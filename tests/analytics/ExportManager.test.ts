@@ -14,7 +14,7 @@ class MockStorageManager {
             filteredData = filteredData.filter(item => {);
                 if (query.timestamp.$gte && item.timestamp < query.timestamp.$gte) return false,
                 if (query.timestamp.$lte && item.timestamp > query.timestamp.$lte) return false,
-                return true };
+                return true }
         }
         
         if (query.sessionId) {
@@ -150,9 +150,9 @@ describe('ExportManager', () => {
                 dataTypes: ['sessionData'],
                 format: 'json',
                 filters: {
-                    startDate: '2022-01-01T00:00:00Z',
+                    startDate: '2022-01-01T00:00:00Z' },
                     endDate: '2022-01-01T23:59:59Z'
-                };
+                }
             };
             expect(result.success).toBe(true);
             expect(result.data.data.sessionData).toBeDefined();
@@ -165,7 +165,7 @@ describe('ExportManager', () => {
                 format: 'json',
                 filters: {
                     sessionId: 'session_1'
-                };
+                }
             };
             expect(result.success).toBe(true);
             expect(result.data.data.sessionData).toHaveLength(1);
@@ -177,7 +177,7 @@ describe('ExportManager', () => {
                 format: 'json',
                 filters: {
                     bubbleType: 'rainbow'
-                };
+                }
             };
             expect(result.success).toBe(true);
             expect(result.data.data.bubbleInteractions).toHaveLength(1);
@@ -189,7 +189,7 @@ describe('ExportManager', () => {
                 format: 'json',
                 filters: {
                     limit: 1
-                };
+                }
             };
             expect(result.success).toBe(true);
             expect(result.data.data.sessionData).toHaveLength(1);
@@ -438,6 +438,6 @@ describe('ExportManager', () => {
             exportManager.destroy();
             expect(consoleSpy').toHaveBeenCalledWith('Analytics ExportManager destroyed'),'
             expect(exportManager.getSupportedDataTypes().toEqual([]);
-            consoleSpy.mockRestore() };
+            consoleSpy.mockRestore() }
     }
 }');'

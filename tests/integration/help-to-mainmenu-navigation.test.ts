@@ -122,7 +122,7 @@ class MockHelpScene {
             this.showEffectivenessReport(report) }');'
         this.helpEventManager.setCallback('onSearchFocus', (') => {'
             // 検索フォーカス時の処理
-            console.log('Search bar focused') };
+            console.log('Search bar focused') }
     }
     enter(') {'
         this.isActive = true;
@@ -336,6 +336,6 @@ describe('Help to Main Menu Navigation Integration Test', () => {
                 // Navigate back
                 helpScene.simulateEscKey();
                 expect(gameEngine.sceneManager.getCurrentScene()').toBe('menu') }'
-        };
+        }
     }
 }');'

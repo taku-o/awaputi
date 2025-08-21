@@ -19,7 +19,7 @@ describe('Visual Effects Integration Tests', () => {  let dom: any,
         `, {"
             pretendToBeVisual: true," }"
             resources: "usable"
-            };
+            }
         },
         (global: any).window = dom.window,
         (global: any).document = dom.window.document,
@@ -115,7 +115,7 @@ describe('Visual Effects Integration Tests', () => {  let dom: any,
             // ストレステスト: 大量のパーティクルエフェクト''
             for (let i = 0, i < 50, i++') { }'
                 simulateBubblePop('normal', Math.random() * 800, Math.random() * 600); }
-                simulateComboEffect(Math.floor(Math.random() * 15) + 1};
+                simulateComboEffect(Math.floor(Math.random() * 15) + 1}
             }
             
             await simulateFrames(120); // 2秒分
@@ -243,14 +243,14 @@ describe('Visual Effects Integration Tests', () => {  let dom: any,
             gameEngine.effectProfiler.startProfiling(),'
             // メモリ圧迫状況のシミュレーション' }'
             for (let i = 0; i < 200; i++') { }'
-                simulateBubblePop('diamond', Math.random() * 800, Math.random() * 600};
+                simulateBubblePop('diamond', Math.random() * 800, Math.random() * 600}
             }
             
             await simulateFrames(60);
             // 自動メモリクリーンアップが動作することを確認
             const memoryAfterCleanup = gameEngine.effectProfiler.getCurrentMemoryUsage();
             expect(memoryAfterCleanup).toBeLessThan(1000); // 1GB未満
-        };
+        }
     }
     // ヘルパー関数
     function simulateFrames(count: any) { return new Promise(resolve => { 
@@ -261,13 +261,13 @@ describe('Visual Effects Integration Tests', () => {  let dom: any,
                 }
                     gameEngine.render(); }
                     frameCount++; }
-                    setTimeout(animate, 16.67};
+                    setTimeout(animate, 16.67}
                 } else {  }
-                    resolve(};
+                    resolve(}
                 }
             };)
             animate();
-        };
+        }
     }
     function simulateBubblePop(bubbleType, x, y) { if (gameEngine.enhancedParticleManager) { }
             gameEngine.enhancedParticleManager.createBubbleDestructionEffect(x, y, bubbleType};)
@@ -276,7 +276,7 @@ describe('Visual Effects Integration Tests', () => {  let dom: any,
         if (gameEngine.audioManager) {
     
 }
-            gameEngine.audioManager.playSound(`bubble_${bubbleType)`};
+            gameEngine.audioManager.playSound(`bubble_${bubbleType)`}
         }
     }
     function simulateComboEffect(comboCount: any) { if (gameEngine.enhancedParticleManager) { }
@@ -291,7 +291,7 @@ describe('Visual Effects Integration Tests', () => {  let dom: any,
     
 }
                 gameEngine.enhancedEffectManager.screenShake(300, 5};)
-            };
+            }
         };
     function simulateTouchEffect(x, y) { if (gameEngine.enhancedParticleManager) { }
             gameEngine.enhancedParticleManager.createTouchFeedbackEffect(x, y};)

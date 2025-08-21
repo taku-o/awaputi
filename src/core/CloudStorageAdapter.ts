@@ -13,18 +13,17 @@ export interface CloudStorageConfig { provider?: string,
 /**
  * 認証データインターフェース
  */
-interface AuthData { token: string;
-    userId: string;
-    expiresAt: string | number  }
-
+interface AuthData { token: string,
+    userId: string,
+    expiresAt: string | number  };
 /**
  * 同期キューアイテムインターフェース
  */'
 interface SyncQueueItem { id: number,''
-    operation: 'set' | 'remove';
-    key: string;
-    data: any | null;
-    timestamp: number;
+    operation: 'set' | 'remove,
+    key: string,
+    data: any | null,
+    timestamp: number,
     retries: number;
 
 /**
@@ -43,20 +42,19 @@ interface ApiResponse { success?: boolean,
 /**
  * クラウドメタデータインターフェース
  */
-interface CloudMetadata { uploadedAt: number;
-    userId: string;
-    provider: string;
+interface CloudMetadata { uploadedAt: number,
+    userId: string,
+    provider: string,
     version: string;
 
 /**
  * 同期ステータスインターフェース
  */
-export interface SyncStatus { isOnline: boolean;
-    isAuthenticated: boolean;
-    queuedOperations: number;
-    conflicts: number;
-    lastSync: string | null }
-
+export interface SyncStatus { isOnline: boolean,
+    isAuthenticated: boolean,
+    queuedOperations: number,
+    conflicts: number,
+    lastSync: string | null };
 /**
  * クラウドストレージアダプター基盤
  * 
@@ -75,13 +73,13 @@ export class CloudStorageAdapter {
     private syncQueue: SyncQueueItem[];
     private conflictQueue: any[]';'
 
-    constructor(options: CloudStorageConfig = {)) {
+    constructor(options: CloudStorageConfig = {) {
         this.config = {''
-            provider: options.provider || 'generic';
-            apiEndpoint: options.apiEndpoint || null;
-            timeout: options.timeout || 30000;
-            retryAttempts: options.retryAttempts || 3;
-            retryDelay: options.retryDelay || 1000;
+            provider: options.provider || 'generic,
+            apiEndpoint: options.apiEndpoint || null,
+            timeout: options.timeout || 30000,
+            retryAttempts: options.retryAttempts || 3,
+            retryDelay: options.retryDelay || 1000,
     chunkSize: options.chunkSize || 1024 * 1024, // 1MB chunks };
         
         this.authToken = null;
@@ -119,10 +117,9 @@ export class CloudStorageAdapter {
                 await this.testConnection()','
             console.log('CloudStorageAdapter: 初期化が完了しました'
             }
-
         } catch (error') {'
             getErrorHandler().handleError(error, 'CLOUD_STORAGE_INITIALIZATION_ERROR', {''
-                operation: 'initialize');
+                operation: 'initialize'),
                 provider: this.config.provider) }';'
         }
     }
@@ -141,7 +138,7 @@ export class CloudStorageAdapter {
                     console.log('CloudStorageAdapter: Valid auth token found'}
                     return true;
 
-            console.log('CloudStorageAdapter: No valid auth token found',
+            console.log('CloudStorageAdapter: No valid auth token found,
             return false;
             ';'
 
@@ -178,7 +175,7 @@ export class CloudStorageAdapter {
         };
             if (response.status === 'ok') {
 
-                console.log('CloudStorageAdapter: Connection, test successful') }
+                console.log('CloudStorageAdapter: Connection, test successful');
                 return true;
 
             throw new Error(`接続テストに失敗しました: ${response.message || '不明なエラー}`};'
@@ -247,7 +244,7 @@ export class CloudStorageAdapter {
             
             // チャンク処理（大きなデータの場合）
             if (JSON.stringify(processedData).length > this.config.chunkSize) { ''
-                return await this.setChunked(key, processedData) }
+                return await this.setChunked(key, processedData);
             ';'
             // API リクエスト
             const response = await this.makeRequest('PUT', `/data/${encodeURIComponent(key}`, { data: processedData,
@@ -383,7 +380,7 @@ export class CloudStorageAdapter {
                 chunks.push(dataStr.substring(i, i + chunkSize); }
             }
             
-            const chunkId = `${key}_${Date.now())`,
+            const chunkId = `${key}_${Date.now()),
             // 各チャンクを保存
             for(let, i = 0, i < chunks.length, i++) { }'
 
@@ -392,7 +389,7 @@ export class CloudStorageAdapter {
             // チャンク完了の通知
             const response = await this.makeRequest('POST', `/data/chunks/${chunkId}/complete`, {
                 key
-                totalChunks: chunks.length);
+                totalChunks: chunks.length),
             ,
             return response.success || false, catch (error) {
             getErrorHandler().handleError(error, 'CLOUD_STORAGE_CHUNK_ERROR', {''
@@ -427,14 +424,14 @@ export class CloudStorageAdapter {
     /**
      * 同期キューへの追加'
      */''
-    private addToSyncQueue(operation: 'set' | 'remove', key: string, data: any = null): void { this.syncQueue.push({);
+    private addToSyncQueue(operation: 'set' | 'remove', key: string, data: any = null): void { this.syncQueue.push({),
             id: Date.now() + Math.random();
             operation,
             key,
             data,
             timestamp: Date.now(
     retries: 0  };
-        console.log(`CloudStorageAdapter: Added ${operation} operation, to sync, queue`};
+        console.log(`CloudStorageAdapter: Added ${operation} operation, to sync, queue`}
     }
     
     /**
@@ -466,7 +463,7 @@ export class CloudStorageAdapter {
                 
                 processedItems.push(item);
                 
-            } catch (error) { item.retries++,
+            } catch (error) { item.retries++;
                 if (item.retries >= this.config.retryAttempts) { }
                     console.error(`CloudStorageAdapter: Failed, to sync ${item.operation} after ${item.retries} retries`);
                     processedItems.push(item); // 失敗したアイテムも削除
@@ -476,7 +473,7 @@ export class CloudStorageAdapter {
         // 処理済みアイテムを削除
         this.syncQueue = this.syncQueue.filter(item => !processedItems.includes(item);
         
-        console.log(`CloudStorageAdapter: Sync queue processed, ${this.syncQueue.length} items remaining`};
+        console.log(`CloudStorageAdapter: Sync queue processed, ${this.syncQueue.length} items remaining`}
     }
     
     /**
@@ -531,7 +528,7 @@ export class CloudStorageAdapter {
     }
 
     private handleOnline = (): void => {  ''
-        console.log('CloudStorageAdapter: Back, online',
+        console.log('CloudStorageAdapter: Back, online,
         this.isOnline = true;
         
         // 初期化が未完了の場合は実行
@@ -551,7 +548,7 @@ export class CloudStorageAdapter {
     /**
      * 認証状態の確認
      */
-    isAuthenticated(): boolean { return !!(this.authToken && this.userId) }
+    isAuthenticated(): boolean { return !!(this.authToken && this.userId);
     
     /**
      * ログアウト
@@ -560,8 +557,7 @@ export class CloudStorageAdapter {
             if (this.authToken && this.config.apiEndpoint) {', ' }
 
                 await this.makeRequest('POST', '/auth/logout'; }
-
-            } catch (error) { // ログアウトエラーは無視 } finally { this.authToken = null;
+        } catch (error) { // ログアウトエラーは無視 } finally { this.authToken = null;
             this.userId = null;
             localStorage.removeItem('bubblePop_cloudAuth');
             console.log('CloudStorageAdapter: Logged, out }'
@@ -609,10 +605,10 @@ export function createCloudStorageAdapter(provider: string = 'generic', options:
     switch(provider) {
 
         case 'aws':','
-            config.apiEndpoint = config.apiEndpoint || 'https: //api.bubblepop.aws.example.com',
+            config.apiEndpoint = config.apiEndpoint || 'https: //api.bubblepop.aws.example.com,
             break,
         case 'gcp':','
-            config.apiEndpoint = config.apiEndpoint || 'https: //api.bubblepop.gcp.example.com',
+            config.apiEndpoint = config.apiEndpoint || 'https: //api.bubblepop.gcp.example.com,
             break,
         case 'azure':','
             config.apiEndpoint = config.apiEndpoint || 'https: //api.bubblepop.azure.example.com,'

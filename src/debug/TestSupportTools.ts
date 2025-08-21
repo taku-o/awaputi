@@ -56,7 +56,7 @@ export class TestSupportTools extends BaseComponent { private gameEngine: GameEn
         this.testEnvironment = {}
 
     private _handleError(message: string, error: any): void {
-        console.error(`[TestSupportTools] ${message}:`, error};
+        console.error(`[TestSupportTools] ${message}:`, error}
     }
 
     public getComponent(name: string): TestComponent | undefined { return this.components.get(name) }

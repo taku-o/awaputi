@@ -13,8 +13,7 @@ export class AnalysisRenderingPerformanceTests {
         this.performanceConfig = mainTestSuite.performanceConfig;
         this.environmentThresholds = mainTestSuite.environmentThresholds;
         
-        console.log('[AnalysisRenderingPerformanceTests] Component initialized') }
-
+        console.log('[AnalysisRenderingPerformanceTests] Component initialized') };
     /**
      * Register analysis and rendering performance tests
      */
@@ -49,7 +48,7 @@ export class AnalysisRenderingPerformanceTests {
                 const comparison = statisticsAnalyzer && typeof statisticsAnalyzer.comparePerformance === 'function'
                     ? await statisticsAnalyzer.comparePerformance({), : undefined
                         startDate: Date.now() - 30 * 24 * 60 * 60 * 1000, // 30日前
-                        endDate: Date.now(};
+                        endDate: Date.now(}
             };
                     : {};
                 const result = measurement.endMeasurement(');'
@@ -86,7 +85,7 @@ export class AnalysisRenderingPerformanceTests {
                     promises.push(statisticsAnalyzer.analyzeTrends()') }'
                 if (statisticsAnalyzer && typeof statisticsAnalyzer.comparePerformance === 'function') {
                     promises.push(statisticsAnalyzer.comparePerformance({);
-                        startDate: Date.now() - 7 * 24 * 60 * 60 * 1000;
+                        startDate: Date.now() - 7 * 24 * 60 * 60 * 1000,
                         endDate: Date.now( }');'
                 }
                 if (statisticsAnalyzer && typeof statisticsAnalyzer.generateInsights === 'function') {
@@ -102,7 +101,7 @@ export class AnalysisRenderingPerformanceTests {
                 expect(trends.toBeDefined();
                 expect(comparison.toBeDefined();
                 expect(insights.toBeDefined();
-            };
+            }
         }');'
 
         describe('描画パフォーマンステスト', (') => {'
@@ -242,12 +241,12 @@ export class AnalysisRenderingPerformanceTests {
                     const result = measurement.endMeasurement();
 
                     results[`${size.width}x${size.height}`] = result;
-                    console.log(`Render ${size.width}x${size.height):`, result};
+                    console.log(`Render ${size.width}x${size.height):`, result}
                 }
 
                 // 画面サイズに関係なく一定の性能を維持
                 Object.values(results.forEach(result => {);
-                    expect(result.duration).toBeLessThan(300) };
+                    expect(result.duration).toBeLessThan(300) }
             }');'
 
             test('アニメーション付き描画のパフォーマンス', async (') => {'
@@ -283,7 +282,7 @@ export class AnalysisRenderingPerformanceTests {
                 // 60FPSを維持できることを確認（16.67ms/frame）
                 const averageFrameTime = result.duration / animationFrames;
                 expect(averageFrameTime.toBeLessThan(20); // 余裕を見て20ms
-            };
+            }
         }');'
     }
 }

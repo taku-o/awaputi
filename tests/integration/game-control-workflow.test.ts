@@ -352,6 +352,6 @@ describe('Game Control Workflow Integration', () => {
             gameUIManager.handleControlButtonClick(700, 50);
             // Buttons should be disabled during dialog display
             const buttonState = gameUIManager.gameControlButtons.getButtonState();
-            expect(buttonState.enabled).toBe(false) };
+            expect(buttonState.enabled).toBe(false) }
     }
 }');'

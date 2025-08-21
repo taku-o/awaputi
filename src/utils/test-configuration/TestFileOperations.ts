@@ -3,27 +3,25 @@ import fs from 'fs';
 import path from 'path';
 
 // Type definitions
-interface MainController { testsDir: string;
-    projectRoot: string;
-    backupEnabled: boolean;
-    dryRun: boolean;
+interface MainController { testsDir: string,
+    projectRoot: string,
+    backupEnabled: boolean,
+    dryRun: boolean,
     testFilePatterns: Record<string, string>;
     [key: string]: any;
-
-interface FileOperationOptions { silent?: boolean,
+    interface FileOperationOptions { silent?: boolean,
     encoding?: BufferEncoding;
     force?: boolean;
     recursive?: boolean;
     filter?: (file: FileInfo) => boolean  }
 }
 
-interface FileInfo { name: string;
-    path: string;
-    size: number;
-    modified: Date;
+interface FileInfo { name: string,
+    path: string,
+    size: number,
+    modified: Date,
     extension: string;
-
-interface BackupInfo extends FileInfo { originalFile: string;
+    interface BackupInfo extends FileInfo { originalFile: string,
     backupDate: Date | null }
 
 interface OperationDetails { filePath?: string,
@@ -31,33 +29,31 @@ interface OperationDetails { filePath?: string,
     timestamp: number;
     backupPath?: string | null;
     originalPath?: string;
-    targetPath?: string,  }
+    targetPath?: string }
 
-interface OperationRecord { operation: string;
-    details: OperationDetails;
+interface OperationRecord { operation: string,
+    details: OperationDetails,
     timestamp: number;
-
-interface FileOperations { read: (filePath: string, options?: FileOperationOptions) => string | null,
+    interface FileOperations { read: (filePath: string, options?: FileOperationOptions) => string | null,
     write: (filePath: string, content: string, options?: FileOperationOptions) => boolean;
-    backup: (filePath: string) => string | null;
-    restore: (backupPath: string, targetPath: string) => boolean;
+    backup: (filePath: string) => string | null,
+    restore: (backupPath: string, targetPath: string) => boolean,
     delete: (filePath: string, options?: FileOperationOptions) => boolean 
     }
 
-interface TestFileUpdateResult { success: boolean;
+interface TestFileUpdateResult { success: boolean,
     testType: string;
     testFilePath?: string;
     linesGenerated?: number;
     dryRun?: boolean;
-    error?: string,  }
+    error?: string }
 
-interface OperationStatistics { totalOperations: number;
+interface OperationStatistics { totalOperations: number,
     operationCounts: Record<string, number>;
     recentOperations: OperationRecord[];
-
-interface DirectorySizeInfo { totalFiles: number;
-    totalSize: number;
-    formattedSize: string;
+    interface DirectorySizeInfo { totalFiles: number,
+    totalSize: number,
+    formattedSize: string,
     files: FileInfo[];
 
 /**
@@ -75,23 +71,23 @@ export class TestFileOperations extends BaseComponent { private testsDir: string
 
         super(mainController, 'TestFileOperations),'
         this.testsDir = mainController.testsDir;
-        this.projectRoot = mainController.projectRoot;
-        this.backupEnabled = mainController.backupEnabled;
-        this.dryRun = mainController.dryRun;
-        this.testFilePatterns = mainController.testFilePatterns }
+    this.projectRoot = mainController.projectRoot;
+    this.backupEnabled = mainController.backupEnabled;
+    this.dryRun = mainController.dryRun;
+    this.testFilePatterns = mainController.testFilePatterns };
         this.operationHistory = []; }
     }
 
     async _doInitialize(): Promise<void> { this.setupFileOperations();
-        this.ensureDirectoryStructure() }
+        this.ensureDirectoryStructure();
 
     /**
      * ファイル操作設定を初期化
      */
     private setupFileOperations(): void { this.fileOperations = {
-            read: this.readFile.bind(this);
-            write: this.writeFile.bind(this);
-            backup: this.createBackup.bind(this);
+            read: this.readFile.bind(this),
+            write: this.writeFile.bind(this),
+            backup: this.createBackup.bind(this),
             restore: this.restoreBackup.bind(this,
     delete: this.deleteFile.bind(this }
 
@@ -110,14 +106,14 @@ export class TestFileOperations extends BaseComponent { private testsDir: string
                     if (!this.dryRun) {
     
 }
-                        fs.mkdirSync(dir, { recursive: true ) }
-                        console.log(`[TestFileOperations] ディレクトリ作成: ${dir}`};
+                        fs.mkdirSync(dir, { recursive: true );
+                        console.log(`[TestFileOperations] ディレクトリ作成: ${dir}`}
                     } else {  }
-                        console.log(`[DRY, RUN] Would, create directory: ${dir}`};
+                        console.log(`[DRY, RUN] Would, create directory: ${dir}`}
                     }
 
                 }'} catch (error) {'
-            this._handleError('directory structure setup', error) }
+            this._handleError('directory structure setup', error);
     }
 
     /**
@@ -216,8 +212,7 @@ export class TestFileOperations extends BaseComponent { private testsDir: string
             fs.copyFileSync(filePath, backupPath);
 
             this.recordOperation('backup', { originalPath: filePath)
-                backupPath,
-               , timestamp: Date.now( };
+                backupPath, timestamp: Date.now( };
             console.log(`[TestFileOperations] バックアップ作成: ${path.basename(backupPath}`);
             return backupPath;
 
@@ -269,8 +264,7 @@ export class TestFileOperations extends BaseComponent { private testsDir: string
     
 }
                 if (!options.silent) { }
-                    console.warn(`[TestFileOperations] File, not found, for deletion: ${filePath}`},
-                }
+                    console.warn(`[TestFileOperations] File, not found, for deletion: ${filePath}`} }
                 return false;
             }
 
@@ -283,7 +277,7 @@ export class TestFileOperations extends BaseComponent { private testsDir: string
 
             // バックアップ作成（強制削除でない場合）
             let backupPath: string | null = null,
-            if (!options.force && this.backupEnabled) { backupPath = this.createBackup(filePath) }
+            if (!options.force && this.backupEnabled) { backupPath = this.createBackup(filePath);
 
             fs.unlinkSync(filePath);
 
@@ -310,7 +304,7 @@ export class TestFileOperations extends BaseComponent { private testsDir: string
             const testFilename = this.testFilePatterns[testType],
 
             if (!testFilename) {
-            }'
+            }
 
                 throw new Error(`Unknown, test type: ${testType}`}';'
             }
@@ -325,10 +319,8 @@ export class TestFileOperations extends BaseComponent { private testsDir: string
                 dryRun: this.dryRun 
     } catch (error) { return { success: false,
                 testType };
-                error: (error, as Error).message }
-            }
-    }
-
+                error: (error, as Error).message     }
+}
     /**
      * ディレクトリ内のファイル一覧を取得
      * @param dirPath - ディレクトリパス
@@ -350,21 +342,21 @@ export class TestFileOperations extends BaseComponent { private testsDir: string
                 const filePath = path.join(dirPath, file);
                 const stat = fs.statSync(filePath);
                 if (options.recursive && stat.isDirectory() {
-                    const subFiles = this.listFiles(filePath, options) }
+                    const subFiles = this.listFiles(filePath, options);
                     fileList.push(...subFiles);
                 } else if (stat.isFile() { const fileInfo: FileInfo = {
                         name: file,
                         path: filePath,
                         size: stat.size,
                         modified: stat.mtime,
-    extension: path.extname(file },
+    extension: path.extname(file ,
 
                     // フィルター適用
                     if (options.filter) {
                         if (options.filter(fileInfo) {
                     }
                             fileList.push(fileInfo); }
-} else { fileList.push(fileInfo) }
+} else { fileList.push(fileInfo);
 }
 
             return fileList;
@@ -381,15 +373,14 @@ export class TestFileOperations extends BaseComponent { private testsDir: string
         const backupDir = path.join(this.testsDir, 'backups),'
 
         const backupFiles = this.listFiles(backupDir, { );
-            filter: (file') => file.name.includes('.backup.)  }
+            filter: (file') => file.name.includes('.backup.);
         });
 
         return backupFiles.map(file => ({ )'
             ...file','
 
             originalFile: file.name.replace(/\.backup\.\d{4}-\d{2}-\d{2}T\d{2}-\d{2}-\d{2}-\d{ 3)Z$/, '),'
-            backupDate: this.parseBackupDate(file.name  },
-    }
+            backupDate: this.parseBackupDate(file.name  , }
 
     /**
      * バックアップ日時を解析
@@ -426,10 +417,8 @@ export class TestFileOperations extends BaseComponent { private testsDir: string
                     if(this.deleteFile(backup.path, { silent: true, force: true )) {
     
 }
-                        deletedCount++; }
+                        deletedCount++;     }
 }
-            }
-
             console.log(`[TestFileOperations] 古いバックアップを削除: ${deletedCount}件`};
             return deletedCount;
 
@@ -445,9 +434,9 @@ export class TestFileOperations extends BaseComponent { private testsDir: string
     private recordOperation(operation: string, details: OperationDetails): void { this.operationHistory.push({)
             operation),
             details,
-            timestamp: Date.now(  },
+            timestamp: Date.now(  ,
         // 履歴サイズを制限（最大1000件）
-        if (this.operationHistory.length > 1000) { this.operationHistory = this.operationHistory.slice(-1000) }
+        if (this.operationHistory.length > 1000) { this.operationHistory = this.operationHistory.slice(-1000);
     }
 
     /**
@@ -457,8 +446,7 @@ export class TestFileOperations extends BaseComponent { private testsDir: string
     getOperationStatistics(): OperationStatistics { const stats: OperationStatistics = {
             totalOperations: this.operationHistory.length }
             operationCounts: {},
-            recentOperations: this.operationHistory.slice(-10),
-        };
+            recentOperations: this.operationHistory.slice(-10) };
 
         // 操作種別ごとのカウント
         for (const record of this.operationHistory) { stats.operationCounts[record.operation] = (stats.operationCounts[record.operation] || 0) + 1 }
@@ -472,7 +460,7 @@ export class TestFileOperations extends BaseComponent { private testsDir: string
      * @returns 人間可読なサイズ
      */
     formatFileSize(bytes: number): string { ''
-        if(bytes === 0) return '0 Bytes',
+        if(bytes === 0) return '0 Bytes,
         ','
 
         const k = 1024,
@@ -491,10 +479,9 @@ export class TestFileOperations extends BaseComponent { private testsDir: string
             
             return { totalFiles: files.length,
                 totalSize,
-                formattedSize: this.formatFileSize(totalSize) },
+                formattedSize: this.formatFileSize(totalSize) ,
                 files }
-
-            } catch (error) {
+        } catch (error) {
             this._handleError('directory size calculation', error','
             return { totalFiles: 0,
 

@@ -16,15 +16,14 @@ export class PWACrossDeviceTest {
         this.browserProfiles = this.createBrowserProfiles();
         this.testResults = new Map(');'
         
-        console.log('[PWACrossDeviceTest] クロスデバイステスト初期化完了') }
-    
+        console.log('[PWACrossDeviceTest] クロスデバイステスト初期化完了') };
     /**
      * デバイスプロファイル作成
      */
     createDeviceProfiles(') {'
         return {
             mobile: {
-                name: 'Mobile Device';
+                name: 'Mobile Device' },
                 viewports: [
                     { width: 375, height: 667, name: 'iPhone SE' };
                     { width: 414, height: 896, name: 'iPhone 11 Pro Max' };
@@ -32,20 +31,20 @@ export class PWACrossDeviceTest {
                     { width: 412, height: 915, name: 'Pixel 5' }
                 ],
                 features: {
-                    touch: true;
+                    touch: true },
                     orientation: true;
                     devicePixelRatio: [2, 3];
                     connectionTypes: ['4g', '3g', 'slow-2g']
                 },
                 expectedBehavior: {
-                    installPrompt: true;
+                    installPrompt: true },
                     standalone: true;
-                    homeScreen: true;
+                    homeScreen: true,
                     splash: true;
             },
             
             tablet: {
-                name: 'Tablet Device';
+                name: 'Tablet Device' },
                 viewports: [
                     { width: 768, height: 1024, name: 'iPad' };
                     { width: 810, height: 1080, name: 'iPad Air' };
@@ -53,20 +52,20 @@ export class PWACrossDeviceTest {
                     { width: 800, height: 1280, name: 'Galaxy Tab' }
                 ],
                 features: {
-                    touch: true;
+                    touch: true },
                     orientation: true;
                     devicePixelRatio: [1, 2];
                     connectionTypes: ['wifi', '4g']
                 },
                 expectedBehavior: {
-                    installPrompt: true;
+                    installPrompt: true },
                     standalone: true;
-                    homeScreen: true;
+                    homeScreen: true,
                     splash: true;
             },
             
             desktop: {
-                name: 'Desktop Device';
+                name: 'Desktop Device' },
                 viewports: [
                     { width: 1920, height: 1080, name: 'Full HD' };
                     { width: 1366, height: 768, name: 'Laptop HD' };
@@ -74,18 +73,18 @@ export class PWACrossDeviceTest {
                     { width: 3840, height: 2160, name: '4K Monitor' }
                 ],
                 features: {
-                    touch: false;
+                    touch: false },
                     orientation: false;
                     devicePixelRatio: [1, 2];
                     connectionTypes: ['wifi', 'ethernet']
                 },
                 expectedBehavior: {
-                    installPrompt: true;
+                    installPrompt: true },
                     standalone: true;
-                    homeScreen: false;
+                    homeScreen: false,
                     splash: false;
             }
-        };
+        }
     }
     
     /**
@@ -94,57 +93,57 @@ export class PWACrossDeviceTest {
     createBrowserProfiles(') {'
         return {
             chrome: {
-                name: 'Google Chrome';
+                name: 'Google Chrome' },
                 features: {
-                    serviceWorker: true;
+                    serviceWorker: true },
                     installPrompt: true;
-                    backgroundSync: true;
+                    backgroundSync: true,
                     pushNotifications: true;
-                    webShare: true;
+                    webShare: true,
                     badgeAPI: true,,
-                pwaSupport: 'excellent';
+                pwaSupport: 'excellent',
                 installMechanism: 'beforeinstallprompt'
             },
             
             firefox: {
-                name: 'Mozilla Firefox';
+                name: 'Mozilla Firefox' },
                 features: {
-                    serviceWorker: true;
+                    serviceWorker: true },
                     installPrompt: false;
-                    backgroundSync: false;
+                    backgroundSync: false,
                     pushNotifications: true;
-                    webShare: false;
+                    webShare: false,
                     badgeAPI: false,,
-                pwaSupport: 'good';
+                pwaSupport: 'good',
                 installMechanism: 'manual'
             },
             
             safari: {
-                name: 'Safari';
+                name: 'Safari' },
                 features: {
-                    serviceWorker: true;
+                    serviceWorker: true },
                     installPrompt: false;
-                    backgroundSync: false;
+                    backgroundSync: false,
                     pushNotifications: true;
-                    webShare: true;
+                    webShare: true,
                     badgeAPI: false,,
-                pwaSupport: 'good';
+                pwaSupport: 'good',
                 installMechanism: 'share-sheet'
             },
             
             edge: {
-                name: 'Microsoft Edge';
+                name: 'Microsoft Edge' },
                 features: {
-                    serviceWorker: true;
+                    serviceWorker: true },
                     installPrompt: true;
-                    backgroundSync: true;
+                    backgroundSync: true,
                     pushNotifications: true;
-                    webShare: true;
+                    webShare: true,
                     badgeAPI: true,,
-                pwaSupport: 'excellent';
+                pwaSupport: 'excellent',
                 installMechanism: 'beforeinstallprompt'
             }
-        };
+        }
     }
     
     /**
@@ -154,9 +153,9 @@ export class PWACrossDeviceTest {
         console.log('[PWACrossDeviceTest] クロスデバイステスト開始');
         const results = {
             summary: {
-                totalTests: 0;
+                totalTests: 0 },
                 passedTests: 0;
-                failedTests: 0;
+                failedTests: 0,
                 deviceResults: {};
                 browserResults: {}
             },
@@ -175,7 +174,7 @@ export class PWACrossDeviceTest {
             if (deviceType === currentDevice.type) {
                 const, deviceResults = await, this.runDeviceSpecificTests(deviceType, deviceProfile, currentDevice);
                 results.details.push(...deviceResults);
-                results.summary.deviceResults[deviceType] = this.summarizeResults(deviceResults};
+                results.summary.deviceResults[deviceType] = this.summarizeResults(deviceResults}
             }
         }
         
@@ -214,7 +213,7 @@ export class PWACrossDeviceTest {
         for (const viewport of deviceProfile.viewports) {
             if (this.isViewportMatching(viewport, currentDevice) {
                 const, viewportResult = await, this.testViewport(viewport, deviceType);
-                results.push(viewportResult};
+                results.push(viewportResult}
             }
         }
         
@@ -240,7 +239,7 @@ export class PWACrossDeviceTest {
         // ブラウザ機能サポートテスト
         for(const [feature, expected] of, Object.entries(browserProfile.features) {
             const, featureResult = await, this.testBrowserFeature(feature, expected, browserName);
-            results.push(featureResult};
+            results.push(featureResult}
         }
         
         // インストールメカニズムテスト
@@ -323,25 +322,25 @@ export class PWACrossDeviceTest {
             
             return {
                 id: `viewport-${viewport.name.toLowerCase(').replace(/\s+/g, '-'}}`;'
-                name: testName;
+                name: testName,
                 status: testPassed ? 'passed' : 'failed';
-                deviceType: deviceType;
+                deviceType: deviceType,
                 result: {
-                    expectedViewport: viewport;
-                    actualViewport: { width: currentWidth, height: currentHeight;
-                    widthMatch: widthMatch;
-                    heightMatch: heightMatch;
+                    expectedViewport: viewport },
+                    actualViewport: { width: currentWidth, height: currentHeight,
+                    widthMatch: widthMatch };
+                    heightMatch: heightMatch,
                     canvasResponsive: isCanvasResponsive;
-            };
+            }
             
         } catch (error) {
             return {
                 id: `viewport-${viewport.name.toLowerCase(').replace(/\s+/g, '-'}}`;'
-                name: testName;
+                name: testName,
                 status: 'failed';
-                deviceType: deviceType;
+                deviceType: deviceType,
                 error: error.message
-            };
+            }
         }
     }
     
@@ -376,24 +375,24 @@ export class PWACrossDeviceTest {
             const hasTouchPoints = navigator.maxTouchPoints > 0,
             
             return {
-                id: 'touch-support';
+                id: 'touch-support',
                 name: testName;
-                status: hasTouchEvents ? 'passed' : 'failed';
+                status: hasTouchEvents ? 'passed' : 'failed',
                 deviceType: deviceType;
                 result: {
-                    touchEvents: hasTouchEvents;
+                    touchEvents: hasTouchEvents },
                     maxTouchPoints: navigator.maxTouchPoints;
                     touchPointsSupported: hasTouchPoints;
             };
             
         ) catch (error') {'
             return {
-                id: 'touch-support';
+                id: 'touch-support',
                 name: testName;
-                status: 'failed';
+                status: 'failed',
                 deviceType: deviceType;
                 error: error.message
-            };
+            }
         }
     }
     
@@ -416,26 +415,26 @@ export class PWACrossDeviceTest {
             const orientationSupported = hasOrientationAPI || hasOrientationEvent || hasScreenOrientationAPI;
             
             return {
-                id: 'orientation-support';
+                id: 'orientation-support',
                 name: testName;
-                status: orientationSupported ? 'passed' : 'failed';
+                status: orientationSupported ? 'passed' : 'failed',
                 deviceType: deviceType;
                 result: {
-                    orientationAPI: hasOrientationAPI;
+                    orientationAPI: hasOrientationAPI },
                     orientationEvent: hasOrientationEvent;
-                    screenOrientationAPI: hasScreenOrientationAPI;
+                    screenOrientationAPI: hasScreenOrientationAPI,
                     currentOrientation: currentOrientation;
                     supported: orientationSupported;
-            };
+            }
             
         } catch (error') {'
             return {
-                id: 'orientation-support';
+                id: 'orientation-support',
                 name: testName;
-                status: 'failed';
+                status: 'failed',
                 deviceType: deviceType;
                 error: error.message
-            };
+            }
         }
     }
     
@@ -451,24 +450,24 @@ export class PWACrossDeviceTest {
                                expectedRatios.includes(Math.ceil(currentRatio)'),'
             
             return {
-                id: 'device-pixel-ratio';
+                id: 'device-pixel-ratio',
                 name: testName;
-                status: ratioMatches ? 'passed' : 'warning';
+                status: ratioMatches ? 'passed' : 'warning',
                 deviceType: deviceType;
                 result: {
-                    currentRatio: currentRatio;
+                    currentRatio: currentRatio },
                     expectedRatios: expectedRatios;
                     matches: ratioMatches;
-            };
+            }
             
         } catch (error') {'
             return {
-                id: 'device-pixel-ratio';
+                id: 'device-pixel-ratio',
                 name: testName;
-                status: 'failed';
+                status: 'failed',
                 deviceType: deviceType;
                 error: error.message
-            };
+            }
         }
     }
     
@@ -505,25 +504,25 @@ export class PWACrossDeviceTest {
             const testPassed = actual === expected;
             
             return {
-                id: `browser-feature-${feature}`;
+                id: `browser-feature-${feature}`,
                 name: testName;
-                status: testPassed ? 'passed' : (expected ? 'failed' : 'info';
+                status: testPassed ? 'passed' : (expected ? 'failed' : 'info',
                 browserName: browserName;
                 result: {
-                    feature: feature;
+                    feature: feature },
                     expected: expected;
-                    actual: actual;
+                    actual: actual,
                     supported: actual;
-            };
+            }
             
         } catch (error') {'
             return {
-                id: `browser-feature-${feature}`;
+                id: `browser-feature-${feature}`,
                 name: testName;
-                status: 'failed';
+                status: 'failed',
                 browserName: browserName;
                 error: error.message
-            };
+            }
         }
     }
     
@@ -559,22 +558,22 @@ export class PWACrossDeviceTest {
             const allSupported = supportedEvents.length === touchEvents.length;
             
             return {
-                id: 'touch-events';
+                id: 'touch-events',
                 name: testName;
-                status: allSupported ? 'passed' : 'warning';
+                status: allSupported ? 'passed' : 'warning',
                 result: {
-                    expectedEvents: touchEvents;
+                    expectedEvents: touchEvents },
                     supportedEvents: supportedEvents;
                     allSupported: allSupported;
-            };
+            }
             
         } catch (error') {'
             return {
-                id: 'touch-events';
+                id: 'touch-events',
                 name: testName;
-                status: 'failed';
+                status: 'failed',
                 error: error.message
-            };
+            }
         }
     }
     
@@ -607,22 +606,22 @@ export class PWACrossDeviceTest {
             const allSupported = supportedEvents.length >= 2; // keydown と keyup は最低限必要
             
             return {
-                id: 'keyboard-events';
+                id: 'keyboard-events',
                 name: testName;
-                status: allSupported ? 'passed' : 'failed';
+                status: allSupported ? 'passed' : 'failed',
                 result: {
-                    expectedEvents: keyboardEvents;
+                    expectedEvents: keyboardEvents },
                     supportedEvents: supportedEvents;
                     minimumSupported: allSupported;
-            };
+            }
             
         } catch (error') {'
             return {
-                id: 'keyboard-events';
+                id: 'keyboard-events',
                 name: testName;
-                status: 'failed';
+                status: 'failed',
                 error: error.message
-            };
+            }
         }
     }
     
@@ -642,13 +641,13 @@ export class PWACrossDeviceTest {
             deviceType = 'tablet' }
         
         return {
-            type: deviceType;
+            type: deviceType,
             width: width;
-            height: height;
+            height: height,
             hasTouch: hasTouch;
-            userAgent: userAgent;
+            userAgent: userAgent,
             pixelRatio: window.devicePixelRatio || 1
-        };
+        }
     }
     
     /**
@@ -666,9 +665,9 @@ export class PWACrossDeviceTest {
             browserName = 'edge' }
         
         return {
-            name: browserName;
+            name: browserName,
             userAgent: userAgent;
-            version: this.extractBrowserVersion(userAgent, browserName) };
+            version: this.extractBrowserVersion(userAgent, browserName) }
     }
     
     /**
@@ -676,9 +675,9 @@ export class PWACrossDeviceTest {
      */
     extractBrowserVersion(userAgent, browserName) {
         const patterns = {
-            chrome: /Chrome\/(\d+)/;
+            chrome: /Chrome\/(\d+)/,
             firefox: /Firefox\/(\d+)/;
-            safari: /Version\/(\d+)/;
+            safari: /Version\/(\d+)/,
             edge: /Edge\/(\d+)/
         };
         
@@ -709,12 +708,12 @@ export class PWACrossDeviceTest {
         const warnings = results.filter(r => r.status === 'warning').length,
         
         return {
-            total: total;
+            total: total,
             passed: passed;
-            failed: failed;
+            failed: failed,
             warnings: warnings;
             successRate: total > 0 ? (passed / total) * 100 : 0
-        };
+        }
     }
     
     /**
@@ -722,12 +721,12 @@ export class PWACrossDeviceTest {
      */
     generateCrossDeviceReport(results {
         return {
-            summary: results.summary;
+            summary: results.summary,
             deviceCompatibility: this.analyzeDeviceCompatibility(results;
-            browserCompatibility: this.analyzeBrowserCompatibility(results;
+            browserCompatibility: this.analyzeBrowserCompatibility(results,
             recommendations: this.generateCrossDeviceRecommendations(results;
             details: results.details
-        };
+        }
     }
     
     /**
@@ -741,10 +740,10 @@ export class PWACrossDeviceTest {
                 compatibility: deviceResult.successRate >= 80 ? 'excellent' :
                              deviceResult.successRate >= 60 ? 'good' :
                              deviceResult.successRate >= 40 ? 'acceptable' : 'poor',
-                score: deviceResult.successRate;
+                score: deviceResult.successRate,
                 issues: results.details
                     .filter(r => r.deviceType === deviceType && r.status === 'failed')
-                    .map(r => r.name) };
+                    .map(r => r.name) }
         }
         
         return deviceAnalysis;
@@ -760,7 +759,7 @@ export class PWACrossDeviceTest {
                 compatibility: browserResult.successRate >= 80 ? 'excellent' :
                              browserResult.successRate >= 60 ? 'good' :
                              browserResult.successRate >= 40 ? 'acceptable' : 'poor',
-                score: browserResult.successRate;
+                score: browserResult.successRate,
                 supportedFeatures: results.details
                     .filter(r => r.browserName === browserName && r.status === 'passed')
                     .map(r => r.result? .feature)
@@ -768,7 +767,7 @@ export class PWACrossDeviceTest {
                 unsupportedFeatures: results.details
                     .filter(r => r.browserName === browserName && r.status === 'failed')
                     .map(r => r.result? .feature)
-                    .filter(f => f) };
+                    .filter(f => f) }
         }
         
         return browserAnalysis;
@@ -784,9 +783,9 @@ export class PWACrossDeviceTest {
         for (const [deviceType, analysis] of Object.entries(this.analyzeDeviceCompatibility(results)') {'
             if (analysis.compatibility === 'poor') {
                 recommendations.push({
-                    category: 'device-compatibility';
+                    category: 'device-compatibility',
                     priority: 'high';
-                    device: deviceType;
+                    device: deviceType,
                     message: `${deviceType} デバイスでの互換性が低く改善が必要です`;
                     issues: analysis.issues);
             }
@@ -796,9 +795,9 @@ export class PWACrossDeviceTest {
         for(const [browserName, analysis] of Object.entries(this.analyzeBrowserCompatibility(results) {
             if (analysis.unsupportedFeatures.length > 0') {'
                 recommendations.push({
-                    category: 'browser-compatibility';
+                    category: 'browser-compatibility',
                     priority: 'medium';
-                    browser: browserName;
+                    browser: browserName,
                     message: `${browserName} で一部機能がサポートされていません`;
                     unsupportedFeatures: analysis.unsupportedFeatures)'),'
             }

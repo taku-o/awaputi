@@ -65,7 +65,7 @@ function _getCallerInfo() { try {'
 
         return '不明';
     } catch (error) {
-        return '不明',
+        return '不明,
 
 /**
  * BALANCE_CONFIGの互換性プロキシ
@@ -85,11 +85,11 @@ const BALANCE_CONFIG_PROXY = new Proxy({}, { get(target, prop) {
             case 'scoring':','
                 return, gameConfig.getScoreConfig('''
             case 'stages': ','
-                return, gameConfig.getStageConfig('',
+                return, gameConfig.getStageConfig(',
             case 'items':','
-                return, gameConfig.getItemConfig('',
+                return, gameConfig.getItemConfig(',
             case 'bubbles':','
-                return, gameConfig.getBubbleConfig('',
+                return, gameConfig.getBubbleConfig(',
             case 'changelog':);
                 // 変更履歴は新システムでは別の方法で管理}
                 return configManager.getChangeHistory(}

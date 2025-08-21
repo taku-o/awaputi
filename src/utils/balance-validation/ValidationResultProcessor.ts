@@ -15,8 +15,7 @@ interface Rule { autoFix: boolean;
 }
 
 interface ValidationContext { [key: string]: any;
-
-interface ProcessorConfig { enableDetailedReports?: boolean,
+    interface ProcessorConfig { enableDetailedReports?: boolean,
     includePerformanceMetrics?: boolean;
     maxSuggestions?: number;
     autoFixThreshold?: 'low' | 'medium' | 'high' | 'critical' }
@@ -30,104 +29,91 @@ interface RuleExecutionResult { skipped?: boolean,
     executionTime?: number;
     error?: boolean;
     suggestion?: string;
-
     autoFix?: boolean;
     autoFixFn?: (oldValue: any, fixedValue: any, context: ValidationContext') => any;'
     originalError?: Error;
      }
 }
 
-interface ProcessedIssue { rule: string;
-    message: string;
-    severity: string;
+interface ProcessedIssue { rule: string,
+    message: string,
+    severity: string,
     category: string;
     executionTime?: number;
     originalError?: Error;
      }
 
-interface ProcessedSuggestion { rule: string;
-    suggestion: string;
+interface ProcessedSuggestion { rule: string,
+    suggestion: string,
     severity: string;
-
-interface AppliedRule { name: string;
+    interface AppliedRule { name: string;
     category?: string;
     result: 'passed' | 'failed';
     executionTime?: number;
     error: boolean;
-
-interface AppliedFix { rule: string;
-    originalValue: any;
-    fixedValue: any;
+    interface AppliedFix { rule: string,
+    originalValue: any,
+    fixedValue: any,
     issue: string;
-
-interface ProcessedResultMetadata { originalValue: any;
+    interface ProcessedResultMetadata { originalValue: any,
     requestedValue: any;
     context?: ValidationContext;
-    processingTime: number;
+    processingTime: number,
     timestamp: number;
     appliedFixes?: AppliedFix[];
     error?: string;
-
-interface ProcessedResult { valid: boolean;
-    errors: ProcessedIssue[];
-    warnings: ProcessedIssue[];
-    suggestions: ProcessedSuggestion[];
-    autoFixAvailable: boolean;
-    autoFixedValue: any;
-    rulesApplied: AppliedRule[];
+    interface ProcessedResult { valid: boolean,
+    errors: ProcessedIssue[],
+    warnings: ProcessedIssue[],
+    suggestions: ProcessedSuggestion[],
+    autoFixAvailable: boolean,
+    autoFixedValue: any,
+    rulesApplied: AppliedRule[],
     metadata: ProcessedResultMetadata;
     summary?: ValidationSummary;
-
-interface PerformanceSummary { totalExecutionTime: number;
-    averageExecutionTime: number;
-    slowestRule: RulePerformanceInfo | null;
+    interface PerformanceSummary { totalExecutionTime: number,
+    averageExecutionTime: number,
+    slowestRule: RulePerformanceInfo | null,
     fastestRule: RulePerformanceInfo | null }
 
-interface RulePerformanceInfo { name: string;
+interface RulePerformanceInfo { name: string,
     executionTime: number;
-
-interface SeverityBreakdown { critical: number;
-    high: number;
-    medium: number;
-    low: number;
+    interface SeverityBreakdown { critical: number,
+    high: number,
+    medium: number,
+    low: number,
     warning: number;
-
-interface CategoryBreakdown { [category: string]: number;
-
-interface ValidationSummary { totalRules: number;
-    executed: number;
-    skipped: number;
-    passed: number;
-    failed: number;
-    errors: number;
-    warnings: number;
-    suggestions: number;
-    autoFixesAvailable: boolean;
+    interface CategoryBreakdown { [category: string]: number;
+    interface ValidationSummary { totalRules: number,
+    executed: number,
+    skipped: number,
+    passed: number,
+    failed: number,
+    errors: number,
+    warnings: number,
+    suggestions: number,
+    autoFixesAvailable: boolean,
     overallResult: 'valid' | 'invalid';
     performance?: PerformanceSummary;
-    severityBreakdown: SeverityBreakdown;
+    severityBreakdown: SeverityBreakdown,
     categoryBreakdown: CategoryBreakdown;
-
-interface HistoryEntry { timestamp: number;
-    valid: boolean;
-    errorCount: number;
-    warningCount: number;
-    processingTime: number;
-    rulesExecuted: number;
+    interface HistoryEntry { timestamp: number,
+    valid: boolean,
+    errorCount: number,
+    warningCount: number,
+    processingTime: number,
+    rulesExecuted: number,
     autoFixApplied: number;
-
-interface RecentTrends { successRate: number;
-    averageErrors: number;
-    averageWarnings: number;
+    interface RecentTrends { successRate: number,
+    averageErrors: number,
+    averageWarnings: number,
     autoFixUsage: number;
-
-interface Analytics { totalValidations?: number,
+    interface Analytics { totalValidations?: number,
     successRate?: number;
     averageProcessingTime?: number;
     recentTrends?: RecentTrends;
     message?: string;
-
-export class ValidationResultProcessor {
+    export class ValidationResultProcessor {
     private mainController: MainController;
     private config: ProcessorConfig;
     private resultHistory: HistoryEntry[];
@@ -138,10 +124,9 @@ export class ValidationResultProcessor {
         
         // Result processing configuration
         this.config = {
-            enableDetailedReports: true;
-            includePerformanceMetrics: true;
-    maxSuggestions: 10 }
-
+            enableDetailedReports: true,
+    includePerformanceMetrics: true,
+    maxSuggestions: 10 };
             autoFixThreshold: 'medium' // Only auto-fix issues below this severity 
     };
         // Result history for analytics
@@ -164,8 +149,7 @@ export class ValidationResultProcessor {
                 autoFixAvailable: false,
                 autoFixedValue: newValue,
                 rulesApplied: [],
-    metadata: {
-                    originalValue: oldValue,
+    metadata: { originalValue: oldValue  ,
                     requestedValue: newValue,
                     context: this.sanitizeContext(context),
                     processingTime: 0,
@@ -186,7 +170,7 @@ export class ValidationResultProcessor {
             processedResult.valid = processedResult.errors.length === 0;
             
             // Process auto-fix if available and applicable
-            if (this.shouldApplyAutoFix(processedResult) { processedResult.autoFixedValue = this.processAutoFix(processedResult, oldValue, newValue context) }
+            if (this.shouldApplyAutoFix(processedResult) { processedResult.autoFixedValue = this.processAutoFix(processedResult, oldValue, newValue context);
             
             // Generate summary
             processedResult.summary = this.generateSummary(processedResult ruleResults);
@@ -205,13 +189,13 @@ export class ValidationResultProcessor {
             
             return { valid: false,
 
-                errors: [{ },
+                errors: [{ };
 
                     rule: 'system',' }'
 
                     message: `Result processing, failed: ${(error, as, Error'}'.message}`,''
                     severity: 'high',]';'
-                    category: 'system'],
+                    category: 'system'];
                 }],
                 warnings: [],
                 suggestions: [],
@@ -219,7 +203,7 @@ export class ValidationResultProcessor {
                 autoFixedValue: newValue,
                 rulesApplied: [],
     metadata: { originalValue: oldValue,
-                    requestedValue: newValue,
+                    requestedValue: newValue  ,
                     processingTime: performance.now() - startTime,
     error: (error, as Error).message,
                     timestamp: Date.now( 
@@ -233,26 +217,26 @@ export class ValidationResultProcessor {
         processedResult.rulesApplied.push({
             name: ruleResult.ruleName,
     category: ruleResult.category)','
-            result: ruleResult.valid ? 'passed' : 'failed',
+            result: ruleResult.valid ? 'passed' : 'failed,
     executionTime: ruleResult.executionTime),
-            error: ruleResult.error || false,
+            error: ruleResult.error || false;
 
         if (!ruleResult.valid) {
             const issue: ProcessedIssue = {'
                 rule: ruleResult.ruleName,
-                message: ruleResult.message || 'Validation failed',
-                severity: ruleResult.severity || 'medium',
+                message: ruleResult.message || 'Validation failed,
+                severity: ruleResult.severity || 'medium,
                 category: ruleResult.category || 'general' }
                 executionTime: ruleResult.executionTime 
     };
             // Classify as error or warning
-            if (this.isWarningLevel(issue.severity) { processedResult.warnings.push(issue) } else { processedResult.errors.push(issue) }
+            if (this.isWarningLevel(issue.severity) { processedResult.warnings.push(issue) } else { processedResult.errors.push(issue);
             
             // Add suggestion if available
             if (ruleResult.suggestion) { processedResult.suggestions.push({)
                     rule: ruleResult.ruleName,
     suggestion: ruleResult.suggestion }
-                    severity: issue.severity),
+                    severity: issue.severity);
     }
             
             // Check auto-fix availability
@@ -262,7 +246,7 @@ export class ValidationResultProcessor {
         // Handle execution errors
         if (ruleResult.error) { processedResult.warnings.push({'
                 rule: ruleResult.ruleName,
-                message: ruleResult.message || 'Rule execution error',
+                message: ruleResult.message || 'Rule execution error,
                 severity: 'warning',','
                 category: 'system'
             }
@@ -306,7 +290,7 @@ export class ValidationResultProcessor {
         
         try {
             // Get rules that contributed to warnings and have auto-fix
-            const autoFixableIssues = processedResult.warnings.filter(warning => { ) }
+            const autoFixableIssues = processedResult.warnings.filter(warning => { );
                 const ruleApplied = processedResult.rulesApplied.find(r => r.name === warning.rule); }
                 return ruleApplied && this.isAutoFixEligible({ autoFix: true, as RuleExecutionResult, warning);
             };
@@ -327,7 +311,7 @@ export class ValidationResultProcessor {
                             appliedFixes.push({ : undefined, rule: issue.rule),
                                 originalValue: previousValue,
     fixedValue: fixedValue,
-                                issue: issue.message), 
+                                issue: issue.message); 
     } catch (fixError) {
                         console.warn(`[ValidationResultProcessor] Auto-fix failed for rule ${issue.rule}:`, fixError);
                     }
@@ -335,8 +319,8 @@ export class ValidationResultProcessor {
             
             // Add fix information to metadata
             if (appliedFixes.length > 0) { processedResult.metadata.appliedFixes = appliedFixes }
-                console.log(`[ValidationResultProcessor] Applied ${appliedFixes.length} auto-fixes`};
-            } catch (error) { console.error('[ValidationResultProcessor] Error applying auto-fix:', error }
+                console.log(`[ValidationResultProcessor] Applied ${appliedFixes.length} auto-fixes`}
+        } catch (error) { console.error('[ValidationResultProcessor] Error applying auto-fix:', error }
         
         return fixedValue;
     }
@@ -354,15 +338,14 @@ export class ValidationResultProcessor {
             warnings: processedResult.warnings.length,
             suggestions: processedResult.suggestions.length,
             autoFixesAvailable: processedResult.autoFixAvailable,
-            overallResult: processedResult.valid ? 'valid' : 'invalid',
-    severityBreakdown: {
-                critical: 0,
+            overallResult: processedResult.valid ? 'valid' : 'invalid,
+    severityBreakdown: { critical: 0  ,
                 high: 0,
                 medium: 0,
                 low: 0,
     warning: 0  }
             };
-            categoryBreakdown: {},
+            categoryBreakdown: {  },
         // Performance summary
         const executionTimes = processedResult.rulesApplied;
             .filter(r => r.executionTime !== undefined);
@@ -372,8 +355,8 @@ export class ValidationResultProcessor {
         
             summary.performance = {
                 totalExecutionTime: executionTimes.reduce((sum, time) => sum + time, 0),
-                averageExecutionTime: executionTimes.reduce((sum, time) => sum + time, 0) / executionTimes.length,,
-                slowestRule: this.findSlowestRule(processedResult.rulesApplied) }
+                averageExecutionTime: executionTimes.reduce((sum, time) => sum + time, 0) / executionTimes.length,
+                slowestRule: this.findSlowestRule(processedResult.rulesApplied),
 
                 fastestRule: this.findFastestRule(processedResult.rulesApplied); 
     }
@@ -484,10 +467,10 @@ export class ValidationResultProcessor {
             timestamp: result.metadata.timestamp,
             valid: result.valid,
             errorCount: result.errors.length,
-            warningCount: result.warnings.length);
+            warningCount: result.warnings.length),
             processingTime: result.metadata.processingTime,
     rulesExecuted: result.rulesApplied.length),
-            autoFixApplied: result.metadata.appliedFixes?.length || 0),
+            autoFixApplied: result.metadata.appliedFixes?.length || 0);
         // Maintain history size
         if (this.resultHistory.length > this.maxHistorySize) {
     
@@ -514,7 +497,7 @@ export class ValidationResultProcessor {
         // Summary
         if (result.summary) {', ' }
 
-            lines.push('Summary: ') }
+            lines.push('Summary: ');
 
             lines.push(`  Rules: ${result.summary.executed}/${result.summary.totalRules} executed`};
             lines.push(`  Passed: ${result.summary.passed}, Failed: ${result.summary.failed}`};
@@ -572,15 +555,14 @@ export class ValidationResultProcessor {
         if (result.summary?.performance) {
             : undefined' }'
 
-            lines.push('Performance: ') }
+            lines.push('Performance: ');
             lines.push(`  Total, execution time: ${result.summary.performance.totalExecutionTime.toFixed(2}ms`),
 
             lines.push(`  Average, per rule: ${result.summary.performance.averageExecutionTime.toFixed(2}ms`),
 
             if (result.summary.performance.slowestRule) { }'
 
-                lines.push(`  Slowest, rule: ${result.summary.performance.slowestRule.name} (${result.summary.performance.slowestRule.executionTime.toFixed(2}ms)`),
-            }
+                lines.push(`  Slowest, rule: ${result.summary.performance.slowestRule.name} (${result.summary.performance.slowestRule.executionTime.toFixed(2}ms)`) }
         }
 
         return lines.join('\n';
@@ -600,7 +582,7 @@ export class ValidationResultProcessor {
             successRate: (this.resultHistory.filter(r => r.valid).length / this.resultHistory.length) * 100,
             averageProcessingTime: this.resultHistory.reduce((sum, r) => sum + r.processingTime, 0) / this.resultHistory.length,
             recentTrends: {
-                successRate: (recent.filter(r => r.valid).length / recent.length) * 100,
+                successRate: (recent.filter(r => r.valid).length / recent.length) * 100 ,
                 averageErrors: recent.reduce((sum, r) => sum + r.errorCount, 0) / recent.length,
                 averageWarnings: recent.reduce((sum, r) => sum + r.warningCount, 0) / recent.length,
                 autoFixUsage: (recent.filter(r => r.autoFixApplied > 0).length / recent.length) * 100  }
@@ -636,6 +618,6 @@ export class ValidationResultProcessor {
      */'
     destroy(): void { ''
         this.clearHistory()','
-        console.log('[ValidationResultProcessor] Processor, destroyed') }
+        console.log('[ValidationResultProcessor] Processor, destroyed');
 
     }'}'

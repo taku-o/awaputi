@@ -13,85 +13,91 @@ import { EnvironmentalAudioManager  } from '../EnvironmentalAudioManager';
 /**
  * 品質管理インターフェース
  */
-interface QualityManager { currentQuality: number;
-    targetQuality: number;
-    adjustmentInProgress: boolean;
-    monitoringEnabled: boolean;
-    adjustmentTimer: NodeJS.Timeout | null;
-    settingFromWatcher: boolean;
+interface QualityManager { currentQuality: number,
+    targetQuality: number,
+    adjustmentInProgress: boolean,
+    monitoringEnabled: boolean,
+    adjustmentTimer: NodeJS.Timeout | null,
+    settingFromWatcher: boolean,
     qualityLevels: {
         lo,w: number;
-        medium: number;
-    high: number;
+    },
+        medium: number,
+    high: number,
     performanceMetrics: PerformanceMetrics;
     }
 
 /**
  * パフォーマンスメトリクスインターフェース
  */
-interface PerformanceMetrics { cpuUsage: number;
-    memoryUsage: number;
-    audioProcessingLoad: number;
+interface PerformanceMetrics { cpuUsage: number,
+    memoryUsage: number,
+    audioProcessingLoad: number,
     activeAudioNodes: number;
 
 /**
  * 品質設定インターフェース
  */
-interface QualityConfig { adjustmentSteps: number;
-    adjustmentDelay: number;
+interface QualityConfig { adjustmentSteps: number,
+    adjustmentDelay: number,
     performanceThreshold: {
         hig,h: number;
-        medium: number;
-    low: number;
+    },
+        medium: number,
+    low: number,
     stabilityWindow: number;
 }
 
 /**
  * 品質パフォーマンス情報インターフェース
  */
-interface QualityPerformanceInfo { current: PerformanceMetrics;
+interface QualityPerformanceInfo { current: PerformanceMetrics,
     quality: {
         curren,t: number;
-        target: number;
-    adjustmentInProgress: boolean;
-    monitoring: { enabled: boolean;
+    },
+        target: number,
+    adjustmentInProgress: boolean,
+    monitoring: { enabled: boolean,
     adjustmentTimer: boolean;
+    },
     adjustmentTimer: boolean;
         };
 /**
  * 環境音響設定インターフェース
  */
-interface EnvironmentalAudioSettings { biome: string | null;
-    weather: string | null;
-    timeOfDay: string | null;
-    volume: number;
-    isPlaying: boolean;
+interface EnvironmentalAudioSettings { biome: string | null,
+    weather: string | null,
+    timeOfDay: string | null,
+    volume: number,
+    isPlaying: boolean,
     isPlaying: boolean;
         };
 /**
  * 統合ステータスインターフェース
  */
-interface FormatHandlerStatus { preset: any;
+interface FormatHandlerStatus { preset: any,
     environmental: {
         initialize,d: boolean;
-        playing: boolean;
+    },
+        playing: boolean,
     settings: EnvironmentalAudioSettings | null;
-        [key: string]: any,,
+        [key: string]: any,
     quality: QualityPerformanceInfo;
     }
 
 /**
  * プリセットエクスポートデータインターフェース
  */
-interface PresetExportData { id: string;
-    name: string;
-    description: string;
-    tags: string[];
-    settings: any;
+interface PresetExportData { id: string,
+    name: string,
+    description: string,
+    tags: string[],
+    settings: any,
     metadata: {
         versio,n: string;
-        created: number;
-    modified: number;
+    },
+        created: number,
+    modified: number,
     modified: number;
         };
 /**
@@ -112,10 +118,9 @@ interface ErrorHandler { handleError(error: any, context: string): void;
  */
 interface AudioManager { soundEffectSystem?: {
         setQuality?(quality: number): void;
-        setVariationLimit?(limit: number): void;
+    setVariationLimit?(limit: number): void;
     bgmSystem?: { setQuality?(quality: number): void;
-
-export class AudioFormatHandler {
+    export class AudioFormatHandler {
     private audioContext: AudioContext;
     private audioManager: AudioManager;
     private configManager: ConfigurationManager;
@@ -132,10 +137,10 @@ export class AudioFormatHandler {
     constructor(audioContext: AudioContext, audioManager: AudioManager) {
 
         this.audioContext = audioContext;
-        this.audioManager = audioManager;
-        this.configManager = getConfigurationManager();
-        this.errorHandler = getErrorHandler();
-        this.loggingSystem = LoggingSystem.getInstance ? LoggingSystem.getInstance() : new LoggingSystem();
+    this.audioManager = audioManager;
+    this.configManager = getConfigurationManager();
+    this.errorHandler = getErrorHandler();
+    this.loggingSystem = LoggingSystem.getInstance ? LoggingSystem.getInstance() : new LoggingSystem();
         
         // プリセット管理
         this.presetManager = null;
@@ -145,28 +150,26 @@ export class AudioFormatHandler {
         
         // 品質管理
         this.qualityManager = {
-            currentQuality: 1.0;
-            targetQuality: 1.0;
-            adjustmentInProgress: false;
-            monitoringEnabled: false;
-            adjustmentTimer: null;
+            currentQuality: 1.0,
+    targetQuality: 1.0,
+    adjustmentInProgress: false,
+    monitoringEnabled: false,
+    adjustmentTimer: null,
     settingFromWatcher: false, // 循環参照防止フラグ;
-            qualityLevels: {
-                low: 0.25;
+    qualityLevels: { low: 0.25  ,
     medium: 0.6 }
                 high: 1.0 
     };
-            performanceMetrics: { cpuUsage: 0;
-                memoryUsage: 0;
-                audioProcessingLoad: 0;
+            performanceMetrics: { cpuUsage: 0,
+                memoryUsage: 0  ,
+                audioProcessingLoad: 0,
     activeAudioNodes: 0 
     };
         // 品質調整設定
-        this.qualityConfig = { adjustmentSteps: 10;
+        this.qualityConfig = { adjustmentSteps: 10,
             adjustmentDelay: 100, // ms;
-            performanceThreshold: {
-                high: 0.8;
-                medium: 0.6;
+            performanceThreshold: { high: 0.8  ,
+                medium: 0.6,
     low: 0.4  };
             stabilityWindow: 5000 // ms;
         },
@@ -245,9 +248,8 @@ export class AudioFormatHandler {
                     if (Math.abs(this.qualityManager.currentQuality - newValue) >= 0.01) {
                         this.qualityManager.settingFromWatcher = true,
                         this.setAudioQuality(newValue).finally(() => { }
-                            this.qualityManager.settingFromWatcher = false; }
-                        };
-                    }
+                            this.qualityManager.settingFromWatcher = false;     }
+}
                 }'}');
 
             const adaptiveModeWatcher = this.configManager.watch('performance', 'adaptive', (newValue: boolean) => {  if (newValue !== undefined) { }
@@ -296,7 +298,7 @@ export class AudioFormatHandler {
             ';'
 
             return this.presetManager.saveCurrentAsPreset(name, description, tags, isTemporary);} catch (error) {
-            this.errorHandler.handleError(error, 'AudioFormatHandler.saveCurrentAsPreset',
+            this.errorHandler.handleError(error, 'AudioFormatHandler.saveCurrentAsPreset,
             return null,
     
     /**
@@ -312,7 +314,7 @@ export class AudioFormatHandler {
             ';'
 
             return this.presetManager.getPreset(presetId);} catch (error) {
-            this.errorHandler.handleError(error, 'AudioFormatHandler.getPreset',
+            this.errorHandler.handleError(error, 'AudioFormatHandler.getPreset,
             return null,
     
     /**
@@ -328,7 +330,7 @@ export class AudioFormatHandler {
             ';'
 
             return this.presetManager.getAllPresets(filterType);} catch (error) {
-            this.errorHandler.handleError(error, 'AudioFormatHandler.getAllPresets',
+            this.errorHandler.handleError(error, 'AudioFormatHandler.getAllPresets,
             return [],
     
     /**
@@ -344,7 +346,7 @@ export class AudioFormatHandler {
             ';'
 
             return this.presetManager.deletePreset(presetId);} catch (error) {
-            this.errorHandler.handleError(error, 'AudioFormatHandler.deletePreset',
+            this.errorHandler.handleError(error, 'AudioFormatHandler.deletePreset,
             return false,
     
     /**
@@ -361,7 +363,7 @@ export class AudioFormatHandler {
             ';'
 
             return this.presetManager.updatePreset(presetId, updateData);} catch (error) {
-            this.errorHandler.handleError(error, 'AudioFormatHandler.updatePreset',
+            this.errorHandler.handleError(error, 'AudioFormatHandler.updatePreset,
             return false,
     
     /**
@@ -379,7 +381,7 @@ export class AudioFormatHandler {
             ';'
 
             return this.presetManager.duplicatePreset(sourcePresetId, newName, isTemporary);} catch (error) {
-            this.errorHandler.handleError(error, 'AudioFormatHandler.duplicatePreset',
+            this.errorHandler.handleError(error, 'AudioFormatHandler.duplicatePreset,
             return null,
     
     /**
@@ -409,7 +411,7 @@ export class AudioFormatHandler {
             ';'
 
             return this.presetManager.getCurrentPreset();} catch (error) {
-            this.errorHandler.handleError(error, 'AudioFormatHandler.getCurrentPreset',
+            this.errorHandler.handleError(error, 'AudioFormatHandler.getCurrentPreset,
             return null,
     
     /**
@@ -425,7 +427,7 @@ export class AudioFormatHandler {
             ';'
 
             return this.presetManager.exportPreset(presetId);} catch (error) {
-            this.errorHandler.handleError(error, 'AudioFormatHandler.exportPreset',
+            this.errorHandler.handleError(error, 'AudioFormatHandler.exportPreset,
             return null,
     
     /**
@@ -442,7 +444,7 @@ export class AudioFormatHandler {
             ';'
 
             return this.presetManager.importPreset(importData, newName);} catch (error) {
-            this.errorHandler.handleError(error, 'AudioFormatHandler.importPreset',
+            this.errorHandler.handleError(error, 'AudioFormatHandler.importPreset,
             return null,
     
     /**
@@ -484,7 +486,7 @@ export class AudioFormatHandler {
             ';'
 
             return this.environmentalAudioManager.start(biomeId, weatherId, timeOfDay);} catch (error) {
-            this.errorHandler.handleError(error, 'AudioFormatHandler.startEnvironmentalAudio',
+            this.errorHandler.handleError(error, 'AudioFormatHandler.startEnvironmentalAudio,
             return false,
     
     /**
@@ -515,7 +517,7 @@ export class AudioFormatHandler {
             ';'
 
             return this.environmentalAudioManager.isPlaying();} catch (error) {
-            this.errorHandler.handleError(error, 'AudioFormatHandler.isEnvironmentalAudioPlaying',
+            this.errorHandler.handleError(error, 'AudioFormatHandler.isEnvironmentalAudioPlaying,
             return false,
     
     /**
@@ -657,7 +659,7 @@ export class AudioFormatHandler {
                 return { biome: null,
                     weather: null,
     timeOfDay: null,
-                    volume: 0 },
+                    volume: 0 ,
                     isPlaying: false,
             ';'
 
@@ -675,7 +677,7 @@ export class AudioFormatHandler {
      */
     async setAudioQuality(quality: number): Promise<void> { try {
             if (quality < 0 || quality > 1) {  }
-                throw new Error(`Audio quality must be between 0 and 1, got: ${quality}`};
+                throw new Error(`Audio quality must be between 0 and 1, got: ${quality}`}
             }
             
             // 同じ値の場合は処理をスキップ（無限ループ防止）
@@ -700,8 +702,8 @@ export class AudioFormatHandler {
     getQualityPerformanceInfo(): QualityPerformanceInfo { return { }
             current: { ...this.qualityManager.performanceMetrics,
             quality: { current: this.qualityManager.currentQuality,
-                target: this.qualityManager.targetQuality,
-    adjustmentInProgress: this.qualityManager.adjustmentInProgress },
+                target: this.qualityManager.targetQuality ,
+    adjustmentInProgress: this.qualityManager.adjustmentInProgress ,
             monitoring: { enabled: this.qualityManager.monitoringEnabled,
     adjustmentTimer: this.qualityManager.adjustmentTimer !== null 
     }
@@ -716,7 +718,7 @@ export class AudioFormatHandler {
             if (!enabled && this.qualityManager.adjustmentTimer) {
             ','
 
-                clearTimeout(this.qualityManager.adjustmentTimer) }
+                clearTimeout(this.qualityManager.adjustmentTimer);
                 this.qualityManager.adjustmentTimer = null; }
             }
 
@@ -748,7 +750,7 @@ export class AudioFormatHandler {
      * パフォーマンスメトリクスを計算
      * @returns 計算されたメトリクス
      */
-    calculatePerformanceMetrics(): PerformanceMetrics & { totalLoad: number,, recommendation: string; { try {
+    calculatePerformanceMetrics(): PerformanceMetrics & { totalLoad: number, recommendation: string; { try {
             // CPU使用率の計算（簡易版）
             const processingLoad = this.qualityManager.performanceMetrics.audioProcessingLoad,
             const nodeLoad = this.qualityManager.performanceMetrics.activeAudioNodes / 20, // 20ノードで50%と仮定
@@ -878,7 +880,7 @@ export class AudioFormatHandler {
             // サウンドエフェクトシステムの品質を調整
             if(this.audioManager.soundEffectSystem && typeof, this.audioManager.soundEffectSystem.setQuality === 'function' {'
                 const maxVariations = Math.ceil(quality * 5), // 最大5バリエーション
-                this.audioManager.soundEffectSystem.setVariationLimit(maxVariations) }
+                this.audioManager.soundEffectSystem.setVariationLimit(maxVariations);
 
                 this.audioManager.soundEffectSystem.setQuality(quality); }
             }
@@ -897,7 +899,7 @@ export class AudioFormatHandler {
                 quality: quality',' }'
 
         } catch (error) {
-            this.errorHandler.handleError(error, 'AudioFormatHandler.applyQualitySettings') }
+            this.errorHandler.handleError(error, 'AudioFormatHandler.applyQualitySettings');
     }
     
     /**'
@@ -914,7 +916,7 @@ export class AudioFormatHandler {
             if (!preset) {
     
 }
-                throw new Error(`Unknown, quality preset: ${level}`};
+                throw new Error(`Unknown, quality preset: ${level}`}
             }
 
             await this.setAudioQuality(preset.audioQuality || this.qualityManager.qualityLevels[level]);
@@ -929,10 +931,10 @@ export class AudioFormatHandler {
      */
     getStatus(): FormatHandlerStatus { return { preset: this.getPresetManagerStatus(
             environmental: {
-                initialized: this.environmentalAudioManager !== null,
-    playing: this.isEnvironmentalAudioPlaying() },
-                settings: this.getEnvironmentalAudioSettings() }
-                ...(this.environmentalAudioManager ? this.environmentalAudioManager.getStatus() : {};
+                initialized: this.environmentalAudioManager !== null ,
+    playing: this.isEnvironmentalAudioPlaying() ,
+                settings: this.getEnvironmentalAudioSettings();
+                ...(this.environmentalAudioManager ? this.environmentalAudioManager.getStatus() : {}
             },
             quality: this.getQualityPerformanceInfo();
         }
@@ -943,24 +945,24 @@ export class AudioFormatHandler {
     dispose(): void { try {
             // プリセットマネージャーを破棄
             if (this.presetManager) {
-                this.presetManager.dispose() }
+                this.presetManager.dispose();
                 this.presetManager = null; }
             }
             
             // 環境音響マネージャーを破棄
             if (this.environmentalAudioManager) {
-                this.environmentalAudioManager.dispose() }
+                this.environmentalAudioManager.dispose();
                 this.environmentalAudioManager = null; }
             }
             
             // 品質調整タイマーをクリア
             if (this.qualityManager.adjustmentTimer) {
 
-                clearTimeout(this.qualityManager.adjustmentTimer) }
+                clearTimeout(this.qualityManager.adjustmentTimer);
                 this.qualityManager.adjustmentTimer = null; }
             }
 
             this.loggingSystem.info('AudioFormatHandler', 'Audio format handler disposed';} catch (error) {
-            this.errorHandler.handleError(error, 'AudioFormatHandler.dispose') }
+            this.errorHandler.handleError(error, 'AudioFormatHandler.dispose');
 
     }'}'

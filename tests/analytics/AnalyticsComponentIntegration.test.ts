@@ -87,7 +87,7 @@ describe('Analytics Component Integration Tests', () => {
                     success: i % 2 === 0,
                     score: 100 + i * 50,
                     action: 'popped'
-                };
+                }
             }
             
             // 3. バッチ収集の実行
@@ -299,6 +299,6 @@ describe('Analytics Component Integration Tests', () => {
             const apiResult = await analyticsAPI.getData('/sessionData', {
                 anonymize: true),
             expect(apiResult.success).toBe(true);
-            expect(mockPrivacyManager.anonymizeData).toHaveBeenCalled() };
+            expect(mockPrivacyManager.anonymizeData).toHaveBeenCalled() }
     }
 }');'

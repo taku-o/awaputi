@@ -10,38 +10,34 @@ import { seoErrorHandler  } from '../SEOErrorHandler.js';
 
 interface MainController {
     baseUrl: string;
-
-interface TestResult { name: string;
-    passed: boolean;
+    interface TestResult { name: string,
+    passed: boolean,
     message: string;
-
-interface ValidationResults { category: string;
-    tests: TestResult[];
-    passed: number;
-    failed: number;
+    interface ValidationResults { category: string,
+    tests: TestResult[],
+    passed: number,
+    failed: number,
     warnings: number;
+    interface CoreWebVitalsResults extends ValidationResults { vitals: { LCP: number,
+        FID: number,
+        CLS: number,
+    timestamp: string,
 
-interface CoreWebVitalsResults extends ValidationResults { vitals: {
-        LCP: number;
-        FID: number;
-        CLS: number;
-    timestamp: string;
+interface ImageInfo { src: string,
+    alt: string,
 
-interface ImageInfo { src: string;
-    alt: string;
-
-interface HeadingStructure { isValid: boolean;
-    levels: number[];
-    issues: string[];
+interface HeadingStructure { isValid: boolean,
+    levels: number[],
+    issues: string[],
 
 export class PerformanceValidator {
-    private mainController: MainController;
-    private, baseUrl: string;
+    private mainController: MainController,
+    private, baseUrl: string,
     constructor(mainController: MainController) {
 
         this.mainController = mainController
 
-    }
+     },
         this.baseUrl = mainController.baseUrl; }
     }
 
@@ -50,23 +46,23 @@ export class PerformanceValidator {
      * @returns Promise<ValidationResults>'
      */''
     async validatePerformanceOptimization('''
-                category: 'Performance Optimization',
+                category: 'Performance Optimization,
                 tests: [],
                 passed: 0,
                 failed: 0,
-    warnings: 0,
+    warnings: 0;
             },
             
             // WebP対応の確認
             const webpTest: TestResult = { ''
-                name: 'WebP support detection',
+                name: 'WebP support detection,
                 passed: false,
                 message: '}'
             const webpSupported = await this._checkWebPSupport();
             if (webpSupported) {
                 webpTest.passed = true,
                 webpTest.message = '✅ WebP format supported' }
-                results.passed++; }
+                results.passed++; } }
 
             } else {
                 webpTest.message = '⚠️ WebP format not supported in this environment' }
@@ -77,14 +73,14 @@ export class PerformanceValidator {
             
             // キャッシュヘッダーの確認
             const cacheTest: TestResult = { ''
-                name: 'Cache headers validation',
+                name: 'Cache headers validation,
                 passed: false,
                 message: '};'
             ';'
 
             const cacheHeaders = this._generateTestCacheHeaders();
             if (cacheHeaders && Object.keys(cacheHeaders).length > 0') { cacheTest.passed = true,'
-                cacheTest.message = '✅ Cache headers properly configured',
+                cacheTest.message = '✅ Cache headers properly configured,
                 results.passed++ }
 
             } else {
@@ -107,22 +103,22 @@ export class PerformanceValidator {
             return results;
 
         } catch (error) {
-            return seoErrorHandler.handle(error, 'validatePerformanceOptimization',
+            return seoErrorHandler.handle(error, 'validatePerformanceOptimization,
 
     /**
      * アクセシビリティ準拠の検証
      * @returns Promise<ValidationResults>'
      */''
     async validateAccessibilityCompliance('''
-                category: 'Accessibility Compliance',
+                category: 'Accessibility Compliance,
                 tests: [],
                 passed: 0,
                 failed: 0,
-    warnings: 0 },
+    warnings: 0 ,
             
             // alt属性の確認
             const altTest: TestResult = { ''
-                name: 'Image alt attributes',
+                name: 'Image alt attributes,
                 passed: false,
                 message: '}'
             const images = await this._extractImages();
@@ -141,7 +137,7 @@ export class PerformanceValidator {
             
             // 見出し構造の確認
             const headingTest: TestResult = { ''
-                name: 'Heading structure',
+                name: 'Heading structure,
                 passed: false,
                 message: '};'
             ';'
@@ -187,10 +183,10 @@ export class PerformanceValidator {
             if (typeof, window !== 'undefined' && 'performance' in, window) {
                 // Performance Observer APIを使用してCore Web Vitalsを測定
                 // 実際の実装では web-vitals ライブラリを使用することを推奨
-                vitals.LCP = this._measureLCP(),,
+                vitals.LCP = this._measureLCP(),
                 vitals.FID = this._measureFID();
                 vitals.CLS = this._measureCLS('''
-                category: 'Core Web Vitals',
+                category: 'Core Web Vitals,
                 tests: [],
                 passed: 0,
                 failed: 0,
@@ -198,31 +194,31 @@ export class PerformanceValidator {
                 vitals: vitals,)'
             // LCP検証
             const lcpTest: TestResult = { ')'
-                name: 'Largest Contentful Paint(LCP)',
+                name: 'Largest Contentful Paint(LCP),
                 passed: vitals.LCP <= 2500,
                 message: vitals.LCP <= 2500  }
                     ? `✅ Good LCP: ${vitals.LCP.toFixed(2}ms`
-                    : `⚠️ Needs improvement LCP: ${vitals.LCP.toFixed(2}ms (target: ≤2500ms)`},
+                    : `⚠️ Needs improvement LCP: ${vitals.LCP.toFixed(2}ms (target: ≤2500ms),
             results.tests.push(lcpTest);
             lcpTest.passed ? results.passed++ : results.warnings++;
             
             // FID検証
             const fidTest: TestResult = { ''
-                name: 'First Input Delay(FID)',
+                name: 'First Input Delay(FID),
                 passed: vitals.FID <= 100,
                 message: vitals.FID <= 100  }
                     ? `✅ Good FID: ${vitals.FID.toFixed(2}ms`
-                    : `⚠️ Needs improvement FID: ${vitals.FID.toFixed(2}ms (target: ≤100ms)`},
+                    : `⚠️ Needs improvement FID: ${vitals.FID.toFixed(2}ms (target: ≤100ms),
             results.tests.push(fidTest);
             fidTest.passed ? results.passed++ : results.warnings++;
             
             // CLS検証
             const clsTest: TestResult = { ''
-                name: 'Cumulative Layout Shift(CLS)',
+                name: 'Cumulative Layout Shift(CLS),
                 passed: vitals.CLS <= 0.1,
                 message: vitals.CLS <= 0.1  }
                     ? `✅ Good CLS: ${vitals.CLS.toFixed(3}`
-                    : `⚠️ Needs improvement CLS: ${vitals.CLS.toFixed(3} (target: ≤0.1)`},
+                    : `⚠️ Needs improvement CLS: ${vitals.CLS.toFixed(3} (target: ≤0.1),
             results.tests.push(clsTest);
             clsTest.passed ? results.passed++ : results.warnings++;
 
@@ -230,22 +226,22 @@ export class PerformanceValidator {
             return results;
 
         } catch (error) {
-            return seoErrorHandler.handle(error, 'trackCoreWebVitals',
+            return seoErrorHandler.handle(error, 'trackCoreWebVitals,
 
     /**
      * サイトマップの検証
      * @returns Promise<ValidationResults>'
      */''
     async validateSitemap('''
-                category: 'Sitemap Validation',
+                category: 'Sitemap Validation,
                 tests: [],
                 passed: 0,
                 failed: 0,
-    warnings: 0 },
+    warnings: 0 ,
             
             // サイトマップの存在確認
             const sitemapTest: TestResult = { ''
-                name: 'Sitemap accessibility',
+                name: 'Sitemap accessibility,
                 passed: false,
                 message: '}'
             const sitemapExists = await this._checkSitemapExists();
@@ -264,22 +260,22 @@ export class PerformanceValidator {
             return results;
 
         } catch (error) {
-            return seoErrorHandler.handle(error, 'validateSitemap',
+            return seoErrorHandler.handle(error, 'validateSitemap,
 
     /**
      * robots.txtの検証
      * @returns Promise<ValidationResults>'
      */''
     async validateRobotsTxt('''
-                category: 'Robots.txt Validation',
+                category: 'Robots.txt Validation,
                 tests: [],
                 passed: 0,
                 failed: 0,
-    warnings: 0 },
+    warnings: 0 ,
             
             // robots.txtの存在確認
             const robotsTest: TestResult = { ''
-                name: 'Robots.txt accessibility',
+                name: 'Robots.txt accessibility,
                 passed: false,
                 message: '}'
             const robotsExists = await this._checkRobotsExists();
@@ -298,7 +294,7 @@ export class PerformanceValidator {
             return results;
 
         } catch (error) {
-            return seoErrorHandler.handle(error, 'validateRobotsTxt',
+            return seoErrorHandler.handle(error, 'validateRobotsTxt,
 
     // プライベートメソッド
     
@@ -308,7 +304,7 @@ export class PerformanceValidator {
      */''
     private async _extractImages('''
             { src: '/assets/images/game-screenshot.png', alt: 'ゲームスクリーンショット'
-            },''
+            ,''
             { src: '/assets/images/logo.png', alt: 'BubblePopロゴ'
             }
         ];
@@ -392,7 +388,7 @@ export class PerformanceValidator {
      * @private
      */''
     private async _validateCompressionSettings('''
-            name: 'Compression settings validation',
+            name: 'Compression settings validation,
             passed: false,
             message: ');'
             };
@@ -406,8 +402,7 @@ export class PerformanceValidator {
             } else { }'
 
                 test.message = '⚠️ Compression not detected'; }
-
-            } catch (error) { }
+        } catch (error) { }
 
             test.message = `⚠️ Could not verify compression: ${error, instanceof Error ? error.message : 'Unknown, error'}`;
         }
@@ -420,7 +415,7 @@ export class PerformanceValidator {
      * @private'
      */''
     private async _validateResourceOptimization('''
-            name: 'Resource optimization validation',
+            name: 'Resource optimization validation,
             passed: false,
             message: ');'
             };
@@ -445,7 +440,7 @@ export class PerformanceValidator {
      * @private'
      */''
     private async _validateKeyboardNavigation('''
-            name: 'Keyboard navigation validation',
+            name: 'Keyboard navigation validation,
             passed: false,
             message: ');'
             };
@@ -459,8 +454,7 @@ export class PerformanceValidator {
             } else { }'
 
                 test.message = '⚠️ Keyboard navigation could be improved'; }
-
-            } catch (error) { }
+        } catch (error) { }
 
             test.message = `⚠️ Keyboard navigation check failed: ${error, instanceof Error ? error.message : 'Unknown, error'}`;
         }
@@ -473,7 +467,7 @@ export class PerformanceValidator {
      * @private'
      */''
     private async _validateColorContrast('''
-            name: 'Color contrast validation',
+            name: 'Color contrast validation,
             passed: false,
             message: ');'
             };

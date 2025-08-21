@@ -6,22 +6,22 @@
  */
 
 // Types for audio events
-interface AudioAccessibilityEvent { id: string;
-    type: string;
+interface AudioAccessibilityEvent { id: string,
+    type: string,
     data: Record<string, any>;
     timestamp: number;
 
 // Types for event statistics
-interface EventStatistics { totalEvents: number;
+interface EventStatistics { totalEvents: number,
     eventsByType: Record<string, number>;
-    uptime: number;
-    firstEventTime: number | null;
+    uptime: number,
+    firstEventTime: number | null,
     lastEventTime: number | null  }
 
 // Types for component status
-interface ComponentStatus { historySize: number;
-    maxHistorySize: number;
-    uptime: number;
+interface ComponentStatus { historySize: number,
+    maxHistorySize: number,
+    uptime: number,
     eventTypes: string[];
 
 // Main controller interface
@@ -36,7 +36,7 @@ export class AudioEventManager {
 
         this.mainController = mainController;
         this.eventHistory = [];
-        this.maxHistorySize = 50 }
+        this.maxHistorySize = 50 };
         this.initializationTime = Date.now(); }
     }
 
@@ -46,15 +46,15 @@ export class AudioEventManager {
      * @param eventData - イベントデータ
      */
     public recordEvent(eventType: string, eventData: Record<string, any>): void { const event: AudioAccessibilityEvent = {
-            id: this.generateEventId();
+            id: this.generateEventId(),
             type: eventType,
             data: eventData,
-    timestamp: Date.now( },
+    timestamp: Date.now( };
         
         this.eventHistory.push(event);
         
         // 履歴サイズの制限
-        if (this.eventHistory.length > this.maxHistorySize) { this.eventHistory.shift() }
+        if (this.eventHistory.length > this.maxHistorySize) { this.eventHistory.shift();
     }
 
     /**
@@ -76,7 +76,7 @@ export class AudioEventManager {
      */
     public getStatistics(): EventStatistics {
         const eventsByType: Record<string, number> = {};
-        this.eventHistory.forEach(event => {  ) }
+        this.eventHistory.forEach(event => {  );
             eventsByType[event.type] = (eventsByType[event.type] || 0) + 1; }
         };
         
@@ -84,7 +84,7 @@ export class AudioEventManager {
             eventsByType: eventsByType,
             uptime: Date.now() - this.initializationTime,
     firstEventTime: this.eventHistory.length > 0 ? this.eventHistory[0].timestamp : null,
-            lastEventTime: this.eventHistory.length > 0 ? this.eventHistory[this.eventHistory.length - 1].timestamp : null,
+            lastEventTime: this.eventHistory.length > 0 ? this.eventHistory[this.eventHistory.length - 1].timestamp : null;
 
     /**
      * イベントタイプ別の集計
@@ -128,11 +128,11 @@ export class AudioEventManager {
      */
     public getStatus(): ComponentStatus { return { historySize: this.eventHistory.length,
             maxHistorySize: this.maxHistorySize,
-    uptime: Date.now() - this.initializationTime },
+    uptime: Date.now() - this.initializationTime };
             eventTypes: Object.keys(this.getStatistics().eventsByType); 
     }
 
     /**
      * クリーンアップ
      */
-    public destroy(): void { this.clearEventHistory() }
+    public destroy(): void { this.clearEventHistory();

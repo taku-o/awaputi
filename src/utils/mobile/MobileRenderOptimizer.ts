@@ -10,104 +10,88 @@ import { getConfigurationManager  } from '../../core/ConfigurationManager.js';
 // Type definitions
 interface ErrorHandler { ''
     handleError(error: Error, context: string): void;
-
-interface ConfigurationManager { [key: string]: any;
-
-interface QualitySettings { resolution: number;
-    textureQuality: number;
-    effectsQuality: number;
-    shadersSimplified: boolean;
+    interface ConfigurationManager { [key: string]: any;
+    interface QualitySettings { resolution: number,
+    textureQuality: number,
+    effectsQuality: number,
+    shadersSimplified: boolean,
     cullingAggressive: boolean;
-
-interface QualityLevels { low: QualitySettings;
-    medium: QualitySettings;
-    high: QualitySettings;
+    interface QualityLevels { low: QualitySettings,
+    medium: QualitySettings,
+    high: QualitySettings,
     ultra: QualitySettings;
 ';'
 
 interface QualityConfig { ''
-    currentLevel: 'low' | 'medium' | 'high' | 'ultra' | 'auto';
-    autoAdjustment: boolean;
-    dynamicQuality: boolean;
+    currentLevel: 'low' | 'medium' | 'high' | 'ultra' | 'auto,
+    autoAdjustment: boolean,
+    dynamicQuality: boolean,
     qualityLevels: QualityLevels;
-
-interface OptimizationSettings { reducedResolution: boolean;
-    simplifiedShaders: boolean;
-    cullAggressive: boolean;
-    lodBias: number;
-    drawCallReduction: boolean;
-    textureCompression: boolean;
-    mipmapOptimization: boolean;
-    frustumCulling: boolean;
-    occlusionCulling: boolean;
-    batchingEnabled: boolean;
+    interface OptimizationSettings { reducedResolution: boolean,
+    simplifiedShaders: boolean,
+    cullAggressive: boolean,
+    lodBias: number,
+    drawCallReduction: boolean,
+    textureCompression: boolean,
+    mipmapOptimization: boolean,
+    frustumCulling: boolean,
+    occlusionCulling: boolean,
+    batchingEnabled: boolean,
     instancingEnabled: boolean;
-
-interface FrameRateConfig { target: number;
-    adaptive: boolean;
-    vsyncEnabled: boolean;
-    frameSkipping: boolean;
-    dynamicFrameRate: boolean;
+    interface FrameRateConfig { target: number,
+    adaptive: boolean,
+    vsyncEnabled: boolean,
+    frameSkipping: boolean,
+    dynamicFrameRate: boolean,
     throttleOnBattery: boolean;
-
-interface ViewportConfig { autoResize: boolean;
-    pixelRatio: number;
-    adaptivePixelRatio: boolean;
-    maxPixelRatio: number;
+    interface ViewportConfig { autoResize: boolean,
+    pixelRatio: number,
+    adaptivePixelRatio: boolean,
+    maxPixelRatio: number,
     minPixelRatio: number;
-
-interface RenderConfig { enabled: boolean;
-    quality: QualityConfig;
-    optimizations: OptimizationSettings;
-    frameRate: FrameRateConfig;
+    interface RenderConfig { enabled: boolean,
+    quality: QualityConfig,
+    optimizations: OptimizationSettings,
+    frameRate: FrameRateConfig,
     viewport: ViewportConfig;
-
-interface FrameStats { fps: number;
-    frameTime: number;
-    averageFrameTime: number;
-    frameVariance: number;
-    droppedFrames: number;
+    interface FrameStats { fps: number,
+    frameTime: number,
+    averageFrameTime: number,
+    frameVariance: number,
+    droppedFrames: number,
     totalFrames: number;
-
-interface RenderStats { drawCalls: number;
-    triangles: number;
-    vertices: number;
-    textureBinds: number;
-    shaderChanges: number;
+    interface RenderStats { drawCalls: number,
+    triangles: number,
+    vertices: number,
+    textureBinds: number,
+    shaderChanges: number,
     bufferUpdates: number;
-
-interface PerformanceThresholds { targetFrameTime: number;
-    maxFrameTime: number;
-    criticalFrameTime: number;
+    interface PerformanceThresholds { targetFrameTime: number,
+    maxFrameTime: number,
+    criticalFrameTime: number,
     maxDroppedFrames: number;
-
-interface QualityAdjustment { timestamp: number;
-    level: string;
+    interface QualityAdjustment { timestamp: number,
+    level: string,
     reason: string;
-
-interface QualityHistory { adjustments: QualityAdjustment[];
-    lastAdjustment: number;
+    interface QualityHistory { adjustments: QualityAdjustment[],
+    lastAdjustment: number,
     adjustmentCooldown: number;
-
-interface RenderMonitoring { enabled: boolean;
-    frameStats: FrameStats;
-    renderStats: RenderStats;
-    thresholds: PerformanceThresholds;
+    interface RenderMonitoring { enabled: boolean,
+    frameStats: FrameStats,
+    renderStats: RenderStats,
+    thresholds: PerformanceThresholds,
     qualityHistory: QualityHistory;
-
-interface RenderStatistics { frameStats: FrameStats;
-    renderStats: RenderStats;
-    qualityLevel: string;
-    optimizations: OptimizationSettings;
-    viewport: ViewportConfig;
+    interface RenderStatistics { frameStats: FrameStats,
+    renderStats: RenderStats,
+    qualityLevel: string,
+    optimizations: OptimizationSettings,
+    viewport: ViewportConfig,
     qualityHistory: QualityAdjustment[];
-
-interface OptimizationConfig { quality: QualityConfig;
-    optimizations: OptimizationSettings;
-    frameRate: FrameRateConfig;
+    interface OptimizationConfig { quality: QualityConfig,
+    optimizations: OptimizationSettings,
+    frameRate: FrameRateConfig,
     viewport: ViewportConfig;
-
-export class MobileRenderOptimizer {
+    export class MobileRenderOptimizer {
     private errorHandler: ErrorHandler;
     private configManager: ConfigurationManager;
     private renderConfig: RenderConfig;
@@ -119,84 +103,82 @@ export class MobileRenderOptimizer {
 ','
 
         this.errorHandler = getErrorHandler();
-        this.configManager = getConfigurationManager('''
-                currentLevel: 'auto';
-                autoAdjustment: true;
-                dynamicQuality: true;
-    qualityLevels: {
-                    low: {
-                        resolution: 0.5;
-                        textureQuality: 0.3;
-                        effectsQuality: 0.2;
-    shadersSimplified: true;
-                        cullingAggressive: true;
-                    medium: { resolution: 0.75;
-                        textureQuality: 0.6;
-                        effectsQuality: 0.5;
-                        shadersSimplified: false;
-    cullingAggressive: true;
-                    high: { resolution: 1.0;
-                        textureQuality: 0.8;
-                        effectsQuality: 0.8;
-                        shadersSimplified: false;
-    cullingAggressive: false;
-                    ultra: { resolution: 1.0;
-                        textureQuality: 1.0;
-                        effectsQuality: 1.0;
-                        shadersSimplified: false;
+    this.configManager = getConfigurationManager('''
+                currentLevel: 'auto,
+    autoAdjustment: true,
+    dynamicQuality: true,
+    qualityLevels: { low: {
+                        resolution: 0.5  ,
+                        textureQuality: 0.3,
+    effectsQuality: 0.2,
+    shadersSimplified: true,
+    cullingAggressive: true,
+    medium: { resolution: 0.75,
+                        textureQuality: 0.6  ,
+                        effectsQuality: 0.5,
+    shadersSimplified: false,
+    cullingAggressive: true,
+    high: { resolution: 1.0,
+                        textureQuality: 0.8  ,
+                        effectsQuality: 0.8,
+    shadersSimplified: false,
+    cullingAggressive: false,
+    ultra: { resolution: 1.0,
+                        textureQuality: 1.0  ,
+                        effectsQuality: 1.0,
+    shadersSimplified: false,
     cullingAggressive: false;
             // Rendering optimizations
-            optimizations: { reducedResolution: false;
-                simplifiedShaders: false;
-                cullAggressive: true;
+            optimizations: { reducedResolution: false,
+                simplifiedShaders: false  ,
+                cullAggressive: true,
     lodBias: 1.0, // Level of detail bias for mobile;
-                drawCallReduction: true;
-                textureCompression: true;
-                mipmapOptimization: true;
-                frustumCulling: true;
-                occlusionCulling: false;
-                batchingEnabled: true;
+    drawCallReduction: true,
+    textureCompression: true,
+    mipmapOptimization: true,
+    frustumCulling: true,
+    occlusionCulling: false,
+    batchingEnabled: true,
     instancingEnabled: true;
             // Frame rate control
-            frameRate: { target: 60;
-                adaptive: true;
-                vsyncEnabled: true;
-                frameSkipping: false;
-                dynamicFrameRate: true;
+            frameRate: { target: 60,
+                adaptive: true  ,
+                vsyncEnabled: true,
+    frameSkipping: false,
+    dynamicFrameRate: true,
     throttleOnBattery: true;
             // Viewport and scaling
-            viewport: { autoResize: true;
-                pixelRatio: 1.0;
-                adaptivePixelRatio: true;
-                maxPixelRatio: 2.0;
+            viewport: { autoResize: true,
+                pixelRatio: 1.0  ,
+                adaptivePixelRatio: true,
+    maxPixelRatio: 2.0,
     minPixelRatio: 0.5 
     };
         // Render performance monitoring
         this.renderMonitoring = { enabled: true;
             
             // Frame statistics
-            frameStats: {
-                fps: 60;
-                frameTime: 16.67;
-                averageFrameTime: 16.67;
-                frameVariance: 0;
-                droppedFrames: 0;
+            frameStats: { fps: 60  ,
+                frameTime: 16.67,
+                averageFrameTime: 16.67,
+                frameVariance: 0,
+                droppedFrames: 0,
     totalFrames: 0  };
             // Render statistics
-            renderStats: { drawCalls: 0;
-                triangles: 0;
-                vertices: 0;
-                textureBinds: 0;
-                shaderChanges: 0;
+            renderStats: { drawCalls: 0,
+                triangles: 0  ,
+                vertices: 0,
+                textureBinds: 0,
+                shaderChanges: 0,
     bufferUpdates: 0 };
             // Performance thresholds
             thresholds: { targetFrameTime: 16.67, // 60 FPS
-                maxFrameTime: 33.33,    // 30 FPS minimum;
+                maxFrameTime: 33.33,    // 30 FPS minimum  },
                 criticalFrameTime: 50,   // 20 FPS critical;
                 maxDroppedFrames: 5      // Per second  };
             // Quality adjustment history
-            qualityHistory: { adjustments: [];
-                lastAdjustment: 0;
+            qualityHistory: { adjustments: [],
+                lastAdjustment: 0  ,
     adjustmentCooldown: 2000 // 2 seconds })
         // Initialize render optimizer
         this.initializeRenderOptimizer();
@@ -230,8 +212,8 @@ export class MobileRenderOptimizer {
     applyInitialOptimizations(): void { const quality = this.detectOptimalQuality();
         this.setQualityLevel(quality);
         // Apply device-specific optimizations
-        this.applyDeviceSpecificOptimizations() }
-        console.log(`[MobileRenderOptimizer] Initial, optimizations applied - Quality: ${quality}`};
+        this.applyDeviceSpecificOptimizations();
+        console.log(`[MobileRenderOptimizer] Initial, optimizations applied - Quality: ${quality}`}
     }
     
     /**
@@ -278,7 +260,7 @@ export class MobileRenderOptimizer {
         this.renderMonitoring.qualityHistory.adjustments.push({ );
             timestamp: Date.now()','
     reason: 'manual' };
-        console.log(`[MobileRenderOptimizer] Quality, level set, to: ${level}`};
+        console.log(`[MobileRenderOptimizer] Quality, level set, to: ${level}`}
     }
     
     /**
@@ -302,7 +284,7 @@ export class MobileRenderOptimizer {
         // Update LOD bias
         opts.lodBias = 2.0 - settings.textureQuality;
         
-        console.log(`[MobileRenderOptimizer] Quality settings applied - Resolution: ${settings.resolution}, Texture Quality: ${settings.textureQuality}`};
+        console.log(`[MobileRenderOptimizer] Quality settings applied - Resolution: ${settings.resolution}, Texture Quality: ${settings.textureQuality}`}
     }
     
     /**
@@ -310,8 +292,8 @@ export class MobileRenderOptimizer {
      */
     setRenderResolution(scale: number): void { this.renderConfig.viewport.pixelRatio = Math.max()
             this.renderConfig.viewport.minPixelRatio),
-            Math.min(this.renderConfig.viewport.maxPixelRatio, scale) }
-        console.log(`[MobileRenderOptimizer] Render, resolution set, to: ${scale}`};
+            Math.min(this.renderConfig.viewport.maxPixelRatio, scale);
+        console.log(`[MobileRenderOptimizer] Render, resolution set, to: ${scale}`}
     }
     
     /**
@@ -354,7 +336,7 @@ export class MobileRenderOptimizer {
         // Monitor frame performance
         setInterval(() => { 
             this.updateFrameStatistics();
-            this.checkPerformanceThresholds() }
+            this.checkPerformanceThresholds();
             this.adjustQualityIfNeeded();' }'
 
         }, 1000'); // Check every second'
@@ -459,8 +441,8 @@ export class MobileRenderOptimizer {
             // Record, adjustment
             this.renderMonitoring.qualityHistory.adjustments.push({);
                 timestamp: Date.now()'
-                reason: 'performance'} },
-        }
+                reason: 'performance'    }
+}
     }
     
     /**
@@ -482,9 +464,9 @@ export class MobileRenderOptimizer {
         const targetFrameTime = this.renderMonitoring.thresholds.targetFrameTime;
         
         // Check if we can increase quality
-        if (stats.averageFrameTime < targetFrameTime * 0.8) { this.considerQualityIncrease() }
+        if (stats.averageFrameTime < targetFrameTime * 0.8) { this.considerQualityIncrease();
         // Check if we need to decrease quality
-        else if (stats.averageFrameTime > targetFrameTime * 1.3) { this.considerQualityDecrease() }
+        else if (stats.averageFrameTime > targetFrameTime * 1.3) { this.considerQualityDecrease();
     }
     
     /**
@@ -526,7 +508,7 @@ export class MobileRenderOptimizer {
             renderStats: this.renderMonitoring.renderStats,
             qualityLevel: this.renderConfig.quality.currentLevel,
             optimizations: this.renderConfig.optimizations,
-    viewport: this.renderConfig.viewport },
+    viewport: this.renderConfig.viewport ,
             qualityHistory: this.renderMonitoring.qualityHistory.adjustments.slice(-10) // Last 10 adjustments 
     }
     
@@ -535,7 +517,7 @@ export class MobileRenderOptimizer {
      */
     setTargetFrameRate(fps: number): void { this.renderConfig.frameRate.target = fps,
         this.renderMonitoring.thresholds.targetFrameTime = 1000 / fps }
-        console.log(`[MobileRenderOptimizer] Target, frame rate, set to: ${fps} FPS`};
+        console.log(`[MobileRenderOptimizer] Target, frame rate, set to: ${fps} FPS`}
     }
     
     /**
@@ -554,7 +536,7 @@ export class MobileRenderOptimizer {
      */
     getOptimizationSettings(): OptimizationConfig { return { quality: this.renderConfig.quality,
             optimizations: this.renderConfig.optimizations,
-    frameRate: this.renderConfig.frameRate },
+    frameRate: this.renderConfig.frameRate ,
             viewport: this.renderConfig.viewport 
     }
     
@@ -564,6 +546,6 @@ export class MobileRenderOptimizer {
     dispose()';'
             console.log('[MobileRenderOptimizer] Render, optimizer disposed');
         } catch (error) {
-            this.errorHandler.handleError(error as Error, 'MobileRenderOptimizer.dispose') }
+            this.errorHandler.handleError(error as Error, 'MobileRenderOptimizer.dispose');
 
     }'}'

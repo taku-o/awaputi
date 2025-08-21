@@ -12,46 +12,46 @@ import { HelpTransitionRenderer  } from './HelpAnimationManager';
 
 // レイアウト情報インターフェース
 interface HelpLayout {
-    sidebar: { ,x: number, y: number, width: number,, height: number;
-    content: { x: number, y: number, width: number,, height: number;
-    searchBar: { x: number, y: number, width: number,, height: number;
-    backButton: { x: number, y: number, width: number,, height: number;
-    backButton: { x: number, y: number, width: number,, height: number;
-        };
+    sidebar: { ,x: number, y: number, width: number, height: number,
+    content: { x: number, y: number, width: number, height: number,
+    searchBar: { x: number, y: number, width: number, height: number,
+    backButton: { x: number, y: number, width: number, height: number,
+    backButton: { x: number, y: number, width: number, height: number;
+         },
 // 色設定インターフェース
-interface HelpColors { background: string;
-    cardBackground: string;
-    primary: string;
-    secondary: string;
-    text: string;
-    textSecondary: string;
-    border: string;
-    selected: string;
-    searchBackground: string;
-    buttonBackground: string;
-    buttonHover: string;
-    scrollbar: string;
-    scrollbarHover: string;
-    scrollbarTrack: string;
+interface HelpColors { background: string,
+    cardBackground: string,
+    primary: string,
+    secondary: string,
+    text: string,
+    textSecondary: string,
+    border: string,
+    selected: string,
+    searchBackground: string,
+    buttonBackground: string,
+    buttonHover: string,
+    scrollbar: string,
+    scrollbarHover: string,
+    scrollbarTrack: string,
     scrollbarTrack: string;
         };
 // フォントサイズインターフェース
-interface HelpFontSizes { title: number;
-    header: number;
-    normal: number;
-    small: number;
-    tiny: number;
+interface HelpFontSizes { title: number,
+    header: number,
+    normal: number,
+    small: number,
+    tiny: number,
     tiny: number;
         };
 // スクロール状態インターフェース
-interface ScrollState { offset: number;
-    maxOffset: number;
-    contentHeight: number;
-    viewHeight: number;
-    scrollbarWidth: number;
-    isDragging: boolean;
-    dragStartY: number;
-    dragStartOffset: number;
+interface ScrollState { offset: number,
+    maxOffset: number,
+    contentHeight: number,
+    viewHeight: number,
+    scrollbarWidth: number,
+    isDragging: boolean,
+    dragStartY: number,
+    dragStartOffset: number,
     dragStartOffset: number;
         };
 // コンテンツデータインターフェース
@@ -60,12 +60,12 @@ interface ContentData { title?: string,
     steps?: string[];
 
 // ヘルプ状態インターフェース
-interface HelpState { searchQuery: string;
-    categories: any[];
-    selectedCategory: string;
-    selectedTopicIndex: number;
-    isSearching: boolean;
-    searchResults: any[];
+interface HelpState { searchQuery: string,
+    categories: any[],
+    selectedCategory: string,
+    selectedTopicIndex: number,
+    isSearching: boolean,
+    searchResults: any[],
     currentContent: ContentData | null  }
 
 /**
@@ -91,35 +91,34 @@ export class HelpRenderer {
         
         // 色設定
         this.colors = {''
-            background: '#0f0f1a';
-            cardBackground: '#1a1a2e';
-            primary: '#4a90e2';
-            secondary: '#6bb0ff';
-            text: '#ffffff';
-            textSecondary: '#cccccc';
-            border: '#333';
-            selected: '#2d5aa0';
-            searchBackground: '#16213e';
-            buttonBackground: '#2d5aa0';
-            buttonHover: '#3d6ab0';
-            scrollbar: '#555';
-            scrollbarHover: '#777' }
-
+            background: '#0f0f1a,
+            cardBackground: '#1a1a2e,
+            primary: '#4a90e2,
+            secondary: '#6bb0ff,
+            text: '#ffffff,
+            textSecondary: '#cccccc,
+            border: '#333,
+            selected: '#2d5aa0,
+            searchBackground: '#16213e,
+            buttonBackground: '#2d5aa0,
+            buttonHover: '#3d6ab0,
+            scrollbar: '#555,
+            scrollbarHover: '#777' };
             scrollbarTrack: '#333' 
     };
-        this.fontSizes = { title: 28;
-            header: 20;
-            normal: 16;
-            small: 14;
+        this.fontSizes = { title: 28,
+            header: 20,
+            normal: 16,
+            small: 14,
     tiny: 12  };
         // サイドバースクロール状態
-        this.sidebarScroll = { offset: 0;
-            maxOffset: 0;
-            contentHeight: 0;
-            viewHeight: 0;
-            scrollbarWidth: 8;
-            isDragging: false;
-            dragStartY: 0;
+        this.sidebarScroll = { offset: 0,
+            maxOffset: 0,
+            contentHeight: 0,
+            viewHeight: 0,
+            scrollbarWidth: 8,
+            isDragging: false,
+            dragStartY: 0,
     dragStartOffset: 0  };
         // レイアウトは動的に計算する
         this.layout = this.getDefaultLayout();
@@ -130,9 +129,9 @@ export class HelpRenderer {
      * デフォルトレイアウト
      */
     private getDefaultLayout(): HelpLayout { return { }
-            sidebar: { x: 50, y: 110, width: 250, height: 370  },
-            content: { x: 320, y: 110, width: 450, height: 370  },
-            searchBar: { x: 50, y: 60, width: 720, height: 40  },
+            sidebar: { x: 50, y: 110, width: 250, height: 370  ,
+            content: { x: 320, y: 110, width: 450, height: 370  ,
+            searchBar: { x: 50, y: 60, width: 720, height: 40  ,
             backButton: { x: 50, y: 500, width: 100, height: 40  }
     
     /**
@@ -157,7 +156,7 @@ export class HelpRenderer {
                     scale = canvasInfo.scale,
                     canvasWidth = canvasInfo.displayWidth || canvasWidth }
                     canvasHeight = canvasInfo.displayHeight || canvasHeight; }
-                } catch (error) { // フォールバック }
+        } catch (error) { // フォールバック }
         }
         
         // マージンを計算（キャンバス幅の比例）
@@ -181,24 +180,23 @@ export class HelpRenderer {
         const contentHeight = Math.max(300, contentBottom - 110);
         
         // レイアウト設定
-        this.layout = { sidebar: {
-                x: margin,
+        this.layout = { sidebar: { x: margin,
                 y: 110,
                 width: sidebarWidth,
     height: contentHeight,
             content: { x: margin + sidebarWidth + spacing,
-                y: 110,
+                y: 110  ,
                 width: contentWidth,
     height: contentHeight,
             searchBar: { x: margin,
-                y: 60,
+                y: 60  ,
     width: sidebarWidth + spacing + contentWidth, // サイドバー左端からコンテンツ右端まで,
-                height: 40  },
+                height: 40  };
             backButton: { x: margin,
-                y: backButtonY,
+                y: backButtonY  ,
                 width: 100,
     height: backButtonHeight,
-    height: backButtonHeight,
+    height: backButtonHeight;
         };
     /**
      * メイン描画処理
@@ -207,9 +205,9 @@ export class HelpRenderer {
         ctx: CanvasRenderingContext2D,
         state: HelpState,
         accessibilityManager: HelpAccessibilityManager
-    );
+    ),
         animationManager: HelpAnimationManager,
-    transitionRenderer: HelpTransitionRenderer,
+    transitionRenderer: HelpTransitionRenderer;
     ): void { ctx.save(
         
         // レイアウトを再計算（キャンバスサイズ変更に対応）
@@ -285,7 +283,7 @@ export class HelpRenderer {
             ctx.strokeStyle = this.colors.secondary,
             ctx.lineWidth = 3,
             ctx.setLineDash([5, 5]);
-            this.roundRect(ctx, searchBar.x - 2, searchBar.y - 2, searchBar.width + 4, searchBar.height + 4, 10, false) }
+            this.roundRect(ctx, searchBar.x - 2, searchBar.y - 2, searchBar.width + 4, searchBar.height + 4, 10, false);
 
             ctx.setLineDash([]); }
         }
@@ -336,7 +334,7 @@ export class HelpRenderer {
             ctx.strokeStyle = this.colors.secondary,
             ctx.lineWidth = 2,
             ctx.setLineDash([5, 5]);
-            this.roundRect(ctx, sidebar.x - 2, sidebar.y - 2, sidebar.width + 4, sidebar.height + 4, 10, false) }
+            this.roundRect(ctx, sidebar.x - 2, sidebar.y - 2, sidebar.width + 4, sidebar.height + 4, 10, false);
             ctx.setLineDash([]); }
         }
 
@@ -347,7 +345,7 @@ export class HelpRenderer {
         const contentArea = { x: sidebar.x + 5,
             y: sidebar.y + 10,
             width: sidebar.width - 10 - (this.sidebarScroll.maxOffset > 0 ? this.sidebarScroll.scrollbarWidth + 5 : 0),
-            height: sidebar.height - 20  },
+            height: sidebar.height - 20  ,
         ctx.save();
         ctx.beginPath();
         ctx.rect(contentArea.x, contentArea.y, contentArea.width, contentArea.height);
@@ -374,7 +372,7 @@ export class HelpRenderer {
 
             if (hasCategoryTransition) {
 
-                const transition = animationManager.getAnimationState('categoryTransition',
+                const transition = animationManager.getAnimationState('categoryTransition,
                 if (transition) {
                     const fromIndex = transition.fromIndex,
 
@@ -385,7 +383,7 @@ export class HelpRenderer {
                         alpha = 1 - progress }
                         offsetX = -10 * progress; }
                     } else if (catIndex === toIndex) { alpha = progress,
-                        offsetX = 10 * (1 - progress) }
+                        offsetX = 10 * (1 - progress);
 }
             
             ctx.save();
@@ -436,7 +434,7 @@ export class HelpRenderer {
         ctx.restore(); // クリッピング解除
         
         // スクロールバーの描画
-        if (this.sidebarScroll.maxOffset > 0) { this.renderScrollbar(ctx, sidebar) }
+        if (this.sidebarScroll.maxOffset > 0) { this.renderScrollbar(ctx, sidebar);
     }
 
     /**
@@ -483,8 +481,8 @@ export class HelpRenderer {
             const handleY = trackY + (scrollbar.offset / scrollbar.maxOffset) * (trackHeight - handleHeight),
             
             ctx.fillStyle = scrollbar.isDragging ? this.colors.scrollbarHover: this.colors.scrollbar 
-            this.roundRect(ctx, trackX, handleY, scrollbar.scrollbarWidth, handleHeight, 4, true) }
-}
+            this.roundRect(ctx, trackX, handleY, scrollbar.scrollbarWidth, handleHeight, 4, true);
+} };
 
     /**
      * メインコンテンツ描画
@@ -502,12 +500,12 @@ export class HelpRenderer {
             ctx.strokeStyle = this.colors.secondary,
             ctx.lineWidth = 2,
             ctx.setLineDash([5, 5]);
-            this.roundRect(ctx, contentArea.x - 2, contentArea.y - 2, contentArea.width + 4, contentArea.height + 4, 10, false) }
+            this.roundRect(ctx, contentArea.x - 2, contentArea.y - 2, contentArea.width + 4, contentArea.height + 4, 10, false);
             ctx.setLineDash([]); }
         }
         
         // コンテンツ描画
-        if (state.currentContent) { this.renderContentData(ctx, contentArea, state.currentContent) } else { this.renderNoContentMessage(ctx, contentArea) }
+        if (state.currentContent) { this.renderContentData(ctx, contentArea, state.currentContent) } else { this.renderNoContentMessage(ctx, contentArea);
     }
 
     /**
@@ -520,7 +518,7 @@ export class HelpRenderer {
         if (contentData.title) {
     
 }
-            ctx.fillStyle = this.colors.text; }
+            ctx.fillStyle = this.colors.text; } };
 
             ctx.font = `bold ${this.fontSizes.header}px Arial, sans-serif`;
             ctx.textAlign = 'left';
@@ -528,7 +526,7 @@ export class HelpRenderer {
             
             const titleLines = this.wrapText(ctx, contentData.title, maxWidth);
             titleLines.forEach(line => {  );
-                ctx.fillText(line, contentArea.x + 20, currentY) }
+                ctx.fillText(line, contentArea.x + 20, currentY);
                 currentY += this.fontSizes.header + 5; }
             };
             currentY += 10;
@@ -540,7 +538,7 @@ export class HelpRenderer {
             
             const descLines = this.wrapText(ctx, contentData.description, maxWidth);
             descLines.forEach(line => {  );
-                ctx.fillText(line, contentArea.x + 20, currentY) }
+                ctx.fillText(line, contentArea.x + 20, currentY);
                 currentY += this.fontSizes.normal + 3; }
             };
             currentY += 15;
@@ -563,16 +561,14 @@ export class HelpRenderer {
                 
                 const stepLines = this.wrapText(ctx, step, maxWidth - 30);
                 stepLines.forEach((line, lineIndex) => {  const xOffset = lineIndex === 0 ? 40 : 20,
-                    ctx.fillText(line, contentArea.x + xOffset, currentY) }
+                    ctx.fillText(line, contentArea.x + xOffset, currentY);
                     currentY += this.fontSizes.normal + 3; }
                 };
                 
                 currentY += 10;
                 
-                if (currentY > contentArea.y + contentArea.height - 30) { break, // スペース不足 }
+                if (currentY > contentArea.y + contentArea.height - 30) { break, // スペース不足     }
 }
-    }
-
     /**
      * 検索結果描画
      */
@@ -589,7 +585,7 @@ export class HelpRenderer {
             ctx.strokeStyle = this.colors.secondary,
             ctx.lineWidth = 2,
             ctx.setLineDash([5, 5]);
-            this.roundRect(ctx, contentArea.x - 2, contentArea.y - 2, contentArea.width + 4, contentArea.height + 4, 10, false) }
+            this.roundRect(ctx, contentArea.x - 2, contentArea.y - 2, contentArea.width + 4, contentArea.height + 4, 10, false);
 
             ctx.setLineDash([]); }
         }
@@ -613,8 +609,8 @@ export class HelpRenderer {
             
             // SearchEngineの結果構造に対応"
             const resultData = result.content || result,""
-            const title = resultData.title || result.title || 'Untitled',
-            const categoryId = resultData.categoryId || result.categoryId || resultData.category || 'unknown',
+            const title = resultData.title || result.title || 'Untitled,
+            const categoryId = resultData.categoryId || result.categoryId || resultData.category || 'unknown,
             
             // カテゴリ名を翻訳 }
             const categoryKey = `help.categories.${categoryId}`;
@@ -652,7 +648,7 @@ export class HelpRenderer {
             ctx.strokeStyle = this.colors.secondary,
             ctx.lineWidth = 3,
             ctx.setLineDash([5, 5]);
-            this.roundRect(ctx, backButton.x - 2, backButton.y - 2, backButton.width + 4, backButton.height + 4, 8, false) }
+            this.roundRect(ctx, backButton.x - 2, backButton.y - 2, backButton.width + 4, backButton.height + 4, 8, false);
 
             ctx.setLineDash([]); }
         }
@@ -673,7 +669,7 @@ export class HelpRenderer {
      * コンテンツなしメッセージ'
      */''
     private renderNoContentMessage(ctx: CanvasRenderingContext2D, contentArea: { x: number, y: number, width: number,  height: number )): void {
-        ctx.fillStyle = this.colors.textSecondary }
+        ctx.fillStyle = this.colors.textSecondary } };
 
         ctx.font = `${this.fontSizes.normal}px Arial, sans-serif`;
         ctx.textAlign = 'center';
@@ -690,7 +686,7 @@ export class HelpRenderer {
      * エラーメッセージ描画'
      */''
     private renderErrorMessage(ctx: CanvasRenderingContext2D, message: string): void { ''
-        ctx.fillStyle = 'rgba(255, 0, 0, 0.8)',
+        ctx.fillStyle = 'rgba(255, 0, 0, 0.8),
         ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
         ctx.fillStyle = this.colors.text }
 
@@ -721,8 +717,8 @@ export class HelpRenderer {
             const ariaInfo = accessibilityManager.getAriaLabel(element.id);
             if (ariaInfo) {
                 // アクセシビリティ情報のオーバーレイ
-                ctx.fillStyle = 'rgba(0, 0, 0, 0.8)',
-                ctx.fillRect(10, ctx.canvas.height - 60, 400, 50) }
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.8),
+                ctx.fillRect(10, ctx.canvas.height - 60, 400, 50);
                 ctx.fillStyle = this.colors.text; }
 
                 ctx.font = `${this.fontSizes.small}px Arial, sans-serif`;
@@ -752,7 +748,7 @@ export class HelpRenderer {
             ','
 
             if (metrics.width > maxWidth && currentLine) {''
-                lines.push(currentLine) }
+                lines.push(currentLine);
                 currentLine = char; }
             } else {  currentLine = testLine,
                 ','
@@ -766,11 +762,9 @@ export class HelpRenderer {
                         lines.push(currentLine);' }'
 
                         currentLine = '; }'
+    }
 }
-            }
-        }
-        
-        if (currentLine) { lines.push(currentLine) }
+        if (currentLine) { lines.push(currentLine);
         
         return lines;
     }
@@ -783,7 +777,7 @@ export class HelpRenderer {
     x: number, ;
         y: number, ;
         width: number, ;
-        height: number );
+        height: number ),
         radius: number,
     fill: boolean = true,
     ): void { ctx.beginPath(
@@ -801,7 +795,7 @@ export class HelpRenderer {
     
 }
             ctx.fill(); }
-        } else { ctx.stroke() }
+        } else { ctx.stroke();
     }
 
     /**
@@ -813,15 +807,15 @@ export class HelpRenderer {
     /**
      * 設定更新
      */
-    public updateColors(newColors: Partial<HelpColors>): void { Object.assign(this.colors, newColors) }
+    public updateColors(newColors: Partial<HelpColors>): void { Object.assign(this.colors, newColors);
 
-    public updateLayout(newLayout: Partial<HelpLayout>): void { Object.assign(this.layout, newLayout) }
+    public updateLayout(newLayout: Partial<HelpLayout>): void { Object.assign(this.layout, newLayout);
 
     /**
      * サイドバースクロール操作
      */
     public scrollSidebar(deltaY: number): void { const newOffset = this.sidebarScroll.offset + deltaY,
-        this.sidebarScroll.offset = Math.max(0, Math.min(newOffset, this.sidebarScroll.maxOffset) }
+        this.sidebarScroll.offset = Math.max(0, Math.min(newOffset, this.sidebarScroll.maxOffset);
 
     /**
      * サイドバーをスムーズにスクロール
@@ -924,7 +918,7 @@ export class HelpRenderer {
         const scrollRatio = deltaY / usableTrackHeight,
         const newOffset = this.sidebarScroll.dragStartOffset + scrollRatio * this.sidebarScroll.maxOffset,
         
-        this.sidebarScroll.offset = Math.max(0, Math.min(newOffset, this.sidebarScroll.maxOffset) }
+        this.sidebarScroll.offset = Math.max(0, Math.min(newOffset, this.sidebarScroll.maxOffset);
 
     /**
      * ドラッグ終了
@@ -947,6 +941,6 @@ export class HelpRenderer {
      */''
     public isPointInRect(x: number, y: number, rect: { x: number, y: number, width: number,  height: number )): boolean {
         return x >= rect.x && x <= rect.x + rect.width &&,
-               y >= rect.y && y <= rect.y + rect.height }
+               y >= rect.y && y <= rect.y + rect.height } }
 
     }'}'

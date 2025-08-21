@@ -99,7 +99,7 @@ describe('EventStageManager Integration Tests', () => {  let eventStageManager: 
                     type: 'event',')',
                     subType: 'EVENT_STARTED',')',
         eventId: 'spring-cherry-blossom') }
-    };
+    }
                 }'
             );'}');
         test('should send warning notification when event is ending', (') => {  // Mock event with end time soon'
@@ -133,7 +133,7 @@ describe('EventStageManager Integration Tests', () => {  let eventStageManager: 
             };'
             // Should not throw error''
             expect((') => { }'
-                eventStageManager.sendEventNotification('spring-cherry-blossom', 'EVENT_STARTED'};
+                eventStageManager.sendEventNotification('spring-cherry-blossom', 'EVENT_STARTED'}
             }.not.toThrow();'
         }'}');
     describe('Event Statistics Collection', (') => {  ''
@@ -151,7 +151,7 @@ describe('EventStageManager Integration Tests', () => {  let eventStageManager: 
                 eventId, playerId, stats);'
             );'}');
         test('should get detailed event statistics', (') => {  mockStatisticsManager.getDetailedEventStatistics.mockReturnValue({'
-                totalEvents: 5);
+                totalEvents: 5),
                 completionRate: 0.8)','
                , averageScore: 12500,') }'
                 favoriteEvent: 'spring-cherry-blossom'); }

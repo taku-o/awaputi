@@ -8,11 +8,11 @@ class MockChartRenderer {
     createChart(canvas, config) {
         const chartId = `chart-${this.chartCounter++}`;
         const mockChart = {
-            id: chartId;
+            id: chartId,
             canvas: canvas;
-            config: config;
+            config: config,
             data: config.data;
-            options: config.options;
+            options: config.options,
             update: jest.fn(
             destroy: jest.fn(
         resetZoom: jest.fn( };
@@ -27,7 +27,7 @@ class MockTrendAnalyzer {
     detectAnomalies(data, threshold = 2.0) {
         // テスト用の簡単な異常検出
         return data.map((d, index') => ({'
-            index: index;
+            index: index,
             value: d.averageScore || 0;
             type: 'test_anomaly'
         }).filter(a => a.value > 150'); // 150以上を異常値として扱う'
@@ -160,7 +160,7 @@ describe('TimeSeriesVisualizer', () => {
             chart.data.datasets.forEach(dataset => {
                 dataset.data.forEach(value => {);
                     expect(value).toBeGreaterThanOrEqual(0);
-                    expect(value).toBeLessThanOrEqual(1) };
+                    expect(value).toBeLessThanOrEqual(1) }
             }
         }');'
         test('正規化なしの場合、元の値が保持される', (') => {'
@@ -182,7 +182,7 @@ describe('TimeSeriesVisualizer', () => {
                 { period: '2024-04', averageScore: 130 }
             ],
             trend: {
-                direction: 'increasing',
+                direction: 'increasing' },
                 confidence: 0.85,
                 strength: 0.7
             }
@@ -228,7 +228,7 @@ describe('TimeSeriesVisualizer', () => {
             const stableTrendAnalysis = {
                 ...sampleTrendAnalysis,
                 trend: {
-                    direction: 'stable',
+                    direction: 'stable' },
                     confidence: 0.5,
                     strength: 0.1
                 }
@@ -394,6 +394,6 @@ describe('TimeSeriesVisualizer', () => {
             const chart = visualizer.createSingleMetricChart(mockCanvas, sampleData, 'invalid_metric');
             expect(chart).toBeDefined();
             expect(chart.data.datasets[0].data).toEqual([0]); // デフォルト値
-        };
+        }
     }
 }');'

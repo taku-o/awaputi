@@ -13,49 +13,46 @@ import { ErrorHandler  } from '../utils/ErrorHandler.js';
  * スコア設定の型定義
  */
 export interface ScoreConfig { baseScores: Record<string, number>,
-    combo: ComboConfig;
+    combo: ComboConfig,
     ageBonus: AgeBonusConfig;
 
 /**
  * コンボ設定の型定義
  */
-export interface ComboConfig { multiplierIncrement: number;
+export interface ComboConfig { multiplierIncrement: number,
     maxMultiplier: number;
 
 /**
  * 年齢ボーナス設定の型定義
  */
-export interface AgeBonusConfig { earlyBonus: number;
-    midBonus: number;
+export interface AgeBonusConfig { earlyBonus: number,
+    midBonus: number,
     lateBonus: number;
 
 /**
  * ステージ設定の型定義
  */
 export interface StageConfig { unlockRequirements: Record<string, number>,
-    difficulty: Record<string, StageDifficultyConfig> }
-
+    difficulty: Record<string, StageDifficultyConfig> };
 /**
  * ステージ難易度設定の型定義
  */
-export interface StageDifficultyConfig { spawnRate: number;
+export interface StageDifficultyConfig { spawnRate: number,
     maxBubbles: number;
 
 /**
  * アイテム設定の型定義
  */
 export interface ItemConfig { baseCosts: Record<string, number>,
-    costMultiplier: number;
+    costMultiplier: number,
     effects: Record<string, number | object>;
-    maxLevels: Record<string, number> }
-
+    maxLevels: Record<string, number> };
 /**
  * バブル設定の型定義
  */
 export interface BubbleConfig { maxAge: Record<string, number>,
     health: Record<string, number>;
-    specialEffects: Record<string, Record<string, any>> }
-
+    specialEffects: Record<string, Record<string, any>> };
 /**
  * 設定検証ルールの型定義
  */'
@@ -64,13 +61,12 @@ export interface ValidationRule {,
     min?: number;
     max?: number;
     validator?: (value: any) => boolean 
-    }
-
+    };
 export class GameConfig {
     private configManager: ConfigurationManager;
     constructor() {
 
-        this.configManager = getConfigurationManager() }
+        this.configManager = getConfigurationManager() };
         this._initialize(); }
     }
 
@@ -93,10 +89,8 @@ export class GameConfig {
 
         } catch (error) { ErrorHandler.handleError(error as Error, {)'
                 context: 'GameConfig._initialize'
-            };
-        }
-    }
-
+                }
+}
     /**
      * スコア設定の移行
      * @private
@@ -118,10 +112,8 @@ export class GameConfig {
         // 年齢ボーナス
         for(const [key, value] of Object.entries(scoring.ageBonus)) { }'
 
-            this.configManager.set('game', `scoring.ageBonus.${key}`, value};
-        }
-    }
-
+            this.configManager.set('game', `scoring.ageBonus.${key}`, value    }
+}
     /**
      * ステージ設定の移行
      * @private
@@ -138,10 +130,8 @@ export class GameConfig {
         for(const [stageId, settings] of Object.entries(stages.difficulty)) { ''
             this.configManager.set('game', `stages.difficulty.${stageId}.spawnRate`, settings.spawnRate'};' }
 
-            this.configManager.set('game', `stages.difficulty.${stageId}.maxBubbles`, settings.maxBubbles};
-        }
-    }
-
+            this.configManager.set('game', `stages.difficulty.${stageId}.maxBubbles`, settings.maxBubbles    }
+}
     /**
      * アイテム設定の移行
      * @private
@@ -166,10 +156,8 @@ export class GameConfig {
         // 最大レベル
         for(const [itemId, maxLevel] of Object.entries(items.maxLevels)) { }'
 
-            this.configManager.set('game', `items.maxLevels.${itemId}`, maxLevel};
-        }
-    }
-
+            this.configManager.set('game', `items.maxLevels.${itemId}`, maxLevel    }
+}
     /**
      * 泡設定の移行
      * @private
@@ -185,7 +173,7 @@ export class GameConfig {
         // 耐久値
         for(const [bubbleType, health] of Object.entries(bubbles.health)) { }'
 
-            this.configManager.set('game', `bubbles.health.${bubbleType}`, health};
+            this.configManager.set('game', `bubbles.health.${bubbleType}`, health}
         }
         
         // 特殊効果
@@ -204,28 +192,28 @@ export class GameConfig {
     private _setupValidationRules('';
         this.configManager.setValidationRule('game', 'scoring.combo.multiplierIncrement', { ')'
             type: 'number')','
-    min: 0.01,')',
+    min: 0.01,'),
             max: 0.5','
 
         this.configManager.setValidationRule('game', 'scoring.combo.maxMultiplier', {''
             type: 'number')','
-    min: 1,')',
+    min: 1,'),
             max: 10'),'
         ','
         // ステージ設定の検証ルール
         this.configManager.setValidationRule('game', 'stages.difficulty.*.spawnRate', {''
             type: 'number')','
-    min: 0.5,')',
+    min: 0.5,'),
             max: 5.0','
 
         this.configManager.setValidationRule('game', 'stages.difficulty.*.maxBubbles', {''
             type: 'number')','
-    min: 5,')',
+    min: 5,'),
             max: 100'),'
         ','
         // アイテム設定の検証ルール
         this.configManager.setValidationRule('game', 'items.costMultiplier', {''
-            type: 'number',
+            type: 'number,
     min: 1.0,','
             max: 3.0  }
 
@@ -374,7 +362,7 @@ export class GameConfig {
      */''
     getBubbleSpecialEffects(bubbleType: string): Record<string, any> { }'
 
-        return this._getConfigObject('game', `bubbles.specialEffects.${bubbleType}`};
+        return this._getConfigObject('game', `bubbles.specialEffects.${bubbleType}`}
     }
 
     /**

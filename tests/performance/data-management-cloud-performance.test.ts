@@ -31,7 +31,7 @@ describe('データ管理 - クラウド対応パフォーマンステスト', (
         (global: any).performance = {
             now: jest.fn(() => Date.now(),
             memory: {
-                usedJSHeapSize: 10000000,
+                usedJSHeapSize: 10000000 },
         totalJSHeapSize: 50000000
             };
         );
@@ -42,7 +42,7 @@ describe('データ管理 - クラウド対応パフォーマンステスト', (
         // GameEngineのモック
         mockGameEngine = {
             playerData: {
-                save: jest.fn(
+                save: jest.fn( },
                 load: jest.fn(
                 get: jest.fn((') => ({ name: 'TestPlayer', score: 1000 )) }),'
             settingsManager: {
@@ -50,9 +50,9 @@ describe('データ管理 - クラウド対応パフォーマンステスト', (
                     enabled: false, // パフォーマンステストではクラウド無効
                     provider: 'test'
     })
-            ),
+            ) };
             statisticsManager: {
-                getStatistics: jest.fn(() => ({ totalGames: 10, totalScore: 5000 )) }),
+                getStatistics: jest.fn(() => ({ totalGames: 10, totalScore: 5000 )) }) };
         
         dataManager = new DataManager(mockGameEngine);
     };
@@ -75,7 +75,7 @@ describe('データ管理 - クラウド対応パフォーマンステスト', (
         
         const status = duration <= expectedTime ? 'PASS' : 'FAIL',
         performanceResults.push({ test: testName, duration, expectedTime, status )'),'
-        return { duration, status };
+        return { duration, status }
     };
     
     describe('基本データ操作パフォーマンス', (') => {'
@@ -114,7 +114,7 @@ describe('データ管理 - クラウド対応パフォーマンステスト', (
                     timestamp: Date.now() + i
                 }'),'
                 settings: {
-                    graphics: 'high',
+                    graphics: 'high' },
                     audio: 'enabled',
                     controls: Array(50').fill('default' }'
             };
@@ -239,7 +239,7 @@ describe('データ管理 - クラウド対応パフォーマンステスト', (
                 cloudStorage: {
                     set: jest.fn().mockResolvedValue(true),
                    , remove: jest.fn().mockResolvedValue(true
-                );
+                ) };
             
             offlineManager = new OfflineManager(mockDataStorage, mockSyncManager);
         };
@@ -268,7 +268,7 @@ describe('データ管理 - クラウド対応パフォーマンステスト', (
                     type: 'save',
                     key: `key${i}`,
                     data: { index: i,);
-                    timestamp: Date.now(','
+                    timestamp: Date.now(',' };
                     retries: 0,
                     status: 'pending'
                 }');'
@@ -298,7 +298,7 @@ describe('データ管理 - クラウド対応パフォーマンステスト', (
                     index: i),
                    , data: Array(100).fill(`data-${i)`,
         timestamp: Date.now(},
-                };
+                }
             }
             
             const afterOperationsMemory = performance.memory.usedJSHeapSize;
@@ -323,12 +323,12 @@ describe('データ管理 - クラウド対応パフォーマンステスト', (
                         cycle,
                         index: i,
         timestamp: Date.now(},
-                    };
+                    }
                 }
                 
                 // データクリア
                 for (let i = 0; i < 20; i++) {
-                    await dataManager.storage.remove(`leak-test-${cycle}-${i)`};
+                    await dataManager.storage.remove(`leak-test-${cycle}-${i)`}
                 }
                 
                 // ガベージコレクションを強制（可能な場合）
@@ -373,7 +373,7 @@ describe('データ管理 - クラウド対応パフォーマンステスト', (
                 duration: averageDuration,
                 expectedTime: 200,
                 status: averageDuration < 200 ? 'PASS' : 'FAIL'
-            };
+            }
         }
     }');'
     describe('スケーラビリティテスト', (') => {'
@@ -391,7 +391,7 @@ describe('データ管理 - クラウド対応パフォーマンステスト', (
                         index: i),
                        , data: `test-data-${i)`,
         timestamp: Date.now(},
-                    };
+                    }
                 }
                 
                 await Promise.all(promises);
@@ -401,7 +401,7 @@ describe('データ管理 - クラウド対応パフォーマンステスト', (
                 results.push({ keyCount, duration );
                 // クリーンアップ
                 for (let i = 0, i < keyCount, i++) {
-                    await dataManager.storage.remove(`scale-test-${i)`};
+                    await dataManager.storage.remove(`scale-test-${i)`}
                 }
             }
             

@@ -5,35 +5,35 @@ import { jest, describe, test, expect, beforeEach, afterEach } from '@jest/globa
 import { LoggingSystem, getLoggingSystem } from '../../src/core/LoggingSystem';
 // Type definitions
 interface LogLevel {
-    debug: number;
+    debug: number,
     info: number;
-    warn: number;
+    warn: number,
     error: number;
 interface LogEntry {
-    timestamp: number;
+    timestamp: number,
     level: keyof LogLevel;
     message: string;
     data?: any;
     source?: string;
 interface LogConfig {
-    maxLogSize: number;
+    maxLogSize: number,
     logLevel: keyof LogLevel;
     enableConsole: boolean;
 interface LogStats {
-    total: number;
+    total: number,
     byLevel: Record<keyof LogLevel, number>;
     byCategory: Record<string, number> }
 interface ConfigChangeData {
-    category: string;
+    category: string,
     key: string;
-    oldValue: any;
+    oldValue: any,
     newValue: any;
     changeType: 'create' | 'update' | 'delete'
             }
 interface ConfigConflictData {
-    category: string;
+    category: string,
     key: string;
-    value1: any;
+    value1: any,
     value2: any;
     resolvedValue: any;
 interface LogFilter {
@@ -42,9 +42,9 @@ interface LogFilter {
     limit?: number;
     newest?: boolean;
 interface ConsoleOutput {
-    debug: any[][];
+    debug: any[][],
     info: any[][];
-    warn: any[][];
+    warn: any[][],
     error: any[][];
 describe('LoggingSystem', () => {
     let loggingSystem: LoggingSystem;
@@ -52,18 +52,18 @@ describe('LoggingSystem', () => {
     // Mock console output
     const originalConsole = { ...console };
     let consoleOutput: ConsoleOutput = {
-        debug: [];
+        debug: [],
         info: [];
-        warn: [];
+        warn: [],
         error: []
     };
     
     beforeEach(() => {
         // Mock console output
         consoleOutput = {
-            debug: [];
+            debug: [],
             info: [];
-            warn: [];
+            warn: [],
             error: []
         };
         
@@ -73,7 +73,7 @@ describe('LoggingSystem', () => {
         console.error = (...args) => { consoleOutput.error.push(args') };'
         
         loggingSystem = new LoggingSystem({
-            maxLogSize: 10;
+            maxLogSize: 10,
             logLevel: 'debug';
             enableConsole: true,);
     }
@@ -306,6 +306,6 @@ describe('LoggingSystem', () => {
             }
             
             expect(loggingSystem.logs.length).toBeLessThanOrEqual(10);
-        };
+        }
     }
 }');'

@@ -15,34 +15,31 @@ export interface LocalizationManager {,
     getCurrentLanguage('''
     priority?: 'high' | 'normal' | 'low';
     [key: string]: any;
-
-export interface CachedContentItem { data: any;
+    export interface CachedContentItem { data: any,
     timestamp: number;
     version?: string;
     expires: number;
-
-export interface ContentManifest { version: string;
-    lastUpdated: number;
+    export interface ContentManifest { version: string,
+    lastUpdated: number,
     contents: {
         [contentType: string]: {
             [language: string]: {
                 versio,n: string;
-                url: string;
+    },
+                url: string,
     size: number;
                 checksum?: string;;
     }
 
-export interface VersionInfo { version: string;
+export interface VersionInfo { version: string,
     lastUpdated: number;
     checksum?: string;
-
-export interface TutorialData { tutorials: any[];
+    export interface TutorialData { tutorials: any[];
     [key: string]: any;
-
-export interface FAQData { faqs: any[];
+    export interface FAQData { faqs: any[];
     [key: string]: any;
 );
-export interface GuidedTourData { tours: any[])
+    export interface GuidedTourData { tours: any[])
     [ke,y: string]: any;
 
 /**
@@ -62,17 +59,16 @@ export class ContentLoader {
     // バージョン管理
     private contentVersions: Map<string, string>;
     private manifestCache: Map<string, ContentManifest>;
-
     constructor(localizationManager: LocalizationManager | null = null) {
 
         this.localizationManager = localizationManager || getLocalizationManager();
-        this.cacheSystem = CacheSystem.getInstance ? CacheSystem.getInstance() : new CacheSystem();
-        this.loggingSystem = LoggingSystem.getInstance ? LoggingSystem.getInstance() : new LoggingSystem('''
-            baseUrl: '/help';
-            defaultLanguage: 'ja';
-            supportedLanguages: ['ja', 'en', 'zh-CN', 'zh-TW', 'ko'];
-            cacheTimeout: 30 * 60 * 1000, // 30分;
-            retryAttempts: 3 }
+    this.cacheSystem = CacheSystem.getInstance ? CacheSystem.getInstance() : new CacheSystem();
+    this.loggingSystem = LoggingSystem.getInstance ? LoggingSystem.getInstance() : new LoggingSystem('''
+            baseUrl: '/help,
+    defaultLanguage: 'ja,
+    supportedLanguages: ['ja', 'en', 'zh-CN', 'zh-TW', 'ko'];
+    cacheTimeout: 30 * 60 * 1000, // 30分;
+    retryAttempts: 3 };
             retryDelay: 1000 })
         // キャッシュ管理
         this.contentCache = new Map<string, CachedContentItem>();
@@ -101,7 +97,7 @@ export class ContentLoader {
 
             this.loggingSystem.info('ContentLoader', 'Content loader initialized successfully';} catch (error) {
             this.loggingSystem.error('ContentLoader', 'Failed to initialize content loader', error','
-            ErrorHandler.handle(error, 'ContentLoader.initialize') }
+            ErrorHandler.handle(error, 'ContentLoader.initialize');
     }
 
     /**
@@ -119,7 +115,7 @@ export class ContentLoader {
             
             // キャッシュから確認
             if (!options.forceReload) {
-                const cached = this.getCachedContent(cacheKey) }
+                const cached = this.getCachedContent(cacheKey);
 
                 if(cached && this.isContentValid(cached)) { }'
 
@@ -134,8 +130,7 @@ export class ContentLoader {
                 const model = new HelpContentModel(content);
                 // バリデーション
                 if (!model.validate() { }
-                    throw new Error(`Invalid, help content, format: ${language}`},
-                }
+                    throw new Error(`Invalid, help content, format: ${language}`} }
                 ;
                 // キャッシュに保存
                 this.setCachedContent(cacheKey, model);
@@ -174,7 +169,7 @@ export class ContentLoader {
             
             // キャッシュ確認
             if (!options.forceReload) {
-                const cached = this.getCachedContent(cacheKey) }
+                const cached = this.getCachedContent(cacheKey);
 
                 if(cached && this.isContentValid(cached)) { }'
 
@@ -228,7 +223,7 @@ export class ContentLoader {
             
             // キャッシュ確認
             if (!options.forceReload) {
-                const cached = this.getCachedContent(cacheKey) }
+                const cached = this.getCachedContent(cacheKey);
 
                 if(cached && this.isContentValid(cached)) { }'
 
@@ -348,7 +343,7 @@ export class ContentLoader {
                 data,
                 timestamp: Date.now(),
                 version,
-                expires: Date.now() + this.config.cacheTimeout  },
+                expires: Date.now() + this.config.cacheTimeout  ,
             // ローカルキャッシュに保存
             this.contentCache.set(key, cachedItem);
             
@@ -395,7 +390,7 @@ export class ContentLoader {
             let attempts = 0,
             while(attempts < this.config.retryAttempts) {
                 try {
-                    const response = await this.fetchWithTimeout(url, options.timeout || 10000) }
+                    const response = await this.fetchWithTimeout(url, options.timeout || 10000);
 
                     if (!response.ok) { }'
 
@@ -442,12 +437,12 @@ export class ContentLoader {
             const response = await fetch(url, {
                 signal: controller.signal)','
     headers: {', 'Accept': 'application/json','
-                    'Cache-Control': 'no-cache' 
+                    'Cache-Control': 'no-cache'  }
     
             };
             );
             return response;
-        } finally { clearTimeout(timeoutId) }
+        } finally { clearTimeout(timeoutId);
     }
 
     /**
@@ -469,8 +464,7 @@ export class ContentLoader {
                 this.manifestCache.set('default', manifest' }'
 
                 this.loggingSystem.info('ContentLoader', 'Content manifest loaded successfully'; }
-
-            } catch (error) {
+        } catch (error) {
             this.loggingSystem.warn('ContentLoader', 'Failed to load content manifest', error' }'
     }
 
@@ -486,7 +480,7 @@ export class ContentLoader {
             ],
 
             await Promise.allSettled(preloadPromises),'
-            }'
+            }
 
             this.loggingSystem.info('ContentLoader', `Essential content preloaded: ${language}`}';} catch (error) { }'
 
@@ -503,16 +497,16 @@ export class ContentLoader {
                 // パターンマッチングでクリア
                 for (const key of this.contentCache.keys() {
                     if (key.includes(pattern) {
-                        this.contentCache.delete(key) }
+                        this.contentCache.delete(key);
                         this.cacheSystem.delete(key); }
 }
             } else {  // 全クリア
                 this.contentCache.clear(),' }'
 
-                this.cacheSystem.clear() }
+                this.cacheSystem.clear();
 
             this.loggingSystem.info('ContentLoader', `Cache cleared: ${pattern || 'all}`}';} catch (error) {
-            this.loggingSystem.error('ContentLoader', 'Failed to clear cache', error) }
+            this.loggingSystem.error('ContentLoader', 'Failed to clear cache', error);
     }
 
     /**
@@ -526,7 +520,7 @@ export class ContentLoader {
             this.loggingSystem.info('ContentLoader', 'Content loader destroyed',' }'
 
         } catch (error) {
-            this.loggingSystem.error('ContentLoader', 'Failed to destroy content loader', error) }
+            this.loggingSystem.error('ContentLoader', 'Failed to destroy content loader', error);
 }
 
 // シングルトンインスタンス管理
@@ -538,7 +532,7 @@ let contentLoaderInstance: ContentLoader | null = null,
  * @returns ContentLoaderインスタンス
  */
 export function getContentLoader(localizationManager?: LocalizationManager): ContentLoader { if (!contentLoaderInstance) {
-        contentLoaderInstance = new ContentLoader(localizationManager || null) }
+        contentLoaderInstance = new ContentLoader(localizationManager || null) };
     return contentLoaderInstance;
 }
 

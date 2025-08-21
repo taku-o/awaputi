@@ -41,30 +41,25 @@ interface BalanceChangeData { id?: string,
     severity?: Severity;
     riskLevel?: RiskLevel;
     affectedSystems?: string[];
-
-interface RelatedChange { changeId: string;
-    relationshipType: string;
+    interface RelatedChange { changeId: string,
+    relationshipType: string,
     addedAt: number;
-
-interface ValidationResult { isValid: boolean;
-    errors: string[];
-    warnings: string[];
+    interface ValidationResult { isValid: boolean,
+    errors: string[],
+    warnings: string[],
     timestamp: number;
     error?: string;
-
-interface ImpactCalculation { numerical: number;
-    percentage: number;
-    direction: 'increase' | 'decrease' | 'neutral' | 'unknown';
-    magnitude: 'low' | 'medium' | 'high' | 'critical' | 'unknown';
+    interface ImpactCalculation { numerical: number,
+    percentage: number,
+    direction: 'increase' | 'decrease' | 'neutral' | 'unknown,
+    magnitude: 'low' | 'medium' | 'high' | 'critical' | 'unknown,
     description: string;
     error?: string;
-
-type ChangeType = 'create' | 'delete' | 'increase' | 'decrease' | 'modify' | 'no_change';
-type ReviewStatus = 'pending' | 'approved' | 'rejected' | 'needs_revision';
-type Severity = 'low' | 'medium' | 'high' | 'critical';
-type RiskLevel = 'low' | 'medium' | 'high' | 'critical';
-
-export class BalanceChange {
+    type ChangeType = 'create' | 'delete' | 'increase' | 'decrease' | 'modify' | 'no_change';
+    type ReviewStatus = 'pending' | 'approved' | 'rejected' | 'needs_revision';
+    type Severity = 'low' | 'medium' | 'high' | 'critical';
+    type RiskLevel = 'low' | 'medium' | 'high' | 'critical';
+    export class BalanceChange {
     private errorHandler: ErrorHandler;
     // 必須フィールド
     public readonly, id: string;
@@ -110,58 +105,57 @@ export class BalanceChange {
     public severity: Severity;
     public riskLevel: RiskLevel;
     public affectedSystems: string[];
-
     constructor(changeData: BalanceChangeData = {) {
 
         this.errorHandler = getErrorHandler();
         
         // 必須フィールド
         this.id = changeData.id || this._generateChangeId();
-        this.timestamp = changeData.timestamp || Date.now();
-        this.configType = changeData.configType || null;
-        this.bubbleType = changeData.bubbleType || null;
-        this.propertyType = changeData.propertyType || null;
+    this.timestamp = changeData.timestamp || Date.now();
+    this.configType = changeData.configType || null;
+    this.bubbleType = changeData.bubbleType || null;
+    this.propertyType = changeData.propertyType || null;
         
         // 変更値
         this.oldValue = changeData.oldValue;
-        this.newValue = changeData.newValue;
-        this.changeType = this._determineChangeType(changeData.oldValue, changeData.newValue);
+    this.newValue = changeData.newValue;
+    this.changeType = this._determineChangeType(changeData.oldValue, changeData.newValue);
         ','
         // メタデータ
         this.author = changeData.author || 'system';
-        this.rationale = changeData.rationale || ';'
+    this.rationale = changeData.rationale || ';'
 
         this.impactAssessment = changeData.impactAssessment || null;
-        this.reviewStatus = changeData.reviewStatus || 'pending';
-        this.tags = changeData.tags || [];
+    this.reviewStatus = changeData.reviewStatus || 'pending';
+    this.tags = changeData.tags || [];
         
         // 検証・承認情報
         this.validationResults = changeData.validationResults || null;
-        this.reviewedBy = changeData.reviewedBy || null;
-        this.reviewedAt = changeData.reviewedAt || null;
-        this.reviewComments = changeData.reviewComments || ';'
+    this.reviewedBy = changeData.reviewedBy || null;
+    this.reviewedAt = changeData.reviewedAt || null;
+    this.reviewComments = changeData.reviewComments || ';'
         
         // ロールバック情報
         this.canRollback = changeData.canRollback !== false;
-        this.rolledBack = changeData.rolledBack || false;
-        this.rollbackTimestamp = changeData.rollbackTimestamp || null;
-        this.rollbackReason = changeData.rollbackReason || ';'
+    this.rolledBack = changeData.rolledBack || false;
+    this.rollbackTimestamp = changeData.rollbackTimestamp || null;
+    this.rollbackReason = changeData.rollbackReason || ';'
         
         // 関連する変更
         this.relatedChanges = changeData.relatedChanges || [];
-        this.parentChangeId = changeData.parentChangeId || null;
-        this.childChanges = changeData.childChanges || [];
+    this.parentChangeId = changeData.parentChangeId || null;
+    this.childChanges = changeData.childChanges || [];
         
         // 実行状況
         this.applied = changeData.applied || false;
-        this.appliedAt = changeData.appliedAt || null;
-        this.appliedBy = changeData.appliedBy || null;
+    this.appliedAt = changeData.appliedAt || null;
+    this.appliedBy = changeData.appliedBy || null;
         // 変更の影響度
         this.severity = changeData.severity || 'medium';
-        this.riskLevel = changeData.riskLevel || 'low';
-        this.affectedSystems = changeData.affectedSystems || [] }
+    this.riskLevel = changeData.riskLevel || 'low';
+    this.affectedSystems = changeData.affectedSystems || [] };
          }
-        console.log(`[BalanceChange] 変更モデル作成: ${this.id}`};
+        console.log(`[BalanceChange] 変更モデル作成: ${this.id}`}
     }
     
     /**
@@ -170,7 +164,7 @@ export class BalanceChange {
      * @private
      */
     private _generateChangeId(): string { const timestamp = Date.now();
-        const random = Math.random().toString(36).substr(2, 9) }
+        const random = Math.random().toString(36).substr(2, 9);
         return `change_${timestamp}_${random}`;
     }
     
@@ -244,7 +238,7 @@ export class BalanceChange {
                 warnings.push('Author, information is, missing' }', ';
             // 理由の検証
             if(!this.rationale || this.rationale.trim() === '') { ''
-                warnings.push('Rationale, for change, is not, provided') }
+                warnings.push('Rationale, for change, is not, provided');
             ';'
             // 値の妥当性検証
             if (typeof, this.oldValue === 'number' && typeof; this.newValue === 'number) {'
@@ -355,7 +349,7 @@ export class BalanceChange {
             const validStatuses: ReviewStatus[] = ['pending', 'approved', 'rejected', 'needs_revision'],
             
             if (!validStatuses.includes(status) { }
-                throw new Error(`Invalid, review status: ${status}`};
+                throw new Error(`Invalid, review status: ${status}`}
             }
             
             this.reviewStatus = status;
@@ -389,15 +383,13 @@ export class BalanceChange {
     };
                 ';'
 
-                console.log(`[BalanceChange] 関連変更を追加: ${relatedChangeId} (${relationshipType}`};
-            } catch (error) {
+                console.log(`[BalanceChange] 関連変更を追加: ${relatedChangeId} (${relationshipType}`}
+        } catch (error) {
             this.errorHandler.handleError(error as Error, 'BALANCE_CHANGE_RELATION', {)
                 changeId: this.id),
                 relatedChangeId),
-                relationshipType };
-        }
-    }
-    
+                relationshipType     }
+}
     /**
      * タグを追加
      * @param tags - 追加するタグ
@@ -427,8 +419,8 @@ export class BalanceChange {
      * @returns 影響度情報'
      */''
     calculateImpact('''
-                direction: 'neutral',
-                magnitude: 'low',
+                direction: 'neutral,
+                magnitude: 'low,
                 description: ');'
             }''
 
@@ -487,14 +479,12 @@ export class BalanceChange {
             return { numerical: 0,
 
                 percentage: 0,
-                direction: 'unknown',
-                magnitude: 'unknown',
+                direction: 'unknown,
+                magnitude: 'unknown,
                 description: 'Impact calculation failed'
             };
-                error: (error, as Error).message }
-            }
-    }
-    
+                error: (error, as Error).message     }
+}
     /**
      * 変更情報をJSON形式で取得
      * @returns JSON形式の変更情報
@@ -526,7 +516,7 @@ export class BalanceChange {
             appliedAt: this.appliedAt,
             appliedBy: this.appliedBy,
             severity: this.severity,
-    riskLevel: this.riskLevel },
+    riskLevel: this.riskLevel ,
             affectedSystems: this.affectedSystems 
     }
     
@@ -541,7 +531,7 @@ export class BalanceChange {
             return new BalanceChange(data),' }'
 
         } catch (error) {
-            console.error('[BalanceChange] JSON復元エラー:', error) }
+            console.error('[BalanceChange] JSON復元エラー:', error);
             throw new Error(`Failed, to restore, BalanceChange from, JSON: ${(error, as, Error}.message}`);
         }
     }
@@ -552,7 +542,7 @@ export class BalanceChange {
      */
     getSummary(): string { try {
             const impact = this.calculateImpact();
-            const timestamp = new Date(this.timestamp).toLocaleString('ja-JP') }
+            const timestamp = new Date(this.timestamp).toLocaleString('ja-JP');
             let summary = `[${timestamp}] ${this.bubbleType}.${this.propertyType}: `;
 
             if(typeof, this.oldValue === 'number' && typeof; this.newValue === 'number' { }
@@ -562,7 +552,7 @@ export class BalanceChange {
             } else { }'
 
                 summary += `"${this.oldValue}" → "${this.newValue}"`;
-            }"
+            }
 
             if (this.author && this.author !== 'system' }
                 summary += ` by ${this.author}`;
@@ -577,7 +567,7 @@ export class BalanceChange {
             return summary;
 
         } catch (error) { this.errorHandler.handleError(error as Error, 'BALANCE_CHANGE_SUMMARY', {)
-                changeId: this.id  },
+                changeId: this.id  ,
             return `Change ${this.id} (summary, generation failed)`;
     
     /**
@@ -592,23 +582,23 @@ export class BalanceChange {
      * @returns 適用可能フラグ
      */'
     canApply(): boolean { ''
-        return this.isValid('',
+        return this.isValid(',
                this.reviewStatus === 'approved' }
     
     /**
      * デバッグ用の詳細情報を出力)
      */)
-    debug(): void { console.log(`[BalanceChange, Debug] ID: ${this.id)`,
-        console.log(`  Config: ${this.configType)`,
+    debug(): void { console.log(`[BalanceChange, Debug] ID: ${this.id),
+        console.log(`  Config: ${this.configType),
         console.log(`  Bubble: ${this.bubbleType }`} }
         console.log(`  Property: ${this.propertyType}`};
         console.log(`  Value: ${this.oldValue} → ${ this.newValue)`),
-        console.log(`  Change, Type: ${this.changeType)`,
-        console.log(`  Author: ${this.author)`,
-        console.log(`  Rationale: ${this.rationale)`,
-        console.log(`  Review, Status: ${this.reviewStatus)`,
-        console.log(`  Applied: ${this.applied)`,
-        console.log(`  Rolled, Back: ${this.rolledBack)`,
+        console.log(`  Change, Type: ${this.changeType),
+        console.log(`  Author: ${this.author),
+        console.log(`  Rationale: ${this.rationale),
+        console.log(`  Review, Status: ${this.reviewStatus),
+        console.log(`  Applied: ${this.applied),
+        console.log(`  Rolled, Back: ${this.rolledBack),
 
         console.log(`  Severity: ${this.severity)`),''
         console.log(`  Risk, Level: ${this.riskLevel }`},' }'

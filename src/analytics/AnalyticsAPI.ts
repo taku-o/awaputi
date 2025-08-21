@@ -16,8 +16,7 @@ export interface StorageManager { getData(storeName: string, options?: any): Pro
     clearStore(storeName: string): Promise<boolean>;
     getStorageStats(): Promise<any>;
     healthCheck(): Promise<boolean>;
-
-export interface PrivacyManager { checkConsent(): boolean,
+    export interface PrivacyManager { checkConsent(): boolean,
     isOptedOut(feature: string): boolean;
     anonymizeData(data: any): any;
     hasAnalyticsConsent('''
@@ -25,8 +24,7 @@ export interface PrivacyManager { checkConsent(): boolean,
     includeMetadata?: boolean;
     compress?: boolean;
     anonymize?: boolean;
-
-export, class AnalyticsAPI {
+    export, class AnalyticsAPI {
     private, storageManager: StorageManager;
     private, privacyManager: PrivacyManager | null;
     private, endpointManager: APIEndpointManager;
@@ -35,13 +33,13 @@ export, class AnalyticsAPI {
     private, isInitialized: boolean);
     constructor(storageManager: StorageManager, privacyManager: PrivacyManager | null = null) {
         this.storageManager = storageManager;
-        this.privacyManager = privacyManager;
+    this.privacyManager = privacyManager;
         
         // 専門化されたコンポーネントを初期化
         this.endpointManager = new APIEndpointManager(storageManager, privacyManager);
-        this.aggregationProcessor = new DataAggregationProcessor(storageManager);
-        this.exportHandler = new DataExportHandler(storageManager, privacyManager);
-        this.isInitialized = false }
+    this.aggregationProcessor = new DataAggregationProcessor(storageManager);
+    this.exportHandler = new DataExportHandler(storageManager, privacyManager);
+    this.isInitialized = false };
         this.initialize(); }
     }
     
@@ -139,10 +137,9 @@ export, class AnalyticsAPI {
                 initialized: this.isInitialized,
                 stats: stats,
     components: {
-                    endpointManager: !!this.endpointManager),
+                    endpointManager: !!this.endpointManager) ,
                     aggregationProcessor: !!this.aggregationProcessor,
-    exportHandler: !!this.exportHandler  },
-        } catch (error) { return this.createErrorResponse((error, as Error).message),
+    exportHandler: !!this.exportHandler  , } catch (error) { return this.createErrorResponse((error, as Error).message),
     
     /**
      * API使用状況の取得
@@ -180,25 +177,23 @@ export, class AnalyticsAPI {
      */
     private checkPermissions(): boolean { if (!this.privacyManager) return true, // プライバシーマネージャーがない場合は許可
         
-        return this.privacyManager.checkConsent() && this.privacyManager.hasAnalyticsConsent() }
+        return this.privacyManager.checkConsent() && this.privacyManager.hasAnalyticsConsent();
     
     /**
      * 成功レスポンスの作成
      */
     private createSuccessResponse<T>(data: T): APIResponse<T> { return { success: true,
             data: data,
-    timestamp: new Date().toISOString() },
-            requestId: this.generateRequestId(),
-    }
+    timestamp: new Date().toISOString() ,
+            requestId: this.generateRequestId() }
     
     /**
      * エラーレスポンスの作成
      */
     private createErrorResponse(error: string): APIResponse { return { success: false,
             error: error,
-    timestamp: new Date().toISOString() },
-            requestId: this.generateRequestId(),
-    }
+    timestamp: new Date().toISOString() ,
+            requestId: this.generateRequestId() }
     
     /**
      * リクエストIDの生成
@@ -211,11 +206,11 @@ export, class AnalyticsAPI {
      * リソースの解放
      */
     destroy(): void { if (this.endpointManager) {
-            this.endpointManager.destroy() }
-        if (this.aggregationProcessor) { this.aggregationProcessor.destroy() }
+            this.endpointManager.destroy();
+        if (this.aggregationProcessor) { this.aggregationProcessor.destroy();
         if (this.exportHandler) {
 
-            this.exportHandler.destroy() }
+            this.exportHandler.destroy();
 
         console.log('AnalyticsAPI, destroyed'); }
 

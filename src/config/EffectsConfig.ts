@@ -11,88 +11,92 @@ import { getErrorHandler, ErrorHandler  } from '../utils/ErrorHandler.js';
 /**
  * パーティクルタイプ別設定の型定義
  */
-export interface ParticleTypeConfig { count: number;
-    size: number;
-    speed: number;
+export interface ParticleTypeConfig { count: number,
+    size: number,
+    speed: number,
     life: number;
 /**
  * パーティクル設定の型定義
  */
-export interface ParticleConfig { maxCount: number;
-    poolSize: number;
-    quality: number;
-    enabled: boolean;
-    bubble: ParticleTypeConfig;
-    star: ParticleTypeConfig;
+export interface ParticleConfig { maxCount: number,
+    poolSize: number,
+    quality: number,
+    enabled: boolean,
+    bubble: ParticleTypeConfig,
+    star: ParticleTypeConfig,
     explosion: ParticleTypeConfig;
 /**
  * 画面効果詳細設定の型定義
  */
-export interface ScreenEffectDetails { shake: {
-        intensit,y: number;
-        duration: number;
-    damping: number;
-    flash: { intensity: number;
+export interface ScreenEffectDetails { shake: { intensit,y: number,
+        duration: number,
+    damping: number,
+    flash: { intensity: number,
     duration: number;
-    zoom: { min: number;
+    },
+    zoom: { min: number,
         max: number;
-    speed: number;
-    tint: { intensity: number;
+    },
+    speed: number,
+    tint: { intensity: number,
     duration: number;
+    },
     duration: number;
         };
 /**
  * 画面効果設定の型定義
  */
-export interface ScreenEffectConfig extends ScreenEffectDetails { shakeIntensity: number;
-    flashDuration: number;
-    zoomSensitivity: number;
+export interface ScreenEffectConfig extends ScreenEffectDetails { shakeIntensity: number,
+    flashDuration: number,
+    zoomSensitivity: number,
     enabled: boolean;
 /**
  * アニメーションタイプ別設定の型定義
  */
-export interface AnimationTypeConfigs { pop: {
-        duratio,n: number;
-        scale: number;
+export interface AnimationTypeConfigs { pop: { duratio,n: number,
+        scale: number,
+    easing: string,
+    fade: { duration: number,
     easing: string;
-    fade: { duration: number;
-    easing: string;
-    slide: { duration: number;
+    },
+    slide: { duration: number,
         distance: number;
-    easing: string;
-    bounce: { duration: number;
+    },
+    easing: string,
+    bounce: { duration: number,
         height: number;
-    easing: string;
+    },
+    easing: string,
     easing: string;
         };
 /**
  * アニメーション設定の型定義
  */
-export interface AnimationConfig extends AnimationTypeConfigs { duration: number;
-    easing: string;
+export interface AnimationConfig extends AnimationTypeConfigs { duration: number,
+    easing: string,
     enabled: boolean;
 /**
  * 品質レベル設定の型定義
  */
-export interface QualityLevelSettings { particleQuality: number;
-    maxParticles: number;
-    particleCount: number;
-    screenEffects: boolean;
-    complexAnimations: boolean;
+export interface QualityLevelSettings { particleQuality: number,
+    maxParticles: number,
+    particleCount: number,
+    screenEffects: boolean,
+    complexAnimations: boolean,
     highQualityTextures: boolean;
 /**
  * 品質設定の型定義
  */'
 export interface QualityConfig {,
-    level: 'low' | 'medium' | 'high' | 'ultra';
-    autoAdjust: boolean;
-    targetFPS: number;
+    level: 'low' | 'medium' | 'high' | 'ultra,
+    autoAdjust: boolean,
+    targetFPS: number,
     memoryThreshold: number;
 /**
  * ParticleManagerインターフェースの型定義
  */
-export interface ParticleManager { maxParticles: number;
-    poolSize: number;
+export interface ParticleManager { maxParticles: number,
+    poolSize: number,
     particlePool: any[];
     initializePool(): void;
 /**
@@ -100,11 +104,11 @@ export interface ParticleManager { maxParticles: number;
  */
 export interface EffectManager { applyConfiguration(): void,
     getConfigValue(key: string): any;
-export class EffectsConfig {
+    export class EffectsConfig {
     private configManager: ConfigurationManager;
     constructor() {
 
-        this.configManager = getConfigurationManager() }
+        this.configManager = getConfigurationManager() };
         this._initialize(); }
     /**
      * 初期化処理 - デフォルト設定の登録
@@ -218,37 +222,37 @@ export class EffectsConfig {
         // 品質レベル別設定
         this.configManager.set('effects', 'quality.levels.low', { particleQuality: 0.3,
             maxParticles: 100,
-            particleCount: 5);
+            particleCount: 5),
             screenEffects: false','
-    complexAnimations: false,')',
+    complexAnimations: false,'),
             highQualityTextures: false','
             highQualityTextures: false','
         };
         this.configManager.set('effects', 'quality.levels.medium', {
             particleQuality: 0.6,
             maxParticles: 250,
-            particleCount: 10);
+            particleCount: 10),
             screenEffects: true','
-    complexAnimations: false,')',
+    complexAnimations: false,'),
             highQualityTextures: false','
             highQualityTextures: false','
         };
         this.configManager.set('effects', 'quality.levels.high', {
             particleQuality: 1.0,
             maxParticles: 500,
-            particleCount: 15);
+            particleCount: 15),
             screenEffects: true','
-    complexAnimations: true,')',
+    complexAnimations: true,'),
             highQualityTextures: true','
             highQualityTextures: true','
         };
         this.configManager.set('effects', 'quality.levels.ultra', {
             particleQuality: 1.5,
             maxParticles: 1000,
-            particleCount: 20);
+            particleCount: 20),
             screenEffects: true,
     complexAnimations: true,','
-            highQualityTextures: true,
+            highQualityTextures: true;
     /**
      * 検証ルールの設定
      * @private'
@@ -256,19 +260,19 @@ export class EffectsConfig {
     private _setupValidationRules('';
         this.configManager.setValidationRule('effects', 'particles.maxCount', { ')'
             type: 'number')','
-    min: 0,')',
+    min: 0,'),
             max: 2000','
             max: 2000','
         };
         this.configManager.setValidationRule('effects', 'particles.poolSize', {''
             type: 'number')','
-    min: 0,')',
+    min: 0,'),
             max: 1000','
             max: 1000','
         };
         this.configManager.setValidationRule('effects', 'particles.quality', {''
             type: 'number')','
-    min: 0.1,')',
+    min: 0.1,'),
             max: 2.0','
             max: 2.0','
         };
@@ -278,19 +282,19 @@ export class EffectsConfig {
         // 画面効果設定の検証ルール
         this.configManager.setValidationRule('effects', 'screen.shakeIntensity', {''
             type: 'number')','
-    min: 0,')',
+    min: 0,'),
             max: 2.0','
             max: 2.0','
         };
         this.configManager.setValidationRule('effects', 'screen.flashDuration', {''
             type: 'number')','
-    min: 0,')',
+    min: 0,'),
             max: 1000','
             max: 1000','
         };
         this.configManager.setValidationRule('effects', 'screen.zoomSensitivity', {''
             type: 'number')','
-    min: 0.1,')',
+    min: 0.1,'),
             max: 2.0','
             max: 2.0','
         };
@@ -300,12 +304,12 @@ export class EffectsConfig {
         // アニメーション設定の検証ルール
         this.configManager.setValidationRule('effects', 'animations.duration', {''
             type: 'number')','
-    min: 0,')',
+    min: 0,'),
             max: 2000','
             max: 2000','
         };
         this.configManager.setValidationRule('effects', 'animations.easing', {''
-            type: 'string',
+            type: 'string,
             validator: (value: any') => ['linear', 'easeIn', 'easeOut', 'easeInOut', 'easeOutBounce].includes(value),' }'
 
         }');'
@@ -315,7 +319,7 @@ export class EffectsConfig {
         ','
         // 品質設定の検証ルール
         this.configManager.setValidationRule('effects', 'quality.level', {''
-            type: 'string',
+            type: 'string,
             validator: (value: any') => ['low', 'medium', 'high', 'ultra].includes(value),' }'
 
         }');'
@@ -326,12 +330,12 @@ export class EffectsConfig {
         };
         this.configManager.setValidationRule('effects', 'quality.targetFPS', {''
             type: 'number')','
-    min: 15,')',
+    min: 15,'),
             max: 144','
             max: 144','
         };
         this.configManager.setValidationRule('effects', 'quality.memoryThreshold', {''
-            type: 'number',
+            type: 'number,
     min: 52428800, // 50MB','
             max: 536870912 // 512MB  }
     /**
@@ -344,19 +348,19 @@ export class EffectsConfig {
             quality: this.configManager.get('effects', 'particles.quality', 1.0','
             enabled: this.configManager.get('effects', 'particles.enabled', true','
             bubble: { ''
-                count: this.configManager.get('effects', 'particles.bubble.count', 15','
+                count: this.configManager.get('effects', 'particles.bubble.count', 15','  },
                 size: this.configManager.get('effects', 'particles.bubble.size', 3','
                 speed: this.configManager.get('effects', 'particles.bubble.speed', 100','
                 life: this.configManager.get('effects', 'particles.bubble.life', 800 },
 
             star: { ''
-                count: this.configManager.get('effects', 'particles.star.count', 10','
+                count: this.configManager.get('effects', 'particles.star.count', 10','  },
                 size: this.configManager.get('effects', 'particles.star.size', 4','
                 speed: this.configManager.get('effects', 'particles.star.speed', 80','
                 life: this.configManager.get('effects', 'particles.star.life', 1200 },
 
             explosion: { ''
-                count: this.configManager.get('effects', 'particles.explosion.count', 30','
+                count: this.configManager.get('effects', 'particles.explosion.count', 30','  },
                 size: this.configManager.get('effects', 'particles.explosion.size', 5','
                 speed: this.configManager.get('effects', 'particles.explosion.speed', 150','
                 life: this.configManager.get('effects', 'particles.explosion.life', 1500 }
@@ -407,7 +411,7 @@ export class EffectsConfig {
      * @returns {boolean} 設定成功フラグ'
      */''
     setParticlePoolSize(size: number): boolean { ''
-        return this.configManager.set('effects', 'particles.poolSize', size) }
+        return this.configManager.set('effects', 'particles.poolSize', size);
     /**
      * パーティクル品質を設定
      * @param {number} quality - パーティクル品質 (0.1-2.0)
@@ -432,21 +436,21 @@ export class EffectsConfig {
             zoomSensitivity: this.configManager.get('effects', 'screen.zoomSensitivity', 1.0','
             enabled: this.configManager.get('effects', 'screen.enabled', true','
             shake: { ''
-                intensity: this.configManager.get('effects', 'screen.shake.intensity', 10','
+                intensity: this.configManager.get('effects', 'screen.shake.intensity', 10','  },
                 duration: this.configManager.get('effects', 'screen.shake.duration', 500','
                 damping: this.configManager.get('effects', 'screen.shake.damping', 0.9 },
 
             flash: { ''
-                intensity: this.configManager.get('effects', 'screen.flash.intensity', 0.5','
+                intensity: this.configManager.get('effects', 'screen.flash.intensity', 0.5','  },
                 duration: this.configManager.get('effects', 'screen.flash.duration', 200 },
 
             zoom: { ''
-                min: this.configManager.get('effects', 'screen.zoom.min', 0.8','
+                min: this.configManager.get('effects', 'screen.zoom.min', 0.8','  },
                 max: this.configManager.get('effects', 'screen.zoom.max', 1.2','
                 speed: this.configManager.get('effects', 'screen.zoom.speed', 0.3 },
 
             tint: { ''
-                intensity: this.configManager.get('effects', 'screen.tint.intensity', 0.3','
+                intensity: this.configManager.get('effects', 'screen.tint.intensity', 0.3','  },
                 duration: this.configManager.get('effects', 'screen.tint.duration', 500 }
         }
 
@@ -488,14 +492,14 @@ export class EffectsConfig {
      * @returns {boolean} 設定成功フラグ'
      */''
     setShakeIntensity(intensity: number): boolean { ''
-        return this.configManager.set('effects', 'screen.shakeIntensity', intensity) }
+        return this.configManager.set('effects', 'screen.shakeIntensity', intensity);
     /**
      * フラッシュ時間を設定
      * @param {number} duration - フラッシュ時間 (ms)
      * @returns {boolean} 設定成功フラグ'
      */''
     setFlashDuration(duration: number): boolean { ''
-        return this.configManager.set('effects', 'screen.flashDuration', duration) }
+        return this.configManager.set('effects', 'screen.flashDuration', duration);
     /**
      * ズーム感度を設定
      * @param {number} sensitivity - ズーム感度 (0.1-2.0)
@@ -519,21 +523,21 @@ export class EffectsConfig {
             easing: this.configManager.get('effects', 'animations.easing', 'easeOut');
             enabled: this.configManager.get('effects', 'animations.enabled', true','
             pop: { ''
-                duration: this.configManager.get('effects', 'animations.pop.duration', 300','
+                duration: this.configManager.get('effects', 'animations.pop.duration', 300','  },
                 scale: this.configManager.get('effects', 'animations.pop.scale', 1.2','
                 easing: this.configManager.get('effects', 'animations.pop.easing', 'easeOutBack'},
 
             fade: { ''
-                duration: this.configManager.get('effects', 'animations.fade.duration', 500','
+                duration: this.configManager.get('effects', 'animations.fade.duration', 500','  },
                 easing: this.configManager.get('effects', 'animations.fade.easing', 'easeInOut'},
 
             slide: { ''
-                duration: this.configManager.get('effects', 'animations.slide.duration', 400','
+                duration: this.configManager.get('effects', 'animations.slide.duration', 400','  },
                 distance: this.configManager.get('effects', 'animations.slide.distance', 50','
                 easing: this.configManager.get('effects', 'animations.slide.easing', 'easeOutQuad'},
 
             bounce: { ''
-                duration: this.configManager.get('effects', 'animations.bounce.duration', 600','
+                duration: this.configManager.get('effects', 'animations.bounce.duration', 600','  },
                 height: this.configManager.get('effects', 'animations.bounce.height', 30','
                 easing: this.configManager.get('effects', 'animations.bounce.easing', 'easeOutBounce }'
         }
@@ -600,7 +604,7 @@ export class EffectsConfig {
             // パーティクルプールの再初期化（必要に応じて）
             if (particleManager.particlePool.length !== particleConfig.poolSize) {
                 particleManager.particlePool = [],
-                particleManager.initializePool() }
+                particleManager.initializePool();
 
             console.log('[EffectsConfig] ParticleManagerに設定を適用しました'); }'
 
@@ -620,7 +624,7 @@ export class EffectsConfig {
             // EffectManagerの設定適用メソッドを呼び出し
             if(typeof, effectManager.applyConfiguration === 'function' {'
 
-                effectManager.applyConfiguration() }
+                effectManager.applyConfiguration();
 
             console.log('[EffectsConfig] EffectManagerに設定を適用しました'); }'
 
@@ -659,9 +663,9 @@ export class EffectsConfig {
             const zoomSensitivity = effectManager.getConfigValue('zoomSensitivity');
             const enabled = effectManager.getConfigValue('enabled);'
             
-            if (shakeIntensity !== null) { this.setShakeIntensity(shakeIntensity) }
-            if (flashDuration !== null) { this.setFlashDuration(flashDuration) }
-            if (zoomSensitivity !== null) { this.setZoomSensitivity(zoomSensitivity) }
+            if (shakeIntensity !== null) { this.setShakeIntensity(shakeIntensity);
+            if (flashDuration !== null) { this.setFlashDuration(flashDuration);
+            if (zoomSensitivity !== null) { this.setZoomSensitivity(zoomSensitivity);
             if (enabled !== null) {', ' }
 
                 this.setScreenEffectEnabled(enabled); }
@@ -677,7 +681,7 @@ export class EffectsConfig {
      * @returns {QualityConfig} 品質設定'
      */''
     getQualityConfig()';'
-            level: this.configManager.get('effects', 'quality.level', 'high') as 'low' | 'medium' | 'high' | 'ultra',
+            level: this.configManager.get('effects, 'quality.level', 'high') as 'low' | 'medium' | 'high' | 'ultra',
             autoAdjust: this.configManager.get('effects', 'quality.autoAdjust', true','
             targetFPS: this.configManager.get('effects', 'quality.targetFPS', 60','
             memoryThreshold: this.configManager.get('effects', 'quality.memoryThreshold', 104857600';'
@@ -733,7 +737,7 @@ export class EffectsConfig {
      * @returns {boolean} 設定成功フラグ'
      */''
     setTargetFPS(fps: number): boolean { ''
-        return this.configManager.set('effects', 'quality.targetFPS', fps) }
+        return this.configManager.set('effects', 'quality.targetFPS', fps);
     /**
      * メモリ閾値を設定
      * @param {number} threshold - メモリ閾値 (bytes)

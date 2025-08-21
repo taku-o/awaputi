@@ -15,32 +15,33 @@
  */
 
 // Types for color mappings
-interface ColorMapping { color: string;
+interface ColorMapping { color: string,
     label: string;
-
-interface ColorMappings { low: ColorMapping;
-    medium: ColorMapping;
-    high: ColorMapping;
+    interface ColorMappings { low: ColorMapping,
+    medium: ColorMapping,
+    high: ColorMapping,
     critical: ColorMapping;
 
 // Types for haptic settings
-interface AudioToVibrationMapping { bubblePop: string;
-    comboAchieved: string;
-    achievementUnlocked: string;
+interface AudioToVibrationMapping { bubblePop: string,
+    comboAchieved: string,
+    achievementUnlocked: string,
     gameStateChange: {
         gameOve,r: string;
-        levelUp: string;
-    warning: string;
-    backgroundMusic: string;
-    specialEffects: { electric: string;
+    },
+        levelUp: string,
+    warning: string,
+    backgroundMusic: string,
+    specialEffects: { electric: string,
         explosion: string;
-        freeze: string;
-    magnetic: string;
+    },
+        freeze: string,
+    magnetic: string,
     magnetic: string;
         };
-interface HapticSettings { enabled: boolean;
-    vibrationIntensity: number;
-    audioToVibrationMapping: AudioToVibrationMapping;
+interface HapticSettings { enabled: boolean,
+    vibrationIntensity: number,
+    audioToVibrationMapping: AudioToVibrationMapping,
     audioToVibrationMapping: AudioToVibrationMapping;
         };
 // Types for rhythm data
@@ -49,8 +50,8 @@ interface RhythmData { bpm?: number,
     beat?: number;
 
 // Types for vibration options
-interface VibrationOptions { intensity: number;
-    category: string;
+interface VibrationOptions { intensity: number,
+    category: string,
     eventData: any;
     duration?: number;
 
@@ -61,15 +62,16 @@ interface VibrationManager { triggerVibration(pattern: string, options: Vibratio
     destroy?(): void;
     userPreferences?: {
         accessibilityEnhance,d: boolean;
+    };
 
 // Main controller interface
-interface MainController { errorHandler: any;
+interface MainController { errorHandler: any,
     settings: {
         colorIndicatio,n?: boolean;
-        hapticFeedback?: boolean;;
+    hapticFeedback?: boolean;;
     audioManager?: { accessibilityManager?: {
             vibrationManager?: VibrationManager;;
-}
+} };
 
 export class AudioFeedbackManager {
     private mainController: MainController;
@@ -87,36 +89,36 @@ export class AudioFeedbackManager {
         this.vibrationManager = null;
         
         // 音響強度の色彩表現
-        this.colorIndicator = null }
+        this.colorIndicator = null };
         this.colorMappings = { }
             low: { color: '#00ff00', label: '低音量'
-            },''
+            ,''
             medium: { color: '#ffff00', label: '中音量'
-            },''
+            ,''
             high: { color: '#ff8000', label: '高音量'
-            },''
+            ,''
             critical: { color: '#ff0000', label: '最大音量'
-            };
+             ,
         
         // 触覚フィードバック設定
-        this.hapticSettings = { enabled: false;
-            vibrationIntensity: 0.8;
-    audioToVibrationMapping: {''
-                bubblePop: 'bubblePop';
-                comboAchieved: 'combo';
-                achievementUnlocked: 'bonus';
-                gameStateChange: {''
-                    gameOver: 'gameOver';
-                    levelUp: 'levelUp';
+        this.hapticSettings = { enabled: false,
+            vibrationIntensity: 0.8,
+    audioToVibrationMapping: { ''
+                bubblePop: 'bubblePop'  ,
+                comboAchieved: 'combo,
+                achievementUnlocked: 'bonus,
+                gameStateChange: { ''
+                    gameOver: 'gameOver'  ,
+                    levelUp: 'levelUp,
                     warning: 'warning'
             }
 
                 },''
                 backgroundMusic: 'heartbeat', // BGMのリズムに合わせた振動;
                 specialEffects: { ''
-                    electric: 'electric';
-                    explosion: 'explosion';
-                    freeze: 'freeze';
+                    electric: 'electric'  ,
+                    explosion: 'explosion,
+                    freeze: 'freeze,
                     magnetic: 'magnetic'
             }
 }
@@ -128,17 +130,17 @@ export class AudioFeedbackManager {
         this.colorIndicator = document.createElement('div');
         this.colorIndicator.className = 'audio-accessibility-color-indicator';
         this.colorIndicator.style.cssText = `;
-            position: fixed;
-            top: 50%;
-            right: 10px;
-            transform: translateY(-50%;
-    width: 30px;
-            height: 200px;
+            position: fixed,
+            top: 50%,
+            right: 10px,
+            transform: translateY(-50%,
+    width: 30px,
+            height: 200px,
             background: linear-gradient(to top, #00ff00, #ffff00, #ff8000, #ff0000);
             border: 2px solid #ffffff;
             border-radius: 15px;
-            z-index: 10000;
-            display: none;
+            z-index: 10000,
+            display: none,
     transition: all 0.3s ease;
         `;
         this.colorIndicator.setAttribute('role', 'progressbar');
@@ -148,13 +150,13 @@ export class AudioFeedbackManager {
         const levelIndicator = document.createElement('div');
         levelIndicator.className = 'level-marker';
         levelIndicator.style.cssText = `;
-            position: absolute;
-            left: -5px;
-            width: 40px;
+            position: absolute,
+            left: -5px,
+            width: 40px,
     height: 4px;
             background-color: #ffffff;
-            border-radius: 2px;
-            transition: bottom 0.1s ease;
+            border-radius: 2px,
+            transition: bottom 0.1s ease,
     bottom: 0px;
         `;
         this.colorIndicator.appendChild(levelIndicator);
@@ -254,10 +256,10 @@ export class AudioFeedbackManager {
     }
             ';'
 
-            console.log(`Haptic, feedback triggered, for: ${eventType}`};
+            console.log(`Haptic, feedback triggered, for: ${eventType}`}
         } catch (error) { this.errorHandler.handleError(error, 'ACCESSIBILITY_ERROR', {''
                 component: 'AudioFeedbackManager',','
-                operation: 'triggerHapticFeedback');
+                operation: 'triggerHapticFeedback'),
                 eventType: eventType,';'
         }
     }
@@ -329,11 +331,11 @@ export class AudioFeedbackManager {
             if (specialEffectMapping) {
                 this.vibrationManager.triggerVibration(specialEffectMapping, {'
                     intensity: this.hapticSettings.vibrationIntensity,','
-                    category: 'accessibility');
-                    eventData: effectData) }
+                    category: 'accessibility'),
+                    eventData: effectData);
 
-                console.log(`Special, effect vibration, triggered for: ${effectType}`};
-            } catch (error) { console.warn('Failed to trigger special effect vibration:', error }
+                console.log(`Special, effect vibration, triggered for: ${effectType}`}
+        } catch (error) { console.warn('Failed to trigger special effect vibration:', error }
     }
 
     /**

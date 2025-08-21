@@ -3,20 +3,16 @@ interface ProgressCalculator { calculate: (current: number, increment: unknown, 
 }
 
 interface ConditionEvaluator { (value: unknown, condition: EvaluationCondition): boolean;
-
-interface Validator { (value: unknown, ...args: unknown[]): boolean;
-
-interface PerformanceStats { calculationCount: number;
-    totalCalculationTime: number;
-    averageCalculationTime: number;
+    interface Validator { (value: unknown, ...args: unknown[]): boolean;
+    interface PerformanceStats { calculationCount: number,
+    totalCalculationTime: number,
+    averageCalculationTime: number,
     errorCount: number;
-
-interface CalculationContext { isConsecutive?: boolean,
+    interface CalculationContext { isConsecutive?: boolean,
     subConditions?: SubCondition[];
     milestones?: Milestone[];
     dataType?: string;
-
-interface EvaluationCondition { type: string;
+    interface EvaluationCondition { type: string;
     field?: string;
     target?: unknown;
     min?: number;
@@ -28,40 +24,36 @@ interface EvaluationCondition { type: string;
     pattern?: string;
     targets?: unknown[];
     operator?: string;
-
-interface SubCondition { weight?: number;
-
-interface Milestone { id: string;
-    name: string;
+    interface SubCondition { weight?: number;
+    interface Milestone { id: string,
+    name: string,
     percentage: number;
     reward?: unknown;
-    achieved?: boolean,  }
+    achieved?: boolean }
 
-interface ProgressResult { progress: number;
-    percentage: number;
-    milestones: Milestone[];
+interface ProgressResult { progress: number,
+    percentage: number,
+    milestones: Milestone[],
     isComplete: boolean;
-
-interface ConditionSet { conditions: EvaluationCondition[];
+    interface ConditionSet { conditions: EvaluationCondition[],
     operator: 'AND' | 'OR' | 'XOR' | 'NOT' }
 
 interface AchievementDefinition { target?: number;
-
-interface ProgressData { current?: unknown,
+    interface ProgressData { current?: unknown,
     target?: unknown;
     milestones?: unknown;
-
-interface DiagnosticsInfo { performance: PerformanceStats & {
-        registeredCalculator,s: number;
-        registeredEvaluators: number;
+    interface DiagnosticsInfo { performance: PerformanceStats & {
+        registeredCalculator,s: number,
+        registeredEvaluators: number,
     registeredValidators: number;;
-    registrations: { calculators: string[];
-        evaluators: string[];
-    validators: string[];
-    memoryUsage: { calculators: number;
+    registrations: { calculators: string[],
+        evaluators: string[]  ,
+    validators: string[],
+    memoryUsage: { calculators: number,
         evaluators: number;
-        validators: number;
-    milestoneTrackers: number;
+    },
+        validators: number,
+    milestoneTrackers: number,
     milestoneTrackers: number;
         };
 /**
@@ -85,9 +77,9 @@ export class AchievementProgressEngine {
         
         // パフォーマンス統計
         this.performanceStats = {
-            calculationCount: 0;
-            totalCalculationTime: 0;
-    averageCalculationTime: 0 }
+            calculationCount: 0,
+            totalCalculationTime: 0,
+    averageCalculationTime: 0 };
             errorCount: 0 
     };
         this.initialize();
@@ -150,7 +142,7 @@ export class AchievementProgressEngine {
                 
                 return Math.min(totalProgress, target);
             },
-            getPercentage: (current: number, target: number): number => { return target > 0 ? (current / target) * 100 : 0) }
+            getPercentage: (current: number, target: number): number => { return target > 0 ? (current / target) * 100 : 0);
     
     /**
      * デフォルトの条件評価器を登録'
@@ -185,33 +177,33 @@ export class AchievementProgressEngine {
 
         this.conditionEvaluators.set('date_range', (value, condition) => {  const date = new Date(value);
             const startDate = new Date(condition.startDate);
-            const endDate = new Date(condition.endDate) }
+            const endDate = new Date(condition.endDate);
 
             return date >= startDate && date <= endDate; }'
 
         }');'
         ';'
         // 複数条件組み合わせ
-        this.conditionEvaluators.set('all_of', (values, condition) => {  return condition.subConditions.every(subCondition => ) }
+        this.conditionEvaluators.set('all_of', (values, condition) => {  return condition.subConditions.every(subCondition => );
 
                 this.evaluateCondition(values, subCondition); }'
 
         }');'
 
-        this.conditionEvaluators.set('any_of', (values, condition) => {  return condition.subConditions.some(subCondition => ) }
+        this.conditionEvaluators.set('any_of', (values, condition) => {  return condition.subConditions.some(subCondition => );
 
                 this.evaluateCondition(values, subCondition); }'
 
         }');'
 
-        this.conditionEvaluators.set('none_of', (values, condition) => {  return !condition.subConditions.some(subCondition => ) }
+        this.conditionEvaluators.set('none_of', (values, condition) => {  return !condition.subConditions.some(subCondition => );
 
                 this.evaluateCondition(values, subCondition); }'
 
         }');'
         ';'
         // パターンマッチング
-        this.conditionEvaluators.set('pattern', (value, condition) => {  const pattern = new RegExp(condition.pattern) }
+        this.conditionEvaluators.set('pattern', (value, condition) => {  const pattern = new RegExp(condition.pattern);
 
             return pattern.test(String(value); }'
 
@@ -275,7 +267,7 @@ export class AchievementProgressEngine {
         }');'
         ';'
         // 日時検証
-        this.validators.set('date', (value) => {  const date = new Date(value) }
+        this.validators.set('date', (value) => {  const date = new Date(value);
 
             return !isNaN(date.getTime(); }'
 
@@ -306,11 +298,11 @@ export class AchievementProgressEngine {
      */
     public calculateProgress(achievementType: string, currentProgress: number, newData: unknown, targetValue: number, context: CalculationContext = {}: ProgressResult { const startTime = performance.now();
         try {
-            this.performanceStats.calculationCount++,
+            this.performanceStats.calculationCount++;
             
             const calculator = this.calculators.get(achievementType);
             if (!calculator) { }
-                throw new Error(`Unknown, achievement type: ${achievementType}`};
+                throw new Error(`Unknown, achievement type: ${achievementType}`}
             }
             
             // 進捗データを検証
@@ -331,8 +323,8 @@ export class AchievementProgressEngine {
             return { progress: newProgress,
                 percentage: calculator.getPercentage(newProgress, targetValue);
                 milestones: milestones,
-                isComplete: newProgress >= targetValue 
-    } catch (error) { this.performanceStats.errorCount++,
+                isComplete: newProgress >= targetValue  }
+        } catch (error) { this.performanceStats.errorCount++;
             console.error('Progress calculation error:', error);
             throw error }
     }
@@ -403,11 +395,9 @@ export class AchievementProgressEngine {
                         id: milestone.id),
                         name: milestone.name,
     percentage: milestone.percentage),
-                        reward: milestone.reward || null) }
-                    milestone.achieved = true; }
+                        reward: milestone.reward || null);
+                    milestone.achieved = true;     }
 }
-        }
-        
         return milestones;
     }
     
@@ -416,7 +406,7 @@ export class AchievementProgressEngine {
      */''
     private validateProgressData(currentProgress: number, newData: unknown, targetValue: number, context: CalculationContext): void { // 現在進捗の検証
         if(!this.validators.get('positive_number)(currentProgress)') {''
-            throw new Error('Invalid, current progress, value') }
+            throw new Error('Invalid, current progress, value');
         ';'
         // 目標値の検証
         if(!this.validators.get('positive_number)(targetValue) || targetValue <= 0') { ''
@@ -424,13 +414,11 @@ export class AchievementProgressEngine {
         // 新データの検証（型に応じて）
         if (newData !== null && newData !== undefined) {
 
-            const dataType = context.dataType || 'number',
-            const validator = this.validators.get(dataType) }
+            const dataType = context.dataType || 'number,
+            const validator = this.validators.get(dataType);
             if (validator && !validator(newData) { }
-                throw new Error(`Invalid, new data, for type: ${dataType}`};
-            }
+                throw new Error(`Invalid, new data, for type: ${dataType}`    }
 }
-    
     /**
      * 進捗結果を検証'
      */''
@@ -439,10 +427,8 @@ export class AchievementProgressEngine {
             throw new Error('Invalid, progress calculation, result' }'
         
         if (result > targetValue * 1.1) { // 10%のマージンを許可 }
-            console.warn(`Progress, result ${result} exceeds, target ${targetValue}`};
-        }
-    }
-    
+            console.warn(`Progress, result ${result} exceeds, target ${targetValue}`    }
+}
     /**
      * データから値を抽出
      */
@@ -524,9 +510,9 @@ export class AchievementProgressEngine {
     /**
      * パフォーマンス統計を取得
      */
-    public getPerformanceStats(): PerformanceStats & { registeredCalculators: number, registeredEvaluators: number,, registeredValidators: number, { return { ...this.performanceStats,
+    public getPerformanceStats(): PerformanceStats & { registeredCalculators: number, registeredEvaluators: number, registeredValidators: number, { return { ...this.performanceStats,
             registeredCalculators: this.calculators.size,
-    registeredEvaluators: this.conditionEvaluators.size },
+    registeredEvaluators: this.conditionEvaluators.size ,
             registeredValidators: this.validators.size 
     }
     
@@ -563,7 +549,7 @@ export class AchievementProgressEngine {
         } catch (error) {
             console.error('Progress data repair error:', error);
             return { current: 0,
-                target: achievementDefinition.target || 1 },
+                target: achievementDefinition.target || 1 ,
                 milestones: [] 
     }
     }
@@ -573,12 +559,12 @@ export class AchievementProgressEngine {
      */
     public getDiagnostics(): DiagnosticsInfo { return { performance: this.getPerformanceStats(
             registrations: {
-                calculators: Array.from(this.calculators.keys(
-    evaluators: Array.from(this.conditionEvaluators.keys()) },
-                validators: Array.from(this.validators.keys();
+                calculators: Array.from(this.calculators.keys( ,
+    evaluators: Array.from(this.conditionEvaluators.keys()) ,
+                validators: Array.from(this.validators.keys()));
     },
             memoryUsage: { calculators: this.calculators.size,
-                evaluators: this.conditionEvaluators.size,
+                evaluators: this.conditionEvaluators.size ,
                 validators: this.validators.size,
     milestoneTrackers: this.milestoneTrackers.size 
     }
@@ -590,5 +576,5 @@ export class AchievementProgressEngine {
             calculationCount: 0,
             totalCalculationTime: 0,
             averageCalculationTime: 0,
-    errorCount: 0 },
+    errorCount: 0 ,
         this.milestoneTrackers.clear();

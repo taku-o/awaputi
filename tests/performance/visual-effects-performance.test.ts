@@ -36,7 +36,7 @@ global.HTMLCanvasElement.prototype.getContext = jest.fn(() => ({
     setTransform: jest.fn(
     measureText: jest.fn(() => ({ width: 0 )),
     canvas: {
-        width: 800,
+        width: 800 },
         height: 600
             };
 ));
@@ -44,7 +44,7 @@ global.HTMLCanvasElement.prototype.getContext = jest.fn(() => ({
 (global: any).performance = {
     now: jest.fn(() => Date.now() + Math.random() * 10),
     memory: {
-        usedJSHeapSize: 1000000,
+        usedJSHeapSize: 1000000 },
         totalJSHeapSize: 2000000,
         jsHeapSizeLimit: 4000000
     },
@@ -188,7 +188,7 @@ describe('Visual Effects Performance Tests', () => {
                 const effectType = ['fade', 'slide', 'zoom', 'pulse'][i % 4],
                 effectManager.addTransitionEffect(effectType, 1000 + (i * 20), { : undefined
                     intensity: 0.5 + (i % 5) * 0.1
-                };
+                }
             }
             const startTime = performance.now();
             for (let frame = 0; frame < frames; frame++) {
@@ -211,7 +211,7 @@ describe('Visual Effects Performance Tests', () => {
                     0.5 + Math.random() * 0.5,
                     `hsl(${i * 18), 70%, 50%)`,
                     40 + Math.random() * 60
-                };
+                }
             }
             const startTime = performance.now();
             for (let frame = 0; frame < testFrames; frame++) {
@@ -286,7 +286,7 @@ describe('Visual Effects Performance Tests', () => {
                     y: Math.random() * 600,
                     size: 15 + Math.random(') * 20,'
                     type: ['normal', 'stone', 'rainbow'][i % 3]
-                };
+                }
             }
             const startTime = performance.now();
             // Animate all bubbles spawning

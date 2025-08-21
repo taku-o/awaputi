@@ -2,7 +2,7 @@ import { jest  } from '@jest/globals';
 import { FontFallbackHandler  } from '../../../../../src/core/i18n/font-loading/FontFallbackHandler.js';
 // Type definitions
 interface MockCanvasContext {
-    font: string;
+    font: string,
     measureText: jest.Mock<{ widt,h: number;, [string]>;
 }
 interface MockCanvas {
@@ -14,13 +14,13 @@ interface MockElement {
     setAttribute?: jest.Mock<void, [string, string]>;
 }
 interface FallbackInfo {
-    language: string;
+    language: string,
     originalFont: string;
 interface FallbackStats {
-    totalApplied: number;
+    totalApplied: number,
     byLanguage: {
-        [languag,e: string]: number,,
-    systemFontsCount: number;
+        [languag,e: string]: number, };
+    systemFontsCount: number,
     availableSystemFonts: string[];
 interface FontFallbackConfig {
     development?: {
@@ -236,6 +236,6 @@ describe('FontFallbackHandler', () => {
             handler.applyFallback(mockElement, 'ja', 'TestFont');
             expect(consoleSpy.log).toHaveBeenCalledWith(');'
                 expect.stringContaining('[FontFallbackHandler] Applied fallback for ja: '),
-        };
+        }
     }
 }');'

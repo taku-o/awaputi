@@ -5,12 +5,12 @@
 
 // Type definitions
 interface MainController { [key: string]: any;
-
-interface ValidationContext { bubbleType?: string,
+    interface ValidationContext { bubbleType?: string,
     propertyType?: string;
     relatedValues?: Record<string, any>;
     canvasSize?: {
         widt,h: number;
+    },
     height: number;
     [key: string]: any;
 
@@ -18,44 +18,38 @@ interface RuleResult { valid: boolean;
     message?: string;
     severity?: 'low' | 'warning' | 'medium' | 'high' | 'critical';
     suggestion?: string;
-
-interface RuleDefinition { name: string;
-    category: string;
-    description: string;
+    interface RuleDefinition { name: string,
+    category: string,
+    description: string,
     check: (oldValue: any, newValue: any, context: ValidationContext') => boolean | RuleResult;'
-    severity: 'low' | 'warning' | 'medium' | 'high' | 'critical';
-    autoFix: boolean;
-    autoFixFn: ((oldValue: any, newValue: any, context: ValidationContext) => any) | null;
-    enabled: boolean;
+    severity: 'low' | 'warning' | 'medium' | 'high' | 'critical,
+    autoFix: boolean,
+    autoFixFn: ((oldValue: any, newValue: any, context: ValidationContext) => any) | null,
+    enabled: boolean,
     priority: number;
 }
 
-interface BubbleHealthLimits { min: number;
+interface BubbleHealthLimits { min: number,
     max: number;
-
-interface ScoreLimits {
+    interface ScoreLimits {
     max: number;
-
-interface RuleCategories { VALUE_RANGE: string;
-    BALANCE_IMPACT: string;
-    COMPATIBILITY: string;
-    PROGRESSION: string;
-    SAFETY: string;
+    interface RuleCategories { VALUE_RANGE: string,
+    BALANCE_IMPACT: string,
+    COMPATIBILITY: string,
+    PROGRESSION: string,
+    SAFETY: string,
     PERFORMANCE: string;
-
-interface RuleFilters { category?: string,
+    interface RuleFilters { category?: string,
     severity?: string;
     enabled?: boolean;
     autoFix?: boolean;
-
-interface RuleStatistics { totalRules: number;
-    enabledRules: number;
-    disabledRules: number;
+    interface RuleStatistics { totalRules: number,
+    enabledRules: number,
+    disabledRules: number,
     byCategory: Record<string, number>;
     bySeverity: Record<string, number>;
     autoFixableRules: number;
-
-interface RuleDefinitionOptions { category?: string,
+    interface RuleDefinitionOptions { category?: string,
 
     description?: string;
     check: (oldValue: any, newValue: any, context: ValidationContext') => boolean | RuleResult;'
@@ -63,7 +57,7 @@ interface RuleDefinitionOptions { category?: string,
     autoFix?: boolean;
     autoFixFn?: (oldValue: any, newValue: any, context: ValidationContext) => any;
     enabled?: boolean;
-    priority?: number,  }
+    priority?: number }
 }
 
 export class ValidationRuleDefinitions {
@@ -80,8 +74,7 @@ export class ValidationRuleDefinitions {
             COMPATIBILITY: 'compatibility',    // 他設定との互換性;
             PROGRESSION: 'progression',        // 進行性・一貫性;
             SAFETY: 'safety',                 // 安全性・エラー防止
-    }
-
+    };
             PERFORMANCE: 'performance'         // パフォーマンス影響 }'
 
         console.log('[ValidationRuleDefinitions] Rule definitions component initialized);'
@@ -95,7 +88,7 @@ export class ValidationRuleDefinitions {
         this.addSizeRules();
         this.addTimeRules();
         this.addSpecialEffectRules();
-        this.addSystemRules() }
+        this.addSystemRules();
         console.log(`[ValidationRuleDefinitions] Initialized ${this.rules.size} rules`}');'
     }
     
@@ -104,7 +97,7 @@ export class ValidationRuleDefinitions {
      */''
     private addBubbleHealthRules()';'
         this.addRule('bubble_health_range', { category: this.ruleCategories.VALUE_RANGE,''
-            description: 'バブル体力値の妥当な範囲をチェック',
+            description: 'バブル体力値の妥当な範囲をチェック,
             check: (oldValue, newValue, context') => { }'
 
                 if (typeof, newValue !== 'number') { }
@@ -125,13 +118,13 @@ export class ValidationRuleDefinitions {
                         message: `${bubbleType}バブルの体力値は${limits.min}〜${limits.max}の範囲で設定してください` 
                     }
                 
-                return { valid: true,,''
-            severity: 'high',
+                return { valid: true,''
+            severity: 'high,
             autoFix: false','
         }'),'
         // Gradual health change check
         this.addRule('bubble_health_gradual_change', { category: this.ruleCategories.BALANCE_IMPACT,''
-            description: '体力値の急激な変更を防止',
+            description: '体力値の急激な変更を防止,
             check: (oldValue, newValue, context') => { }'
 
                 if (typeof, oldValue !== 'number' || typeof, newValue !== 'number) { }'
@@ -147,13 +140,13 @@ export class ValidationRuleDefinitions {
                         message: `体力値の変更が大きすぎます（${(changeRatio * 100}.toFixed(1}% > ${(threshold * 100}%）。段階的な調整を推奨します`,''
                         suggestion: `段階的調整: ${oldValue} → ${Math.round(oldValue * (1 + Math.sign(newValue - oldValue} * threshold}'}' → ${newValue}`}
                 
-                return { valid: true,,''
-            severity: 'medium',
+                return { valid: true,''
+            severity: 'medium,
             autoFix: false','
         }'),'
         // Boss bubble special rules
         this.addRule('boss_bubble_health_special', { category: this.ruleCategories.BALANCE_IMPACT,''
-            description: 'Bossバブルの体力値特別チェック',
+            description: 'Bossバブルの体力値特別チェック,
             check: (oldValue, newValue, context') => { }'
 
                 if (context.bubbleType !== 'boss') { }
@@ -178,10 +171,10 @@ export class ValidationRuleDefinitions {
 
                         message: `Bossバブルの体力が高すぎます（通常バブルの${healthRatio.toFixed(1'}'倍）。ゲームプレイ性を損なう可能性があります`}
                 
-                return { valid: true,,''
-            severity: 'high',
-    autoFix: false,
-        }'
+                return { valid: true,''
+            severity: 'high,
+    autoFix: false;
+        }
             }
     
     /**
@@ -189,7 +182,7 @@ export class ValidationRuleDefinitions {
      */''
     private addScoreRules()';'
         this.addRule('score_range', { category: this.ruleCategories.VALUE_RANGE,''
-            description: 'スコア値の妥当な範囲をチェック',
+            description: 'スコア値の妥当な範囲をチェック,
             check: (oldValue, newValue, context') => { }'
 
                 if (typeof, newValue !== 'number') { }
@@ -210,8 +203,8 @@ export class ValidationRuleDefinitions {
                         message: `${bubbleType}バブルのスコアが上限（${limits.max}）を超えています` 
                     }
                 
-                return { valid: true,,''
-            severity: 'medium',
+                return { valid: true,''
+            severity: 'medium,
             autoFix: true,
             autoFixFn: (oldValue, newValue, context') => {  ''
                 const limits = this.getScoreLimits(context.bubbleType || 'normal' }'
@@ -219,7 +212,7 @@ export class ValidationRuleDefinitions {
         ';'
         // Score balance ratio
         this.addRule('score_balance_ratio', { category: this.ruleCategories.BALANCE_IMPACT,''
-            description: 'バブルタイプ間のスコア比率バランスをチェック',
+            description: 'バブルタイプ間のスコア比率バランスをチェック,
             check: (oldValue, newValue, context') => { }'
 
                 if (typeof, newValue !== 'number' || !context.relatedValues' }'
@@ -228,15 +221,15 @@ export class ValidationRuleDefinitions {
                 const normalScore = context.relatedValues.normal?.score || 10;
                 const scoreRatio = newValue / normalScore;
                  : undefined
-                const expectedRatios: Record<string, min: number,, max: number,> =
-                    normal: min: 0.8, max: 1.2  },
-                    stone: min: 1.2, max: 2.0  },
-                    iron: min: 1.8, max: 3.0  },
-                    diamond: min: 2.5, max: 4.0  },
-                    rainbow: min: 3.0, max: 6.0  },
-                    boss: min: 8.0, max: 15.0  },
-                    golden: min: 5.0, max: 10.0  },
-                    explosive: min: 2.0, max: 4.0  },
+                const expectedRatios: Record<string, min: number, max: number,> =
+                    normal: min: 0.8, max: 1.2  ,
+                    stone: min: 1.2, max: 2.0  ,
+                    iron: min: 1.8, max: 3.0  ,
+                    diamond: min: 2.5, max: 4.0  ,
+                    rainbow: min: 3.0, max: 6.0  ,
+                    boss: min: 8.0, max: 15.0  ,
+                    golden: min: 5.0, max: 10.0  ,
+                    explosive: min: 2.0, max: 4.0  ,
 
                 const bubbleType = context.bubbleType || 'normal';
                 const expectedRatio = expectedRatios[bubbleType];
@@ -246,10 +239,9 @@ export class ValidationRuleDefinitions {
 
                         message: `${bubbleType}バブルのスコア比率が推奨範囲外です（${scoreRatio.toFixed(1'}'倍、推奨: ${expectedRatio.min}〜${expectedRatio.max}倍）`}
                 
-                return { valid: true,,''
-            severity: 'medium',
-    autoFix: false,
-        }'
+                return { valid: true,''
+            severity: 'medium,
+    autoFix: false }'
             }
     
     /**
@@ -257,7 +249,7 @@ export class ValidationRuleDefinitions {
      */''
     private addSizeRules()';'
         this.addRule('size_range', { category: this.ruleCategories.VALUE_RANGE,''
-            description: 'バブルサイズの妥当な範囲をチェック',
+            description: 'バブルサイズの妥当な範囲をチェック,
             check: (oldValue, newValue, context') => { }'
 
                 if (typeof, newValue !== 'number') { }
@@ -286,8 +278,8 @@ export class ValidationRuleDefinitions {
                         message: `サイズが小さすぎます（${newValue} < ${minSize}）。クリック可能性を考慮してください` 
                     }
                 
-                return { valid: true,,''
-            severity: 'high',
+                return { valid: true,''
+            severity: 'high,
             autoFix: true,
     autoFixFn: (oldValue, newValue, context) => {  }
                 const canvasSize = context.canvasSize || { width: 800, height: 600  }
@@ -299,7 +291,7 @@ export class ValidationRuleDefinitions {
         ';'
         // Size hierarchy check
         this.addRule('size_hierarchy', { category: this.ruleCategories.PROGRESSION,''
-            description: 'バブルタイプ間のサイズ階層をチェック',
+            description: 'バブルタイプ間のサイズ階層をチェック,
             check: (oldValue, newValue, context') => { }'
 
                 if(typeof, newValue !== 'number' || !context.relatedValues' { }'
@@ -341,10 +333,9 @@ export class ValidationRuleDefinitions {
                         }
                 }
                 
-                return { valid: true,,''
-            severity: 'medium',
-    autoFix: false,
-        }'
+                return { valid: true,''
+            severity: 'medium,
+    autoFix: false }'
             }
     
     /**
@@ -352,7 +343,7 @@ export class ValidationRuleDefinitions {
      */''
     private addTimeRules()';'
         this.addRule('time_range', { category: this.ruleCategories.VALUE_RANGE,''
-            description: '時間値の妥当な範囲をチェック',
+            description: '時間値の妥当な範囲をチェック,
             check: (oldValue, newValue, context') => { ''
                 const propertyType = context.propertyType || ','
                 if(propertyType !== 'maxAge' && ','
@@ -385,8 +376,8 @@ export class ValidationRuleDefinitions {
                         message: `時間値が短すぎます（${newValue}ms < ${minTime}ms）` 
                     }
                 
-                return { valid: true,,''
-            severity: 'medium',
+                return { valid: true,''
+            severity: 'medium,
             autoFix: true,
     autoFixFn: (oldValue, newValue, context) => {  const maxTime = 600000,
                 const minTime = 100 }
@@ -394,7 +385,7 @@ export class ValidationRuleDefinitions {
         ';'
         // Bubble lifetime balance
         this.addRule('bubble_lifetime_balance', { category: this.ruleCategories.BALANCE_IMPACT,''
-            description: 'バブル寿命のゲームバランスをチェック',
+            description: 'バブル寿命のゲームバランスをチェック,
             check: (oldValue, newValue, context') => { }'
 
                 if (context.propertyType !== 'maxAge') { }
@@ -418,10 +409,9 @@ export class ValidationRuleDefinitions {
 
                         message: `バブル寿命が短すぎます（ステージ時間の${(lifetimeRatio * 100}.toFixed(1'}'%）。プレイヤーが対応できない可能性があります`}
                 
-                return { valid: true,,''
-            severity: 'medium',
-    autoFix: false,
-        }'
+                return { valid: true,''
+            severity: 'medium,
+    autoFix: false }'
             }
     
     /**
@@ -429,7 +419,7 @@ export class ValidationRuleDefinitions {
      */''
     private addSpecialEffectRules()';'
         this.addRule('electric_effect_intensity', { category: this.ruleCategories.BALANCE_IMPACT,''
-            description: '電気効果の強度をチェック',
+            description: '電気効果の強度をチェック,
             check: (oldValue, newValue, context') => { }'
 
                 if (context.bubbleType !== 'electric' || context.propertyType !== 'intensity') { }
@@ -450,17 +440,16 @@ export class ValidationRuleDefinitions {
                         valid: false,
 
                         message: `電気効果の強度が高すぎます（${newValue}）。プレイヤーの操作性に深刻な影響を与える可能性があります`,''
-                        severity: 'warning',
-                    } }
+                        severity: 'warning' } }
                 
-                return { valid: true,,''
-            severity: 'medium',
+                return { valid: true,''
+            severity: 'medium,
             autoFix: true,
     autoFixFn: (oldValue, newValue, context) => { return Math.max(1, Math.min(newValue, 50),'}');
         ';'
         // Rainbow effect duration balance
         this.addRule('rainbow_duration_balance', { category: this.ruleCategories.BALANCE_IMPACT,''
-            description: 'Rainbow効果の持続時間バランスをチェック',
+            description: 'Rainbow効果の持続時間バランスをチェック,
             check: (oldValue, newValue, context') => { }'
 
                 if (context.bubbleType !== 'rainbow' || context.propertyType !== 'duration') { }
@@ -484,10 +473,9 @@ export class ValidationRuleDefinitions {
                         message: `Rainbow効果の持続時間が長すぎます（${newValue}ms）。ゲームバランスを崩す可能性があります` 
                     }
                 
-                return { valid: true,,''
-            severity: 'medium',
-    autoFix: false,
-        }'
+                return { valid: true,''
+            severity: 'medium,
+    autoFix: false }'
             }
     
     /**
@@ -495,7 +483,7 @@ export class ValidationRuleDefinitions {
      */''
     private addSystemRules()';'
         this.addRule('performance_impact', { category: this.ruleCategories.PERFORMANCE,''
-            description: 'パフォーマンスへの影響をチェック',
+            description: 'パフォーマンスへの影響をチェック,
             check: (oldValue, newValue, context') => { '
                 // Particle count limitation
                 if (context.propertyType === 'particleCount') {', '
@@ -519,8 +507,8 @@ export class ValidationRuleDefinitions {
                         }
                 }
                 
-                return { valid: true,,''
-            severity: 'low',
+                return { valid: true,''
+            severity: 'low,
             autoFix: true,
             autoFixFn: (oldValue, newValue, context') => {  ''
                 if(context.propertyType === 'particleCount' { }
@@ -533,7 +521,7 @@ export class ValidationRuleDefinitions {
         ';'
         // Configuration consistency check
         this.addRule('configuration_consistency', { category: this.ruleCategories.COMPATIBILITY,''
-            description: '設定値間の整合性をチェック',
+            description: '設定値間の整合性をチェック,
             check: (oldValue, newValue, context) => { }'
 
                 if(!context.relatedValues) return { valid: true,
@@ -541,7 +529,7 @@ export class ValidationRuleDefinitions {
                 // Health and score relationship check
                 if (context.propertyType === 'health') {
 
-                    const bubbleType = context.bubbleType || 'normal',
+                    const bubbleType = context.bubbleType || 'normal,
                     const score = context.relatedValues[bubbleType]?.score || newValue,
                     const healthScoreRatio = score / newValue,
                     
@@ -559,10 +547,9 @@ export class ValidationRuleDefinitions {
                             message: `体力に対してスコアが高すぎます（比率: ${healthScoreRatio.toFixed(2'}'）。バランス調整を推奨`}
                 }
                 
-                return { valid: true,,''
-            severity: 'medium',
-    autoFix: false,
-        }'
+                return { valid: true,''
+            severity: 'medium,
+    autoFix: false }'
             }
     
     /**
@@ -581,16 +568,16 @@ export class ValidationRuleDefinitions {
         ';'
 
         const ruleDefinition: RuleDefinition = { name,''
-            category: rule.category || 'general',
+            category: rule.category || 'general,
             description: rule.description || ','
             check: rule.check,
-            severity: rule.severity || 'medium',
+            severity: rule.severity || 'medium,
             autoFix: rule.autoFix || false,
             autoFixFn: rule.autoFixFn || null,
             enabled: rule.enabled !== false,
-    priority: rule.priority || 1  },
+    priority: rule.priority || 1  ,
         this.rules.set(name, ruleDefinition);
-        console.log(`[ValidationRuleDefinitions] Rule, added: ${name}`};
+        console.log(`[ValidationRuleDefinitions] Rule, added: ${name}`}
     }
     
     /**
@@ -598,7 +585,7 @@ export class ValidationRuleDefinitions {
      */
     removeRule(name: string): boolean { const deleted = this.rules.delete(name);
         if (deleted) { }
-            console.log(`[ValidationRuleDefinitions] Rule, removed: ${name}`};
+            console.log(`[ValidationRuleDefinitions] Rule, removed: ${name}`}
         }
         return deleted;
     }
@@ -612,20 +599,20 @@ export class ValidationRuleDefinitions {
      * Get all rules
      */
     getRules(filters: RuleFilters = { ): RuleDefinition[] {
-        let rules = Array.from(this.rules.values();
+        let rules = Array.from(this.rules.values()));
         if (filters.category) {
     
 }
             rules = rules.filter(rule => rule.category === filters.category); }
         }
         
-        if (filters.severity) { rules = rules.filter(rule => rule.severity === filters.severity) }
+        if (filters.severity) { rules = rules.filter(rule => rule.severity === filters.severity);
         }
         
-        if (filters.enabled !== undefined) { rules = rules.filter(rule => rule.enabled === filters.enabled) }
+        if (filters.enabled !== undefined) { rules = rules.filter(rule => rule.enabled === filters.enabled);
         }
         
-        if (filters.autoFix !== undefined) { rules = rules.filter(rule => rule.autoFix === filters.autoFix) }
+        if (filters.autoFix !== undefined) { rules = rules.filter(rule => rule.autoFix === filters.autoFix);
         }
         
         return rules;
@@ -635,24 +622,24 @@ export class ValidationRuleDefinitions {
      * Get bubble health limits
      */
     getBubbleHealthLimits(bubbleType: string): BubbleHealthLimits { const limits: Record<string, BubbleHealthLimits> = { }
-            normal: { min: 1, max: 5  },
-            stone: { min: 1, max: 8  },
-            iron: { min: 2, max: 12  },
-            diamond: { min: 3, max: 20  },
-            rainbow: { min: 1, max: 3  },
-            pink: { min: 1, max: 3  },
-            clock: { min: 1, max: 3  },
-            electric: { min: 1, max: 5  },
-            poison: { min: 1, max: 5  },
-            spiky: { min: 1, max: 8  },
-            escaping: { min: 1, max: 5  },
-            boss: { min: 5, max: 50  },
-            golden: { min: 1, max: 10  },
-            frozen: { min: 2, max: 15  },
-            magnetic: { min: 1, max: 8  },
-            explosive: { min: 1, max: 6  },
-            phantom: { min: 1, max: 4  },
-            multiplier: { min: 1, max: 3  },
+            normal: { min: 1, max: 5  ,
+            stone: { min: 1, max: 8  ,
+            iron: { min: 2, max: 12  ,
+            diamond: { min: 3, max: 20  ,
+            rainbow: { min: 1, max: 3  ,
+            pink: { min: 1, max: 3  ,
+            clock: { min: 1, max: 3  ,
+            electric: { min: 1, max: 5  ,
+            poison: { min: 1, max: 5  ,
+            spiky: { min: 1, max: 8  ,
+            escaping: { min: 1, max: 5  ,
+            boss: { min: 5, max: 50  ,
+            golden: { min: 1, max: 10  ,
+            frozen: { min: 2, max: 15  ,
+            magnetic: { min: 1, max: 8  ,
+            explosive: { min: 1, max: 6  ,
+            phantom: { min: 1, max: 4  ,
+            multiplier: { min: 1, max: 3  ,
         
         return limits[bubbleType] || { min: 1, max: 10  }
     
@@ -660,24 +647,24 @@ export class ValidationRuleDefinitions {
      * Get score limits
      */
     getScoreLimits(bubbleType: string): ScoreLimits { const limits: Record<string, ScoreLimits> = { }
-            normal: { max: 50 },
-            stone: { max: 100 },
-            iron: { max: 150 },
-            diamond: { max: 200 },
-            rainbow: { max: 300 },
-            pink: { max: 80 },
-            clock: { max: 100 },
-            electric: { max: 120 },
-            poison: { max: 60 },
-            spiky: { max: 100 },
-            escaping: { max: 80 },
-            boss: { max: 500 },
-            golden: { max: 400 },
-            frozen: { max: 120 },
-            magnetic: { max: 100 },
-            explosive: { max: 180 },
-            phantom: { max: 150 },
-            multiplier: { max: 250 },
+            normal: { max: 50 ,
+            stone: { max: 100 ,
+            iron: { max: 150 ,
+            diamond: { max: 200 ,
+            rainbow: { max: 300 ,
+            pink: { max: 80 ,
+            clock: { max: 100 ,
+            electric: { max: 120 ,
+            poison: { max: 60 ,
+            spiky: { max: 100 ,
+            escaping: { max: 80 ,
+            boss: { max: 500 ,
+            golden: { max: 400 ,
+            frozen: { max: 120 ,
+            magnetic: { max: 100 ,
+            explosive: { max: 180 ,
+            phantom: { max: 150 ,
+            multiplier: { max: 250 ,
         return limits[bubbleType] || { max: 100 }
     
     /**
@@ -694,7 +681,7 @@ export class ValidationRuleDefinitions {
             size: 0.6,
             maxAge: 1.2,
             duration: 1.0,
-    intensity: 0.4  },
+    intensity: 0.4  ,
         const modifier = propertyModifiers[propertyType] || 1.0;
         return baseThreshold * modifier;
     }
@@ -741,8 +728,7 @@ export class ValidationRuleDefinitions {
     disabledRules: 0 }
             byCategory: {},
             bySeverity: {},
-            autoFixableRules: 0,
-        },
+            autoFixableRules: 0 ,
         
         for (const rule of this.rules.values() {
         
@@ -766,6 +752,6 @@ export class ValidationRuleDefinitions {
      */'
     destroy(): void { ''
         this.rules.clear()','
-        console.log('[ValidationRuleDefinitions] Rule, definitions destroyed') }
+        console.log('[ValidationRuleDefinitions] Rule, definitions destroyed');
 
     }'}'

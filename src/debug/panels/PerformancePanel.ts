@@ -6,50 +6,45 @@
 import { AdvancedPerformanceMonitor  } from '../AdvancedPerformanceMonitor.js';
 import { PerformanceChart  } from '../charts/PerformanceChart.js';
 
-interface ChartConfig { label: string;
-    color: string;
-    min: number;
-    max: number;
-    warning: number;
+interface ChartConfig { label: string,
+    color: string,
+    min: number,
+    max: number,
+    warning: number,
     critical: number;
-
-interface ChartConfigs { [key: string]: ChartConfig;
-
-interface PanelOptions { [key: string]: any;
-
-interface Metrics { fps: number;
-    frameTime: number;
-    memory: number;
-    drawCalls: number;
-    particleCount: number;
+    interface ChartConfigs { [key: string]: ChartConfig;
+    interface PanelOptions { [key: string]: any;
+    interface Metrics { fps: number,
+    frameTime: number,
+    memory: number,
+    drawCalls: number,
+    particleCount: number,
     effectCount: number;
 ';'
 
 interface Alert { ''
-    level: 'warning' | 'critical';
-    metric: string;
+    level: 'warning' | 'critical,
+    metric: string,
     message: string;
-
-interface ProfilingResults { component: string;
-    duration: number;
-    sampleCount: number;
+    interface ProfilingResults { component: string,
+    duration: number,
+    sampleCount: number,
     operations: {
         [operation: string]: {
             coun,t: number;
-            avgTime: number;
-            minTime: number;
-            maxTime: number;
+    },
+            avgTime: number,
+            minTime: number,
+            maxTime: number,
     totalTime: number;
 }
 
-interface Threshold { warning: number;
+interface Threshold { warning: number,
     critical: number;
-
-interface PanelState { thresholds: {
+    interface PanelState { thresholds: {
         fp,s?: Threshold;
-        memory?: Threshold;
-
-interface GameEngine { // Game engine properties }
+    memory?: Threshold;
+    interface GameEngine { // Game engine properties }
 
 interface DebugInterface { // Debug interface properties }
 
@@ -77,33 +72,33 @@ export class PerformancePanel {
         this.monitor = new AdvancedPerformanceMonitor(gameEngine);
         // チャート管理
         this.charts = new Map('''
-                label: 'FPS';
+                label: 'FPS,
                 color: '#00ff00', ;
                 min: 0, ;
-                max: 60;
-    warning: 30 }
+                max: 60,
+    warning: 30 };
                 critical: 20
             };
             frameTime: { ''
-                label: 'Frame Time(ms)';
+                label: 'Frame Time(ms)'  ,
                 color: '#ffff00', ;
                 min: 0, ;
-                max: 50;
-                warning: 33;
+                max: 50,
+                warning: 33,
     critical: 50  };
             memory: { ''
-                label: 'Memory(%)';
+                label: 'Memory(%)'  ,
                 color: '#ff9900', ;
                 min: 0, ;
-                max: 100;
-                warning: 80;
+                max: 100,
+                warning: 80,
     critical: 90  };
             drawCalls: { ''
-                label: 'Draw Calls';
+                label: 'Draw Calls'  ,
                 color: '#00ffff', ;
                 min: 0, ;
-                max: 300;
-                warning: 100;
+                max: 300,
+                warning: 100,
     critical: 200  }
         };
         this.initialize();
@@ -112,7 +107,7 @@ export class PerformancePanel {
     private initialize(): void { this.createUI();
         this.setupCharts();
         this.bindEvents();
-        this.setupAlertCallbacks() }
+        this.setupAlertCallbacks();
 
     private createUI()';'
         const panelElement = document.getElementById('panel-performance';
@@ -194,15 +189,15 @@ export class PerformancePanel {
                     <h4>Threshold Settings</h4>"";
                     <div class="threshold-controls">"";
                         <div class="threshold-item">";"
-                            <label>FPS Warning: </label>"",
+                            <label>FPS Warning: </label>",
                             <input type="number" id="threshold-fps-warning" value="30" min="1" max="60">";"
-                            <label>Critical: </label>"",
+                            <label>Critical: </label>",
                             <input type="number" id="threshold-fps-critical" value="20" min="1" max="60">";"
                         </div>"";
                         <div class="threshold-item">";"
-                            <label>Memory Warning: </label>"",
+                            <label>Memory Warning: </label>",
                             <input type="number" id="threshold-memory-warning" value="80" min="1" max="100">";"
-                            <label>Critical: </label>"",
+                            <label>Critical: </label>",
                             <input type="number" id="threshold-memory-critical" value="90" min="1" max="100">";"
                         </div>"";
                         <button id="threshold-apply">Apply Thresholds</button>;
@@ -232,23 +227,23 @@ export class PerformancePanel {
                 font-size: 12px }
             
             .performance-panel h4 { margin: 10px 0 5px 0,
-                color: #00ff00,
+                color: #00ff00;
                 font-size: 13px,
                 border-bottom: 1px solid #333,
                 padding-bottom: 3px }
             
             .stats-grid { display: grid,
                 grid-template-columns: repeat(3, 1fr);
-                gap: 10px,
+                gap: 10px;
                 margin-bottom: 15px }
             
             .stat-item { background: rgba(0, 0, 0, 0.3);
-                padding: 8px,
+                padding: 8px;
                 border-radius: 4px,
                 text-align: center,
             
             .stat-label { font-size: 10px,
-                color: #888,
+                color: #888;
                 margin-bottom: 2px }
             
             .stat-value { font-size: 16px,
@@ -262,7 +257,7 @@ export class PerformancePanel {
             .performance-alerts { margin-bottom: 15px }
             
             .alerts-list { background: rgba(0, 0, 0, 0.3);
-                padding: 10px,
+                padding: 10px;
                 border-radius: 4px,
                 max-height: 150px,
                 overflow-y: auto,
@@ -284,7 +279,7 @@ export class PerformancePanel {
                 padding: 20px  }
             
             .charts-container { background: rgba(0, 0, 0, 0.3);
-                padding: 10px,
+                padding: 10px;
                 border-radius: 4px,
                 margin-bottom: 15px }
             
@@ -292,16 +287,16 @@ export class PerformancePanel {
                 border: 1px solid #333  }
             
             .profiling-controls { display: flex,
-    gap: 10px,
+    gap: 10px;
                 margin-bottom: 10px }
             
             .profiling-controls select,
             .profiling-controls button { padding: 5px 10px,
                 background: #333,
                 border: 1px solid #555,
-    color: white,
+    color: white;
                 border-radius: 3px,
-                cursor: pointer,
+                cursor: pointer;
             
             .profiling-controls button:hover:not(:disabled) { background: #444 }
             
@@ -309,7 +304,7 @@ export class PerformancePanel {
     cursor: not-allowed }
             
             .profiling-results { background: rgba(0, 0, 0, 0.3);
-                padding: 10px,
+                padding: 10px;
                 border-radius: 4px,
                 font-family: monospace,
                 font-size: 11px,
@@ -322,11 +317,11 @@ export class PerformancePanel {
                 border-radius: 3px }
             
             .threshold-controls { background: rgba(0, 0, 0, 0.3);
-                padding: 10px,
+                padding: 10px;
                 border-radius: 4px }
             
             .threshold-item { margin-bottom: 10px,
-                display: flex,
+                display: flex;
                 align-items: center,
                 gap: 10px  }
             
@@ -337,16 +332,16 @@ export class PerformancePanel {
                 padding: 3px 5px,
                 background: #222,
                 border: 1px solid #444,
-    color: white,
+    color: white;
                 border-radius: 3px }
             
             #threshold-apply { width: 100%,
                 padding: 5px,
                 background: #0066cc,
                 border: none,
-    color: white,
+    color: white;
                 border-radius: 3px,
-                cursor: pointer,
+                cursor: pointer;
             
             #threshold-apply:hover { background: #0088ff }
         `;
@@ -359,11 +354,9 @@ export class PerformancePanel {
             const canvas = document.getElementById(`chart-${metric.replace(/([A-Z]}/g, '-$1'}.toLowerCase(}`) as HTMLCanvasElement;
             if (canvas) {
                 const chart = new PerformanceChart(canvas, config);
-                this.charts.set(metric, chart) }
-                this.monitor.registerChart(metric, chart); }
+                this.charts.set(metric, chart);
+                this.monitor.registerChart(metric, chart);     }
 }
-    }
-
     private bindEvents()';'
         const startBtn = document.getElementById('profile-start') as HTMLButtonElement;
         const stopBtn = document.getElementById('profile-stop') as HTMLButtonElement;
@@ -387,25 +380,25 @@ export class PerformancePanel {
         ';'
         // 閾値設定
         const applyButton = document.getElementById('threshold-apply') as HTMLButtonElement;
-        applyButton?.addEventListener('click', () => { this.applyThresholds() }
+        applyButton?.addEventListener('click', () => { this.applyThresholds();
  : undefined
     private setupAlertCallbacks(): void { // アラート発生時のコールバック
         this.monitor.addAlertCallback((alert: Alert) => {  
-            this.displayAlert(alert) }
+            this.displayAlert(alert);
         }
 
     show(): void { this.isActive = true;
-        this.startUpdating() }
+        this.startUpdating();
 
     hide(): void { this.isActive = false;
-        this.stopUpdating() }
+        this.stopUpdating();
 
-    activate(): void { this.show() }
+    activate(): void { this.show();
 
-    deactivate(): void { this.hide() }
+    deactivate(): void { this.hide();
 
     private startUpdating(): void { this.updateInterval = setInterval(() => { 
-            this.updateStats() }
+            this.updateStats();
             this.updateAlerts(); }
         }, 100);
     }
@@ -421,7 +414,7 @@ export class PerformancePanel {
         const fpsElement = document.getElementById('perf-fps),'
         if (fpsElement) {
 
-            fpsElement.textContent = metrics.fps.toFixed(1) }
+            fpsElement.textContent = metrics.fps.toFixed(1);
 
             this.updateStatClass(fpsElement, 'fps', metrics.fps'; }'
         }
@@ -448,7 +441,7 @@ export class PerformancePanel {
         const drawCallsElement = document.getElementById('perf-draw-calls);'
         if (drawCallsElement) {
 
-            drawCallsElement.textContent = metrics.drawCalls.toString() }
+            drawCallsElement.textContent = metrics.drawCalls.toString();
 
             this.updateStatClass(drawCallsElement, 'drawCalls', metrics.drawCalls'; }'
         }
@@ -507,17 +500,17 @@ export class PerformancePanel {
     }
 
     private displayAlert(alert: Alert): void { // 新しいアラートの表示（オプション: 通知やアニメーション） }
-        console.log(`Performance, Alert [${alert.level}]: ${alert.message}`};
+        console.log(`Performance, Alert [${alert.level}]: ${alert.message}`}
     }
 ';'
 
     private displayProfilingResults(results: ProfilingResults): void { ''
         if(!this.profilingContainer) return,
 
-        let html = '<h5>Profiling Results: ' + results.component + '</h5>',
-        html += '<div>Duration: ' + results.duration.toFixed(2) + 'ms</div>',
-        html += '<div>Samples: ' + results.sampleCount + '</div>',
-        html += '<hr>',
+        let html = '<h5>Profiling Results: ' + results.component + '</h5>,
+        html += '<div>Duration: ' + results.duration.toFixed(2) + 'ms</div>,
+        html += '<div>Samples: ' + results.sampleCount + '</div>,
+        html += '<hr>,
 
         for(const [operation, stats] of Object.entries(results.operations)) {
             html += `','
@@ -533,7 +526,7 @@ export class PerformancePanel {
             }
         
         this.profilingContainer.innerHTML = html;
-    }"
+    }
 
     private applyThresholds(): void { // FPS閾値""
         const fpsWarningElement = document.getElementById('threshold-fps-warning') as HTMLInputElement,
@@ -554,12 +547,12 @@ export class PerformancePanel {
         // チャート設定も更新
         if(this.charts.has('fps)' {''
             const chart = this.charts.get('fps'!,
-            (chart, as any).updateThresholds(fpsWarning, fpsCritical) }
+            (chart, as any).updateThresholds(fpsWarning, fpsCritical);
 
         }''
         if(this.charts.has('memory)' { ''
             const chart = this.charts.get('memory'!,
-            (chart, as any).updateThresholds(memoryWarning, memoryCritical) }
+            (chart, as any).updateThresholds(memoryWarning, memoryCritical);
         ';'
         // フィードバック
         const button = document.getElementById('threshold-apply') as HTMLButtonElement;
@@ -570,8 +563,7 @@ export class PerformancePanel {
         }, 1000);
     }
 
-    getState(): PanelState { return { thresholds: {
-                fps: (this.monitor, as any).thresholds.fps };
+    getState(): PanelState { return { thresholds: { fps: (this.monitor, as any).thresholds.fps  },
                 memory: (this.monitor, as any).thresholds.memory }
 }
 ';'
@@ -582,7 +574,7 @@ export class PerformancePanel {
                 this.monitor.setThreshold('fps', state.thresholds.fps.warning, state.thresholds.fps.critical','
                 const fpsWarningElement = document.getElementById('threshold-fps-warning') as HTMLInputElement,
                 const fpsCriticalElement = document.getElementById('threshold-fps-critical) as HTMLInputElement,'
-                fpsWarningElement.value = state.thresholds.fps.warning.toString() }
+                fpsWarningElement.value = state.thresholds.fps.warning.toString();
                 fpsCriticalElement.value = state.thresholds.fps.critical.toString(); }
 
             }''
@@ -591,11 +583,9 @@ export class PerformancePanel {
                 this.monitor.setThreshold('memory', state.thresholds.memory.warning, state.thresholds.memory.critical','
                 const memoryWarningElement = document.getElementById('threshold-memory-warning') as HTMLInputElement,
                 const memoryCriticalElement = document.getElementById('threshold-memory-critical) as HTMLInputElement,'
-                memoryWarningElement.value = state.thresholds.memory.warning.toString() }
-                memoryCriticalElement.value = state.thresholds.memory.critical.toString(); }
+                memoryWarningElement.value = state.thresholds.memory.warning.toString();
+                memoryCriticalElement.value = state.thresholds.memory.critical.toString();     }
 }
-    }
-
     destroy(): void { this.stopUpdating();
         // チャートのクリーンアップ
         for (const chart of this.charts.values() {

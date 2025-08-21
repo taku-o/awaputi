@@ -7,12 +7,12 @@ import { PerformanceDataCollector } from '../../src/analytics/PerformanceDataCol
 const mockPerformance = {
     now: jest.fn(() => Date.now(),
     memory: {
-        usedJSHeapSize: 10000000,
+        usedJSHeapSize: 10000000 },
         totalJSHeapSize: 50000000,
         jsHeapSizeLimit: 100000000
     },
     timing: {
-        navigationStart: 1000,
+        navigationStart: 1000 },
         domContentLoadedEventEnd: 2000,
         loadEventEnd: 3000,
         domComplete: 2500,
@@ -26,7 +26,7 @@ const mockPerformance = {
         loadEventStart: 2800
     },
     navigation: {
-        type: 0,
+        type: 0 },
         redirectCount: 0
     },
     mark: jest.fn(
@@ -168,7 +168,7 @@ describe('PerformanceDataCollector', () => {
                     fps: fps,
                     frameTime: 1000 / fps,
                     sessionId: 'test-session'
-                };
+                }
             }
             const stats = collector.calculateFPSStatistics();
             expect(stats.current).toBe(50);
@@ -192,7 +192,7 @@ describe('PerformanceDataCollector', () => {
                     total: 50000000,
                     limit: 100000000,
                     sessionId: 'test-session'
-                };
+                }
             }
             const stats = collector.calculateMemoryStatistics();
             expect(stats.current.used).toBe(30000000);
@@ -233,7 +233,7 @@ describe('PerformanceDataCollector', () => {
                     fps: 60,
                     frameTime: 16.67,
                     sessionId: 'test-session'
-                };
+                }
             }
             expect(limitedCollector.performanceData.fps).toHaveLength(3);
             limitedCollector.destroy();
@@ -314,6 +314,6 @@ describe('PerformanceDataCollector', () => {
             expect(collector.isRunning).toBe(true);
             collector.destroy();
             expect(collector.isRunning).toBe(false);
-            expect(collector.performanceData.fps).toHaveLength(0) };
+            expect(collector.performanceData.fps).toHaveLength(0) }
     }
 }');'

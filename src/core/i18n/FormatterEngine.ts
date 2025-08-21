@@ -7,56 +7,45 @@ import { getRegionalSettingsManager  } from './RegionalSettingsManager.js';
 
 // 型定義
 export interface FormatParams { [key: string]: any;
-
-export interface FormatterInterface { format(value: any, language: string, region?: string | null, options?: any): string;
-
-export interface NumberFormatterInterface extends FormatterInterface { formatWithSettings(value: any, numberFormatSettings: NumberFormatSettings | null, format?: string): string,
+    export interface FormatterInterface { format(value: any, language: string, region?: string | null, options?: any): string;
+    export interface NumberFormatterInterface extends FormatterInterface { formatWithSettings(value: any, numberFormatSettings: NumberFormatSettings | null, format?: string): string,
     getLocale(language: string, region?: string | null): string;
-
-export interface DateFormatterInterface extends FormatterInterface { formatWithSettings(value: any, dateFormatSettings: DateFormatSettings | null, format?: string, regionInfo?: RegionInfo): string,
+    export interface DateFormatterInterface extends FormatterInterface { formatWithSettings(value: any, dateFormatSettings: DateFormatSettings | null, format?: string, regionInfo?: RegionInfo): string,
     formatTimeWithSettings(value: any, timeFormatSettings: TimeFormatSettings | null, format?: string, regionInfo?: RegionInfo): string;
     getMonthNames(regionInfo: RegionInfo): string[];
     getLocale(language: string, region?: string | null): string;
-
-export interface CurrencyFormatterInterface extends FormatterInterface { formatWithSettings(value: any, currencyFormatSettings: CurrencyFormatSettings | null, format?: string): string,
+    export interface CurrencyFormatterInterface extends FormatterInterface { formatWithSettings(value: any, currencyFormatSettings: CurrencyFormatSettings | null, format?: string): string,
     getCurrencyCode(language: string, region?: string | null): string;
     getLocale(language: string, region?: string | null): string;
-
-export interface RelativeTimeFormatterInterface extends FormatterInterface { getLocale(language: string, region?: string | null): string;
-
-export interface ListFormatterInterface extends FormatterInterface { getLocale(language: string, region?: string | null): string;
+    export interface RelativeTimeFormatterInterface extends FormatterInterface { getLocale(language: string, region?: string | null): string;
+    export interface ListFormatterInterface extends FormatterInterface { getLocale(language: string, region?: string | null): string;
 ';'
 
 export interface PluralFormatterInterface extends FormatterInterface { getPluralRules(language: string): Intl.PluralRules | PluralRuleFallback,''
     makeEnglishPlural(text: string): string;
-
-export interface NumberFormatSettings { decimal?: string,
+    export interface NumberFormatSettings { decimal?: string,
     thousands?: string;
     precision?: number;
     prefix?: string;
     suffix?: string;
-
-export interface DateFormatSettings { short?: string,
+    export interface DateFormatSettings { short?: string,
     medium?: string;
     long?: string;
     full?: string;
-    [key: string]: string | undefined }
-
+    [key: string]: string | undefined };
 export interface TimeFormatSettings { short?: string,
     medium?: string;
     long?: string;
     full?: string;
     hour12?: boolean;
-    [key: string]: string | boolean | undefined }
-
+    [key: string]: string | boolean | undefined };
 export interface CurrencyFormatSettings { symbol?: string,
 
     code?: string;
     position?: 'before' | 'after';
     space?: boolean;
     precision?: number;
-
-export interface RegionInfo { timezone?: string,
+    export interface RegionInfo { timezone?: string,
     calendar?: string;
     firstDayOfWeek?: number;
     weekendDays?: number[];
@@ -65,27 +54,24 @@ export interface RegionInfo { timezone?: string,
     numberFormats?: NumberFormatSettings;
     currencyFormats?: CurrencyFormatSettings;
     [key: string]: any;
-
-export interface RegionalSettings { language: string;
-    region: string | null;
-    numberFormat: NumberFormatSettings;
-    dateFormat: DateFormatSettings;
-    timeFormat: TimeFormatSettings;
-    currencyFormat: CurrencyFormatSettings;
+    export interface RegionalSettings { language: string,
+    region: string | null,
+    numberFormat: NumberFormatSettings,
+    dateFormat: DateFormatSettings,
+    timeFormat: TimeFormatSettings,
+    currencyFormat: CurrencyFormatSettings,
     regionInfo: RegionInfo;
-
-export interface FormatterStats { availableFormatters: string[];
-    regionalSettings: any;
-    supportedLanguages: string[];
+    export interface FormatterStats { availableFormatters: string[],
+    regionalSettings: any,
+    supportedLanguages: string[],
     supportedRegions: string[];
-
-export interface PluralObject { zero?: string,
+    export interface PluralObject { zero?: string,
     one?: string;
     two?: string;
     few?: string;
     many?: string;
     other: string;
-    [key: string]: string | undefined }
+    [key: string]: string | undefined };
 ';'
 
 export interface PluralRuleFallback {;
@@ -107,43 +93,38 @@ export interface DateTimeFormatOptions {,
 
 export interface ListFormatOptions {,
     style?: 'long' | 'short' | 'narrow';
-    type?: 'conjunction' | 'disjunction' | 'unit' }
-
+    type?: 'conjunction' | 'disjunction' | 'unit' };
 export interface FormatterConfiguration { enabled?: boolean,
     defaultLanguage?: string;
     defaultRegion?: string;
     fallbackFormats?: boolean;
     cacheResults?: boolean;
-
-export interface AdvancedFormatPattern { pattern: RegExp;
-    replacement: (match: string, ...groups: string[]) => string;
+    export interface AdvancedFormatPattern { pattern: RegExp,
+    replacement: (match: string, ...groups: string[]) => string,
     priority: number;
-}
-
+};
 export interface FormatterRegistry { [name: string]: FormatterInterface;
-
-export class FormatterEngine {
+    export class FormatterEngine {
     private formatters: Map<string, FormatterInterface>;
     private regionalSettingsManager: any;
     private, configuration: FormatterConfiguration','
 
-    constructor('',
-            ['number', new NumberFormatter('',
-            ['date', new DateFormatter('',
-            ['currency', new CurrencyFormatter('',
-            ['relative', new RelativeTimeFormatter(']',
-            ['list', new ListFormatter(']',
+    constructor(',
+            ['number, new NumberFormatter('',
+            ['date, new DateFormatter('',
+            ['currency, new CurrencyFormatter('',
+            ['relative, new RelativeTimeFormatter(']',
+            ['list, new ListFormatter(']',
             ['plural', new PluralFormatter()],
         ]),
         ','
         // 地域設定マネージャーの参照
         this.regionalSettingsManager = getRegionalSettingsManager('''
-            defaultLanguage: 'en';
-            defaultRegion: null;
-            fallbackFormats: true;
+            defaultLanguage: 'en,
+    defaultRegion: null,
+    fallbackFormats: true,
     cacheResults: false;)'
-    }
-    
+    };
     /**
      * テキストをフォーマット'
      */''
@@ -191,7 +172,7 @@ export class FormatterEngine {
                 const formatter = this.formatters.get('number' as NumberFormatterInterface; }'
                 return formatter.format(value, language, region);
             return match;
-        };
+        } };
         
         // 日付フォーマット: {{date: key,
         formatted = formatted.replace(/\{\{date:(\w+)\}\}/g, (match, key) => {  const value = params[key],
@@ -200,7 +181,7 @@ export class FormatterEngine {
                 const formatter = this.formatters.get('date' as DateFormatterInterface; }'
                 return formatter.format(value, language, region);
             return match;
-        };
+        } };
         
         // 通貨フォーマット: {{currency: key,
         formatted = formatted.replace(/\{\{currency:(\w+)\}\}/g, (match, key) => {  const value = params[key],
@@ -209,7 +190,7 @@ export class FormatterEngine {
                 const formatter = this.formatters.get('currency' as CurrencyFormatterInterface; }'
                 return formatter.format(value, language, region);
             return match;
-        };
+        } };
         
         // 相対時間フォーマット: {{relative: key,
         formatted = formatted.replace(/\{\{relative:(\w+)\}\}/g, (match, key) => {  const value = params[key],
@@ -218,7 +199,7 @@ export class FormatterEngine {
                 const formatter = this.formatters.get('relative' as RelativeTimeFormatterInterface; }'
                 return formatter.format(value, language, region);
             return match;
-        };
+        } };
         
         // リストフォーマット: {{list: key,
         formatted = formatted.replace(/\{\{list:(\w+)\}\}/g, (match, key) => {  const value = params[key],
@@ -229,8 +210,8 @@ export class FormatterEngine {
         };
         
         return formatted;
-    }
-    
+    } };
+
     /**
      * 特殊フォーマット処理
      */
@@ -243,7 +224,7 @@ export class FormatterEngine {
                 const formatter = this.formatters.get('plural' as PluralFormatterInterface; }'
                 return formatter.format(baseText, count, language);
             return match;
-        };
+        } };
         
         return formatted;
     }
@@ -269,12 +250,12 @@ export class FormatterEngine {
     /**
      * フォーマッターを削除
      */
-    removeFormatter(name: string): boolean { return this.formatters.delete(name) }
+    removeFormatter(name: string): boolean { return this.formatters.delete(name);
     
     /**
      * 利用可能なフォーマッターを取得
      */
-    getAvailableFormatters(): string[] { return Array.from(this.formatters.keys() }
+    getAvailableFormatters(): string[] { return Array.from(this.formatters.keys()));
     
     /**
      * 地域設定に基づく包括的フォーマット'
@@ -344,7 +325,7 @@ export class FormatterEngine {
                 const formatter = this.formatters.get('date' as DateFormatterInterface; }'
                 return formatter.formatTimeWithSettings(value, settings.timeFormat, format, settings.regionInfo);
             return match;
-        };
+        } };
         
         return formatted;
     }
@@ -352,7 +333,7 @@ export class FormatterEngine {
     /**
      * 地域設定情報を取得
      */ : undefined
-    getRegionalSettings(language: string, region: string | null = null): RegionalSettings { return this.regionalSettingsManager.getCompleteSettings(language, region) }
+    getRegionalSettings(language: string, region: string | null = null): RegionalSettings { return this.regionalSettingsManager.getCompleteSettings(language, region);
     
     /**
      * フォーマット統計を取得
@@ -360,7 +341,7 @@ export class FormatterEngine {
     getFormatterStats(): FormatterStats { const regionalStats = this.regionalSettingsManager.getStats();
         return { availableFormatters: this.getAvailableFormatters(
             regionalSettings: regionalStats,
-    supportedLanguages: regionalStats.supportedLanguages },
+    supportedLanguages: regionalStats.supportedLanguages };
             supportedRegions: regionalStats.supportedRegions 
     }
     
@@ -369,7 +350,7 @@ export class FormatterEngine {
      */''
     updateConfiguration(config: Partial<FormatterConfiguration>): void {'
         this.configuration = { ...this.configuration, ...config,
-        console.log('FormatterEngine configuration updated:', config) }
+        console.log('FormatterEngine configuration updated:', config);
     
     /**
      * 設定を取得
@@ -385,7 +366,7 @@ export class NumberFormatter implements NumberFormatterInterface { format(value:
             const number = Number(value);
             if (isNaN(number) {
     
-}
+};
                 return String(value);
             
             const locale = this.getLocale(language, region);
@@ -411,7 +392,7 @@ export class NumberFormatter implements NumberFormatterInterface { format(value:
             const parts = formatted.split('.);'
             
             // 千の位区切りを適用
-            if (Math.abs(number) >= 1000) { parts[0] = parts[0].replace(/\B(?=(\d{3)+(?!\d))/g, thousandsSeparator) }
+            if (Math.abs(number) >= 1000) { parts[0] = parts[0].replace(/\B(?=(\d{3)+(?!\d))/g, thousandsSeparator);
             
             // 小数点記号の置換
             if (parts.length > 1) { formatted = parts[0] + decimalSeparator + parts[1] } else { formatted = parts[0] }
@@ -429,9 +410,9 @@ export class NumberFormatter implements NumberFormatterInterface { format(value:
         ';'
 
         const localeMap: Record<string, string> = { ', 'ja': 'ja-JP','
-            'en': 'en-US',
-            'zh-CN': 'zh-CN',
-            'zh-TW': 'zh-TW',
+            'en': 'en-US,
+            'zh-CN': 'zh-CN,
+            'zh-TW': 'zh-TW,
             'ko': 'ko-KR' };
         
         return localeMap[language] || language;
@@ -443,13 +424,12 @@ export class DateFormatter implements DateFormatterInterface { format(value: any
         try {
             const date = new Date(value);
             if(isNaN(date.getTime()) {
-                return String(value),  }
-
+                return String(value) };
             const locale = this.getLocale(language, region);
 
             const formatOptions: DateTimeFormatOptions = { ''
-                year: 'numeric';
-                month: 'long';
+                year: 'numeric,
+                month: 'long,
                 day: 'numeric';
                 ...options,
             
@@ -463,7 +443,7 @@ export class DateFormatter implements DateFormatterInterface { format(value: any
     formatWithSettings(value: any, dateFormatSettings: DateFormatSettings | null, format: string = 'medium', regionInfo: RegionInfo = {}: string { try {
             const date = new Date(value);
             if(isNaN(date.getTime()) {''
-                return String(value) }
+                return String(value);
             ';'
             // フォーマット設定から適切なパターンを取得
             const formatPattern = dateFormatSettings?.[format] || dateFormatSettings?.medium || 'YYYY/MM/DD';
@@ -497,7 +477,7 @@ export class DateFormatter implements DateFormatterInterface { format(value: any
     formatTimeWithSettings(value: any, timeFormatSettings: TimeFormatSettings | null, format: string = 'medium', regionInfo: RegionInfo = { }: string { try {
             const date = new Date(value);
             if(isNaN(date.getTime()) {''
-                return String(value) }
+                return String(value);
             ';'
             // フォーマット設定から適切なパターンを取得
             const formatPattern = timeFormatSettings?.[format] || timeFormatSettings?.medium || 'HH: mm:ss';
@@ -537,9 +517,9 @@ export class DateFormatter implements DateFormatterInterface { format(value: any
         ';'
 
         const localeMap: Record<string, string> = { ', 'ja': 'ja-JP','
-            'en': 'en-US',
-            'zh-CN': 'zh-CN',
-            'zh-TW': 'zh-TW',
+            'en': 'en-US,
+            'zh-CN': 'zh-CN,
+            'zh-TW': 'zh-TW,
             'ko': 'ko-KR' };
         
         return localeMap[language] || language;
@@ -552,7 +532,7 @@ export class CurrencyFormatter implements CurrencyFormatterInterface { format(va
             const number = Number(value);
             if (isNaN(number) {
     
-}
+};
                 return String(value);
             ';'
 
@@ -561,7 +541,7 @@ export class CurrencyFormatter implements CurrencyFormatterInterface { format(va
             ';'
 
             return new Intl.NumberFormat(locale, { ')'
-                style: 'currency');
+                style: 'currency'),
                 currency: currencyCode)).format(number  } catch (error) {
             console.warn(`Currency formatting failed for ${language}:`, error);
             const currencyCode = currency || this.getCurrencyCode(language, region);
@@ -575,9 +555,9 @@ export class CurrencyFormatter implements CurrencyFormatterInterface { format(va
         ';'
 
         const localeMap: Record<string, string> = { ', 'ja': 'ja-JP','
-            'en': 'en-US',
-            'zh-CN': 'zh-CN',
-            'zh-TW': 'zh-TW',
+            'en': 'en-US,
+            'zh-CN': 'zh-CN,
+            'zh-TW': 'zh-TW,
             'ko': 'ko-KR' };
         
         return localeMap[language] || language;
@@ -621,13 +601,13 @@ export class CurrencyFormatter implements CurrencyFormatterInterface { format(va
 
      : undefined';'
     getCurrencyCode(language: string, region?: string | null): string { const currencyMap: Record<string, string> = {', 'ja': 'JPY','
-            'ja-JP': 'JPY',
-            'en': 'USD',
-            'en-US': 'USD',
-            'en-GB': 'GBP',
-            'zh-CN': 'CNY',
-            'zh-TW': 'TWD',
-            'ko': 'KRW',
+            'ja-JP': 'JPY,
+            'en': 'USD,
+            'en-US': 'USD,
+            'en-GB': 'GBP,
+            'zh-CN': 'CNY,
+            'zh-TW': 'TWD,
+            'ko': 'KRW,
             'ko-KR': 'KRW' };
         ';'
 
@@ -650,8 +630,7 @@ export class RelativeTimeFormatter implements RelativeTimeFormatterInterface { f
             if (absDiff < 60000) {
             ,
                 // 1分未満
-                const seconds = Math.round(diffMs / 1000) }
-
+                const seconds = Math.round(diffMs / 1000) };
                 return rtf.format(seconds, 'second); else if (absDiff < 3600000) { // 1時間未満'
                 const minutes = Math.round(diffMs / 60000);
                 return rtf.format(minutes, 'minute), else if (absDiff < 86400000) { // 1日未満'
@@ -671,9 +650,9 @@ export class RelativeTimeFormatter implements RelativeTimeFormatterInterface { f
         ';'
 
         const localeMap: Record<string, string> = { ', 'ja': 'ja-JP','
-            'en': 'en-US',
-            'zh-CN': 'zh-CN',
-            'zh-TW': 'zh-TW',
+            'en': 'en-US,
+            'zh-CN': 'zh-CN,
+            'zh-TW': 'zh-TW,
             'ko': 'ko-KR' };
         
         return localeMap[language] || language;
@@ -685,13 +664,13 @@ export class ListFormatter implements ListFormatterInterface { format(value: any
         try {
             if (!Array.isArray(value) {
     
-}
+};
                 return String(value);
 
             const locale = this.getLocale(language, region);
 
             const formatOptions: ListFormatOptions = { ''
-                style: 'long';
+                style: 'long,
                 type: 'conjunction';
                 ...options,
             
@@ -710,9 +689,9 @@ export class ListFormatter implements ListFormatterInterface { format(value: any
         ';'
 
         const localeMap: Record<string, string> = { ', 'ja': 'ja-JP','
-            'en': 'en-US',
-            'zh-CN': 'zh-CN',
-            'zh-TW': 'zh-TW',
+            'en': 'en-US,
+            'zh-CN': 'zh-CN,
+            'zh-TW': 'zh-TW,
             'ko': 'ko-KR' };
         
         return localeMap[language] || language;
@@ -725,7 +704,7 @@ export class PluralFormatter implements PluralFormatterInterface { format(text: 
             const number = Number(count);
             if (isNaN(number) {
     
-}
+};
                 return String(text);
             ';'
 

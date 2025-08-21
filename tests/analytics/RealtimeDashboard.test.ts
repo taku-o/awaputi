@@ -211,6 +211,6 @@ describe('RealtimeDashboard', () => {
             // リソースが解放される
             expect(dashboard.charts.size).toBe(0);
             expect(dashboard.updateTimer).toBe(null);
-            expect(container.innerHTML').toBe(') };
+            expect(container.innerHTML').toBe(') }
     }
 }');'

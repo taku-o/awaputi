@@ -7,7 +7,7 @@ import { PlayerData } from '../../src/core/PlayerData.js';
 // Mock GameEngine
 const mockGameEngine = {
   audioManager: {
-    playLevelUpSound: jest.fn(
+    playLevelUpSound: jest.fn( },
     playHealSound: jest.fn(
         playDamageSound: jest.fn()' }'
 } as any;
@@ -192,6 +192,6 @@ describe('PlayerData', () => {
       expect(playerData.username').toBe(');
       expect(playerData.highScores).toEqual({);
       expect(playerData.unlockedStages').toEqual(['tutorial', 'normal']),'
-      expect(playerData.ownedItems).toEqual([]) };
+      expect(playerData.ownedItems).toEqual([]) }
   }
 }');'

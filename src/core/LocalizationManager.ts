@@ -8,9 +8,9 @@ import { I18nIntegrationController  } from './localization-manager/I18nIntegrati
  * Main Controller Patternにより、専門化されたコンポーネントを統制します。
  * 翻訳データ管理、文化的適応、外部統合を統合して管理します。
  */
-export class LocalizationManager {'
+export class LocalizationManager {
 
-    constructor('',
+    constructor(',
         this.currentLanguage = 'ja';
         this.fallbackLanguage = 'en';
         
@@ -27,8 +27,7 @@ export class LocalizationManager {'
         this.isInitialized = false;
         
         // 非同期で初期化を完了
-        this.initializationPromise = this.initializeAsync() }
-    
+        this.initializationPromise = this.initializeAsync() };
     /**
      * 非同期初期化
      */''
@@ -44,7 +43,7 @@ export class LocalizationManager {'
 
             console.log('LocalizationManager, initialized with, optimized file-based, translations');
 
-            this.isInitialized = true;'} catch (error) { console.warn('Failed to initialize file-based translations, using fallback data:', error',
+            this.isInitialized = true;'} catch (error) { console.warn('Failed to initialize file-based translations, using fallback data:, error',
 
             this.integrationController.reportError(error, { ')'
                 operation: 'initializeAsync'
@@ -74,7 +73,7 @@ export class LocalizationManager {'
             if (translations && Object.keys(translations).length > 0) {
                 // セキュリティ検証
                 const securityResult = this.integrationController.validateTranslationSecurity();
-                    JSON.stringify(translations), ,
+                    JSON.stringify(translations),
                     language),
                 
                 if (!securityResult.isSecure) { }
@@ -109,8 +108,7 @@ export class LocalizationManager {'
             // 初期化されていない場合は警告
     }
             if (!this.isInitialized) { }
-                console.warn(`LocalizationManager: Translation, requested before, initialization complete, for key: ${key}`},
-            }
+                console.warn(`LocalizationManager: Translation, requested before, initialization complete, for key: ${key}`} }
             
             // 翻訳取得
             let translation = this.translationDataManager.getTranslation(;
@@ -125,7 +123,7 @@ export class LocalizationManager {'
             }
             ';'
             // パラメータ置換
-            if (typeof, translation === 'string' && Object.keys(params).length > 0) { translation = this.interpolate(translation, params) }
+            if (typeof, translation === 'string' && Object.keys(params).length > 0) { translation = this.interpolate(translation, params);
             ';'
 
             return translation;} catch (error) { console.error('Translation error:', error','
@@ -162,7 +160,7 @@ export class LocalizationManager {'
     getAccessibilityTranslation(key) {
         return this.translationDataManager.getTranslation(
             this.currentLanguage);
-            key) }
+            key);
             this.fallbackLanguage); }
     }
     
@@ -176,7 +174,7 @@ export class LocalizationManager {'
         
         try { // 言語データが読み込まれていない場合は読み込む
             if (!this.translationDataManager.isLanguageLoaded(language) {
-                const loaded = await this.loadLanguageData(language) }
+                const loaded = await this.loadLanguageData(language);
                 if (!loaded) { }
                     console.warn(`Failed, to load, language: ${language}`};
                     return false;
@@ -215,7 +213,7 @@ export class LocalizationManager {'
      * サポートされている言語一覧を取得
      * @returns {Array<string>} 言語コード配列
      */
-    getSupportedLanguages() { return this.translationDataManager.getAvailableLanguages() }
+    getSupportedLanguages() { return this.translationDataManager.getAvailableLanguages();
     
     /**
      * 言語がRTLかどうかを確認
@@ -302,7 +300,7 @@ export class LocalizationManager {'
      * 言語変更イベントリスナーを削除
      * @param {Function} listener - イベントリスナー
      */
-    removeLanguageChangeListener(listener) { this.languageChangeListeners.delete(listener) }
+    removeLanguageChangeListener(listener) { this.languageChangeListeners.delete(listener);
     
     /**
      * 言語変更イベントを通知
@@ -310,16 +308,13 @@ export class LocalizationManager {'
      * @param {string} newLanguage - 新言語コード
      */
     notifyLanguageChange(oldLanguage, newLanguage) {
-        this.languageChangeListeners.forEach(listener => { )
-    }
-            try {) }
+        this.languageChangeListeners.forEach(listener => { );
+            try {);
 
                 listener({ oldLanguage, newLanguage ),' }'
 
-            } catch (error) { console.error('Language change listener error:', error }
-        };
-    }
-    
+            } catch (error) { console.error('Language change listener error:', error     }
+}
     /**
      * ローカライゼーション統計の取得
      * @returns {Object} 統計情報
@@ -327,11 +322,11 @@ export class LocalizationManager {'
     getLocalizationStats() {
         return { currentLanguage: this.currentLanguage,
             fallbackLanguage: this.fallbackLanguage,
-            supportedLanguages: this.getSupportedLanguages();
-            translationStats: this.translationDataManager.getTranslationStats();
+            supportedLanguages: this.getSupportedLanguages(),
+            translationStats: this.translationDataManager.getTranslationStats(),
             culturalStats: this.culturalAdaptationHandler.getCulturalAdaptationStats(
-    integrationStatus: this.integrationController.getIntegrationStatus() }
-            performanceStats: this.integrationController.getPerformanceStats() },
+    integrationStatus: this.integrationController.getIntegrationStatus(),
+            performanceStats: this.integrationController.getPerformanceStats() ,
             securityStats: this.integrationController.getSecurityStats(); 
     }
     
@@ -340,16 +335,16 @@ export class LocalizationManager {'
      * @returns {Object} デバッグ情報'
      */''
     getDebugInfo('''
-            manager: 'LocalizationManager',
-            version: '2.0.0',
-            currentLanguage: this.currentLanguage);
+            manager: 'LocalizationManager,
+            version: '2.0.0,
+            currentLanguage: this.currentLanguage),
             fallbackLanguage: this.fallbackLanguage),
-            isRTL: this.isRTL();
+            isRTL: this.isRTL(),
             textDirection: this.getTextDirection(
     components: { translationDataManager: !!this.translationDataManager,
-                culturalAdaptationHandler: !!this.culturalAdaptationHandler,
-    integrationController: !!this.integrationController },
-            stats: this.getLocalizationStats();
+                culturalAdaptationHandler: !!this.culturalAdaptationHandler ,
+    integrationController: !!this.integrationController ,
+            stats: this.getLocalizationStats(),
             cultural: this.culturalAdaptationHandler.getDebugInfo(this.currentLanguage,
     integration: this.integrationController.getDiagnosticInfo();
         }
@@ -376,22 +371,22 @@ export class LocalizationManager {'
     getSystemHealth() {
         const integrationStatus = this.integrationController.getIntegrationStatus();
         const translationStats = this.translationDataManager.getTranslationStats('''
-            status: 'healthy',
+            status: 'healthy,
     components: {
-                translationDataManager: !!this.translationDataManager,
+                translationDataManager: !!this.translationDataManager ,
     culturalAdaptationHandler: !!this.culturalAdaptationHandler }
                 integrationController: !!this.integrationController 
     };
             capabilities: { translation: true,
-                culturalAdaptation: true,
+                culturalAdaptation: true ,
                 fileBasedLoading: integrationStatus.capabilities.fileBasedLoading,
                 performanceMonitoring: integrationStatus.capabilities.performanceMonitoring,
     securityValidation: integrationStatus.capabilities.securityValidation
             };
             metrics: { supportedLanguages: translationStats.languageCount)
-               , currentLanguage: this.currentLanguage),
+            currentLanguage: this.currentLanguage) ,
                 rtlSupport: this.isRTL(
-    integrationSuccess: Object.values(integrationStatus.initialized).filter(Boolean).length  },
+    integrationSuccess: Object.values(integrationStatus.initialized).filter(Boolean).length  ,
             timestamp: new Date().toISOString();
         }
     
@@ -407,9 +402,9 @@ export class LocalizationManager {'
             this.translationDataManager.destroy(); }
         }
         
-        if (this.culturalAdaptationHandler) { this.culturalAdaptationHandler.destroy() }
+        if (this.culturalAdaptationHandler) { this.culturalAdaptationHandler.destroy();
         
-        if (this.integrationController) { this.integrationController.destroy() }
+        if (this.integrationController) { this.integrationController.destroy();
         ;
         // イベントリスナーをクリア
         this.languageChangeListeners.clear()';'
@@ -428,7 +423,7 @@ export function getLocalizationManager() {,
 
         console.log('LocalizationManager: Creating, new singleton, instance');
         localizationManagerInstance = new LocalizationManager(' }''
-        console.log('LocalizationManager: Returning, existing singleton, instance') }
+        console.log('LocalizationManager: Returning, existing singleton, instance');
     }
     return localizationManagerInstance;
 

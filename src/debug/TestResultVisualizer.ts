@@ -10,21 +10,19 @@ import { TestDataVisualizer  } from './test-result-visualizer/TestDataVisualizer
 
 interface TestSupportTools { // Define the interface based on usage }
 
-interface TestResult { id: string;
-    name: string;
-    status: 'passed' | 'failed' | 'skipped';
+interface TestResult { id: string,
+    name: string,
+    status: 'passed' | 'failed' | 'skipped,
     duration: number;
     error?: Error;
     timestamp: number;
-
-interface TestSummary { total: number;
-    passed: number;
-    failed: number;
-    skipped: number;
+    interface TestSummary { total: number,
+    passed: number,
+    failed: number,
+    skipped: number,
     duration: number;
     coverage?: number;
-
-export class TestResultVisualizer {
+    export class TestResultVisualizer {
     private testSupportTools: TestSupportTools;
     private chartGenerator: TestChartGenerator;
     private dataVisualizer: TestDataVisualizer;
@@ -38,16 +36,14 @@ export class TestResultVisualizer {
         
         // Initialize sub-components using dependency injection
         this.chartGenerator = new TestChartGenerator(this);
-        this.dataVisualizer = new TestDataVisualizer(this);
-
-        this.initialize()
-}
-
+    this.dataVisualizer = new TestDataVisualizer(this);
+    this.initialize()
+};
         console.log('[TestResultVisualizer] Initialized, with Main, Controller Pattern'); }'
     }
 
     private initialize(): void { this.createContainer();
-        this.setupEventHandlers() }
+        this.setupEventHandlers();
 
     private createContainer()';'
         this.container = document.createElement('div');
@@ -61,12 +57,12 @@ export class TestResultVisualizer {
             height: 700px,
             background: rgba(0, 0, 0, 0.9);
             color: white,
-    padding: 20px,
+    padding: 20px;
             border-radius: 12px,
             font-family: 'Segoe UI', monospace;
             font-size: 13px,
             z-index: 15000,
-            display: none,
+            display: none;
             overflow-y: auto,
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -77,11 +73,11 @@ export class TestResultVisualizer {
     }
 
     private createDashboardHTML(): string { return `''
-            <div class="dashboard-header">"",
+            <div class="dashboard-header">",
                 <h2 style="margin: 0 0 15px 0, color: #00ff88, display: flex, align-items: center,">""
                     <span style="margin-right: 10px,">📊</span>
                     Test Results Dashboard","
-                </h2>"",
+                </h2>",
                 <div class="controls" style="margin-bottom: 20px,">""
                     <button id="refresh-results" style="margin-right: 10px, padding: 5px 12px, background: #007acc, color: white, border: none, border-radius: 4px, cursor: pointer,">Refresh</button>""
                     <button id="export-results" style="margin-right: 10px, padding: 5px 12px, background: #28a745, color: white, border: none, border-radius: 4px, cursor: pointer,">Export</button>""
@@ -90,7 +86,7 @@ export class TestResultVisualizer {
                 </div>,
             </div>","
 
-            <div class="dashboard-tabs">"",
+            <div class="dashboard-tabs">",
                 <div class="tab-buttons" style="display: flex, margin-bottom: 15px, border-bottom: 1px solid #333,">""
                     <button class="tab-button active" data-tab="summary" style="padding: 8px 16px, background: #444, color: white, border: none, border-radius: 4px 4px 0 0, margin-right: 2px, cursor: pointer,">Summary</button>""
                     <button class="tab-button" data-tab="performance" style="padding: 8px 16px, background: #222, color: #ccc, border: none, cursor: pointer,">Performance</button>""
@@ -99,65 +95,65 @@ export class TestResultVisualizer {
                     <button class="tab-button" data-tab="coverage" style="padding: 8px 16px, background: #222, color: #ccc, border: none, cursor: pointer,">Coverage</button>
                 </div>","
 
-                <div class="tab-content">"",
-                    <div id="tab-summary" class="tab-panel active">"",
+                <div class="tab-content">",
+                    <div id="tab-summary" class="tab-panel active">",
                         <div class="summary-grid" style="display: grid, grid-template-columns: 1fr 1fr 1fr, gap: 20px, margin-bottom: 20px,">""
                             <div class="summary-card" style="background: #333, padding: 15px, border-radius: 8px,">""
                                 <h3 style="margin: 0 0 10px 0, color: #00ff88,">Test Summary</h3>""
-                                <div id="test-summary-content">"",
-                                    <div class="metric">"",
-                                        <span class="label">Total Tests:</span>"",
+                                <div id="test-summary-content">",
+                                    <div class="metric">",
+                                        <span class="label">Total Tests:</span>",
                                         <span class="value" id="total-tests">--</span>","
-                                    </div>"",
-                                    <div class="metric">"",
-                                        <span class="label">Passed:</span>"",
+                                    </div>",
+                                    <div class="metric">",
+                                        <span class="label">Passed:</span>",
                                         <span class="value passed" id="passed-tests">--</span>","
-                                    </div>"",
-                                    <div class="metric">"",
-                                        <span class="label">Failed:</span>"",
+                                    </div>",
+                                    <div class="metric">",
+                                        <span class="label">Failed:</span>",
                                         <span class="value failed" id="failed-tests">--</span>","
-                                    </div>"",
-                                    <div class="metric">"",
-                                        <span class="label">Skipped:</span>"",
+                                    </div>",
+                                    <div class="metric">",
+                                        <span class="label">Skipped:</span>",
                                         <span class="value skipped" id="skipped-tests">--</span>,
                                     </div>,
                                 </div>","
-                            </div>"",
+                            </div>",
                             <div class="summary-card" style="background: #333, padding: 15px, border-radius: 8px,">""
                                 <h3 style="margin: 0 0 10px 0, color: #ff8800,">Performance</h3>""
-                                <div id="performance-summary-content">"",
-                                    <div class="metric">"",
-                                        <span class="label">Total Duration:</span>"",
+                                <div id="performance-summary-content">",
+                                    <div class="metric">",
+                                        <span class="label">Total Duration:</span>",
                                         <span class="value" id="total-duration">--</span>","
-                                    </div>"",
-                                    <div class="metric">"",
-                                        <span class="label">Average:</span>"",
+                                    </div>",
+                                    <div class="metric">",
+                                        <span class="label">Average:</span>",
                                         <span class="value" id="avg-duration">--</span>","
-                                    </div>"",
-                                    <div class="metric">"",
-                                        <span class="label">Slowest:</span>"",
+                                    </div>",
+                                    <div class="metric">",
+                                        <span class="label">Slowest:</span>",
                                         <span class="value" id="slowest-test">--</span>,
                                     </div>,
                                 </div>","
-                            </div>"",
+                            </div>",
                             <div class="summary-card" style="background: #333, padding: 15px, border-radius: 8px,">""
                                 <h3 style="margin: 0 0 10px 0, color: #8800ff,">Coverage</h3>""
-                                <div id="coverage-summary-content">"",
-                                    <div class="metric">"",
-                                        <span class="label">Line Coverage:</span>"",
+                                <div id="coverage-summary-content">",
+                                    <div class="metric">",
+                                        <span class="label">Line Coverage:</span>",
                                         <span class="value" id="line-coverage">--</span>","
-                                    </div>"",
-                                    <div class="metric">"",
-                                        <span class="label">Branch Coverage:</span>"",
+                                    </div>",
+                                    <div class="metric">",
+                                        <span class="label">Branch Coverage:</span>",
                                         <span class="value" id="branch-coverage">--</span>","
-                                    </div>"",
-                                    <div class="metric">"",
-                                        <span class="label">Function Coverage:</span>"",
+                                    </div>",
+                                    <div class="metric">",
+                                        <span class="label">Function Coverage:</span>",
                                         <span class="value" id="function-coverage">--</span>,
                                     </div>,
                                 </div>,
                             </div>","
-                        </div>"",
+                        </div>",
                         <div id="charts-container" style="background: #333, padding: 15px, border-radius: 8px,">""
                             <h3 style="margin: 0 0 10px 0, color: #00aaff,">Test Results Charts</h3>""
                             <div id="chart-content"></div>,
@@ -198,21 +194,21 @@ export class TestResultVisualizer {
         closeBtn?.addEventListener('click', () => this.hide()),
 ','
         // Tab buttons
-        const tabButtons = this.container.querySelectorAll('.tab-button',
+        const tabButtons = this.container.querySelectorAll('.tab-button,
         tabButtons.forEach(button => { '),'
             button.addEventListener('click', (e) => {'
                 const target = e.target as HTMLElement,
                 const tabName = target.getAttribute('data-tab),'
                 if (tabName) { }
                     this.switchTab(tabName); }
-};
+}
         };
     }
  : undefined';'
     public show(): void { ''
         if (this.container) {
 
-            this.container.style.display = 'block',
+            this.container.style.display = 'block,
             this.isVisible = true }
             this.refreshResults(); }
 }
@@ -226,7 +222,7 @@ export class TestResultVisualizer {
 }
 
     public toggle(): void { if (this.isVisible) {
-            this.hide() } else { this.show() }
+            this.hide() } else { this.show();
     }
 ';'
 
@@ -234,9 +230,9 @@ export class TestResultVisualizer {
         if(!this.container) return,
 ','
         // Update tab buttons
-        const tabButtons = this.container.querySelectorAll('.tab-button',
+        const tabButtons = this.container.querySelectorAll('.tab-button,
         tabButtons.forEach(btn => { '),'
-            btn.classList.remove('active',
+            btn.classList.remove('active,
             (btn, as HTMLElement').style.background = '#222',' }
 
             (btn, as HTMLElement').style.color = '#ccc'; }'
@@ -246,7 +242,7 @@ export class TestResultVisualizer {
         const activeButton = this.container.querySelector(`[data-tab="${tabName}"]`";"
         if (activeButton) {"
 
-            activeButton.classList.add('active',
+            activeButton.classList.add('active,
             (activeButton, as HTMLElement').style.background = '#444' }'
 
             (activeButton, as HTMLElement').style.color = 'white'; }'
@@ -277,30 +273,30 @@ export class TestResultVisualizer {
             case 'summary':','
                 this.loadSummaryContent('''
             case 'performance': ','
-                this.loadPerformanceContent('',
+                this.loadPerformanceContent(',
             case 'trends':','
-                this.loadTrendsContent('',
+                this.loadTrendsContent(',
             case 'details':','
                 this.loadDetailsContent()','
             case 'coverage':),
-                this.loadCoverageContent() }
+                this.loadCoverageContent();
                 break; }
 }
 
     private loadSummaryContent(): void { // Delegate to chartGenerator
-        this.chartGenerator.generateSummaryCharts() }
+        this.chartGenerator.generateSummaryCharts();
 
     private loadPerformanceContent(): void { // Delegate to chartGenerator
-        this.chartGenerator.generatePerformanceCharts() }
+        this.chartGenerator.generatePerformanceCharts();
 
     private loadTrendsContent(): void { // Delegate to chartGenerator
-        this.chartGenerator.generateTrendsCharts() }
+        this.chartGenerator.generateTrendsCharts();
 
     private loadDetailsContent(): void { // Delegate to dataVisualizer
-        this.dataVisualizer.renderTestDetails() }
+        this.dataVisualizer.renderTestDetails();
 
     private loadCoverageContent(): void { // Delegate to dataVisualizer
-        this.dataVisualizer.renderCoverageDetails() }
+        this.dataVisualizer.renderCoverageDetails();
 
     private refreshResults(): void { // Get latest test results from testSupportTools
         // this.currentTestResults = this.testSupportTools.getLatestResults();
@@ -338,30 +334,30 @@ export class TestResultVisualizer {
         const data = {
             results: this.currentTestResults,
             summary: this.calculateSummary(this.currentTestResults,
-    exportedAt: new Date().toISOString( },
+    exportedAt: new Date().toISOString( ,
 
         const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' }';'
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a);'
         a.href = url;
-        a.download = `test-results-${Date.now()).json`,
+        a.download = `test-results-${Date.now()).json,
         a.click();
-        URL.revokeObjectURL(url) }
+        URL.revokeObjectURL(url);
 
     private clearHistory(): void { this.currentTestResults = null;
         this.charts.clear();
-        this.updateSummaryDisplay() }
+        this.updateSummaryDisplay();
 
     public updateResults(results: TestResult[]): void { this.currentTestResults = results,
         if (this.isVisible) {
 
-            this.updateSummaryDisplay() }
+            this.updateSummaryDisplay();
 
             this.loadTabContent('summary'; }'
 }
 
     public destroy(): void { if (this.container && this.container.parentNode) {
-            this.container.parentNode.removeChild(this.container) }
+            this.container.parentNode.removeChild(this.container);
 
         }''
         this.charts.clear();

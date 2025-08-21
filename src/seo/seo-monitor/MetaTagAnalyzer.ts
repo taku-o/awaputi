@@ -7,40 +7,38 @@
 interface MetaTagThresholds { metaTags: {
         titleLength: {
             mi,n: number;
-    max: number;
-        descriptionLength: { min: number;
+    },
+    max: number,
+        descriptionLength: { min: number,
     max: number;
 }
 
-interface MetaTagAlert { type: string;
-    severity: 'info' | 'warning' | 'critical';
+interface MetaTagAlert { type: string,
+    severity: 'info' | 'warning' | 'critical,
     metric: string;
     current?: number;
     threshold?: string;
-    message: string;
+    message: string,
     timestamp: string;
-
-interface MetaTags { title: string | null;
-    description: string | null;
-    keywords: string | null;
+    interface MetaTags { title: string | null,
+    description: string | null,
+    keywords: string | null,
     ogTags: Record<string, string>;
     twitterTags: Record<string, string>;
     timestamp: string;
-
-export class MetaTagAnalyzer {
+    export class MetaTagAnalyzer {
     private thresholds: MetaTagThresholds;
     constructor(thresholds: MetaTagThresholds) {
-        this.thresholds = thresholds }
-    
+        this.thresholds = thresholds };
     /**
      * メタタグのチェック
      */
     async checkMetaTags(): Promise<MetaTags | null> { try {
             const metaTags: MetaTags = {
-                title: this.extractTitleTag();
-                description: this.extractDescriptionTag();
-                keywords: this.extractKeywordsTag();
-                ogTags: this.extractOGTags();
+                title: this.extractTitleTag(),
+                description: this.extractDescriptionTag(),
+                keywords: this.extractKeywordsTag(),
+                ogTags: this.extractOGTags(),
                 twitterTags: this.extractTwitterTags(
     timestamp: new Date().toISOString( };
             
@@ -64,11 +62,11 @@ export class MetaTagAnalyzer {
 
             if (titleLength < min || titleLength > max) {
                 alerts.push({''
-                    type: 'metaTags';
+                    type: 'metaTags,
                     severity: 'warning',';'
                     metric: 'title_length'
             }
-                    current: titleLength) }
+                    current: titleLength),
                     threshold: `${min}-${max}`);
                     message: `Title length (${titleLength}} is outside optimal range(${min}-${ max}`
             }
@@ -77,12 +75,12 @@ export class MetaTagAnalyzer {
             }
 
         } else {  alerts.push({''
-                type: 'metaTags',
+                type: 'metaTags,
                 severity: 'critical',','
-                metric: 'title_missing',')',
-                message: 'Title tag is missing') }
+                metric: 'title_missing,')',
+                message: 'Title tag is missing'),
                 timestamp: new Date().toISOString(); 
-    };
+    }
         }
         
         // 説明文長のチェック
@@ -91,11 +89,11 @@ export class MetaTagAnalyzer {
 
             if (descLength < min || descLength > max) {
                 alerts.push({''
-                    type: 'metaTags',
+                    type: 'metaTags,
                     severity: 'warning',','
                     metric: 'description_length'
             }
-                    current: descLength) }
+                    current: descLength),
                     threshold: `${min}-${max}`),
                     message: `Description length (${descLength}} is outside optimal range(${min}-${ max}`
             }
@@ -104,15 +102,13 @@ export class MetaTagAnalyzer {
             }
 
         } else {  alerts.push({''
-                type: 'metaTags',
+                type: 'metaTags,
                 severity: 'critical',','
-                metric: 'description_missing',')',
-                message: 'Description meta tag is missing') }
+                metric: 'description_missing,')',
+                message: 'Description meta tag is missing'),
                 timestamp: new Date().toISOString(); 
-    };
         }
-    }
-    
+}
     /**
      * タイトルタグの抽出'
      */''
@@ -127,7 +123,7 @@ export class MetaTagAnalyzer {
     private extractDescriptionTag()';'
         if (typeof, document !== 'undefined') {
 
-            const meta = document.querySelector('meta[name="description"]') }
+            const meta = document.querySelector('meta[name="description"]');
 
             return meta ? meta.getAttribute('content') : null;
         return 'HTML5 Canvas を使用したバブルポップゲーム'; // モックデータ
@@ -139,7 +135,7 @@ export class MetaTagAnalyzer {
     private extractKeywordsTag()';'
         if (typeof, document !== 'undefined') {
 
-            const meta = document.querySelector('meta[name="keywords"]') }
+            const meta = document.querySelector('meta[name="keywords"]');
 
             return meta ? meta.getAttribute('content') : null;
         return 'バブルポップ,ゲーム,HTML5'; // モックデータ
@@ -156,12 +152,10 @@ export class MetaTagAnalyzer {
                 const property = meta.getAttribute('property');
                 const content = meta.getAttribute('content) }'
                 if (property && content) { }
-                    ogTags[property] = content; }
-};
-        }
-
+                    ogTags[property] = content;     }
+}
         return Object.keys(ogTags).length > 0 ? ogTags : { ', 'og:title': 'BubblePop','
-            'og:description': 'HTML5 Canvas を使用したバブルポップゲーム',
+            'og:description': 'HTML5 Canvas を使用したバブルポップゲーム,
             'og:type': 'website'
             }
     
@@ -176,11 +170,9 @@ export class MetaTagAnalyzer {
                 const name = meta.getAttribute('name');
                 const content = meta.getAttribute('content) }'
                 if (name && content) { }
-                    twitterTags[name] = content; }
-};
-        }
-
+                    twitterTags[name] = content;     }
+}
         return Object.keys(twitterTags).length > 0 ? twitterTags : { ', 'twitter:card': 'summary_large_image','
-            'twitter:title': 'BubblePop',
+            'twitter:title': 'BubblePop,
             'twitter:description': 'HTML5 Canvas を使用したバブルポップゲーム'
             }'}'

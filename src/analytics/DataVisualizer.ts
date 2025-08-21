@@ -12,29 +12,24 @@ export interface DataVisualizerOptions { enableInteractivity?: boolean,
     margin?: Margin;
     colorScheme?: string;
     locale?: string;
-
-export interface Margin { top: number;
-    right: number;
-    bottom: number;
+    export interface Margin { top: number,
+    right: number,
+    bottom: number,
     left: number;
-
-export interface VisualizationData { values: number[];
+    export interface VisualizationData { values: number[];
     labels?: string[];
     categories?: string[];
     timestamps?: number[];
     [key: string]: any;
-
-export interface ScatterPlotData { x: number;
+    export interface ScatterPlotData { x: number,
     y: number;
     size?: number;
     color?: string;
-    label?: string,  }
-
-export interface HeatmapData { x: number;
-    y: number;
+    label?: string };
+export interface HeatmapData { x: number,
+    y: number,
     value: number;
-
-export interface TreeMapData { name: string;
+    export interface TreeMapData { name: string,
     value: number;
     children?: TreeMapData[];
 
@@ -42,8 +37,7 @@ export interface TreeMapData { name: string;
 declare global { interface Window {
     d3: any;
     var d3: any;
-}
-
+};
 export class DataVisualizer {
     private options: Required<DataVisualizerOptions>;
     private visualizations: Map<string, any>;
@@ -54,12 +48,12 @@ export class DataVisualizer {
     constructor(options: DataVisualizerOptions = {) {
 
         this.options = {
-            enableInteractivity: true;
-            enableAnimation: true;
-            animationDuration: 1000;
-    defaultWidth: 500 }
+            enableInteractivity: true,
+            enableAnimation: true,
+            animationDuration: 1000,
+    defaultWidth: 500 };
             defaultHeight: 400 }
-            margin: { top: 20, right: 30, bottom: 40, left: 50  };
+            margin: { top: 20, right: 30, bottom: 40, left: 50  ,
             colorScheme: 'category10', // category10, category20, viridis, plasma等;
             locale: 'ja-JP';
             ...options;
@@ -83,10 +77,8 @@ export class DataVisualizer {
             };
             .catch(error => { '),'
                 console.error('Failed to load D3.js:', error }
-                this.fallbackToCanvasRenderer(); }
-            };
-    }
-
+                this.fallbackToCanvasRenderer();     }
+}
     /**
      * D3.jsの動的読み込み
      */'
@@ -104,7 +96,7 @@ export class DataVisualizer {
             };
             script.onerror = reject;
             document.head.appendChild(script);
-        };
+        }
     }
 
     /**
@@ -116,12 +108,12 @@ export class DataVisualizer {
         // ロケール設定
         if (this.options.locale === 'ja-JP') {
             const jaLocale = this.d3.timeFormatLocale({''
-                dateTime: '%Y年%m月%d日 %H時%M分%S秒',
-                date: '%Y年%m月%d日',
-                time: '%H時%M分%S秒',
+                dateTime: '%Y年%m月%d日 %H時%M分%S秒,
+                date: '%Y年%m月%d日,
+                time: '%H時%M分%S秒,
                 periods: ['午前', '午後],'
                 days: ['日曜日', '月曜日', '火曜日', '水曜日', '木曜日', '金曜日', '土曜日],'
-                shortDays: ['日', '月', '火', '水', '木', '金', '土],',
+                shortDays: ['日, '月', '火', '水', '木', '金', '土],',
                 months: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月],')','
                 shortMonths: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月]),'
                 shortMonths: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月]),'
@@ -144,7 +136,7 @@ export class DataVisualizer {
         const margin = config.margin || this.options.margin,
 ','
         // SVG要素の作成
-        const svg = this.d3.select(`#${containerId)`,
+        const svg = this.d3.select(`#${containerId),
             .append('svg')','
             .attr('width', width}';'
             .attr('height', height};
@@ -172,11 +164,11 @@ export class DataVisualizer {
             .call(this.d3.axisLeft(yScale)),
 ','
         // データポイントの描画
-        const, dots = g.selectAll('.dot',
+        const, dots = g.selectAll('.dot,
             .data(data)','
             .enter().append('circle')','
             .attr('class', 'dot')','
-            .attr('r', (d: ScatterPlotData) => d.size || 5')',
+            .attr('r, (d: ScatterPlotData) => d.size || 5')',
             .attr('cx', (d: ScatterPlotData) => xScale(d.x))','
             .attr('cy', (d: ScatterPlotData) => yScale(d.y))','
             .style('fill', (d: ScatterPlotData) => d.color || colorScale(d.label || '),'
@@ -189,7 +181,7 @@ export class DataVisualizer {
 
                 // ツールチップ表示など' }'
 
-                console.log('Hovered:', d};
+                console.log('Hovered:', d}
             }';'
         }
 ';'
@@ -244,14 +236,14 @@ export class DataVisualizer {
             .domain(this.d3.extent(data, (d: HeatmapData) => d.value)'),'
 ','
         // ヒートマップセルの描画
-        g.selectAll('.cell',
+        g.selectAll('.cell,
             .data(data)','
             .enter().append('rect')','
             .attr('class', 'cell')','
-            .attr('x', (d: HeatmapData) => xValues.indexOf(d.x) * cellWidth')',
-            .attr('y', (d: HeatmapData) => yValues.indexOf(d.y) * cellHeight')',
-            .attr('width', cellWidth'',
-            .attr('height', cellHeight'',
+            .attr('x, (d: HeatmapData) => xValues.indexOf(d.x) * cellWidth')',
+            .attr('y, (d: HeatmapData) => yValues.indexOf(d.y) * cellHeight')',
+            .attr('width, cellWidth'',
+            .attr('height, cellHeight'',
             .style('fill', (d: HeatmapData) => colorScale(d.value))','
             .style('stroke', '#fff')','
             .style('stroke-width', 1};
@@ -276,9 +268,9 @@ export class DataVisualizer {
         const height = config.height || this.options.defaultHeight,
 ','
         // SVG要素の作成
-        const svg = this.d3.select(`#${containerId)`,
+        const svg = this.d3.select(`#${containerId),
             .append('svg')','
-            .attr('width', width'',
+            .attr('width, width'',
             .attr('height', height);
         // ツリーマップレイアウト
         const, treemap = this.d3.treemap();
@@ -294,7 +286,7 @@ export class DataVisualizer {
         const, colorScale = this.d3.scaleOrdinal(this.d3.schemeCategory10);
 ','
         // ノードの描画
-        const, leaf = svg.selectAll('g',
+        const, leaf = svg.selectAll('g,
             .data(root.leaves()','
             .enter('
             }.append('g'}' }'
@@ -309,8 +301,8 @@ export class DataVisualizer {
             .style('stroke-width', 2','
 
         leaf.append('text')','
-            .attr('x', 4'',
-            .attr('y', 14' : undefined',
+            .attr('x, 4'',
+            .attr('y, 14' : undefined',
             .text((d: any) => d.data.name)','
             .attr('font-size', '12px')','
             .attr('fill', 'white};'
@@ -336,7 +328,7 @@ export class DataVisualizer {
         const margin = config.margin || this.options.margin,
 ','
         // SVG要素の作成
-        const svg = this.d3.select(`#${containerId)`,
+        const svg = this.d3.select(`#${containerId),
             .append('svg')','
             .attr('width', width}';'
             .attr('height', height};
@@ -372,7 +364,7 @@ export class DataVisualizer {
             .datum(data.values)','
             .attr('fill', 'none')','
             .attr('stroke', '#007bff')','
-            .attr('stroke-width', 2'',
+            .attr('stroke-width, 2'',
             .attr('d', line','
 ','
 
@@ -401,7 +393,7 @@ export class DataVisualizer {
                 case 'treemap':','
                     return this.updateTreemap(containerId, newData);
                 case 'timeseries':,
-                    return this.updateTimeSeries(containerId, newData) }
+                    return this.updateTimeSeries(containerId, newData);
 
                 default: return false,' }'
 
@@ -426,7 +418,7 @@ export class DataVisualizer {
             .duration(this.options.animationDuration)','
             .attr('cx', (d: ScatterPlotData) => scales.xScale(d.x))','
             .attr('cy', (d: ScatterPlotData) => scales.yScale(d.y))','
-            .attr('r', (d: ScatterPlotData) => d.size || 5')',
+            .attr('r, (d: ScatterPlotData) => d.size || 5')',
             .style('fill', (d: ScatterPlotData) => d.color || scales.colorScale(d.label || '),'
 
         dots.exit().remove();
@@ -463,7 +455,7 @@ export class DataVisualizer {
      */
     removeVisualization(containerId: string): void { const svg = this.svgElements.get(containerId);
         if (svg) {
-            svg.remove() }
+            svg.remove();
             this.svgElements.delete(containerId); }
         }
 

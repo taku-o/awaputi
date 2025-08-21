@@ -17,35 +17,33 @@ export interface FloatingTextOptions { duration?: number,
     outline?: boolean;
     outlineColor?: string;
     easing?: string;
-
-export interface FloatingText { id: number;
-    x: number;
-    y: number;
-    originalY: number;
-    text: string;
-    life: number;
-    maxLife: number;
-    color: string;
-    fontSize: number;
-    fontWeight: string;
-    fontFamily: string;
-    velocityX: number;
-    velocityY: number;
-    gravity: number;
-    fadeOut: boolean;
-    scaleAnimation: boolean;
-    bounceAnimation: boolean;
-    pulseAnimation: boolean;
-    alpha: number;
-    scale: number;
-    rotation: number;
-    rotationSpeed: number;
-    shadow: boolean;
-    outline: boolean;
-    outlineColor: string;
+    export interface FloatingText { id: number,
+    x: number,
+    y: number,
+    originalY: number,
+    text: string,
+    life: number,
+    maxLife: number,
+    color: string,
+    fontSize: number,
+    fontWeight: string,
+    fontFamily: string,
+    velocityX: number,
+    velocityY: number,
+    gravity: number,
+    fadeOut: boolean,
+    scaleAnimation: boolean,
+    bounceAnimation: boolean,
+    pulseAnimation: boolean,
+    alpha: number,
+    scale: number,
+    rotation: number,
+    rotationSpeed: number,
+    shadow: boolean,
+    outline: boolean,
+    outlineColor: string,
     easing: string;
-
-export interface AnimationConfig { color: string;
+    export interface AnimationConfig { color: string,
     fontSize: number;
     velocityX?: number;
     velocityY: number;
@@ -55,8 +53,7 @@ export interface AnimationConfig { color: string;
     bounceAnimation?: boolean;
     pulseAnimation?: boolean;
     rotationSpeed?: number;
-
-export interface AnimationConfigMap { [key: string]: AnimationConfig;
+    export interface AnimationConfigMap { [key: string]: AnimationConfig;
 
 /**
  * フローティングテキスト管理クラス
@@ -67,7 +64,7 @@ export class FloatingTextManager {
     private, textId: number;
     constructor() {
 
-        this.texts = [] }
+        this.texts = [] };
         this.textId = 0; }
     }
     
@@ -83,10 +80,10 @@ export class FloatingTextManager {
             text: text,
             life: options.duration || 2000,
             maxLife: options.duration || 2000,
-    color: options.color || '#FFFFFF',
+    color: options.color || '#FFFFFF,
             fontSize: options.fontSize || 20,
-            fontWeight: options.fontWeight || 'bold',
-            fontFamily: options.fontFamily || 'Arial',
+            fontWeight: options.fontWeight || 'bold,
+            fontFamily: options.fontFamily || 'Arial,
             velocityX: options.velocityX || 0,
             velocityY: options.velocityY || -50,
             gravity: options.gravity || 0,
@@ -100,7 +97,7 @@ export class FloatingTextManager {
             rotationSpeed: options.rotationSpeed || 0,
     shadow: options.shadow || false,
             outline: options.outline || false,
-            outlineColor: options.outlineColor || '#000000',
+            outlineColor: options.outlineColor || '#000000,
             easing: options.easing || 'linear'
             };
         this.texts.push(floatingText);
@@ -117,26 +114,26 @@ export class FloatingTextManager {
         return this.addText(x, y, text, { color: color,
 
             fontSize: 24,
-            fontWeight: 'bold',
+            fontWeight: 'bold,
             velocityY: -80),
             duration: 1500,
     scaleAnimation: true,','
             shadow: true,
-            shadow: true,
+            shadow: true;
         };
     /**
      * ダメージ表示用のフローティングテキスト
      */'
     public addDamageText(x: number, y: number, damage: number): number { ''
         return this.addText(x, y, `-${damage}`, {''
-            color: '#FF4444',
+            color: '#FF4444,
             fontSize: 28,
-            fontWeight: 'bold',
+            fontWeight: 'bold,
     velocityY: -60 }
-            velocityX: (Math.random() - 0.5} * 40,
+            velocityX: (Math.random() - 0.5} * 40;
             duration: 2000,
             bounceAnimation: true,
-    shadow: true,
+    shadow: true;
         } }
     
     /**
@@ -144,14 +141,14 @@ export class FloatingTextManager {
      */''
     public addHealText(x: number, y: number, heal: number): number {'
         return this.addText(x, y, `+${heal} HP`, { ''
-            color: '#44FF44',
+            color: '#44FF44,
             fontSize: 26,
-            fontWeight: 'bold',
-            velocityY: -70);
+            fontWeight: 'bold,
+            velocityY: -70),
             duration: 1800,
     pulseAnimation: true,','
             shadow: true,
-            shadow: true,
+            shadow: true;
         };
     /**
      * コンボ表示用のフローティングテキスト'
@@ -164,7 +161,7 @@ export class FloatingTextManager {
             color: colors[colorIndex],' }'
 
             fontSize: 32 + Math.min(combo * 2, 20'}',''
-            fontWeight: 'bold',
+            fontWeight: 'bold,
             velocityY: -100,
             duration: 2500,
             scaleAnimation: true,
@@ -177,34 +174,34 @@ export class FloatingTextManager {
      * 特殊効果表示用のフローティングテキスト'
      */''
     public addEffectText(x: number, y: number, effect: string, type: string = 'normal'): number { const configs: AnimationConfigMap = {'
-            bonus: {''
-                color: '#FFD700',
+            bonus: { ''
+                color: '#FFD700'  ,
                 fontSize: 36,
                 velocityY: -120,
                 duration: 3000,
                 scaleAnimation: true,
     pulseAnimation: true,
             timeStop: { ''
-                color: '#00AAFF',
+                color: '#00AAFF'  ,
                 fontSize: 32,
                 velocityY: -90,
                 duration: 2500,
     bounceAnimation: true,
             shock: { ''
-                color: '#FFFF00',
+                color: '#FFFF00'  ,
                 fontSize: 28,
                 velocityX: (Math.random() - 0.5) * 100,
     velocityY: -60,
                 duration: 2000,
-                rotationSpeed: (Math.random() - 0.5) * 10  },
+                rotationSpeed: (Math.random() - 0.5) * 10  };
             chain: { ''
-                color: '#FF6600',
+                color: '#FF6600'  ,
                 fontSize: 30,
                 velocityY: -80,
                 duration: 2200,
     scaleAnimation: true,
             normal: { ''
-                color: '#FFFFFF',
+                color: '#FFFFFF'  ,
                 fontSize: 24,
                 velocityY: -50,
     duration: 2000 
@@ -213,42 +210,42 @@ export class FloatingTextManager {
         ';'
 
         return this.addText(x, y, effect, { ...config)'
-            fontWeight: 'bold',
+            fontWeight: 'bold,
     outline: true,','
             shadow: true,
-            shadow: true,
+            shadow: true;
         };
     /**
      * カスタムアニメーション付きテキスト'
      */''
     public addAnimatedText(x: number, y: number, text: string, animationType: string): number { const animations: AnimationConfigMap = {'
-            rainbow: {''
-                color: '#FF0000', // 虹色は更新で変更,
+            rainbow: { ''
+                color: '#FF0000', // 虹色は更新で変更  },
                 fontSize: 28,
                 velocityY: -70,
                 duration: 2000,
     pulseAnimation: true,
             explosive: { ''
-                color: '#FF4500',
+                color: '#FF4500'  ,
                 fontSize: 32,
                 velocityX: (Math.random() - 0.5) * 200,
                 velocityY: -150,
     gravity: 80,
                 duration: 2500,
-                rotationSpeed: (Math.random() - 0.5) * 15  },
+                rotationSpeed: (Math.random() - 0.5) * 15  };
             gentle: { ''
-                color: '#87CEEB',
+                color: '#87CEEB'  ,
                 fontSize: 22,
                 velocityY: -40,
                 duration: 3000,
-    scaleAnimation: true,
+    scaleAnimation: true;
         const config = animations[animationType] || animations.gentle;
         ';'
 
         return this.addText(x, y, text, { ...config)'
             fontWeight: 'bold'),
             shadow: true,
-            shadow: true,
+            shadow: true;
         };
     /**
      * 更新処理
@@ -276,7 +273,7 @@ export class FloatingTextManager {
             this.updateAnimations(text, deltaTime);
             
             return true;
-        };
+        }
     }
     
     /**
@@ -340,7 +337,7 @@ export class FloatingTextManager {
             // 影を描画
             if (text.shadow) {
 
-                context.shadowColor = 'rgba(0, 0, 0, 0.8)',
+                context.shadowColor = 'rgba(0, 0, 0, 0.8),
                 context.shadowOffsetX = 2,
                 context.shadowOffsetY = 2 }
                 context.shadowBlur = 4; }
@@ -358,13 +355,13 @@ export class FloatingTextManager {
             context.fillText(text.text, 0, 0);
             
             context.restore();
-        };
+        }
     }
     
     /**
      * 特定のテキストを削除
      */
-    public removeText(id: number): void { this.texts = this.texts.filter(text => text.id !== id) }
+    public removeText(id: number): void { this.texts = this.texts.filter(text => text.id !== id);
     
     /**
      * 全てのテキストをクリア

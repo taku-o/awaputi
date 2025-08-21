@@ -16,7 +16,7 @@ const mockAudioManager = {
 const mockAccessibilityManager = {
     gameEngine: {
         canvas: { 
-            width: 800, 
+            width: 800 },
             height: 600,
             getContext: (') => ({'
                 fillStyle: ','
@@ -131,7 +131,7 @@ async function testAudioAccessibilitySupportAPI(') {'
         console.log('✓ showVisualNotification, method signature: COMPATIBLE',
         
         // 7. Status, retrieval test, const status = support.getStatus('),'
-        console.log(`✓ getStatus, returns object: ${typeof, status === 'object' ? 'PASS' : 'FAIL')`};
+        console.log(`✓ getStatus, returns object: ${typeof, status === 'object' ? 'PASS' : 'FAIL')`}
         
     } catch (error') {'
         console.error('AudioAccessibilitySupport API test error:', error.message) }
@@ -354,7 +354,7 @@ function generateCompatibilityReport(audioResults, focusResults, feedbackResults
         overallCompatibility: true,
         components: {
             AudioAccessibilitySupport: {
-                constructor: audioResults.constructor,
+                constructor: audioResults.constructor },
                 methodsTotal: Object.keys(audioResults.publicMethods).length,
                 methodsPassed: Object.values(audioResults.publicMethods).filter(v => v).length,
                 propertiesTotal: Object.keys(audioResults.properties).length,
@@ -362,7 +362,7 @@ function generateCompatibilityReport(audioResults, focusResults, feedbackResults
                 compatibility: calculateCompatibility(audioResults
             );
             VisualFocusManager: {
-                constructor: focusResults.constructor,
+                constructor: focusResults.constructor },
                 methodsTotal: Object.keys(focusResults.publicMethods).length,
                 methodsPassed: Object.values(focusResults.publicMethods).filter(v => v).length,
                 propertiesTotal: Object.keys(focusResults.properties).length,
@@ -370,7 +370,7 @@ function generateCompatibilityReport(audioResults, focusResults, feedbackResults
                 compatibility: calculateCompatibility(focusResults
             );
             VisualFeedbackManager: {
-                constructor: feedbackResults.constructor,
+                constructor: feedbackResults.constructor },
                 methodsTotal: Object.keys(feedbackResults.publicMethods).length,
                 methodsPassed: Object.values(feedbackResults.publicMethods).filter(v => v).length,
                 propertiesTotal: Object.keys(feedbackResults.properties).length,

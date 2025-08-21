@@ -91,7 +91,7 @@ describe('Phase G End-to-End統合テスト', (') => {'
                     try {
                         const component = await import(componentPath);
                         loadedComponents.push(component);
-                        console.log(`✅ コンポーネント読み込み成功: ${componentPath)`};
+                        console.log(`✅ コンポーネント読み込み成功: ${componentPath)`}
                     } catch (error) {
                         console.warn(`⚠️ コンポーネント読み込み失敗: ${componentPath} - ${error.message}`);
                     }
@@ -144,7 +144,7 @@ describe('Phase G End-to-End統合テスト', (') => {'
                     cueManager: { processAudioEvent: jest.fn() },
                     feedbackManager: { showVisualNotification: jest.fn() },
                     settingsManager: { getSettings: jest.fn().mockReturnValue({) },
-                    initialize: jest.fn().mockResolvedValue(true,
+                    initialize: jest.fn().mockResolvedValue(true },
                     getStatus: jest.fn().mockReturnValue({ initialized: true ,
                 
                 await expect(mockSupport.initialize().resolves.toBe(true);
@@ -211,7 +211,7 @@ describe('Phase G End-to-End統合テスト', (') => {'
                         loadPath = fallbackPath }
                     
                     results.push({ name: systemName, loaded: true, path: loadPath,);
-                    console.log(`✅ ${systemName} 読み込み成功: ${loadPath)`};
+                    console.log(`✅ ${systemName} 読み込み成功: ${loadPath)`}
                 } catch (error) {
                     results.push({ name: systemName, loaded: false, error: error.message },
                     console.warn(`⚠️ ${systemName} 読み込み失敗: ${error.message}`);
@@ -222,7 +222,7 @@ describe('Phase G End-to-End統合テスト', (') => {'
             const loadedSystems = results.filter(r => r.loaded);
             expect(loadedSystems.length).toBeGreaterThanOrEqual(0); // 0でもOK（モックで継続）
             
-            console.log(`Visual Manager読み込み結果: ${loadedSystems.length}/${visualSystems.length)`};
+            console.log(`Visual Manager読み込み結果: ${loadedSystems.length}/${visualSystems.length)`}
         }');'
     }
     describe('Phase G Cross-System統合テスト', (') => {'
@@ -230,17 +230,17 @@ describe('Phase G End-to-End統合テスト', (') => {'
             // 複数システム間のデータ連携をシミュレート
             const dataFlow = {
                 balanceChange: {
-                    source: 'BalanceAdjuster',
+                    source: 'BalanceAdjuster' },
                     target: 'ConfigurationManager',
                     data: { bubbleScore: 15, oldScore: 10 }
                 },
                 accessibilityEvent: {
-                    source: 'AudioAccessibilitySupport', 
+                    source: 'AudioAccessibilitySupport' },
                     target: 'VisualFeedbackManager',
                     data: { eventType: 'score_update', visualCue: true,
                 },
                 focusChange: {
-                    source: 'VisualFocusManager',
+                    source: 'VisualFocusManager' },
                     target: 'AudioAccessibilitySupport',
                     data: { focusedElement: 'bubble', announce: true,
                 }
@@ -252,7 +252,7 @@ describe('Phase G End-to-End統合テスト', (') => {'
                 expect(flow.target).toBeDefined();
                 expect(flow.data).toBeDefined();
                 expect(typeof flow.data').toBe('object'),'
-                console.log(`✅ データフロー確認: ${flowName} (${flow.source} → ${flow.target)`};
+                console.log(`✅ データフロー確認: ${flowName} (${flow.source} → ${flow.target)`}
             }
             
             expect(Object.keys(dataFlow).toHaveLength(3);
@@ -288,7 +288,7 @@ describe('Phase G End-to-End統合テスト', (') => {'
                 expect(scenario.expected).toBeDefined();
                 // リカバリー戦略が定義されていることを確認
                 expect(scenario.recovery.length).toBeGreaterThan(0);
-                console.log(`✅ エラーシナリオ確認: ${scenario.system} - ${scenario.expected)`};
+                console.log(`✅ エラーシナリオ確認: ${scenario.system} - ${scenario.expected)`}
             }
             
             expect(errorScenarios.toHaveLength(3);
@@ -297,15 +297,15 @@ describe('Phase G End-to-End統合テスト', (') => {'
             // システム全体のパフォーマンス指標確認
             const performanceMetrics = {
                 initialization: {
-                    target: '< 100ms',
+                    target: '< 100ms' },
                     systems: ['BalanceAdjuster', 'AudioAccessibilitySupport', 'VisualManagers']
                 },
                 memoryUsage: {
-                    target: '< 50MB total',
+                    target: '< 50MB total' },
                     perSystem: '< 10MB per system'
                 },
                 responseTime: {
-                    target: '< 16ms per frame',
+                    target: '< 16ms per frame' },
                     criticalPath: 'Visual updates, Audio processing'
                 }
             };
@@ -318,7 +318,7 @@ describe('Phase G End-to-End統合テスト', (') => {'
             console.log('✅ パフォーマンス指標確認完了');
             console.log(`初期化目標: ${performanceMetrics.initialization.target)`),
             console.log(`メモリ使用量目標: ${performanceMetrics.memoryUsage.target)`),
-            console.log(`応答時間目標: ${performanceMetrics.responseTime.target)`};
+            console.log(`応答時間目標: ${performanceMetrics.responseTime.target)`}
         }');'
     }
     describe('Phase G総合品質確認', (') => {'
@@ -326,22 +326,22 @@ describe('Phase G End-to-End統合テスト', (') => {'
             // 統合されたシステム全体の安定性指標
             const qualityMetrics = {
                 codeComplexity: {
-                    target: 'Main Controller Pattern adoption',
+                    target: 'Main Controller Pattern adoption' },
                     achieved: 'All major files < 2,500 words',
                     benefit: 'Improved maintainability'
                 },
                 apiCompatibility: {
-                    target: '100% backward compatibility',
+                    target: '100% backward compatibility' },
                     achieved: 'All public APIs preserved',
                     benefit: 'No breaking changes'
                 },
                 testCoverage: {
-                    target: 'Integration tests passing',
+                    target: 'Integration tests passing' },
                     achieved: 'File structure and API tests complete',
                     benefit: 'System reliability verified'
                 },
                 performanceImpact: {
-                    target: '< 5% performance degradation',
+                    target: '< 5% performance degradation' },
                     achieved: 'Minimal overhead from pattern',
                     benefit: 'Scalable architecture'
                 }
@@ -352,7 +352,7 @@ describe('Phase G End-to-End統合テスト', (') => {'
                 expect(data.target).toBeDefined();
                 expect(data.achieved).toBeDefined();
                 expect(data.benefit).toBeDefined();
-                console.log(`✅ 品質指標 ${metric}: ${data.achieved)`};
+                console.log(`✅ 品質指標 ${metric}: ${data.achieved)`}
             }
             
             expect(Object.keys(qualityMetrics).toHaveLength(4)');'
@@ -366,25 +366,25 @@ describe('Phase G End-to-End統合テスト', (') => {'
             // Phase G全体の完了状況確認
             const phaseGCompletion = {
                 'Phase G.1': {
-                    target: 'balance-adjuster.js分割',
+                    target: 'balance-adjuster.js分割' },
                     status: 'completed',
                     components: 4,
                     mainController: '< 500 words'
                 },
                 'Phase G.2': {
-                    target: 'AudioAccessibilitySupport.js分割',
+                    target: 'AudioAccessibilitySupport.js分割' },
                     status: 'completed', 
                     components: 6,
                     mainController: '< 350 words'
                 },
                 'Phase G.3': {
-                    target: 'VisualFocusManager.js分割',
+                    target: 'VisualFocusManager.js分割' },
                     status: 'completed',
                     components: 4,
                     mainController: 'TBD'
                 },
                 'Phase G.4': {
-                    target: 'VisualFeedbackManager.js分割',
+                    target: 'VisualFeedbackManager.js分割' },
                     status: 'completed',
                     components: 4, 
                     mainController: 'TBD'
@@ -405,7 +405,7 @@ describe('Phase G End-to-End統合テスト', (') => {'
             console.log('✅ MCPツール互換性達成');
             // Issue #103完了条件の確認
             expect(completedPhases.length).toBe(4);
-            expect(totalComponents.toBeGreaterThan(0)};
+            expect(totalComponents.toBeGreaterThan(0)}
         };
     }
 }');'

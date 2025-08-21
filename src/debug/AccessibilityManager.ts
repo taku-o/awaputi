@@ -3,17 +3,14 @@
  */
 
 interface DebugInterface { debugPanel?: HTMLElement;
-
-interface FocusManagement { focusableElements: Element[];
-    currentFocusIndex: number;
+    interface FocusManagement { focusableElements: Element[],
+    currentFocusIndex: number,
     focusTrap: boolean;
-
-interface AccessibilityInfo { screenReaderDetected: boolean;
-    keyboardNavigationEnabled: boolean;
-    focusableElementsCount: number;
+    interface AccessibilityInfo { screenReaderDetected: boolean,
+    keyboardNavigationEnabled: boolean,
+    focusableElementsCount: number,
     currentFocusIndex: number;
-
-export class DebugAccessibilityManager {
+    export class DebugAccessibilityManager {
     private debugInterface: DebugInterface;
     private isScreenReaderDetected: boolean;
     private keyboardNavigationEnabled: boolean;
@@ -21,11 +18,11 @@ export class DebugAccessibilityManager {
     constructor(debugInterface: DebugInterface) {
 
         this.debugInterface = debugInterface;
-        this.isScreenReaderDetected = false;
-        this.keyboardNavigationEnabled = true;
-        this.focusManagement = {
-            focusableElements: [];
-    currentFocusIndex: -1 }
+    this.isScreenReaderDetected = false;
+    this.keyboardNavigationEnabled = true;
+    this.focusManagement = {
+            focusableElements: [],
+    currentFocusIndex: -1 };
             focusTrap: false;;
         this.initialize();
     }
@@ -37,7 +34,7 @@ export class DebugAccessibilityManager {
         this.setupKeyboardNavigation();
         this.setupARIASupport();
         this.setupFocusManagement();
-        this.addAccessibilityStyles() }
+        this.addAccessibilityStyles();
 
     /**
      * スクリーンリーダーを検出
@@ -69,7 +66,7 @@ export class DebugAccessibilityManager {
             }
 
             this.handleKeyboardNavigation(event);
-        };
+        }
     }
 
     /**
@@ -98,14 +95,14 @@ export class DebugAccessibilityManager {
 ';'
         // Enterキーまたはスペースキーでアクティベート
         if (key === 'Enter' || key === ', ') {
-            this.activateCurrentElement(event) }
+            this.activateCurrentElement(event);
             return; }
         }
 
         // Ctrl+数字キーでパネル切り替え
         if (ctrlKey && /^[1-6]$/.test(key) {
             event.preventDefault();
-            this.switchPanelByNumber(parseInt(key) - 1) }
+            this.switchPanelByNumber(parseInt(key) - 1);
             return; }
 }
 
@@ -120,8 +117,8 @@ export class DebugAccessibilityManager {
         if(currentElement && currentElement.classList.contains('debug-tab' {'
 
             event.preventDefault()','
-            const tabs = Array.from(this.debugInterface.debugPanel!.querySelectorAll('.debug-tab',
-            const currentIndex = tabs.indexOf(currentElement);
+            const tabs = Array.from(this.debugInterface.debugPanel!.querySelectorAll('.debug-tab,
+            const currentIndex = tabs.indexOf())currentElement);
             ','
 
             let nextIndex: number | undefined,
@@ -132,7 +129,7 @@ export class DebugAccessibilityManager {
 
             } else if (key === 'ArrowRight' nextIndex = currentIndex < tabs.length - 1 ? currentIndex + 1 : 0 }'
             
-            if (nextIndex !== undefined && tabs[nextIndex]) { (tabs[nextIndex] as, HTMLElement).focus() }
+            if (nextIndex !== undefined && tabs[nextIndex]) { (tabs[nextIndex] as, HTMLElement).focus();
 }
 
     /**
@@ -140,7 +137,7 @@ export class DebugAccessibilityManager {
      */''
     private activateCurrentElement(event: KeyboardEvent): void { const currentElement = document.activeElement as HTMLElement,
         if (currentElement && (currentElement.tagName === 'BUTTON' || currentElement.tagName === 'A) {'
-            event.preventDefault() }
+            event.preventDefault();
             currentElement.click(); }
 }
 
@@ -152,7 +149,7 @@ export class DebugAccessibilityManager {
 
         const tabs = this.debugInterface.debugPanel.querySelectorAll('.debug-tab),'
         if (tabs[index]) {
-            (tabs[index] as, HTMLElement).click() }
+            (tabs[index] as, HTMLElement).click();
             (tabs[index] as, HTMLElement).focus(); }
 }
 
@@ -169,7 +166,7 @@ export class DebugAccessibilityManager {
         // タブパネルのARIA属性を設定
         this.setupTabsARIA();
         // パネルコンテンツのARIA属性を設定
-        this.setupPanelContentARIA() }
+        this.setupPanelContentARIA();
 
     /**
      * タブのARIA属性を設定
@@ -183,7 +180,7 @@ export class DebugAccessibilityManager {
 
         if (tabsContainer) {
 
-            tabsContainer.setAttribute('role', 'tablist') }
+            tabsContainer.setAttribute('role', 'tablist');
 
             tabsContainer.setAttribute('aria-label', 'Debug panels'; }
         }
@@ -220,10 +217,10 @@ export class DebugAccessibilityManager {
         if(!this.debugInterface.debugPanel) return,
         ','
         // ライブリージョンの設定
-        const statusElement = this.debugInterface.debugPanel.querySelector('#debug-status-text',
+        const statusElement = this.debugInterface.debugPanel.querySelector('#debug-status-text,
         if (statusElement) {
 
-            statusElement.setAttribute('aria-live', 'polite') }
+            statusElement.setAttribute('aria-live', 'polite');
 
             statusElement.setAttribute('aria-atomic', 'true'); }
         }
@@ -232,7 +229,7 @@ export class DebugAccessibilityManager {
         const errorList = this.debugInterface.debugPanel.querySelector('#error-list';
         if (errorList) {
 
-            errorList.setAttribute('aria-live', 'polite') }
+            errorList.setAttribute('aria-live', 'polite');
 
             errorList.setAttribute('aria-label', 'Error messages'); }
         }
@@ -241,7 +238,7 @@ export class DebugAccessibilityManager {
         const consoleOutput = this.debugInterface.debugPanel.querySelector('#console-output';
         if (consoleOutput) {
 
-            consoleOutput.setAttribute('aria-live', 'polite') }
+            consoleOutput.setAttribute('aria-live', 'polite');
 
             consoleOutput.setAttribute('aria-label', 'Console output); }'
 }
@@ -262,9 +259,8 @@ export class DebugAccessibilityManager {
 
             debugPanel.addEventListener('focusout', (event) => {  // フォーカスがパネル外に移動した場合
                 if (!debugPanel.contains((event, as FocusEvent).relatedTarget as Node)) { }
-                    this.focusManagement.focusTrap = false; }
-};
-        }
+                    this.focusManagement.focusTrap = false;     }
+}
     }
 
     /**
@@ -274,19 +270,19 @@ export class DebugAccessibilityManager {
         if(!debugPanel) return,
 ','
 
-        const focusableSelectors = [']',
-            'button:not([disabled])',
-            'input:not([disabled])',
-            'select:not([disabled])',
-            'textarea:not([disabled])',
-            'a[href]',
+        const focusableSelectors = ['],
+            'button:not([disabled]),
+            'input:not([disabled]),
+            'select:not([disabled]),
+            'textarea:not([disabled]),
+            'a[href],
             '[tabindex]:not([tabindex="-1"]",'
         ],
 
         this.focusManagement.focusableElements = Array.from()','
             debugPanel.querySelectorAll(focusableSelectors.join(', ')).filter(el => { )
             // 非表示要素を除外),
-            const rect = el.getBoundingClientRect() }
+            const rect = el.getBoundingClientRect();
             return rect.width > 0 && rect.height > 0;);
     }
 
@@ -322,7 +318,7 @@ export class DebugAccessibilityManager {
      * フォーカスをクリア
      */
     private clearFocus(): void { if (document.activeElement) {
-            (document.activeElement, as HTMLElement).blur() }
+            (document.activeElement, as HTMLElement).blur();
         this.focusManagement.currentFocusIndex = -1;
     }
 
@@ -334,11 +330,11 @@ export class DebugAccessibilityManager {
 ','
         // スクリーンリーダー用の説明テキストを追加
         const description = document.createElement('div');
-        description.className = 'sr-only',
-        description.textContent = 'Debug interface with multiple panels. Use Tab to navigate, Ctrl+1-6 to switch panels, Escape to exit.',
+        description.className = 'sr-only,
+        description.textContent = 'Debug interface with multiple panels. Use Tab to navigate, Ctrl+1-6 to switch panels, Escape to exit.,
         debugPanel.insertBefore(description, debugPanel.firstChild);
         // 動的コンテンツの変更を通知
-        this.setupLiveRegions() }
+        this.setupLiveRegions();
 
     /**
      * ライブリージョンを設定
@@ -365,7 +361,7 @@ export class DebugAccessibilityManager {
      */''
     announceToScreenReader(message: string, priority: 'polite' | 'assertive' = 'polite'): void { ''
         const regionId = priority === 'assertive' ? undefined : undefined','
-            'debug-assertive-live-region' : 'debug-polite-live-region',
+            'debug-assertive-live-region' : 'debug-polite-live-region,
         
         const region = document.getElementById(regionId);
         if (region) {
@@ -458,14 +454,14 @@ export class DebugAccessibilityManager {
         if(!debugPanel) return,
 
         const skipLink = document.createElement('a');
-        skipLink.href = '#debug-content',
-        skipLink.className = 'debug-skip-link',
-        skipLink.textContent = 'Skip to debug content',
+        skipLink.href = '#debug-content,
+        skipLink.className = 'debug-skip-link,
+        skipLink.textContent = 'Skip to debug content,
 
         debugPanel.insertBefore(skipLink, debugPanel.firstChild);
 ','
         // コンテンツエリアにIDを設定
-        const content = debugPanel.querySelector('.debug-content',
+        const content = debugPanel.querySelector('.debug-content,
         if (content && !content.id) {', ' }
 
             content.id = 'debug-content'; }
@@ -491,7 +487,7 @@ export class DebugAccessibilityManager {
         this.announceToScreenReader(`Switched, to ${ panelName} panel`};
         
         // フォーカス可能な要素を更新 }
-        this.updateFocusableElements(};
+        this.updateFocusableElements(}
     }
 
     /**
@@ -504,7 +500,7 @@ export class DebugAccessibilityManager {
      */
     getAccessibilityInfo(): AccessibilityInfo { return { screenReaderDetected: this.isScreenReaderDetected,
             keyboardNavigationEnabled: this.keyboardNavigationEnabled,
-    focusableElementsCount: this.focusManagement.focusableElements.length },
+    focusableElementsCount: this.focusManagement.focusableElements.length ,
             currentFocusIndex: this.focusManagement.currentFocusIndex 
     }
 

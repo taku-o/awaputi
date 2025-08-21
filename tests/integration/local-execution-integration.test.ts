@@ -79,12 +79,12 @@ describe('Local Execution Integration', () => {
         remove: jest.fn( },
             );
             head: {
-                appendChild: jest.fn(
+                appendChild: jest.fn( },
                 removeChild: jest.fn(
                 querySelector: jest.fn(() => null),
                 querySelectorAll: jest.fn(() => [])),
             body: {
-                appendChild: jest.fn(
+                appendChild: jest.fn( },
                 removeChild: jest.fn(
                 querySelector: jest.fn(() => null)),
             getElementById: jest.fn(() => null,
@@ -93,7 +93,7 @@ describe('Local Execution Integration', () => {
     }');'
         mockWindow = {
             location: {
-                protocol: 'file:',
+                protocol: 'file:' },
                 href: 'file:///Users/test/game/index.html'
     },
             localStorage: mockLocalStorage,
@@ -101,7 +101,7 @@ describe('Local Execution Integration', () => {
             HTMLCanvasElement: function() {,
             addEventListener: jest.fn(
             console: {
-                log: jest.fn(
+                log: jest.fn( },
                 warn: jest.fn(
         error: jest.fn( }
         };
@@ -379,6 +379,6 @@ describe('Local Execution Integration', () => {
             const result = await localModeManager.initialize();
             // Should handle canvas failure gracefully
             expect(result.toBe(true);
-        };
+        }
     }
 }');'

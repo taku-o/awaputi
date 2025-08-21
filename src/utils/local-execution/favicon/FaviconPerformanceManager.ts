@@ -7,69 +7,61 @@
  */
 
 // Type definitions
-interface PerformanceConfig { lazyLoadingEnabled: boolean;
-    batchProcessing: boolean;
-    memoryCleanupEnabled: boolean;
-    maxConcurrentGeneration: number;
-    cacheCompressionEnabled: boolean;
+interface PerformanceConfig { lazyLoadingEnabled: boolean,
+    batchProcessing: boolean,
+    memoryCleanupEnabled: boolean,
+    maxConcurrentGeneration: number,
+    cacheCompressionEnabled: boolean,
     debounceDelay: number;
-
-interface CanvasPoolItem { canvas: HTMLCanvasElement;
-    context: CanvasRenderingContext2D;
-    size: number;
-    inUse: boolean;
+    interface CanvasPoolItem { canvas: HTMLCanvasElement,
+    context: CanvasRenderingContext2D,
+    size: number,
+    inUse: boolean,
     createdAt: number;
-
-interface ResourcePool { canvasElements: CanvasPoolItem[];
-    contexts: CanvasRenderingContext2D[];
-    generationQueue: any[];
+    interface ResourcePool { canvasElements: CanvasPoolItem[],
+    contexts: CanvasRenderingContext2D[],
+    generationQueue: any[],
     activeGenerations: number;
-
-interface CanvasInfo { canvas: HTMLCanvasElement;
-    ctx: CanvasRenderingContext2D;
-    fromPool: boolean;
+    interface CanvasInfo { canvas: HTMLCanvasElement,
+    ctx: CanvasRenderingContext2D,
+    fromPool: boolean,
     poolIndex: number;
-
-interface GenerationRequest { size: number;
+    interface GenerationRequest { size: number;
     [key: string]: any;
-
-interface BatchResult { status: 'fulfilled' | 'rejected';
+    interface BatchResult { status: 'fulfilled' | 'rejected';
     value?: any;
     reason?: any;
-
-interface PerformanceStats { resourcePool: {
-        totalCanvasElement,s: number;
-        activeCanvasElements: number;
-        queuedGenerations: number;
-    activeGenerations: number;
-    config: PerformanceConfig;
-    debounceTimers: number;
+    interface PerformanceStats { resourcePool: {
+        totalCanvasElement,s: number,
+        activeCanvasElements: number,
+    queuedGenerations: number,
+    activeGenerations: number,
+    config: PerformanceConfig,
+    debounceTimers: number,
     memoryUsage: MemoryUsage;
-    }
+    } };
 
-interface MemoryUsage { canvasMemoryBytes: number;
-    canvasMemoryKB: number;
+interface MemoryUsage { canvasMemoryBytes: number,
+    canvasMemoryKB: number,
     canvasMemoryMB: number;
-
-type RenderCallback = (canvasInfo: CanvasInfo, request: GenerationRequest) => Promise<any>;
-type GenerationFunction = () => Promise<any>;
-
-export default class FaviconPerformanceManager { /**
+    type RenderCallback = (canvasInfo: CanvasInfo, request: GenerationRequest) => Promise<any>;
+    type GenerationFunction = () => Promise<any>;
+    export default class FaviconPerformanceManager { /**
      * パフォーマンス設定
      */
     static PERFORMANCE_CONFIG: PerformanceConfig = {
-        lazyLoadingEnabled: true;
-        batchProcessing: true;
-        memoryCleanupEnabled: true;
-        maxConcurrentGeneration: 3;
-        cacheCompressionEnabled: true;
+        lazyLoadingEnabled: true,
+    batchProcessing: true,
+    memoryCleanupEnabled: true,
+    maxConcurrentGeneration: 3,
+    cacheCompressionEnabled: true,
     debounceDelay: 100 };
     /**
      * リソースプール
      */
-    private static _resourcePool: ResourcePool = { canvasElements: [];
-        contexts: [];
-        generationQueue: [];
+    private static _resourcePool: ResourcePool = { canvasElements: [],
+        contexts: [],
+        generationQueue: [],
     activeGenerations: 0  };
     /**
      * デバウンス用タイマー
@@ -93,7 +85,7 @@ export default class FaviconPerformanceManager { /**
             // Canvasをクリア
             const ctx = poolItem.context,
             ctx.clearRect(0, 0, size, size);
-            return { canvas: poolItem.canvas;
+            return { canvas: poolItem.canvas,
                 ctx: poolItem.context }
                 fromPool: true;;
                 poolIndex }
@@ -113,10 +105,10 @@ export default class FaviconPerformanceManager { /**
         
         // プールに追加
         const poolItem: CanvasPoolItem = { canvas,
-            context: ctx,
+            context: ctx;
             size,
             inUse: true,
-    createdAt: Date.now(  },
+    createdAt: Date.now(  };
         
         this._resourcePool.canvasElements.push(poolItem);
         
@@ -151,7 +143,7 @@ export default class FaviconPerformanceManager { /**
                 status: result.status,','
                 value: result.status === 'fulfilled' ? result.value : undefined,')'
         
-                reason: result.status === 'rejected' ? result.reason : undefined)) }
+                reason: result.status === 'rejected' ? result.reason : undefined));
         }
         
         return results;
@@ -178,14 +170,14 @@ export default class FaviconPerformanceManager { /**
         return new Promise((resolve, reject) => {  const timer = setTimeout(async () => {
                 try {
                     const result = await generationFunction();
-                    this._debounceTimers.delete(identifier) }
+                    this._debounceTimers.delete(identifier);
                     resolve(result); }
-                } catch (error) { this._debounceTimers.delete(identifier);
-                    reject(error) }
+        } catch (error) { this._debounceTimers.delete(identifier);
+                    reject(error);
             }, debounceDelay);
             
             this._debounceTimers.set(identifier, timer);
-        };
+        }
     }
     
     /**
@@ -212,7 +204,7 @@ export default class FaviconPerformanceManager { /**
         // デバウンスタイマーをクリーンアップ
         this._debounceTimers.forEach((timer, identifier) => { clearTimeout(timer, as number) });
         this._debounceTimers.clear()';'
-        if (typeof, window !== 'undefined' && (window, as any).gc) { (window, as any).gc() }
+        if (typeof, window !== 'undefined' && (window, as any).gc) { (window, as any).gc();
     }
     
     /**
@@ -222,18 +214,18 @@ export default class FaviconPerformanceManager { /**
     static getPerformanceStats(): PerformanceStats { return { resourcePool: {
                 totalCanvasElements: this._resourcePool.canvasElements.length,
                 activeCanvasElements: this._resourcePool.canvasElements.filter(item => item.inUse).length,
-                queuedGenerations: this._resourcePool.generationQueue.length },
+                queuedGenerations: this._resourcePool.generationQueue.length ,
                 activeGenerations: this._resourcePool.activeGenerations 
-    };
+        }
             config: { ...this.PERFORMANCE_CONFIG,
-            debounceTimers: this._debounceTimers.size,
-    memoryUsage: this._estimateMemoryUsage() }
+            debounceTimers: this._debounceTimers.size ,
+    memoryUsage: this._estimateMemoryUsage();
     
     /**
      * パフォーマンス設定更新
      * @param newConfig - 新しい設定
      */
-    static updateConfig(newConfig: Partial<PerformanceConfig>): void { Object.assign(this.PERFORMANCE_CONFIG, newConfig) }
+    static updateConfig(newConfig: Partial<PerformanceConfig>): void { Object.assign(this.PERFORMANCE_CONFIG, newConfig);
     
     /**
      * リクエストを処理
@@ -242,7 +234,7 @@ export default class FaviconPerformanceManager { /**
      * @param renderCallback - レンダリングコールバック
      * @returns 処理結果
      */
-    private static async _processSingleRequest(request: GenerationRequest, renderCallback: RenderCallback): Promise<BatchResult> { this._resourcePool.activeGenerations++,
+    private static async _processSingleRequest(request: GenerationRequest, renderCallback: RenderCallback): Promise<BatchResult> { this._resourcePool.activeGenerations++;
         
         try {
             const canvasInfo = this.getCanvasFromPool(request.size);
@@ -251,7 +243,7 @@ export default class FaviconPerformanceManager { /**
 
             return { status: 'fulfilled', value: result;'} catch (error) { }'
 
-            return { status: 'rejected', reason: error; finally { this._resourcePool.activeGenerations--,
+            return { status: 'rejected', reason: error; finally { this._resourcePool.activeGenerations--;
     
     /**
      * バッチ作成
@@ -277,7 +269,7 @@ export default class FaviconPerformanceManager { /**
     private static _estimateMemoryUsage(): MemoryUsage { let estimatedSize = 0,
         
         this._resourcePool.canvasElements.forEach(item => { )
-            // Canvas要素のメモリ使用量を推定 (4, bytes per, pixel * width * height) }
+            // Canvas要素のメモリ使用量を推定 (4, bytes per, pixel * width * height);
             estimatedSize += item.size * item.size * 4; }
         };
         

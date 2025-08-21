@@ -6,7 +6,7 @@
 export class MockDataManager {
     constructor(parent?: any) {
         // TypeScript implementation
-    }
+    };
         console.log('[MockDataManager] Initialized'); }'
     }
 

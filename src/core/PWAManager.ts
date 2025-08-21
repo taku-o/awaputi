@@ -15,19 +15,19 @@ export class PWAManager {
 
         this.errorHandler = getErrorHandler();
         this.browserCompatibility = getBrowserCompatibility('''
-                scriptPath: '/sw.js';
-                scope: '/' }
+                scriptPath: '/sw.js,
+                scope: '/' };
                 updateCheckInterval: 300000 // 5分 
     };
             installation: { enabled: true,
-                autoPrompt: false,
-    promptDelay: 5000 },
+                autoPrompt: false ,
+    promptDelay: 5000 ,
             offline: { enabled: true,''
-                cacheStrategy: 'cacheFirst',
+                cacheStrategy: 'cacheFirst' ,
                 fallbackPages: ['/offline.html]  };'
             sync: { enabled: true,
     retryInterval: 60000 // 1分 
-    };
+     ,
         // PWA状態
         this.state = { isOnline: navigator.onLine,
             isInstalled: false,
@@ -82,7 +82,7 @@ export class PWAManager {
 }
 
             // インストールプロンプトの設定
-            if (this.config.installation.enabled) { this.installationManager.setupInstallPrompt() }
+            if (this.config.installation.enabled) { this.installationManager.setupInstallPrompt();
 
             // ネットワーク監視の開始
             this.startNetworkMonitoring();
@@ -98,7 +98,7 @@ export class PWAManager {
 ';'
 
             return true;} catch (error) {
-            this.handleError(error, 'INITIALIZATION_ERROR',
+            this.handleError(error, 'INITIALIZATION_ERROR,
             return false,
 
     /**
@@ -116,7 +116,7 @@ export class PWAManager {
         // インストール状態の検出
         this.state.isInstalled = this.installationManager.isAppInstalled();
         // スタンドアローンモードの検出
-        this.state.isStandalone = this.installationManager.isStandaloneMode() }
+        this.state.isStandalone = this.installationManager.isStandaloneMode();
 
         console.log('[PWAManager] PWA state detected:', this.state'; }'
     }
@@ -148,8 +148,8 @@ export class PWAManager {
 
     }
         if (isOnline && !previousState) { }
-            this.handleNetworkRecovery(};
-        } else if (!isOnline && previousState) { this.handleNetworkLoss() }
+            this.handleNetworkRecovery(}
+        } else if (!isOnline && previousState) { this.handleNetworkLoss();
 
         this.updateNetworkInfo();
     }
@@ -248,7 +248,7 @@ export class PWAManager {
     saveOfflineState() {
         const offlineState = { : undefined
     
-            timestamp: Date.now() }
+            timestamp: Date.now(),
 
             gameState: this.gameEngine?.getGameState?.() || {}, : undefined''
             userProgress: this.gameEngine?.getUserProgress?.() || {},
@@ -268,8 +268,7 @@ export class PWAManager {
                 await this.gameEngine?.syncOfflineData?.(state') }'
 
                 localStorage.removeItem('pwa_offline_state'; }
-
-            } catch (error) {
+        } catch (error) {
             this.handleError(error, 'SYNC_ERROR' }'
     }
 
@@ -282,17 +281,17 @@ export class PWAManager {
         if (!indicator) {
 
             indicator = document.createElement('div');
-            indicator.id = 'pwa-offline-indicator',
+            indicator.id = 'pwa-offline-indicator,
 
             indicator.innerHTML = `','
-                <span class="offline-icon">📶</span>"",
+                <span class="offline-icon">📶</span>",
                 <span class="offline-text">オフラインモード</span>,
-            `,
+            ,
             indicator.style.cssText = ` : undefined
                 position: fixed,
                 top: 10px,
                 left: 50%,
-                transform: translateX(-50%);
+                transform: translateX(-50%),
                 background: #FF9800,
                 color: white,
     padding: 8px 16px,
@@ -303,9 +302,9 @@ export class PWAManager {
                 align-items: center,
                 gap: 8px,
             `,"
-        }"
+        }
             document.body.appendChild(indicator); }
-        }"
+        }
 
         indicator.style.display = 'flex';
         console.log('[PWAManager] Offline, indicator shown');
@@ -348,7 +347,7 @@ export class PWAManager {
             this.serviceWorkerManager.checkForUpdates();
             // 状態同期
             this.syncPendingData()','
-            console.log('[PWAManager] Page, became hidden',
+            console.log('[PWAManager] Page, became hidden,
             
             // 現在状態の保存
     }
@@ -394,7 +393,7 @@ export class PWAManager {
             position: fixed,
             bottom: 20px,
             left: 50%,
-            transform: translateX(-50%);
+            transform: translateX(-50%),
             background: #2196F3,
             color: white,
     padding: 16px,
@@ -403,7 +402,7 @@ export class PWAManager {
             box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         `;"
 
-        notification.querySelector('.pwa-update-apply').addEventListener('click', () => {  this.serviceWorkerManager.applyServiceWorkerUpdate() }
+        notification.querySelector('.pwa-update-apply').addEventListener('click', () => {  this.serviceWorkerManager.applyServiceWorkerUpdate();
 
             document.body.removeChild(notification);' }'
 
@@ -429,8 +428,8 @@ export class PWAManager {
      */
     getPWAState() {
         return { ...this.state,
-            canInstall: this.installationManager.canInstall() }
-            installStats: this.installationManager.getInstallStats() },
+            canInstall: this.installationManager.canInstall(),
+            installStats: this.installationManager.getInstallStats() ,
             serviceWorkerStats: this.serviceWorkerManager.getServiceWorkerStats(); 
     }
 
@@ -438,13 +437,13 @@ export class PWAManager {
      * インストール可能性のチェック
      * @returns {boolean} インストール可能可否
      */
-    canInstall() { return this.installationManager.canInstall() }
+    canInstall() { return this.installationManager.canInstall();
 
     /**
      * インストールプロンプトの表示
      * @returns {Promise<boolean>} プロンプト結果
      */
-    async promptInstall() { return await this.installationManager.promptInstall() }
+    async promptInstall() { return await this.installationManager.promptInstall();
 
     /**
      * オフライン状態のチェック
@@ -468,8 +467,8 @@ export class PWAManager {
      * @returns {Object} 統計情報
      */
     getStats() {
-        return { ...this.stats serviceWorkerStats: this.serviceWorkerManager.getServiceWorkerStats() }
-            installStats: this.installationManager.getInstallStats() },
+        return { ...this.stats serviceWorkerStats: this.serviceWorkerManager.getServiceWorkerStats(),
+            installStats: this.installationManager.getInstallStats() ,
             currentState: this.state 
     }
 
@@ -483,7 +482,7 @@ export class PWAManager {
         const indicator = document.getElementById('pwa-offline-indicator),'
 
         if (indicator) {''
-            indicator.remove() }
+            indicator.remove();
 
         console.log('[PWAManager] Cleanup, completed'); }'
     }
@@ -502,10 +501,8 @@ export class PWAManager {
             }
                 ...data);
         } else {  }
-            console.error(`[PWAManager] ${context}:`, error, data};
-        }
+            console.error(`[PWAManager] ${context}:`, error, data    }
 }
-
 // シングルトンインスタンス
 let pwaManagerInstance = null;
 

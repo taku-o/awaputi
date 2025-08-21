@@ -25,22 +25,22 @@ export class PWATestFramework {
         
         // テスト設定
         this.config = {
-            defaultTimeout: 10000;
+            defaultTimeout: 10000,
             retryAttempts: 3;
-            verbose: true;
+            verbose: true,
             verbose: true;
         };
             // テスト対象URL
-            baseUrl: window.location.origin;
+            baseUrl: window.location.origin,
             manifestUrl: '/manifest.json';
-            serviceWorkerUrl: '/sw.js';
+            serviceWorkerUrl: '/sw.js',
             serviceWorkerUrl: '/sw.js';
         };
             // 期待される設定値
             expectedConfig: {
-                appName: 'BubblePop';
+                appName: 'BubblePop' },
                 themeColor: '#4CAF50';
-                backgroundColor: '#ffffff';
+                backgroundColor: '#ffffff',
                 displayMode: 'standalone';
                 orientation: 'portrait-primary'
             }
@@ -172,7 +172,7 @@ export class PWATestFramework {
             featureTests: this.featureTests,
             performanceTests: this.performanceTests,
             reportGenerator: this.reportGenerator
-        };
+        }
     }
     
     /**
@@ -205,7 +205,7 @@ export class PWATestFramework {
             testResultsCount: this.testResults.length,
             executorState: this.executor.getState(
             config: this.config
-        };
+        }
     }
     
     /**

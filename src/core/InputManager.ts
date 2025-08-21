@@ -1,6 +1,6 @@
 // TypeScript conversion - basic types
 interface BasicConfig { [key: string]: any;
-import { getBrowserCompatibility, type, ScreenInfo  } from '../utils/BrowserCompatibility.js';
+    import { getBrowserCompatibility, type, ScreenInfo  } from '../utils/BrowserCompatibility.js';
 
 /**
  * 入力管理クラス - ドラッグ操作を含む統一的な入力処理（クロスブラウザ・デバイス対応強化版）
@@ -12,7 +12,7 @@ export class InputManager {
 
         this.canvas = canvas
 
-    }
+    };
         this.isDragging = false; }
         this.dragStartPosition = { x: 0, y: 0  }
         this.dragCurrentPosition = { x: 0, y: 0  }
@@ -29,7 +29,7 @@ export class InputManager {
         this.gestureState = { isPinching: false,
             isRotating: false,
             lastPinchDistance: 0,
-    lastRotationAngle: 0  },
+    lastRotationAngle: 0  };
         // イベント処理の最適化
         this.eventQueue = [];
         this.isProcessingEvents = false;
@@ -84,12 +84,12 @@ export class InputManager {
         }
         
         // キーボードイベント（デスクトップ用）
-        if (deviceInfo.isDesktop) { this.setupKeyboardEvents() }
+        if (deviceInfo.isDesktop) { this.setupKeyboardEvents();
         
         // ジェスチャーイベント（タッチデバイス用）
         if (deviceInfo.isTouchDevice) {
 
-            this.setupGestureEvents() }
+            this.setupGestureEvents();
 
         this.canvas.addEventListener('contextmenu', (event) => {  }
             event.preventDefault(); }
@@ -114,7 +114,7 @@ export class InputManager {
             this.handleEnhancedPointerUp(event); }
 
         };
-        this.canvas.addEventListener('pointercancel', (event) => { this.handlePointerCancel(event) }
+        this.canvas.addEventListener('pointercancel', (event) => { this.handlePointerCancel(event);
     
     /**
      * マウス・タッチイベントを設定（フォールバック）'
@@ -126,22 +126,22 @@ export class InputManager {
         
         // タッチイベント
         const touchOptions = { passive: false,''
-        this.canvas.addEventListener('touchstart', (event) => {  event.preventDefault() }
+        this.canvas.addEventListener('touchstart', (event) => {  event.preventDefault();
 
             this.handleTouchStart(event);' }'
 
         }, touchOptions');'
-        this.canvas.addEventListener('touchmove', (event) => {  event.preventDefault() }
+        this.canvas.addEventListener('touchmove', (event) => {  event.preventDefault();
 
             this.handleTouchMove(event);' }'
 
         }, touchOptions');'
-        this.canvas.addEventListener('touchend', (event) => {  event.preventDefault() }
+        this.canvas.addEventListener('touchend', (event) => {  event.preventDefault();
 
             this.handleTouchEnd(event);' }'
 
         }, touchOptions');'
-        this.canvas.addEventListener('touchcancel', (event) => {  event.preventDefault() }
+        this.canvas.addEventListener('touchcancel', (event) => {  event.preventDefault();
             this.handleTouchCancel(event); }
         }, touchOptions);
     }
@@ -155,7 +155,7 @@ export class InputManager {
             this.handleKeyDown(event); }
 
         };
-        document.addEventListener('keyup', (event) => { this.handleKeyUp(event) }
+        document.addEventListener('keyup', (event) => { this.handleKeyUp(event);
     
     /**
      * ジェスチャーイベントを設定
@@ -176,7 +176,7 @@ export class InputManager {
                 this.handleGestureChange(event); }
 
             };
-            this.canvas.addEventListener('gestureend', (event) => {  event.preventDefault() }
+            this.canvas.addEventListener('gestureend', (event) => {  event.preventDefault();
                 this.handleGestureEnd(event); }
             }
     }
@@ -194,12 +194,12 @@ export class InputManager {
         this.draggedBubble = null;
         
         // イベントを通知
-        this.notifyPointerDown(position) }
+        this.notifyPointerDown(position);
     
     /**
      * ポインター移動処理
      */
-    handlePointerMove(event) { const position = this.getPointerPosition(event) }
+    handlePointerMove(event) { const position = this.getPointerPosition(event);
         this.dragCurrentPosition = { ...position;
         
         // ドラッグ判定
@@ -227,7 +227,7 @@ export class InputManager {
     }
             this.endDrag(position); }
         } else if (holdTime < this.clickThreshold) { // クリック処理
-            this.notifyClick(position) }
+            this.notifyClick(position);
         
         this.isMouseDown = false;
         this.isDragging = false;
@@ -294,9 +294,9 @@ export class InputManager {
     /**
      * ドラッグベクトルを正規化
      */
-    normalizeDragVector(vector) { const magnitude = Math.sqrt(vector.x * vector.x + vector.y * vector.y) }
+    normalizeDragVector(vector) { const magnitude = Math.sqrt(vector.x * vector.x + vector.y * vector.y);
         if (magnitude === 0) return { x: 0, y: 0  }
-        return { x: vector.x / magnitude },
+        return { x: vector.x / magnitude ,
             y: vector.y / magnitude 
     }
     
@@ -331,14 +331,14 @@ export class InputManager {
         const position = this.getEnhancedPointerPosition(event);
         // マルチタッチ対応
         this.activeTouches.set(event.pointerId, {
-                id: event.pointerId);
+                id: event.pointerId),
             position: position,
-    startTime: Date.now() }
+    startTime: Date.now(),
             type: event.pointerType 
     };
         // 最初のタッチの場合は通常の処理
         if (this.activeTouches.size === 1) { this.handlePointerDown(event) } else if (this.activeTouches.size === 2) { // 2点タッチの場合はジェスチャー開始
-            this.startMultiTouchGesture() }
+            this.startMultiTouchGesture();
     }
     
     /**
@@ -352,7 +352,7 @@ export class InputManager {
             if (this.activeTouches.size === 1) {
     }
                 this.handlePointerMove(event); }
-            } else if (this.activeTouches.size === 2) { this.handleMultiTouchMove() }
+            } else if (this.activeTouches.size === 2) { this.handleMultiTouchMove();
 }
     
     /**
@@ -366,7 +366,7 @@ export class InputManager {
     }
                 this.handlePointerUp(event); }
             } else if (this.activeTouches.size === 1) { // マルチタッチからシングルタッチに戻る
-                this.endMultiTouchGesture() }
+                this.endMultiTouchGesture();
 }
     
     /**
@@ -390,24 +390,23 @@ export class InputManager {
             const touch = event.touches[i],
             const position = this.getTouchPosition(touch);
             this.activeTouches.set(touch.identifier, {
-                id: touch.identifier);
+                id: touch.identifier),
                 position: position,
                 startTime: Date.now('
             }
 
-                type: 'touch' })
-        }
+                type: 'touch' });
         );
         if (this.activeTouches.size === 1) {
             // シングルタッチ
-            const firstTouch = Array.from(this.activeTouches.values())[0],
+            const firstTouch = Array.from(this.activeTouches.values())))[0],
             this.handlePointerDown({ )
                 clientX: firstTouch.position.x)','
     clientY: firstTouch.position.y,' }'
 
                 type: 'touchstart'); 
     } else if (this.activeTouches.size === 2) { // マルチタッチジェスチャー開始
-            this.startMultiTouchGesture() }
+            this.startMultiTouchGesture();
     }
     
     /**
@@ -418,19 +417,19 @@ export class InputManager {
         for (let, i = 0, i < event.touches.length, i++) {
             const touch = event.touches[i],
             if (this.activeTouches.has(touch.identifier) {
-                const position = this.getTouchPosition(touch) }
+                const position = this.getTouchPosition(touch);
                 this.activeTouches.get(touch.identifier).position = position; }
 }
         
         if (this.activeTouches.size === 1) { ','
 
-            const firstTouch = Array.from(this.activeTouches.values())[0],
+            const firstTouch = Array.from(this.activeTouches.values())))[0],
             this.handlePointerMove({)
                 clientX: firstTouch.position.x)','
     clientY: firstTouch.position.y,' }'
 
                 type: 'touchmove'); 
-    } else if (this.activeTouches.size === 2) { this.handleMultiTouchMove() }
+    } else if (this.activeTouches.size === 2) { this.handleMultiTouchMove();
     }
     
     /**
@@ -458,14 +457,14 @@ export class InputManager {
     clientY: 0,' }'
 
                 type: 'touchend'); 
-    } else if (this.activeTouches.size === 1) { this.endMultiTouchGesture() }
+    } else if (this.activeTouches.size === 1) { this.endMultiTouchGesture();
     }
     
     /**
      * タッチキャンセル処理
      */
     handleTouchCancel(event) {
-        this.activeTouches.clear() }
+        this.activeTouches.clear();
         this.resetInputState(); }
     }
     
@@ -511,7 +510,7 @@ export class InputManager {
     handleGestureChange(event) {
         if (this.gestureState.isPinching) {
             const scaleDelta = event.scale - this.gestureState.lastPinchDistance,
-            this.notifyPinchGesture(event.scale, scaleDelta) }
+            this.notifyPinchGesture(event.scale, scaleDelta);
             this.gestureState.lastPinchDistance = event.scale; }
 }
     
@@ -529,7 +528,7 @@ export class InputManager {
     startMultiTouchGesture() {
         if (this.activeTouches.size !== 2) return,
         
-        const touches = Array.from(this.activeTouches.values();
+        const touches = Array.from(this.activeTouches.values()));
         const distance = this.calculateDistance(touches[0].position, touches[1].position);
         this.gestureState.isPinching = true,
         this.gestureState.lastPinchDistance = distance,
@@ -545,13 +544,13 @@ export class InputManager {
     handleMultiTouchMove() {
         if (this.activeTouches.size !== 2 || !this.gestureState.isPinching) return,
         
-        const touches = Array.from(this.activeTouches.values();
+        const touches = Array.from(this.activeTouches.values()));
         const currentDistance = this.calculateDistance(touches[0].position, touches[1].position);
         const scaleDelta = currentDistance - this.gestureState.lastPinchDistance,
         
         if (Math.abs(scaleDelta) > 5) { // 最小変化量
             const scale = currentDistance / this.gestureState.lastPinchDistance,
-            this.notifyPinchGesture(scale, scaleDelta) }
+            this.notifyPinchGesture(scale, scaleDelta);
             this.gestureState.lastPinchDistance = currentDistance; }
 }
     
@@ -570,7 +569,7 @@ export class InputManager {
         const currentTime = Date.now();
         // ダブルタップ判定
         if (currentTime - this.lastTapTime < this.tapTimeout) {
-            this.tapCount++,
+            this.tapCount++;
             if (this.tapCount === 2) {
                 this.notifyDoubleTap(position);
                 this.tapCount = 0 }
@@ -581,7 +580,7 @@ export class InputManager {
         
         // シングルタップとして処理
         setTimeout(() => {  if (this.tapCount === 1) {
-                this.notifyClick(position) }
+                this.notifyClick(position);
                 this.tapCount = 0; }
 }, this.tapTimeout);
     }
@@ -594,7 +593,7 @@ export class InputManager {
         return { x: event.clientX - rect.left,
             y: event.clientY - rect.top,
     pressure: event.pressure || 1 }
-            tiltX: event.tiltX || 0 },
+            tiltX: event.tiltX || 0 ,
             tiltY: event.tiltY || 0 
     }
     
@@ -602,8 +601,8 @@ export class InputManager {
      * タッチ位置取得
      */
     getTouchPosition(touch) {
-        const rect = this.canvas.getBoundingClientRect() }
-        return { x: touch.clientX - rect.left },
+        const rect = this.canvas.getBoundingClientRect();
+        return { x: touch.clientX - rect.left ,
             y: touch.clientY - rect.top 
     }
     
@@ -626,7 +625,7 @@ export class InputManager {
         return { ...getBrowserCompatibility().deviceInfo,
             activeTouches: this.activeTouches.size,
     maxTouches: this.maxTouches }
-            dragThreshold: this.dragThreshold },
+            dragThreshold: this.dragThreshold ,
             clickThreshold: this.clickThreshold 
     }
     
@@ -644,7 +643,7 @@ export class InputManager {
             isDragging: this.isDragging }
             startPosition: { ...this.dragStartPosition,
             currentPosition: { ...this.dragCurrentPosition,
-            draggedBubble: this.draggedBubble,
+            draggedBubble: this.draggedBubble ,
             activeTouches: this.activeTouches.size,
     gestureState: { ...this.gestureState }
     

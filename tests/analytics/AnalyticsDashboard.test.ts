@@ -24,14 +24,14 @@ import { AnalyticsDashboard ') from '../../src/analytics/AnalyticsDashboard','
 // DOM のモック
 Object.defineProperty(global, 'document', {
     value: {,
-        getElementById: jest.fn(
+        getElementById: jest.fn( },
         createElement: jest.fn((tag) => ({
             tagName: tag.toUpperCase(','
             id: ','
             className: ','
             innerHTML: ','
             style: {,
-            appendChild: jest.fn(
+            appendChild: jest.fn( },
             addEventListener: jest.fn(
             querySelector: jest.fn(
         remove: jest.fn()
@@ -39,7 +39,7 @@ Object.defineProperty(global, 'document', {
         head: {
             appendChild: jest.fn( },
         body: {
-            appendChild: jest.fn(
+            appendChild: jest.fn( },
         removeChild: jest.fn( }
     }
 );
@@ -62,7 +62,7 @@ describe('AnalyticsDashboard', () => {
             className: ','
             innerHTML: ','
             style: {,
-            appendChild: jest.fn(
+            appendChild: jest.fn( },
         addEventListener: jest.fn(),
         document.getElementById.mockReturnValue(mockContainer'),'
         dashboard = new AnalyticsDashboard('test-dashboard', {
@@ -223,7 +223,7 @@ describe('AnalyticsDashboard', () => {
                         { timestamp: Date.now(), fps: 60 },
                         { timestamp: Date.now() + 1000, fps: 58 },
                         { timestamp: Date.now() + 2000, fps: 59 }
-                    ],
+                    ] };
                     memory: [
                         { timestamp: Date.now(), usagePercent: 45 },
                         { timestamp: Date.now() + 1000, usagePercent: 48 },
@@ -246,7 +246,7 @@ describe('AnalyticsDashboard', () => {
         test('パフォーマンス指標が正しく更新される', () => {
             const mockData = {
                 performance: {
-                    fps: [{ timestamp: Date.now(), fps: 60 }],
+                    fps: [{ timestamp: Date.now(), fps: 60 }] },
                     memory: [{ timestamp: Date.now('), usagePercent: 50 }]'
                 }
             };

@@ -26,10 +26,10 @@ describe('Security Integration Tests', () => {
                 setAttribute: jest.fn(
         getAttribute: jest.fn(),
             head: {
-                appendChild: jest.fn(
+                appendChild: jest.fn( },
         removeChild: jest.fn( },
             body: {
-                appendChild: jest.fn(
+                appendChild: jest.fn( },
         removeChild: jest.fn( },
             querySelector: jest.fn().mockReturnValue({,
                 setAttribute: jest.fn(
@@ -50,7 +50,7 @@ describe('Security Integration Tests', () => {
         info: jest.fn( },
         mockDOM = {
             elements: []
-        };
+        }
     };
     afterEach(() => {
         localizationManager? .cleanup();
@@ -319,6 +319,6 @@ describe('Security Integration Tests', () => {
             
             localizationManager.cleanup();
             expect(localizationManager.securityManager.cleanup).toHaveBeenCalled();
-            expect(localizationManager.securityTester.cleanup).toHaveBeenCalled() };
+            expect(localizationManager.securityTester.cleanup).toHaveBeenCalled() }
     }
 }');'

@@ -11,17 +11,17 @@ import { AudioDataOptimizer  } from '../../src/audio/AudioDataOptimizer.js';
 import { AudioCacheManager  } from '../../src/audio/AudioCacheManager.js';
 import { AudioPerformanceMonitor  } from '../../src/audio/AudioPerformanceMonitor.js';
 interface MockFunction<__T = any> extends Function {
-    calls: any[][];
+    calls: any[][],
     executionTimes: number[];
     getAverageExecutionTime(): number;
 interface PerformanceMeasurement {
-    average: number;
+    average: number,
     min: number;
-    max: number;
+    max: number,
     median: number;
     measurements: number[];
 interface MemoryUsage {
-    used: number;
+    used: number,
     total: number;
     limit: number;
 interface AudioManagerStatus {
@@ -29,25 +29,25 @@ interface AudioManagerStatus {
     qualityMode?: string;
     bufferUnderruns?: number;
 interface AudioMetrics {
-    cpuUsage: number;
+    cpuUsage: number,
     memoryUsage: number;
-    activeSourceNodes: number;
+    activeSourceNodes: number,
     averageLatency: number;
     bufferUnderruns: number;
 interface AudioReport {
-    summary: string;
+    summary: string,
     recommendations: string[];
 interface CacheStats {
-    hits: number;
+    hits: number,
     misses: number;
-    size: number;
+    size: number,
     memoryUsage: number;
 interface OptimizationStats {
-    compressionTime: number;
+    compressionTime: number,
     compressionRatio: number;
     qualityScore: number;
 interface BGMConfig {
-    style: string;
+    style: string,
     duration: number;
     complexity: string;
 interface SoundPlayOptions {
@@ -60,20 +60,20 @@ interface BGMPlayOptions {
     duration?: number;
     quality?: string;
 interface CrossfadeOptions {
-    fadeOutDuration: number;
+    fadeOutDuration: number,
     fadeInDuration: number;
 interface HapticOptions {
     intensity: number;
 interface DeviceInfo {
-    memory: number;
+    memory: number,
     cores: number;
     userAgent: string;
 interface BenchmarkResult {
-    average: number;
+    average: number,
     median: number;
     p95: number;
 interface BenchmarkTest {
-    name: string;
+    name: string,
     operation: () => any }
 // パフォーマンステスト用のモック関数
 const mockFn = <T = any>(returnValue?: T): MockFunction<T> => {
@@ -110,7 +110,7 @@ const measurePerformance = async (
         max: Math.max(...measurements,
         median: measurements.sort((a, b) => a - b)[Math.floor(measurements.length / 2)],
         measurements
-    };
+    }
 };
 // メモリ使用量測定（概算）
 const measureMemoryUsage = (): MemoryUsage => {
@@ -119,7 +119,7 @@ const measureMemoryUsage = (): MemoryUsage => {
             used: (performance.memory.usedJSHeapSize,
             total: (performance.memory.totalJSHeapSize,
             limit: (performance.memory.jsHeapSizeLimit
-        };
+        }
     }
     // フォールバック値
     return { used: 0, total: 0, limit: 0 },
@@ -133,9 +133,9 @@ describe('音響システムパフォーマンステスト', () => {
         // Performance API のモック
         Object.defineProperty(global, 'performance', {
             value: {,
-                now: () => Date.now(),
+                now: () => Date.now() },
                 memory: {
-                    usedJSHeapSize: 10 * 1024 * 1024,  // 10MB
+                    usedJSHeapSize: 10 * 1024 * 1024,  // 10MB };
                     totalJSHeapSize: 20 * 1024 * 1024, // 20MB
                     jsHeapSizeLimit: 100 * 1024 * 1024 // 100MB
                 },
@@ -150,32 +150,32 @@ describe('音響システムパフォーマンステスト', () => {
             return {
                 createGain: mockFn(() => ({
                     gain: { 
-                        value: 1,
+                        value: 1 },
                         setValueAtTime: mockFn(
         exponentialRampToValueAtTime: mockFn( },
                     connect: mockFn(
-        disconnect: mockFn( };
+        disconnect: mockFn( },
                 createAnalyser: mockFn(() => ({
                     fftSize: 256,
                     frequencyBinCount: 128,
                     getFloatFrequencyData: mockFn(
                     getByteFrequencyData: mockFn(
                     connect: mockFn(
-        disconnect: mockFn( };
+        disconnect: mockFn( },
                 createBufferSource: mockFn(() => ({
                     buffer: null,
                     start: mockFn(
                     stop: mockFn(
                     connect: mockFn(
                     disconnect: mockFn(
-        addEventListener: mockFn( };
+        addEventListener: mockFn( },
                 createOscillator: mockFn((') => ({'
                     type: 'sine',
                     frequency: { value: 440 },
                     start: mockFn(
                     stop: mockFn(
                     connect: mockFn(
-        disconnect: mockFn( };
+        disconnect: mockFn( },
                 createBuffer: mockFn(() => ({
                     length: 44100,
                     sampleRate: 44100,
@@ -587,7 +587,7 @@ describe('音響システムパフォーマンステスト', () => {
                     average: performanceData.average,
                     median: performanceData.median,
                     p95: performanceData.measurements.sort((a, b) => a - b)[Math.floor(0.95 * performanceData.measurements.length')]'
-                };
+                }
             }
             
             // 基準値と比較（実際の実装では前バージョンの値と比較）
@@ -596,6 +596,6 @@ describe('音響システムパフォーマンステスト', () => {
             expect(benchmarkResults['Effect toggle'].average).toBeLessThan(20');'
             expect(benchmarkResults['Volume change'].average).toBeLessThan(10');'
             console.log('Performance benchmark results:', benchmarkResults);
-        };
+        }
     }
 }');'

@@ -4,50 +4,43 @@ import { getErrorHandler  } from '../../utils/ErrorHandler.js';
 type ErrorHandler = ReturnType<typeof getErrorHandler>;
 
 // Export interfaces for particle physics
-export interface PhysicsSettings { gravity: number;
-    friction: number;
-    bounce: number;
-    airResistance: number;
-    collisionDetection: boolean;
-    magneticFields: MagneticField[];
+export interface PhysicsSettings { gravity: number,
+    friction: number,
+    bounce: number,
+    airResistance: number,
+    collisionDetection: boolean,
+    magneticFields: MagneticField[],
     windForce: Vector2D;
-
-export interface AnimationSettings { interpolation: boolean;
-    easingEnabled: boolean;
-    smoothRotation: boolean;
+    export interface AnimationSettings { interpolation: boolean,
+    easingEnabled: boolean,
+    smoothRotation: boolean,
     smoothScaling: boolean;
-
-export interface MagneticField { x: number;
-    y: number;
-    strength: number;
-    radius: number;
+    export interface MagneticField { x: number,
+    y: number,
+    strength: number,
+    radius: number,
     radiusSquared: number;
-
-export interface Vector2D { x: number;
+    export interface Vector2D { x: number,
     y: number;
-
-export interface Boundaries { left: number;
-    right: number;
-    top: number;
+    export interface Boundaries { left: number,
+    right: number,
+    top: number,
     bottom: number;
-
-export interface TrailPoint { x: number;
+    export interface TrailPoint { x: number,
     y: number;
     alpha?: number;
-
-export interface PulsationConfig { speed: number;
+    export interface PulsationConfig { speed: number,
     amplitude: number;
-
-export interface Particle { x: number;
-    y: number;
-    vx: number;
+    export interface Particle { x: number,
+    y: number,
+    vx: number,
     vy: number;
     size?: number;
     color?: string;
-    life: number;
-    maxLife: number;
-    alpha: number;
-    active: boolean;
+    life: number,
+    maxLife: number,
+    alpha: number,
+    active: boolean,
     type: string;
     rotation?: number;
     rotationSpeed?: number;
@@ -62,12 +55,10 @@ export interface Particle { x: number;
 ';'
 
 export interface BackgroundParticle extends Particle {;
-    type: 'background';
+    type: 'background,
     gravityAffected: false;
-
-export type BackgroundTheme = 'default' | 'stars' | 'snow' | 'sakura' | 'ocean';
-
-export interface TimingProfiles { [key: string]: any;
+    export type BackgroundTheme = 'default' | 'stars' | 'snow' | 'sakura' | 'ocean';
+    export interface TimingProfiles { [key: string]: any;
 
 /**
  * Particle Physics Engine
@@ -91,7 +82,7 @@ export class ParticlePhysicsEngine {
 ','
 
         this.errorHandler = getErrorHandler('';
-        this.backgroundTheme = 'default';
+    this.backgroundTheme = 'default';
 
         ' }'
 
@@ -142,10 +133,8 @@ export class ParticlePhysicsEngine {
 
             } catch (error) { this.errorHandler.handleError(error as Error, {)'
                 context: 'ParticlePhysicsEngine.updateParticlePhysics'
-            };
-        }
-    }
-    
+                }
+}
     /**
      * 磁場効果を適用
      */
@@ -155,15 +144,13 @@ export class ParticlePhysicsEngine {
                 const dy = field.y - particle.y)
                 const distanceSquared = dx * dx + dy * dy),
                 if (distanceSquared < field.radiusSquared) {
-                    const force = field.strength / Math.max(distanceSquared, 100) }
+                    const force = field.strength / Math.max(distanceSquared, 100);
                     particle.vx += dx * force * deltaTime; }
                     particle.vy += dy * force * deltaTime; }
 };'} catch (error) { this.errorHandler.handleError(error as Error, {)'
                 context: 'ParticlePhysicsEngine.applyMagneticFields'
-            };
-        }
-    }
-    
+                }
+}
     /**
      * パーティクルの軌跡を更新
      */
@@ -184,10 +171,8 @@ export class ParticlePhysicsEngine {
                     particle.trail.shift(); }
                 }'} catch (error) { this.errorHandler.handleError(error as Error, {)'
                 context: 'ParticlePhysicsEngine.updateParticleTrail'
-            };
-        }
-    }
-    
+                }
+}
     /**
      * 衝突検出と処理
      */
@@ -204,13 +189,11 @@ export class ParticlePhysicsEngine {
                 particles.forEach(otherParticle => {  );
                     if (particle !== otherParticle && particle.active && otherParticle.active) { }
                         this.handleParticleCollision(particle, otherParticle); }
-};
+}
             };'} catch (error) { this.errorHandler.handleError(error as Error, {)'
                 context: 'ParticlePhysicsEngine.handleCollisions'
-            };
-        }
-    }
-    
+                }
+}
     /**
      * 境界との衝突処理
      */
@@ -237,10 +220,8 @@ export class ParticlePhysicsEngine {
 
             } catch (error) { this.errorHandler.handleError(error as Error, {)'
                 context: 'ParticlePhysicsEngine.handleBoundaryCollision'
-            };
-        }
-    }
-    
+                }
+}
     /**
      * パーティクル間の衝突処理
      */
@@ -288,10 +269,8 @@ export class ParticlePhysicsEngine {
 
             } catch (error) { this.errorHandler.handleError(error as Error, {)'
                 context: 'ParticlePhysicsEngine.handleParticleCollision'
-            };
-        }
-    }
-    
+                }
+}
     /**
      * 背景パーティクルを更新
      */
@@ -315,14 +294,11 @@ export class ParticlePhysicsEngine {
                 return particle.life > 0 && ,
                        particle.x > -50 && particle.x < canvasWidth + 50 && }
                        particle.y > -50 && particle.y < canvasHeight + 50; }
-            };
-
+            }
         } catch (error) { this.errorHandler.handleError(error as Error, {)'
                 context: 'ParticlePhysicsEngine.updateBackgroundParticles'
-            };
-        }
-    }
-    
+                }
+}
     /**
      * 背景パーティクルを作成
      */
@@ -337,7 +313,7 @@ export class ParticlePhysicsEngine {
     alpha: Math.random() * 0.3 + 0.1,
                 life: Math.random() * 5000 + 2000,
                 maxLife: Math.random('''
-                type: 'background',
+                type: 'background,
     gravityAffected: false,))
             ';'
             this.backgroundParticles.push(particle);'} catch (error) { this.errorHandler.handleError(error as Error, {)'
@@ -367,21 +343,19 @@ export class ParticlePhysicsEngine {
     addMagneticField(x: number, y: number, strength: number, radius: number): void { try {
             this.physicsSettings.magneticFields.push({)
                 x, y, strength, radius),
-                radiusSquared: radius * radius) }
+                radiusSquared: radius * radius);
 
             console.log(`[ParticlePhysicsEngine] 磁場を追加: (${x}, ${y}}, 強度: ${strength}`);'} catch (error) { this.errorHandler.handleError(error as Error, {)'
                 context: 'ParticlePhysicsEngine.addMagneticField'
-            };
-        }
-    }
-    
+                }
+}
     /**
      * 風力を設定
      */
     setWindForce(x: number, y: number): void { try { }
             this.physicsSettings.windForce = { x, y };
 
-            console.log(`[ParticlePhysicsEngine] 風力を設定: (${x}, ${y}`};
+            console.log(`[ParticlePhysicsEngine] 風力を設定: (${x}, ${y}`}
         } catch (error) { this.errorHandler.handleError(error as Error, {)'
                 context: 'ParticlePhysicsEngine.setWindForce',' }'
 

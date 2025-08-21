@@ -16,45 +16,45 @@ interface ConfigMap {
         [bubbleTyp,e: string]: BubbleConfig;
 }
 interface SourceInfo {
-    name: string;
+    name: string,
     priority: number;
 interface SourceConfig {
-    config: ConfigMap;
+    config: ConfigMap,
     source: SourceInfo;
 interface Discrepancy {
     type: string;
     bubbleType?: string;
-    key: string;
+    key: string,
     values: Array<{
-        valu,e: any;
+        valu,e: any,
         source: string;
         priority: number;>;
     severity: string;
 interface ValidationResult {
-    timestamp: Date;
+    timestamp: Date,
     sourceCount: number;
-    discrepancyCount: number;
+    discrepancyCount: number,
     discrepancies: Discrepancy[];
     sourceConfigs: Map<string, SourceConfig>;
     recommendations: Recommendation[];
 interface Recommendation {
-    action: string;
+    action: string,
     targetValue: any;
-    priority: string;
+    priority: string,
     affectedFiles: string[];
 interface SyncReport {
-    timestamp: Date;
+    timestamp: Date,
     discrepancyCount: number;
-    discrepancies: Discrepancy[];
+    discrepancies: Discrepancy[],
     syncHistory: any[];
-    sources: any;
+    sources: any,
     status: string;
 interface MockErrorHandler {
     handleError: jest.MockedFunction<(erro,r: Error) => void> }
 interface MockConfigManager {
-    get: jest.MockedFunction<(categor,y: string, key: string) => any>;
+    get: jest.MockedFunction<(categor,y: string, key: string) => any>,
     set: jest.MockedFunction<(categor,y: string, key: string, value => boolean>);
-    has: jest.MockedFunction<(categor,y: string, key: string) => boolean>;
+    has: jest.MockedFunction<(categor,y: string, key: string) => boolean>,
     getCategory: jest.MockedFunction<(categor,y: string) => any> }
 // Jest の設定
 const mockErrorHandler: MockErrorHandler = {
@@ -97,7 +97,7 @@ describe('ConfigurationSynchronizer', () => {
                 bubbles: {
                     normal: { score: 15 },
                     boss: { health: 5 }
-                };
+                }
             };
             (synchronizer._loadBubbleImplementationConfig = jest.fn().mockResolvedValue({
                 bubbles: {
@@ -351,6 +351,6 @@ describe('ConfigurationSynchronizer', () => {
             const values = (synchronizer._extractElectricIntensityValues(sourceConfigs);
             expect(values.size).toBe(1');'
             expect(values.get('source1').value).toBe(20);
-        };
+        }
     }
 }');'

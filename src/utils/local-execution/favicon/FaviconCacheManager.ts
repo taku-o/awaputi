@@ -7,28 +7,24 @@
  */
 
 // Type definitions
-interface CacheData { dataURL: string;
-    timestamp: number;
-    size: number;
+interface CacheData { dataURL: string,
+    timestamp: number,
+    size: number,
     configHash: string;
-
-interface CacheStats { totalEntries: number;
+    interface CacheStats { totalEntries: number,
     totalSize: number;
     expiredCount?: number;
     available: boolean;
     error?: string;
-
-interface FaviconConfig { backgroundColor?: string,
+    interface FaviconConfig { backgroundColor?: string,
     textColor?: string;
     text?: string;
     fontFamily?: string;
-
-interface HashableConfig { backgroundColor?: string,
+    interface HashableConfig { backgroundColor?: string,
     textColor?: string;
     text?: string;
     fontFamily?: string;
-
-export default class FaviconCacheManager { /**
+    export default class FaviconCacheManager { /**
      * キャッシュキーのプレフィックス
      */
     static readonly CACHE_PREFIX: string = 'awaputi_favicon_';
@@ -61,7 +57,7 @@ export default class FaviconCacheManager { /**
             
             // 期限切れチェック
             if (this._isExpired(data.timestamp) {
-                localStorage.removeItem(key) }
+                localStorage.removeItem(key);
                 return null;
             ';'
 
@@ -89,7 +85,7 @@ export default class FaviconCacheManager { /**
             localStorage.setItem(key, JSON.stringify(data);'} catch (error) {'
             console.warn('Error saving favicon to cache:', error);
             // キャッシュ容量が満杯の場合、古いエントリを削除
-            this._cleanupOldEntries() }
+            this._cleanupOldEntries();
     }
     
     /**
@@ -98,9 +94,9 @@ export default class FaviconCacheManager { /**
      * @returns ハッシュ値
      */
     static generateConfigHash(config: FaviconConfig): string { const hashableConfig: HashableConfig = {
-            backgroundColor: config.backgroundColor;
-            textColor: config.textColor;
-            text: config.text;
+            backgroundColor: config.backgroundColor,
+            textColor: config.textColor,
+            text: config.text,
     fontFamily: config.fontFamily };
         const configStr = JSON.stringify(hashableConfig);
         return this._simpleHash(configStr);
@@ -117,7 +113,7 @@ export default class FaviconCacheManager { /**
                 // 全ファビコンキャッシュを削除
                 const keys = Object.keys(localStorage).filter(key => );
                     key.startsWith(this.CACHE_PREFIX);
-                keys.forEach(key => localStorage.removeItem(key) }
+                keys.forEach(key => localStorage.removeItem(key);
             } else {  // 特定サイズのみ削除
                 const keys = Object.keys(localStorage).filter(key => );
                     key.startsWith(this.CACHE_PREFIX) && key.includes(`_${size}_`} }
@@ -142,22 +138,20 @@ export default class FaviconCacheManager { /**
                 if (item) {
                     totalSize += item.length,
                     try {
-                        const data: CacheData = JSON.parse(item) }
+                        const data: CacheData = JSON.parse(item);
                         if (this._isExpired(data.timestamp) { }
                             expiredCount++; }
-                        } catch (e) { expiredCount++ }
+        } catch (e) { expiredCount++ }
 };
             
             return { totalEntries: keys.length,
                 totalSize,
                 expiredCount };
                 available: true, catch (error) { return { totalEntries: 0, 
-                totalSize: 0, ,
+                totalSize: 0,
                 available: false,
-                error: (error, as Error).message  }
-            }
-    }
-    
+                error: (error, as Error).message      }
+}
     /**
      * キャッシュキー生成
      * @private
@@ -200,11 +194,11 @@ export default class FaviconCacheManager { /**
                 try {),
                     const item = localStorage.getItem(key);
                     if (item) {
-                        const data: CacheData = JSON.parse(item) }
+                        const data: CacheData = JSON.parse(item);
                         if (this._isExpired(data.timestamp) { }
                             localStorage.removeItem(key); }
-} catch (e) { // 壊れたエントリも削除
-                    localStorage.removeItem(key) }
+        } catch (e) { // 壊れたエントリも削除
+                    localStorage.removeItem(key);
             };'} catch (error) { console.warn('Error cleaning up favicon cache:', error }'
     }
     

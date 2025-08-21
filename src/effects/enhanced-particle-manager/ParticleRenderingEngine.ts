@@ -7,10 +7,10 @@ interface ParticleManager { // Placeholder for particle manager interface
     [key: string]: any;
 
 // Export interfaces for rendering
-export interface ParticleType { renderMethod: string;
+export interface ParticleType { renderMethod: string,
     cost: RenderingCost;
 ;
-export interface ExtendedParticleTypes { // 高度な基本パーティクル
+    export interface ExtendedParticleTypes { // 高度な基本パーティクル
     'advanced_circle': ParticleType,', 'glow_circle': ParticleType,', 'trail_particle': ParticleType;
     ';'
     // カスタム形状
@@ -20,17 +20,14 @@ export interface ExtendedParticleTypes { // 高度な基本パーティクル
     'energy_orb': ParticleType,', 'magic_sparkle': ParticleType,', 'plasma_burst': ParticleType;
     
     [key: string]: ParticleType;
-
-export interface RenderingSettings { batchRendering: boolean;
-    antiAliasing: boolean;
-    shadowQuality: ShadowQuality;
+    export interface RenderingSettings { batchRendering: boolean,
+    antiAliasing: boolean,
+    shadowQuality: ShadowQuality,
     textureFiltering: TextureFiltering;
-
-export interface TrailPoint { x: number;
+    export interface TrailPoint { x: number,
     y: number;
     alpha?: number;
-
-export interface RenderableParticle { x: number;
+    export interface RenderableParticle { x: number,
     y: number;
     size?: number;
     color?: string;
@@ -40,10 +37,9 @@ export interface RenderableParticle { x: number;
     gradient?: boolean;
     trail?: TrailPoint[];
     rotation?: number;
-
-export type RenderingCost = 'low' | 'medium' | 'high';
-export type ShadowQuality = 'low' | 'medium' | 'high';
-export type TextureFiltering = 'linear' | 'nearest';
+    export type RenderingCost = 'low' | 'medium' | 'high';
+    export type ShadowQuality = 'low' | 'medium' | 'high';
+    export type TextureFiltering = 'linear' | 'nearest';
 
 /**
  * Particle Rendering Engine
@@ -60,30 +56,29 @@ export class ParticleRenderingEngine {
     constructor(canvas: HTMLCanvasElement, particleManager: ParticleManager) {
 
         this.canvas = canvas;
-        this.particleManager = particleManager
-}
-
+    this.particleManager = particleManager
+};
         this.errorHandler = getErrorHandler('}'
 
             'advanced_circle': { renderMethod: 'renderAdvancedCircle', cost: 'low'
-            },', 'glow_circle': { renderMethod: 'renderGlowCircle', cost: 'medium'
-            },', 'trail_particle': { renderMethod: 'renderTrailParticle', cost: 'medium'
-            },
+            ,', 'glow_circle': { renderMethod: 'renderGlowCircle', cost: 'medium'
+            ,', 'trail_particle': { renderMethod: 'renderTrailParticle', cost: 'medium'
+            ,
             // カスタム形状
             'hexagon': { renderMethod: 'renderHexagon', cost: 'low'
-            },', 'triangle': { renderMethod: 'renderTriangle', cost: 'low'
-            },', 'cross': { renderMethod: 'renderCross', cost: 'low'
-            },
+            ,', 'triangle': { renderMethod: 'renderTriangle', cost: 'low'
+            ,', 'cross': { renderMethod: 'renderCross', cost: 'low'
+            ,
             // 高級エフェクト
             'energy_orb': { renderMethod: 'renderEnergyOrb', cost: 'high'
-            },', 'magic_sparkle': { renderMethod: 'renderMagicSparkle', cost: 'high'
-            },', 'plasma_burst': { renderMethod: 'renderPlasmaBurst', cost: 'high'
+            ,', 'magic_sparkle': { renderMethod: 'renderMagicSparkle', cost: 'high'
+            ,', 'plasma_burst': { renderMethod: 'renderPlasmaBurst', cost: 'high'
             };
         
         // レンダリング設定
         this.renderingSettings = { batchRendering: false,
             antiAliasing: true,
-            shadowQuality: 'medium',
+            shadowQuality: 'medium,
             textureFiltering: 'linear'
             };
         console.log('[ParticleRenderingEngine] パーティクルレンダリングエンジンを初期化しました');
@@ -113,18 +108,18 @@ export class ParticleRenderingEngine {
      * レンダリングメソッドが存在するかチェック
      */'
     private hasRenderMethod(methodName: string): boolean { ''
-        return typeof(this, as any)[methodName] === 'function',
+        return typeof(this, as any)[methodName] === 'function,
     
     /**
      * レンダリングメソッドを呼び出し
      */
-    private callRenderMethod(methodName: string, context: CanvasRenderingContext2D, particle: RenderableParticle): void { (this, as any)[methodName](context, particle) }
+    private callRenderMethod(methodName: string, context: CanvasRenderingContext2D, particle: RenderableParticle): void { (this, as any)[methodName](context, particle);
     
     /**
      * 基本パーティクル描画
      */'
     renderBasicParticle(context: CanvasRenderingContext2D, particle: RenderableParticle): void { try {'
-            context.save('',
+            context.save(',
             context.fillStyle = particle.color || '#ffffff')
             ),
             context.beginPath();
@@ -144,7 +139,7 @@ export class ParticleRenderingEngine {
      * 高度な円形パーティクル描画
      */'
     renderAdvancedCircle(context: CanvasRenderingContext2D, particle: RenderableParticle): void { try {'
-            context.save('',
+            context.save(',
             context.fillStyle = particle.color || '#ffffff');
             // グラデーション効果)
             if (particle.gradient) {
@@ -164,10 +159,8 @@ export class ParticleRenderingEngine {
 
             context.restore();'} catch (error) { this.errorHandler.handleError(error as Error, {)'
                 context: 'ParticleRenderingEngine.renderAdvancedCircle'
-            };
-        }
-    }
-    
+                }
+}
     /**
      * 光るパーティクル描画
      */
@@ -176,7 +169,7 @@ export class ParticleRenderingEngine {
             const glowSize = (particle.size || 2) * 2,
             const gradient = context.createRadialGradient(
                 particle.x, particle.y, 0)','
-                particle.x, particle.y, glowSize'',
+                particle.x, particle.y, glowSize',
             '),'
 
             gradient.addColorStop(0, particle.color || '#ffffff');
@@ -192,10 +185,8 @@ export class ParticleRenderingEngine {
 
             context.restore(};'} catch (error) { this.errorHandler.handleError(error as Error, {)'
                 context: 'ParticleRenderingEngine.renderGlowCircle'
-            };
-        }
-    }
-    
+                }
+}
     /**
      * 軌跡付きパーティクル描画
      */
@@ -215,7 +206,7 @@ export class ParticleRenderingEngine {
                 for(let, i = 1; i < particle.trail.length; i++) {
                 
                     const alpha = i / particle.trail.length,
-                    context.globalAlpha = alpha * (particle.alpha || 1.0) }
+                    context.globalAlpha = alpha * (particle.alpha || 1.0);
                     context.lineTo(particle.trail[i].x, particle.trail[i].y); }
                 }
 
@@ -237,8 +228,8 @@ export class ParticleRenderingEngine {
      * 六角形パーティクル描画
      */'
     renderHexagon(context: CanvasRenderingContext2D, particle: RenderableParticle): void { try {'
-            context.save('',
-            context.fillStyle = particle.color || '#ffffff',
+            context.save(',
+            context.fillStyle = particle.color || '#ffffff,
             
             const, size = particle.size || 2,
             const, x = particle.x,
@@ -252,7 +243,7 @@ export class ParticleRenderingEngine {
                 if (i === 0) {
             }
                     context.moveTo(px, py); }
-                } else { context.lineTo(px, py) }
+                } else { context.lineTo(px, py);
             }
             context.closePath();
             context.fill();
@@ -268,8 +259,8 @@ export class ParticleRenderingEngine {
      * 三角形パーティクル描画
      */'
     renderTriangle(context: CanvasRenderingContext2D, particle: RenderableParticle): void { try {'
-            context.save('',
-            context.fillStyle = particle.color || '#ffffff',
+            context.save(',
+            context.fillStyle = particle.color || '#ffffff,
             
             const, size = particle.size || 2,
             const, x = particle.x,
@@ -301,7 +292,7 @@ export class ParticleRenderingEngine {
             context.save()','
             context.strokeStyle = particle.color || '#ffffff',')'
             context.lineWidth = Math.max(1, (particle.size || 2) * 0.2),
-            context.lineCap = 'round',
+            context.lineCap = 'round,
             
             const size = particle.size || 2,
             const x = particle.x,
@@ -323,10 +314,8 @@ export class ParticleRenderingEngine {
 
         } catch (error) { this.errorHandler.handleError(error as Error, {)'
                 context: 'ParticleRenderingEngine.renderCross'
-            };
-        }
-    }
-    
+                }
+}
     /**
      * エネルギーオーブ描画
      */

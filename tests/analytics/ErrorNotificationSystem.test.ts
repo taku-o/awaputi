@@ -5,7 +5,7 @@ import { ErrorNotificationSystem  } from '../../src/analytics/ErrorNotificationS
 // performance.memory のモック
 Object.defineProperty(performance, 'memory', {
     value: {
-        usedJSHeapSize: 50 * 1024 * 1024, // 50MB
+        usedJSHeapSize: 50 * 1024 * 1024, // 50MB };
         totalJSHeapSize: 100 * 1024 * 1024, // 100MB
         jsHeapSizeLimit: 2048 * 1024 * 1024 // 2GB
     },
@@ -15,7 +15,7 @@ Object.defineProperty(navigator, 'storage', {
     value: {,
         estimate: jest.fn().mockResolvedValue({
             quota: 1024 * 1024 * 1024, // 1GB
-            usage: 100 * 1024 * 1024    // 100MB) },
+            usage: 100 * 1024 * 1024    // 100MB) } },
     configurable: true,');'
 describe('ErrorNotificationSystem', () => {
     let errorSystem: any,
@@ -273,7 +273,7 @@ describe('ErrorNotificationSystem', () => {
                     type: 'javascript',
                     message: `Error ${i}`;);
                     timestamp: Date.now() + i
-                };
+                }
             }
             expect(errorSystem.errorHistory.length).toBe(2);
         }');'
@@ -363,6 +363,6 @@ describe('ErrorNotificationSystem', () => {
             expect(criticalElement).toBeTruthy(');'
             expect(criticalElement.classList.contains('dismissing').toBe(false);
             jest.useRealTimers();
-        };
+        }
     }
 }');'

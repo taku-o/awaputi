@@ -23,7 +23,7 @@ const mockD3 = {
         style: jest.fn()
                                         ))
                                     ))
-                                )) };
+                                )) }
                         },
                         style: jest.fn(() => ({
                             attr: jest.fn(
@@ -38,7 +38,7 @@ const mockD3 = {
                                 style: jest.fn())
                         ))
                     ));
-                };
+                }
             },
         remove: jest.fn(),
         append: jest.fn(() => ({
@@ -55,7 +55,7 @@ const mockD3 = {
         text: jest.fn())
                 ));
             );
-        };
+        }
     },
     scaleLinear: jest.fn(() => ({
         domain: jest.fn(() => ({
@@ -130,7 +130,7 @@ const mockD3 = {
 // DOM のモック
 Object.defineProperty(global, 'document', {
     value: {,
-        getElementById: jest.fn(
+        getElementById: jest.fn( },
         createElement: jest.fn((') => ({'
             id: ','
             width: 500,
@@ -306,7 +306,7 @@ describe('DataVisualizer', () => {
             // 数値変換が行われることを確認
             testData.forEach(d => {);
                 expect(typeof d.value').toBe('number'),'
-                expect(d.date).toBeInstanceOf(Date) };
+                expect(d.date).toBeInstanceOf(Date) }
         }
     }');'
     describe('SVG作成', (') => {'
@@ -327,7 +327,7 @@ describe('DataVisualizer', () => {
                                 attr: jest.fn())
                         ))
                     ));
-                };
+                }
             };
             
             mockD3.select.mockReturnValue(mockSelectChain');'
@@ -365,7 +365,7 @@ describe('DataVisualizer', () => {
                         callback(mockEvent, mockData);
                     }
                     return mockSelection;
-    };
+    }
             };
             const config = {
                 tooltipFormatter: (d) => `カスタム: ${d.value}`
@@ -493,6 +493,6 @@ describe('DataVisualizer', () => {
             const result = dataVisualizer.updateVisualization('error-test', []);
             expect(result).toBe(false);
             expect(consoleSpy').toHaveBeenCalledWith('Visualization update failed:', expect.any(Error),'
-            consoleSpy.mockRestore() };
+            consoleSpy.mockRestore() }
     }
 }');'

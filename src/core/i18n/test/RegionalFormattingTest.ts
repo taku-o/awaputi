@@ -2,59 +2,53 @@ import { FormatterEngine  } from '../FormatterEngine.js';
 import { getRegionalSettingsManager  } from '../RegionalSettingsManager.js';
 
 // インターフェース定義
-interface TestResult { category: string;
-    testName: string;
-    passed: boolean;
-    actual: string;
-    expected: string;
+interface TestResult { category: string,
+    testName: string,
+    passed: boolean,
+    actual: string,
+    expected: string,
     timestamp: Date;
-
-interface NumberTestCase { value: number;
-    language: string;
+    interface NumberTestCase { value: number,
+    language: string,
     expected: string;
-
-interface DateTestCase { date: Date;
-    language: string;
-    format: string;
+    interface DateTestCase { date: Date,
+    language: string,
+    format: string,
     expected: string;
-
-interface TimeTestCase { time: Date;
-    language: string;
-    format: string;
+    interface TimeTestCase { time: Date,
+    language: string,
+    format: string,
     expected: string;
-
-interface CurrencyTestCase { value: number;
-    language: string;
+    interface CurrencyTestCase { value: number,
+    language: string,
     expected: string;
-
-interface RegionalTestCase { language: string;
+    interface RegionalTestCase { language: string,
     region: string;
-
-interface FormatStringTestCase { text: string;
-    params: { [key: string]: any;
+    interface FormatStringTestCase { text: string,
+    params: { [key: string]: any,
     language: string;
+    },
     expected: string;
 }
 
 interface MultiLanguageResults { [language: string]: {
-        numbe,r: string;
-        currency: string;
+        numbe,r: string,
+        currency: string,
     date: string;
-
-interface TestReport { summary: {
-        totalTest,s: number;
-        passedTests: number;
-        failedTests: number;
-    successRate: string;
+    interface TestReport { summary: {
+        totalTest,s: number,
+        passedTests: number,
+    failedTests: number,
+    successRate: string,
     categories: { [category: string]: {
-            total: number;
-            passed: number;
-            failed: number;
-    tests: TestResult[];
+            total: number,
+    passed: number,
+    failed: number,
+    tests: TestResult[],
     timestamp: Date;
-    }
+    } };
 
-interface TestResultWithReport { results: TestResult[];
+interface TestResultWithReport { results: TestResult[],
     report: TestReport;
 
 /**
@@ -68,7 +62,7 @@ export class RegionalFormattingTest {
 ','
 
         this.formatterEngine = new FormatterEngine();
-        this.regionalSettingsManager = getRegionalSettingsManager(' }''
+    this.regionalSettingsManager = getRegionalSettingsManager(' }''
         console.log('RegionalFormattingTest, initialized'); }'
     }
     
@@ -109,7 +103,7 @@ export class RegionalFormattingTest {
             { value: 1234567.89, language: 'en', expected: '1,234,567.89' },''
             { value: 1234567.89, language: 'zh-CN', expected: '1,234,567.89' },''
             { value: 42, language: 'ja', expected: '42'
-            },]'
+            ,]'
             { value: 0.5, language: 'en', expected: '0.5'
             }]
         ];
@@ -119,7 +113,7 @@ export class RegionalFormattingTest {
 
             try {'
                 const settings = this.regionalSettingsManager.getCompleteSettings(testCase.language);
-                const formatter = this.formatterEngine.formatters.get('number',
+                const formatter = this.formatterEngine.formatters.get('number,
                 if (!formatter) {
     
 }
@@ -131,24 +125,22 @@ export class RegionalFormattingTest {
                 const passed = this.compareValues(result, testCase.expected);
                 this.addTestResult('Number Formatting', `${testCase.language}: ${testCase.value}`, passed, result, testCase.expected}';} catch (error) { }'
 
-                this.addTestResult('Number Formatting', `${testCase.language}: ${testCase.value}`, false, 'Error', (error as Error}.message};
-            }
+                this.addTestResult('Number Formatting', `${testCase.language}: ${testCase.value}`, false, 'Error', (error as Error}.message    }
 }
-    
     /**
      * 日付フォーマットテスト'
      */''
     async testDateFormatting()';'
         console.log('Testing, date formatting, across regions...');
 
-        const testDate = new Date('2025-07-29T10: 30:00',
+        const testDate = new Date('2025-07-29T10: 30:00,
         const testCases: DateTestCase[] = [';'
             { date: testDate, language: 'ja', format: 'short', expected: '2025/07/29'
-            },''
+            ,''
             { date: testDate, language: 'en', format: 'short', expected: '07/29/2025'
-            },''
+            ,''
             { date: testDate, language: 'ko', format: 'short', expected: '2025. 07. 29'
-            },]'
+            ,]'
             { date: testDate, language: 'zh-CN', format: 'medium', expected: '2025年07月29日'
             }]
         ];
@@ -158,7 +150,7 @@ export class RegionalFormattingTest {
 
             try {'
                 const settings = this.regionalSettingsManager.getCompleteSettings(testCase.language);
-                const formatter = this.formatterEngine.formatters.get('date',
+                const formatter = this.formatterEngine.formatters.get('date,
                 if (!formatter) {
     
 }
@@ -170,22 +162,20 @@ export class RegionalFormattingTest {
                 const passed = this.compareValues(result, testCase.expected);
                 this.addTestResult('Date Formatting', `${testCase.language} (${testCase.format}`, passed, result, testCase.expected};'} catch (error) { }'
 
-                this.addTestResult('Date Formatting', `${testCase.language} (${testCase.format)}`, false, 'Error', (error, as Error}.message};
-            }
+                this.addTestResult('Date Formatting', `${testCase.language} (${testCase.format)}`, false, 'Error', (error, as Error}.message    }
 }
-    
     /**
      * 時刻フォーマットテスト'
      */''
     async testTimeFormatting()';'
         console.log('Testing, time formatting, across regions...');
 
-        const testTime = new Date('2025-07-29T14: 30:45',
+        const testTime = new Date('2025-07-29T14: 30:45,
         const testCases: TimeTestCase[] = [';'
             { time: testTime, language: 'ja', format: 'short', expected: '14:30'
-            },''
+            ,''
             { time: testTime, language: 'en', format: 'short', expected: '2:30 PM'
-            },]'
+            ,]'
             { time: testTime, language: 'ko', format: 'medium', expected: '14:30:45'
             }]
         ];
@@ -195,7 +185,7 @@ export class RegionalFormattingTest {
 
             try {'
                 const settings = this.regionalSettingsManager.getCompleteSettings(testCase.language);
-                const formatter = this.formatterEngine.formatters.get('date',
+                const formatter = this.formatterEngine.formatters.get('date,
                 if (!formatter) {
     
 }
@@ -207,10 +197,8 @@ export class RegionalFormattingTest {
                 const passed = this.compareValues(result, testCase.expected);
                 this.addTestResult('Time Formatting', `${testCase.language} (${testCase.format}`, passed, result, testCase.expected};'} catch (error) { }'
 
-                this.addTestResult('Time Formatting', `${testCase.language} (${testCase.format)}`, false, 'Error', (error, as Error}.message};
-            }
+                this.addTestResult('Time Formatting', `${testCase.language} (${testCase.format)}`, false, 'Error', (error, as Error}.message    }
 }
-    
     /**
      * 通貨フォーマットテスト'
      */''
@@ -231,7 +219,7 @@ export class RegionalFormattingTest {
 
             try {'
                 const settings = this.regionalSettingsManager.getCompleteSettings(testCase.language);
-                const formatter = this.formatterEngine.formatters.get('currency',
+                const formatter = this.formatterEngine.formatters.get('currency,
                 if (!formatter) {
     
 }
@@ -243,10 +231,8 @@ export class RegionalFormattingTest {
                 const passed = this.compareValues(result, testCase.expected);
                 this.addTestResult('Currency Formatting', `${testCase.language}: ${testCase.value}`, passed, result, testCase.expected}';} catch (error) { }'
 
-                this.addTestResult('Currency Formatting', `${testCase.language}: ${testCase.value}`, false, 'Error', (error as Error}.message};
-            }
+                this.addTestResult('Currency Formatting', `${testCase.language}: ${testCase.value}`, false, 'Error', (error as Error}.message    }
 }
-    
     /**
      * 複数言語同時テスト'
      */''
@@ -276,7 +262,7 @@ export class RegionalFormattingTest {
                     date: dateFormatter.formatWithSettings(new, Date(), settings.dateFormat, 'short'};
 
                 this.addTestResult('Multi-Language', language, true, 'All formats generated', 'Success';} catch (error) {
-                this.addTestResult('Multi-Language', language, false, 'Error', (error as Error).message) }
+                this.addTestResult('Multi-Language', language, false, 'Error', (error as Error).message);
         }
 
         console.log('Multi-language formatting results:', results';'
@@ -291,11 +277,11 @@ export class RegionalFormattingTest {
 
         const testCases: RegionalTestCase[] = [';'
             { language: 'ja', region: 'JP'
-            },''
+            ,''
             { language: 'en', region: 'US'
-            },''
+            ,''
             { language: 'zh-CN', region: 'CN'
-            },]'
+            ,]'
             { language: 'ko', region: 'KR'
             }]
         ];
@@ -314,10 +300,8 @@ export class RegionalFormattingTest {
 
                 this.addTestResult('Regional Settings Integration', `${testCase.language}-${testCase.region}`, hasRequiredSettings, 'Complete settings', hasRequiredSettings ? 'All present' : 'Missing settings'}';} catch (error) { }'
 
-                this.addTestResult('Regional Settings Integration', `${testCase.language}-${testCase.region}`, false, 'Error', (error as Error}.message};
-            }
+                this.addTestResult('Regional Settings Integration', `${testCase.language}-${testCase.region}`, false, 'Error', (error as Error}.message    }
 }
-    
     /**
      * 高度なフォーマット文字列テスト'
      */''
@@ -328,16 +312,15 @@ export class RegionalFormattingTest {
         const testCases: FormatStringTestCase[] = [{ }'
 
                 text: 'Score: {{number: score;, Date: {{date:today: short;, Price: {{currency: price;',''
-                params: { score: 1234, today: new Date('2025-07-29'), price: 99.99  },''
-                language: 'en',
-                expected: 'Score: 1,234, Date: 07/29/2025, Price: $100',
-            },
+                params: { score: 1234, today: new Date('2025-07-29'), price: 99.99  ,''
+                language: 'en,
+                expected: 'Score: 1,234, Date: 07/29/2025, Price: $100' ,
 
             { }'
 
                 text: 'スコア: {{number: score;、日付: {{date:today: medium;',''
-                params: { score: 5678, today: new Date('2025-07-29'},''
-                language: 'ja',
+                params: { score: 5678, today: new Date('2025-07-29',''
+                language: 'ja,
                 expected: 'スコア: 5,678、日付: 2025年07月29日];'
             }]
         ];
@@ -350,12 +333,12 @@ export class RegionalFormattingTest {
                     testCase.params),
                     testCase.language),
 
-                const passed = this.compareValues(result, testCase.expected) }
+                const passed = this.compareValues(result, testCase.expected);
 
                 this.addTestResult('Advanced Format Strings', testCase.language, passed, result, testCase.expected'; }'
 
             } catch (error) {
-                this.addTestResult('Advanced Format Strings', testCase.language, false, 'Error', (error as Error).message) }
+                this.addTestResult('Advanced Format Strings', testCase.language, false, 'Error', (error as Error).message);
 }
     
     /**
@@ -378,10 +361,8 @@ export class RegionalFormattingTest {
     
 }
             console.log(`  Expected: ${expected}`} }
-            console.log(`  Actual: ${actual}`},
-        }
-    }
-    
+            console.log(`  Actual: ${actual}`    }
+}
     /**
      * 値の比較（緩い比較）'
      */''
@@ -404,17 +385,17 @@ export class RegionalFormattingTest {
         console.log('\n=====================================');
         console.log('REGIONAL, FORMATTING TEST, SUMMARY');
         console.log('=====================================),'
-        console.log(`Total, Tests: ${totalTests)`,
-        console.log(`Passed: ${passedTests)`,
+        console.log(`Total, Tests: ${totalTests),
+        console.log(`Passed: ${passedTests),
         console.log(`Failed: ${failedTests }`} }
         console.log(`Success Rate: ${((passedTests / totalTests} * 100}.toFixed(1}%`),
 
         if (failedTests > 0') {'
 
-            console.log('\nFailed, Tests: ',
+            console.log('\nFailed, Tests: ,
             this.testResults,
-                .filter(result => !result.passed) }
-                .forEach(result => {) }
+                .filter(result => !result.passed);
+                .forEach(result => {);
                     console.log(`  ${result.category}: ${result.testName}`};
 
                     console.log(`    Expected: ${result.expected}`);
@@ -430,7 +411,7 @@ export class RegionalFormattingTest {
      */
     generateReport(): TestReport { const report: TestReport = {
             summary: {
-                totalTests: this.testResults.length,
+                totalTests: this.testResults.length ,
     passedTests: this.testResults.filter(r => r.passed).length,
                 failedTests: this.testResults.filter(r => !r.passed).length,
                 successRate: ((this.testResults.filter(r => r.passed).length / this.testResults.length) * 100).toFixed(1') + '%'

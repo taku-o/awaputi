@@ -8,90 +8,74 @@
 import { getErrorHandler  } from '../../utils/ErrorHandler.js';
 
 // 型定義
-export interface PerformanceMeasurement { duration: number;
-    timestamp: number;
+export interface PerformanceMeasurement { duration: number,
+    timestamp: number,
     success: boolean;
-
-export interface TranslationMeasurement { id: string;
-    startTime: number;
-    key: string;
+    export interface TranslationMeasurement { id: string,
+    startTime: number,
+    key: string,
     language: string;
-
-export interface LanguageSwitchResult { result: any;
+    export interface LanguageSwitchResult { result: any,
     duration: number;
-
-export interface RenderingResult { result: any;
+    export interface RenderingResult { result: any,
     duration: number;
-
-export interface MemoryInfo { used: number;
-    total: number;
-    limit: number;
+    export interface MemoryInfo { used: number,
+    total: number,
+    limit: number,
     timestamp: number;
-
-export interface NetworkInfo { effectiveType: string;
-    downlink: number;
-    rtt: number;
+    export interface NetworkInfo { effectiveType: string,
+    downlink: number,
+    rtt: number,
     timestamp: number;
-
-export interface PerformanceMetrics { translationTimes: Map<string, PerformanceMeasurement[]>,
+    export interface PerformanceMetrics { translationTimes: Map<string, PerformanceMeasurement[]>,
     languageSwitchTimes: Map<string, PerformanceMeasurement[]>;
     renderingTimes: Map<string, PerformanceMeasurement[]>;
     memoryUsage: Map<number, MemoryInfo>;
     cachePerformance: Map<string, any>;
-    networkPerformance: Map<number, NetworkInfo> }
-
-export interface PerformanceThresholds { translationTime: number;
-    languageSwitchTime: number;
-    renderingTime: number;
-    memoryGrowth: number;
-    cacheHitRate: number;
+    networkPerformance: Map<number, NetworkInfo> };
+export interface PerformanceThresholds { translationTime: number,
+    languageSwitchTime: number,
+    renderingTime: number,
+    memoryGrowth: number,
+    cacheHitRate: number,
     networkTimeout: number;
-
-export interface PerformanceAlert { type: string;
-    details: any;
-    timestamp: number;
+    export interface PerformanceAlert { type: string,
+    details: any,
+    timestamp: number,
     severity: AlertSeverity;
-
-export interface AlertCategories { performance: PerformanceAlert[];
-    memory: PerformanceAlert[];
+    export interface AlertCategories { performance: PerformanceAlert[],
+    memory: PerformanceAlert[],
     network: PerformanceAlert[];
-
-export interface PerformanceStatistics { startTime: number;
-    totalTranslations: number;
-    totalLanguageSwitches: number;
-    totalRenders: number;
-    performanceIssues: number;
+    export interface PerformanceStatistics { startTime: number,
+    totalTranslations: number,
+    totalLanguageSwitches: number,
+    totalRenders: number,
+    performanceIssues: number,
     optimizations: number;
     uptime?: number;
     avgTranslationsPerMinute?: number;
     avgSwitchesPerMinute?: number;
-
-export interface AutoOptimizationConfig { enabled: boolean;
-    adaptiveThresholds: boolean;
-    memoryCleanup: boolean;
+    export interface AutoOptimizationConfig { enabled: boolean,
+    adaptiveThresholds: boolean,
+    memoryCleanup: boolean,
     cacheOptimization: boolean;
-
-export interface TranslationPerformanceAnalysis { totalTranslations: number;
+    export interface TranslationPerformanceAnalysis { totalTranslations: number,
+    averageTime: number,
+    slowTranslations: number,
+    fastestLanguage: LanguagePerformance | null,
+    slowestLanguage: LanguagePerformance | null };
+export interface LanguagePerformance { language: string,
     averageTime: number;
-    slowTranslations: number;
-    fastestLanguage: LanguagePerformance | null;
-    slowestLanguage: LanguagePerformance | null }
-
-export interface LanguagePerformance { language: string;
-    averageTime: number;
-
-export interface LanguageSwitchPerformanceAnalysis { totalSwitches: number;
-    averageTime: number;
-    slowSwitches: number;
+    export interface LanguageSwitchPerformanceAnalysis { totalSwitches: number,
+    averageTime: number,
+    slowSwitches: number,
     commonSwitchPatterns: SwitchPattern[];
-
-export interface SwitchPattern { pattern: string;
-    count: number;
+    export interface SwitchPattern { pattern: string,
+    count: number,
     percentage: number;
-
-export interface RenderingPerformanceAnalysis { totalRenders: number;
-    averageTime: number;
-    averageFPS: number;
+    export interface RenderingPerformanceAnalysis { totalRenders: number,
+    averageTime: number,
+    averageFPS: number,
     droppedFrames: number;
 ';'
 
@@ -101,30 +85,25 @@ export interface MemoryTrendAnalysis {,
     currentUsage?: number;
     maxUsage?: number;
     minUsage?: number;
-
-export interface PerformanceAnalysis { translationPerformance: TranslationPerformanceAnalysis;
-    languageSwitchPerformance: LanguageSwitchPerformanceAnalysis;
-    renderingPerformance: RenderingPerformanceAnalysis;
-    memoryTrends: MemoryTrendAnalysis;
+    export interface PerformanceAnalysis { translationPerformance: TranslationPerformanceAnalysis,
+    languageSwitchPerformance: LanguageSwitchPerformanceAnalysis,
+    renderingPerformance: RenderingPerformanceAnalysis,
+    memoryTrends: MemoryTrendAnalysis,
     recommendations: PerformanceRecommendation[];
-
-export interface PerformanceRecommendation { type: RecommendationType;
-    severity: AlertSeverity;
-    message: string;
+    export interface PerformanceRecommendation { type: RecommendationType,
+    severity: AlertSeverity,
+    message: string,
     action: OptimizationAction;
-
-export interface PerformanceReport { timestamp: number;
-    uptime: number;
-    statistics: PerformanceStatistics;
-    analysis: PerformanceAnalysis;
-    alerts: AlertCategories;
-    thresholds: PerformanceThresholds;
+    export interface PerformanceReport { timestamp: number,
+    uptime: number,
+    statistics: PerformanceStatistics,
+    analysis: PerformanceAnalysis,
+    alerts: AlertCategories,
+    thresholds: PerformanceThresholds,
     autoOptimization: AutoOptimizationConfig;
-
-export interface LanguageStats { totalTime: number;
+    export interface LanguageStats { totalTime: number,
     count: number;
-
-export interface PerformanceIssueDetails { key?: string,
+    export interface PerformanceIssueDetails { key?: string,
     language?: string;
     duration?: number;
     threshold?: number;
@@ -138,9 +117,8 @@ export interface PerformanceIssueDetails { key?: string,
     effectiveType?: string;
     downlink?: number;
     rtt?: number;
-
-export interface NetworkConnection { effectiveType: string;
-    downlink: number;
+    export interface NetworkConnection { effectiveType: string,
+    downlink: number,
     rtt: number;
 
 // Navigator型拡張
@@ -153,10 +131,10 @@ declare global { interface Navigator {
     }
     
     interface Performance { memory?: {
-            usedJSHeapSiz,e: number;
-            totalJSHeapSize: number;
+            usedJSHeapSiz,e: number,
+            totalJSHeapSize: number,
     jsHeapSizeLimit: number;
-}
+} };
 
 export type AlertSeverity = 'low' | 'medium' | 'high';
 export type RecommendationType = 'translation' | 'language_switch' | 'rendering' | 'memory';
@@ -187,7 +165,7 @@ export class I18nPerformanceMonitor {
             renderingTimes: new Map<string, PerformanceMeasurement[]>(),      // レンダリング時間;
             memoryUsage: new Map<number, MemoryInfo>(),         // メモリ使用量;
             cachePerformance: new Map<string, any>(),    // キャッシュ性能
-    }
+    };
             networkPerformance: new Map<number, NetworkInfo>()   // ネットワーク性能 }
         };
         
@@ -197,23 +175,23 @@ export class I18nPerformanceMonitor {
             renderingTime: 16.67,     // 60FPS (16.67ms),
             memoryGrowth: 20,         // 20%以内の増加,
             cacheHitRate: 80,         // 80%以上,
-            networkTimeout: 5000      // 5秒以内  },
+            networkTimeout: 5000      // 5秒以内  };
         // アラート設定
         this.alerts = { performance: [],
             memory: [],
-    network: []  },
+    network: []  };
         // 統計データ
         this.statistics = { startTime: Date.now(
             totalTranslations: 0,
             totalLanguageSwitches: 0,
             totalRenders: 0,
             performanceIssues: 0,
-    optimizations: 0  },
+    optimizations: 0  };
         // 自動最適化設定
         this.autoOptimization = { enabled: true,
             adaptiveThresholds: true,
             memoryCleanup: true,
-    cacheOptimization: true,
+    cacheOptimization: true;
         // 監視開始
         this.startMonitoring();
     }
@@ -226,7 +204,7 @@ export class I18nPerformanceMonitor {
         
         // 定期的な統計収集
         this.monitoringInterval = window.setInterval(() => {  this.collectSystemMetrics();
-            this.analyzePerformance() }
+            this.analyzePerformance();
             this.optimizeIfNeeded(); }
         }, 5000); // 5秒間隔
         
@@ -244,7 +222,7 @@ export class I18nPerformanceMonitor {
      * 翻訳性能の測定開始
      */
     startTranslationMeasurement(key: string, language: string): TranslationMeasurement {
-        const measurementId = `${key}_${language}_${Date.now())`,
+        const measurementId = `${key}_${language}_${Date.now()),
         return { id: measurementId,
             startTime: performance.now();
             key };
@@ -259,11 +237,11 @@ export class I18nPerformanceMonitor {
         
         // メトリクス記録 }
         const key = `${measurement.language}:${measurement.key}`;
-        if (!this.metrics.translationTimes.has(key) { this.metrics.translationTimes.set(key []) }
+        if (!this.metrics.translationTimes.has(key) { this.metrics.translationTimes.set(key []);
         
         this.metrics.translationTimes.get(key)!.push({ )
             duration,
-            timestamp: Date.now(),
+            timestamp: Date.now();
             success }');'
         
         // 統計更新
@@ -274,7 +252,7 @@ export class I18nPerformanceMonitor {
             this.recordPerformanceIssue('translation', {
                 key: measurement.key,
     language: measurement.language);
-                duration) }
+                duration);
                 threshold: this.thresholds.translationTime); 
     }
         
@@ -282,8 +260,7 @@ export class I18nPerformanceMonitor {
         if (duration > this.thresholds.translationTime * 2) {
     
 }
-            console.warn(`Slow, translation detected: ${measurement.key} (${duration.toFixed(2}ms)`),
-        }
+            console.warn(`Slow, translation detected: ${measurement.key} (${duration.toFixed(2}ms)`);
         
         return duration;
     }
@@ -293,7 +270,7 @@ export class I18nPerformanceMonitor {
      */
     async measureLanguageSwitch<T>(fromLanguage: string, toLanguage: string, callback: () => Promise<T>): Promise<LanguageSwitchResult> { return new Promise(async (resolve, reject) => {  }
             const startTime = performance.now(); }
-            const measurementId = `switch_${fromLanguage}_${toLanguage}_${Date.now())`,
+            const measurementId = `switch_${fromLanguage}_${toLanguage}_${Date.now()),
             
             try { const result = await callback();
                 const endTime = performance.now();
@@ -301,7 +278,7 @@ export class I18nPerformanceMonitor {
                 
                 // メトリクス記録 }
                 const switchKey = `${fromLanguage}->${toLanguage}`;
-                if (!this.metrics.languageSwitchTimes.has(switchKey) { this.metrics.languageSwitchTimes.set(switchKey, []) }
+                if (!this.metrics.languageSwitchTimes.has(switchKey) { this.metrics.languageSwitchTimes.set(switchKey, []);
                 
                 this.metrics.languageSwitchTimes.get(switchKey)!.push({ )
                     duration,
@@ -314,25 +291,23 @@ export class I18nPerformanceMonitor {
 
                     this.recordPerformanceIssue('languageSwitch', {
                         from: fromLanguage,
-    to: toLanguage),
-                        duration) }
-                        threshold: this.thresholds.languageSwitchTime),
+    to: toLanguage);
+                        duration);
+                        threshold: this.thresholds.languageSwitchTime);
     }
                 
-                resolve({ result, duration ) }
+                resolve({ result, duration );
 
             } catch (error) {
-                const endTime = performance.now('',
+                const endTime = performance.now(',
                 this.recordPerformanceIssue('languageSwitchError', {
                 from: fromLanguage,
     to: toLanguage);
                     duration,
                     error: (error, as Error).message  });
                 reject(error);
-            }
-        };
-    }
-    
+                }
+}
     /**
      * レンダリング性能の測定
      */
@@ -357,9 +332,9 @@ export class I18nPerformanceMonitor {
 
                     this.recordPerformanceIssue('rendering', {
                 duration);
-                        threshold: this.thresholds.renderingTime) }
-                        fps: Math.round(1000 / duration),
-    };
+                        threshold: this.thresholds.renderingTime),
+                        fps: Math.round(1000 / duration);
+    }
                 }
                 
                 resolve({ result, duration );
@@ -369,10 +344,8 @@ export class I18nPerformanceMonitor {
                 this.recordPerformanceIssue('renderingError', {);
                     error: (error, as Error).message  };
                 reject(error);
-            }
-        };
-    }
-    
+                }
+}
     /**
      * システムメトリクスの収集
      */
@@ -391,10 +364,8 @@ export class I18nPerformanceMonitor {
             for(const [timestamp] of, this.metrics.memoryUsage) {
                 if (timestamp < oneHourAgo) {
             }
-                    this.metrics.memoryUsage.delete(timestamp); }
+                    this.metrics.memoryUsage.delete(timestamp);     }
 }
-        }
-        
         // パフォーマンス統計の更新
         this.updatePerformanceStatistics();
     }
@@ -405,7 +376,7 @@ export class I18nPerformanceMonitor {
     private monitorMemoryUsage(): void { if (!performance.memory) return,
         
         const currentMemory = performance.memory.usedJSHeapSize,
-        const memoryHistory = Array.from(this.metrics.memoryUsage.values();
+        const memoryHistory = Array.from(this.metrics.memoryUsage.values()));
         if (memoryHistory.length > 1) {
         
             const previousMemory = memoryHistory[memoryHistory.length - 2].used,
@@ -413,10 +384,10 @@ export class I18nPerformanceMonitor {
 
             if (memoryGrowth > this.thresholds.memoryGrowth) {''
                 this.recordPerformanceIssue('memoryGrowth', {
-                    current: currentMemory);
+                    current: currentMemory),
                     previous: previousMemory,
     growth: memoryGrowth,
-                    threshold: this.thresholds.memoryGrowth), 
+                    threshold: this.thresholds.memoryGrowth); 
     }
     }
     
@@ -429,7 +400,7 @@ export class I18nPerformanceMonitor {
                 effectiveType: connection.effectiveType,
                 downlink: connection.downlink,
                 rtt: connection.rtt,
-    timestamp: Date.now( },
+    timestamp: Date.now( };
 
             this.metrics.networkPerformance.set(Date.now(), networkInfo');'
             ';'
@@ -447,11 +418,11 @@ export class I18nPerformanceMonitor {
      * パフォーマンス分析
      */
     analyzePerformance(): PerformanceAnalysis { const analysis: PerformanceAnalysis = {
-            translationPerformance: this.analyzeTranslationPerformance();
-            languageSwitchPerformance: this.analyzeLanguageSwitchPerformance();
-            renderingPerformance: this.analyzeRenderingPerformance();
+            translationPerformance: this.analyzeTranslationPerformance(),
+            languageSwitchPerformance: this.analyzeLanguageSwitchPerformance(),
+            renderingPerformance: this.analyzeRenderingPerformance(),
             memoryTrends: this.analyzeMemoryTrends(
-    recommendations: [] },
+    recommendations: [] };
         // 推奨事項の生成
         this.generateRecommendations(analysis);
         
@@ -466,7 +437,7 @@ export class I18nPerformanceMonitor {
             averageTime: 0,
             slowTranslations: 0,
             fastestLanguage: null,
-    slowestLanguage: null,
+    slowestLanguage: null;
         let totalTime = 0;
         let totalCount = 0;
         const languageAverages = new Map<string, LanguageStats>();
@@ -514,8 +485,7 @@ export class I18nPerformanceMonitor {
                 analysis.fastestLanguage = { language, averageTime: avgTime,
             
             if (avgTime > slowestTime) { slowestTime = avgTime }
-                analysis.slowestLanguage = { language, averageTime: avgTime,
-        }
+                analysis.slowestLanguage = { language, averageTime: avgTime }
         
         return analysis;
     }
@@ -527,7 +497,7 @@ export class I18nPerformanceMonitor {
             totalSwitches: 0,
             averageTime: 0,
             slowSwitches: 0,
-    commonSwitchPatterns: [] },
+    commonSwitchPatterns: [] };
         let totalTime = 0;
         let totalCount = 0;
         const switchCounts = new Map<string, number>();
@@ -557,13 +527,13 @@ export class I18nPerformanceMonitor {
         }
         
         // 一般的な切り替えパターン
-        const sortedSwitches = Array.from(switchCounts.entries();
+        const sortedSwitches = Array.from(switchCounts.entries()));
             .sort(([,a], [,b]) => b - a);
             .slice(0, 5);
         
         analysis.commonSwitchPatterns = sortedSwitches.map(([pattern, count]) => ({ pattern,
             count,
-            percentage: (count / totalCount) * 100  },
+            percentage: (count / totalCount) * 100  };
         return analysis;
     }
     
@@ -590,7 +560,7 @@ export class I18nPerformanceMonitor {
     /**
      * メモリトレンドの分析
      */
-    private analyzeMemoryTrends(): MemoryTrendAnalysis { const memoryData = Array.from(this.metrics.memoryUsage.values();
+    private analyzeMemoryTrends(): MemoryTrendAnalysis { const memoryData = Array.from(this.metrics.memoryUsage.values()));
         if (memoryData.length < 2) { }'
 
             return { trend: 'insufficient_data' }
@@ -603,7 +573,7 @@ export class I18nPerformanceMonitor {
         const changeRate = ((final - initial) / initial) * 100;
         
         return { trend,
-            changeRate: Math.abs(changeRate);
+            changeRate: Math.abs(changeRate),
             currentUsage: final,
     maxUsage: Math.max(...recent.map(d = > d.used  }
             minUsage: Math.min(...recent.map(d => d.used); 
@@ -616,7 +586,7 @@ export class I18nPerformanceMonitor {
         // 翻訳性能の推奨事項
         if (analysis.translationPerformance.averageTime > this.thresholds.translationTime) {
             recommendations.push({''
-                type: 'translation',
+                type: 'translation,
                 severity: 'medium',','
                 message: 'Translation performance is below threshold. Consider caching frequently used translations.',' }'
 
@@ -626,7 +596,7 @@ export class I18nPerformanceMonitor {
         // 言語切り替え性能の推奨事項
         if (analysis.languageSwitchPerformance.averageTime > this.thresholds.languageSwitchTime) {
             recommendations.push({''
-                type: 'language_switch',
+                type: 'language_switch,
                 severity: 'high',','
                 message: 'Language switching is slow. Consider preloading common languages.',' }'
 
@@ -636,7 +606,7 @@ export class I18nPerformanceMonitor {
         // レンダリング性能の推奨事項
         if (analysis.renderingPerformance.averageFPS < 60) {
             recommendations.push({''
-                type: 'rendering',
+                type: 'rendering,
                 severity: 'high',','
                 message: 'Rendering performance is below 60 FPS. Optimize UI updates.',' }'
 
@@ -646,7 +616,7 @@ export class I18nPerformanceMonitor {
         // メモリ使用量の推奨事項
         if(analysis.memoryTrends.trend === 'increasing' && analysis.memoryTrends.changeRate && analysis.memoryTrends.changeRate > 10' { '
             recommendations.push({''
-                type: 'memory',
+                type: 'memory,
                 severity: 'medium',','
                 message: 'Memory usage is increasing. Consider garbage collection.',' }'
 
@@ -668,10 +638,8 @@ export class I18nPerformanceMonitor {
             if (this.shouldAutoOptimize(recommendation) {
     
 }
-                this.executeOptimization(recommendation); }
+                this.executeOptimization(recommendation);     }
 }
-    }
-    
     /**
      * 自動最適化の判定'
      */''
@@ -693,7 +661,7 @@ export class I18nPerformanceMonitor {
     /**
      * 最適化の実行
      */
-    private executeOptimization(recommendation: PerformanceRecommendation): void { console.log(`Executing, auto-optimization: ${recommendation.action)`,
+    private executeOptimization(recommendation: PerformanceRecommendation): void { console.log(`Executing, auto-optimization: ${recommendation.action),
 
         try {'
             switch(recommendation.action) {
@@ -705,7 +673,7 @@ export class I18nPerformanceMonitor {
                     break
             }
                 default: }
-                    console.warn(`Unknown, optimization action: ${recommendation.action}`};
+                    console.warn(`Unknown, optimization action: ${recommendation.action}`}
             }
             
             this.statistics.optimizations++;
@@ -735,11 +703,10 @@ export class I18nPerformanceMonitor {
                     if (Array.isArray(value) {
                         // 配列データの場合、古いエントリを削除
                         const recentEntries = value.filter(entry => );
-                            !entry.timestamp || entry.timestamp > oneHourAgo) }
+                            !entry.timestamp || entry.timestamp > oneHourAgo);
 
-                        metricMap.set(key, recentEntries); }
+                        metricMap.set(key, recentEntries);     }
 }
-            }
         }
 
         console.log('Memory, cleanup completed');
@@ -758,7 +725,7 @@ export class I18nPerformanceMonitor {
     private recordPerformanceIssue(type: string, details: PerformanceIssueDetails): void { const issue: PerformanceAlert = {
             type,
             details,
-            timestamp: Date.now() severity: this.calculateSeverity(type details },
+            timestamp: Date.now() severity: this.calculateSeverity(type details ,
         
         this.alerts.performance.push(issue');'
         this.statistics.performanceIssues++;
@@ -771,10 +738,8 @@ export class I18nPerformanceMonitor {
         ';'
         // 重要な問題はコンソールに出力
         if(issue.severity === 'high' { }
-            console.warn(`Performance issue detected: ${type}`, details};
-        }
-    }
-    
+            console.warn(`Performance issue detected: ${type}`, details    }
+}
     /**
      * 重要度の計算
      */'
@@ -782,15 +747,15 @@ export class I18nPerformanceMonitor {
         switch(type) {
 
             case 'languageSwitch':','
-                return details.duration && details.duration > this.thresholds.languageSwitchTime * 2 ? 'high' : 'medium',
+                return details.duration && details.duration > this.thresholds.languageSwitchTime * 2 ? 'high' : 'medium,
             case 'rendering':','
-                return details.fps && details.fps < 30 ? 'high' : 'medium',
+                return details.fps && details.fps < 30 ? 'high' : 'medium,
             case 'memoryGrowth':','
-                return details.growth && details.growth > this.thresholds.memoryGrowth * 2 ? 'high' : 'medium',
+                return details.growth && details.growth > this.thresholds.memoryGrowth * 2 ? 'high' : 'medium,
             case 'slowNetwork':','
                 return details.effectiveType === 'slow-2g' ? 'high' : 'medium' }
 
-            default: return 'low',
+            default: return 'low,
     
     /**
      * パフォーマンス統計の更新
@@ -812,7 +777,7 @@ export class I18nPerformanceMonitor {
     statistics: this.statistics,
             analysis,
             alerts: this.alerts,
-    thresholds: this.thresholds },
+    thresholds: this.thresholds ,
             autoOptimization: this.autoOptimization 
     }
     
@@ -828,9 +793,8 @@ export class I18nPerformanceMonitor {
                 const suggestedThreshold = analysis.translationPerformance.averageTime * 1.2,
                 if (suggestedThreshold > this.thresholds.translationTime) {
         }
-                    this.thresholds.translationTime = Math.min(suggestedThreshold, 50); // 最大50ms }
+                    this.thresholds.translationTime = Math.min(suggestedThreshold, 50); // 最大50ms     }
 }
-        }
         ;
         // 手動設定の適用
         Object.assign(this.thresholds, newThresholds);
@@ -855,10 +819,10 @@ export class I18nPerformanceMonitor {
      * メトリクス情報を取得
      */
     getMetrics(): PerformanceMetrics { return { translationTimes: new Map(this.metrics.translationTimes,
-            languageSwitchTimes: new Map(this.metrics.languageSwitchTimes);
-            renderingTimes: new Map(this.metrics.renderingTimes);
+            languageSwitchTimes: new Map(this.metrics.languageSwitchTimes),
+            renderingTimes: new Map(this.metrics.renderingTimes),
             memoryUsage: new Map(this.metrics.memoryUsage,
-    cachePerformance: new Map(this.metrics.cachePerformance) },
+    cachePerformance: new Map(this.metrics.cachePerformance) ,
             networkPerformance: new Map(this.metrics.networkPerformance); 
     }
     
@@ -871,14 +835,14 @@ export class I18nPerformanceMonitor {
         
         if (this.memoryMonitoringInterval) {
         
-            clearInterval(this.memoryMonitoringInterval) }
+            clearInterval(this.memoryMonitoringInterval);
             this.memoryMonitoringInterval = undefined; }
         }
         
         if (this.networkMonitoringInterval) {
         ','
 
-            clearInterval(this.networkMonitoringInterval) }
+            clearInterval(this.networkMonitoringInterval);
             this.networkMonitoringInterval = undefined; }
         }
 

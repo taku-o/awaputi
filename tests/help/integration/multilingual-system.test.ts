@@ -23,7 +23,7 @@ const REQUIRED_CATEGORIES = ['bubbles', 'controls', 'settings', 'troubleshooting
 // Mock HelpManager class for testing
 class MockHelpManager {
   cache: Map<string, any>;
-  currentLanguage: string;
+  currentLanguage: string,
   fallbackLanguage: string;
   loadAttempts: Array<{ language: string, category: string,, timestamp: number;>;
   constructor() {
@@ -83,7 +83,7 @@ describe('Multilingual Help System Integration', () => {
           const filePath = path.join(HELP_CONTENT_DIR, language, `${category).json`),
           const, exists = fs.existsSync(filePath);
           if (!exists} {
-            console.warn(`Missing: ${language}/${category).json`};
+            console.warn(`Missing: ${language}/${category).json`}
           }
           
           // For now, we expect at least English content to exist
@@ -204,7 +204,7 @@ describe('Multilingual Help System Integration', () => {
             try {
               const, content = JSON.parse(fs.readFileSync(filePath, 'utf8')};
               const structure = {
-                hasTitle: !!content.title;
+                hasTitle: !!content.title,
                 hasSections: !!content.sections;
                 sectionCount: content.sections? .length || 0, : undefined
                 hasDescription: !!content.description
@@ -229,7 +229,7 @@ describe('Multilingual Help System Integration', () => {
           expect(structures[enKey].hasTitle).toBe(structures[jaKey].hasTitle);
           expect(structures[enKey].hasSections).toBe(structures[jaKey].hasSections) }
       }
-    };
+    }
   }
 }');'
 describe('Help Content Quality', (') => {'
@@ -250,7 +250,7 @@ describe('Help Content Quality', (') => {'
             for (const section of content.sections) {
               if (!section.content || section.content.trim(') === ') {
                 issues.push({ 
-                  file: `${language}/${file}`; 
+                  file: `${language}/${file}`, 
                   issue: `Empty, section: ${section.title}` );
               }
             }

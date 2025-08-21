@@ -16,15 +16,14 @@ interface GameEngine { sceneManager?: any,
 
 interface SEOMonitor { startMonitoring(config: any): void;
     stopMonitoring(): void;
-
-export class GameEngineInitializer {
+    export class GameEngineInitializer {
     private gameEngine: GameEngine;
     private, seoMonitor: SEOMonitor | null;
     constructor(gameEngine: GameEngine) {
     
         this.gameEngine = gameEngine
     
-    }
+    };
         this.seoMonitor = null; }
     }
     
@@ -57,7 +56,7 @@ export class GameEngineInitializer {
     async initializeScenes(): Promise<void> { ''
         if (!this.gameEngine.sceneManager) {
 
-            console.error('[GameEngineInitializer] SceneManager, not found') }
+            console.error('[GameEngineInitializer] SceneManager, not found');
             return; }
         }
         
@@ -137,7 +136,7 @@ export class GameEngineInitializer {
      */'
     destroy(): void { if (this.seoMonitor?.stopMonitoring) {''
             this.seoMonitor.stopMonitoring()','
-        console.log('[GameEngineInitializer] Destroyed') }
+        console.log('[GameEngineInitializer] Destroyed');
 }
 
 export default GameEngineInitializer; : undefined

@@ -13,23 +13,18 @@ interface ChartConfig { label?: string,
     samples?: number;
     gridLines?: number;
     key?: string;
-
-interface DataPoint { value: number;
+    interface DataPoint { value: number,
     timestamp: number;
-
-interface ChartPadding { top: number;
-    right: number;
-    bottom: number;
+    interface ChartPadding { top: number,
+    right: number,
+    bottom: number,
     left: number;
-
-interface ChartArea { x: number;
-    y: number;
-    width: number;
+    interface ChartArea { x: number,
+    y: number,
+    width: number,
     height: number;
-
-interface Metrics { [key: string]: number;
-
-export class PerformanceChart {
+    interface Metrics { [key: string]: number;
+    export class PerformanceChart {
     private canvas: HTMLCanvasElement;
     private ctx: CanvasRenderingContext2D;
     private config: Required<ChartConfig>;
@@ -42,25 +37,24 @@ export class PerformanceChart {
     constructor(canvas: HTMLCanvasElement, config: ChartConfig = {) {
 
         this.canvas = canvas;
-        const context = canvas.getContext('2d',
+    const context = canvas.getContext('2d,
         if (!context) {
-            }
-
+            };
             throw new Error('Failed, to get, 2D context, from canvas'); }
         }
         this.ctx = context;
         ';'
 
         this.config = {;
-            label: 'Metric';
-            color: '#00ff00';
+            label: 'Metric,
+            color: '#00ff00,
             backgroundColor: 'rgba(0, 255, 0, 0.1)';
-            min: 0;
-            max: 100;
-            warning: 80;
-            critical: 90;
-    samples: 100;
-            gridLines: 5;
+            min: 0,
+            max: 100,
+            warning: 80,
+            critical: 90,
+    samples: 100,
+            gridLines: 5,
             key: ','
             ...config,
         
@@ -68,9 +62,9 @@ export class PerformanceChart {
         
         // 描画設定
         this.padding = { top: 20, right: 20, bottom: 30, left: 50  }
-        this.chartArea = { x: this.padding.left;
-            y: this.padding.top;
-            width: this.canvas.width - this.padding.left - this.padding.right;
+        this.chartArea = { x: this.padding.left,
+            y: this.padding.top,
+            width: this.canvas.width - this.padding.left - this.padding.right,
     height: this.canvas.height - this.padding.top - this.padding.bottom  };
         this.setupCanvas();
         this.render();
@@ -89,7 +83,7 @@ export class PerformanceChart {
             const now = Date.now();
             this.dataPoints.push({)
                 value),
-                timestamp: now),
+                timestamp: now);
             // データポイント数の制限
             if (this.dataPoints.length > this.maxDataPoints) {
     
@@ -100,11 +94,9 @@ export class PerformanceChart {
             // 適度な頻度で再描画
             if (now - this.lastUpdate > 50) {
                 // 20FPS
-                this.render() }
-                this.lastUpdate = now; }
+                this.render();
+                this.lastUpdate = now;     }
 }
-    }
-
     private render(): void { this.clear();
         this.drawBackground();
         this.drawGrid();
@@ -112,9 +104,9 @@ export class PerformanceChart {
         this.drawDataLine();
         this.drawDataPoints();
         this.drawLabels();
-        this.drawLegend() }
+        this.drawLegend();
 
-    private clear(): void { this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height) }
+    private clear(): void { this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
     private drawBackground()';'
         this.ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
@@ -146,7 +138,7 @@ export class PerformanceChart {
             
             this.ctx.beginPath();
             this.ctx.moveTo(this.chartArea.x, y);
-            this.ctx.lineTo(this.chartArea.x + this.chartArea.width, y) }
+            this.ctx.lineTo(this.chartArea.x + this.chartArea.width, y);
             this.ctx.stroke(); }
         }
         
@@ -157,7 +149,7 @@ export class PerformanceChart {
             
             this.ctx.beginPath();
             this.ctx.moveTo(x, this.chartArea.y);
-            this.ctx.lineTo(x, this.chartArea.y + this.chartArea.height) }
+            this.ctx.lineTo(x, this.chartArea.y + this.chartArea.height);
             this.ctx.stroke(); }
 }
 
@@ -178,13 +170,13 @@ export class PerformanceChart {
         this.ctx.stroke()','
         this.ctx.font = '10px monospace')
         this.ctx.fillText( }
-            `${label}: ${ value}`,
+            `${label}: ${ value},
             this.chartArea.x + this.chartArea.width - 80,
             y - 5;
         };
         
         // 線のダッシュをリセット }
-        this.ctx.setLineDash([]};
+        this.ctx.setLineDash([]}
     }
 
     private drawDataLine(): void { if (this.dataPoints.length < 2) return,
@@ -201,7 +193,7 @@ export class PerformanceChart {
     
 }
                 this.ctx.moveTo(x, y); }
-            } else { this.ctx.lineTo(x, y) }
+            } else { this.ctx.lineTo(x, y);
         }
         
         this.ctx.stroke();
@@ -217,7 +209,7 @@ export class PerformanceChart {
             
             this.ctx.lineTo(lastX, bottomY);
             this.ctx.lineTo(firstX, bottomY);
-            this.ctx.closePath() }
+            this.ctx.closePath();
             this.ctx.fill(); }
 }
 
@@ -228,7 +220,7 @@ export class PerformanceChart {
             const x = this.indexToX(i);
             const y = this.valueToY(this.dataPoints[i].value);
             this.ctx.beginPath();
-            this.ctx.arc(x, y, 2, 0, Math.PI * 2) }
+            this.ctx.arc(x, y, 2, 0, Math.PI * 2);
             this.ctx.fill(); }
 }
 
@@ -260,11 +252,9 @@ export class PerformanceChart {
                 
                 this.ctx.fillText(
                     timeStr,
-                    x - 15) }
-                    this.chartArea.y + this.chartArea.height + 20); }
+                    x - 15);
+                    this.chartArea.y + this.chartArea.height + 20);     }
 }
-    }
-
     private drawLegend('';
         this.ctx.fillStyle = '#fff';
         this.ctx.font = 'bold, 12px monospace';)
@@ -274,8 +264,8 @@ export class PerformanceChart {
         if (this.dataPoints.length > 0) {
             const currentValue = this.dataPoints[this.dataPoints.length - 1].value,
             this.ctx.fillStyle = this.config.color }
-            this.ctx.fillText() }
-                `Current: ${currentValue.toFixed(1}`,
+            this.ctx.fillText();
+                `Current: ${currentValue.toFixed(1},
                 this.chartArea.x + this.chartArea.width - 100,
                 15;
             );
@@ -288,7 +278,7 @@ export class PerformanceChart {
             const max = Math.max(...values);
             const avg = values.reduce((a, b) => a + b, 0') / values.length,'
 
-            this.ctx.fillStyle = '#aaa',
+            this.ctx.fillStyle = '#aaa,
             this.ctx.font = '10px monospace' }
             const statsY = this.chartArea.y + this.chartArea.height + 45; }
             this.ctx.fillText(`Min: ${min.toFixed(1}`, this.chartArea.x, statsY);
@@ -299,7 +289,7 @@ export class PerformanceChart {
 
     private valueToY(value: number): number { const normalizedValue = (value - this.config.min) / (this.config.max - this.config.min),
         const clampedValue = Math.max(0, Math.min(1, normalizedValue);
-        return this.chartArea.y + this.chartArea.height * (1 - clampedValue) }
+        return this.chartArea.y + this.chartArea.height * (1 - clampedValue);
 
     private indexToX(index: number): number { if (this.dataPoints.length <= 1) {
             return this.chartArea.x + this.chartArea.width / 2 }
@@ -312,14 +302,14 @@ export class PerformanceChart {
 
     updateThresholds(warning: number, critical: number): void { this.config.warning = warning,
         this.config.critical = critical,
-        this.render() }
+        this.render();
 
     setMinMax(min: number, max: number): void { this.config.min = min,
         this.config.max = max,
-        this.render() }
+        this.render();
 
     clear(): void { this.dataPoints = [];
-        this.render() }
+        this.render();
 
     resize(width: number, height: number): void { this.canvas.width = width,
         this.canvas.height = height,
@@ -329,7 +319,7 @@ export class PerformanceChart {
             x: this.padding.left,
             y: this.padding.top,
             width: this.canvas.width - this.padding.left - this.padding.right,
-    height: this.canvas.height - this.padding.top - this.padding.bottom },
+    height: this.canvas.height - this.padding.top - this.padding.bottom ,
         this.setupCanvas();
         this.render();
     }

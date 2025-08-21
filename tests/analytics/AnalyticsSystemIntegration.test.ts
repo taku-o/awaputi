@@ -21,7 +21,7 @@ import { AnalyticsAPI  } from '../../src/analytics/AnalyticsAPI';
         onsuccess: null,
         onerror: null,
         result: {
-            createObjectStore: jest.fn(
+            createObjectStore: jest.fn( },
             transaction: jest.fn(() => ({
                 objectStore: jest.fn(() => ({
                     add: jest.fn(
@@ -35,7 +35,7 @@ import { AnalyticsAPI  } from '../../src/analytics/AnalyticsAPI';
 (global: any).Chart = class {
     constructor() {
         this.data = { datasets: [{ data: [] }] },
-        this.options = {};
+        this.options = {}
     }
     update() {}
     destroy() {}
@@ -103,7 +103,7 @@ describe('Analytics System Integration Tests', () => {
                     bubbleType: i % 2 === 0 ? 'normal' : 'stone',
                     success: i % 3 !== 0,
                     score: 100 + i * 50
-                };
+                }
             }
             
             // 2. バッチ処理での収集
@@ -174,6 +174,6 @@ describe('Analytics System Integration Tests', () => {
                 r.value.error && 
                 r.value.error.code === 'RATE_LIMIT_EXCEEDED');
             expect(rateLimitedRequests.length).toBeGreaterThan(0);
-        };
+        }
     }
 }');'

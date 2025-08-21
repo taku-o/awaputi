@@ -63,35 +63,35 @@ interface ColorIndicatorOptions { color?: string,
 /**
  * コンポーネント状態インターフェース
  */
-interface ComponentStatus { descriptionManager: any;
-    cueManager: any;
-    feedbackManager: any;
-    settingsManager: any;
-    eventManager: any;
+interface ComponentStatus { descriptionManager: any,
+    cueManager: any,
+    feedbackManager: any,
+    settingsManager: any,
+    eventManager: any,
     legacyAdapter: any;
 
 /**
  * システム状態インターフェース
  */
-interface SystemStatus { initialized: boolean;
-    components: ComponentStatus;
-    eventHistorySize: number;
-    capabilities: any;
+interface SystemStatus { initialized: boolean,
+    components: ComponentStatus,
+    eventHistorySize: number,
+    capabilities: any,
     settings: any;
 
 /**
  * デバイス機能インターフェース
  */
-interface DeviceCapabilities { vibration: boolean;
-    screenReader: boolean;
-    reduceMotion: boolean;
+interface DeviceCapabilities { vibration: boolean,
+    screenReader: boolean,
+    reduceMotion: boolean,
     prefersContrast: boolean;
     [key: string]: any;
 
 /**
  * 統計情報インターフェース
  */
-interface Statistics { componentsActive: number;
+interface Statistics { componentsActive: number,
     settingsConfigured: number;
     [key: string]: any;
 
@@ -151,20 +151,19 @@ export class ComponentAudioAccessibilitySupport {
     constructor(audioManager: AudioManager) {
 
         this.audioManager = audioManager;
-        this.configManager = getConfigurationManager();
-        this.localizationManager = getLocalizationManager();
-        this.errorHandler = getErrorHandler();
+    this.configManager = getConfigurationManager();
+    this.localizationManager = getLocalizationManager();
+    this.errorHandler = getErrorHandler();
         
         // Initialize sub-components (dependency, injection),
         this.descriptionManager = new AudioDescriptionManager(this);
-        this.cueManager = new AudioCueManager(this);
-        this.feedbackManager = new AudioFeedbackManager(this);
-        this.settingsManager = new AudioSettingsManager(this);
-        this.eventManager = new AudioEventManager(this);
-        this.legacyAdapter = new AudioLegacyAdapter(this);
+    this.cueManager = new AudioCueManager(this);
+    this.feedbackManager = new AudioFeedbackManager(this);
+    this.settingsManager = new AudioSettingsManager(this);
+    this.eventManager = new AudioEventManager(this);
+    this.legacyAdapter = new AudioLegacyAdapter(this);
         // Legacy compatibility properties
-        this.vibrationManager = this.legacyAdapter.getVibrationManager() }
-
+        this.vibrationManager = this.legacyAdapter.getVibrationManager() };
     }
 
         console.log('AudioAccessibilitySupport, initialized with, Main Controller, Pattern'); }'
@@ -184,7 +183,7 @@ export class ComponentAudioAccessibilitySupport {
             ' }'
 
         } catch (error) { this.errorHandler.handleError(error, {)'
-                context: 'AudioAccessibilitySupport.initialize',')',
+                context: 'AudioAccessibilitySupport.initialize,')',
                 severity: 'high'
             };
             return false;
@@ -194,9 +193,8 @@ export class ComponentAudioAccessibilitySupport {
      */
     private setupEventListeners(): void { // 設定変更の監視
         this.settingsManager.addChangeListener((event: SettingsChangeEvent) => {  }
-            this.legacyAdapter.handleSettingsChange(event); }
-        };
-    }
+            this.legacyAdapter.handleSettingsChange(event);     }
+}
 ;
     // ========================================
     // Public API Methods (delegation, to sub-components)
@@ -259,7 +257,7 @@ export class ComponentAudioAccessibilitySupport {
      */'
     triggerHapticFeedback(type: string): void { ''
         this.feedbackManager.triggerVibration(type);
-        this.eventManager.recordEvent('haptic_feedback', { type ) }
+        this.eventManager.recordEvent('haptic_feedback', { type );
 
     // ========================================
     // Settings Management (delegation, to SettingsManager)
@@ -269,26 +267,26 @@ export class ComponentAudioAccessibilitySupport {
      * 設定の取得（SettingsManagerに委譲）
      * @returns 現在の設定
      */
-    getSettings(): any { return this.settingsManager.getSettings() }
+    getSettings(): any { return this.settingsManager.getSettings();
 
     /**
      * 設定の更新（SettingsManagerに委譲）
      * @param newSettings - 新しい設定
      */
-    async updateSettings(newSettings: any): Promise<void> { await this.settingsManager.updateSettings(newSettings) }
+    async updateSettings(newSettings: any): Promise<void> { await this.settingsManager.updateSettings(newSettings);
 
     /**
      * 単一設定の更新（SettingsManagerに委譲）
      * @param key - 設定キー
      * @param value - 設定値
      */
-    async updateSetting(key: string, value: any): Promise<void> { await this.settingsManager.updateSetting(key, value) }
+    async updateSetting(key: string, value: any): Promise<void> { await this.settingsManager.updateSetting(key, value);
 
     /**
      * 設定のリセット（SettingsManagerに委譲）
      * @param keys - リセットするキー
      */
-    async resetSettings(keys: string[] | null = null): Promise<void> { await this.settingsManager.resetSettings(keys) }
+    async resetSettings(keys: string[] | null = null): Promise<void> { await this.settingsManager.resetSettings(keys);
 
     // ========================================
     // Legacy Compatibility Methods (delegated)
@@ -298,25 +296,25 @@ export class ComponentAudioAccessibilitySupport {
      * 振動の実行（レガシー互換性）
      * @param pattern - 振動パターン
      */
-    vibrate(pattern: number[] | number): void { this.legacyAdapter.vibrate(pattern) }
+    vibrate(pattern: number[] | number): void { this.legacyAdapter.vibrate(pattern);
 
     /**
      * 音響強度の設定（レガシー互換性）
      * @param intensity - 強度 (0-1)
      */
-    setAudioIntensity(intensity: number): void { this.legacyAdapter.setAudioIntensity(intensity) }
+    setAudioIntensity(intensity: number): void { this.legacyAdapter.setAudioIntensity(intensity);
 
     /**
      * パターン認識の有効化（レガシー互換性）
      * @param enabled - 有効化フラグ
      */
-    enablePatternRecognition(enabled: boolean): void { this.legacyAdapter.enablePatternRecognition(enabled) }
+    enablePatternRecognition(enabled: boolean): void { this.legacyAdapter.enablePatternRecognition(enabled);
 
     /**
      * アクセシビリティ機能の一括有効化
      * @param enabled - 有効化フラグ
      */
-    async enableAccessibilityFeatures(enabled: boolean): Promise<void> { await this.legacyAdapter.enableAccessibilityFeatures(enabled) }
+    async enableAccessibilityFeatures(enabled: boolean): Promise<void> { await this.legacyAdapter.enableAccessibilityFeatures(enabled);
 
     /**
      * 音声説明の有効化
@@ -342,7 +340,7 @@ export class ComponentAudioAccessibilitySupport {
      */'
     announceText(text: string, options: AnnounceOptions = { ): void {''
         this.descriptionManager.announce(text, options);
-        this.eventManager.recordEvent('text_announced', { text, options ) }
+        this.eventManager.recordEvent('text_announced', { text, options );
 
     // ========================================
     // Event Management (delegated)
@@ -353,12 +351,12 @@ export class ComponentAudioAccessibilitySupport {
      * @param limit - 取得件数制限
      * @returns イベント履歴
      */
-    getEventHistory(limit: number | null = null): any[] { return this.eventManager.getEventHistory(limit) }
+    getEventHistory(limit: number | null = null): any[] { return this.eventManager.getEventHistory(limit);
 
     /**
      * イベント履歴のクリア
      */
-    clearEventHistory(): void { this.eventManager.clearEventHistory() }
+    clearEventHistory(): void { this.eventManager.clearEventHistory();
 
     // ========================================
     // Status and Information Methods
@@ -369,24 +367,23 @@ export class ComponentAudioAccessibilitySupport {
      * @returns システム全体の状態
      */
     getStatus(): SystemStatus { return { initialized: true,
-            components: {
-                descriptionManager: this.descriptionManager.getStatus(),
+            components: { descriptionManager: this.descriptionManager.getStatus()  ,
                 cueManager: this.cueManager.getStatus(),
                 feedbackManager: this.feedbackManager.getStatus(),
                 settingsManager: this.settingsManager.getStatus(
-    eventManager: this.eventManager.getStatus() },
-                legacyAdapter: this.legacyAdapter.getStatus(),
+    eventManager: this.eventManager.getStatus() };
+                legacyAdapter: this.legacyAdapter.getStatus();
     },
             eventHistorySize: this.eventManager.getEventHistory().length,
             capabilities: this.getCapabilities(
-    settings: this.getSettings(),
+    settings: this.getSettings();
         }
 
     /**
      * デバイス機能の取得
      * @returns デバイス機能情報
      */
-    getCapabilities(): DeviceCapabilities { return this.legacyAdapter.getCapabilities() }
+    getCapabilities(): DeviceCapabilities { return this.legacyAdapter.getCapabilities();
 
     /**
      * 統計情報の取得
@@ -394,8 +391,8 @@ export class ComponentAudioAccessibilitySupport {
      */
     getStatistics(): Statistics { const eventStats = this.eventManager.getStatistics();
         return { ...eventStats,
-            componentsActive: 6 },
-            settingsConfigured: Object.keys(this.getSettings().length 
+            componentsActive: 6 };
+            settingsConfigured: Object.keys(this.getSettings().length; 
     }
 
 
@@ -413,18 +410,18 @@ export class ComponentAudioAccessibilitySupport {
             this.descriptionManager.destroy(); }
         }
         
-        if (this.cueManager) { this.cueManager.destroy() }
+        if (this.cueManager) { this.cueManager.destroy();
         
-        if (this.feedbackManager) { this.feedbackManager.destroy() }
+        if (this.feedbackManager) { this.feedbackManager.destroy();
         
-        if (this.settingsManager) { this.settingsManager.destroy() }
+        if (this.settingsManager) { this.settingsManager.destroy();
         
-        if (this.eventManager) { this.eventManager.destroy() }
+        if (this.eventManager) { this.eventManager.destroy();
         
         if (this.legacyAdapter) {
         ','
 
-            this.legacyAdapter.destroy() }
+            this.legacyAdapter.destroy();
 
         console.log('AudioAccessibilitySupport, destroyed'); }'
     }

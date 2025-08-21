@@ -1,11 +1,11 @@
 import type { BubbleDragSystem as IBubbleDragSystem, 
     BubblePhysicsEngine,
-    Bubble, ,
+    Bubble,
     Position,
     Vector2  } from '../../types/game';
 
-interface DragHistoryEntry { x: number;
-    y: number;
+interface DragHistoryEntry { x: number,
+    y: number,
     time: number;
 
 /**
@@ -15,7 +15,7 @@ interface DragHistoryEntry { x: number;
  */
 export class BubbleDragSystem implements IBubbleDragSystem { private draggedBubble: Bubble | null = null
     private, isDragging: boolean = false;
-    // @ts-ignore 将来のドラッグ機能拡張で使用予定 }
+    // @ts-ignore 将来のドラッグ機能拡張で使用予定 };
     private __dragStartPosition: Position = { x: 0, y: 0  }
     // @ts-ignore 将来のドラッグ機能拡張で使用予定
     private __dragCurrentPosition: Position = { x: 0, y: 0  }
@@ -55,7 +55,7 @@ export class BubbleDragSystem implements IBubbleDragSystem { private draggedBubb
         
         // 履歴を記録（最新の10個まで保持）
         this.dragHistory.push({ x, y, time: Date.now(  };
-        if (this.dragHistory.length > 10) { this.dragHistory.shift() }
+        if (this.dragHistory.length > 10) { this.dragHistory.shift();
         
         return true;
     }
@@ -68,13 +68,13 @@ export class BubbleDragSystem implements IBubbleDragSystem { private draggedBubb
         
         // ドラッグベクトルを計算
         const dragVector: Vector2 = { x: endX - startX,
-            y: endY - startY  },
+            y: endY - startY  ,
         // ドラッグ距離を計算
         const dragDistance = Math.sqrt(dragVector.x * dragVector.x + dragVector.y * dragVector.y);
         
         // 最小ドラッグ距離をチェック
         if (dragDistance < 15) {
-            this.resetDrag() }
+            this.resetDrag();
             return false;
         
         // 履歴から速度を計算（より滑らかな投擲）
@@ -126,14 +126,14 @@ export class BubbleDragSystem implements IBubbleDragSystem { private draggedBubb
     calculateForceDirection(dragVector: Vector2, velocity: Vector2): Vector2 { // ドラッグベクトルと速度ベクトルを合成
         const combinedVector: Vector2 = {
             x: dragVector.x * 0.6 + velocity.x * 0.4,
-    y: dragVector.y * 0.6 + velocity.y * 0.4 },
+    y: dragVector.y * 0.6 + velocity.y * 0.4 ,
         const magnitude = Math.sqrt(combinedVector.x * combinedVector.x + combinedVector.y * combinedVector.y);
         if (magnitude === 0) {
     
 }
             return { x: 0, y: 0  }
         
-        return { x: combinedVector.x / magnitude },
+        return { x: combinedVector.x / magnitude ,
             y: combinedVector.y / magnitude 
     }
     
@@ -152,7 +152,7 @@ export class BubbleDragSystem implements IBubbleDragSystem { private draggedBubb
      */
     renderDragTrail(context: CanvasRenderingContext2D, renderQuality: number): void { if (renderQuality > 0.8 && this.isDragging && this.dragHistory.length > 1) {''
             context.save()','
-            context.strokeStyle = 'rgba(255, 255, 0, 0.5)',
+            context.strokeStyle = 'rgba(255, 255, 0, 0.5),
             context.lineWidth = 2,
             context.setLineDash([3, 3]);
             context.beginPath();

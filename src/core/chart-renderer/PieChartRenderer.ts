@@ -22,10 +22,9 @@ export interface PieChartData { value: number;
     color?: string;
     category?: string;
     exploded?: boolean;
-    metadata?: Record<string, any> }
-
-export interface ProcessedPieData extends PieChartData { percentage: number;
-    index: number;
+    metadata?: Record<string, any> };
+export interface ProcessedPieData extends PieChartData { percentage: number,
+    index: number,
     normalizedValue: number;
     sliceInfo?: SliceGeometry;
 
@@ -44,68 +43,58 @@ export interface PieChartOptions { padding?: number,
     explosionOptions?: ExplosionOptions;
     animation?: PieAnimationOptions;
     interaction?: PieInteractionOptions;
-     }
-
-export interface PieChartTheme { colors: PieThemeColors;
+     };
+export interface PieChartTheme { colors: PieThemeColors,
     palette: string[];
     background?: string;
     font?: PieFontTheme;
     sliceStyles?: SliceStyleTheme;
-     }
-
-export interface PieThemeColors { primary: string;
-    secondary: string;
-    accent: string;
-    dark: string;
-    light: string;
-    background: string;
-    text: string;
-    border: string;
-    shadow: string;
+     };
+export interface PieThemeColors { primary: string,
+    secondary: string,
+    accent: string,
+    dark: string,
+    light: string,
+    background: string,
+    text: string,
+    border: string,
+    shadow: string,
     highlight: string;
-
-export interface PieFontTheme { family: string;
-    size: number;
-    weight: string;
+    export interface PieFontTheme { family: string,
+    size: number,
+    weight: string,
     color: string;
     labelColor?: string;
     legendColor?: string;
-
-export interface SliceStyleTheme { borderWidth: number;
-    borderColor: string;
-    shadowBlur: number;
-    shadowColor: string;
+    export interface SliceStyleTheme { borderWidth: number,
+    borderColor: string,
+    shadowBlur: number,
+    shadowColor: string,
     hoverScale: number;
-
-export interface SliceOptions { borderWidth?: number,
+    export interface SliceOptions { borderWidth?: number,
     borderColor?: string;
     startAngle?: number;
     clockwise?: boolean;
     shadow?: SliceShadowOptions;
     gradient?: SliceGradientOptions;
     pattern?: SlicePatternOptions;
-
-export interface SliceShadowOptions { enabled: boolean;
-    color: string;
-    blur: number;
-    offsetX: number;
+    export interface SliceShadowOptions { enabled: boolean,
+    color: string,
+    blur: number,
+    offsetX: number,
     offsetY: number;
-
-export interface SliceGradientOptions { enabled: boolean;
-    type: GradientType;
+    export interface SliceGradientOptions { enabled: boolean,
+    type: GradientType,
     stops: GradientStop[];
     angle?: number;
     center?: Point2D;
-
-export interface GradientStop { position: number;
+    export interface GradientStop { position: number,
     color: string;
-
-export interface SlicePatternOptions { enabled: boolean;
+    export interface SlicePatternOptions { enabled: boolean,
     type: PatternType;
     image?: HTMLImageElement;
     repeat?: PatternRepeat;
-
-export interface PieLabelOptions { show?: boolean,
+    export interface PieLabelOptions { show?: boolean,
     position?: LabelPosition;
     format?: LabelFormat;
     font?: PieFontConfiguration;
@@ -114,23 +103,19 @@ export interface PieLabelOptions { show?: boolean,
     connector?: ConnectorOptions;
     rotation?: LabelRotation;
     collision?: CollisionAvoidance;
-
-export interface PieFontConfiguration { family?: string,
+    export interface PieFontConfiguration { family?: string,
     size?: number;
     weight?: string;
     style?: string;
-
-export interface ConnectorOptions { show: boolean;
-    color: string;
-    width: number;
-    length: number;
+    export interface ConnectorOptions { show: boolean,
+    color: string,
+    width: number,
+    length: number,
     style: LineStyle;
-
-export interface CollisionAvoidance { enabled: boolean;
-    method: AvoidanceMethod;
+    export interface CollisionAvoidance { enabled: boolean,
+    method: AvoidanceMethod,
     spacing: number;
-
-export interface PieLegendOptions { show?: boolean,
+    export interface PieLegendOptions { show?: boolean,
     position?: PieLegendPosition;
     alignment?: PieLegendAlignment;
     itemGap?: number;
@@ -141,77 +126,66 @@ export interface PieLegendOptions { show?: boolean,
     background?: string;
     border?: LegendBorderOptions;
     columns?: number;
-
-export interface LegendBorderOptions { show: boolean;
-    color: string;
-    width: number;
+    export interface LegendBorderOptions { show: boolean,
+    color: string,
+    width: number,
     radius: number;
-
-export interface DonutOptions { enabled?: boolean,
+    export interface DonutOptions { enabled?: boolean,
     innerRadius?: number;
     innerRadiusPercent?: number;
     centerLabel?: CenterLabelOptions;
     centerIcon?: CenterIconOptions;
-
-export interface CenterLabelOptions { show: boolean;
+    export interface CenterLabelOptions { show: boolean,
     text: string;
     font?: PieFontConfiguration;
     color?: string;
     multiline?: boolean;
-    maxWidth?: number,  }
-
-export interface CenterIconOptions { show: boolean;
-    icon: string;
+    maxWidth?: number };
+export interface CenterIconOptions { show: boolean,
+    icon: string,
     size: number;
     color?: string;
     image?: HTMLImageElement;
-     }
-
+     };
 export interface ExplosionOptions { enabled?: boolean,
     distance?: number;
     slices?: number[];
     animation?: ExplosionAnimationOptions;
-
-export interface ExplosionAnimationOptions { enabled: boolean;
-    duration: number;
-    easing: EasingFunction;
+    export interface ExplosionAnimationOptions { enabled: boolean,
+    duration: number,
+    easing: EasingFunction,
     stagger: number;
-
-export interface PieAnimationOptions { enabled?: boolean,
+    export interface PieAnimationOptions { enabled?: boolean,
     duration?: number;
     easing?: EasingFunction;
     delay?: number;
     type?: AnimationType;
     stagger?: number;
-
-export interface PieInteractionOptions { hover?: PieHoverOptions,
+    export interface PieInteractionOptions { hover?: PieHoverOptions,
     click?: PieClickOptions;
     selection?: SelectionOptions;
     tooltip?: PieTooltipOptions;
-
-export interface PieHoverOptions { enabled?: boolean,
+    export interface PieHoverOptions { enabled?: boolean,
     scale?: number;
     explode?: boolean;
     explodeDistance?: number;
     highlightColor?: string;
     cursor?: string;
-
-export interface PieClickOptions { enabled?: boolean,
+    export interface PieClickOptions { enabled?: boolean,
     toggle?: boolean;
     explodeOnClick?: boolean;
-    callback?: (slice: SliceData, event: MouseEvent) => void  }
+    callback?: (slice: SliceData, event: MouseEvent) => void  };
 }
 
-export interface SelectionOptions { enabled: boolean;
-    multiple: boolean;
-    highlightColor: string;
+export interface SelectionOptions { enabled: boolean,
+    multiple: boolean,
+    highlightColor: string,
     selectedSlices: Set<number>;
-
-export interface PieTooltipOptions { enabled?: boolean,
+    export interface PieTooltipOptions { enabled?: boolean,
     format?: (slice: SliceData) => string;
     style?: PieTooltipStyle;
     position?: TooltipPosition;
-     }
+     };
 }
 
 export interface PieTooltipStyle { background?: string,
@@ -221,136 +195,126 @@ export interface PieTooltipStyle { background?: string,
     padding?: number;
     font?: PieFontConfiguration;
     shadow?: boolean;
-
-export interface PieChartArea { centerX: number;
-    centerY: number;
+    export interface PieChartArea { centerX: number,
+    centerY: number,
     radius: number;
     innerRadius?: number;
     size: number;
-
-export interface SliceGeometry { startAngle: number;
-    endAngle: number;
-    angle: number;
-    midAngle: number;
+    export interface SliceGeometry { startAngle: number,
+    endAngle: number,
+    angle: number,
+    midAngle: number,
     radius: number;
     innerRadius?: number;
-    centerX: number;
+    centerX: number,
     centerY: number;
     explodeX?: number;
     explodeY?: number;
-
-export interface SliceData { startAngle: number;
-    endAngle: number;
-    angle: number;
-    midAngle: number;
-    color: string;
-    value: number;
+    export interface SliceData { startAngle: number,
+    endAngle: number,
+    angle: number,
+    midAngle: number,
+    color: string,
+    value: number,
     percentage: number;
     label?: string;
     category?: string;
-    exploded: boolean;
-    selected: boolean;
-    geometry: SliceGeometry;
+    exploded: boolean,
+    selected: boolean,
+    geometry: SliceGeometry,
     data: ProcessedPieData;
-
-export interface Point2D { x: number;
+    export interface Point2D { x: number,
     y: number;
-
-export interface PieRenderResult { type: ChartType;
-    dataPoints: number;
-    total: number;
-    slices: SliceData[];
+    export interface PieRenderResult { type: ChartType,
+    dataPoints: number,
+    total: number,
+    slices: SliceData[],
     chartArea: PieChartArea;
     performance?: PieRenderPerformance;
     error?: string;
-
-export interface PieRenderPerformance { renderTime: number;
-    dataProcessingTime: number;
-    sliceDrawTime: number;
-    labelDrawTime: number;
+    export interface PieRenderPerformance { renderTime: number,
+    dataProcessingTime: number,
+    sliceDrawTime: number,
+    labelDrawTime: number,
     legendDrawTime: number;
     memoryUsage?: number;
-
-export interface PieValidationResult { isValid: boolean;
-    errors: PieValidationError[];
+    export interface PieValidationResult { isValid: boolean,
+    errors: PieValidationError[],
     warnings: PieValidationWarning[];
-
-export interface PieValidationError { field: string;
-    message: string;
+    export interface PieValidationError { field: string,
+    message: string,
     code: string;
-
-export interface PieValidationWarning { field: string;
-    message: string;
+    export interface PieValidationWarning { field: string,
+    message: string,
     suggestion: string;
-
-export interface LabelBounds { x: number;
-    y: number;
-    width: number;
-    height: number;
+    export interface LabelBounds { x: number,
+    y: number,
+    width: number,
+    height: number,
     text: string;
 
 // 列挙型
 export type ChartType = 'pie' | 'donut' | 'semi-circle' | 'rose';
-export type GradientType = 'linear' | 'radial' | 'conic';
-export type PatternType = 'stripes' | 'dots' | 'grid' | 'diagonal' | 'custom';
-export type PatternRepeat = 'repeat' | 'repeat-x' | 'repeat-y' | 'no-repeat';
-export type LabelPosition = 'inside' | 'outside' | 'edge' | 'center';
-export type LabelFormat = 'percentage' | 'value' | 'label' | 'both' | 'custom';
-export type LabelRotation = 'none' | 'tangent' | 'radial' | 'horizontal';
-export type LineStyle = 'solid' | 'dashed' | 'dotted';
-export type AvoidanceMethod = 'shift' | 'hide' | 'abbreviate';
-export type PieLegendPosition = 'top' | 'bottom' | 'left' | 'right' | 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
-export type PieLegendAlignment = 'start' | 'center' | 'end';
-export type SymbolShape = 'square' | 'circle' | 'triangle' | 'diamond';
-export type AnimationType = 'grow' | 'rotate' | 'fade' | 'slide' | 'bounce';
-export type EasingFunction = 'linear' | 'ease' | 'ease-in' | 'ease-out' | 'ease-in-out';
-export type TooltipPosition = 'cursor' | 'slice' | 'center';
+    export type GradientType = 'linear' | 'radial' | 'conic';
+    export type PatternType = 'stripes' | 'dots' | 'grid' | 'diagonal' | 'custom';
+    export type PatternRepeat = 'repeat' | 'repeat-x' | 'repeat-y' | 'no-repeat';
+    export type LabelPosition = 'inside' | 'outside' | 'edge' | 'center';
+    export type LabelFormat = 'percentage' | 'value' | 'label' | 'both' | 'custom';
+    export type LabelRotation = 'none' | 'tangent' | 'radial' | 'horizontal';
+    export type LineStyle = 'solid' | 'dashed' | 'dotted';
+    export type AvoidanceMethod = 'shift' | 'hide' | 'abbreviate';
+    export type PieLegendPosition = 'top' | 'bottom' | 'left' | 'right' | 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
+    export type PieLegendAlignment = 'start' | 'center' | 'end';
+    export type SymbolShape = 'square' | 'circle' | 'triangle' | 'diamond';
+    export type AnimationType = 'grow' | 'rotate' | 'fade' | 'slide' | 'bounce';
+    export type EasingFunction = 'linear' | 'ease' | 'ease-in' | 'ease-out' | 'ease-in-out';
+    export type TooltipPosition = 'cursor' | 'slice' | 'center';
 
 // 定数
-export const DEFAULT_PIE_OPTIONS: Partial<PieChartOptions> = { padding: 20;
-    showLabels: true;
-    showLegend: false;
-    showPercentages: true;
-    showValues: false;
-    fontSize: 12;
+export const DEFAULT_PIE_OPTIONS: Partial<PieChartOptions> = { padding: 20,
+    showLabels: true,
+    showLegend: false,
+    showPercentages: true,
+    showValues: false,
+    fontSize: 12,
     fontFamily: 'Arial, sans-serif' } as const;
 ';'
 
 export const DEFAULT_PIE_THEME: PieChartTheme = { colors: {''
-        primary: '#3B82F6';
-        secondary: '#10B981';
-        accent: '#F59E0B';
-        dark: '#1F2937';
-        light: '#F9FAFB';
-        background: '#FFFFFF';
-        text: '#374151';
-        border: '#E5E7EB';
-        shadow: 'rgba(0, 0, 0, 0.1)',
+        primary: '#3B82F6,
+        secondary: '#10B981,
+        accent: '#F59E0B,
+        dark: '#1F2937,
+        light: '#F9FAFB,
+        background: '#FFFFFF,
+        text: '#374151,
+        border: '#E5E7EB,
+        shadow: 'rgba(0, 0, 0, 0.1),
         highlight: '#FBBF24'
-            };
+        }
     palette: [','
-        '#3B82F6', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6',
+        '#3B82F6, '#10B981', '#F59E0B', '#EF4444', '#8B5CF6',
         '#06B6D4', '#84CC16', '#F97316', '#EC4899', '#14B8A6',]';'
         '#F472B6', '#A78BFA', '#34D399', '#FBBF24', '#FB7185']';'
     ],
-    background: '#FFFFFF';
+    background: '#FFFFFF,
     sliceStyles: { borderWidth: 2,''
-        borderColor: '#FFFFFF';
-        shadowBlur: 4;
-        shadowColor: 'rgba(0, 0, 0, 0.1)',
+        borderColor: '#FFFFFF'  ,
+        shadowBlur: 4,
+        shadowColor: 'rgba(0, 0, 0, 0.1),
         hoverScale: 1.05  }
 } as const;
 export const PIE_CONFIG = { MIN_SLICE_ANGLE: 0.01, // 最小スライス角度（ラジアン）
     DEFAULT_START_ANGLE: -Math.PI / 2, // 12時位置から開始,
-    MAX_SLICES: 20;
-    MIN_RADIUS: 20;
-    LABEL_OFFSET: 20;
+    MAX_SLICES: 20,
+    MIN_RADIUS: 20,
+    LABEL_OFFSET: 20,
     CONNECTOR_LENGTH: 15  } as const;
-export const DONUT_CONFIG = { DEFAULT_INNER_RADIUS_PERCENT: 0.5;
-    MIN_INNER_RADIUS_PERCENT: 0.1;
+export const DONUT_CONFIG = { DEFAULT_INNER_RADIUS_PERCENT: 0.5,
+    MIN_INNER_RADIUS_PERCENT: 0.1,
     MAX_INNER_RADIUS_PERCENT: 0.9  } as const;
-export const EXPLOSION_CONFIG = { DEFAULT_DISTANCE: 10;
-    MAX_DISTANCE: 50;
+export const EXPLOSION_CONFIG = { DEFAULT_DISTANCE: 10,
+    MAX_DISTANCE: 50,
     ANIMATION_DURATION: 300  } as const;
 // ユーティリティ関数
 export function validatePieData(data: any[]): PieValidationResult { const errors: PieValidationError[] = [];
@@ -359,7 +323,7 @@ export function validatePieData(data: any[]): PieValidationResult { const errors
     if(!Array.isArray(data)) {
         errors.push({''
             field: 'data',','
-            message: 'Pie chart data must be an array',')',
+            message: 'Pie chart data must be an array,')',
             code: 'INVALID_DATA_TYPE'
             };
         return { isValid: false, errors, warnings }
@@ -374,7 +338,7 @@ export function validatePieData(data: any[]): PieValidationResult { const errors
     ';'
 
     const hasNegativeValues = data.some(item => {  ')'
-        const value = typeof item === 'number' ? item: item?.value,')',
+        const value = typeof item === 'number' ? item: item?.value,'),
         return typeof value === 'number' && value < 0),
 
     if (hasNegativeValues) {
@@ -398,7 +362,7 @@ export function validatePieData(data: any[]): PieValidationResult { const errors
             message: 'All data items must have valid numeric values',' }'
 
             code: 'INVALID_VALUES'); 
-    };
+    }
     }
 
     if (data.length > PIE_CONFIG.MAX_SLICES) {
@@ -407,12 +371,12 @@ export function validatePieData(data: any[]): PieValidationResult { const errors
             field: 'data',' }'
 
             message: `Large number of slices (>${PIE_CONFIG.MAX_SLICES}'}' may affect readability`,''
-            suggestion: 'Consider grouping smaller slices into "Other" category',
+            suggestion: 'Consider grouping smaller slices into "Other" category';
         } }
 
     const total = data.reduce((sum, item) => {  ''
         const value = typeof item === 'number' ? item: item?.value || 0 
-        return sum + Math.abs(value),, 0),
+        return sum + Math.abs(value), 0),
 
     if (total === 0) {
         errors.push({ : undefined''
@@ -420,7 +384,7 @@ export function validatePieData(data: any[]): PieValidationResult { const errors
             message: 'Total value cannot be zero',' }'
 
             code: 'ZERO_TOTAL'); 
-    };
+    }
     }
     
     return { isValid: errors.length === 0,
@@ -428,10 +392,9 @@ export function validatePieData(data: any[]): PieValidationResult { const errors
         warnings }
     }
 
-export function calculateAngle(value: number, total: number): number { return (value / total) * 2 * Math.PI }
-
+export function calculateAngle(value: number, total: number): number { return (value / total) * 2 * Math.PI };
 export function calculateSlicePosition(centerX: number, centerY: number, radius: number, angle: number, explodeDistance: number = 0): Point2D { const x = centerX + Math.cos(angle) * (radius + explodeDistance),
-    const y = centerY + Math.sin(angle) * (radius + explodeDistance) }
+    const y = centerY + Math.sin(angle) * (radius + explodeDistance) };
     return { x, y }
 
 export function isPointInSlice(point: Point2D, slice: SliceData): boolean {
@@ -459,8 +422,7 @@ export function isPointInSlice(point: Point2D, slice: SliceData): boolean {
 ';'
 
 export function formatPieValue(value: number, format: LabelFormat, percentage?: number): string {,
-    switch(format) {', ' }
-
+    switch(format) {', ' };
         case 'percentage':' }'
 
             return `${(percentage || 0}.toFixed(1'}'%`;
@@ -476,24 +438,23 @@ export function formatPieValue(value: number, format: LabelFormat, percentage?: 
 export function generateSliceColors(count: number, baseColors: string[] = DEFAULT_PIE_THEME.palette): string[] { const colors: string[] = [],
     for(let, i = 0, i < count, i++) {
     
-}
+};
         colors.push(baseColors[i % baseColors.length]); }
     }
     return colors;
 }
 
 export function calculateOptimalRadius(width: number, height: number, padding: number): number { const availableSize = Math.min(width, height) - (padding * 2),
-    return Math.max(PIE_CONFIG.MIN_RADIUS, availableSize / 2) }
-
+    return Math.max(PIE_CONFIG.MIN_RADIUS, availableSize / 2) };
 export class PieChartRenderer {
     private performance: PieRenderPerformance;
     constructor() {
 
         this.performance = {
-            renderTime: 0;
-            dataProcessingTime: 0;
-            sliceDrawTime: 0;
-    labelDrawTime: 0 }
+            renderTime: 0,
+            dataProcessingTime: 0,
+            sliceDrawTime: 0,
+    labelDrawTime: 0 };
             legendDrawTime: 0 
     }
 
@@ -525,19 +486,19 @@ export class PieChartRenderer {
             // ラベルの描画
             if (options.showLabels !== false) {
                 const labelStartTime = performance.now();
-                this.renderLabels(context, processedData, slices, chartArea, options) }
+                this.renderLabels(context, processedData, slices, chartArea, options);
                 this.performance.labelDrawTime = performance.now() - labelStartTime; }
             }
             
             // 凡例の描画
             if (options.showLegend) {
                 const legendStartTime = performance.now();
-                this.renderLegend(context, processedData, chartArea, options) }
+                this.renderLegend(context, processedData, chartArea, options);
                 this.performance.legendDrawTime = performance.now() - legendStartTime; }
             }
             
             // ドーナツ中央のラベル
-            if (options.donutOptions?.enabled && options.donutOptions.centerLabel?.show) { this.renderCenterLabel(context, chartArea, options) }
+            if (options.donutOptions?.enabled && options.donutOptions.centerLabel?.show) { this.renderCenterLabel(context, chartArea, options);
             
             this.performance.renderTime = performance.now() - startTime;
 
@@ -545,24 +506,23 @@ export class PieChartRenderer {
             ';'
 
             return { : undefined''
-                type: 'pie',
-    dataPoints: processedData.length,
+                type: 'pie,
+    dataPoints: processedData.length;
                 total,
                 slices };
                 chartArea }
                 performance: { ...this.performance } catch (error) {
-            console.error('Pie chart rendering failed:', error','
+            console.error('Pie chart rendering failed:', error',' };
 
             return { ''
-                type: 'pie', ,
+                type: 'pie,
                 dataPoints: 0,
-    total: 0 },
+    total: 0 };
                 slices: [] }
-                chartArea: { centerX: 0, centerY: 0, radius: 0, size: 0  },
+                chartArea: { centerX: 0, centerY: 0, radius: 0, size: 0  ,
                 error: (error, as Error).message ;
-            } }
-    }
-
+                }
+}
     /**
      * チャートエリアの計算
      */
@@ -593,24 +553,22 @@ export class PieChartRenderer {
     private processData(data: (number | PieChartData)[]): ProcessedPieData[] { ''
         const total = data.reduce((sum, item) => { ''
             const value = typeof item === 'number' ? item: item.value 
-            return sum + Math.abs(value),, 0),
+            return sum + Math.abs(value), 0),
 
         return data.map((item, index) => {  ''
             if(typeof, item === 'number' { }'
                 return {  };
                     value: item,
-                    label: `Slice ${index + 1}`,
-                    percentage: (item / total) * 100,
+                    label: `Slice ${index + 1}`;
+                    percentage: (item / total) * 100;
                     index,
-                    normalizedValue: item / total,
+                    normalizedValue: item / total;
                 } } else {  return { ...item,
                     percentage: (item.value / total) * 100 }
                     index };
                     normalizedValue: item.value / total 
-    }
-        };
-    }
-
+        }
+}
     /**
      * スライスの描画
      */
@@ -649,7 +607,7 @@ export class PieChartRenderer {
             if (chartArea.innerRadius) {
             
                 // ドーナツチャート
-                context.arc(geometry.centerX, geometry.centerY, chartArea.radius, currentAngle, currentAngle + sliceAngle, !clockwise) }
+                context.arc(geometry.centerX, geometry.centerY, chartArea.radius, currentAngle, currentAngle + sliceAngle, !clockwise);
                 context.arc(geometry.centerX, geometry.centerY, chartArea.innerRadius, currentAngle + sliceAngle, currentAngle, clockwise); }
             } else {  // 標準パイチャート }
                 context.arc(geometry.centerX, geometry.centerY, chartArea.radius, currentAngle, currentAngle + sliceAngle, !clockwise); }
@@ -723,14 +681,14 @@ export class PieChartRenderer {
             ','
             // フォーマットされたラベルの生成
             let labelText = ','
-            const format = labelOptions.format || 'percentage',
+            const format = labelOptions.format || 'percentage,
 
             if(options.showPercentages && format !== 'value' { }'
 
                 labelText = formatPieValue(slice.value, format, slice.percentage);' }'
 
             } else if (options.showValues) { ''
-                labelText = formatPieValue(slice.value, 'value') }
+                labelText = formatPieValue(slice.value, 'value');
 
             } else { }'
 
@@ -743,7 +701,7 @@ export class PieChartRenderer {
                 const textWidth = textMetrics.width,
                 const textHeight = fontSize,
 
-                context.fillStyle = 'rgba(255, 255, 255, 0.8)',
+                context.fillStyle = 'rgba(255, 255, 255, 0.8),
                 context.fillRect(x - textWidth/2 - 4, y - textHeight/2 - 2, textWidth + 8, textHeight + 4);
                 // テキストの描画
                 context.fillStyle = labelOptions.color || options.theme.colors.dark,
@@ -753,8 +711,7 @@ export class PieChartRenderer {
                     y: y - textHeight/2),
                     width: textWidth,
     height: textHeight,
-                    text: labelText), 
-    };
+                    text: labelText) }
     }
 
     /**
@@ -779,14 +736,14 @@ export class PieChartRenderer {
         data.forEach((item, index) => {  const color = item.color || options.theme.palette[index % options.theme.palette.length],
             ','
             // シンボルの描画
-            const symbolShape = legendOptions.symbolShape || 'square',
+            const symbolShape = legendOptions.symbolShape || 'square,
             context.fillStyle = color,
 
             if(symbolShape === 'circle' {'
-                context.beginPath() }
+                context.beginPath();
                 context.arc(legendX + symbolSize/2, legendY, symbolSize/2, 0, 2 * Math.PI); }
                 context.fill(); }
-            } else { context.fillRect(legendX, legendY - symbolSize/2, symbolSize, symbolSize) }
+            } else { context.fillRect(legendX, legendY - symbolSize/2, symbolSize, symbolSize);
             
             // ラベルテキストの描画
             context.fillStyle = legendOptions.color || options.theme.colors.dark;
@@ -794,7 +751,7 @@ export class PieChartRenderer {
             context.fillText(labelText, legendX + symbolSize + 8, legendY);
             
             legendY += itemGap;
-        };
+        }
     }
 
     /**
@@ -818,11 +775,9 @@ export class PieChartRenderer {
         let startY = chartArea.centerY - totalHeight / 2;
         
         lines.forEach(line => {  );
-            context.fillText(line, chartArea.centerX, startY + lineHeight / 2) }
-            startY += lineHeight; }
-        };
-    }
-
+            context.fillText(line, chartArea.centerX, startY + lineHeight / 2);
+            startY += lineHeight;     }
+}
     /**
      * パフォーマンスメトリクスの取得
      */
@@ -838,7 +793,7 @@ export class PieChartRenderer {
         if(options.padding && (options.padding < 0 || options.padding > 100)) {
             errors.push({''
                 field: 'padding',','
-                message: 'Padding must be between 0 and 100',')',
+                message: 'Padding must be between 0 and 100,')',
                 code: 'INVALID_PADDING'
             }
         
@@ -853,8 +808,7 @@ export class PieChartRenderer {
                     field: 'donutOptions.innerRadiusPercent'
             }''
                     message: `Inner radius percent must be between ${DONUT_CONFIG.MIN_INNER_RADIUS_PERCENT} and ${DONUT_CONFIG.MAX_INNER_RADIUS_PERCENT}`,')'
-                    code: 'INVALID_INNER_RADIUS'),
-    }
+                    code: 'INVALID_INNER_RADIUS') }
         
         if (options.explosionOptions?.distance) { ','
 

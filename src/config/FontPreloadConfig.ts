@@ -6,45 +6,44 @@
 /**
  * フォントプリロード設定の型定義
  */
-export interface FontPreloadConfig { preload: string[];
-    fallbacks: Record<string, string[]> }
-
+export interface FontPreloadConfig { preload: string[],
+    fallbacks: Record<string, string[]> };
 /**
  * フォントプリロード設定
  */
-export const fontPreloadConfig: FontPreloadConfig = { preload: ["ja","", "en",
-        "zh-CN",
-        "zh-TW","]",
+export const fontPreloadConfig: FontPreloadConfig = { preload: ["ja,"", "en",
+        "zh-CN,
+        "zh-TW,"]",
         "ko"],
     ],
-    fallbacks: {"
-        ja: ["",
-            "Hiragino Sans",
-            "Yu Gothic",
-            "Meiryo","]",
+    fallbacks: { "
+        ja: [",
+            "Hiragino Sans,
+            "Yu Gothic,
+            "Meiryo,"]",
             "sans-serif"]","
         ],
-        "zh-CN": ["",
-            "PingFang SC",
-            "Microsoft YaHei",
-            "SimHei","]",
+        "zh-CN": [",
+            "PingFang SC,
+            "Microsoft YaHei,
+            "SimHei,"]",
             "sans-serif"]","
         ],
-        "zh-TW": ["",
-            "PingFang TC",
-            "Microsoft JhengHei",
-            "PMingLiU", "]",
+        "zh-TW": [",
+            "PingFang TC,
+            "Microsoft JhengHei,
+            "PMingLiU, "]",
+            "sans-serif"],
+        ]  },
+        ko: [",
+            "Apple SD Gothic Neo,
+            "Malgun Gothic,
+            "Nanum Gothic,"]",
             "sans-serif"],
         ],
-        ko: ["",
-            "Apple SD Gothic Neo",
-            "Malgun Gothic",
-            "Nanum Gothic","]",
-            "sans-serif"],
-        ],
-        en: ["",
-            "Arial",
-            "Helvetica","]",
+        en: [",
+            "Arial,
+            "Helvetica,"]",
             "sans-serif"],
         ] }
 };

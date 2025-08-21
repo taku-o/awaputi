@@ -14,9 +14,9 @@ import { jest  } from '@jest/globals';
 import FaviconGenerator from '../../../src/utils/local-execution/FaviconGenerator.js';
 // Type definitions
 interface MockContext {
-    fillStyle: string;
+    fillStyle: string,
     strokeStyle: string;
-    lineWidth: number;
+    lineWidth: number,
     fillRect: jest.Mock<void, [number, number, number, number]>;
     strokeRect: jest.Mock<void, [number, number, number, number]>;
     beginPath: jest.Mock<void, []>;
@@ -30,23 +30,23 @@ interface MockContext {
     getImageData: jest.Mock<ImageData, [number, number, number, number]>;
     putImageData: jest.Mock<void, [ImageData, number, number]> }
 interface MockCanvas {
-    width: number;
+    width: number,
     height: number;
     getContext: jest.Mock<MockContext | null, [string]>;
     toDataURL: jest.Mock<string, [string? , number?]>, : undefined
     toBlob?: jest.Mock<void, [(blob: Blob | null') => void, string? , number?]>, : undefined'
     style: Partial<CSSStyleDeclaration>;
 interface MockLink {
-    rel: string;
+    rel: string,
     type: string;
-    sizes: string;
+    sizes: string,
     href: string;
     id: string;
     remove?: jest.Mock<void, []> }
 interface MockDocument {
     createElement: jest.Mock<MockCanvas | MockLink | any, [string]>;
     head?: {
-        appendChil,d: jest.Mock<void, [any]>;
+        appendChil,d: jest.Mock<void, [any]> };
         removeChild: jest.Mock<void, [any]>;
         querySelector: jest.Mock<MockLink | null, [string]>;
         querySelectorAll: jest.Mock<NodeListOf<MockLink>, [string]> };
@@ -69,7 +69,7 @@ interface GenerateConfig {
     enableHighDPI?: boolean;
     preferBlob?: boolean;
 interface GenerateResult {
-    success: boolean;
+    success: boolean,
     generated: number;
     fromCache?: number;
     error?: string;
@@ -123,10 +123,10 @@ describe('FaviconGenerator', () => {
                     sizes: ','
                     href: ','
                     id: '} as MockLink;'
-                return {};
+                return {}
             },
             head: {
-                appendChild: jest.fn(
+                appendChild: jest.fn( },
                 removeChild: jest.fn(
                 querySelector: jest.fn(() => null),
                 querySelectorAll: jest.fn(() => [] as unknown as NodeListOf<MockLink>) }),
@@ -180,7 +180,7 @@ describe('FaviconGenerator', () => {
         test('should handle Canvas creation failure', async () => {
             mockDocument.createElement.mockImplementation((tag: string') => {'
                 if (tag === 'canvas') throw new Error('Canvas not supported');
-                return {};
+                return {}
             };
             const result = await FaviconGenerator.generateMissingFavicons();
             expect(result.success).toBe(false);
@@ -415,6 +415,6 @@ describe('FaviconGenerator', () => {
             expect(result.success).toBe(true);
             // Should generate favicon even if DOM injection fails
             expect(result.generated).toBe(1);
-        };
+        }
     }
 }');'

@@ -7,8 +7,7 @@ export class PWAReportGenerator {
     constructor(mainFramework {
         this.mainFramework = mainFramework;
         
-        console.log('[PWAReportGenerator] Report generator component initialized') }
-    
+        console.log('[PWAReportGenerator] Report generator component initialized') };
     /**
      * Generate test report
      */
@@ -18,33 +17,33 @@ export class PWAReportGenerator {
         
         const report = {
             summary: {
-                totalTests: this.mainFramework.executor.state.totalTests;
+                totalTests: this.mainFramework.executor.state.totalTests },
                 passedTests: this.mainFramework.executor.state.passedTests;
-                failedTests: this.mainFramework.executor.state.failedTests;
+                failedTests: this.mainFramework.executor.state.failedTests,
                 skippedTests: this.mainFramework.executor.state.skippedTests;
                 successRate: this.mainFramework.executor.state.totalTests > 0 ?   : undefined
                     (this.mainFramework.executor.state.passedTests / this.mainFramework.executor.state.totalTests) * 100 : 0,
-                totalDuration: totalDuration;
+                totalDuration: totalDuration,
                 averageDuration: this.mainFramework.executor.state.totalTests > 0 ?   : undefined
                     totalDuration / this.mainFramework.executor.state.totalTests : 0
             },
             
-            details: this.mainFramework.testResults;
+            details: this.mainFramework.testResults,
             
             environment: {
-                userAgent: navigator.userAgent;
+                userAgent: navigator.userAgent },
                 platform: navigator.platform;
-                cookieEnabled: navigator.cookieEnabled;
+                cookieEnabled: navigator.cookieEnabled,
                 onLine: navigator.onLine;
-                language: navigator.language;
+                language: navigator.language,
                 languages: navigator.languages;
-                hardwareConcurrency: navigator.hardwareConcurrency;
+                hardwareConcurrency: navigator.hardwareConcurrency,
                 maxTouchPoints: navigator.maxTouchPoints;
-                screenResolution: `${screen.width}x${screen.height}`;
+                screenResolution: `${screen.width}x${screen.height}`,
                 colorDepth: screen.colorDepth;
-                pixelDepth: screen.pixelDepth;
+                pixelDepth: screen.pixelDepth,
                 timezone: Intl.DateTimeFormat().resolvedOptions().timeZone;
-                timestamp: new Date().toISOString() };
+                timestamp: new Date().toISOString() },
             
             recommendations: this.generateRecommendations( };
         
@@ -62,31 +61,31 @@ export class PWAReportGenerator {
         for (const test of failedTests') {'
             if (test.id === 'manifest-exists') {
                 recommendations.push({
-                    category: 'manifest';
+                    category: 'manifest',
                     priority: 'high';
                     message: 'Create or fix App Manifest file')') }'
             
             if (test.id === 'service-worker-registration') {
                 recommendations.push({
-                    category: 'service-worker';
+                    category: 'service-worker',
                     priority: 'high';
                     message: 'Check Service Worker registration')') }'
             
             if (test.id === 'icon-loading-test') {
                 recommendations.push({
-                    category: 'icons';
+                    category: 'icons',
                     priority: 'medium';
                     message: 'Some icons failed to load. Check icon paths')') }'
             
             if (test.id === 'cache-performance-test') {
                 recommendations.push({
-                    category: 'performance';
+                    category: 'performance',
                     priority: 'medium';
                     message: 'Cache performance needs improvement')') }'
             
             if (test.id === 'browser-feature-support') {
                 recommendations.push({
-                    category: 'compatibility';
+                    category: 'compatibility',
                     priority: 'low';
                     message: 'Consider polyfills for unsupported browser features') }
         }
@@ -97,16 +96,16 @@ export class PWAReportGenerator {
             
             if (successRate < 50') {'
                 recommendations.push({
-                    category: 'general';
+                    category: 'general',
                     priority: 'critical';
                     message: 'Critical PWA functionality issues. Review basic configuration') } else if (successRate < 80') {'
                 recommendations.push({
-                    category: 'general';
+                    category: 'general',
                     priority: 'medium';
-                    message: 'PWA functionality can be improved. Check failed tests') };
+                    message: 'PWA functionality can be improved. Check failed tests') }
             } else if (successRate >= 95') {'
                 recommendations.push({
-                    category: 'general';
+                    category: 'general',
                     priority: 'info';
                     message: 'PWA functionality is working well!') });
             }
@@ -120,7 +119,7 @@ export class PWAReportGenerator {
             if (test.status === 'passed' && test.result') {'
                 if (test.result.performance === 'poor') {
                     recommendations.push({
-                        category: 'performance';
+                        category: 'performance',
                         priority: 'high';
                         message: `${test.name} shows poor performance. Consider optimization`);
                 }

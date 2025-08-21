@@ -18,23 +18,23 @@ const mockGameEngine = {
         getAverageRenderTime: jest.fn(() => 16.67) }
     ),
     enhancedParticleManager: { getActiveParticleCount: jest.fn(() => 150,
-        setParticleMultiplier: jest.fn(
+        setParticleMultiplier: jest.fn( },
         setEnabled: jest.fn(
         clearAllParticles: jest.fn(
         createBubbleDestructionEffect: jest.fn(
         createComboEffect: jest.fn()),
     enhancedEffectManager: {
-        getActiveEffectCount: jest.fn(() => 5,
+        getActiveEffectCount: jest.fn(() => 5 },
         setEffectIntensity: jest.fn(
         setEnabled: jest.fn(
         clearAllEffects: jest.fn(
         screenFlash: jest.fn(
         screenShake: jest.fn(),','
     effectQualityController: {''
-        getCurrentQualityLevel: jest.fn((') => 'high','
+        getCurrentQualityLevel: jest.fn((') => 'high',' };
         setQualityLevel: jest.fn()),
     animationManager: {
-        setEnabled: jest.fn(
+        setEnabled: jest.fn( },
         clearAllAnimations: jest.fn(),','
     seasonalEffectManager: {''
         setEnabled: jest.fn()') }'

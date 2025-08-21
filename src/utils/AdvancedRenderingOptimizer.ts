@@ -7,95 +7,88 @@ import { RenderingPerformanceMonitor  } from './rendering/RenderingPerformanceMo
 import { QuadTree  } from './rendering/QuadTree.js';
 
 // Type definitions
-interface RenderingConfig { enabled: boolean;
-    dirtyRegionEnabled: boolean;
-    viewportCullingEnabled: boolean;
-    layerCachingEnabled: boolean;
-    targetFPS: number;
-    maxRenderTime: number;
-    performanceThreshold: number;
-    optimizationLevel: 'conservative' | 'balanced' | 'aggressive';
-    adaptiveOptimization: boolean;
-    debugMode: boolean;
-    showDirtyRegions: boolean;
-    showCulledObjects: boolean;
+interface RenderingConfig { enabled: boolean,
+    dirtyRegionEnabled: boolean,
+    viewportCullingEnabled: boolean,
+    layerCachingEnabled: boolean,
+    targetFPS: number,
+    maxRenderTime: number,
+    performanceThreshold: number,
+    optimizationLevel: 'conservative' | 'balanced' | 'aggressive,
+    adaptiveOptimization: boolean,
+    debugMode: boolean,
+    showDirtyRegions: boolean,
+    showCulledObjects: boolean,
     showLayerComposition: boolean;
-
-interface RenderObject { x: number;
-    y: number;
-    width: number;
+    interface RenderObject { x: number,
+    y: number,
+    width: number,
     height: number;
     layer?: number;
     zIndex?: number;
     material?: string;
     renderPriority?: number;
     [key: string]: any;
-
-interface Camera { x: number;
-    y: number;
-    zoom: number;
-    offsetX: number;
+    interface Camera { x: number,
+    y: number,
+    zoom: number,
+    offsetX: number,
     offsetY: number;
-
-interface RenderResult { success: boolean;
+    interface RenderResult { success: boolean;
     renderTime?: number;
     objectsRendered?: number;
     objectsCulled?: number;
     dirtyRegions?: number;
     performanceGain?: number;
     error?: string;
-
-interface DirtyRegion { x: number;
-    y: number;
-    width: number;
+    interface DirtyRegion { x: number,
+    y: number,
+    width: number,
     height: number;
     full?: boolean;
-
-interface LayerRenderResult { layersRendered: number;
-    objectsRendered: number;
+    interface LayerRenderResult { layersRendered: number,
+    objectsRendered: number,
     dirtyRegionsProcessed: number;
-
-interface ObjectBounds { x: number;
-    y: number;
-    width: number;
+    interface ObjectBounds { x: number,
+    y: number,
+    width: number,
     height: number;
-
-interface Layer { name: string;
-    enabled: boolean;
+    interface Layer { name: string,
+    enabled: boolean,
     visible: boolean;
     cacheable?: boolean;
     dirty?: boolean;
-
-interface RenderingPipeline { enabled: boolean;
-    stages: string[];
-    currentStage: string;
+    interface RenderingPipeline { enabled: boolean,
+    stages: string[],
+    currentStage: string,
     batching: {
         enable,d: boolean;
-        batchSize: number;
-        currentBatch: any[];
+    },
+        batchSize: number,
+        currentBatch: any[],
     batchBuffer: Map<string, any>;
-        textureAtlasing: boolean;
-    drawCallOptimization: { enabled: boolean;
+        textureAtlasing: boolean,
+    drawCallOptimization: { enabled: boolean,
         maxDrawCalls: number;
-        currentDrawCalls: number;
-        instancedRendering: boolean;
-    stateBatching: boolean;
+    },
+        currentDrawCalls: number,
+        instancedRendering: boolean,
+    stateBatching: boolean,
     stageTimings: Map<string, number>;
-    totalRenderTime: number;
+    totalRenderTime: number,
     frameCount: number;
 }
 
-interface SpatialOptimizer { enabled: boolean;
-    quadTree: QuadTree | null;
+interface SpatialOptimizer { enabled: boolean,
+    quadTree: QuadTree | null,
     spatialHash: Map<string, any>;
-
     partitioning: {''
-        metho,d: 'grid' | 'quadtree' | 'octree';
-        maxDepth: number;
-        maxObjectsPerNode: number;
-    minNodeSize: number;
-    occlusionCulling: { enabled: boolean;
-        occluders: Set<any>;
+        metho,d: 'grid' | 'quadtree' | 'octree' ,
+        maxDepth: number,
+    maxObjectsPerNode: number,
+    minNodeSize: number,
+    occlusionCulling: { enabled: boolean,
+        occluders: Set<any>  ,
         occlusionQueries: Map<string, any> }
 
 interface OptimizerConfig { rendering?: Partial<RenderingConfig>,
@@ -103,14 +96,12 @@ interface OptimizerConfig { rendering?: Partial<RenderingConfig>,
     culling?: any;
     layers?: any;
     performance?: any;
-
-interface OptimizerStats { dirtyRegions: any;
-    culling: any;
-    layers: any;
-    performance: any;
-    pipeline: {
-        stageTiming,s: Record<string, number>;
-        currentStage: string;
+    interface OptimizerStats { dirtyRegions: any,
+    culling: any,
+    layers: any,
+    performance: any,
+    pipeline: { stageTiming,s: Record<string, number>  },
+        currentStage: string,
         currentStage: string;
         };
 /**
@@ -149,9 +140,9 @@ export class AdvancedRenderingOptimizer {
             optimizationLevel: 'balanced', // 'conservative', 'balanced', 'aggressive';
             adaptiveOptimization: true;
             // Debug options
-            debugMode: false;
-            showDirtyRegions: false;
-    showCulledObjects: false;
+            debugMode: false,
+            showDirtyRegions: false,
+    showCulledObjects: false,
             showLayerComposition: false;))
         // Initialize component managers
         this.dirtyRegionManager = new BasicDirtyRegionManager();
@@ -161,38 +152,37 @@ export class AdvancedRenderingOptimizer {
                 'prepare', 'cull', 'sort', 'batch', 'render', 'compose'];
             currentStage: 'idle';
             // Batching system
-           , batching: { enabled: true;
-                batchSize: 100);
-                currentBatch: [];
+            batching: { enabled: true,
+                batchSize: 100)  ,
+                currentBatch: [],
     batchBuffer: new Map<string, any>();
                 textureAtlasing: true;
             // Draw call optimization
-            drawCallOptimization: { enabled: true;
-                maxDrawCalls: 1000;
-                currentDrawCalls: 0;
-                instancedRendering: true;
+            drawCallOptimization: { enabled: true,
+                maxDrawCalls: 1000  ,
+                currentDrawCalls: 0,
+                instancedRendering: true,
     stateBatching: true;
             // Timing tracking
             stageTimings: new Map<string, number>();
-            totalRenderTime: 0;
+            totalRenderTime: 0,
     frameCount: 0;
         },
         
         // Spatial optimization
-        this.spatialOptimizer = { enabled: true;
-            quadTree: null;
+        this.spatialOptimizer = { enabled: true,
+            quadTree: null,
             spatialHash: new Map<string, any>(),
-            spatialHash: new Map<string, any>(),
-        };
+            spatialHash: new Map<string, any>() };
             // Spatial partitioning
-            partitioning: {''
-                method: 'quadtree', // 'grid', 'quadtree', 'octree',
-                maxDepth: 8;
-                maxObjectsPerNode: 10;
+            partitioning: { ''
+                method: 'quadtree', // 'grid', 'quadtree', 'octree'  },
+                maxDepth: 8,
+                maxObjectsPerNode: 10,
     minNodeSize: 32  };
             // Occlusion culling
             occlusionCulling: { enabled: false, // Advanced feature
-                occluders: new Set<any>();
+                occluders: new Set<any>()  ,
                 occlusionQueries: new Map<string, any>( }
         };
 
@@ -210,7 +200,7 @@ export class AdvancedRenderingOptimizer {
         // Setup event listeners
         this.setupEventListeners();
         // Create baseline measurements
-        this.performanceMonitor.establishPerformanceBaseline() }
+        this.performanceMonitor.establishPerformanceBaseline();
     
     /**
      * Initialize spatial data structures
@@ -218,7 +208,7 @@ export class AdvancedRenderingOptimizer {
     private initializeSpatialStructures()';'
         if(this.spatialOptimizer.partitioning.method === 'quadtree' {'
 
-            this.initializeQuadTree() }
+            this.initializeQuadTree();
 
         console.log('[AdvancedRenderingOptimizer] Spatial, structures initialized'); }'
     }
@@ -233,47 +223,47 @@ export class AdvancedRenderingOptimizer {
             x: viewport.x - margin,
             y: viewport.y - margin),
             width: viewport.width + margin * 2,
-    height: viewport.height + margin * 2), this.spatialOptimizer.partitioning.maxObjectsPerNode, this.spatialOptimizer.partitioning.maxDepth) }
+    height: viewport.height + margin * 2), this.spatialOptimizer.partitioning.maxObjectsPerNode, this.spatialOptimizer.partitioning.maxDepth);
     
     /**
      * Main rendering optimization entry point
      */'
     optimizeRendering(renderObjects: RenderObject[], camera: Camera | null = null): RenderResult { ''
-        const startTime = performance.now('',
-            this.renderingPipeline.currentStage = 'prepare',
+        const startTime = performance.now(',
+            this.renderingPipeline.currentStage = 'prepare,
             ','
             // 1. Prepare rendering data')'
             const preparedObjects = this.prepareRenderingData(renderObjects, camera);
             ','
             // 2. Perform viewport culling
-            this.renderingPipeline.currentStage = 'cull',
+            this.renderingPipeline.currentStage = 'cull,
             const visibleObjects = this.viewportCuller.performViewportCulling(preparedObjects);
             ','
             // 3. Calculate dirty regions
-            this.renderingPipeline.currentStage = 'sort',
+            this.renderingPipeline.currentStage = 'sort,
             const dirtyRegions = this.dirtyRegionManager.calculateDirtyRegions(visibleObjects);
             ','
             // 4. Optimize layer composition
-            this.renderingPipeline.currentStage = 'batch',
+            this.renderingPipeline.currentStage = 'batch,
             const layerBatches = this.layerManager.optimizeLayerComposition(visibleObjects);
             ','
             // 5. Execute optimized rendering
-            this.renderingPipeline.currentStage = 'render',
+            this.renderingPipeline.currentStage = 'render,
             const renderResult = this.executeOptimizedRendering(layerBatches, dirtyRegions);
             ','
             // 6. Final composition
-            this.renderingPipeline.currentStage = 'compose',
+            this.renderingPipeline.currentStage = 'compose,
             this.performFinalComposition(renderResult);
             // Update performance metrics
             const totalTime = performance.now() - startTime,
             this.performanceMonitor.updateRenderingPerformance(totalTime, renderObjects.length);
-            this.renderingPipeline.currentStage = 'idle',
+            this.renderingPipeline.currentStage = 'idle,
             
             return { success: true,
                 renderTime: totalTime,
                 objectsRendered: visibleObjects.length,
                 objectsCulled: renderObjects.length - visibleObjects.length,
-    dirtyRegions: dirtyRegions.length },
+    dirtyRegions: dirtyRegions.length };
                 performanceGain: this.performanceMonitor.calculatePerformanceGain(); 
     } catch (error) {
             this.errorHandler.handleError(error, 'ADVANCED_RENDERING_ERROR', {''
@@ -283,10 +273,8 @@ export class AdvancedRenderingOptimizer {
 
             this.renderingPipeline.currentStage = 'idle';
             return { success: false,
-                error: (error, as Error).message  }
-            }
-    }
-    
+                error: (error, as Error).message      }
+}
     /**
      * Prepare rendering data and sort objects
      */
@@ -313,7 +301,7 @@ export class AdvancedRenderingOptimizer {
         // Sort by render priority (layer, z-index, material);
         prepared.sort((a, b) => {  if (a.layer !== b.layer) { }
                 return (a.layer || 0) - (b.layer || 0);
-            if (a.zIndex !== b.zIndex) { return (a.zIndex || 0) - (b.zIndex || 0) }
+            if (a.zIndex !== b.zIndex) { return (a.zIndex || 0) - (b.zIndex || 0);
             return (a.renderPriority || 0) - (b.renderPriority || 0);}');'
 
         this.renderingPipeline.stageTimings.set('prepare', performance.now() - stageStart);
@@ -369,9 +357,9 @@ export class AdvancedRenderingOptimizer {
         this.applyPostProcessingEffects()';'
         this.renderingPipeline.stageTimings.set('render', performance.now() - stageStart);
         
-        return { layersRendered: Array.from(layerBatches.keys().length,
-            objectsRendered: Array.from(layerBatches.values().flat().length },
-            dirtyRegionsProcessed: dirtyRegions.length 
+        return { layersRendered: Array.from(layerBatches.keys())).length,
+            objectsRendered: Array.from(layerBatches.values())).flat().length ,
+            dirtyRegionsProcessed: dirtyRegions.length; 
     }
     
     /**
@@ -379,9 +367,9 @@ export class AdvancedRenderingOptimizer {
      */
     private clearDirtyRegions(dirtyRegions: DirtyRegion[]): void { for (const region of dirtyRegions) {
             if (region.full) {
-                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height) }
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
                 break; }
-            } else { this.ctx.clearRect(region.x, region.y, region.width, region.height) }
+            } else { this.ctx.clearRect(region.x, region.y, region.width, region.height);
 }
     
     /**
@@ -394,9 +382,8 @@ export class AdvancedRenderingOptimizer {
             for (const obj of objects) {
                 if (this.shouldRenderObject(obj, dirtyRegions) {
         }
-                    this.renderObjectToContext(obj, this.ctx); }
+                    this.renderObjectToContext(obj, this.ctx);     }
 }
-        }
     }
     
     /**
@@ -420,17 +407,17 @@ export class AdvancedRenderingOptimizer {
             bounds.x + bounds.width < region.x ||,
             bounds.x > region.x + region.width ||,
             bounds.y + bounds.height < region.y ||,
-            bounds.y > region.y + region.height) }
+            bounds.y > region.y + region.height);
     
     /**
      * Calculate object bounds
      */
-    private calculateObjectBounds(obj: RenderObject): ObjectBounds { return this.dirtyRegionManager.calculateObjectBounds(obj) }
+    private calculateObjectBounds(obj: RenderObject): ObjectBounds { return this.dirtyRegionManager.calculateObjectBounds(obj);
     
     /**
      * Render object to context
      */
-    private renderObjectToContext(obj: RenderObject, ctx: CanvasRenderingContext2D): void { this.layerManager.renderObjectToLayerContext(obj, ctx) }
+    private renderObjectToContext(obj: RenderObject, ctx: CanvasRenderingContext2D): void { this.layerManager.renderObjectToLayerContext(obj, ctx);
     
     /**
      * Perform final composition
@@ -439,7 +426,7 @@ export class AdvancedRenderingOptimizer {
         // Apply any final composition effects
         // (This, is where, post-processing, would happen')'
         ,
-        this.renderingPipeline.stageTimings.set('compose', performance.now() - stageStart) }
+        this.renderingPipeline.stageTimings.set('compose', performance.now() - stageStart);
     
     /**
      * Apply post-processing effects
@@ -458,7 +445,7 @@ export class AdvancedRenderingOptimizer {
         this.ctx.strokeStyle = 'red';
         this.ctx.lineWidth = 2;
         );
-        for (const region of this.dirtyRegionManager.config.mergedRegions) { this.ctx.strokeRect(region.x, region.y, region.width, region.height) }
+        for (const region of this.dirtyRegionManager.config.mergedRegions) { this.ctx.strokeRect(region.x, region.y, region.width, region.height);
     }
     
     /**
@@ -475,8 +462,8 @@ export class AdvancedRenderingOptimizer {
         // Handle visibility change
         document.addEventListener('visibilitychange', () => {  if (document.hidden) { }
                 this.pauseOptimizations(); }
-            } else { this.resumeOptimizations() }
-        };
+            } else { this.resumeOptimizations();
+        }
     }
     
     /**
@@ -487,37 +474,37 @@ export class AdvancedRenderingOptimizer {
         // Update layer manager
         this.layerManager.handleCanvasResize();
         // Reinitialize spatial structures
-        this.initializeSpatialStructures() }
+        this.initializeSpatialStructures();
     
     /**
      * Pause optimizations
      */
-    private pauseOptimizations(): void { this.performanceMonitor.stopPerformanceMonitoring() }
+    private pauseOptimizations(): void { this.performanceMonitor.stopPerformanceMonitoring();
     
     /**
      * Resume optimizations
      */
-    private resumeOptimizations(): void { this.performanceMonitor.startPerformanceMonitoring() }
+    private resumeOptimizations(): void { this.performanceMonitor.startPerformanceMonitoring();
     
     /**
      * Mark dirty region
      */
-    markDirtyRegion(bounds: ObjectBounds): void { this.dirtyRegionManager.markDirtyRegion(bounds) }
+    markDirtyRegion(bounds: ObjectBounds): void { this.dirtyRegionManager.markDirtyRegion(bounds);
     
     /**
      * Mark layer dirty
      */
-    markLayerDirty(layerName: string): void { this.layerManager.markLayerDirty(layerName) }
+    markLayerDirty(layerName: string): void { this.layerManager.markLayerDirty(layerName);
     
     /**
      * Get comprehensive statistics
      */
     getStats(): OptimizerStats { return { dirtyRegions: this.dirtyRegionManager.getStats(
-            culling: this.viewportCuller.getStats();
-            layers: this.layerManager.getStats();
+            culling: this.viewportCuller.getStats(),
+            layers: this.layerManager.getStats(),
             performance: this.performanceMonitor.getStats(
     pipeline: {
-                stageTimings: Object.fromEntries(this.renderingPipeline.stageTimings) },
+                stageTimings: Object.fromEntries(this.renderingPipeline.stageTimings) ,
                 currentStage: this.renderingPipeline.currentStage 
     }
     
@@ -525,15 +512,15 @@ export class AdvancedRenderingOptimizer {
      * Configure the rendering optimizer
      */
     configure(config: OptimizerConfig): void { if (config.rendering) {
-            Object.assign(this.renderingConfig, config.rendering) }
+            Object.assign(this.renderingConfig, config.rendering);
         
-        if (config.dirtyRegions) { this.dirtyRegionManager.configure(config.dirtyRegions) }
+        if (config.dirtyRegions) { this.dirtyRegionManager.configure(config.dirtyRegions);
         
-        if (config.culling) { this.viewportCuller.configure(config.culling) }
+        if (config.culling) { this.viewportCuller.configure(config.culling);
         
-        if (config.layers) { this.layerManager.configure(config.layers) }
+        if (config.layers) { this.layerManager.configure(config.layers);
         
-        if (config.performance) { this.performanceMonitor.configure(config.performance) }
+        if (config.performance) { this.performanceMonitor.configure(config.performance);
     }
     
     /**
@@ -556,10 +543,8 @@ export class AdvancedRenderingOptimizer {
         if (this.spatialOptimizer.quadTree) {
     
 }
-            this.spatialOptimizer.quadTree.clear(); }
+            this.spatialOptimizer.quadTree.clear();     }
 }
-}
-
 // グローバルインスタンス（遅延初期化）
 let _advancedRenderingOptimizer: AdvancedRenderingOptimizer | null = null,
 
@@ -571,7 +556,7 @@ export function getAdvancedRenderingOptimizer(canvas?: HTMLCanvasElement, contex
         } catch (error) {
             console.error('[AdvancedRenderingOptimizer] インスタンス作成エラー:', error);
             // フォールバック: 基本的なインスタンスを作成
-            _advancedRenderingOptimizer = new AdvancedRenderingOptimizer(canvas, context) }
+            _advancedRenderingOptimizer = new AdvancedRenderingOptimizer(canvas, context);
     }
     return _advancedRenderingOptimizer;
 }
@@ -582,7 +567,7 @@ export function getAdvancedRenderingOptimizer(canvas?: HTMLCanvasElement, contex
 export function reinitializeAdvancedRenderingOptimizer(canvas: HTMLCanvasElement, context: CanvasRenderingContext2D): void { try {
         if (_advancedRenderingOptimizer) {
     
-}
+};
             _advancedRenderingOptimizer.destroy(); }
         }''
         _advancedRenderingOptimizer = new AdvancedRenderingOptimizer(canvas, context);

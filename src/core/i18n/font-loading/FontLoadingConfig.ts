@@ -4,28 +4,33 @@
  */
 
 // 型定義
-export interface FontLoadingConfigData { enabledSources: string[];
+export interface FontLoadingConfigData { enabledSources: string[],
     timeouts: {
         googl,e: number;
-        local: number;
-    system: number;
-    fallbackBehavior: { useSystemFonts: boolean;
+    },
+        local: number,
+    system: number,
+    fallbackBehavior: { useSystemFonts: boolean,
         suppressErrors: boolean;
-    maxRetries: number;
-    logging: { level: string;
+    },
+    maxRetries: number,
+    logging: { level: string,
         suppressRepeated: boolean;
-    maxErrorsPerSource: number;
-    development: { disableExternalFonts: boolean;
+    },
+    maxErrorsPerSource: number,
+    development: { disableExternalFonts: boolean,
     verboseLogging: boolean;
+    },
     fontSources: { google: {
-            baseUrl: string;
-            weights: string[];
-    display: string;
-        local: { fontDirectory: string;
-    formats: string[];
-    performance: { preloadCommonFonts: boolean;
+            baseUrl: string,
+            weights: string[],
+    display: string,
+        local: { fontDirectory: string,
+    formats: string[]  ,
+    performance: { preloadCommonFonts: boolean,
         cacheFontResults: boolean;
-    maxCacheSize: number;
+    },
+    maxCacheSize: number,
     maxCacheSize: number;
         };
 export type ConfigChangeListener = (config: FontLoadingConfigData) => void;
@@ -43,39 +48,38 @@ export class FontLoadingConfig {
         this.config = this._mergeWithDefaults(customConfig);
         this.listeners = new Set<ConfigChangeListener>();
 
-     }
+     };
         this.validationRules = this._initializeValidationRules(); }
     private _mergeWithDefaults(customConfig: Partial<FontLoadingConfigData>): FontLoadingConfigData { const defaultConfig = {
             enabledSources: ['system', 'google', 'local'];
-            timeouts: {
-                google: 3000;
-                local: 1000;
+            timeouts: { google: 3000  ,
+                local: 1000,
     system: 500 
  };
-            fallbackBehavior: { useSystemFonts: true;
-                suppressErrors: true;
+            fallbackBehavior: { useSystemFonts: true,
+                suppressErrors: true  ,
     maxRetries: 1 
 };
             logging: { ''
-                level: 'warn';
-                suppressRepeated: true;
+                level: 'warn'  ,
+                suppressRepeated: true,
     maxErrorsPerSource: 3 
 };
-            development: { disableExternalFonts: false;
-    verboseLogging: false;
+            development: { disableExternalFonts: false,
+    verboseLogging: false  ,
             fontSources: { google: {''
-                    baseUrl: 'https://fonts.googleapis.com/css2';
+                    baseUrl: 'https://fonts.googleapis.com/css2,
                     weights: ['400', '500', '700'];
                     display: 'swap'
-            };
+        }
                 local: { ''
-                    fontDirectory: '/fonts';
+                    fontDirectory: '/fonts'  ,
                     formats: ['woff2', 'woff', 'ttf] }'
             },
-            performance: { preloadCommonFonts: true;
-                cacheFontResults: true;
+            performance: { preloadCommonFonts: true,
+                cacheFontResults: true  ,
     maxCacheSize: 50 
-    },
+    ,
 
         return this._deepMerge(defaultConfig, customConfig);
     }
@@ -103,11 +107,11 @@ export class FontLoadingConfig {
 
             }],''
             ['timeouts', { ''
-                type: 'object';
+                type: 'object,
                 properties: { }'
 
-                    google: { type: 'number', min: 1000, max: 10000  },''
-                    local: { type: 'number', min: 500, max: 5000  },''
+                    google: { type: 'number', min: 1000, max: 10000  ,''
+                    local: { type: 'number', min: 500, max: 5000  ,''
                     system: { type: 'number', min: 100, max: 2000  }]
                 }]'
             }],''
@@ -118,13 +122,13 @@ export class FontLoadingConfig {
             }],''
             ['logging.maxErrorsPerSource', { ''
                 type: 'number),'
-                min: 1)];
+                min: 1)],
     max: 10])];
-        ]) }
-    get(path: string): any { return this._getNestedValue(this.config, path) }
+        ]);
+    get(path: string): any { return this._getNestedValue(this.config, path);
     set(path: string, value: any): boolean { const validation = this._validateValue(path, value);
         if (!validation.valid) { }
-            throw new Error(`Invalid, configuration value, for ${path}: ${validation.error}`};
+            throw new Error(`Invalid, configuration value, for ${path}: ${validation.error}`}
         }
 
         const oldValue = this._getNestedValue(this.config, path);
@@ -134,16 +138,16 @@ export class FontLoadingConfig {
         return true;
     }
 
-    update(updates: Record<string, any>): { success: boolean,, results: Record<string, boolean>, errors: Record<string, string> } {
+    update(updates: Record<string, any>): { success: boolean, results: Record<string, boolean>, errors: Record<string, string> } {
         const results: Record<string, boolean> = {};
-        const errors: Record<string, string> = {};
+        const errors: Record<string, string> = {} };
 
         for(const [path, value] of Object.entries(updates) {
 
             try {
-                this.set(path, value) }
+                this.set(path, value);
                 results[path] = true; }
-            } catch (error) { errors[path] = (error, as Error).message;
+        } catch (error) { errors[path] = (error, as Error).message;
                 results[path] = false }
         }
 
@@ -151,8 +155,7 @@ export class FontLoadingConfig {
             console.warn('[FontLoadingConfig] Some updates failed:', errors }
         return { success: Object.values(results).every(r => r,
             results: results,
-            errors: errors ,
-    } }
+            errors: errors  } }
 
     private _getNestedValue(obj: any, path: string): any { ''
         const keys = path.split('.),'
@@ -213,20 +216,19 @@ export class FontLoadingConfig {
     
 }
             return { valid: false, error: `Value must be at most ${rule.max }` }
-        }
+        } };
 
         if (rule.type === 'array' && rule.allowedValues) {
             for (const item of value) {
         }
                 if (!rule.allowedValues.includes(item) { }
-                    return { valid: false, error: `Array contains invalid, value: ${item }` },
-}
+                    return { valid: false, error: `Array contains invalid, value: ${item }` } }
         return { valid: true,
 
     enableSource(sourceName: string): void { ''
         const enabledSources = this.get('enabledSources' || [],
         if(!enabledSources.includes(sourceName)) {''
-            this.set('enabledSources', [...enabledSources, sourceName]) }
+            this.set('enabledSources', [...enabledSources, sourceName]);
     }
 
     disableSource(sourceName: string): void { ''
@@ -243,7 +245,7 @@ export class FontLoadingConfig {
 
     enableProductionMode('''
             'development.verboseLogging': false,
-            'logging.level': 'warn',
+            'logging.level': 'warn,
             'development.disableExternalFonts': false,';'
             'fallbackBehavior.suppressErrors': true';'
     }
@@ -254,15 +256,15 @@ export class FontLoadingConfig {
             'fallbackBehavior.useSystemFonts': true);
     }
 
-    addConfigListener(listener: ConfigChangeListener): void { this.listeners.add(listener) }
-    removeConfigListener(listener: ConfigChangeListener): void { this.listeners.delete(listener) }
+    addConfigListener(listener: ConfigChangeListener): void { this.listeners.add(listener);
+    removeConfigListener(listener: ConfigChangeListener): void { this.listeners.delete(listener);
     private _notifyListeners(path: string, newValue: any, oldValue: any): void { for (const listener of this.listeners) {
             try {
                 listener(this.config),' }'
 
             } catch (error) { console.error('[FontLoadingConfig] Listener error:', error }
         }
-    export(): FontLoadingConfigData { return JSON.parse(JSON.stringify(this.config) }
+    export(): FontLoadingConfigData { return JSON.parse(JSON.stringify(this.config);
 
     import(configData: string | FontLoadingConfigData): boolean { try {'
             const parsedConfig = typeof configData === 'string' ? JSON.parse(configData) : configData,
@@ -275,8 +277,8 @@ export class FontLoadingConfig {
             console.error('[FontLoadingConfig] Import failed:', error);
             return false,
 
-    validate(): { valid: boolean,, errors: Array<{ path: string, value: any,, error: string;> } {
-        const errors: Array<{ path: string, value: any,, error: string;> = [];
+    validate(): { valid: boolean, errors: Array<{ path: string, value: any, error: string;> } {
+        const errors: Array<{ path: string, value: any, error: string;> = [];
 
         for(const [path, rule] of this.validationRules) { const value = this._getNestedValue(this.config, path);
             const validation = this._validateValue(path, value);
@@ -284,26 +286,23 @@ export class FontLoadingConfig {
                 errors.push({)
                     path: path,
     value: value,
-                    error: validation.error!), 
-    }
+                    error: validation.error!) }
 
-        return { valid: errors.length = == 0 },
-            errors: errors ,
-    } }
+        return { valid: errors.length = == 0 ,
+            errors: errors  } }
 ';'
 
     reset(): void { ''
         this.config = this._mergeWithDefaults({));
-        this._notifyListeners('*', this.config, null) }
+        this._notifyListeners('*', this.config, null);
 
     getStats()';'
             enabledSources: this.get('enabledSources').length,
             totalTimeouts: Object.keys(this.get('timeouts)'.length,
-            developmentMode: this.get('development.verboseLogging',
+            developmentMode: this.get('development.verboseLogging,
             offlineMode: !this.get('enabledSources').includes('google);'
             configSize: JSON.stringify(this.config).length,
-    listeners: this.listeners.size,
-        } }
+    listeners: this.listeners.size } }
 ';'
 // デフォルト設定インスタンス
 export const defaultFontLoadingConfig = new FontLoadingConfig();

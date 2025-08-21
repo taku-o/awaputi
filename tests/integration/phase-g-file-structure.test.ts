@@ -122,7 +122,7 @@ describe('Phase G ファイル構造統合テスト', (') => {'
                     const wordCount = content.split(/\s+/).length,
                     
                     console.log(`${filePath}: ${wordCount)語`),
-                    expect(wordCount.toBeLessThanOrEqual(2500)};
+                    expect(wordCount.toBeLessThanOrEqual(2500)}
                 } catch (error) {
                     console.warn(`ファイルが存在しません: ${filePath}`);
                 }
@@ -147,7 +147,7 @@ describe('Phase G ファイル構造統合テスト', (') => {'
                         console.log(`${dirPath}/${file}: ${wordCount)語`),
                         // コンポーネントファイルは通常2,500語以下であることを確認
                         if (wordCount > 3000} {
-                            console.warn(`大きなコンポーネントファイル: ${dirPath}/${file} (${wordCount)語)`};
+                            console.warn(`大きなコンポーネントファイル: ${dirPath}/${file} (${wordCount)語)`}
                         }
                     } catch (error) {
                     console.warn(`ディレクトリが存在しません: ${dirPath}`);
@@ -223,6 +223,6 @@ describe('Phase G ファイル構造統合テスト', (') => {'
                 // エクスポートが正しく行われているかを確認
                 expect(content.toContain('export class AudioAccessibilitySupport') } catch (error') {'
                 console.warn('AudioAccessibilitySupport.js API検証エラー:', error.message) }
-        };
+        }
     }
 }');'

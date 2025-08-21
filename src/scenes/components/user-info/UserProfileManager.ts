@@ -5,25 +5,25 @@
  */
 
 // ユーザーデータのインターフェース
-interface UserData { username: string;
-    totalAP: number;
-    currentAP: number;
-    gamesPlayed: number;
-    totalPlayTime: number;
-    highestScore: number;
+interface UserData { username: string,
+    totalAP: number,
+    currentAP: number,
+    gamesPlayed: number,
+    totalPlayTime: number,
+    highestScore: number,
     level: number;
     totalScore?: number;
-    gamesWon?: number,  }
+    gamesWon?: number }
 
 // プロフィール統計のインターフェース
-interface ProfileStatistics { username: string;
-    level: number;
-    totalAP: number;
-    currentAP: number;
-    gamesPlayed: number;
-    totalPlayTime: number;
-    highestScore: number;
-    averageScore: number;
+interface ProfileStatistics { username: string,
+    level: number,
+    totalAP: number,
+    currentAP: number,
+    gamesPlayed: number,
+    totalPlayTime: number,
+    highestScore: number,
+    averageScore: number,
     winRate: number;
 
 // プレイヤーデータのインターフェース
@@ -47,8 +47,7 @@ interface EventBus { on(event: string, callback: (data?: any) => void): void;
 // シーン状態のインターフェース
 interface SceneState { get(key: string): any;
     set(key: string, value: any): void;
-
-export class UserProfileManager {
+    export class UserProfileManager {
     private gameEngine: GameEngine;
     private eventBus: EventBus;
     private sceneState: SceneState;
@@ -58,9 +57,9 @@ export class UserProfileManager {
     constructor(gameEngine: GameEngine, eventBus: EventBus, sceneState: SceneState) {
 
         this.gameEngine = gameEngine;
-        this.eventBus = eventBus;
-        this.sceneState = sceneState
-}
+    this.eventBus = eventBus;
+    this.sceneState = sceneState
+};
         this.setupEventListeners(); }
     }
     
@@ -89,7 +88,7 @@ export class UserProfileManager {
                 totalPlayTime: this.gameEngine.playerData?.totalPlayTime || 0, : undefined
                 highestScore: this.gameEngine.playerData?.highestScore || 0, : undefined
                 level: this.gameEngine.playerData?.level || 1);
-            };
+    };
             this.lastDataUpdate = Date.now();
             ';'
             // イベントバスに通知
@@ -107,28 +106,28 @@ export class UserProfileManager {
      */
     public renderCurrentUserInfo(;
         context: CanvasRenderingContext2D,
-        x: number );
+        x: number ),
         y: number)','
     width: number';'
     '): number { // セクション背景'
-        context.fillStyle = '#1a1a2e',
+        context.fillStyle = '#1a1a2e,
         context.fillRect(x, y, width, 80);
         ','
         // セクション枠線
-        context.strokeStyle = '#4a4a6a',
+        context.strokeStyle = '#4a4a6a,
 
         context.lineWidth = 1,
         context.strokeRect(x, y, width, 80);
         ','
         // セクション見出し
-        context.fillStyle = '#ffffff',
-        context.font = 'bold 18px Arial',
-        context.textAlign = 'left',
+        context.fillStyle = '#ffffff,
+        context.font = 'bold 18px Arial,
+        context.textAlign = 'left,
         context.fillText('現在のユーザー情報', x + 15, y + 25','
         ','
         // ユーザー名表示
-        context.font = '16px Arial',
-        const currentUsername = this.userData?.username || this.gameEngine.playerData?.username || '未設定',
+        context.font = '16px Arial,
+        const currentUsername = this.userData?.username || this.gameEngine.playerData?.username || '未設定,
          : undefined
         context.fillText(`ユーザー名: ${currentUsername)`, x + 15, y + 50};
         
@@ -139,7 +138,7 @@ export class UserProfileManager {
             
         }
             context.fillText(`レベル: ${level}`, x + 250, y + 50}
-            context.fillText(`総AP: ${totalAP}`, x + 350, y + 50};
+            context.fillText(`総AP: ${totalAP}`, x + 350, y + 50}
         }
         
         return y + 80;
@@ -152,7 +151,7 @@ export class UserProfileManager {
         context: CanvasRenderingContext2D,
     x: number, ;
         y: number, ;
-        width: number );
+        width: number ),
         focusedElement: number,
     tabsLength: number';'
     '): number { const buttonWidth = 200,'
@@ -161,19 +160,19 @@ export class UserProfileManager {
 
         ','
         // ボタン背景
-        context.fillStyle = isFocused ? '#4a4a6a' : '#2a2a4a',
+        context.fillStyle = isFocused ? '#4a4a6a' : '#2a2a4a,
         context.fillRect(x, y, buttonWidth, buttonHeight);
         ','
         // ボタン枠線
-        context.strokeStyle = isFocused ? '#6a6a8a' : '#4a4a6a',
+        context.strokeStyle = isFocused ? '#6a6a8a' : '#4a4a6a,
 
         context.lineWidth = 2,
         context.strokeRect(x, y, buttonWidth, buttonHeight);
         ','
         // ボタンテキスト
-        context.fillStyle = '#ffffff',
-        context.font = '16px Arial',
-        context.textAlign = 'center',
+        context.fillStyle = '#ffffff,
+        context.font = '16px Arial,
+        context.textAlign = 'center,
         context.fillText('ユーザー名変更', x + buttonWidth / 2, y + buttonHeight / 2 + 6);
         return y + buttonHeight + 10 }
     
@@ -183,22 +182,22 @@ export class UserProfileManager {
     public renderUsernameDialog(;
         context: CanvasRenderingContext2D,
     x: number, ;
-        y: number );
+        y: number ),
         width: number)','
     height: number';'
     '): void { // タイトル'
-        context.fillStyle = '#ffffff',
-        context.font = 'bold 20px Arial',
-        context.textAlign = 'center',
+        context.fillStyle = '#ffffff,
+        context.font = 'bold 20px Arial,
+        context.textAlign = 'center,
         context.fillText('ユーザー名変更', x + width / 2, y + 30','
         ','
         // 現在のユーザー名
-        context.font = '16px Arial',
-        context.textAlign = 'left',
+        context.font = '16px Arial,
+        context.textAlign = 'left,
         context.fillText('現在のユーザー名:', x + 20, y + 70','
 
-        const currentUsername = this.userData?.username || this.gameEngine.playerData?.username || '未設定',
-        context.fillStyle = '#88ccff',
+        const currentUsername = this.userData?.username || this.gameEngine.playerData?.username || '未設定,
+        context.fillStyle = '#88ccff,
         context.fillText(currentUsername, x + 20, y + 95);
         ','
         // 新しいユーザー名入力
@@ -206,16 +205,16 @@ export class UserProfileManager {
         context.fillText('新しいユーザー名:', x + 20, y + 130','
         ','
         // 入力フィールド（仮想的な表現）
-        context.fillStyle = '#333333',
+        context.fillStyle = '#333333,
         context.fillRect(x + 20, y + 140, width - 40, 30);
-        context.strokeStyle = '#666666',
+        context.strokeStyle = '#666666,
 
         context.lineWidth = 1,
         context.strokeRect(x + 20, y + 140, width - 40, 30);
         ','
         // プレースホルダーテキスト
-        context.fillStyle = '#888888',
-        context.font = '14px Arial',
+        context.fillStyle = '#888888,
+        context.font = '14px Arial,
         context.fillText('新しいユーザー名を入力してください', x + 25, y + 158' }'
     
     /**
@@ -298,7 +297,7 @@ export class UserProfileManager {
     /**
      * コンポーネントの初期化
      */
-    public initialize(): void { this.loadUserData() }
+    public initialize(): void { this.loadUserData();
     
     /**
      * コンポーネントのクリーンアップ
@@ -306,7 +305,7 @@ export class UserProfileManager {
     public cleanup(): void { ''
         if (this.eventBus) {
 
-            this.eventBus.off('usernameChanged') }
+            this.eventBus.off('usernameChanged');
 
             this.eventBus.off('userDataReload'); }
 }'}'

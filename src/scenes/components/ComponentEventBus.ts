@@ -1,31 +1,26 @@
 // インターフェース定義
 interface ListenerOptions { once?: boolean,
     priority?: number;
-
-interface ListenerInfo { callback: EventCallback;
-    once: boolean;
-    priority: number;
+    interface ListenerInfo { callback: EventCallback,
+    once: boolean,
+    priority: number,
     id: string;
-
-interface EventHistoryEntry { event: string;
-    data: any;
+    interface EventHistoryEntry { event: string,
+    data: any,
     timestamp: number;
-
-interface ErrorInfo { type: 'listener_error' | 'emit_error';
-    error: Error;
+    interface ErrorInfo { type: 'listener_error' | 'emit_error',
+    error: Error,
     event: string;
     listenerId?: string;
     data?: any;
     timestamp: number;
-
-interface DebugInfo { eventNames: string[];
+    interface DebugInfo { eventNames: string[],
     listenerCounts: Record<string, number>;
-    recentEvents: EventHistoryEntry[];
+    recentEvents: EventHistoryEntry[],
     totalEvents: number;
-
-type EventCallback = (data: any, event: string) => boolean | void;
-type ErrorHandler = (errorInfo: ErrorInfo) => void;
-type UnsubscribeFunction = () => void;
+    type EventCallback = (data: any, event: string) => boolean | void;
+    type ErrorHandler = (errorInfo: ErrorInfo) => void;
+    type UnsubscribeFunction = () => void;
 
 /**
  * コンポーネント間通信用のイベントバス
@@ -47,11 +42,11 @@ export class ComponentEventBus {
         
         // デバッグ用のイベント履歴
         this.eventHistory = [];
-        this.maxHistorySize = 100;
+    this.maxHistorySize = 100;
         
         // エラーハンドリング
 
-     }
+     };
         this.errorHandlers = []; }
     }
     
@@ -68,12 +63,12 @@ export class ComponentEventBus {
             throw new Error('Invalid, event or, callback'; }'
         }
         
-        if (!this.listeners.has(event) { this.listeners.set(event, []) }
+        if (!this.listeners.has(event) { this.listeners.set(event, []);
         
         const listenerInfo: ListenerInfo = { callback,
             once: options.once || false,
             priority: options.priority || 0,
-    id: this.generateListenerId(  },
+    id: this.generateListenerId(  };
         
         this.listeners.get(event)!.push(listenerInfo);
         
@@ -111,10 +106,8 @@ export class ComponentEventBus {
             if (listeners.length === 0) {
     
 }
-                this.listeners.delete(event); }
+                this.listeners.delete(event);     }
 }
-    }
-    
     /**
      * イベントを発火
      * @param event - イベント名
@@ -144,11 +137,11 @@ export class ComponentEventBus {
                     }
                     
                     // onceリスナーの場合は削除対象にマーク
-                    if (listener.once) { toRemove.push(listener.id) } catch (error) { this.handleListenerError(error as Error, event, listener) }
+                    if (listener.once) { toRemove.push(listener.id) } catch (error) { this.handleListenerError(error as Error, event, listener);
             }
             
             // onceリスナーを削除
-            for (const id of toRemove) { this.off(event, id) }
+            for (const id of toRemove) { this.off(event, id);
             
             return handled;
         } catch (error) { this.handleEmitError(error as Error, event, data);
@@ -159,14 +152,14 @@ export class ComponentEventBus {
      * @param event - 特定のイベント名（省略時は全イベント）
      */
     removeAllListeners(event?: string): void { if (event) {
-            this.listeners.delete(event) } else { this.listeners.clear() }
+            this.listeners.delete(event) } else { this.listeners.clear();
     }
     
     /**
      * 登録されているイベントの一覧を取得
      * @returns イベント名の配列
      */
-    getEventNames(): string[] { return Array.from(this.listeners.keys() }
+    getEventNames(): string[] { return Array.from(this.listeners.keys()));
     
     /**
      * 特定のイベントのリスナー数を取得
@@ -187,10 +180,10 @@ export class ComponentEventBus {
      * @returns デバッグ情報
      */
     getDebugInfo(): DebugInfo { return { eventNames: this.getEventNames()
-           , listenerCounts: Object.fromEntries();
+            listenerCounts: Object.fromEntries();
                 this.getEventNames().map(event => [event, this.getListenerCount(event)])),
-            recentEvents: this.eventHistory.slice(-10) },
-            totalEvents: this.eventHistory.length 
+            recentEvents: this.eventHistory.slice(-10) };
+            totalEvents: this.eventHistory.length; 
     }
     
     /**
@@ -211,7 +204,7 @@ export class ComponentEventBus {
             data: this.safeClone(data,
     timestamp: Date.now( };
         // 履歴サイズを制限
-        if (this.eventHistory.length > this.maxHistorySize) { this.eventHistory.shift() }
+        if (this.eventHistory.length > this.maxHistorySize) { this.eventHistory.shift();
     }
     
     /**
@@ -221,11 +214,11 @@ export class ComponentEventBus {
      * @param listener - リスナー情報
      */''
     private handleListenerError(error: Error, event: string, listener: ListenerInfo): void { const errorInfo: ErrorInfo = {''
-            type: 'listener_error',
+            type: 'listener_error';
             error,
             event,
             listenerId: listener.id,
-    timestamp: Date.now(  },
+    timestamp: Date.now(  };
         
         // エラーハンドラーに通知
         for(const handler of this.errorHandlers) {
@@ -246,11 +239,11 @@ export class ComponentEventBus {
      * @param data - イベントデータ'
      */''
     private handleEmitError(error: Error, event: string, data: any): void { const errorInfo: ErrorInfo = {''
-            type: 'emit_error',
+            type: 'emit_error';
             error,
             event,
             data: this.safeClone(data,
-    timestamp: Date.now(  },
+    timestamp: Date.now(  };
         
         // エラーハンドラーに通知
         for(const handler of this.errorHandlers) {
@@ -274,7 +267,7 @@ export class ComponentEventBus {
                 return obj;
 
             return JSON.parse(JSON.stringify(obj);} catch (error) {
-            return '[Uncloneable Object]',
+            return '[Uncloneable Object],
     
     /**
      * EventBusのクリーンアップ

@@ -7,29 +7,25 @@
  */
 
 // Type definitions
-interface CanvasContext { canvas: HTMLCanvasElement;
+interface CanvasContext { canvas: HTMLCanvasElement,
     ctx: CanvasRenderingContext2D;
-
-interface FaviconConfig { backgroundColor?: string,
+    interface FaviconConfig { backgroundColor?: string,
     textColor?: string;
     fontFamily?: string;
     text?: string;
-
-interface FaviconRenderConfig { backgroundColor: string;
-    textColor: string;
-    fontFamily: string;
+    interface FaviconRenderConfig { backgroundColor: string,
+    textColor: string,
+    fontFamily: string,
     text: string;
-
-type ImageFormat = 'png' | 'ico';
-
-export default class FaviconCanvasRenderer { /**
+    type ImageFormat = 'png' | 'ico';
+    export default class FaviconCanvasRenderer { /**
      * Canvas要素とコンテキストを作成
      * @param size - キャンバスサイズ
      * @returns Canvas要素とコンテキスト'
      */''
     static createCanvas(size: number): CanvasContext {''
         const canvas = document.createElement('canvas');
-        canvas.width = size,
+    canvas.width = size,
 
         canvas.height = size,
         const ctx = canvas.getContext('2d),'
@@ -48,9 +44,9 @@ export default class FaviconCanvasRenderer { /**
      * @param config - 設定オブジェクト'
      */''
     static renderFavicon(ctx: CanvasRenderingContext2D, size: number, config: FaviconConfig): void { const renderConfig: FaviconRenderConfig = {''
-            backgroundColor: config.backgroundColor || '#2196F3';
-            textColor: config.textColor || '#FFFFFF';
-            fontFamily: config.fontFamily || 'Arial, sans-serif',
+            backgroundColor: config.backgroundColor || '#2196F3,
+            textColor: config.textColor || '#FFFFFF,
+            fontFamily: config.fontFamily || 'Arial, sans-serif,
             text: config.text || 'B'
             };
         // 背景を描画
@@ -94,7 +90,7 @@ export default class FaviconCanvasRenderer { /**
             // ICO形式の場合はPNGに変換してからICOヘッダーを付加
         }
             return this._convertToICO(canvas);
-        return canvas.toDataURL(`image/${format}`};
+        return canvas.toDataURL(`image/${format}`}
     }
 
     /**
@@ -119,9 +115,9 @@ export default class FaviconCanvasRenderer { /**
      * @returns SVG Data URL'
      */''
     static generateSVGFallback(size: number, config: FaviconConfig): string { const renderConfig: FaviconRenderConfig = {''
-            backgroundColor: config.backgroundColor || '#2196F3',
-            textColor: config.textColor || '#FFFFFF',
-            fontFamily: config.fontFamily || 'Arial, sans-serif',
+            backgroundColor: config.backgroundColor || '#2196F3,
+            textColor: config.textColor || '#FFFFFF,
+            fontFamily: config.fontFamily || 'Arial, sans-serif,
             text: config.text || 'B'
             };
 ';'

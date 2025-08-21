@@ -6,43 +6,34 @@
 import path from 'path';
 
 // Type definitions
-interface DuplicateFile { fileName: string;
+interface DuplicateFile { fileName: string,
     paths: string[];
-
-interface DuplicateClass { className: string;
+    interface DuplicateClass { className: string,
     locations: ClassLocation[];
-
-interface ClassLocation { file: string;
+    interface ClassLocation { file: string,
     line: number;
     column?: number;
-
-interface FileNameResolution { originalPath: string;
-    newPath: string;
-    newFileName: string;
+    interface FileNameResolution { originalPath: string,
+    newPath: string,
+    newFileName: string,
     reason: string;
-
-interface ClassNameResolution { location: ClassLocation;
-    newClassName: string;
+    interface ClassNameResolution { location: ClassLocation,
+    newClassName: string,
     reason: string;
-
-interface FileNameStrategy { originalName: string;
-    conflicts: string[];
+    interface FileNameStrategy { originalName: string,
+    conflicts: string[],
     resolutions: FileNameResolution[];
-
-interface ClassNameStrategy { originalClassName: string;
-    conflicts: ClassLocation[];
+    interface ClassNameStrategy { originalClassName: string,
+    conflicts: ClassLocation[],
     resolutions: ClassNameResolution[];
-
-interface SpecialCaseMapping { [directoryKey: string]: string;
-
-interface NamingConventions { class: string;
-    file: string;
+    interface SpecialCaseMapping { [directoryKey: string]: string;
+    interface NamingConventions { class: string,
+    file: string,
     prefix: string;
-
-interface NameValidation { originalName: string;
-    newName: string;
-    type: 'class' | 'file';
-    isValid: boolean;
+    interface NameValidation { originalName: string,
+    newName: string,
+    type: 'class' | 'file,
+    isValid: boolean,
     issues: string[];
 ';'
 
@@ -52,25 +43,22 @@ interface Conflict { ''
     paths?: string[];
     className?: string;
     locations?: ClassLocation[];
+    interface NameInfo { original: string,
 
-interface NameInfo { original: string;
-
-    new: string;
+    new: string,
     type: 'class' | 'file'
             }
 
-interface StrategyEvaluation { strategy: FileNameStrategy | ClassNameStrategy;
-    score: number;
-    strengths: string[];
-    weaknesses: string[];
+interface StrategyEvaluation { strategy: FileNameStrategy | ClassNameStrategy,
+    score: number,
+    strengths: string[],
+    weaknesses: string[],
     recommendations: string[];
-
-export class NamingStrategyEngine {
+    export class NamingStrategyEngine {
     private readonly domainPrefixes: Map<string, string>,
     private readonly specialCases: Map<string, SpecialCaseMapping>,
     private readonly namingConventions: NamingConventions;
-
-    constructor('',
+    constructor(',
             ['src/core', 'Core'],
             ['src/debug', 'Debug'],
             ['src/ui', 'UI'],
@@ -81,7 +69,7 @@ export class NamingStrategyEngine {
             ['src/managers', 'Manager'],
             ['src/accessibility', 'Accessibility'],
             ['src/effects', 'Effect'],
-            ['src/tests', 'Test]',
+            ['src/tests, 'Test]',
         ]'),'
 
         // 特別な処理が必要なクラス名のマッピング
@@ -90,19 +78,19 @@ export class NamingStrategyEngine {
                 'src/scenes/components': 'ComponentDialogManager', ]','
                 'src/ui/data-management-ui': 'DataManagementDialogManager' }]'
             }],''
-            ['BaseDialog', { ', 'src/scenes/components': 'SceneBaseDialog',]',
+            ['BaseDialog, { ', 'src/scenes/components': 'SceneBaseDialog',]',
                 'src/ui': 'UIBaseDialog' }]'
             }],''
             ['PerformanceMonitor', { ', 'src/analytics': 'AnalyticsPerformanceMonitor','
-                'src/debug': 'DebugPerformanceMonitor',
+                'src/debug': 'DebugPerformanceMonitor,
                 'src/core/render': 'RenderPerformanceMonitor',]','
                 'src/core': 'CorePerformanceMonitor' }]'
             }]']');
 ';'
 
         this.namingConventions = {;
-            class: 'PascalCase',
-            file: 'camelCase',
+            class: 'PascalCase,
+            file: 'camelCase,
             prefix: 'PascalCase'
             }
 
@@ -123,7 +111,7 @@ export class NamingStrategyEngine {
 
                 const dirName = path.dirname(filePath);
                 const baseName = path.basename(duplicate.fileName, '.js),'
-                const prefix = this.generateDirectoryPrefix(dirName) }
+                const prefix = this.generateDirectoryPrefix(dirName);
                 const newFileName = `${prefix}${this.toPascalCase(baseName}.js`;
                 
                 strategy.resolutions.push({ )
@@ -131,7 +119,7 @@ export class NamingStrategyEngine {
     newPath: path.join(dirName, newFileName);
                     newFileName: newFileName,
                     reason: `Directory-based, prefix: ${prefix}`
-                };
+                }
             }
 
             strategies.push(strategy);
@@ -160,15 +148,15 @@ export class NamingStrategyEngine {
                     const newName = specialMapping[dirKey] || this.generateDefaultName(duplicate.className, location.file);
                     strategy.resolutions.push({)
                         location: location,
-                        newClassName: newName) }
-                        reason: `Special case mapping for ${duplicate.className}`),
+                        newClassName: newName),
+                        reason: `Special case mapping for ${duplicate.className}`);
                 }
             } else { // 一般的な戦略の適用
                 for (const location of duplicate.locations) {
                     const newName = this.generateDefaultName(duplicate.className, location.file);
                     strategy.resolutions.push({)
                         location: location,
-                        newClassName: newName) }
+                        newClassName: newName),
                         reason: `Domain-based prefix application`); 
     }
 
@@ -193,7 +181,7 @@ export class NamingStrategyEngine {
                 const domainResults = this.generateClassNameStrategy([duplicateClass]);
                 results.push(...domainResults);'' else if (conflict.type === 'file' && conflict.fileName && conflict.paths) { const duplicateFile: DuplicateFile = {
                     fileName: conflict.fileName,
-    paths: conflict.paths },
+    paths: conflict.paths };
                 const fileResults = this.generateFileNameStrategy([duplicateFile]);
                 results.push(...fileResults);
         }
@@ -227,7 +215,7 @@ export class NamingStrategyEngine {
             // camelCase の検証 (ファイル名 - 拡張子除く');'
             if (nameInfo.type === 'file') {
 
-                const baseName = path.basename(nameInfo.new, '.js',
+                const baseName = path.basename(nameInfo.new, '.js,
                 if (!this.isCamelCase(baseName) && !this.isPascalCase(baseName)) {
                     result.isValid = false }
 
@@ -279,7 +267,7 @@ export class NamingStrategyEngine {
     /**
      * デフォルトの名前生成
      */
-    generateDefaultName(originalName: string, filePath: string): string { const prefix = this.generateDirectoryPrefix(path.dirname(filePath) }
+    generateDefaultName(originalName: string, filePath: string): string { const prefix = this.generateDirectoryPrefix(path.dirname(filePath);
         return prefix ? `${prefix}${originalName}` : originalName;
     }
 
@@ -297,32 +285,32 @@ export class NamingStrategyEngine {
     /**
      * PascalCase の検証
      */
-    isPascalCase(str: string): boolean { return /^[A-Z][a-zA-Z0-9]*$/.test(str) }
+    isPascalCase(str: string): boolean { return /^[A-Z][a-zA-Z0-9]*$/.test(str);
 
     /**
      * camelCase の検証
      */
-    isCamelCase(str: string): boolean { return /^[a-z][a-zA-Z0-9]*$/.test(str) }
+    isCamelCase(str: string): boolean { return /^[a-z][a-zA-Z0-9]*$/.test(str);
 
     /**
      * 文字列をPascalCaseに変換
      */
-    toPascalCase(str: string): string { return str.charAt(0).toUpperCase() + str.slice(1) }
+    toPascalCase(str: string): string { return str.charAt(0).toUpperCase() + str.slice(1);
 
     /**
      * 文字列をcamelCaseに変換
      */
-    toCamelCase(str: string): string { return str.charAt(0).toLowerCase() + str.slice(1) }
+    toCamelCase(str: string): string { return str.charAt(0).toLowerCase() + str.slice(1);
 
     /**
      * JavaScript予約語の検証
      */''
     isReservedWord(word: string): boolean { const reservedWords = [', 'abstract', 'await', 'boolean', 'break', 'byte', 'case', 'catch', 'char','
-            'class', 'const', 'continue', 'debugger', 'default', 'delete', 'do',
-            'double', 'else', 'enum', 'export', 'extends', 'false', 'final', 'finally',
-            'float', 'for', 'function', 'goto', 'if', 'implements', 'import', 'in',
-            'instanceof', 'int', 'interface', 'let', 'long', 'native', 'new', 'null',
-            'package', 'private', 'protected', 'public', 'return', 'short', 'static',
+            'class, 'const', 'continue', 'debugger', 'default', 'delete', 'do',
+            'double, 'else', 'enum', 'export', 'extends', 'false', 'final', 'finally',
+            'float, 'for', 'function', 'goto', 'if', 'implements', 'import', 'in',
+            'instanceof, 'int', 'interface', 'let', 'long', 'native', 'new', 'null',
+            'package, 'private', 'protected', 'public', 'return', 'short', 'static',
             'super', 'switch', 'synchronized', 'this', 'throw', 'throws', 'transient',]','
             'true', 'try', 'typeof', 'var', 'void', 'volatile', 'while', 'with', 'yield'],
         ],
@@ -336,7 +324,7 @@ export class NamingStrategyEngine {
             score: 0,
             strengths: [],
             weaknesses: [],
-    recommendations: []  },
+    recommendations: []  };
         // 命名の一貫性をチェック
         const prefixes = strategy.resolutions.map(r => {  ')'
             const name = 'newClassName' in r ? r.newClassName: r.newFileName,
@@ -358,7 +346,7 @@ export class NamingStrategyEngine {
         // 名前の長さをチェック
         const averageLength = strategy.resolutions.reduce((sum, r) => {  ''
             const name = 'newClassName' in r ? r.newClassName: r.newFileName 
-            return sum + (name?.length || 0),, 0) / strategy.resolutions.length,
+            return sum + (name?.length || 0), 0) / strategy.resolutions.length,
 
         if (averageLength <= 30) {
             evaluation.score += 15 }

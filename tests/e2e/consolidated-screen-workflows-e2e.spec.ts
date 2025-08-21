@@ -36,7 +36,7 @@ test.describe('Consolidated Screen Workflows E2E Tests', () => {
         // LocalStorage クリア
         await page.evaluate(() => {
             localStorage.clear();
-            sessionStorage.clear() };
+            sessionStorage.clear() }
     }');'
 
     test.describe('Unified Help Screen Complete Workflows', (') => {'
@@ -156,7 +156,7 @@ test.describe('Consolidated Screen Workflows E2E Tests', () => {
                 error.includes('contextualHelp') ||
                 error.includes('F1') ||
                 error.includes('handleContextualHelp');
-            expect(f1Errors).toHaveLength(0) };
+            expect(f1Errors).toHaveLength(0) }
     }');'
 
     test.describe('Unified Settings Screen Complete Workflows', (') => {'
@@ -278,7 +278,7 @@ test.describe('Consolidated Screen Workflows E2E Tests', () => {
                 error.includes('navigation') ||
                 error.includes('context') ||
                 error.includes('stack');
-            expect(chainErrors).toHaveLength(0) };
+            expect(chainErrors).toHaveLength(0) }
     }');'
 
     test.describe('Cross-Browser Keyboard Shortcuts Verification', (') => {'
@@ -370,7 +370,7 @@ test.describe('Consolidated Screen Workflows E2E Tests', () => {
                 error.includes('contextualHelp');
             
             expect(browserSpecificErrors).toHaveLength(0);
-        };
+        }
     }');'
 
     test.describe('JavaScript Error Monitoring During Navigation', (') => {'
@@ -461,7 +461,7 @@ test.describe('Consolidated Screen Workflows E2E Tests', () => {
             
             expect(navigationErrors).toHaveLength(0);
             expect(jsErrors.length).toBe(0);
-        };
+        }
     }');'
 
     test.describe('Performance and Reliability Validation', (') => {'
@@ -544,5 +544,5 @@ test.describe('Consolidated Screen Workflows E2E Tests', () => {
             // 最終状態のスクリーンショット
             await page.screenshot({ path: `e2e-screenshots/test-cleanup-${Date.now(}}.png` },
         }
-    };
+    }
 }');'

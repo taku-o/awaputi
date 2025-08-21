@@ -3,17 +3,19 @@ import { getErrorHandler  } from '../../utils/ErrorHandler';
 /**
  * 拡張変換状態インターフェース
  */
-interface EnhancedTransform { depthOfField: number;
+interface EnhancedTransform { depthOfField: number,
     motionBlur: {
-        ,x: number;
-        y: number;
-    intensity: number;
-    chromatic: number;
-    vignette: number;
-    noise: number;
-    scanlines: number;
-    glitch: { intensity: number;
+            x: number;
+    },
+        y: number,
+    intensity: number,
+    chromatic: number,
+    vignette: number,
+    noise: number,
+    scanlines: number,
+    glitch: { intensity: number,
     frequency: number;
+    },
     frequency: number;
         };
 /**
@@ -26,13 +28,13 @@ interface RenderSettings { enablePostProcessing: boolean,''
 /**
  * グリッチ効果設定インターフェース
  */
-interface GlitchEffect { intensity: number;
+interface GlitchEffect { intensity: number,
     frequency: number;
 
 /**
  * フォーカスポイントインターフェース
  */
-interface FocusPoint { x: number;
+interface FocusPoint { x: number,
     y: number;
 
 /**
@@ -46,7 +48,7 @@ export class PostProcessingRenderer {
 
         this.canvas = canvas
 
-    }
+    };
         this.errorHandler = getErrorHandler(); }
     }
     
@@ -64,20 +66,18 @@ export class PostProcessingRenderer {
             }
             
             // ノイズ効果
-            if (enhancedTransform.noise > 0) { this.renderNoiseEffect(context, enhancedTransform.noise) }
+            if (enhancedTransform.noise > 0) { this.renderNoiseEffect(context, enhancedTransform.noise);
             
             // スキャンライン効果
-            if (enhancedTransform.scanlines > 0) { this.renderScanlinesEffect(context, enhancedTransform.scanlines) }
+            if (enhancedTransform.scanlines > 0) { this.renderScanlinesEffect(context, enhancedTransform.scanlines);
             
             // グリッチ効果
             if (enhancedTransform.glitch.intensity > 0) { this.renderGlitchEffect(context, enhancedTransform.glitch),' }'
 
             } catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'PostProcessingRenderer.renderPostProcessingEffects'
-            };
-        }
-    }
-    
+                }
+}
     /**
      * ビネット効果をレンダリング
      */
@@ -99,10 +99,8 @@ export class PostProcessingRenderer {
 
             context.restore(};'} catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'PostProcessingRenderer.renderVignetteEffect'
-            };
-        }
-    }
-    
+                }
+}
     /**
      * ノイズ効果をレンダリング
      */
@@ -125,16 +123,14 @@ export class PostProcessingRenderer {
 
             context.putImageData(imageData, 0, 0);'} catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'PostProcessingRenderer.renderNoiseEffect'
-            };
-        }
-    }
-    
+                }
+}
     /**
      * スキャンライン効果をレンダリング
      */
     renderScanlinesEffect(context: CanvasRenderingContext2D, intensity: number): void { try {
             const canvas = this.canvas,
-            context.save('',
+            context.save(',
             context.globalCompositeOperation = 'multiply',', ')','
             for(let, y = 0, y < canvas.height, y += 4) {
 
@@ -145,10 +141,8 @@ export class PostProcessingRenderer {
 
             context.restore();'} catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'PostProcessingRenderer.renderScanlinesEffect'
-            };
-        }
-    }
-    
+                }
+}
     /**
      * グリッチ効果をレンダリング
      */
@@ -164,14 +158,12 @@ export class PostProcessingRenderer {
                 for(let, y = 0, y < canvas.height, y += sliceHeight) {
                 
                     if (Math.random() < intensity) {
-                        const imageData = context.getImageData(0, y, canvas.width, sliceHeight) }
+                        const imageData = context.getImageData(0, y, canvas.width, sliceHeight);
                         context.putImageData(imageData, offset, y); }
 }'} catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'PostProcessingRenderer.renderGlitchEffect'
-            };
-        }
-    }
-    
+                }
+}
     /**
      * 拡張変換を適用
      */
@@ -187,10 +179,8 @@ export class PostProcessingRenderer {
             // 色収差は後処理で実装
         } catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'PostProcessingRenderer.applyEnhancedTransform'
-            };
-        }
-    }
-    
+                }
+}
     /**
      * 深度ブラー効果を適用
      */
@@ -200,7 +190,7 @@ export class PostProcessingRenderer {
             const canvas = this.canvas,
             
             context.save();
-            context.filter = `blur(${blurRadius)px)`,
+            context.filter = `blur(${blurRadius)px),
             
             // フォーカスポイント周辺はシャープに保つ
             const, focusRadius = 100,

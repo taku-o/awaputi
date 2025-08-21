@@ -7,40 +7,32 @@
 // 型定義
 export interface MobileAccessibilityManager { capabilities: AccessibilityCapabilities;
     [key: string]: any;
-
-export interface ValidationConfig { wcagLevel: WCAGLevel;
-    checkContrast: boolean;
-    checkKeyboard: boolean;
-    checkScreenReader: boolean;
-    checkMobile: boolean;
+    export interface ValidationConfig { wcagLevel: WCAGLevel,
+    checkContrast: boolean,
+    checkKeyboard: boolean,
+    checkScreenReader: boolean,
+    checkMobile: boolean,
     checkTiming: boolean;
-
-export interface ValidationRules { contrast: ContrastRules;
-    timing: TimingRules;
-    touch: TouchRules;
+    export interface ValidationRules { contrast: ContrastRules,
+    timing: TimingRules,
+    touch: TouchRules,
     keyboard: KeyboardRules;
-
-export interface ContrastRules { normal: number;
-    large: number;
+    export interface ContrastRules { normal: number,
+    large: number,
     enhanced: number;
-
-export interface TimingRules { minActionTime: number;
+    export interface TimingRules { minActionTime: number,
     maxSessionTime: number;
-
-export interface TouchRules { minTargetSize: number;
+    export interface TouchRules { minTargetSize: number,
     minSpacing: number;
-
-export interface KeyboardRules { requiredKeys: string[];
+    export interface KeyboardRules { requiredKeys: string[],
     navigationKeys: string[];
-
-export interface ValidationResults { overall: ValidationStatus;
-    issues: ValidationIssue[];
-    suggestions: AccessibilitySuggestion[];
-    score: number;
+    export interface ValidationResults { overall: ValidationStatus,
+    issues: ValidationIssue[],
+    suggestions: AccessibilitySuggestion[],
+    score: number,
     maxScore: number;
-
-export interface ValidationIssue { type: IssueType;
-    severity: IssueSeverity;
+    export interface ValidationIssue { type: IssueType,
+    severity: IssueSeverity,
     element: string;
     issue?: string;
     current?: string | number;
@@ -49,221 +41,193 @@ export interface ValidationIssue { type: IssueType;
     requiredSize?: number;
     wcagReference: string;
     details?: any;
-
-export interface AccessibilitySuggestion { type: SuggestionType;
-    priority: SuggestionPriority;
+    export interface AccessibilitySuggestion { type: SuggestionType,
+    priority: SuggestionPriority,
     message: string;
-
-export interface ValidationCheckResult { status: ValidationStatus;
+    export interface ValidationCheckResult { status: ValidationStatus,
     issues: ValidationIssue[];
     checkedElements?: number;
     totalChecks?: number;
-
-export interface CategoryValidationResult { category: ValidationCategory;
-    status: ValidationStatus;
+    export interface CategoryValidationResult { category: ValidationCategory,
+    status: ValidationStatus,
     issues: ValidationIssue[];
     checkedElements?: number;
-    totalChecks?: number,  }
-
-export interface WCAGComplianceReport { level: WCAGLevel;
-    passed: number;
-    failed: number;
-    warnings: number;
-    issues: ValidationIssue[];
-    timestamp: number;
+    totalChecks?: number };
+export interface WCAGComplianceReport { level: WCAGLevel,
+    passed: number,
+    failed: number,
+    warnings: number,
+    issues: ValidationIssue[],
+    timestamp: number,
     compliance: ComplianceStatus;
-
-export interface AccessibilityValidationReport { metadata: ReportMetadata;
-    summary: ReportSummary;
-    results: ReportResults;
-    categories: ValidationCategorization;
-    deviceInfo: DeviceAccessibilityInfo;
+    export interface AccessibilityValidationReport { metadata: ReportMetadata,
+    summary: ReportSummary,
+    results: ReportResults,
+    categories: ValidationCategorization,
+    deviceInfo: DeviceAccessibilityInfo,
     capabilities: AccessibilityCapabilities;
     elementDetails?: ElementAccessibilityDetails[];
     recommendations?: DetailedRecommendation[];
-
-export interface ReportMetadata { timestamp: number;
-    validator: string;
-    version: string;
-    wcagLevel: WCAGLevel;
+    export interface ReportMetadata { timestamp: number,
+    validator: string,
+    version: string,
+    wcagLevel: WCAGLevel,
     userAgent: string;
-
-export interface ReportSummary { overall: ValidationStatus;
-    score: number;
-    maxScore: number;
-    issueCount: number;
+    export interface ReportSummary { overall: ValidationStatus,
+    score: number,
+    maxScore: number,
+    issueCount: number,
     suggestionCount: number;
-
-export interface ReportResults { issues: FormattedIssue[];
+    export interface ReportResults { issues: FormattedIssue[],
     suggestions: FormattedSuggestion[];
-
-export interface FormattedIssue { category: string;
-    severity: IssueSeverity;
-    description: string;
-    element: string;
-    recommendation: string;
+    export interface FormattedIssue { category: string,
+    severity: IssueSeverity,
+    description: string,
+    element: string,
+    recommendation: string,
     wcagReference: string;
-
-export interface FormattedSuggestion { category: string;
-    priority: SuggestionPriority;
-    title: string;
-    description: string;
+    export interface FormattedSuggestion { category: string,
+    priority: SuggestionPriority,
+    title: string,
+    description: string,
     actionItems: string[];
-
-export interface ValidationCategorization { [category: string]: {
-        issueCoun,t: number;
-        severity: IssueSeverity;
+    export interface ValidationCategorization { [category: string]: {
+        issueCoun,t: number,
+        severity: IssueSeverity,
     status: ValidationStatus;
-
-export interface DeviceAccessibilityInfo { screenReader: boolean;
-    highContrast: boolean;
-    reducedMotion: boolean;
-    touchSupport: boolean;
-    screenSize: ScreenSizeCategory;
+    export interface DeviceAccessibilityInfo { screenReader: boolean,
+    highContrast: boolean,
+    reducedMotion: boolean,
+    touchSupport: boolean,
+    screenSize: ScreenSizeCategory,
     orientation: OrientationMode;
-
-export interface AccessibilityCapabilities { supportsScreenReader: boolean;
-    supportsHighContrast: boolean;
-    supportsReducedMotion: boolean;
-    supportsKeyboardNavigation: boolean;
+    export interface AccessibilityCapabilities { supportsScreenReader: boolean,
+    supportsHighContrast: boolean,
+    supportsReducedMotion: boolean,
+    supportsKeyboardNavigation: boolean,
     supportsTouchInput: boolean;
     [key: string]: any;
-
-export interface ElementAccessibilityDetails { element: string;
-    tagName: string;
+    export interface ElementAccessibilityDetails { element: string,
+    tagName: string,
     role: string;
     ariaLabel?: string;
-    focusable: boolean;
-    visible: boolean;
+    focusable: boolean,
+    visible: boolean,
     keyboardAccessible: boolean;
     contrastRatio?: number;
     touchTargetSize?: number;
     issues: string[];
-
-export interface DetailedRecommendation { category: ValidationCategory;
-    title: string;
-    description: string;
-    priority: SuggestionPriority;
-    steps: RecommendationStep[];
+    export interface DetailedRecommendation { category: ValidationCategory,
+    title: string,
+    description: string,
+    priority: SuggestionPriority,
+    steps: RecommendationStep[],
     resources: RecommendationResource[];
-
-export interface RecommendationStep { stepNumber: number;
+    export interface RecommendationStep { stepNumber: number,
     action: string;
     code?: string;
     explanation: string;
-
-export interface RecommendationResource { title: string;
-    url: string;
+    export interface RecommendationResource { title: string,
+    url: string,
     type: ResourceType;
-
-export interface TouchTargetSpacingResult { hasProblems: boolean;
+    export interface TouchTargetSpacingResult { hasProblems: boolean,
     issues: ValidationIssue[];
-
-export interface ViewportValidationResult { hasViewportTag: boolean;
-    isResponsive: boolean;
+    export interface ViewportValidationResult { hasViewportTag: boolean,
+    isResponsive: boolean,
     issues: ValidationIssue[];
-
-export interface OrientationValidationResult { supportsPortrait: boolean;
-    supportsLandscape: boolean;
+    export interface OrientationValidationResult { supportsPortrait: boolean,
+    supportsLandscape: boolean,
     issues: ValidationIssue[];
-
-export interface GestureValidationResult { hasKeyboardAlternatives: boolean;
+    export interface GestureValidationResult { hasKeyboardAlternatives: boolean,
     issues: ValidationIssue[];
-
-export interface SessionTimeoutValidation { hasTimeout: boolean;
+    export interface SessionTimeoutValidation { hasTimeout: boolean,
     canExtend: boolean;
     issue?: ValidationIssue;
-
-export interface TextReadabilityCheck { readable: boolean;
+    export interface TextReadabilityCheck { readable: boolean,
     issues: string[];
-
-export interface ColorRGBValue { r: number;
-    g: number;
+    export interface ColorRGBValue { r: number,
+    g: number,
     b: number;
-
-export interface ReportOptions { includeElementDetails?: boolean,
+    export interface ReportOptions { includeElementDetails?: boolean,
     includeRecommendations?: boolean;
-
-export interface IssueCategories { [category: string]: ValidationIssue[];
+    export interface IssueCategories { [category: string]: ValidationIssue[];
 
 // 列挙型
 export type WCAGLevel = 'A' | 'AA' | 'AAA';
-export type ValidationStatus = 'pass' | 'fail' | 'warning' | 'pending';
-export type IssueSeverity = 'error' | 'warning' | 'info';
-
-export type IssueType = ';'
+    export type ValidationStatus = 'pass' | 'fail' | 'warning' | 'pending';
+    export type IssueSeverity = 'error' | 'warning' | 'info';
+    export type IssueType = ';'
     | 'contrast' | 'keyboard-focus' | 'focus-indicator' | 'touch-target-size', ';'
     | 'missing-alt' | 'missing-text-alternative' | 'keyboard-inaccessible'';'
     | 'text-not-scalable' | 'no-focus-indicator' | 'viewport' | 'orientation'';'
     | 'gesture' | 'mobile-input' | 'session-timeout' | 'autoplay' | 'motion';
-export type SuggestionType = 'general' | 'contrast' | 'keyboard' | 'touch' | 'mobile' | 'timing' | 'screen-reader';
-export type SuggestionPriority = 'high' | 'medium' | 'low';
-
-export type ValidationCategory = ';'
+    export type SuggestionType = 'general' | 'contrast' | 'keyboard' | 'touch' | 'mobile' | 'timing' | 'screen-reader';
+    export type SuggestionPriority = 'high' | 'medium' | 'low';
+    export type ValidationCategory = ';'
     | 'contrast' | 'keyboard' | 'screen-reader' | 'touch-targets', ';'
     | 'mobile-specific' | 'timing' | 'general';
-export type ComplianceStatus = 'compliant' | 'non-compliant' | 'partial';
-export type ScreenSizeCategory = 'small' | 'medium' | 'large' | 'extra-large';
-export type OrientationMode = 'portrait' | 'landscape' | 'unknown';
-export type ResourceType = 'documentation' | 'tutorial' | 'tool' | 'reference';
+    export type ComplianceStatus = 'compliant' | 'non-compliant' | 'partial';
+    export type ScreenSizeCategory = 'small' | 'medium' | 'large' | 'extra-large';
+    export type OrientationMode = 'portrait' | 'landscape' | 'unknown';
+    export type ResourceType = 'documentation' | 'tutorial' | 'tool' | 'reference';
 
 // 定数
-export const DEFAULT_VALIDATION_CONFIG: ValidationConfig = {;
-    wcagLevel: 'AA';
-    checkContrast: true;
-    checkKeyboard: true;
-    checkScreenReader: true;
-    checkMobile: true;
+export const DEFAULT_VALIDATION_CONFIG: ValidationConfig = {,
+    wcagLevel: 'AA,
+    checkContrast: true,
+    checkKeyboard: true,
+    checkScreenReader: true,
+    checkMobile: true,
     checkTiming: true;
-export const DEFAULT_VALIDATION_RULES: ValidationRules = { contrast: {
-        normal: 4.5;
-        large: 3.0;
-    enhanced: 7.0 };
+    export const DEFAULT_VALIDATION_RULES: ValidationRules = { contrast: {
+        normal: 4.5,
+    large: 3.0,
+    enhanced: 7.0 } };
     timing: { minActionTime: 20000, // 20秒
-        maxSessionTime: 1200000 // 20分  };
+        maxSessionTime: 1200000 // 20分   ,
     touch: { minTargetSize: 44, // 44px
-        minSpacing: 8 // 8px  };
+        minSpacing: 8 // 8px   ,
     keyboard: { ''
-        requiredKeys: ['Tab', 'Enter', 'Escape', 'Space'],
+        requiredKeys: ['Tab', 'Enter', 'Escape', 'Space']  },
         navigationKeys: ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight] }'
 };
 ';'
 
 export const INTERACTIVE_ELEMENT_SELECTORS = [']';
-    'button', 'input', 'select', 'textarea', 'a[href]',
-    '[onclick]', '[role="button"]', '[role="link"]', '[role="menuitem"]',
+    'button, 'input', 'select', 'textarea', 'a[href]',
+    '[onclick], '[role="button"]', '[role="link"]', '[role="menuitem"]',
     '[tabindex]:not([tabindex="-1"]", '.interactive';'
 ];
 ';'
 
 export const WCAG_REFERENCES = {;
-    NON_TEXT_CONTENT: '1.1.1';
-    INFO_AND_RELATIONSHIPS: '1.3.1';
-    RESIZE_TEXT: '1.4.4';
-    CONTRAST_MINIMUM: '1.4.3';
-    CONTRAST_ENHANCED: '1.4.6';
-    KEYBOARD: '2.1.1';
-    NO_KEYBOARD_TRAP: '2.1.2';
-    FOCUS_VISIBLE: '2.4.7';
+    NON_TEXT_CONTENT: '1.1.1,
+    INFO_AND_RELATIONSHIPS: '1.3.1,
+    RESIZE_TEXT: '1.4.4,
+    CONTRAST_MINIMUM: '1.4.3,
+    CONTRAST_ENHANCED: '1.4.6,
+    KEYBOARD: '2.1.1,
+    NO_KEYBOARD_TRAP: '2.1.2,
+    FOCUS_VISIBLE: '2.4.7,
     TARGET_SIZE: '2.5.5'
             } as const;
 ';'
 // ユーティリティ関数
 export function isValidHTMLElement(element: any): element is HTMLElement { return element &&;
            element.nodeType === Node.ELEMENT_NODE &&','
-           typeof element.getBoundingClientRect === 'function' }
+           typeof element.getBoundingClientRect === 'function' };
 }
 
 export function parseRGBColor(color: string): ColorRGBValue | null { const rgbMatch = color.match(/rgb\((\d+),\s*(\d+),\s*(\d+)\)/),
     if (rgbMatch) {
-        return { r: parseInt(rgbMatch[1], 10) }
+        return { r: parseInt(rgbMatch[1], 10) };
             g: parseInt(rgbMatch[2], 10) };
             b: parseInt(rgbMatch[3], 10); }
         }
     
     const hexMatch = color.match(/^#([a-f\d]{2)([a-f\d]{2}([a-f\d]{2}$/i);
     if (hexMatch) {
-        return { r: parseInt(hexMatch[1], 16) }
+        return { r: parseInt(hexMatch[1], 16);
             g: parseInt(hexMatch[2], 16) };
             b: parseInt(hexMatch[3], 16); }
         }
@@ -272,7 +236,7 @@ export function parseRGBColor(color: string): ColorRGBValue | null { const rgbMa
 }
 
 export function calculateRelativeLuminance(rgb: ColorRGBValue): number { const [r, g, b] = [rgb.r, rgb.g, rgb.b].map(c => { )
-        c = c / 255) }
+        c = c / 255) };
         return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4););
     
     return 0.2126 * r + 0.7152 * g + 0.0722 * b;
@@ -286,11 +250,10 @@ export function getContrastRatio(color1: string, color2: string): number { const
     const lum2 = calculateRelativeLuminance(rgb2);
     const lighter = Math.max(lum1, lum2);
     const darker = Math.min(lum1, lum2);
-    return (lighter + 0.05) / (darker + 0.05) }
-
+    return (lighter + 0.05) / (darker + 0.05) };
 export function isLargeText(fontSize: number, fontWeight: string): boolean {,
     const weightValue = fontWeight === 'bold' ? 700 : parseInt(fontWeight, 10) || 400,
-    return fontSize >= 24 || (fontSize >= 18 && weightValue >= 700) }
+    return fontSize >= 24 || (fontSize >= 18 && weightValue >= 700) };
 ';'
 
 export function generateElementSelector(element: HTMLElement): string { }'
@@ -319,7 +282,7 @@ export class MobileAccessibilityValidator {
     constructor(mobileAccessibilityManager: MobileAccessibilityManager) {
         this.mobileAccessibilityManager = mobileAccessibilityManager
         
-     }
+     };
         // 設定の初期化 }
         this.validationConfig = { ...DEFAULT_VALIDATION_CONFIG;
         
@@ -328,11 +291,11 @@ export class MobileAccessibilityValidator {
         
         // 検証結果
         this.validationResults = {;
-            overall: 'pending',
+            overall: 'pending,
             issues: [],
             suggestions: [],
             score: 0,
-    maxScore: 100 },
+    maxScore: 100 };
         // 要素キャッシュ
         this.elementCache = new Map();
         this.lastValidation = null;
@@ -389,7 +352,7 @@ export class MobileAccessibilityValidator {
                 this.checkTouchTargetSize()],
             ],
             // レベルAAA, AAA: [this.checkEnhancedContrast(),
-                this.checkContextHelp(),,
+                this.checkContextHelp(),
                 this.checkErrorSuggestions();
                 this.checkTimingExtensions(}';'
         if(level === 'A' || level === 'AA' || level === 'AAA} {', ' }'
@@ -410,7 +373,7 @@ export class MobileAccessibilityValidator {
             failed: 0],
     warnings: 0,]','
             issues: [],
-            timestamp: Date.now('',
+            timestamp: Date.now(',
     compliance: 'compliant'
             }', ')';'
         results.forEach((result) => {  ''
@@ -421,11 +384,11 @@ export class MobileAccessibilityValidator {
 
                     complianceReport.passed++;' }'
 
-                } else if(checkResult.status === 'fail' { complianceReport.failed++,
+                } else if(checkResult.status === 'fail' { complianceReport.failed++;
                     complianceReport.issues.push(...checkResult.issues),'
 
-                } else if(checkResult.status === 'warning' { complianceReport.warnings++,
-                    complianceReport.issues.push(...checkResult.issues) }
+                } else if(checkResult.status === 'warning' { complianceReport.warnings++;
+                    complianceReport.issues.push(...checkResult.issues);
         };
 
         complianceReport.compliance = complianceReport.failed === 0 ? 'compliant' : 'non-compliant';
@@ -439,28 +402,28 @@ export class MobileAccessibilityValidator {
      */
     generateValidationReport(options: ReportOptions = { ): AccessibilityValidationReport {
         const report: AccessibilityValidationReport = {'
-            metadata: {''
-                timestamp: Date.now('',
-    validator: 'MobileAccessibilityValidator',
-                version: '1.0.0',
+            metadata: { ''
+                timestamp: Date.now(''  ,
+    validator: 'MobileAccessibilityValidator,
+                version: '1.0.0,
                 wcagLevel: this.validationConfig.wcagLevel,
-    userAgent: navigator.userAgent  },
+    userAgent: navigator.userAgent  };
             summary: { overall: this.validationResults.overall,
-                score: this.validationResults.score,
+                score: this.validationResults.score  ,
                 maxScore: this.validationResults.maxScore,
                 issueCount: this.validationResults.issues.length,
     suggestionCount: this.validationResults.suggestions.length })
             results: { )
-                issues: this.formatIssues(this.validationResults.issues,
+                issues: this.formatIssues(this.validationResults.issues  ,
     suggestions: this.formatSuggestions(this.validationResults.suggestions }
             categories: this.categorizeValidationResults(),
             deviceInfo: this.getDeviceAccessibilityInfo(
-    capabilities: this.mobileAccessibilityManager.capabilities,
+    capabilities: this.mobileAccessibilityManager.capabilities;
         },
         
-        if (options.includeElementDetails) { report.elementDetails = this.getElementAccessibilityDetails() }
+        if (options.includeElementDetails) { report.elementDetails = this.getElementAccessibilityDetails();
         
-        if (options.includeRecommendations) { report.recommendations = this.generateDetailedRecommendations() }
+        if (options.includeRecommendations) { report.recommendations = this.generateDetailedRecommendations();
         
         return report;
     }
@@ -484,12 +447,12 @@ export class MobileAccessibilityValidator {
                 const requiredRatio = this.getRequiredContrastRatio(element);
                 if (contrastRatio < requiredRatio) {
                     issues.push({)'
-                        type: 'contrast',')',
+                        type: 'contrast,')',
                         severity: 'error'),
                         element: this.getElementSelector(element),
                         current: contrastRatio.toFixed(2,
     required: requiredRatio,
-    required: requiredRatio,
+    required: requiredRatio;
         };
                         wcagReference: WCAG_REFERENCES.CONTRAST_MINIMUM' }'
 
@@ -499,10 +462,10 @@ export class MobileAccessibilityValidator {
         ';'
 
         return { ''
-            category: 'contrast',
-            status: issues.length === 0 ? 'pass' : 'fail',
+            category: 'contrast,
+            status: issues.length === 0 ? 'pass' : 'fail';
             issues };
-            checkedElements: elements.length 
+            checkedElements: elements.length; 
     }
     
     /**
@@ -514,8 +477,8 @@ export class MobileAccessibilityValidator {
         interactiveElements.forEach(element => { );
             if(!this.isKeyboardFocusable(element)) {
                 issues.push({)'
-                    type: 'keyboard-focus',')',
-                    severity: 'error',
+                    type: 'keyboard-focus,')',
+                    severity: 'error,
                     element: this.getElementSelector(element,
                     issue: 'Interactive element is not keyboard focusable'
             }
@@ -525,11 +488,11 @@ export class MobileAccessibilityValidator {
             ';'
             // フォーカスインジケーターチェック
             if(!this.hasFocusIndicator(element)) { issues.push({)'
-                    type: 'focus-indicator',')',
-                    severity: 'warning',
+                    type: 'focus-indicator,')',
+                    severity: 'warning,
                     element: this.getElementSelector(element,
-                    issue: 'No visible focus indicator',
-    wcagReference: WCAG_REFERENCES.FOCUS_VISIBLE  };
+                    issue: 'No visible focus indicator,
+    wcagReference: WCAG_REFERENCES.FOCUS_VISIBLE  }
             }
         };
         
@@ -543,10 +506,10 @@ export class MobileAccessibilityValidator {
         ';'
 
         return { ''
-            category: 'keyboard',
-            status: issues.length === 0 ? 'pass' : 'fail',
+            category: 'keyboard,
+            status: issues.length === 0 ? 'pass' : 'fail';
             issues };
-            checkedElements: interactiveElements.length 
+            checkedElements: interactiveElements.length; 
     }
     
     /**
@@ -569,10 +532,10 @@ export class MobileAccessibilityValidator {
         ','
 
         return { ''
-            category: 'screen-reader',
-            status: issues.length === 0 ? 'pass' : 'fail',
+            category: 'screen-reader,
+            status: issues.length === 0 ? 'pass' : 'fail';
             issues };
-            totalChecks: ariaIssues.length + landmarkIssues.length + headingIssues.length + liveRegionIssues.length 
+            totalChecks: ariaIssues.length + landmarkIssues.length + headingIssues.length + liveRegionIssues.length; 
     }
     
     /**
@@ -585,13 +548,13 @@ export class MobileAccessibilityValidator {
             const size = Math.min(rect.width, rect.height);
             if (size < this.validationRules.touch.minTargetSize) {
                 issues.push({)'
-                    type: 'touch-target-size',')',
+                    type: 'touch-target-size,')',
                     severity: 'error'),
                     element: this.getElementSelector(element,
     currentSize: size,
                     requiredSize: this.validationRules.touch.minTargetSize }
                     wcagReference: WCAG_REFERENCES.TARGET_SIZE 
-    };
+    }
             }
             
             // タッチターゲット間隔チェック
@@ -600,10 +563,10 @@ export class MobileAccessibilityValidator {
         ';'
 
         return { ''
-            category: 'touch-targets',
-            status: issues.length === 0 ? 'pass' : 'fail',
+            category: 'touch-targets,
+            status: issues.length === 0 ? 'pass' : 'fail';
             issues };
-            checkedElements: touchElements.length 
+            checkedElements: touchElements.length; 
     }
     
     /**
@@ -626,8 +589,8 @@ export class MobileAccessibilityValidator {
         ','
 
         return { ''
-            category: 'mobile-specific',
-            status: issues.length === 0 ? 'pass' : 'fail',
+            category: 'mobile-specific,
+            status: issues.length === 0 ? 'pass' : 'fail';
             issues };
             totalChecks: 4 
     }
@@ -655,8 +618,8 @@ export class MobileAccessibilityValidator {
         ';'
 
         return { ''
-            category: 'timing',
-            status: issues.length === 0 ? 'pass' : 'fail',
+            category: 'timing,
+            status: issues.length === 0 ? 'pass' : 'fail';
             issues };
             totalChecks: 3 
     }
@@ -675,9 +638,9 @@ export class MobileAccessibilityValidator {
             const imgElement = img as HTMLImageElement,
             if (!imgElement.alt && !img.getAttribute('aria-label') && !img.getAttribute('aria-labelledby)' {'
                 issues.push({)'
-                    type: 'missing-alt',')',
-                    severity: 'error',
-    element: this.getElementSelector(img) }
+                    type: 'missing-alt,')',
+                    severity: 'error,
+    element: this.getElementSelector(img),
 
                     wcagReference: WCAG_REFERENCES.NON_TEXT_CONTENT' }'
 
@@ -695,9 +658,9 @@ export class MobileAccessibilityValidator {
 
             if(!this.hasTextAlternative(media)) {
                 issues.push({)'
-                    type: 'missing-text-alternative',')',
-                    severity: 'error',
-    element: this.getElementSelector(media) }
+                    type: 'missing-text-alternative,')',
+                    severity: 'error,
+    element: this.getElementSelector(media),
 
                     wcagReference: WCAG_REFERENCES.NON_TEXT_CONTENT' }'
 
@@ -714,9 +677,9 @@ export class MobileAccessibilityValidator {
         interactiveElements.forEach(element => { );
             if(!this.isKeyboardAccessible(element)) {
                 issues.push({)'
-                    type: 'keyboard-inaccessible',')',
-                    severity: 'error',
-    element: this.getElementSelector(element) }
+                    type: 'keyboard-inaccessible,')',
+                    severity: 'error,
+    element: this.getElementSelector(element),
 
                     wcagReference: WCAG_REFERENCES.KEYBOARD' }'
 
@@ -737,7 +700,7 @@ export class MobileAccessibilityValidator {
      * WCAG レベルAA チェック項目
      */)
     async checkColorContrast(): Promise<ValidationCheckResult> { const result = await this.validateContrastRatio();
-        return { status: result.status },
+        return { status: result.status ,
             issues: result.issues 
     }
 
@@ -747,7 +710,7 @@ export class MobileAccessibilityValidator {
         const readabilityCheck = this.checkTextReadability();
         if (!readabilityCheck.readable) {
             issues.push({''
-                type: 'text-not-scalable',
+                type: 'text-not-scalable,
                 severity: 'error',','
                 element: 'html')','
     wcagReference: WCAG_REFERENCES.RESIZE_TEXT,' }'
@@ -760,7 +723,7 @@ export class MobileAccessibilityValidator {
 
         return { status: issues.length === 0 ? 'pass' : 'fail', issues }
     
-    async checkKeyboardNavigation(): Promise<ValidationCheckResult> { return await this.validateKeyboardAccessibility() }
+    async checkKeyboardNavigation(): Promise<ValidationCheckResult> { return await this.validateKeyboardAccessibility();
     
     async checkFocusVisible(): Promise<ValidationCheckResult> { const issues: ValidationIssue[] = [],
         const focusableElements = this.getFocusableElements();
@@ -769,9 +732,9 @@ export class MobileAccessibilityValidator {
         focusableElements.forEach(element => { );
             if(!this.hasFocusIndicator(element)) {
                 issues.push({)'
-                    type: 'no-focus-indicator',')',
-                    severity: 'error',
-    element: this.getElementSelector(element) }
+                    type: 'no-focus-indicator,')',
+                    severity: 'error,
+    element: this.getElementSelector(element),
 
                     wcagReference: WCAG_REFERENCES.FOCUS_VISIBLE' }'
 
@@ -782,7 +745,7 @@ export class MobileAccessibilityValidator {
         return { status: issues.length === 0 ? 'pass' : 'fail', issues }
     
     async checkTouchTargetSize(): Promise<ValidationCheckResult> { const result = await this.validateTouchTargets();
-        return { status: result.status },
+        return { status: result.status ,
             issues: result.issues 
     }
     ';'
@@ -809,14 +772,14 @@ export class MobileAccessibilityValidator {
                style.opacity !== '0' &&,
                element.offsetParent !== null }
     
-    hasText(element: HTMLElement): boolean { return !!(element.textContent && element.textContent.trim().length > 0) }
+    hasText(element: HTMLElement): boolean { return !!(element.textContent && element.textContent.trim().length > 0);
     
-    calculateContrastRatio(backgroundColor: string, textColor: string): number { return getContrastRatio(backgroundColor, textColor) }
+    calculateContrastRatio(backgroundColor: string, textColor: string): number { return getContrastRatio(backgroundColor, textColor);
     
     calculateLuminance(color: string): number { const rgb = parseRGBColor(color);
         if (!rgb) return 0,
         
-        return calculateRelativeLuminance(rgb) }
+        return calculateRelativeLuminance(rgb);
     
     parseColor(color: string): [number, number, number] | null { const rgb = parseRGBColor(color);
         return rgb ? [rgb.r, rgb.g, rgb.b] : null;
@@ -829,11 +792,11 @@ export class MobileAccessibilityValidator {
         const isLarge = isLargeText(fontSize, fontWeight);
         return isLarge ? this.validationRules.contrast.large: this.validationRules.contrast.normal, 
     getInteractiveElements()','
-        return Array.from(document.querySelectorAll(INTERACTIVE_ELEMENT_SELECTORS.join(', ')),
+        return Array.from(document.querySelectorAll(INTERACTIVE_ELEMENT_SELECTORS.join())', ')),
             .filter((el): el is HTMLElement => isValidHTMLElement(el);
-            .filter(el => this.isVisibleElement(el) }
+            .filter(el => this.isVisibleElement(el);
     
-    getTouchableElements(): HTMLElement[] { return this.getInteractiveElements() }
+    getTouchableElements(): HTMLElement[] { return this.getInteractiveElements();
     
     getFocusableElements(): HTMLElement[] { return this.getInteractiveElements().filter(el => this.isKeyboardFocusable(el);
     isKeyboardFocusable(element: HTMLElement): boolean { ''
@@ -846,7 +809,7 @@ export class MobileAccessibilityValidator {
                element.hasAttribute('contenteditable);'
     }
     
-    isKeyboardAccessible(element: HTMLElement): boolean { return this.isKeyboardFocusable(element) }
+    isKeyboardAccessible(element: HTMLElement): boolean { return this.isKeyboardFocusable(element);
 
     hasFocusIndicator(element: HTMLElement): boolean { ''
         const style = getComputedStyle(element, ':focus');
@@ -858,9 +821,9 @@ export class MobileAccessibilityValidator {
         return !!(element.getAttribute('aria-label') ||','
                  element.getAttribute('aria-labelledby') ||','
                  element.getAttribute('title) ||,'
-                 element.textContent?.trim() }
+                 element.textContent?.trim();
      : undefined
-    getElementSelector(element: HTMLElement): string { return generateElementSelector(element) }
+    getElementSelector(element: HTMLElement): string { return generateElementSelector(element);
     
     // 検証関連のスタブメソッド実装
     validateTabOrder(): ValidationIssue[] { return [] }
@@ -902,7 +865,7 @@ export class MobileAccessibilityValidator {
         return { readable: true, issues: []  }
 
     resetValidationResults('''
-            overall: 'pending',
+            overall: 'pending,
             issues: [],
             suggestions: [],
             score: 0,
@@ -913,10 +876,8 @@ export class MobileAccessibilityValidator {
         results.forEach(result => { '),'
             if (result.status === 'fulfilled' && result.value.issues) { }
                 this.validationResults.issues.push(...result.value.issues);
-            }
-        };
-    }
-
+                }
+}
     calculateOverallScore()';'
         const failedChecks = this.validationResults.issues.filter(issue => issue.severity === 'error).length;'
 
@@ -956,15 +917,15 @@ export class MobileAccessibilityValidator {
     }
 
     getSuggestionForCategory(category: string, count: number): AccessibilitySuggestion { const suggestions: Record<string, AccessibilitySuggestion> = {', 'contrast': {''
-                type: 'contrast',
+                type: 'contrast,
                 priority: 'high'
             }
                 message: `${count}個の要素でコントラスト比が不足しています。色の組み合わせを見直してください。`},', 'keyboard-focus': { ''
-                type: 'keyboard',
+                type: 'keyboard,
                 priority: 'high'
             }
                 message: `${count}個の要素がキーボードフォーカスできません。tabindex属性を追加してください。`},', 'touch-target-size': { ''
-                type: 'touch',
+                type: 'touch,
                 priority: 'medium'
             }
                 message: `${count}個のタッチターゲットが小さすぎます。最小44pxのサイズを確保してください。`
@@ -973,7 +934,7 @@ export class MobileAccessibilityValidator {
         ';'
 
         return suggestions[category] || { ''
-            type: 'general',
+            type: 'general,
             priority: 'medium'
             }
             message: `${category}カテゴリーで${count}個の問題が見つかりました。`
@@ -986,7 +947,7 @@ export class MobileAccessibilityValidator {
             description: issue.issue || `${issue.type} issue`)
             element: issue.element,
     recommendation: `Fix ${issue.type}`)
-            wcagReference: issue.wcagReference)),
+            wcagReference: issue.wcagReference));
     }
     
     formatSuggestions(suggestions: AccessibilitySuggestion[]): FormattedSuggestion[] { return suggestions.map(suggestion => ({
@@ -994,7 +955,7 @@ export class MobileAccessibilityValidator {
     priority: suggestion.priority };
             title: `${suggestion.type} improvement`)
             description: suggestion.message),
-            actionItems: [suggestion.message])),
+            actionItems: [suggestion.message]));
     }
     
     categorizeValidationResults(): ValidationCategorization {
@@ -1003,7 +964,7 @@ export class MobileAccessibilityValidator {
 
         Object.entries(issuesByCategory).forEach(([category, issues]) => {  ''
             const highestSeverity = issues.some(i => i.severity === 'error') ? 'error' :','
-                                  issues.some(i => i.severity === 'warning') ? 'warning' : 'info',
+                                  issues.some(i => i.severity === 'warning') ? 'warning' : 'info,
             
             categories[category] = {
                 issueCount: issues.length,
@@ -1021,8 +982,8 @@ export class MobileAccessibilityValidator {
             touchSupport: 'ontouchstart' in window,
             screenSize: window.innerWidth < 768 ? 'small' : ';'
                        window.innerWidth < 1024 ? 'medium' : ';'
-                       window.innerWidth < 1440 ? 'large' : 'extra-large',
-            orientation: window.innerWidth > window.innerHeight ? 'landscape' : 'portrait',
+                       window.innerWidth < 1440 ? 'large' : 'extra-large,
+            orientation: window.innerWidth > window.innerHeight ? 'landscape' : 'portrait';
         } }
     
     getElementAccessibilityDetails(): ElementAccessibilityDetails[] { return [] }
@@ -1035,6 +996,6 @@ export class MobileAccessibilityValidator {
     getValidationConfig(): ValidationConfig {
         return { ...this.validationConfig }
     
-    updateValidationConfig(newConfig: Partial<ValidationConfig>): void { Object.assign(this.validationConfig, newConfig) }
+    updateValidationConfig(newConfig: Partial<ValidationConfig>): void { Object.assign(this.validationConfig, newConfig);
 
     getLastValidationResults();

@@ -1,6 +1,6 @@
 // TypeScript conversion - basic types
 interface BasicConfig { [key: string]: any;
-import { getErrorHandler  } from '../utils/ErrorHandler.js';
+    import { getErrorHandler  } from '../utils/ErrorHandler.js';
 
 /**
  * インポート管理クラス - データインポート機能
@@ -30,18 +30,18 @@ export class ImportManager {
         
         // インポート設定
         this.config = {
-            validateBeforeImport: true;
-            createBackupBeforeImport: true;
-            allowPartialImport: true;
-    strictVersionCheck: false;
+            validateBeforeImport: true,
+            createBackupBeforeImport: true,
+            allowPartialImport: true,
+    strictVersionCheck: false,
             maxImportSize: 50 * 1024 * 1024 // 50MB 
     };
         // インポート統計
-        this.statistics = { totalImports: 0;
-            successfulImports: 0;
-            failedImports: 0;
-            partialImports: 0;
-            averageImportTime: 0;
+        this.statistics = { totalImports: 0,
+            successfulImports: 0,
+            failedImports: 0,
+            partialImports: 0,
+            averageImportTime: 0,
     lastImport: null;
         this.initialize();
     }
@@ -56,7 +56,6 @@ export class ImportManager {
             // 競合解決ストラテジーの登録
             this.registerConflictResolvers()','
             console.log('ImportManager, initialized' }
-
         } catch (error') { getErrorHandler().handleError(error, 'IMPORT_MANAGER_INITIALIZATION_ERROR', {''
                 operation: 'initialize'
             }';'
@@ -100,7 +99,7 @@ export class ImportManager {
      */''
     async importData(importData, conflictResolution = 'merge', options = { ) {
         try {
-            this.statistics.totalImports++,
+            this.statistics.totalImports++;
             const startTime = performance.now();
             // インポートデータの初期検証
             const validationResult = await this.validateImportData(importData);
@@ -116,8 +115,7 @@ export class ImportManager {
                 const backupResult = await this.backup.createBackup('all', {''
                     description: 'Pre-import backup'),
                     manual: true,
-                    manual: true,
-        };
+                    manual: true };
                 if (!backupResult.success) { }
 
                     console.warn('Failed to create pre-import backup:', backupResult.error); }
@@ -160,11 +158,9 @@ export class ImportManager {
                 options };
             
             return { success: false,
-                error: error.message },
-                conflictResolution }
-            }
-    }
-    
+                error: error.message ,
+                conflictResolution     }
+}
     /**
      * インポートデータの検証
      */
@@ -202,10 +198,8 @@ export class ImportManager {
             
             return { isValid: false,
                 errors: [`Validation, failed: ${error.message}`],
-                warnings: [],
-            } }
-    }
-    
+                warnings: []     }
+}
     /**
      * 競合の検出
      */
@@ -225,7 +219,7 @@ export class ImportManager {
                             conflicts.push({
                                 dataType,
                                 existingData,
-                                newData) }
+                                newData);
                                 conflicts: dataConflicts); 
     } catch (error) { // データが存在しない場合は競合なし }
                     console.log(`No existing data for ${dataType}, no conflict`);
@@ -293,13 +287,11 @@ export class ImportManager {
                     // 配列の比較
                     if (JSON.stringify(existing[field]) !== JSON.stringify(imported[field])) {
                         conflicts.push({''
-                            type: 'ARRAY_CONFLICT',
-                            field,
-                           , existing: existing[field],
-                            imported: imported[field]) }
-                            message: `Different ${field} arrays`,
-                    }'} else if (existing[field] !== imported[field]) { conflicts.push({''
-                        type: 'VALUE_CONFLICT',
+                            type: 'ARRAY_CONFLICT,
+                            field, existing: existing[field],
+                            imported: imported[field]),
+                            message: `Different ${field} arrays` }'} else if (existing[field] !== imported[field]) { conflicts.push({''
+                        type: 'VALUE_CONFLICT,
                         field,
                         existing: existing[field],
     imported: imported[field],
@@ -319,8 +311,7 @@ export class ImportManager {
                             field: `highScores.${stage}`)
                             existing: existing.highScores[stage],
     imported: imported.highScores[stage]),
-                            message: `Different high score for ${stage}`),
-                    }
+                            message: `Different high score for ${stage}`);
 }
         }
         
@@ -336,12 +327,11 @@ export class ImportManager {
         for(const [key, value] of Object.entries(imported) {''
             if (key, in existing && existing[key] !== value) {
                 conflicts.push({''
-                    type: 'SETTING_CONFLICT',
+                    type: 'SETTING_CONFLICT,
                     field: key,
     existing: existing[key],
-                    imported: value) }
-                    message: `Different setting value for ${key}`,
-            }
+                    imported: value),
+                    message: `Different setting value for ${key}` }
         }
         
         return conflicts;
@@ -359,14 +349,13 @@ export class ImportManager {
             if (field, in existing && field, in imported) {''
                 if (existing[field] !== imported[field]) {
                     conflicts.push({''
-                        type: 'STATISTIC_CONFLICT',
+                        type: 'STATISTIC_CONFLICT,
                         field','
-                       , existing: existing[field],
+            existing: existing[field],
                         imported: imported[field],
 
                         message: `Different ${field} values`,')'
-                        recommendation: existing[field] > imported[field] ? 'keep' : 'import'),
-    }
+                        recommendation: existing[field] > imported[field] ? 'keep' : 'import');
         
         return conflicts;
     }
@@ -381,7 +370,7 @@ export class ImportManager {
         const importedStr = JSON.stringify(imported);
         if (existingStr !== importedStr) {
             conflicts.push({''
-                type: 'DATA_CONFLICT',
+                type: 'DATA_CONFLICT,
                 field: 'entire_object),'
                 existing','
                 imported,') }'
@@ -399,8 +388,7 @@ export class ImportManager {
         try {
             const resolver = this.conflictResolvers.get(resolutionStrategy);
             if (!resolver) { }
-                throw new Error(`Unknown, conflict resolution, strategy: ${resolutionStrategy}`},
-            }
+                throw new Error(`Unknown, conflict resolution, strategy: ${resolutionStrategy}`} }
             
             return await resolver.resolve(importData, conflicts, options);
             ';'
@@ -439,9 +427,8 @@ export class ImportManager {
 
                                     success: false'),' }
 
-                                    error: `Validation, failed: ${validationResult.errors.join(', '}`,
-                                    skipped: true,
-                                }','
+                                    error: `Validation, failed: ${validationResult.errors.join(, '}`,
+                                    skipped: true }','
 
                                 continue;
 
@@ -455,7 +442,7 @@ export class ImportManager {
                     // データの保存
                     await this.storage.save(dataType, data);
                     results.push({ dataType)'
-                        success: true,')',
+                        success: true,'),
                         message: 'Import successful'
             } catch (error) { hasErrors = true,
                     
@@ -465,17 +452,15 @@ export class ImportManager {
                         results.push({)
                             dataType,
                             success: false,
-                            error: error.message), 
-    };
+                            error: error.message);
                     } else { throw error }
 }
             
             return { success: !hasErrors,
                 partial: hasPartialImport,
                 results,
-                importedDataTypes: results.filter(r = > r.success).map(r => r.dataType)  },
-                failedDataTypes: results.filter(r => !r.success).map(r => r.dataType),
-    };
+                importedDataTypes: results.filter(r = > r.success).map(r => r.dataType)  ,
+                failedDataTypes: results.filter(r => !r.success).map(r => r.dataType) };
             ';'
 
         } catch (error) {
@@ -486,7 +471,7 @@ export class ImportManager {
             
             return { success: false,
                 partial: false,
-    error: error.message },
+    error: error.message ,
                 results: [] 
     }
     }
@@ -561,10 +546,8 @@ export class ImportManager {
 
             const currentVersion = window.GAME_VERSION || '1.0.0' }
             if (importData.header.gameVersion !== currentVersion) { }
-                warnings.push(`異なるゲームバージョンのデータです (${importData.header.gameVersion} → ${currentVersion}`};
-            }
-        }
-        
+                warnings.push(`異なるゲームバージョンのデータです (${importData.header.gameVersion} → ${currentVersion}`    }
+}
         return warnings;
     }
     
@@ -574,7 +557,7 @@ export class ImportManager {
     updateStatistics(success, duration, partial) {
         try {
             if (success) {
-                this.statistics.successfulImports++,
+                this.statistics.successfulImports++;
                 
                 if (partial) {
     }
@@ -597,13 +580,13 @@ export class ImportManager {
      */
     getImportHistory() { return { }
             statistics: { ...this.statistics,
-            supportedResolutions: Array.from(this.conflictResolvers.keys(
+            supportedResolutions: Array.from(this.conflictResolvers.keys( ,
     config: { ...this.config }
     
     /**
      * 設定の更新
      */
-    updateConfig(newConfig) {
+    updateConfig())newConfig) {
     
 }
         this.config = { ...this.config, ...newConfig }
@@ -616,13 +599,10 @@ export class ImportManager {
             this.importValidators.clear();
             this.conflictResolvers.clear()','
             console.log('ImportManager, destroyed' }
-
         } catch (error') { getErrorHandler().handleError(error, 'IMPORT_MANAGER_DESTROY_ERROR', {''
                 operation: 'destroy'
-            };
-        }
+                }
 }
-
 /**
  * 形式検証器
  */
@@ -662,10 +642,8 @@ class FormatValidator { constructor(importManager: any) {
         
         return { isValid: errors.length === 0,
             errors };
-            warnings }
-        }
+            warnings     }
 }
-
 /**
  * バージョン検証器
  */
@@ -679,7 +657,7 @@ class VersionValidator { constructor(importManager: any) {
         try {'
             if (importData.header && importData.header.gameVersion) {
 
-                const currentVersion = window.GAME_VERSION || '1.0.0',
+                const currentVersion = window.GAME_VERSION || '1.0.0,
                 const importVersion = importData.header.gameVersion,
                 
                 // バージョン互換性のチェック
@@ -694,20 +672,18 @@ class VersionValidator { constructor(importManager: any) {
                     const importMajor = parseInt(importVersion.split('.'[0]'),'
                     const currentMajor = parseInt(currentVersion.split('.)[0]) }'
                     if (importMajor > currentMajor) { }
-                        errors.push(`Import, version too, new: ${importVersion} > ${currentVersion}`};
+                        errors.push(`Import, version too, new: ${importVersion} > ${currentVersion}`}
                     } else if (importMajor < currentMajor) {
-                        warnings.push(`Import, version older: ${importVersion} < ${currentVersion}`};
+                        warnings.push(`Import, version older: ${importVersion} < ${currentVersion}`}
                     }
-} catch (error) {
+        } catch (error) {
             warnings.push(`Version, validation error: ${error.message}`);
         }
         
         return { isValid: errors.length === 0,
             errors };
-            warnings }
-        }
+            warnings     }
 }
-
 /**
  * 整合性検証器
  */
@@ -732,21 +708,19 @@ class IntegrityValidator { constructor(importManager: any) {
             for(const [dataType, data] of Object.entries(userData) {
             
                 if (this.importManager.validation) {
-                    const validationResult = await this.importManager.validation.validate(dataType, data) }
+                    const validationResult = await this.importManager.validation.validate(dataType, data);
                     if (!validationResult.isValid) { }'
 
                         errors.push(`Invalid ${dataType}: ${validationResult.errors.join(', '}`);
                     }
-} catch (error) {
+        } catch (error) {
             errors.push(`Integrity, validation error: ${error.message}`);
         }
         
         return { isValid: errors.length === 0,
             errors };
-            warnings }
-        }
+            warnings     }
 }
-
 /**
  * サイズ検証器
  */
@@ -760,21 +734,18 @@ class SizeValidator { constructor(importManager: any) {
             const dataSize = JSON.stringify(importData).length,
             
             if (dataSize > this.importManager.config.maxImportSize) { }
-                errors.push(`Import, data too, large: ${dataSize} > ${this.importManager.config.maxImportSize}`};
+                errors.push(`Import, data too, large: ${dataSize} > ${this.importManager.config.maxImportSize}`}
             }
             
             if (dataSize > 10 * 1024 * 1024) { // 10MB }
-                warnings.push(`Large, import data: ${(dataSize / 1024 / 1024}.toFixed(2}MB`),
-            } catch (error) {
+                warnings.push(`Large, import data: ${(dataSize / 1024 / 1024}.toFixed(2}MB`) } catch (error) {
             errors.push(`Size, validation error: ${error.message}`);
         }
         
         return { isValid: errors.length === 0,
             errors };
-            warnings }
-        }
+            warnings     }
 }
-
 /**
  * マージ解決器
  */
@@ -833,7 +804,7 @@ class MergeResolver { constructor(importManager: any) {
             case 'settings':','
                 return this.mergeSettings(merged, imported, conflicts);
             case 'statistics':,
-                return this.mergeStatistics(merged, imported, conflicts) }
+                return this.mergeStatistics(merged, imported, conflicts);
             default: }
                 return { ...imported
     }
@@ -855,10 +826,8 @@ class MergeResolver { constructor(importManager: any) {
             for(const [stage, score] of Object.entries(imported.highScores) {
                 if (!merged.highScores[stage] || score > merged.highScores[stage]) {
             }
-                    merged.highScores[stage] = score; }
+                    merged.highScores[stage] = score;     }
 }
-        }
-        
         // 配列は結合
         if (imported.unlockedStages) { merged.unlockedStages = [...new Set([...existing.unlockedStages, ...imported.unlockedStages])],
         if (imported.ownedItems) { merged.ownedItems = [...new Set([...existing.ownedItems, ...imported.ownedItems])],
@@ -889,13 +858,13 @@ class MergeResolver { constructor(importManager: any) {
 
         switch(conflict.type) {''
             case 'VALUE_CONFLICT':','
-                return 'Take maximum value',
+                return 'Take maximum value,
             case 'ARRAY_CONFLICT':','
-                return 'Merge arrays',
+                return 'Merge arrays,
             case 'SCORE_CONFLICT':','
                 return 'Take higher score' }
 
-            default: return 'Merge data',
+            default: return 'Merge data,
     
     getMergeResult(conflict) {
     ','
@@ -904,10 +873,9 @@ class MergeResolver { constructor(importManager: any) {
             case 'VALUE_CONFLICT':','
                 return Math.max(conflict.existing, conflict.imported);
             case 'SCORE_CONFLICT':','
-                return Math.max(conflict.existing, conflict.imported) }
+                return Math.max(conflict.existing, conflict.imported);
 
-            default: return 'Merged',
-}
+            default: return 'Merged' }
 
 /**
  * 上書き解決器
@@ -950,7 +918,7 @@ class KeepResolver { constructor(importManager: any) {
 
     async preview(importData, conflicts) { const actions = conflicts.map(conflict => ({'
             dataType: conflict.dataType,','
-            action: 'Keep existing data',')',
+            action: 'Keep existing data,')',
             warning: 'Import data will be ignored')','
         ' }'
 
@@ -1000,7 +968,7 @@ class SelectiveResolver { constructor(importManager: any) {
 
     async preview(importData, conflicts) { const actions = conflicts.map(conflict => ({'
             dataType: conflict.dataType,','
-            action: 'User selection required',')',
+            action: 'User selection required,')',
             options: ['keep', 'import', 'merge])'),
 
         ' }'

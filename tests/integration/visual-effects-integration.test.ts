@@ -29,7 +29,7 @@ global.HTMLCanvasElement.prototype.getContext = jest.fn((contextType') => {'
             setTransform: jest.fn(
             measureText: jest.fn(() => ({ width: 0 )),
             canvas: {
-                width: 800,
+                width: 800 },
         height: 600
             };
         );
@@ -40,7 +40,7 @@ global.HTMLCanvasElement.prototype.getContext = jest.fn((contextType') => {'
 global.performance = {
     now: jest.fn(() => Date.now(),
     memory: {
-        usedJSHeapSize: 1000000,
+        usedJSHeapSize: 1000000 },
         totalJSHeapSize: 2000000,
         jsHeapSizeLimit: 4000000
             };
@@ -435,17 +435,17 @@ describe('Visual Effects Integration Tests', () => {
             if (particleManager.initialize) {
                 particleManager.initialize = jest.fn(async (') => {'
                     initOrder.push('particle');
-                    return originalParticleInit? .call(particleManager) };
+                    return originalParticleInit? .call(particleManager) }
             }
             if (effectManager.initialize) {
                 effectManager.initialize = jest.fn(async (') => {'
                     initOrder.push('effect');
-                    return originalEffectInit?.call(effectManager) };
+                    return originalEffectInit?.call(effectManager) }
             }
             if (animationManager.initialize) {
                 animationManager.initialize = jest.fn(async (') => {'
                     initOrder.push('animation');
-                    return originalAnimationInit?.call(animationManager) };
+                    return originalAnimationInit?.call(animationManager) }
             }
             // Initialize systems
             await particleManager.initialize?.();
@@ -475,6 +475,6 @@ describe('Visual Effects Integration Tests', () => {
             // Verify cleanup
             expect(particleManager.particles?.length || 0).toBe(0);
             expect(effectManager.effects?.length || 0).toBe(0);
-        };
+        }
     }
 }'); : undefined'

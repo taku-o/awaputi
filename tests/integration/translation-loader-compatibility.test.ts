@@ -13,7 +13,7 @@ const projectRoot = path.join(__dirname, '..', '..');
 // ErrorHandlerのモック
 globalThis.getErrorHandler = () => ({
   handleError: (error, code, context') => {'
-    console.error('Mock Error Handler:', { error, code, context };
+    console.error('Mock Error Handler:', { error, code, context }
   }
 }');'
 describe('TranslationLoader Compatibility Tests', (') => {'
@@ -115,7 +115,7 @@ describe('TranslationLoader Compatibility Tests', (') => {'
       // モックレスポンスデータ（optimizedAtフィールドなし）
       const mockTranslationData = { : undefined
         meta: {
-          language: 'ja',
+          language: 'ja' },
           version: '1.0.0',
           completeness: 100,
           quality: 95,
@@ -124,7 +124,7 @@ describe('TranslationLoader Compatibility Tests', (') => {'
         },
         translations: {
           game: {
-            score: 'スコア',
+            score: 'スコア' },
             hp: 'HP'
           }
         }
@@ -142,14 +142,14 @@ describe('TranslationLoader Compatibility Tests', (') => {'
     test('should process flattened translations correctly', async (') => {'
       const mockTranslations = {
         game: {
-          score: 'スコア',
+          score: 'スコア' },
           userInfo: {
-            title: 'ユーザー情報',
+            title: 'ユーザー情報' },
             playerName: 'プレイヤー名'
           }
         },
         menu: {
-          start: 'スタート',
+          start: 'スタート' },
           settings: '設定'
         }
       };
@@ -186,7 +186,7 @@ describe('TranslationLoader Compatibility Tests', (') => {'
       const cacheKey = 'ja: game',
       const mockData = {
         meta: {
-          language: 'ja',
+          language: 'ja' },
           version: '1.0.0',
           completeness: 100
         },
@@ -228,6 +228,6 @@ describe('TranslationLoader Compatibility Tests', (') => {'
       // メタデータなしでもフラット化処理が正常に動作することを確認
       expect(flattened['score']').toBe('Score');'
       expect(flattened['start']').toBe('Start');'
-    };
+    }
   }
 }');'

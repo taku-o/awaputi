@@ -22,12 +22,12 @@ const mockGameEngine = {
         switchScene: jest.fn(() => true),
     ),
     audioManager: {
-        toggleMute: jest.fn(() => false)),
+        toggleMute: jest.fn(() => false)) },
     settingsManager: {
-        get: jest.fn(() => 0.5),
+        get: jest.fn(() => 0.5) },
         set: jest.fn(
     responsiveCanvasManager: {
-        toggleFullscreen: jest.fn(),
+        toggleFullscreen: jest.fn() },
     isDebugMode: jest.fn(() => false),
         performanceStats: {
             };
@@ -227,7 +227,7 @@ describe('CoreKeyboardShortcutManager - Integration Tests (Issue #169')', () => 
             expect(helpText['その他']).toBeDefined();
             // Each section should be an array
             Object.values(helpText.forEach(section => {);
-                expect(Array.isArray(section).toBe(true) };
+                expect(Array.isArray(section).toBe(true) }
         }
     }');'
     describe('Statistics Integration', (') => {'
@@ -300,6 +300,6 @@ describe('CoreKeyboardShortcutManager - Integration Tests (Issue #169')', () => 
             );
             shortcutManager.handleKeyDown(event);
             // Verify shortcut was not executed
-            expect(mockGameScene.togglePause).not.toHaveBeenCalled() };
+            expect(mockGameScene.togglePause).not.toHaveBeenCalled() }
     }
 }');'

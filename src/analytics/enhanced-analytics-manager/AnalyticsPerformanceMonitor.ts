@@ -6,9 +6,9 @@ export class AnalyticsPerformanceMonitor {
     constructor() {
         // パフォーマンス監視
         this.performanceMetrics = {
-            fps: 0;
-            memoryUsage: null;
-    errorCount: 0 }
+            fps: 0,
+            memoryUsage: null,
+    errorCount: 0 };
             lastCheck: Date.now(); 
     };
         
@@ -32,7 +32,7 @@ export class AnalyticsPerformanceMonitor {
         // FPS監視
         this.startFPSMonitoring();
         // メモリ使用量監視
-        this.startMemoryMonitoring() }
+        this.startMemoryMonitoring();
         console.info('[PerformanceMonitor] Performance, monitoring started'); }'
     }
     
@@ -41,7 +41,7 @@ export class AnalyticsPerformanceMonitor {
      */
     startFPSMonitoring() {
         const measureFPS = () => { 
-            this.frameCount++,
+            this.frameCount++;
             const currentTime = performance.now();
             ','
 
@@ -113,13 +113,12 @@ export class AnalyticsPerformanceMonitor {
                 severity: 'high'
             };
                 message: `Low FPS, detected: ${metrics.fps}`,''
-                value: metrics.fps',} else if (metrics.fps < 45) { warnings.push({''
-                type: 'moderate_fps',
+                value: metrics.fps' } else if (metrics.fps < 45) { warnings.push({''
+                type: 'moderate_fps,
                 severity: 'medium'
             };
                 message: `Moderate, FPS: ${metrics.fps}`)
-                value: metrics.fps),
-        }
+                value: metrics.fps) }
         
         // メモリ使用量警告
         if (metrics.memoryUsage) { const memoryUsageRatio = metrics.memoryUsage.used / metrics.memoryUsage.limit,
@@ -128,16 +127,15 @@ export class AnalyticsPerformanceMonitor {
                 warnings.push({)'
                     type: 'high_memory_usage',' }'
 
-                    severity: 'high') }
-                    message: `High memory, usage: ${(memoryUsageRatio * 100}.toFixed(1}%`,
+                    severity: 'high'),
+                    message: `High memory, usage: ${(memoryUsageRatio * 100}.toFixed(1}%,
                     value: memoryUsageRatio';'
                 }';} else if (memoryUsageRatio > 0.6) { warnings.push({)'
-                    type: 'moderate_memory_usage',')',
-                    severity: 'medium') }
-                    message: `Moderate memory, usage: ${(memoryUsageRatio * 100}.toFixed(1}%`,
-                    value: memoryUsageRatio,
-                } }
-        }
+                    type: 'moderate_memory_usage,')',
+                    severity: 'medium'),
+                    message: `Moderate memory, usage: ${(memoryUsageRatio * 100}.toFixed(1}%,
+                    value: memoryUsageRatio     }
+}
         ';'
         // エラー数警告
         if (metrics.errorCount > 10) {
@@ -147,11 +145,10 @@ export class AnalyticsPerformanceMonitor {
                 severity: 'high'
             };
                 message: `High error, count: ${metrics.errorCount}`)
-                value: metrics.errorCount),
-        }
+                value: metrics.errorCount) }
         
         // 警告の報告
-        warnings.forEach(warning => { ) }
+        warnings.forEach(warning => { );
             console.warn(`[Performance, Warning] ${warning.severity.toUpperCase(}: ${warning.message}`);
         };
         
@@ -176,7 +173,7 @@ export class AnalyticsPerformanceMonitor {
     };
         
         // 履歴サイズの制限
-        if (this.performanceHistory.length > this.maxHistorySize) { this.performanceHistory.shift() }
+        if (this.performanceHistory.length > this.maxHistorySize) { this.performanceHistory.shift();
     }
     
     /**
@@ -196,7 +193,7 @@ export class AnalyticsPerformanceMonitor {
         
         return { current: this.performanceMetrics.fps,
             average: Math.round(sum / fpsHistory.length,
-    min: Math.min(...fpsHistory) },
+    min: Math.min(...fpsHistory) ,
             max: Math.max(...fpsHistory);
         }
     
@@ -220,7 +217,7 @@ export class AnalyticsPerformanceMonitor {
         return { current: {
                 used: this.performanceMetrics.memoryUsage.used,
                 total: this.performanceMetrics.memoryUsage.total,
-    limit: this.performanceMetrics.memoryUsage.limit },
+    limit: this.performanceMetrics.memoryUsage.limit } },
                 usagePercent: (this.performanceMetrics.memoryUsage.used / this.performanceMetrics.memoryUsage.limit * 100).toFixed(1);
     },
             average: { used: Math.round(avgUsed,
@@ -243,7 +240,7 @@ export class AnalyticsPerformanceMonitor {
             memory: memoryStats,
     errors: {
      }
-                count: this.performanceMetrics.errorCount },
+                count: this.performanceMetrics.errorCount ,
                 rate: this.calculateErrorRate(); 
     },
             warnings: { recent: recentWarnings,
@@ -257,7 +254,7 @@ export class AnalyticsPerformanceMonitor {
      */
     calculateErrorRate() {
         const timeSinceStart = Date.now() - this.performanceMetrics.lastCheck,
-        const hoursElapsed = timeSinceStart / (1000 * 60 * 60) }
+        const hoursElapsed = timeSinceStart / (1000 * 60 * 60);
         return hoursElapsed > 0 ? this.performanceMetrics.errorCount / hoursElapsed: 0,
     
     /**
@@ -270,7 +267,7 @@ export class AnalyticsPerformanceMonitor {
     }
             total: warnings.length }
             byType: {},
-            bySeverity: { high: 0, medium: 0, low: 0  },
+            bySeverity: { high: 0, medium: 0, low: 0  ,
         
         warnings.forEach(warning => {  );
             summary.byType[warning.type] = (summary.byType[warning.type] || 0) + 1 }
@@ -327,7 +324,7 @@ export class AnalyticsPerformanceMonitor {
             factors.push('Some, errors detected' }'
         
         return { score: Math.max(0, score);
-            grade: this.getHealthGrade(score) },
+            grade: this.getHealthGrade(score) ,
             factors: factors,
     
     /**
@@ -337,9 +334,9 @@ export class AnalyticsPerformanceMonitor {
      */
     getHealthGrade(score) {
 
-        if(score >= 90) return 'Excellent',
-        if(score >= 75) return 'Good',
-        if(score >= 60) return 'Fair',
+        if(score >= 90) return 'Excellent,
+        if(score >= 75) return 'Good,
+        if(score >= 60) return 'Fair,
         if(score >= 40) return 'Poor' }
 
         return 'Critical';
@@ -351,7 +348,7 @@ export class AnalyticsPerformanceMonitor {
     getCurrentMetrics() {
         return { fps: this.performanceMetrics.fps,
             memory: this.performanceMetrics.memoryUsage }
-            errorCount: this.performanceMetrics.errorCount },
+            errorCount: this.performanceMetrics.errorCount ,
             timestamp: Date.now(); 
     }
     
@@ -360,14 +357,14 @@ export class AnalyticsPerformanceMonitor {
      */
     stopMonitoring() {
         if (this.fpsRequestId) {
-            cancelAnimationFrame(this.fpsRequestId) }
+            cancelAnimationFrame(this.fpsRequestId);
             this.fpsRequestId = null; }
         }
         
         if (this.memoryIntervalId) {
         ','
 
-            clearInterval(this.memoryIntervalId) }
+            clearInterval(this.memoryIntervalId);
             this.memoryIntervalId = null; }
         }
 

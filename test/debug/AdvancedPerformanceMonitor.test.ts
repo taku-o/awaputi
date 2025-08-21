@@ -11,7 +11,7 @@ const dom = new JSDOM('<!DOCTYPE html><html><body></body></html>');
 (global: any).localStorage = dom.window.localStorage,
 (global: any).performance = { now: jest.fn(() => Date.now(
     memory: {
-        usedJSHeapSize: 50 * 1024 * 1024,
+        usedJSHeapSize: 50 * 1024 * 1024 },
         totalJSHeapSize: 100 * 1024 * 1024,
         jsHeapSizeLimit: 200 * 1024 * 1024 }
     }'
@@ -44,11 +44,11 @@ const mockGameEngine = { canvas: {
             // Mock WebGL context
         ))),
     performanceOptimizer: {
-        getCurrentFPS: jest.fn(() => 60,
+        getCurrentFPS: jest.fn(() => 60 },
         getAverageFPS: jest.fn(() => 58,
         getAverageFrameTime: jest.fn(() => 16.67,
         stats: {
-            droppedFrames: 2,
+            droppedFrames: 2 },
             frameTimeVariance: 3.5,
         renderTime: 12.5 }
             };
@@ -351,7 +351,7 @@ describe('AdvancedPerformanceMonitor', () => {  let monitor: any,
             );'}');
         test('should handle missing game engine gracefully', () => {  const monitorWithoutEngine = new AdvancedPerformanceMonitor(null: any) }
             expect(() => { }
-                monitorWithoutEngine.metricsCollector.collectGameMetrics(};
+                monitorWithoutEngine.metricsCollector.collectGameMetrics(}
             }.not.toThrow();'
             monitorWithoutEngine.destroy();'}');
         test('should handle missing performance optimizer gracefully', () => {  }
@@ -360,7 +360,7 @@ describe('AdvancedPerformanceMonitor', () => {  let monitor: any,
             
             const monitorWithoutOptimizer = new AdvancedPerformanceMonitor(gameEngineWithoutOptimizer: any);
             expect(() => {  }
-                monitorWithoutOptimizer.metricsCollector.collectFrameMetrics(};
+                monitorWithoutOptimizer.metricsCollector.collectFrameMetrics(}
             }.not.toThrow();'
             monitorWithoutOptimizer.destroy();'}');'
     }''

@@ -47,7 +47,7 @@ test.describe('BubblePop Game E2E Tests', () => {
         if (window.gameEngine && window.gameEngine.playerData') {'
           window.gameEngine.playerData.username = 'TestPlayer',
           window.gameEngine.playerData.save() }
-      };
+      }
     }
     
     // Verify user name is saved
@@ -113,7 +113,7 @@ test.describe('BubblePop Game E2E Tests', () => {
     await page.click('#gameCanvas', { position: { x: 200, y: 200 } }');'
     await page.click('#gameCanvas', { position: { x: 300, y: 300 } )');'
     await page.click('#gameCanvas', { position: { x: 400, y: 400 } ),
-    await page.waitForTimeout(500);
+    await page.waitForTimeout(500) };
     
     // Check if score increased
     const finalScore = await page.evaluate(() => {
@@ -144,10 +144,10 @@ test.describe('BubblePop Game E2E Tests', () => {
     await page.waitForTimeout(200');'
     
     await page.click('#gameCanvas', { position: { x: 300, y: 300 } ), // Pink
-    await page.waitForTimeout(200');'
+    await page.waitForTimeout(200');' };
     
     await page.click('#gameCanvas', { position: { x: 400, y: 400 } ), // Electric
-    await page.waitForTimeout(200);
+    await page.waitForTimeout(200) };
     
     // Check if special effects are active
     const effectsActive = await page.evaluate(() => {
@@ -178,7 +178,7 @@ test.describe('BubblePop Game E2E Tests', () => {
     await page.tap('#gameCanvas', { position: { x: 300, y: 300 } ),
     // Test drag gesture
     await page.touchscreen.tap(250, 250);
-    await page.touchscreen.tap(350, 350);
+    await page.touchscreen.tap(350, 350) };
     
     await page.waitForTimeout(500);
     
@@ -210,7 +210,7 @@ test.describe('BubblePop Game E2E Tests', () => {
         return {
           score: window.gameEngine.playerData.currentScore,
           ap: window.gameEngine.playerData.ap
-        };
+        }
       }
       return null;
     };
@@ -275,7 +275,7 @@ test.describe('BubblePop Game E2E Tests', () => {
               window.gameEngine.bubbleManager.spawnBubble('normal', {);
                 x: Math.random() * 800,
                 y: Math.random() * 600
-              };
+              }
             }
           }, i * 100);
         }
@@ -318,5 +318,5 @@ test.describe('BubblePop Game E2E Tests', () => {
       return window.gameEngine ? window.gameEngine.isRunning: false;);
     
     expect(gameIsRunning).toBe(true);
-  };
+  }
 }');'

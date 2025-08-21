@@ -66,11 +66,11 @@ describe('Duplicate Settings Implementation Removal Verification', () => {
                             // AudioSettingsUIは音響設定専用なので除外
                             if(fullPath.includes('AudioSettingsUI') return,
                             
-                            fail(`Found duplicate settings pattern in ${fullPath}: ${pattern)`};
+                            fail(`Found duplicate settings pattern in ${fullPath}: ${pattern)`}
                         }
-                    };
+                    }
                 }
-            };
+            }
         };
         
         checkDirs.forEach(dir => scanDirectory(dir);

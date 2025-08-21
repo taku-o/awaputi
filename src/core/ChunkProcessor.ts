@@ -11,13 +11,13 @@ export interface ChunkProcessorOptions { chunkSize?: number,
 /**
  * プロセス情報
  */
-interface ProcessInfo { id: string;
-    totalItems: number;
-    processedItems: number;
-    totalChunks: number;
-    processedChunks: number;
-    startTime: number;
-    results: any[];
+interface ProcessInfo { id: string,
+    totalItems: number,
+    processedItems: number,
+    totalChunks: number,
+    processedChunks: number,
+    startTime: number,
+    results: any[],
     options: ProcessOptions;
 
 /**
@@ -25,20 +25,19 @@ interface ProcessInfo { id: string;
  */
 export interface ProcessOptions { chunkSize?: number,
     collectResults?: boolean;
-
     mergeResults?: boolean;
     mergeStrategy?: 'object' | 'array';
     customMerger?: (results: any[]) => any;
-    batchSize?: number,  }
+    batchSize?: number };
 }
 
 /**
  * 統計情報
  */
-interface ProcessorStats { totalProcessed: number;
-    totalChunks: number;
-    averageChunkTime: number;
-    memoryPeakUsage: number;
+interface ProcessorStats { totalProcessed: number,
+    totalChunks: number,
+    averageChunkTime: number,
+    memoryPeakUsage: number,
     totalProcessingTime: number;
 
 /**
@@ -65,7 +64,7 @@ export type ChunkProcessorFunction<T, R> = (;
     info: { processId: string)
         totalItems?: number,
         processedItems?: number;
-) => Promise<R> | R;
+) => Promise<R> | R  },
 
 /**
  * データプロバイダー関数型
@@ -107,10 +106,10 @@ export class ChunkProcessor {
         
         // 統計情報
         this.stats = {
-            totalProcessed: 0;
-            totalChunks: 0;
-            averageChunkTime: 0;
-    memoryPeakUsage: 0 }
+            totalProcessed: 0,
+            totalChunks: 0,
+            averageChunkTime: 0,
+    memoryPeakUsage: 0 };
     }
             totalProcessingTime: 0 
     };
@@ -142,16 +141,16 @@ export class ChunkProcessor {
                 totalItems: data.length,
                 processedItems: 0,
                 totalChunks: Math.ceil(data.length / chunkSize,
-    processedChunks: 0,
+    processedChunks: 0;
                 startTime,
-                results: [],
+                results: [];
                 options  };
 
             this.activeProcesses.set(processId, processInfo);
 
             this.emit('processStarted', { id: processId)
-               , totalItems: data.length),
-                totalChunks: processInfo.totalChunks),
+            totalItems: data.length),
+                totalChunks: processInfo.totalChunks);
             // チャンクに分割して処理
             for(let, i = 0, i < data.length, i += chunkSize) {
                 const chunk = data.slice(i, i + chunkSize);
@@ -161,7 +160,7 @@ export class ChunkProcessor {
                 // チャンク処理
                 const chunkStartTime = Date.now();
                 const chunkResult = await this.processChunk(
-                    chunk, ,
+                    chunk,
                     processor,
                     chunkIndex,
                     processInfo);
@@ -174,7 +173,7 @@ export class ChunkProcessor {
                     if (Array.isArray(chunkResult) {
             }
                         processInfo.results.push(...chunkResult);
-                    } else { processInfo.results.push(chunkResult) }
+                    } else { processInfo.results.push(chunkResult);
                 }
                 
                 // 進捗更新
@@ -182,12 +181,11 @@ export class ChunkProcessor {
                 processInfo.processedItems = Math.min(i + chunkSize, data.length);
 
                 this.emit('chunkProcessed', { id: processId)
-                    chunkIndex,
-                   , processedItems: processInfo.processedItems),
+                    chunkIndex, processedItems: processInfo.processedItems),
                     totalItems: processInfo.totalItems,
-    progress: (processInfo.processedItems / processInfo.totalItems) * 100  },
+    progress: (processInfo.processedItems / processInfo.totalItems) * 100  };
                 // 定期的にイベントループに制御を戻す
-                if (chunkIndex % this.yieldInterval === 0) { await this.yieldControl() }
+                if (chunkIndex % this.yieldInterval === 0) { await this.yieldControl();
             }
             ';'
 
@@ -197,7 +195,7 @@ export class ChunkProcessor {
             this.emit('processCompleted', { id: processId)
                 totalItems: processInfo.totalItems,
     duration: totalDuration),
-                results: options.collectResults !== false ? processInfo.results : undefined),
+                results: options.collectResults !== false ? processInfo.results : undefined);
             const results = options.collectResults !== false ? processInfo.results: [],
             this.activeProcesses.delete(processId);
             return results as R[], catch (error) {
@@ -205,9 +203,9 @@ export class ChunkProcessor {
             this.emit('processError', {
                 id: processId,
     error: (error, as Error).message,
-                processedItems: this.activeProcesses.get(processId)?.processedItems || 0  },
+                processedItems: this.activeProcesses.get(processId)?.processedItems || 0  };
             getErrorHandler().handleError(error, 'CHUNK_PROCESSING_ERROR', { processId, : undefined)
-                dataLength: data.length),
+                dataLength: data.length);
                 chunkSize),
                 options,
             
@@ -238,10 +236,10 @@ export class ChunkProcessor {
                     return await processor(entryChunk, 0, { processId: '};'
                 },
                 { ...options,
-                    collectResults: true,
+                    collectResults: true;
             );
             // 結果をオブジェクトに再構成
-            if (options.mergeResults !== false) { return this.mergeChunkResults(results, options) }
+            if (options.mergeResults !== false) { return this.mergeChunkResults(results, options);
             
             return results;
             
@@ -274,7 +272,7 @@ export class ChunkProcessor {
                         const batchResult = await this.processChunk(
                             batch,
                             processor }
-                            Math.floor(processedCount / batchSize) }
+                            Math.floor(processedCount / batchSize);
                             { id: processId, as ProcessInfo,
                             options;
                         );
@@ -290,7 +288,7 @@ export class ChunkProcessor {
                     const batchResult = await this.processChunk(
                         batch,
                         processor }
-                        Math.floor(processedCount / batchSize) }
+                        Math.floor(processedCount / batchSize);
                         { id: processId, as ProcessInfo,
                         options;
                     );
@@ -304,15 +302,14 @@ export class ChunkProcessor {
                     
                     // メモリチェックと制御移譲
                     await this.checkMemoryUsage();
-                    await this.yieldControl('',
+                    await this.yieldControl(',
             this.emit('streamCompleted', {
                 id: processId,
-    totalProcessed: processedCount);
+    totalProcessed: processedCount),
                 results: options.collectResults !== false ? results : undefined','
             return options.collectResults !== false ?, results: [],
             ' 
-            }'
-
+            }
         } catch (error) {
             this.emit('streamError', {
                 id: processId,
@@ -330,20 +327,20 @@ export class ChunkProcessor {
         processor: ChunkProcessorFunction<T, R>, ;
         chunkIndex: number, ;
         processInfo: ProcessInfo,
-    options: ProcessOptions,
+    options: ProcessOptions;
     ): Promise<R>,
         try { // メモリ使用量の推定更新
             this.updateMemoryUsage(chunk);
             // チャンク処理実行
             const result = await processor(chunk, chunkIndex, {
-                processId: processInfo.id);
+                processId: processInfo.id),
                 totalItems: processInfo.totalItems,
     processedItems: processInfo.processedItems),
             ,
             return result } catch (error) { getErrorHandler().handleError(error, 'CHUNK_PROCESS_ERROR', {)
                 chunkIndex,
                 chunkSize: chunk.length),
-                processId: processInfo.id  },
+                processId: processInfo.id  };
             throw error;
         }
     }
@@ -354,7 +351,7 @@ export class ChunkProcessor {
     private async checkMemoryUsage(): Promise<void> { if (this.memoryUsage > this.maxMemoryUsage) {
             // メモリ使用量が上限を超えた場合、ガベージコレクションを実行
             if ((global, as any).gc) {
-                (global, as any).gc() }
+                (global, as any).gc();
             
             // 少し待機してメモリを解放
             await new Promise(resolve => setTimeout(resolve, 10);
@@ -376,7 +373,7 @@ export class ChunkProcessor {
     
 }
                 this.stats.memoryPeakUsage = this.memoryUsage; }
-            } catch (error) { // JSON.stringifyが失敗した場合は推定値を使用
+        } catch (error) { // JSON.stringifyが失敗した場合は推定値を使用
             this.memoryUsage += Array.isArray(data) ? data.length * 100 : 1000 }
     
     /**
@@ -386,7 +383,7 @@ export class ChunkProcessor {
     /**
      * チャンク統計の更新
      */
-    private updateChunkStats(duration: number): void { this.stats.totalChunks++,
+    private updateChunkStats(duration: number): void { this.stats.totalChunks++;
         const currentAvg = this.stats.averageChunkTime,
         this.stats.averageChunkTime = ,
             (currentAvg * (this.stats.totalChunks - 1) + duration) / this.stats.totalChunks }
@@ -394,7 +391,7 @@ export class ChunkProcessor {
     /**
      * プロセス統計の更新
      */
-    private updateProcessStats(duration: number, chunksProcessed: number): void { this.stats.totalProcessed++,
+    private updateProcessStats(duration: number, chunksProcessed: number): void { this.stats.totalProcessed++;
         this.stats.totalProcessingTime += duration }
     
     /**
@@ -415,7 +412,7 @@ export class ChunkProcessor {
 
         } catch (error) { getErrorHandler().handleError(error, 'CHUNK_RESULT_MERGE_ERROR', {)
                 resultsCount: results.length),
-                mergeStrategy: options.mergeStrategy  },
+                mergeStrategy: options.mergeStrategy  };
             return results; // フォールバック
         }
     }
@@ -434,21 +431,19 @@ export class ChunkProcessor {
         totalItems: number,
         processedItems: number,
         progress: number,
-    duration: number,> { return Array.from(this.activeProcesses.values().map(process => ({)
+    duration: number,> { return Array.from(this.activeProcesses.values())).map(process => ({)
             id: process.id,
     totalItems: process.totalItems),
             processedItems: process.processedItems),
             progress: (process.processedItems / process.totalItems) * 100,
-    duration: Date.now() - process.startTime  }
-        };
-    }
-    
+    duration: Date.now() - process.startTime      }
+}
     /**
      * 統計情報を取得
      */
     getStats(): ProcessorStats & { currentMemoryUsage: number,
         activeProcesses: number, { return { ...this.stats,
-            currentMemoryUsage: this.memoryUsage },
+            currentMemoryUsage: this.memoryUsage };
             activeProcesses: this.activeProcesses.size 
     }
     
@@ -466,7 +461,7 @@ export class ChunkProcessor {
      * イベントリスナーの追加
      */
     on(event: string, callback: (data: ProcessEventData) => void): void { if (!this.listeners.has(event) {
-            this.listeners.set(event, []) }
+            this.listeners.set(event, []);
         this.listeners.get(event)!.push(callback);
     }
     
@@ -479,22 +474,19 @@ export class ChunkProcessor {
             if (index > -1) {
     
 }
-                callbacks.splice(index, 1); }
+                callbacks.splice(index, 1);     }
 }
-    }
-    
     /**
      * イベントの発火
      */
     private emit(event: string, data: ProcessEventData): void { if (this.listeners.has(event) {
             this.listeners.get(event)!.forEach(callback => { )
-                try {) }
+                try {);
                     callback(data); }
-                } catch (error) {
+        } catch (error) {
                     console.error(`Error in chunk processor event listener for ${event}:`, error);
-                }
-            };
-        }
+                    }
+}
     }
     
     /**

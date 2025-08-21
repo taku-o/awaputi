@@ -6,7 +6,7 @@
 export class CommandHistoryManager {
     constructor(parent?: any) {
         // TypeScript implementation
-    }
+    };
         console.log('[CommandHistoryManager] Initialized'); }'
     }
 

@@ -6,36 +6,31 @@ import path from 'path';
 interface BubbleEffect { intensity?: number,
     duration?: number;
     [key: string]: any;
-
-interface BubbleConfig { health?: number,
+    interface BubbleConfig { health?: number,
     score?: number;
     size?: number;
     maxAge?: number;
     effects?: BubbleEffect;
     [key: string]: any;
-
-interface GameBalanceExpectations { baseScores?: Record<string, number>,
+    interface GameBalanceExpectations { baseScores?: Record<string, number>,
     bubbles?: Record<string, BubbleConfig> }
 
-interface ConfigurationMetadata { extractedAt: number;
-    sourceFiles: string[];
+interface ConfigurationMetadata { extractedAt: number,
+    sourceFiles: string[],
     generatorVersion: string;
-
-interface AllConfigurations { bubbleTypes: Record<string, BubbleConfig>,
-    gameBalance: GameBalanceExpectations;
+    interface AllConfigurations { bubbleTypes: Record<string, BubbleConfig>,
+    gameBalance: GameBalanceExpectations,
     metadata: ConfigurationMetadata;
-
-interface ValidationResult { valid: boolean;
-    issues: string[];
-    warnings: string[];
-    format: string;
+    interface ValidationResult { valid: boolean,
+    issues: string[],
+    warnings: string[],
+    format: string,
     exists: boolean;
-
-interface ParsingStrategy { file?: string,
+    interface ParsingStrategy { file?: string,
     parser: (filePath?: string) => any  }
 }
 
-interface MainController { configSourceDir: string;
+interface MainController { configSourceDir: string,
     projectRoot: string;
     configurationManager?: {
         get: (namespace: string, path: string) => any  }
@@ -54,11 +49,11 @@ export class ConfigurationParser extends BaseComponent { private configSourceDir
 
         super(mainController, 'ConfigurationParser),'
         this.configSourceDir = mainController.configSourceDir;
-        this.projectRoot = mainController.projectRoot }
+        this.projectRoot = mainController.projectRoot };
         this.parseCache = new Map(); }
         this.parsingStrategies = {}
 
-    async _doInitialize(): Promise<void> { this.setupParsingStrategies() }
+    async _doInitialize(): Promise<void> { this.setupParsingStrategies();
 
     /**
      * 解析戦略を設定'
@@ -69,7 +64,7 @@ export class ConfigurationParser extends BaseComponent { private configSourceDir
             },
 
             bubble: { ''
-                file: 'Bubble.js',
+                file: 'Bubble.js'  ,
     parser: this.parseBubbleFile.bind(this }
             configurationManager: { parser: this.parseConfigurationManager.bind(this 
     }
@@ -88,7 +83,7 @@ export class ConfigurationParser extends BaseComponent { private configSourceDir
             const baseScoresMatch = content.match(/baseScores: \s*\{([^)]+)\}/s),
             if (baseScoresMatch) {
                 const scoresContent = baseScoresMatch[1],
-                const scoreMatches = scoresContent.matchAll(/(\w+):\s*(\d+)/g) }
+                const scoreMatches = scoresContent.matchAll(/(\w+):\s*(\d+)/g);
                 expectations.baseScores = {};
                 for (const match of scoreMatches) {
                     const [, bubbleType, score] = match }
@@ -109,7 +104,7 @@ export class ConfigurationParser extends BaseComponent { private configSourceDir
                     // 各プロパティを抽出
                     const properties: Record<string, RegExp> = { health: /health:\s*(\d+)/,
                         size: /size:\s*(\d+)/,
-    maxAge: /maxAge:\s*(\d+)/  },
+    maxAge: /maxAge:\s*(\d+)/  };
                     for(const [propName, regex] of Object.entries(properties) {
                     
                         const propMatch = configContent.match(regex);
@@ -125,7 +120,7 @@ export class ConfigurationParser extends BaseComponent { private configSourceDir
                         expectations.bubbles[bubbleType].effects = {};
                         
                         const effectProperties: Record<string, RegExp> = { intensity: /intensity:\s*(\d+)/,
-                            duration: /duration:\s*(\d+)/  },
+                            duration: /duration:\s*(\d+)/  ,
                         for(const [effectProp, effectRegex] of Object.entries(effectProperties) {
                         
                             const effectMatch = effectsContent.match(effectRegex);
@@ -133,9 +128,8 @@ export class ConfigurationParser extends BaseComponent { private configSourceDir
     
 }
 
-                                expectations.bubbles[bubbleType].effects![effectProp] = parseInt(effectMatch[1]); }
+                                expectations.bubbles[bubbleType].effects![effectProp] = parseInt(effectMatch[1]);     }
 }
-                    }
 }
 
             console.log('[ConfigurationParser] GameBalance.jsから期待値を抽出しました';
@@ -171,7 +165,7 @@ export class ConfigurationParser extends BaseComponent { private configSourceDir
                     const properties: Record<string, RegExp> = { health: /health:\s*(\d+)/,
                         score: /score:\s*(\d+)/,
                         size: /size:\s*(\d+)/,
-    maxAge: /maxAge:\s*(\d+)/  },
+    maxAge: /maxAge:\s*(\d+)/  ,
                     for(const [propName, regex] of Object.entries(properties) {
                     
                         const propMatch = configStr.match(regex);
@@ -179,9 +173,8 @@ export class ConfigurationParser extends BaseComponent { private configSourceDir
     
 }
 
-                            expectations[bubbleType][propName] = parseInt(propMatch[1]); }
+                            expectations[bubbleType][propName] = parseInt(propMatch[1]);     }
 }
-                }
             }
 
             console.log('[ConfigurationParser] Bubble.jsから期待値を抽出しました';
@@ -194,13 +187,13 @@ export class ConfigurationParser extends BaseComponent { private configSourceDir
     /**
      * ConfigurationManagerから設定を解析'
      */''
-    parseConfigurationManager('',
-                'normal', 'stone', 'iron', 'diamond', 'rainbow', 'pink', 'clock',
-                'electric', 'poison', 'spiky', 'escaping', 'boss', 'golden',
-                'frozen', 'magnetic', 'explosive', 'phantom', 'multiplier',
+    parseConfigurationManager(',
+                'normal, 'stone', 'iron', 'diamond', 'rainbow', 'pink', 'clock',
+                'electric, 'poison', 'spiky', 'escaping', 'boss', 'golden',
+                'frozen, 'magnetic', 'explosive', 'phantom', 'multiplier',
             ],
 
-            ')',
+            '),
             for (const bubbleType of bubbleTypes) { try { }
                     expectations[bubbleType] = {};
                     ';'
@@ -248,10 +241,10 @@ export class ConfigurationParser extends BaseComponent { private configSourceDir
      */ : undefined'
     detectFileFormat(filePath: string): string { const ext = path.extname(filePath).toLowerCase();
         const basename = path.basename(filePath, ext);
-        if (basename === 'GameBalance') return 'gameBalance',
-        if (basename === 'Bubble') return 'bubble',
-        if (ext === '.json') return 'json',
-        if (ext === '.js') return 'javascript',
+        if (basename === 'GameBalance') return 'gameBalance,
+        if (basename === 'Bubble') return 'bubble,
+        if (ext === '.json') return 'json,
+        if (ext === '.js') return 'javascript,
 
         return 'unknown' }
 
@@ -263,7 +256,7 @@ export class ConfigurationParser extends BaseComponent { private configSourceDir
             issues: [],
             warnings: [],
             format: this.detectFileFormat(filePath,
-    exists: fs.existsSync(filePath },
+    exists: fs.existsSync(filePath ,
 ';'
 
         if (!validation.exists) { validation.valid = false,' }'
@@ -300,7 +293,7 @@ export class ConfigurationParser extends BaseComponent { private configSourceDir
                 bubbleTypes: {},
                 gameBalance: {},
                 metadata: { ''
-                    extractedAt: Date.now('',
+                    extractedAt: Date.now('' ,
     generatorVersion: '1.0.0'
             };
             // GameBalance.jsから解析')'
@@ -350,7 +343,7 @@ export class ConfigurationParser extends BaseComponent { private configSourceDir
     /**
      * キャッシュされた解析結果を取得
      */
-    getCachedParse(key: string): any { return this.parseCache.get(key) }
+    getCachedParse(key: string): any { return this.parseCache.get(key);
 
     /**
      * キャッシュをクリア

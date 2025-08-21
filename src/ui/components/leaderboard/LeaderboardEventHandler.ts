@@ -15,37 +15,37 @@ interface GameEngine { // Add specific properties/methods as needed }
 /**
  * Event configuration interface
  */
-interface EventConfig { clickThreshold: number;
-    doubleClickThreshold: number;
-    hoverDelay: number;
-    touchThreshold: number;
-    keyboardRepeatDelay: number;
-    wheelSensitivity: number;
+interface EventConfig { clickThreshold: number,
+    doubleClickThreshold: number,
+    hoverDelay: number,
+    touchThreshold: number,
+    keyboardRepeatDelay: number,
+    wheelSensitivity: number,
     gestureMinDistance: number;
 
 /**
  * Touch data interface
  */
-interface TouchData { startX: number;
-    startY: number;
-    currentX: number;
-    currentY: number;
-    startTime: number;
+interface TouchData { startX: number,
+    startY: number,
+    currentX: number,
+    currentY: number,
+    startTime: number,
     moved: boolean;
 
 /**
  * Event state interface
  */
-interface EventState { lastClickTime: number;
-    lastClickTarget: EventTarget | null;
-    clickCount: number;
-    lastHoverTarget: EventTarget | null;
-    hoverTimer: number | null;
-    isDragging: boolean;
-    dragStartX: number;
-    dragStartY: number;
-    lastKeyTime: number;
-    lastKeyCode: string | null;
+interface EventState { lastClickTime: number,
+    lastClickTarget: EventTarget | null,
+    clickCount: number,
+    lastHoverTarget: EventTarget | null,
+    hoverTimer: number | null,
+    isDragging: boolean,
+    dragStartX: number,
+    dragStartY: number,
+    lastKeyTime: number,
+    lastKeyCode: string | null,
     touches: Map<number, TouchData> }
 
 /**
@@ -60,9 +60,9 @@ interface GestureConfig { distance: number;
 /**
  * UI element bounds interface
  */
-interface Bounds { x: number;
-    y: number;
-    width: number;
+interface Bounds { x: number,
+    y: number,
+    width: number,
     height: number;
 
 /**
@@ -84,81 +84,73 @@ interface EventTarget extends UIElement { ''
 /**
  * UI elements collection interface
  */
-interface UIElements { tabs: UIElement[];
-    sortOptions: UIElement[];
-    entries: UIElement[];
-    buttons: UIElement[];
+interface UIElements { tabs: UIElement[],
+    sortOptions: UIElement[],
+    entries: UIElement[],
+    buttons: UIElement[],
     scrollbar: UIElement | null }
 
 /**
  * Selection state interface
  */
-interface SelectionState { selectedView: string;
-    selectedSort: string;
-    selectedEntry: any | null;
-    selectedEntryIndex: number;
+interface SelectionState { selectedView: string,
+    selectedSort: string,
+    selectedEntry: any | null,
+    selectedEntryIndex: number,
     showingDetails: boolean;
 
 /**
  * Touch interface
  */
-interface Touch { identifier: number;
-    clientX: number;
+interface Touch { identifier: number,
+    clientX: number,
     clientY: number;
 
 /**
  * Event callback data types
  */
-interface ClickEventData { x: number;
-    y: number;
-    target: EventTarget | null;
+interface ClickEventData { x: number,
+    y: number,
+    target: EventTarget | null,
     options: any;
-
-interface HoverEventData { target: EventTarget;
+    interface HoverEventData { target: EventTarget;
     options?: any;
-
-interface ScrollEventData { deltaX?: number,
+    interface ScrollEventData { deltaX?: number,
     deltaY?: number;
     scrollRatio?: number;
     scrollTo?: string;
     options?: any;
     isScrollbarClick?: boolean;
     isGesture?: boolean;
-
-interface KeyDownEventData { keyCode: string;
+    interface KeyDownEventData { keyCode: string;
     action?: string;
     options: any;
-
-interface ViewChangeEventData {
+    interface ViewChangeEventData {
     view: string;
-
-interface SortChangeEventData {
+    interface SortChangeEventData {
     sortBy: string;
-
-interface EntrySelectEventData { entry?: any,
+    interface EntrySelectEventData { entry?: any,
     index: number;
-
-interface DetailsToggleEventData { entry?: any,
+    interface DetailsToggleEventData { entry?: any,
     show: boolean;
+    interface RefreshEventData {}
 
-interface RefreshEventData {}
-
-interface GestureData { deltaX: number;
-    deltaY: number;
+interface GestureData { deltaX: number,
+    deltaY: number,
     velocity: number;
 
 /**
  * Callback function types
  */
 type ClickCallback = (data: ClickEventData) => void;
-type HoverCallback = (data: HoverEventData) => void;
-type ScrollCallback = (data: ScrollEventData) => void;
-type KeyDownCallback = (data: KeyDownEventData) => void;
-type ViewChangeCallback = (data: ViewChangeEventData) => void;
-type SortChangeCallback = (data: SortChangeEventData) => void;
-type EntrySelectCallback = (data: EntrySelectEventData) => void;
-type DetailsToggleCallback = (data: DetailsToggleEventData) => void;
-type RefreshCallback = (data: RefreshEventData) => void;
+    type HoverCallback = (data: HoverEventData) => void;
+    type ScrollCallback = (data: ScrollEventData) => void;
+    type KeyDownCallback = (data: KeyDownEventData) => void;
+    type ViewChangeCallback = (data: ViewChangeEventData) => void;
+    type SortChangeCallback = (data: SortChangeEventData) => void;
+    type EntrySelectCallback = (data: EntrySelectEventData) => void;
+    type DetailsToggleCallback = (data: DetailsToggleEventData) => void;
+    type RefreshCallback = (data: RefreshEventData) => void;
 
 /**
  * Update config interface
@@ -177,74 +169,74 @@ export class LeaderboardEventHandler {
         hoverDelay: 100, // ms;
         touchThreshold: 10, // px;
         keyboardRepeatDelay: 150, // ms;
-        wheelSensitivity: 1.0;
+        wheelSensitivity: 1.0,
     gestureMinDistance: 50 // px  };
     // イベント状態
     private eventState: EventState = { lastClickTime: 0
-        lastClickTarget: null;
-        clickCount: 0;
-        lastHoverTarget: null;
-        hoverTimer: null;
-        isDragging: false;
-        dragStartX: 0;
-        dragStartY: 0;
-        lastKeyTime: 0;
-        lastKeyCode: null;
+        lastClickTarget: null,
+        clickCount: 0,
+        lastHoverTarget: null,
+        hoverTimer: null,
+        isDragging: false,
+        dragStartX: 0,
+        dragStartY: 0,
+        lastKeyTime: 0,
+        lastKeyCode: null,
     touches: new Map( }
     
     // コールバック管理
     private, callbacks = { onClick: new, Set<ClickCallback>();
-        onDoubleClick: new Set<ClickCallback>();
-        onHover: new Set<HoverCallback>();
-        onHoverEnd: new Set<HoverCallback>();
-        onScroll: new Set<ScrollCallback>();
-        onKeyDown: new Set<KeyDownCallback>();
-        onViewChange: new Set<ViewChangeCallback>();
-        onSortChange: new Set<SortChangeCallback>();
-        onEntrySelect: new Set<EntrySelectCallback>();
+        onDoubleClick: new Set<ClickCallback>(),
+        onHover: new Set<HoverCallback>(),
+        onHoverEnd: new Set<HoverCallback>(),
+        onScroll: new Set<ScrollCallback>(),
+        onKeyDown: new Set<KeyDownCallback>(),
+        onViewChange: new Set<ViewChangeCallback>(),
+        onSortChange: new Set<SortChangeCallback>(),
+        onEntrySelect: new Set<EntrySelectCallback>(),
         onDetailsToggle: new Set<DetailsToggleCallback>(
         onRefresh: new Set<RefreshCallback>('
             }
     
     // キーボードショートカット
     private shortcuts: Record<string, string> = { ', 'ArrowUp': 'selectPrevious';'
-        'ArrowDown': 'selectNext',
-        'Enter': 'openDetails',
-        'Escape': 'closeDetails',
-        'r': 'refresh',
-        'f': 'filter',
-        'PageUp': 'pageUp',
-        'PageDown': 'pageDown',
-        'Home': 'goToTop',
+        'ArrowDown': 'selectNext,
+        'Enter': 'openDetails,
+        'Escape': 'closeDetails,
+        'r': 'refresh,
+        'f': 'filter,
+        'PageUp': 'pageUp,
+        'PageDown': 'pageDown,
+        'Home': 'goToTop,
         'End': 'goToBottom' };
-    
+
     // タッチジェスチャー
     private gestures: Record<string, GestureConfig> = { }'
 
-        swipeUp: { distance: 50, direction: 'vertical', velocity: 0.5  },''
-        swipeDown: { distance: 50, direction: 'vertical', velocity: 0.5  },''
-        swipeLeft: { distance: 50, direction: 'horizontal', velocity: 0.5  },''
-        swipeRight: { distance: 50, direction: 'horizontal', velocity: 0.5  };
-        pinchZoom: { distance: 0, threshold: 1.2  };
-        longPress: { distance: 0, duration: 500  };
+        swipeUp: { distance: 50, direction: 'vertical', velocity: 0.5  ,''
+        swipeDown: { distance: 50, direction: 'vertical', velocity: 0.5  ,''
+        swipeLeft: { distance: 50, direction: 'horizontal', velocity: 0.5  ,''
+        swipeRight: { distance: 50, direction: 'horizontal', velocity: 0.5  ,
+        pinchZoom: { distance: 0, threshold: 1.2  ,
+        longPress: { distance: 0, duration: 500   ,
     
     // UI要素の座標情報
     private uiElements: UIElements = { tabs: []
-        sortOptions: [];
-        entries: [];
-        buttons: [];
+        sortOptions: [],
+        entries: [],
+        buttons: [],
     scrollbar: null;
     // 現在の選択状態
     private selectionState: SelectionState = { ''
         selectedView: 'overall'','
-        selectedSort: 'score';
-        selectedEntry: null;
-        selectedEntryIndex: -1;
+        selectedSort: 'score,
+        selectedEntry: null,
+        selectedEntryIndex: -1,
     showingDetails: false;
     constructor(gameEngine: GameEngine) {
 
         this.gameEngine = gameEngine;
-        this.errorHandler = getErrorHandler() }
+        this.errorHandler = getErrorHandler();
         this.initialize(); }
     }
     
@@ -274,9 +266,9 @@ export class LeaderboardEventHandler {
             
             if (isDoubleClick) {
             
-                this.handleDoubleClick(x, y, target, options) }
+                this.handleDoubleClick(x, y, target, options);
                 this.eventState.clickCount = 0; }
-            } else {  this.handleSingleClick(x, y, target, options) }
+            } else {  this.handleSingleClick(x, y, target, options);
                 this.eventState.clickCount = 1; }
             }
             
@@ -299,7 +291,7 @@ export class LeaderboardEventHandler {
             if (this.selectionState.showingDetails) {
 
                 this.closeDetails()','
-            this.executeCallbacks('onClick', { x, y, target, options ) }
+            this.executeCallbacks('onClick', { x, y, target, options );
             return; }
         }
 
@@ -322,7 +314,7 @@ export class LeaderboardEventHandler {
                 break,
 
             case 'scrollbar':','
-                this.handleScrollbarClick(x, y, target) }
+                this.handleScrollbarClick(x, y, target);
                 break; }
         }
         ';'
@@ -345,7 +337,7 @@ export class LeaderboardEventHandler {
         }
         ';'
         // コールバック実行
-        this.executeCallbacks('onDoubleClick', { x, y, target, options ) }
+        this.executeCallbacks('onDoubleClick', { x, y, target, options );
     
     /**
      * ホバーイベントを処理
@@ -364,10 +356,10 @@ export class LeaderboardEventHandler {
             }
             
             // 前のホバーを終了
-            if (this.eventState.lastHoverTarget) { this.handleHoverEnd(this.eventState.lastHoverTarget) }
+            if (this.eventState.lastHoverTarget) { this.handleHoverEnd(this.eventState.lastHoverTarget);
             
             // 新しいホバーを開始
-            if (target) { this.startHover(target, options) }
+            if (target) { this.startHover(target, options);
             
             this.eventState.lastHoverTarget = target;
 
@@ -389,7 +381,7 @@ export class LeaderboardEventHandler {
 
         this.eventState.hoverTimer = window.setTimeout(() => { // コールバック実行' }'
 
-            this.executeCallbacks('onHover', { target, options };
+            this.executeCallbacks('onHover', { target, options }
         }, this.eventConfig.hoverDelay';'
     }
     
@@ -417,12 +409,11 @@ export class LeaderboardEventHandler {
             // コールバック実行
             this.executeCallbacks('onScroll', {
                 deltaX,
-                deltaY: scrollAmount),
+                deltaY: scrollAmount);
                 options ','
 
             ' 
-            }'
-
+            }
         } catch (error) {
             this.errorHandler.handleError(error, 'LeaderboardEventHandler.handleScroll' }'
     }
@@ -475,10 +466,9 @@ export class LeaderboardEventHandler {
                     startY: touch.clientY,
     currentX: touch.clientX),
                     currentY: touch.clientY,
-    startTime: Date.now() }
+    startTime: Date.now(),
                     moved: false;);
-            };
-
+            }
         } catch (error) {
             this.errorHandler.handleError(error, 'LeaderboardEventHandler.handleTouchStart' }'
     }
@@ -510,9 +500,7 @@ export class LeaderboardEventHandler {
                 }
                 
                 // スクロール処理（単一タッチ）
-                if (this.eventState.touches.size === 1) { this.handleScroll(deltaX, deltaY, { isTouchEvent: true,
-            };
-
+                if (this.eventState.touches.size === 1) { this.handleScroll(deltaX, deltaY, { isTouchEvent: true }
         } catch (error) {
             this.errorHandler.handleError(error, 'LeaderboardEventHandler.handleTouchMove' }'
     }
@@ -537,11 +525,10 @@ export class LeaderboardEventHandler {
                     this.handleClick(touch.clientX, touch.clientY, { isTouchEvent: true,
                 
                 // ジェスチャー判定
-                else if (touchData.moved) { this.detectGesture(totalDeltaX, totalDeltaY, duration) }
+                else if (touchData.moved) { this.detectGesture(totalDeltaX, totalDeltaY, duration);
                 
                 this.eventState.touches.delete(touch.identifier);
-            };
-
+            }
         } catch (error) {
             this.errorHandler.handleError(error, 'LeaderboardEventHandler.handleTouchEnd' }'
     }
@@ -562,11 +549,11 @@ export class LeaderboardEventHandler {
                 // 横方向スワイプ
                 const gesture = deltaX > 0 ? 'swipeRight' : 'swipeLeft' }
 
-                this.handleGesture(gesture, { deltaX, deltaY, velocity )) }
+                this.handleGesture(gesture, { deltaX, deltaY, velocity ));
 
             } else {  // 縦方向スワイプ
                 const gesture = deltaY > 0 ? 'swipeDown' : 'swipeUp' }
-                this.handleGesture(gesture, { deltaX, deltaY, velocity ) }
+                this.handleGesture(gesture, { deltaX, deltaY, velocity );
 }
     
     /**
@@ -588,7 +575,7 @@ export class LeaderboardEventHandler {
             case 'swipeLeft':','
                 this.switchToNextView()','
             case 'swipeRight':),
-                this.switchToPreviousView() }
+                this.switchToPreviousView();
                 break; }
 }
     
@@ -700,7 +687,7 @@ export class LeaderboardEventHandler {
                 break,
 
             case 'goToBottom':','
-                this.executeCallbacks('onScroll', { scrollTo: 'bottom ',
+                this.executeCallbacks('onScroll, { scrollTo: 'bottom ',
                 break }
     }
     
@@ -769,7 +756,7 @@ export class LeaderboardEventHandler {
      * @param {Object} entry - エントリーデータ
      */
     toggleDetails(entry: any): void { if (this.selectionState.showingDetails) {
-            this.closeDetails() } else { this.openDetails(entry) }
+            this.closeDetails() } else { this.openDetails(entry);
     }
     
     /**
@@ -831,7 +818,7 @@ export class LeaderboardEventHandler {
      * UI要素の座標を更新
      * @param {Object} elements - UI要素の座標情報
      */
-    updateUIElements(elements: Partial<UIElements>): void { Object.assign(this.uiElements, elements) }
+    updateUIElements(elements: Partial<UIElements>): void { Object.assign(this.uiElements, elements);
     
     /**
      * コールバックを追加
@@ -840,7 +827,7 @@ export class LeaderboardEventHandler {
      */
     addCallback<K extends keyof typeof this.callbacks>(;
         eventType: K,
-    callback: typeof this.callbacks[K] extends Set<infer T> ? T : never,
+    callback: typeof this.callbacks[K] extends Set<infer T> ? T : never;
     ): void { const callbackSet = this.callbacks[eventType],
         if (callbackSet) {
     
@@ -855,7 +842,7 @@ export class LeaderboardEventHandler {
      */
     removeCallback<K extends keyof typeof this.callbacks>(;
         eventType: K,
-    callback: typeof this.callbacks[K] extends Set<infer T> ? T : never,
+    callback: typeof this.callbacks[K] extends Set<infer T> ? T : never;
     ): void { const callbackSet = this.callbacks[eventType],
         if (callbackSet) {', ' }
 
@@ -886,9 +873,8 @@ export class LeaderboardEventHandler {
 
                     callback(data);' }'
 
-                } catch (error) { console.warn('[LeaderboardEventHandler] Callback error:', error }
-            };
-        }
+                } catch (error) { console.warn('[LeaderboardEventHandler] Callback error:', error     }
+}
     }
     
     /**
@@ -902,15 +888,15 @@ export class LeaderboardEventHandler {
      * 選択状態を設定
      * @param {Object} newState - 新しい状態
      */
-    setSelectionState(newState: Partial<SelectionState>): void { Object.assign(this.selectionState, newState) }
+    setSelectionState(newState: Partial<SelectionState>): void { Object.assign(this.selectionState, newState);
     
     /**
      * イベント設定を更新
      * @param {Object} newConfig - 新しい設定
      */
     updateConfig(newConfig: UpdateConfigOptions): void { if (newConfig.eventConfig) {
-            Object.assign(this.eventConfig, newConfig.eventConfig) }
-        if (newConfig.shortcuts) { Object.assign(this.shortcuts, newConfig.shortcuts) }
+            Object.assign(this.eventConfig, newConfig.eventConfig);
+        if (newConfig.shortcuts) { Object.assign(this.shortcuts, newConfig.shortcuts);
         if (newConfig.gestures) {', ' }
 
             Object.assign(this.gestures, newConfig.gestures); }
@@ -931,17 +917,17 @@ export class LeaderboardEventHandler {
         if (this.eventState.hoverTimer') {'
         ','
 
-            clearTimeout(this.eventState.hoverTimer) }
+            clearTimeout(this.eventState.hoverTimer);
             this.eventState.hoverTimer = null; }
         }
         ';'
 
         this.selectionState = {;
-            selectedView: 'overall',
-            selectedSort: 'score',
+            selectedView: 'overall,
+            selectedSort: 'score,
             selectedEntry: null,
             selectedEntryIndex: -1,
-    showingDetails: false,
+    showingDetails: false;
         console.log('[LeaderboardEventHandler] Event, state reset);'
     }
     
@@ -950,7 +936,7 @@ export class LeaderboardEventHandler {
      */
     dispose(): void { this.reset();
         // 全コールバックをクリア
-        Object.values(this.callbacks).forEach(callbackSet => { ) }
+        Object.values(this.callbacks).forEach(callbackSet => { );
             callbackSet.clear();' }'
 
         }');'

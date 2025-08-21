@@ -1,177 +1,205 @@
+#!/usr/bin/env node
+
 const fs = require('fs');
 const path = require('path');
-const { glob } = require('glob');
 
-// Fix interface and object syntax errors
-async function fixInterfaceObjectSyntax() {
-    console.log('Starting interface and object syntax error fixing...');
+// エラーが特に多いファイルを優先的に処理
+const priorityFiles = [
+    'src/analytics/analytics-api/APIEndpointManager.ts',
+    'src/tests/mobile/mobile-test-suite/MobileTestReporter.ts',
+    'src/core/ShareDialog.ts'
+];
+
+/**
+ * インターフェースとオブジェクトの構文エラーを修正
+ */
+function fixInterfaceObjectSyntax(content) {
+    let modified = false;
+    let lines = content.split('\n');
     
-    const tsFiles = glob.sync('/Users/taku-o/Documents/workspaces/awaputi/src/**/*.ts');
-    console.log(`Found ${tsFiles.length} TypeScript files`);
-    
-    let modifiedFiles = 0;
-    let totalModifications = 0;
-    
-    for (const filePath of tsFiles) {
-        try {
-            const content = fs.readFileSync(filePath, 'utf8');
-            let fixed = content;
-            let modifications = 0;
+    // 1. インターフェース内のプロパティセパレータ修正
+    for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+        
+        // インターフェース宣言の検出
+        if (line.match(/^\s*(?:export\s+)?interface\s+\w+\s*{/)) {
+            // インターフェースブロック内を処理
+            let braceCount = 1;
+            let j = i + 1;
             
-            // Pattern 1: Fix broken interface property syntax with closing braces
-            // Example: property: type; } -> property: type }
-            const pattern1 = /([a-zA-Z_$][a-zA-Z0-9_$]*:\s*[^;{},]+);\s*}/g;
-            fixed = fixed.replace(pattern1, (match, prop) => {
-                // Only fix if this looks like an interface property, not a class
-                if (!match.includes('private') && !match.includes('public') && !match.includes('protected')) {
-                    modifications++;
-                    return prop + ' }';
-                }
-                return match;
-            });
-            
-            // Pattern 2: Fix object literal syntax mixed with interface syntax
-            // Example: { property: type; } -> { property: type }
-            const pattern2 = /\{\s*([^{}]*?);\s*\}/g;
-            fixed = fixed.replace(pattern2, (match, content) => {
-                // Check if this is in an object literal context
-                if (!content.includes('function') && !content.includes('=>') && content.includes(':')) {
-                    modifications++;
-                    return '{ ' + content.trim() + ' }';
-                }
-                return match;
-            });
-            
-            // Pattern 3: Fix malformed object properties with semicolons before closing brace
-            // Example: property: value; } -> property: value }
-            const pattern3 = /([a-zA-Z_$][a-zA-Z0-9_$]*:\s*[^;,{}]+);\s*([,}])/g;
-            fixed = fixed.replace(pattern3, (match, prop, ending) => {
-                modifications++;
-                if (ending === ',') {
-                    return prop + ',';
-                } else {
-                    return prop + ' }';
-                }
-            });
-            
-            // Pattern 4: Fix constructor syntax issues
-            // Example: constructor(param: type; ) -> constructor(param: type)
-            const pattern4 = /constructor\s*\([^)]*;\s*\)/g;
-            fixed = fixed.replace(pattern4, (match) => {
-                modifications++;
-                return match.replace(/;\s*\)/, ')');
-            });
-            
-            // Pattern 5: Fix try-catch block syntax
-            // Example: try { } catch (error) {; -> try { } catch (error) {
-            const pattern5 = /}\s*catch\s*\([^)]*\)\s*\{;/g;
-            fixed = fixed.replace(pattern5, (match) => {
-                modifications++;
-                return match.replace(';', '');
-            });
-            
-            // Pattern 6: Fix broken object literal with trailing semicolons
-            // Example: { key: value; key2: value2; } -> { key: value, key2: value2 }
-            const pattern6 = /\{\s*([^{}]*?)\s*\}/g;
-            fixed = fixed.replace(pattern6, (match, content) => {
-                if (content.includes(':') && content.includes(';')) {
-                    const lines = content.split('\n');
-                    let hasModification = false;
-                    const fixedLines = lines.map((line, index) => {
-                        const trimmed = line.trim();
-                        // Check if it's an object property line ending with semicolon
-                        if (trimmed.includes(':') && trimmed.endsWith(';') && 
-                            !trimmed.includes('function') && !trimmed.includes('=>')) {
-                            hasModification = true;
-                            if (index === lines.length - 1 || lines[index + 1].trim() === '') {
-                                // Last property or next line is empty - remove semicolon
-                                return line.replace(/;$/, '');
-                            } else {
-                                // Not last property - replace semicolon with comma
-                                return line.replace(/;$/, ',');
-                            }
-                        }
-                        return line;
-                    });
-                    if (hasModification) {
-                        modifications++;
-                        return '{ ' + fixedLines.join('\n') + ' }';
+            while (j < lines.length && braceCount > 0) {
+                const currentLine = lines[j];
+                
+                // ブレース数のカウント
+                braceCount += (currentLine.match(/{/g) || []).length;
+                braceCount -= (currentLine.match(/}/g) || []).length;
+                
+                if (braceCount > 0) {
+                    // プロパティ行でカンマをセミコロンに変換
+                    if (currentLine.match(/^\s*\w+\s*:\s*[^;,\n]+,\s*$/)) {
+                        lines[j] = currentLine.replace(/,(\s*)$/, ';$1');
+                        modified = true;
+                    }
+                    // end パターンの修正
+                    if (currentLine.match(/^\s*end:\s*Date,$/)) {
+                        lines[j] = currentLine.replace(/,(\s*)$/, ';$1');
+                        modified = true;
                     }
                 }
-                return match;
-            });
-            
-            // Pattern 7: Fix malformed method parameter syntax
-            // Example: method(param: type; , param2: type) -> method(param: type, param2: type)
-            const pattern7 = /\([^)]*;\s*,/g;
-            fixed = fixed.replace(pattern7, (match) => {
-                modifications++;
-                return match.replace(/;\s*,/, ',');
-            });
-            
-            // Pattern 8: Fix broken interface definition
-            // Example: interface Name { property: type; } interface -> interface Name { property: type }
-            const pattern8 = /interface\s+\w+\s*\{[^{}]*;\s*}\s*interface/g;
-            fixed = fixed.replace(pattern8, (match) => {
-                modifications++;
-                return match.replace(/;\s*}\s*interface/, ' }\n\ninterface');
-            });
-            
-            // Pattern 9: Fix broken class property definitions
-            // Example: private property: type; } -> private property: type; }
-            const pattern9 = /((?:private|public|protected)\s+[a-zA-Z_$][a-zA-Z0-9_$]*:\s*[^;{},]+);\s*}/g;
-            fixed = fixed.replace(pattern9, (match, prop) => {
-                // This is a class property, should have semicolon
-                return prop + ';\n    }';
-            });
-            
-            // Pattern 10: Fix missing commas in object literals
-            // Example: { prop1: val1 prop2: val2 } -> { prop1: val1, prop2: val2 }
-            const pattern10 = /\{\s*([^{}]+)\s*\}/g;
-            fixed = fixed.replace(pattern10, (match, content) => {
-                // Split by newlines and check each line
-                const lines = content.split('\n').map(line => line.trim()).filter(line => line);
-                let hasModification = false;
-                
-                for (let i = 0; i < lines.length - 1; i++) {
-                    const line = lines[i];
-                    const nextLine = lines[i + 1];
-                    
-                    // Check if current line has property syntax and next line also has property syntax
-                    if (line.includes(':') && !line.endsWith(',') && !line.endsWith(';') &&
-                        nextLine.includes(':') && 
-                        !line.includes('function') && !line.includes('=>')) {
-                        lines[i] = line + ',';
-                        hasModification = true;
-                    }
-                }
-                
-                if (hasModification) {
-                    modifications++;
-                    return '{ ' + lines.join('\n            ') + ' }';
-                }
-                return match;
-            });
-
-            if (modifications > 0) {
-                fs.writeFileSync(filePath, fixed);
-                modifiedFiles++;
-                totalModifications += modifications;
-                console.log(`Fixed ${modifications} patterns in ${path.relative(process.cwd(), filePath)}`);
+                j++;
             }
-            
-        } catch (error) {
-            console.error(`Error processing file ${filePath}:`, error.message);
         }
     }
     
-    console.log(`\nInterface and object syntax fixing completed:`);
-    console.log(`- Files processed: ${tsFiles.length}`);
-    console.log(`- Files modified: ${modifiedFiles}`);
-    console.log(`- Total modifications: ${totalModifications}`);
+    // 2. インターフェース定義の閉じ括弧が欠けている場合の修正
+    for (let i = 0; i < lines.length - 1; i++) {
+        const line = lines[i];
+        const nextLine = lines[i + 1];
+        
+        // インターフェースプロパティの後にexport classが来る場合
+        if (line.match(/^\s*\w+:\s*[^;]+;?\s*$/) && 
+            nextLine.match(/^\s*export\s+class\s+/)) {
+            // 前の行を探してインターフェース宣言を確認
+            let j = i - 1;
+            let insideInterface = false;
+            let braceCount = 0;
+            
+            while (j >= 0) {
+                const prevLine = lines[j];
+                if (prevLine.match(/^\s*(?:export\s+)?interface\s+\w+\s*{/)) {
+                    insideInterface = true;
+                    braceCount = 1;
+                    break;
+                }
+                j--;
+            }
+            
+            if (insideInterface) {
+                // ブレースカウントを確認
+                for (let k = j + 1; k <= i; k++) {
+                    braceCount += (lines[k].match(/{/g) || []).length;
+                    braceCount -= (lines[k].match(/}/g) || []).length;
+                }
+                
+                if (braceCount > 0) {
+                    // 閉じ括弧を追加
+                    lines[i] = lines[i] + '\n}';
+                    modified = true;
+                }
+            }
+        }
+    }
     
-    return { filesProcessed: tsFiles.length, modifiedFiles, totalModifications };
+    // 3. オブジェクトリテラル内のセミコロンをカンマに修正
+    content = lines.join('\n');
+    
+    // プロパティ定義パターンの修正
+    content = content.replace(/(\w+)\s*:\s*{\s*([^}]*?)}\s*;/g, (match, prop, innerContent) => {
+        // オブジェクトリテラル内のセミコロンをカンマに変換
+        const fixedInner = innerContent.replace(/;(\s*)(?=[a-zA-Z_$])/g, ',$1');
+        modified = true;
+        return `${prop}: { ${fixedInner} },`;
+    });
+    
+    // 4. 不正なプロパティ区切り文字の修正
+    // "enabled: boolean }" -> "enabled: boolean;"
+    content = content.replace(/(\w+)\s*:\s*(boolean|number|string|any)\s*}/g, (match, prop, type) => {
+        modified = true;
+        return `${prop}: ${type};\n    }`;
+    });
+    
+    // 5. オブジェクトリテラル内の不正な閉じ括弧
+    // "timestamp: number | null;" の後の }; を修正
+    content = content.replace(/(\w+)\s*:\s*([^;]+);\s*}\s*;/g, (match, prop, type) => {
+        if (match.includes('|')) {
+            modified = true;
+            return `${prop}: ${type};\n    };`;
+        }
+        return match;
+    });
+    
+    // 6. コンストラクタのパラメータ修正
+    content = content.replace(/constructor\((.*?)\)\s*{/g, (match, params) => {
+        // パラメータ内の不正な区切り文字を修正
+        const fixedParams = params
+            .replace(/,\s*=/g, ' =')  // ", =" -> " ="
+            .replace(/}\s*,/g, '}')   // "}, " -> "}"
+            .replace(/;\s*}/g, ' }'); // "; }" -> " }"
+        
+        if (fixedParams !== params) {
+            modified = true;
+        }
+        return `constructor(${fixedParams}) {`;
+    });
+    
+    return { content, modified };
 }
 
-// Run the fixing
-fixInterfaceObjectSyntax().catch(console.error);
+/**
+ * ファイルを処理
+ */
+function processFile(filePath) {
+    try {
+        const content = fs.readFileSync(filePath, 'utf8');
+        const result = fixInterfaceObjectSyntax(content);
+        
+        if (result.modified) {
+            fs.writeFileSync(filePath, result.content, 'utf8');
+            return true;
+        }
+        return false;
+    } catch (error) {
+        console.error(`Error processing ${filePath}:`, error.message);
+        return false;
+    }
+}
+
+/**
+ * ディレクトリを再帰的に処理
+ */
+function processDirectory(dir) {
+    let totalFixed = 0;
+    const files = fs.readdirSync(dir);
+    
+    for (const file of files) {
+        const filePath = path.join(dir, file);
+        const stat = fs.statSync(filePath);
+        
+        if (stat.isDirectory() && !file.startsWith('.') && file !== 'node_modules') {
+            totalFixed += processDirectory(filePath);
+        } else if (stat.isFile() && file.endsWith('.ts')) {
+            if (processFile(filePath)) {
+                console.log(`Fixed: ${filePath}`);
+                totalFixed++;
+            }
+        }
+    }
+    
+    return totalFixed;
+}
+
+// メイン処理
+console.log('Fixing interface and object syntax errors in TypeScript files...\n');
+
+// 優先ファイルを先に処理
+console.log('Processing priority files first...');
+let priorityFixed = 0;
+for (const file of priorityFiles) {
+    const fullPath = path.join(process.cwd(), file);
+    if (fs.existsSync(fullPath)) {
+        if (processFile(fullPath)) {
+            console.log(`Fixed priority file: ${file}`);
+            priorityFixed++;
+        }
+    }
+}
+
+console.log(`\nFixed ${priorityFixed} priority files\n`);
+
+// 残りのファイルを処理
+console.log('Processing remaining files...');
+const srcFixed = processDirectory(path.join(process.cwd(), 'src'));
+const testsFixed = processDirectory(path.join(process.cwd(), 'src/tests'));
+
+const totalFixed = priorityFixed + srcFixed + testsFixed;
+console.log(`\nTotal files fixed: ${totalFixed}`);

@@ -19,19 +19,19 @@ const mockGameEngine = {
     sceneManager: {
         getCurrentScene: jest.fn((') => ({'
             constructor: { name: 'GameScene' ,
-            togglePause: jest.fn(
+            togglePause: jest.fn( },
             closeSettings: jest.fn(
             showingSettings: false
     )),
         switchScene: jest.fn(() => true),
     ),
     audioManager: {
-        toggleMute: jest.fn(() => false)),
+        toggleMute: jest.fn(() => false)) },
     settingsManager: {
-        get: jest.fn(() => 0.5),
+        get: jest.fn(() => 0.5) },
         set: jest.fn(
     responsiveCanvasManager: {
-        toggleFullscreen: jest.fn(),
+        toggleFullscreen: jest.fn() },
     isDebugMode: jest.fn(() => false),
         performanceStats: {
             };
@@ -250,6 +250,6 @@ describe('CoreKeyboardShortcutManager - Removed Shortcuts (Issue #169')', () => 
             expect(shortcutNames').not.toContain('settings');'
             expect(shortcutNames').not.toContain('help');'
             expect(shortcutNames').not.toContain('userInfo');'
-        };
+        }
     }
 }');'

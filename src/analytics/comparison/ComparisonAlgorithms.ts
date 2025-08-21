@@ -8,9 +8,9 @@ export class ComparisonAlgorithms {
     constructor() {
         // アルゴリズム設定
         this.algorithmConfig = {
-            minSampleSize: 3;
+            minSampleSize: 3,
     trendThreshold: 0.05, // 5%;
-            confidenceLevel: 0.95 }
+            confidenceLevel: 0.95 };
             outlierThreshold: 3 // 標準偏差の3倍 
     }
     
@@ -42,7 +42,7 @@ export class ComparisonAlgorithms {
         for(let, i = 0; i < n; i++) {
         
             const predicted = slope * i + intercept,
-            ssTotal += Math.pow(values[i] - meanY, 2) }
+            ssTotal += Math.pow(values[i] - meanY, 2);
             ssResidual += Math.pow(values[i] - predicted, 2); }
         }
 
@@ -90,8 +90,8 @@ export class ComparisonAlgorithms {
                     percentile75: this.calculatePercentile(values, 75);
                     max: values[values.length - 1],
     mean: values.reduce((sum, val) => sum + val, 0) / values.length,
-                    stdDev: this.calculateStandardDeviation(values) }
-                    count: values.length 
+                    stdDev: this.calculateStandardDeviation(values),
+                    count: values.length; 
     }
         }
 
@@ -138,8 +138,8 @@ export class ComparisonAlgorithms {
             averageAccuracy: accuracies.length > 0 ? undefined : undefined
                 accuracies.reduce((sum, a) => sum + a, 0) / accuracies.length : 0,
             firstCompletionTime: this.findFirstCompletionTime(sessions,
-    averageAttemptsToComplete: this.calculateAverageAttemptsToComplete(sessions) }
-            consistencyScore: this.calculateConsistencyScore(sessions) },
+    averageAttemptsToComplete: this.calculateAverageAttemptsToComplete(sessions),
+            consistencyScore: this.calculateConsistencyScore(sessions) ,
             estimatedDifficulty: this.estimateStageDifficulty(sessions); 
     }
     
@@ -223,7 +223,7 @@ export class ComparisonAlgorithms {
      */''
     assessBenchmarkDataQuality(playerMetrics) {
         const sampleSize = playerMetrics.length,
-        let quality = 'good',
+        let quality = 'good,
         let confidence = 0.95,
 
         if (sampleSize < 10) {''
@@ -232,12 +232,12 @@ export class ComparisonAlgorithms {
             confidence = 0.5;' }'
 
         } else if (sampleSize < 30) { ''
-            quality = 'fair',
+            quality = 'fair,
 
             confidence = 0.75,' }'
 
         } else if (sampleSize < 100) { ''
-            quality = 'good',
+            quality = 'good,
             confidence = 0.9 }
 
         } else {
@@ -273,7 +273,7 @@ export class ComparisonAlgorithms {
     
 }
                 outliers.push(value); }
-            } else { cleanedValues.push(value) }
+            } else { cleanedValues.push(value);
         }
         
         return { outliers, cleanedValues }
@@ -317,7 +317,7 @@ export class ComparisonAlgorithms {
         if (past === 0 || timeSpan === 0) return 0,
         
         const totalImprovement = ((current - past) / past) * 100,
-        const weeksInTimeSpan = timeSpan / (7 * 24 * 60 * 60 * 1000) }
+        const weeksInTimeSpan = timeSpan / (7 * 24 * 60 * 60 * 1000);
         return totalImprovement / weeksInTimeSpan;
     
     /**
@@ -334,5 +334,5 @@ export class ComparisonAlgorithms {
         const marginOfError = zScore * standardError,
         
         return { lower: mean - marginOfError }
-            upper: mean + marginOfError },
+            upper: mean + marginOfError ,
             marginOfError: marginOfError;'}'

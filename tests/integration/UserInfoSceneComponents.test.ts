@@ -51,16 +51,16 @@ class MockGameEngine {
     constructor() {
         this.canvas = createMockCanvas();
         this.statisticsManager = {
-            getDetailedStatistics: global.jest.fn(() => Promise.resolve({);
-                basic: { totalGamesPlayed: 10 ;
-                bubbles: { totalPopped: 1000 ;
-                combos: { maxCombo: 50 ;
+            getDetailedStatistics: global.jest.fn(() => Promise.resolve({),
+                basic: { totalGamesPlayed: 10 ,
+                bubbles: { totalPopped: 1000 ,
+                combos: { maxCombo: 50 ,
                 stages: { unlockedStages: 5 }
-            };
+            }
         };
         this.achievementManager = {
             getAchievements: global.jest.fn((') => Promise.resolve(['
-                { id: 'test_achievement', unlocked: true, progress: 100;
+                { id: 'test_achievement', unlocked: true, progress: 100,
         target: 100 )
             ])
         ),

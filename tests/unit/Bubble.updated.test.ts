@@ -10,38 +10,38 @@ import { jest, describe, test, expect, beforeEach  } from '@jest/globals';
 import { Bubble  } from '../../src/bubbles/Bubble';
 // Type definitions
 interface MockCanvasContext {
-    arc: jest.Mock;
+    arc: jest.Mock,
     fill: jest.Mock;
-    stroke: jest.Mock;
+    stroke: jest.Mock,
     fillText: jest.Mock;
-    strokeText: jest.Mock;
+    strokeText: jest.Mock,
     save: jest.Mock;
-    restore: jest.Mock;
+    restore: jest.Mock,
     translate: jest.Mock;
-    scale: jest.Mock;
+    scale: jest.Mock,
     rotate: jest.Mock;
-    beginPath: jest.Mock;
+    beginPath: jest.Mock,
     closePath: jest.Mock;
-    fillStyle: string;
+    fillStyle: string,
     strokeStyle: string;
-    lineWidth: number;
+    lineWidth: number,
     font: string;
-    textAlign: string;
+    textAlign: string,
     textBaseline: string;
     globalAlpha: number;
 interface MockGameEngine {
-    canvas: { widt,h: number,, height: number;
-    ctx: MockCanvasContext;
-    currentStage: { name: string;
+    canvas: { widt,h: number,, height: number,
+    ctx: MockCanvasContext };
+    currentStage: { name: string,
     getInputManager: jest.Mock<() => {
-        isMousePressed: jest.Mock<() => boolean>;
+        isMousePressed: jest.Mock<() => boolean>,
         getMousePosition: jest.Mock<(') => { x: number,, y: number;>;'
     }>;
 }
 interface BubbleConfig {
-    health: number;
+    health: number,
     score: number;
-    size: number;
+    size: number,
     maxAge: number;
     healAmount?: number;
     color?: string;
@@ -53,9 +53,9 @@ interface BubbleConfig {
     poisonDamage?: number;
 }
 interface TestMetadata {
-    generatedAt: string;
+    generatedAt: string,
     sourceFiles: string[];
-    testTypes: string[];
+    testTypes: string[],
     bubbleTypesCount: number;
 // Mock dependencies
 jest.mock('../../src/core/ConfigurationManager', () => ({
@@ -75,9 +75,9 @@ describe('Bubble Class Tests', () => {
     beforeEach(() => {
         // Mock GameEngine
         mockGameEngine = {
-            canvas: { width: 800, height: 600 ;
+            canvas: { width: 800, height: 600 ,
             ctx: {
-                arc: jest.fn(
+                arc: jest.fn( },
                 fill: jest.fn(
                 stroke: jest.fn(
                 fillText: jest.fn(
@@ -91,15 +91,15 @@ describe('Bubble Class Tests', () => {
                 closePath: jest.fn(','
                 fillStyle: ','
                 strokeStyle: ','
-                lineWidth: 1;
+                lineWidth: 1,
                 font: ','
                 textAlign: ','
                 textBaseline: ','
                 globalAlpha: 1
             },
-            currentStage: { name: 'normal' };
+            currentStage: { name: 'normal' },
             getInputManager: jest.fn(() => ({
-                isMousePressed: jest.fn(() => false);
+                isMousePressed: jest.fn(() => false),
                 getMousePosition: jest.fn(() => ({ x: 0, y: 0 ))))
         );
         jest.clearAllMocks();
@@ -312,6 +312,6 @@ describe('Bubble Class Tests', () => {
             expect(metadata').toHaveProperty('sourceFiles');'
             expect(Array.isArray(metadata.sourceFiles).toBe(true);
             expect(metadata.bubbleTypesCount).toBeGreaterThan(0);
-        };
+        }
     }
 }');'

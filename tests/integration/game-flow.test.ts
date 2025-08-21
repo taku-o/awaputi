@@ -8,10 +8,10 @@ import { Bubble  } from '../../src/bubbles/Bubble.js';
 import { Position  } from '../../src/types/bubble.js';
 // import { MockCanvasRenderingContext2D  } from '../../src/types/test.js';
 interface MockCanvas extends HTMLCanvasElement {
-  width: number;
+  width: number,
   height: number;
 interface MockMouseEvent extends MouseEvent {
-  clientX: number;
+  clientX: number,
   clientY: number;
 interface MockTouchEvent extends TouchEvent {
   touches: Touch[];
@@ -21,7 +21,7 @@ const createMockCanvas = ('): MockCanvas => {'
   canvas.width = 800,
   canvas.height = 600,
   Object.defineProperty(canvas, 'getContext', {);
-    value: jest.fn().mockReturnValue({;
+    value: jest.fn().mockReturnValue({,
       arc: jest.fn(
       fill: jest.fn(
       stroke: jest.fn(
@@ -34,19 +34,19 @@ const createMockCanvas = ('): MockCanvas => {'
       rotate: jest.fn(','
       fillStyle: ','
       strokeStyle: ','
-      lineWidth: 1;
+      lineWidth: 1,
       font: ','
-      textAlign: 'start' as CanvasTextAlign;
+      textAlign: 'start' as CanvasTextAlign,
       textBaseline: 'alphabetic' as CanvasTextBaseline;
       globalAlpha: 1
-    };
+    }
   }
   return canvas;
 };
 const createMockMouseEvent = (type: string, x: number, y: number): MockMouseEvent => {
   return {
     type,
-    clientX: x;
+    clientX: x,
     clientY: y;
     preventDefault: jest.fn(
         stopPropagation: jest.fn( } as any;
@@ -55,7 +55,7 @@ const createMockTouchEvent = (type: string, touches: Array<{ clientX: number,, c
   return {
     type,
     touches: touches.map((touch) => ({
-      clientX: touch.clientX;
+      clientX: touch.clientX,
       clientY: touch.clientY
     }),
     preventDefault: jest.fn(
@@ -71,16 +71,16 @@ describe('Game Flow Integration', () => {
     const mockGetItem = jest.fn((key: string') => {'
       if (key === 'bubblePop_playerData') {
         return JSON.stringify({
-          username: 'TestPlayer';
+          username: 'TestPlayer',
           currentHP: 100;
-          maxHP: 100;
+          maxHP: 100,
           currentScore: 0;
-          ap: 100;
+          ap: 100,
           tap: 500;
           highScores: {','
-          unlockedStages: ['tutorial', 'normal'],
+          unlockedStages: ['tutorial', 'normal'] };
           ownedItems: []
-    };
+    }
       }
       return null;
     }');'
@@ -240,7 +240,7 @@ describe('Game Flow Integration', () => {
     }');'
     test('should load game state correctly', () => {
       const mockGetItem = jest.fn(').mockReturnValue(JSON.stringify({'
-        username: 'LoadedPlayer';
+        username: 'LoadedPlayer',
         currentScore: 2000;
         ap: 75 }');'
       Object.defineProperty(global.localStorage, 'getItem', {
@@ -275,7 +275,7 @@ describe('Game Flow Integration', () => {
       // Simulate high memory usage
       Object.defineProperty(performance, 'memory', {
         value: {
-          usedJSHeapSize: 180 * 1024 * 1024, // 180MB
+          usedJSHeapSize: 180 * 1024 * 1024, // 180MB };
           totalJSHeapSize: 200 * 1024 * 1024, // 200MB
           jsHeapSizeLimit: 200 * 1024 * 1024  // 200MB
         },
@@ -304,6 +304,6 @@ describe('Game Flow Integration', () => {
       // Cleanup
       gameEngine.cleanup();
       // Should complete without errors
-      expect(gameEngine.audioManager.playGameOverSound).toHaveBeenCalled() };
+      expect(gameEngine.audioManager.playGameOverSound).toHaveBeenCalled() }
   }
 }');'

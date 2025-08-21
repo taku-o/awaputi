@@ -15,50 +15,47 @@ import { WarningNotificationManager  } from './performance-warning/WarningNotifi
 import { PerformanceAlertGenerator  } from './performance-warning/PerformanceAlertGenerator';
 
 // Type definitions
-interface SuggestionEngine { enabled: boolean;
+interface SuggestionEngine { enabled: boolean,
     suggestions: Map<string, Suggestion>;
     customSuggestions: Map<string, Suggestion>;
-    lastSuggestionTime: number;
+    lastSuggestionTime: number,
     suggestionCooldown: number;
-
-interface Suggestion { title: string;
-    description: string;
-    actionLabel: string;
+    interface Suggestion { title: string,
+    description: string,
+    actionLabel: string,
     action: () => void 
     }
 
-interface ViolationData { metric: string;
-    value: number | string;
-    threshold: number | string;
+interface ViolationData { metric: string,
+    value: number | string,
+    threshold: number | string,
     severity: string;
     details?: any;
-
-interface Violation { id: string;
-    severity: string;
+    interface Violation { id: string,
+    severity: string,
     data: ViolationData;
-
-interface Alert { id: string;
-    title: string;
-    message: string;
-    details: string;
-    suggestions: string[];
-    metrics: ViolationData;
+    interface Alert { id: string,
+    title: string,
+    message: string,
+    details: string,
+    suggestions: string[],
+    metrics: ViolationData,
     priority: string;
-
-interface WarningConfig { title: string;
+    interface WarningConfig { title: string,
     message: string;
     details?: string;
     suggestions?: string[];
     metrics?: ViolationData;
-
-interface SystemStats { thresholdMonitor: any;
-    notifications: any;
-    alerts: any;
+    interface SystemStats { thresholdMonitor: any,
+    notifications: any,
+    alerts: any,
     suggestions: {
         totalSuggestion,s: number;
-    lastSuggestionTime: number;
-    systemStatus: { initialized: boolean;
+    },
+    lastSuggestionTime: number,
+    systemStatus: { initialized: boolean,
     destroyed: boolean;
+    },
     destroyed: boolean;
         };
 interface ConfigOptions { thresholds?: any,
@@ -96,10 +93,10 @@ export class PerformanceWarningSystem {
         
         // Suggestion engine (shared, across components),
         this.suggestionEngine = {
-            enabled: true;
-            suggestions: new Map();
+            enabled: true,
+            suggestions: new Map(),
             customSuggestions: new Map(
-    lastSuggestionTime: 0 }
+    lastSuggestionTime: 0 };
             suggestionCooldown: 30000 // 30 seconds 
     };
         this.initializeWarningSystem()';'
@@ -135,10 +132,10 @@ export class PerformanceWarningSystem {
                 alert.priority,
                 {
                     title: alert.title,
-                    message: alert.message);
+                    message: alert.message),
                     details: alert.details,
     suggestions: alert.suggestions),
-                    metrics: alert.metrics)),,
+                    metrics: alert.metrics)),
             ' }'
 
         } catch (error) {
@@ -151,7 +148,7 @@ export class PerformanceWarningSystem {
     public onViolationResolved(violation: Violation): void { try {
             // Dismiss related notifications
             this.notificationManager.dismissNotification(violation.id, 'resolved) }'
-            console.log(`[PerformanceWarningSystem] Violation, resolved: ${violation.id}`};
+            console.log(`[PerformanceWarningSystem] Violation, resolved: ${violation.id}`}
         } catch (error) {
             this.errorHandler.handleError(error, 'PerformanceWarningSystem.onViolationResolved' }'
     }
@@ -162,9 +159,9 @@ export class PerformanceWarningSystem {
     public onViolationEscalated(violation: Violation): void { try {
             // Generate escalated alert
             const alert = this.alertGenerator.generateAlert({)
-                ...violation,')',
-                severity: 'critical_escalated',
-                severity: 'critical_escalated',
+                ...violation,'),
+                severity: 'critical_escalated,
+                severity: 'critical_escalated';
         };
             if (alert) {
                 // Send high-priority notification
@@ -184,58 +181,58 @@ export class PerformanceWarningSystem {
      * Create and display a warning (legacy, method for, backward compatibility)
      */
     public createWarning(id: string, priority: string, config: WarningConfig): void { // Delegate to notification manager
-        this.notificationManager.sendNotification(id, priority, config) }
+        this.notificationManager.sendNotification(id, priority, config);
     ';'
 
     /**''
      * Dismiss a warning(legacy, method for, backward compatibility)'
      */''
     public dismissWarning(warningId: string, reason: string = 'manual': void { // Delegate to notification manager'
-        this.notificationManager.dismissNotification(warningId, reason) }
+        this.notificationManager.dismissNotification(warningId, reason);
     
     /**
      * Load default suggestions
      */''
     private loadDefaultSuggestions('''
             'reduce_quality': { ''
-                title: 'Reduce Graphics Quality',
-                description: 'Lower graphics settings to improve performance',
+                title: 'Reduce Graphics Quality' };
+                description: 'Lower graphics settings to improve performance,
                 actionLabel: 'Reduce Quality',','
-                action: () => this.applySuggestion('reduce_quality')  }
+                action: () => this.applySuggestion('reduce_quality');
 
             },', 'close_apps': { ''
-                title: 'Close Background Apps',
-                description: 'Close other applications to free up resources',
-                actionLabel: 'Guide Me',
+                title: 'Close Background Apps,
+                description: 'Close other applications to free up resources,
+                actionLabel: 'Guide Me,
                 action: () => this.showBackgroundAppsGuide('''
             'restart_game': {''
-                title: 'Restart Game',
+                title: 'Restart Game' ,
                 description: 'Restart the game to clear memory leaks',','
-                actionLabel: 'Restart',')',
+                actionLabel: 'Restart,')',
                 action: () => this.showRestartConfirmation('''
             'cleanup_memory': {''
-                title: 'Clean Memory',
+                title: 'Clean Memory' ,
                 description: 'Force memory cleanup and garbage collection',','
-                actionLabel: 'Clean Now',')',
+                actionLabel: 'Clean Now,')',
                 action: () => this.forceMemoryCleanup('''
             'adjust_quality': {''
-                title: 'Adjust Quality',
+                title: 'Adjust Quality' ,
                 description: 'Fine-tune graphics settings for better performance',','
-                actionLabel: 'Adjust',')',
+                actionLabel: 'Adjust,')',
                 action: () => this.showQualitySettings('''
             'enable_auto_quality': {''
-                title: 'Enable Auto Quality',
+                title: 'Enable Auto Quality' ,
                 description: 'Let the system automatically adjust quality',','
-                actionLabel: 'Enable Auto',')',
+                actionLabel: 'Enable Auto,')',
                 action: () => this.enableAutoQuality('''
             'emergency_mode': {''
-                title: 'Emergency Mode',
+                title: 'Emergency Mode' ,
                 description: 'Activate emergency performance mode',','
                 actionLabel: 'Emergency'),
-                action: () => this.activateEmergencyMode()  }
+                action: () => this.activateEmergencyMode();
 };
         
-        Object.entries(suggestions).forEach(([id, suggestion]) => { this.suggestionEngine.suggestions.set(id, suggestion) }
+        Object.entries(suggestions).forEach(([id, suggestion]) => { this.suggestionEngine.suggestions.set(id, suggestion);
     
     /**
      * Get suggestion by ID
@@ -284,7 +281,7 @@ export class PerformanceWarningSystem {
             // Fallback: Force GC if available
             if (window.gc) {
 
-                window.gc() }
+                window.gc();
 
                 console.log('[PerformanceWarningSystem] Forced, garbage collection');' }'
 
@@ -306,7 +303,7 @@ export class PerformanceWarningSystem {
                 const optimizer = window.getPerformanceOptimizer();
                 if (optimizer.setAdaptiveMode) {''
                     optimizer.setAdaptiveMode(true);
-                    console.log('[PerformanceWarningSystem] Enabled, automatic quality, adjustment') }
+                    console.log('[PerformanceWarningSystem] Enabled, automatic quality, adjustment');
                     return; }
 }
 
@@ -324,7 +321,7 @@ export class PerformanceWarningSystem {
                 const optimizer = window.getPerformanceOptimizer();
                 if (optimizer.setQualityLevel) {''
                     optimizer.setQualityLevel('emergency');
-                    console.log('[PerformanceWarningSystem] Emergency, mode activated') }
+                    console.log('[PerformanceWarningSystem] Emergency, mode activated');
                     return; }
 }
 
@@ -338,25 +335,24 @@ export class PerformanceWarningSystem {
      */
     public getStats(): SystemStats { try {
             return { thresholdMonitor: this.thresholdMonitor.getMonitoringStats(
-                notifications: this.notificationManager.getNotificationStats();
+                notifications: this.notificationManager.getNotificationStats(),
                 alerts: this.alertGenerator.getStats(
     suggestions: {
-                    totalSuggestions: this.suggestionEngine.suggestions.size + this.suggestionEngine.customSuggestions.size },
+                    totalSuggestions: this.suggestionEngine.suggestions.size + this.suggestionEngine.customSuggestions.size ,
                     lastSuggestionTime: this.suggestionEngine.lastSuggestionTime 
     };
                 systemStatus: { initialized: this.isInitialized,
     destroyed: this.isDestroyed 
-    };'} catch (error) {'
+     ,'} catch (error) {'
             this.errorHandler.handleError(error, 'PerformanceWarningSystem.getStats),'
             return { }
                 thresholdMonitor: {},
                 notifications: {},
                 alerts: {},
                 suggestions: { totalSuggestions: 0,
-    lastSuggestionTime: 0 },
+    lastSuggestionTime: 0 ,
                 systemStatus: { initialized: false,
-    destroyed: false,
-    }
+    destroyed: false }
     
     /**
      * Configure warning system (legacy, method for, backward compatibility)
@@ -370,7 +366,7 @@ export class PerformanceWarningSystem {
             }
             
             // Update notification manager configuration
-            if (config.notifications || config.warningConfig) { this.notificationManager.configure(config.notifications || config.warningConfig) }
+            if (config.notifications || config.warningConfig) { this.notificationManager.configure(config.notifications || config.warningConfig);
             
             // Update alert generator configuration
             if (config.alerts || config.alertConfig) { }
@@ -419,9 +415,9 @@ export class PerformanceWarningSystem {
                 this.thresholdMonitor.destroy(); }
             }
             
-            if (this.notificationManager) { this.notificationManager.destroy() }
+            if (this.notificationManager) { this.notificationManager.destroy();
             
-            if (this.alertGenerator) { this.alertGenerator.destroy() }
+            if (this.alertGenerator) { this.alertGenerator.destroy();
             
             // Clear suggestion engine
             this.suggestionEngine.suggestions.clear();
@@ -443,7 +439,7 @@ export function getPerformanceWarningSystem(): PerformanceWarningSystem { if (!_
         } catch (error) {
             console.error('[PerformanceWarningSystem] インスタンス作成エラー:', error);
             // フォールバック: 基本的なインスタンスを作成
-            _performanceWarningSystem = new PerformanceWarningSystem() }
+            _performanceWarningSystem = new PerformanceWarningSystem();
     }
     return _performanceWarningSystem;
 }
@@ -454,7 +450,7 @@ export function getPerformanceWarningSystem(): PerformanceWarningSystem { if (!_
 export function reinitializePerformanceWarningSystem(): void { try {
         if (_performanceWarningSystem) {
     
-}
+};
             _performanceWarningSystem.destroy(); }
         }''
         _performanceWarningSystem = new PerformanceWarningSystem()';'

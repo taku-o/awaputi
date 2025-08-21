@@ -17,7 +17,7 @@ export class Scene implements IScene { public gameEngine: any;
         this.gameEngine = gameEngine;
         this.sceneManager = null;
         this.isActive = false
-}
+};
         this.isLoaded = false; }
     }
     

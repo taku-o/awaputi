@@ -17,7 +17,7 @@ test.describe('Internationalization E2E Tests', () => {
     // Wait for LocalizationManager to be initialized
     await page.waitForFunction(() => {
       return window.gameEngine && 
-             window.gameEngine.localizationManager !== undefined };
+             window.gameEngine.localizationManager !== undefined }
   }');'
 
   test('should initialize with default language (Japanese')', async ({ page } => {'
@@ -115,7 +115,7 @@ test.describe('Internationalization E2E Tests', () => {
         'test.greeting': 'Hello, {{name}}!');
       }');'
       
-      return lm.t('test.greeting', { name: 'World' };
+      return lm.t('test.greeting', { name: 'World' }
     }, localizationManager);
     
     expect(translationWithParams').toBe('Hello, World!');'
@@ -128,7 +128,7 @@ test.describe('Internationalization E2E Tests', () => {
     // Add translation only in Japanese
     await page.evaluate((lm') => {'
       lm.addTranslations('ja', {
-        'test.japanese.only': '日本語のみ') };
+        'test.japanese.only': '日本語のみ') }
     }, localizationManager);
     
     // Switch to English
@@ -285,7 +285,7 @@ test.describe('Internationalization E2E Tests', () => {
       
       window.gameEngine.localizationManager.addLanguageChangeListener()
         (newLang, oldLang) => {
-          window.testLanguageChangeEvent = { newLang, oldLang };
+          window.testLanguageChangeEvent = { newLang, oldLang }
         }
       );
     };
@@ -334,7 +334,7 @@ test.describe('Internationalization E2E Tests', () => {
         return {
           success: false,
           error: error.message
-        };
+        }
       }
     };
     
@@ -383,17 +383,17 @@ test.describe('Internationalization E2E Tests', () => {
         return {
           success: true,
           accessibilityTranslationsCleared: Object.keys(stats.accessibilityTranslations).length === 0
-        };
+        }
       } catch (error) {
         return {
           success: false,
           error: error.message
-        };
+        }
       }
     };
     
     expect(cleanupResult.success).toBe(true);
-  };
+  }
 }');'
 
 test.describe('Multi-language UI Integration Tests', () => {
@@ -456,12 +456,12 @@ test.describe('Multi-language UI Integration Tests', () => {
         afterLanguageChange,
         scenePreserved: initialState.currentScene === afterLanguageChange.currentScene,
         languageChanged: initialState.language !== afterLanguageChange.language
-      };
+      }
     };
     
     expect(statePreservationTest.scenePreserved).toBe(true);
     expect(statePreservationTest.languageChanged).toBe(true);
-  };
+  }
 }');'
 
 test.describe('Localization Error Handling', () => {
@@ -489,7 +489,7 @@ test.describe('Localization Error Handling', () => {
         return {
           success: false,
           error: error.message
-        };
+        }
       }
     };
     
@@ -508,10 +508,10 @@ test.describe('Localization Error Handling', () => {
         result: result,
         isString: typeof result === 'string',
         isOriginalKey: result === 'non.existent.key'
-      };
+      }
     };
     
     expect(missingKeyTest.isString).toBe(true);
     expect(missingKeyTest.isOriginalKey).toBe(true);
-  };
+  }
 }');'

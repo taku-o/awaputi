@@ -15,10 +15,8 @@ interface GameEngine { scoreManager?: ScoreManager,
     isRunning?: boolean;
     isPaused?: boolean;
     sceneManager?: SceneManager;
-
-interface SceneManager { currentScene?: string;
-
-interface ScoreManager { getScore?: () => number,
+    interface SceneManager { currentScene?: string;
+    interface ScoreManager { getScore?: () => number,
     getCurrentCombo?: () => number }
 
 interface BubbleManager { getActiveBubbleCount?: () => number,
@@ -36,32 +34,33 @@ interface StageManager { // Stage manager interface }
 interface DebugConsole { registerCommand: (name: string, config: CommandConfig) => void  }
 }
 
-interface CommandConfig { description: string;
-    usage: string;
-    category: string;
+interface CommandConfig { description: string,
+    usage: string,
+    category: string,
     execute: (args: string[]) => string;
     getCompletions?: () => string[]  }
 }
 
-interface GameState { timestamp: number;
-    running: boolean;
-    paused: boolean;
+interface GameState { timestamp: number,
+    running: boolean,
+    paused: boolean,
     currentScene: string | null;
     score?: {
         curren,t: number;
+    },
     combo: number;
     bubbles?: { count: number;
 
-interface PlayerDataSnapshot { name: string;
-    level: number;
-    ap: number;
-    tap: number;
-    highScore: number;
+interface PlayerDataSnapshot { name: string,
+    level: number,
+    ap: number,
+    tap: number,
+    highScore: number,
     highScore: number;
         };
-interface BackupData { id: string;
-    timestamp: number;
-    data: PlayerDataSnapshot | null }
+interface BackupData { id: string,
+    timestamp: number,
+    data: PlayerDataSnapshot | null } };
 
 interface ComponentWithInitialize { initialize?: () => Promise<void> | void }
 ';'
@@ -72,22 +71,17 @@ interface ComponentWithCleanup { ''
 
 interface ExecutionStatistics { [key: string]: any;
     undo?: any;
-
-interface UndoRedoStatistics { [key: string]: any;
-
-interface SafetySettings { [key: string]: any;
-
-interface ExecutionState { lastCommand: any;
-    commandHistory: any[];
-    undoStack: any[];
+    interface UndoRedoStatistics { [key: string]: any;
+    interface SafetySettings { [key: string]: any;
+    interface ExecutionState { lastCommand: any,
+    commandHistory: any[],
+    undoStack: any[],
     maxUndoSize: number;
-
-interface SafetyChecks { confirmDestructive: boolean;
-    preventDataLoss: boolean;
-    validateInputs: boolean;
+    interface SafetyChecks { confirmDestructive: boolean,
+    preventDataLoss: boolean,
+    validateInputs: boolean,
     logAllChanges: boolean;
-
-type TestScenario = 'stress' | 'memory' | 'performance' | 'bubbles' | 'scoring';
+    type TestScenario = 'stress' | 'memory' | 'performance' | 'bubbles' | 'scoring';
 
 /**
  * Game State Commands (Main, Controller)
@@ -103,9 +97,9 @@ export class GameStateCommands extends BaseComponent { private gameEngine?: Game
 
         super(null, 'GameStateCommands),'
         this.gameEngine = gameEngine;
-        this.console = console!;
-        this.errorHandler = null;
-        this.components = new Map() }
+    this.console = console!;
+    this.errorHandler = null;
+    this.components = new Map() };
         this.initialized = false; }
     }
 
@@ -217,10 +211,10 @@ export class GameStateCommands extends BaseComponent { private gameEngine?: Game
     private registerIntegratedCommands('''
         this.console.registerCommand('run-test', { ''
             description: 'Run test scenario',','
-            usage: 'run-test <scenario>',')',
-            category: 'debug',
+            usage: 'run-test <scenario>,')',
+            category: 'debug,
             execute: (args: string[]) => { ''
-                if(args.length === 0) return 'Usage: run-test <scenario>',
+                if(args.length === 0) return 'Usage: run-test <scenario>,
                 const scenario = args[0] as TestScenario,
                 try {  }
                     return this.runTestScenario(scenario); catch (error) {
@@ -231,8 +225,8 @@ export class GameStateCommands extends BaseComponent { private gameEngine?: Game
         // ゲーム状態ダンプ
         this.console.registerCommand('dump-state', { ''
             description: 'Dump current game state',','
-            usage: 'dump-state [--json]',')',
-            category: 'debug',
+            usage: 'dump-state [--json],')',
+            category: 'debug,
     execute: (args: string[]) => { '
                 try {'
                     const state = this.captureGameState()','
@@ -267,7 +261,7 @@ export class GameStateCommands extends BaseComponent { private gameEngine?: Game
         if (scoreManager) {
             state.score = { : undefined
                 current: scoreManager.getScore ? scoreManager.getScore() : 0 
-               , combo: scoreManager.getCurrentCombo ? scoreManager.getCurrentCombo() : 0 
+            combo: scoreManager.getCurrentCombo ? scoreManager.getCurrentCombo() : 0 
              }
         
         // バブル情報
@@ -292,7 +286,7 @@ export class GameStateCommands extends BaseComponent { private gameEngine?: Game
             name: playerData.getName ? playerData.getName() : ','
             level: playerData.getLevel ? playerData.getLevel() : 1,
             ap: playerData.getAP ? playerData.getAP() : 0,
-    tap: playerData.getTAP ? playerData.getTAP() : 0 },
+    tap: playerData.getTAP ? playerData.getTAP() : 0 ,
             highScore: playerData.getHighScore ? playerData.getHighScore() : 0 
         }
 
@@ -303,7 +297,7 @@ export class GameStateCommands extends BaseComponent { private gameEngine?: Game
             stress: () => { '
                 const bubbleManager = this.getBubbleManager();
                 if (!bubbleManager || !bubbleManager.spawnBubble) {
-            }'
+            }
 
                     return 'Bubble manager not available for stress test';
 
@@ -313,7 +307,7 @@ export class GameStateCommands extends BaseComponent { private gameEngine?: Game
 
                 }''
                 return 'Stress test: Spawned 100 bubbles'
-            },
+            ,
 
             memory: () => {  ''
                 if (typeof, window !== 'undefined' && (window, as any).gc) {''
@@ -328,23 +322,21 @@ export class GameStateCommands extends BaseComponent { private gameEngine?: Game
                     Math.random(); }
                 }
                 const end = performance.now();
-                return `Performance test: ${(end - start}.toFixed(2}ms for 10k operations`,
-            },
+                return `Performance test: ${(end - start}.toFixed(2}ms for 10k operations` },
 
             bubbles: () => { }
 
-                return 'Bubbles test: Not implemented yet',,
+                return 'Bubbles test: Not implemented yet,
 
             scoring: () => { }
 
-                return 'Scoring test: Not implemented yet',
+                return 'Scoring test: Not implemented yet,
         
         const test = scenarios[scenario];
         if (!test) {
     
 }
-            return `Unknown test scenario: ${scenario}`,
-        }
+            return `Unknown test scenario: ${scenario}` }
         
         return test();
     }
@@ -365,7 +357,7 @@ export class GameStateCommands extends BaseComponent { private gameEngine?: Game
     
 }
             lines.push(`Score: ${state.score.current}`} }
-            lines.push(`Combo: ${state.score.combo}`};
+            lines.push(`Combo: ${state.score.combo}`}
         }
         ';'
 
@@ -381,13 +373,13 @@ export class GameStateCommands extends BaseComponent { private gameEngine?: Game
      * プレイヤーデータバックアップ作成
      */
     public createPlayerDataBackup(): BackupData { const backup: BackupData = { }
-            id: `backup_${Date.now())`,
+            id: `backup_${Date.now()),
             timestamp: Date.now(
-    data: this.capturePlayerData() },
+    data: this.capturePlayerData() ,
         
         // LocalStorageに保存
         try {
-            localStorage.setItem(`player_backup_${backup.id}`, JSON.stringify(backup}};
+            localStorage.setItem(`player_backup_${backup.id}`, JSON.stringify(backup}}
         } catch (error) { console.warn('Failed to save backup to localStorage:', error }
         
         return backup;
@@ -407,10 +399,10 @@ export class GameStateCommands extends BaseComponent { private gameEngine?: Game
      * 実行統計取得（メインコントローラー統制）
      */
     public getExecutionStatistics(): ExecutionStatistics { const historyManager = this.getHistoryManager();
-        const undoManager = this.getUndoManager() }
+        const undoManager = this.getUndoManager();
         const historyStats = historyManager ? historyManager.getExecutionStatistics() : {};
         const undoStats: UndoRedoStatistics = undoManager ? undoManager.getUndoRedoStatistics() : {
-        return { ...historyStats };
+        return { ...historyStats } };
             undo: undoStats,
 
     /**
@@ -432,13 +424,13 @@ export class GameStateCommands extends BaseComponent { private gameEngine?: Game
         const undoManager = this.getUndoManager();
         return { lastCommand: historyManager ? historyManager.executionState.lastCommand : null,
             commandHistory: historyManager ? historyManager.getCommandHistory() : [],
-    undoStack: undoManager ? undoManager.getUndoStackSummary() : [] },
+    undoStack: undoManager ? undoManager.getUndoStackSummary() : [] ,
             maxUndoSize: undoManager ? undoManager.maxUndoSize : 10 
         }
 
     public get safetyChecks(): SafetyChecks { const safetyValidator = this.getSafetyValidator();
         return safetyValidator ? safetyValidator.getSafetySettings() : {
-            confirmDestructive: true,
+            confirmDestructive: true ,
             preventDataLoss: true,
             validateInputs: true,
     logAllChanges: true,

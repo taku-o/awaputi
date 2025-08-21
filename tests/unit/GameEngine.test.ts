@@ -6,19 +6,19 @@ import { MockFactory  } from '../mocks/MockFactory.js';
 import { GameEngine  } from '../../src/core/GameEngine.js';
 // Types
 interface CanvasInfo {
-    actualWidth: number;
+    actualWidth: number,
     actualHeight: number;
     scale: number;
 interface PerformanceStats {
-    fps: number;
+    fps: number,
     renderTime: number;
     updateTime: number;
 interface MockBubble {
     type: string;
 interface MockLocalStorage {
-    getItem: jest.Mock<(ke,y: string) => string | null>;
-    setItem: jest.Mock<(ke,y: string, value: string) => void>;
-    removeItem: jest.Mock<(ke,y: string) => void>;
+    getItem: jest.Mock<(ke,y: string) => string | null>,
+    setItem: jest.Mock<(ke,y: string, value: string) => void>,
+    removeItem: jest.Mock<(ke,y: string) => void>,
     clear: jest.Mock<(') => void> }'
 // Note: Mock imports removed to avoid path resolution issues
 // Mocks will be created manually in test setup
@@ -338,6 +338,6 @@ describe('GameEngine', () => {
       jest.advanceTimersByTime(16);
       expect(gameEngine.isRunning).toBe(false);
       consoleSpy.mockRestore();
-    };
+    }
   }
 }');'

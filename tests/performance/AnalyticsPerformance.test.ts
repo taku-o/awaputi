@@ -13,15 +13,15 @@ class TestDataGenerator {
         const sessions: any[] = [];
         for (let i = 0, i < count, i++) {
             sessions.push({);
-                sessionId: `session_${i)`;
+                sessionId: `session_${i)`,
                 startTime: Date.now() - Math.random() * 1000000;
                 endTime: Date.now(
                 duration: Math.random() * 300000, // 0-5分
-                stageId: `stage_${Math.floor(Math.random() * 10}}`;
+                stageId: `stage_${Math.floor(Math.random() * 10}}`,
                 finalScore: Math.floor(Math.random() * 100000;
-                bubblesPopped: Math.floor(Math.random() * 500;
+                bubblesPopped: Math.floor(Math.random() * 500,
                 bubblesMissed: Math.floor(Math.random() * 100;
-                maxCombo: Math.floor(Math.random() * 50;
+                maxCombo: Math.floor(Math.random() * 50,
                 completed: Math.random(') > 0.3,'
                 exitReason: ['completed', 'game_over', 'quit'][Math.floor(Math.random() * 3)]
             }');'
@@ -36,14 +36,14 @@ class TestDataGenerator {
         
         for (let i = 0, i < count, i++) {
             interactions.push({);
-                sessionId: `session_${Math.floor(i / 100}}`;
+                sessionId: `session_${Math.floor(i / 100}}`,
                 timestamp: Date.now() - Math.random() * 1000000;
-                bubbleType: bubbleTypes[Math.floor(Math.random() * bubbleTypes.length)];
+                bubbleType: bubbleTypes[Math.floor(Math.random() * bubbleTypes.length)],
                 action: actions[Math.floor(Math.random() * actions.length)];
-                reactionTime: Math.random() * 2000;
-                position: { x: Math.random() * 800, y: Math.random() * 600 };
+                reactionTime: Math.random() * 2000,
+                position: { x: Math.random() * 800, y: Math.random() * 600 },
                 scoreGained: Math.floor(Math.random() * 1000;
-                comboCount: Math.floor(Math.random() * 20 };
+                comboCount: Math.floor(Math.random() * 20 }
         }
         return interactions;
     }
@@ -56,16 +56,16 @@ class TestDataGenerator {
                 timestamp: Date.now() - Math.random() * 1000000,
                 fps: Math.random() * 60 + 30,
                 memoryUsage: {
-                    used: Math.random() * 100 * 1024 * 1024,
+                    used: Math.random() * 100 * 1024 * 1024 },
                     total: 200 * 1024 * 1024,
                     limit: 500 * 1024 * 1024
                 },
                 loadTimes: {
-                    assets: Math.random() * 1000,
+                    assets: Math.random() * 1000 },
                     scripts: Math.random() * 500,
                     total: Math.random() * 2000
                 }
-            };
+            }
         }
         return performanceData;
     }
@@ -73,19 +73,19 @@ class TestDataGenerator {
 // パフォーマンス測定ヘルパー
 class PerformanceProfiler {
     constructor() {
-        this.measurements = {};
+        this.measurements = {}
     }
     
     start(label {
         this.measurements[label] = {
             startTime: performance.now(
             startMemory: performance.memory ? performance.memory.usedJSHeapSize : 0
-        };
+        }
     }
     
     end(label {
         if (!this.measurements[label]) {
-            throw new Error(`No measurement started for label: ${label)`};
+            throw new Error(`No measurement started for label: ${label)`}
         }
         
         const measurement = this.measurements[label];
@@ -93,9 +93,9 @@ class PerformanceProfiler {
         const endMemory = performance.memory ? performance.memory.usedJSHeapSize: 0;
         
         const result = {
-            duration: endTime - measurement.startTime;
+            duration: endTime - measurement.startTime,
             memoryDelta: endMemory - measurement.startMemory;
-            memoryUsed: endMemory;
+            memoryUsed: endMemory,
             memoryUsed: endMemory;
         };
         delete this.measurements[label];
@@ -270,7 +270,7 @@ describe('Analytics Performance Tests', () => {
             // キャッシュからデータを取得（ヒット）
             for (let i = 0; i < 100; i++) {
                 const cached = performanceOptimizer.getCachedData(`session_${i)`),
-                expect(cached.toBeTruthy()};
+                expect(cached.toBeTruthy()}
             }
             
             // 存在しないデータを取得（ミス）
@@ -290,7 +290,7 @@ describe('Analytics Performance Tests', () => {
             // 大量のキャッシュデータを生成
             for (let i = 0, i < 2000, i++') {'
                 const data = { large: 'x'.repeat(1000), index: i,
-                performanceOptimizer.setCachedData(`large_data_${i)`, data};
+                performanceOptimizer.setCachedData(`large_data_${i)`, data}
             }
             
             const afterCacheMemory = performance.memory ? performance.memory.usedJSHeapSize: 0,
@@ -346,7 +346,7 @@ describe('Analytics Performance Tests', () => {
                         totalScore: 0,
                         totalReactionTime: 0,
                         successes: 0
-                    };
+                    }
                 }
                 
                 const type = acc[interaction.bubbleType];
@@ -449,6 +449,6 @@ describe('Analytics Performance Tests', () => {
             console.log(`Performance improvement ratio: ${improvementRatio.toFixed(2}}x`),
             // 少なくとも同等かそれより良いパフォーマンスを期待
             expect(improvementRatio.toBeGreaterThanOrEqual(0.8);
-        };
+        }
     }
 }');'

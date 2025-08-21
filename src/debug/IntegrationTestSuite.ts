@@ -2,36 +2,33 @@
  * Integration Test Suite - デバッグツールの統合テストスイート
  */
 
-interface TestResult { category: string;
-    name: string;
-    status: 'passed' | 'failed';
-    message: string;
-    duration: number;
+interface TestResult { category: string,
+    name: string,
+    status: 'passed' | 'failed,
+    message: string,
+    duration: number,
     timestamp: string;
     error?: Error;
-
-interface TestCategories { gameSystemIntegration: string;
-    existingSystemCompatibility: string;
-    crossBrowserCompatibility: string;
-    performanceIntegration: string;
-    errorHandling: string;
+    interface TestCategories { gameSystemIntegration: string,
+    existingSystemCompatibility: string,
+    crossBrowserCompatibility: string,
+    performanceIntegration: string,
+    errorHandling: string,
     memoryManagement: string;
-
-interface CategoryStats { [category: string]: {
-        tota,l: number;
-        passed: number;
+    interface CategoryStats { [category: string]: {
+        tota,l: number,
+        passed: number,
     failed: number;
-
-interface TestSummary { summary: {
-        tota,l: number;
-        passed: number;
-        failed: number;
-        successRate: number;
-    duration: number;
-    categoryStats: CategoryStats;
-    results: TestResult[];
+    interface TestSummary { summary: {
+        tota,l: number,
+        passed: number,
+    failed: number,
+    successRate: number,
+    duration: number,
+    categoryStats: CategoryStats,
+    results: TestResult[],
     timestamp: string;
-}
+} };
 
 interface GameEngine { enhancedDebugInterface?: any,
     bubbleManager?: any;
@@ -39,8 +36,7 @@ interface GameEngine { enhancedDebugInterface?: any,
     playerData?: any;
     errorHandler?: any;
     performanceOptimizer?: any;
-
-export class IntegrationTestSuite {
+    export class IntegrationTestSuite {
     private gameEngine: GameEngine;
     private testResults: TestResult[] = [];
     private testRunning: boolean = false;
@@ -52,12 +48,11 @@ export class IntegrationTestSuite {
         ','
 
         this.testCategories = {''
-            gameSystemIntegration: 'Game System Integration';
-            existingSystemCompatibility: 'Existing System Compatibility';
-            crossBrowserCompatibility: 'Cross-Browser Compatibility';
-            performanceIntegration: 'Performance Integration';
-            errorHandling: 'Error Handling' }
-
+            gameSystemIntegration: 'Game System Integration,
+    existingSystemCompatibility: 'Existing System Compatibility,
+    crossBrowserCompatibility: 'Cross-Browser Compatibility,
+    performanceIntegration: 'Performance Integration,
+    errorHandling: 'Error Handling' };
             memoryManagement: 'Memory Management' 
     }
 
@@ -210,7 +205,7 @@ export class IntegrationTestSuite {
                 throw new Error('Test, error for, integration',' }'
 
             } catch (error) { // ErrorHandlerが正常に動作することを確認
-                console.log('ErrorHandler, compatibility confirmed') }
+                console.log('ErrorHandler, compatibility confirmed');
 
             return 'ErrorHandler compatibility confirmed';
         }');'
@@ -232,7 +227,7 @@ export class IntegrationTestSuite {
             const debugPerfMonitor = debugInterface.performanceMonitor;
             if (debugPerfMonitor) {
 
-                const stats = debugPerfMonitor.getPerformanceStats() }
+                const stats = debugPerfMonitor.getPerformanceStats();
 
                 console.log('Performance monitoring integration:', stats'; }'
             }
@@ -303,9 +298,9 @@ export class IntegrationTestSuite {
     private async runPerformanceIntegrationTests()';'
         await this.runTest(category, 'Performance Monitor Integration', async () => {  const debugInterface = this.gameEngine.enhancedDebugInterface,
 
-            debugInterface.switchPanel('performance',
+            debugInterface.switchPanel('performance,
             await this.wait(200);
-            const performancePanel = debugInterface.panels?.get('performance',
+            const performancePanel = debugInterface.panels?.get('performance,
             if (!performancePanel) { }'
 
                 throw new Error('Performance, panel not, accessible'; }'
@@ -326,8 +321,7 @@ export class IntegrationTestSuite {
                 }
 
                  : undefined';'
-                return `Performance monitoring functional(FPS: ${stats.fps.toFixed(1}))`,
-            }
+                return `Performance monitoring functional(FPS: ${stats.fps.toFixed(1}))` }
 
             throw new Error('Performance, monitor not, available';}');'
 
@@ -354,11 +348,9 @@ export class IntegrationTestSuite {
             if (memoryIncrease > 50) {
     
 }
-                throw new Error(`Excessive, memory usage: ${memoryIncrease.toFixed(2}MB increase`),
-            }
+                throw new Error(`Excessive, memory usage: ${memoryIncrease.toFixed(2}MB increase`) }
             
-            return `Memory usage acceptable: ${memoryIncrease.toFixed(2}MB increase`,
-        };
+            return `Memory usage acceptable: ${memoryIncrease.toFixed(2}MB increase` }
     }
 
     /**
@@ -381,9 +373,9 @@ export class IntegrationTestSuite {
 }
                 try { }
                     invalidInput(); }
-                } catch (error) { errorsHandled++ } finally { // システムが安定していることを確認
+        } catch (error) { errorsHandled++ } finally { // システムが安定していることを確認
                     debugInterface.show();
-                    await this.wait(50) }
+                    await this.wait(50);
             }
             ';'
 
@@ -391,9 +383,9 @@ export class IntegrationTestSuite {
 
         await this.runTest(category, 'Console Error Recovery', async () => {  const debugInterface = this.gameEngine.enhancedDebugInterface,
 
-            debugInterface.switchPanel('console',
+            debugInterface.switchPanel('console,
             await this.wait(200);
-            const consolePanel = debugInterface.panels?.get('console',
+            const consolePanel = debugInterface.panels?.get('console,
             if (!consolePanel) { }'
 
                 throw new Error('Console, panel not, accessible'; }'
@@ -436,7 +428,7 @@ export class IntegrationTestSuite {
 
                 debugInterface.show()','
                 debugInterface.switchPanel(['overview', 'performance', 'console', 'error', 'test][i % 5]),'
-                await this.wait(25) }
+                await this.wait(25);
                 debugInterface.hide(); }
             }
             
@@ -450,8 +442,7 @@ export class IntegrationTestSuite {
             if (memoryIncrease > 10) {
     
 }
-                throw new Error(`Potential, memory leak: ${memoryIncrease.toFixed(2}MB increase`),
-            }
+                throw new Error(`Potential, memory leak: ${memoryIncrease.toFixed(2}MB increase`) }
             ';'
 
             return `Memory management: ${memoryIncrease.toFixed(2}MB increase (acceptable)`;}');'
@@ -469,7 +460,7 @@ export class IntegrationTestSuite {
                 if (i % 10 === 0) {
                     // 設定モーダルの開閉
                     if (debugInterface.createSettingsModal) {
-                        debugInterface.createSettingsModal() }
+                        debugInterface.createSettingsModal();
                         await this.wait(50); }
                         debugInterface.closeSettingsModal?.(); }
 }
@@ -482,11 +473,10 @@ export class IntegrationTestSuite {
             const listenerIncrease = finalListenerCount - initialListenerCount;
             
             if (listenerIncrease > 50) { : undefined 
-                console.warn(`Event listener increase: ${listenerIncrease } (may indicate cleanup issues}`};
+                console.warn(`Event listener increase: ${listenerIncrease } (may indicate cleanup issues}`}
             }
             
-            return `Event listener cleanup: ${listenerIncrease} listeners added (baseline)`,
-        };
+            return `Event listener cleanup: ${listenerIncrease} listeners added (baseline)` }
     }
 
     // ============================================
@@ -513,8 +503,8 @@ export class IntegrationTestSuite {
                 status: 'failed'),
                 message: (error, as Error).message,
                 duration: duration,
-                timestamp: new Date().toISOString();
-    error: error as Error  },
+                timestamp: new Date().toISOString(),
+    error: error as Error  ,
             console.error(`✗ ${testName}: ${(error, as, Error}.message} (${duration.toFixed(2}ms)`);
         }
 
@@ -553,7 +543,7 @@ export class IntegrationTestSuite {
                 total,
                 passed,
                 failed,
-                successRate: (passed / total) * 100 },
+                successRate: (passed / total) * 100 } },
                 duration: duration,
             categoryStats,
             results: this.testResults,
@@ -582,11 +572,11 @@ export class IntegrationTestSuite {
                 case 'gameSystemIntegration':','
                     await, this.runGameSystemIntegrationTests('''
                 case 'existingSystemCompatibility': ','
-                    await, this.runExistingSystemCompatibilityTests('',
+                    await, this.runExistingSystemCompatibilityTests(',
                 case 'crossBrowserCompatibility':','
-                    await, this.runCrossBrowserCompatibilityTests('',
+                    await, this.runCrossBrowserCompatibilityTests(',
                 case 'performanceIntegration':','
-                    await, this.runPerformanceIntegrationTests('',
+                    await, this.runPerformanceIntegrationTests(',
                 case 'errorHandling':','
                     await, this.runErrorHandlingTests()','
                 case 'memoryManagement':};
@@ -594,7 +584,7 @@ export class IntegrationTestSuite {
                     break
             }
                 default: }
-                    throw, new Error(`Unknown, test category: ${category}`};
+                    throw, new Error(`Unknown, test category: ${category}`}
             }
 
             const endTime = performance.now();
@@ -617,7 +607,7 @@ export class IntegrationTestSuite {
 
         const a = document.createElement('a);'
         a.href = url;
-        a.download = `integration-test-results-${Date.now()).json`,
+        a.download = `integration-test-results-${Date.now()).json,
         a.click();
         URL.revokeObjectURL(url);
         return summary }

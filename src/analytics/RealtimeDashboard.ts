@@ -11,20 +11,20 @@ export class RealtimeDashboard {
         this.options = {
             updateInterval: 1000, // 1秒間隔で更新;
             historyLength: 60, // 60秒分のデータを保持;
-            theme: 'dark';
-            enableFPS: true;
-            enableMemory: true;
-            enableErrors: true;
+            theme: 'dark,
+            enableFPS: true,
+            enableMemory: true,
+            enableErrors: true,
     enableLatency: true;
             ...options
         };
 
         this.charts = new Map();
         this.updateTimer = null;
-        this.dataHistory = { fps: [];
-            memory: [];
-            errors: [];
-            latency: [];
+        this.dataHistory = { fps: [],
+            memory: [],
+            errors: [],
+            latency: [],
     timestamps: []  };
         this.initialize();
     }
@@ -34,7 +34,7 @@ export class RealtimeDashboard {
      */
     initialize() {
         this.createDashboardLayout();
-        this.initializeCharts() }
+        this.initializeCharts();
         this.setupEventListeners(); }
     }
 
@@ -43,18 +43,18 @@ export class RealtimeDashboard {
      */''
     createDashboardLayout() {
         this.container.innerHTML = `','
-            <div class="realtime-dashboard">"",
+            <div class="realtime-dashboard">",
                 <div class="dashboard-header">","
-                    <h2>リアルタイムパフォーマンス監視</h2>"",
-                    <div class="dashboard-controls">"",
-                        <button id="toggle-monitoring" class="control-btn">監視開始</button>"",
-                        <button id="clear-data" class="control-btn">データクリア</button>"",
+                    <h2>リアルタイムパフォーマンス監視</h2>",
+                    <div class="dashboard-controls">",
+                        <button id="toggle-monitoring" class="control-btn">監視開始</button>",
+                        <button id="clear-data" class="control-btn">データクリア</button>",
                         <button id="export-data" class="control-btn">エクスポート</button>,
                     </div>","
-                </div>"",
+                </div>",
                 <div class="dashboard-grid">","
                     ${this.options.enableFPS ? `"
-    }"
+    }
                         <div class="chart-container">" }"
                             <h3>フレームレート (FPS"}"</h3>""
                             <canvas id="fps-chart"></canvas>"";
@@ -72,8 +72,8 @@ export class RealtimeDashboard {
 
                     ${ this.options.enableErrors ? `''
                         <div, class="chart-container">","
-                            <h3>エラー数</h3>"",
-                            <canvas, id="errors-chart"></canvas>"",
+                            <h3>エラー数</h3>",
+                            <canvas, id="errors-chart"></canvas>",
                             <div, class="chart-stats" id="errors-stats"></div>","
                         </div> : undefined" }"
                     ` : '}'
@@ -130,8 +130,7 @@ export class RealtimeDashboard {
     border: none,
                 border-radius: 4px,
                 cursor: pointer,
-    transition: background 0.3s,
-            }
+    transition: background 0.3s }
             .control-btn:hover { opacity: 0.9 }
 
             .control-btn.active { }'
@@ -198,63 +197,61 @@ export class RealtimeDashboard {
      * チャートの初期化'
      */''
     initializeCharts('''
-                    type: 'time',
+                    type: 'time,
                     time: { ''
-                        unit: 'second',
+                        unit: 'second' ,
                         displayFormats: {''
                             second: 'HH:mm:ss'
             }
                     };
                     title: { display: true,''
                         text: '時間'
-            };
+             ,
                     ticks: { ''
-                        color: this.options.theme === 'dark' ? '#aaa' : '#666' },
+                        color: this.options.theme === 'dark' ? '#aaa' : '#666' ,
                     grid: { ''
                         color: this.options.theme === 'dark' ? '#333' : '#e0e0e0' 
-                };
+                 ,
                 y: { beginAtZero: true,
     ticks: {''
-                        color: this.options.theme === 'dark' ? '#aaa' : '#666' },
+                        color: this.options.theme === 'dark' ? '#aaa' : '#666' ,
                     grid: { ''
                         color: this.options.theme === 'dark' ? '#333' : '#e0e0e0' 
-};
+ ,
             plugins: { legend: {
                     display: false,
                 tooltip: { ''
-                    mode: 'index',
+                    mode: 'index' ,
     intersect: false,);
         // FPSチャート
         if (this.options.enableFPS) {
 
-            const fpsCanvas = document.getElementById('fps-chart',
+            const fpsCanvas = document.getElementById('fps-chart,
             if (fpsCanvas) {''
                 this.charts.set('fps', new Chart(fpsCanvas, {)'
-                    type: 'line',
+                    type: 'line,
     data: {'
                         datasets: [{]'
                             label: 'FPS',]','
-                            data: [],')',
-                            borderColor: '#4caf50',
-                            backgroundColor: 'rgba(76, 175, 80, 0.1)',
+                            data: [],'),
+                            borderColor: '#4caf50,
+                            backgroundColor: 'rgba(76, 175, 80, 0.1),
                             borderWidth: 2,
-    pointRadius: 0 }
+    pointRadius: 0 } },
                             tension: 0.1 
     }]
                     };
                     options: { ...chartOptions,
                         scales: {
-                            ...chartOptions.scales,
-                            y: {
-                                ...chartOptions.scales.y,
+                            ...chartOptions.scales  },
+                            y: { ...chartOptions.scales.y  },
                                 min: 0,
                                 max: 120,
     title: {'
-                                    display: true,
+                                    display: true ,
                                     text: 'FPS'
-            }
+                }
 }
-                    }
                 }';'
             }
         }
@@ -262,34 +259,32 @@ export class RealtimeDashboard {
         // メモリチャート
         if (this.options.enableMemory) {
 
-            const memoryCanvas = document.getElementById('memory-chart',
+            const memoryCanvas = document.getElementById('memory-chart,
             if (memoryCanvas) {''
                 this.charts.set('memory', new Chart(memoryCanvas, {)'
-                    type: 'line',
+                    type: 'line,
     data: {'
                         datasets: [{]'
                             label: 'メモリ使用量',]','
-                            data: [],')',
-                            borderColor: '#2196f3',
-                            backgroundColor: 'rgba(33, 150, 243, 0.1)',
+                            data: [],'),
+                            borderColor: '#2196f3,
+                            backgroundColor: 'rgba(33, 150, 243, 0.1),
                             borderWidth: 2,
-    pointRadius: 0 }
+    pointRadius: 0 } },
                             tension: 0.1 
     }]
                     };
                     options: { ...chartOptions,
                         scales: {
-                            ...chartOptions.scales,
-                            y: {
-                                ...chartOptions.scales.y,
+                            ...chartOptions.scales  },
+                            y: { ...chartOptions.scales.y  },
                                 min: 0,
                                 max: 100,
     title: {'
-                                    display: true,
+                                    display: true ,
                                     text: '使用率 (%')'
-            }
+                }
 }
-                    }
                 }';'
             }
         }
@@ -297,26 +292,26 @@ export class RealtimeDashboard {
         // エラーチャート
         if (this.options.enableErrors) {
 
-            const errorsCanvas = document.getElementById('errors-chart',
+            const errorsCanvas = document.getElementById('errors-chart,
             if (errorsCanvas) {''
                 this.charts.set('errors', new Chart(errorsCanvas, {''
-                    type: 'bar',
+                    type: 'bar,
     data: {'
                         datasets: [{]'
                             label: 'エラー数',]','
                             data: [],
-                            backgroundColor: '#f44336',
-                            borderColor: '#f44336' }
+                            backgroundColor: '#f44336,
+                            borderColor: '#f44336' } },
                             borderWidth: 1 
     }]
                     };
                     options: { ...chartOptions,
                         scales: {
-                            ...chartOptions.scales,
-                            y: {)
-                                ...chartOptions.scales.y','
+                            ...chartOptions.scales  },
+                            y: { )
+                                ...chartOptions.scales.y','  },
                                 title: {'
-                                    display: true,
+                                    display: true ,
                                     text: 'エラー数'
             }
 })';'
@@ -326,32 +321,30 @@ export class RealtimeDashboard {
         // レイテンシチャート
         if (this.options.enableLatency) {
 
-            const latencyCanvas = document.getElementById('latency-chart',
+            const latencyCanvas = document.getElementById('latency-chart,
             if (latencyCanvas) {''
                 this.charts.set('latency', new Chart(latencyCanvas, {)'
-                    type: 'line',
+                    type: 'line,
     data: {'
                         datasets: [{]'
                             label: 'レイテンシ',]','
-                            data: [],')',
-                            borderColor: '#ff9800',
-                            backgroundColor: 'rgba(255, 152, 0, 0.1)',
+                            data: [],'),
+                            borderColor: '#ff9800,
+                            backgroundColor: 'rgba(255, 152, 0, 0.1),
                             borderWidth: 2,
-    pointRadius: 0 }
+    pointRadius: 0 } },
                             tension: 0.1 
     }]
                     };
                     options: { ...chartOptions,
                         scales: {
-                            ...chartOptions.scales,
-                            y: {
-                                ...chartOptions.scales.y,
+                            ...chartOptions.scales  },
+                            y: { ...chartOptions.scales.y  },
                                 title: {'
-                                    display: true,
+                                    display: true ,
                                     text: 'レイテンシ (ms')'
-            }
+                }
 }
-                    }
                 }';'
             }
 }
@@ -366,7 +359,7 @@ export class RealtimeDashboard {
             toggleBtn.addEventListener('click', () => { '
                 if (this.updateTimer) {''
                     this.stopUpdates(' }''
-                    toggleBtn.textContent = '監視開始';) }
+                    toggleBtn.textContent = '監視開始';);
 
                     toggleBtn.classList.remove('active'; }'
 
@@ -415,7 +408,7 @@ export class RealtimeDashboard {
         }, this.options.updateInterval);
 
         // モニタリングも開始
-        if (this.monitor && !this.monitor.isMonitoring) { this.monitor.startMonitoring() }
+        if (this.monitor && !this.monitor.isMonitoring) { this.monitor.startMonitoring();
     }
 
     /**
@@ -423,7 +416,7 @@ export class RealtimeDashboard {
      */
     stopUpdates() {
         if (this.updateTimer) {
-            clearInterval(this.updateTimer) }
+            clearInterval(this.updateTimer);
             this.updateTimer = null; }
 }
 
@@ -456,12 +449,10 @@ export class RealtimeDashboard {
     trimHistory() {
         const maxLength = this.options.historyLength,
         
-        Object.keys(this.dataHistory).forEach(key => { ) }
+        Object.keys(this.dataHistory).forEach(key => { );
             if (this.dataHistory[key].length > maxLength) { }
-                this.dataHistory[key] = this.dataHistory[key].slice(-maxLength); }
-};
-    }
-
+                this.dataHistory[key] = this.dataHistory[key].slice(-maxLength);     }
+}
     /**
      * チャートの更新
      */''
@@ -470,8 +461,8 @@ export class RealtimeDashboard {
         if (fpsChart) {
             fpsChart.data.datasets[0].data = this.dataHistory.timestamps.map((time, i) => ({ : undefined, x: time)
         
-               , y: this.dataHistory.fps[i]'
-            }'
+            y: this.dataHistory.fps[i]'
+            }
 
             }');'
             fpsChart.update('none');
@@ -481,8 +472,7 @@ export class RealtimeDashboard {
         const memoryChart = this.charts.get('memory);'
         if (memoryChart) {
             memoryChart.data.datasets[0].data = this.dataHistory.timestamps.map((time, i) => ({
-                x: time)
-         }
+                x: time),
 
                 y: this.dataHistory.memory[i]' }'
 
@@ -494,8 +484,7 @@ export class RealtimeDashboard {
         const errorsChart = this.charts.get('errors);'
         if (errorsChart) {
             errorsChart.data.datasets[0].data = this.dataHistory.timestamps.map((time, i) => ({
-                x: time)
-         }
+                x: time),
 
                 y: this.dataHistory.errors[i]' }'
 
@@ -507,8 +496,7 @@ export class RealtimeDashboard {
         const latencyChart = this.charts.get('latency);'
         if (latencyChart) {
             latencyChart.data.datasets[0].data = this.dataHistory.timestamps.map((time, i) => ({
-                x: time)
-         }
+                x: time),
 
                 y: this.dataHistory.latency[i]' }'
 
@@ -544,7 +532,7 @@ export class RealtimeDashboard {
             const memoryStats = document.getElementById('memory-stats),'
             if (memoryStats) {
                 const currentMemory = this.dataHistory.memory[this.dataHistory.memory.length - 1] || 0,
-                const avgMemory = this.calculateAverage(this.dataHistory.memory) }
+                const avgMemory = this.calculateAverage(this.dataHistory.memory);
                 memoryStats.innerHTML = ` }
                     現在: ${currentMemory.toFixed(1}% | 
                     平均: ${avgMemory.toFixed(1}%
@@ -558,7 +546,7 @@ export class RealtimeDashboard {
             const errorsStats = document.getElementById('errors-stats),'
             if (errorsStats) {
                 const totalErrors = this.dataHistory.errors[this.dataHistory.errors.length - 1] || 0,
-                const errorRate = this.calculateErrorRate() }
+                const errorRate = this.calculateErrorRate();
                 errorsStats.innerHTML = ` }
                     合計: ${totalErrors} | 
                     エラー率: ${errorRate.toFixed(2}/分
@@ -572,7 +560,7 @@ export class RealtimeDashboard {
             const latencyStats = document.getElementById('latency-stats),'
             if (latencyStats) {
                 const currentLatency = this.dataHistory.latency[this.dataHistory.latency.length - 1] || 0,
-                const avgLatency = this.calculateAverage(this.dataHistory.latency) }
+                const avgLatency = this.calculateAverage(this.dataHistory.latency);
                 latencyStats.innerHTML = ` }
                     現在: ${currentLatency.toFixed(1}ms | 
                     平均: ${avgLatency.toFixed(1}ms
@@ -585,7 +573,7 @@ export class RealtimeDashboard {
      */''
     displayAlert(alert) {
 
-        const alertsContainer = document.getElementById('alerts-container',
+        const alertsContainer = document.getElementById('alerts-container,
         if(!alertsContainer) return,
 
 ' }'
@@ -602,7 +590,7 @@ export class RealtimeDashboard {
         alertsContainer.insertBefore(alertItem, alertsContainer.firstChild);
 
         // 最大50件まで表示
-        while (alertsContainer.children.length > 50) { alertsContainer.removeChild(alertsContainer.lastChild) }
+        while (alertsContainer.children.length > 50) { alertsContainer.removeChild(alertsContainer.lastChild);
     }
 
     /**
@@ -610,7 +598,7 @@ export class RealtimeDashboard {
      */
     calculateAverage(values) {
         if (values.length === 0) return 0,
-        const sum = values.reduce((a, b) => a + b, 0) }
+        const sum = values.reduce((a, b) => a + b, 0);
         return sum / values.length;
 
     /**
@@ -661,7 +649,7 @@ export class RealtimeDashboard {
             updateInterval: this.options.updateInterval,
             historyLength: this.options.historyLength,
     data: {
-                timestamps: this.dataHistory.timestamps.map(t => t.toISOString(),
+                timestamps: this.dataHistory.timestamps.map(t => t.toISOString() ,
                 fps: this.dataHistory.fps,
                 memory: this.dataHistory.memory,
                 errors: this.dataHistory.errors }
@@ -671,14 +659,14 @@ export class RealtimeDashboard {
                     average: this.calculateAverage(this.dataHistory.fps),
                     min: Math.min(...this.dataHistory.fps.filter(v => v > 0),
                     max: Math.max(...this.dataHistory.fps)
-                };
+        }
                 memory: { average: this.calculateAverage(this.dataHistory.memory),
-                    min: Math.min(...this.dataHistory.memory),
+                    min: Math.min(...this.dataHistory.memory) ,
                     max: Math.max(...this.dataHistory.memory,
     errors: { total: this.dataHistory.errors[this.dataHistory.errors.length - 1] || 0,
     rate: this.calculateErrorRate( }
                 latency: { average: this.calculateAverage(this.dataHistory.latency),
-                    min: Math.min(...this.dataHistory.latency.filter(v => v > 0),
+                    min: Math.min(...this.dataHistory.latency.filter(v => v > 0) ,
                     max: Math.max(...this.dataHistory.latency)
     };
 
@@ -703,7 +691,7 @@ export class RealtimeDashboard {
         this.stopUpdates();
         // チャートの破棄
     }
-        this.charts.forEach(chart => { ) }
+        this.charts.forEach(chart => { );
             chart.destroy(); }
         }');'
         this.charts.clear()';'

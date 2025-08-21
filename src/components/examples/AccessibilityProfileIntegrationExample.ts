@@ -11,17 +11,15 @@ import { AccessibilityProfileComponent  } from '../AccessibilityProfileComponent
 
 interface GameEngine { // Define game engine interface properties as needed }
 
-interface SettingItem { key: string;
-    label: string;
-    type: string;
-    component: string;
-    description: string;
+interface SettingItem { key: string,
+    label: string,
+    type: string,
+    component: string,
+    description: string,
     category: string;
-
-interface ProfileInfo { name: string;
+    interface ProfileInfo { name: string,
     description: string;
-
-interface ProfileChangeDetail { profileId: string;
+    interface ProfileChangeDetail { profileId: string,
     timestamp: number;
 
 /**
@@ -34,7 +32,7 @@ export class AccessibilityProfileIntegrationExample {
 
         this.gameEngine = gameEngine
 
-    }
+    };
         this.accessibilityProfileComponent = null; }
     }
     
@@ -42,11 +40,11 @@ export class AccessibilityProfileIntegrationExample {
      * SettingsSceneのinitializeSettingItems()メソッドに追加する設定項目の例
      */''
     getAccessibilityProfileSettingItem('''
-            key: 'accessibility.profile',
-            label: 'アクセシビリティプロファイル',
+            key: 'accessibility.profile,
+            label: 'アクセシビリティプロファイル,
             type: 'custom', // カスタムコンポーネントとして実装;
-            component: 'AccessibilityProfileComponent',
-            description: 'プリセットされたアクセシビリティ設定を選択できます',
+            component: 'AccessibilityProfileComponent,
+            description: 'プリセットされたアクセシビリティ設定を選択できます,
             category: 'accessibility);'
             };
     /**
@@ -58,17 +56,16 @@ export class AccessibilityProfileIntegrationExample {
             
             // プロファイル情報の表示（Canvas上）
             const profile = this.getCurrentProfileInfo();
-            ctx.save('',
-            ctx.fillStyle = '#333',
-            ctx.font = '14px, Arial',
+            ctx.save(',
+            ctx.fillStyle = '#333,
+            ctx.font = '14px, Arial,
             ctx.textAlign = 'left')
             ctx.fillText(`現在のプロファイル: ${profile.name)`, x, y + 20),
             ctx.fillText(profile.description, x, y + 40};
             ctx.restore(};
             
             // DOM要素のポジション調整 }
-            this.positionAccessibilityProfileComponent(x, y + 50, width, height - 50};
-
+            this.positionAccessibilityProfileComponent(x, y + 50, width, height - 50}
         } catch (error) { console.error('[AccessibilityProfileIntegration] Render error:', error }
     }
     
@@ -91,10 +88,8 @@ export class AccessibilityProfileIntegrationExample {
                 componentElement.addEventListener('accessibilityProfileChanged', (event) => { 
             }
                     const customEvent = event as CustomEvent<ProfileChangeDetail>; }
-                    this.handleProfileChanged(customEvent.detail); }
-                };
-            }
-            
+                    this.handleProfileChanged(customEvent.detail);     }
+}
             return componentElement;
 
         } catch (error) {
@@ -125,7 +120,7 @@ export class AccessibilityProfileIntegrationExample {
             if (profile) {
     
 }
-                return { name: profile.name },
+                return { name: profile.name ,
                     description: profile.description 
     }
         }
@@ -149,7 +144,7 @@ export class AccessibilityProfileIntegrationExample {
      * 関連するアクセシビリティ設定を更新
      */
     private updateRelatedAccessibilitySettings(profileId: string): void { // プロファイル変更に応じて他の設定項目を更新 }
-        console.log(`[AccessibilityProfileIntegration] Updating, related settings, for profile: ${profileId}`};
+        console.log(`[AccessibilityProfileIntegration] Updating, related settings, for profile: ${profileId}`}
     }
     
     /**

@@ -7,15 +7,14 @@
  */
 
 // Type definitions
-interface LocalModeManager { isInitialized: boolean;
+interface LocalModeManager { isInitialized: boolean,
     config: LocalModeConfig;
     executionContext?: ExecutionContext;
     _initializationMetrics?: InitializationMetrics;
     _resourcePreloadPromises?: Map<string, Promise<any>>;
     _componentCache?: Map<string, any>;
     initializationPromise?: Promise<any>;
-
-interface LocalModeConfig { debugMode?: boolean,
+    interface LocalModeConfig { debugMode?: boolean,
     enableErrorHandling?: boolean;
     enableMetaTagOptimization?: boolean;
     enableFaviconGeneration?: boolean;
@@ -23,27 +22,26 @@ interface LocalModeConfig { debugMode?: boolean,
     enablePerformanceOptimizations?: boolean;
     maxConcurrentTasks?: number;
     [key: string]: any;
-
-interface ExecutionContext { isLocal: boolean;
-    protocol: string;
-    url: string;
-    domain: string;
+    interface ExecutionContext { isLocal: boolean,
+    protocol: string,
+    url: string,
+    domain: string,
     path: string;
     canUseCanvas?: boolean;
     canUseLocalStorage?: boolean;
-    canUseModules?: boolean,  }
+    canUseModules?: boolean }
 
-interface InitializationMetrics { startTime: number | null;
-    endTime: number | null;
+interface InitializationMetrics { startTime: number | null,
+    endTime: number | null,
     componentTimes: Record<string, number>;
-    totalExecutionTime: number;
+    totalExecutionTime: number,
     optimizationsApplied: string[];
-
-interface StatusInfo { isInitialized: boolean;
-    isLocalMode: boolean;
-    config: LocalModeConfig;
+    interface StatusInfo { isInitialized: boolean,
+    isLocalMode: boolean,
+    config: LocalModeConfig,
     executionContext: {
         protoco,l: string;
+    },
     isLocal: boolean;
         canUseCanvas?: boolean;
         canUseLocalStorage?: boolean;
@@ -51,14 +49,14 @@ interface StatusInfo { isInitialized: boolean;
     timestamp: string;
 }
 
-interface HealthCheck { overall: 'healthy' | 'degraded' | 'unhealthy';
+interface HealthCheck { overall: 'healthy' | 'degraded' | 'unhealthy,
 
     checks: Record<string, {''
-        status: 'pass' | 'warning' | 'fail';
+        status: 'pass' | 'warning' | 'fail,
     message: string;
-        value?: any;>;
-    warnings: string[];
-    errors: string[];
+    value?: any;>;
+    warnings: string[],
+    errors: string[],
     score: number;
 }
 
@@ -68,47 +66,46 @@ interface ComponentDebugInfo { available: boolean;
     stats?: any;
     initialized?: boolean;
     support?: any;
-
-interface DebugInfo { status: StatusInfo;
+    interface DebugInfo { status: StatusInfo,
     components: Record<string, ComponentDebugInfo>;
     performance: {
-        initializationMetric,s: InitializationMetrics | null;
+        initializationMetric,s: InitializationMetrics | null ,
     resourcePreloads: {
             coun,t: number;
-    promises: string[];
-        componentCache: { size: number;
-    keys: string[];
+    },
+    promises: string[],
+        componentCache: { size: number,
+    keys: string[]  ,
     cache: { componentCache?: {
-            size: number;
-    entries: [string, any][] };
-        resourcePreloads?: { size: number;
+            size: number,
+    entries: [string, any][]  },
+        resourcePreloads?: { size: number,
     keys: string[];
         error?: string;
     };
-    errors: any;
-    browser: any;
+    errors: any,
+    browser: any,
     resources: any;
 }
 
-interface ConfigChange { key: string;
-    old: any;
+interface ConfigChange { key: string,
+    old: any,
     new: any;
-
-export default class LocalModeStatusManager { /**
+    export default class LocalModeStatusManager { /**
      * 状態情報取得
      * @param manager - LocalModeManagerインスタンス
      * @returns 状態情報
      */
     static getStatus(manager: LocalModeManager): StatusInfo {
-        return { isInitialized: manager.isInitialized };
+        return { isInitialized: manager.isInitialized ,
             isLocalMode: manager.executionContext?.isLocal || false, : undefined 
             config: { ...manager.config;
-            executionContext: manager.executionContext ? { : undefined
-                protocol: manager.executionContext.protocol;
-                isLocal: manager.executionContext.isLocal;
-                canUseCanvas: manager.executionContext.canUseCanvas;
-                canUseLocalStorage: manager.executionContext.canUseLocalStorage;
-    canUseModules: manager.executionContext.canUseModules } : null;
+    executionContext: manager.executionContext ? { : undefined
+                protocol: manager.executionContext.protocol,
+    isLocal: manager.executionContext.isLocal,
+    canUseCanvas: manager.executionContext.canUseCanvas,
+    canUseLocalStorage: manager.executionContext.canUseLocalStorage,
+    canUseModules: manager.executionContext.canUseModules } : null };
             timestamp: new Date().toISOString();
         }
     
@@ -117,10 +114,10 @@ export default class LocalModeStatusManager { /**
      * @param manager - LocalModeManagerインスタンス
      * @returns デバッグ情報
      */
-    static getDebugInfo(manager: LocalModeManager): DebugInfo { return { status: this.getStatus(manager;
-            components: this._getComponentsDebugInfo(manager);
-            performance: this._getPerformanceDebugInfo(manager);
-            cache: this._getCacheDebugInfo(manager);
+    static getDebugInfo(manager: LocalModeManager): DebugInfo { return { status: this.getStatus(manager,
+            components: this._getComponentsDebugInfo(manager),
+            performance: this._getPerformanceDebugInfo(manager),
+            cache: this._getCacheDebugInfo(manager),
             errors: this._getErrorDebugInfo(
     browser: this._getBrowserDebugInfo() };
             resources: this._getResourceDebugInfo(manager); 
@@ -139,12 +136,10 @@ export default class LocalModeStatusManager { /**
         if (manager.config.debugMode) {
 
             console.log('LocalModeManager configuration updated:', {
-                old: oldConfig);
-                new: manager.config) }
-                changed: this._getChangedKeys(oldConfig, manager.config); }
-            };
-        }
-        
+                old: oldConfig),
+                new: manager.config),
+                changed: this._getChangedKeys(oldConfig, manager.config);     }
+}
         return manager.config;
     }
     
@@ -155,15 +150,15 @@ export default class LocalModeStatusManager { /**
      */''
     static getHealthCheck(manager: LocalModeManager): HealthCheck { const health: HealthCheck = {''
             overall: 'healthy' }
-            checks: {};
-            warnings: [];
-            errors: [];
+            checks: {  },
+            warnings: [],
+            errors: [],
     score: 0;
         },
         
         // 初期化状態チェック
         health.checks.initialization = { ''
-            status: manager.isInitialized ? 'pass' : 'fail';
+            status: manager.isInitialized ? 'pass' : 'fail,
             message: manager.isInitialized ? 'Initialized successfully' : 'Not initialized'
             };
         ';'
@@ -185,9 +180,8 @@ export default class LocalModeStatusManager { /**
                 if (!supported) {
     
 }
-                    health.warnings.push(`${cap} is, not supported`};
-                }
-            };
+                    health.warnings.push(`${cap} is, not supported`    }
+}
         }
         ';'
         // パフォーマンスチェック
@@ -197,7 +191,7 @@ export default class LocalModeStatusManager { /**
             health.checks.performance = { : undefined'
         
                 status: initTime < 5000 ? 'pass' : 'warning', 
-                message: `Initialization, time: ${Math.round(initTime }ms`,
+                message: `Initialization, time: ${Math.round(initTime }ms,
                 value: initTime','
             };
             if (initTime >= 5000) {', ' }
@@ -294,12 +288,10 @@ export default class LocalModeStatusManager { /**
      * @private
      */
     private static _getPerformanceDebugInfo(manager: LocalModeManager) { return { initializationMetrics: manager._initializationMetrics || null,
-            resourcePreloads: {
-                count: manager._resourcePreloadPromises?.size || 0, : undefined;;
-                promises: Array.from(manager._resourcePreloadPromises?.keys() || []), 
-    }, : undefined
+            resourcePreloads: { count: manager._resourcePreloadPromises?.size || 0, : undefined;  },
+                promises: Array.from(manager._resourcePreloadPromises?.keys())) || []) , : undefined
             componentCache: { size: manager._componentCache?.size || 0, : undefined
-                keys: Array.from(manager._componentCache?.keys() || [] 
+                keys: Array.from(manager._componentCache?.keys())) || [] 
          }
     
     /**
@@ -309,10 +301,9 @@ export default class LocalModeStatusManager { /**
     private static _getCacheDebugInfo(manager: LocalModeManager) { try {
             return { componentCache: {
                     size: manager._componentCache?.size || 0, : undefined;;
-                    entries: Array.from(manager._componentCache?.entries() || []), 
-    }, : undefined
+                    entries: Array.from(manager._componentCache?.entries())) || []) , : undefined };
                 resourcePreloads: { size: manager._resourcePreloadPromises?.size || 0, : undefined
-                    keys: Array.from(manager._resourcePreloadPromises?.keys() || [] 
+                    keys: Array.from(manager._resourcePreloadPromises?.keys())) || [] 
              } catch (error) { : undefined;
             return { error: (error, as Error).message }
     }
@@ -341,8 +332,8 @@ export default class LocalModeStatusManager { /**
         return { userAgent: navigator.userAgent,
             protocol: window.location.protocol,
             href: window.location.href,
-            localStorage: typeof localStorage !== 'undefined',
-            sessionStorage: typeof sessionStorage !== 'undefined',
+            localStorage: typeof localStorage !== 'undefined,
+            sessionStorage: typeof sessionStorage !== 'undefined,
             canvas: !!document.createElement('canvas').getContext,' };'
 
             performance: typeof performance !== 'undefined' 
@@ -354,7 +345,7 @@ export default class LocalModeStatusManager { /**
      */
     private static _getResourceDebugInfo(manager: LocalModeManager) { return { config: manager.config,
             executionContext: manager.executionContext,
-    isInitialized: manager.isInitialized },
+    isInitialized: manager.isInitialized ,
             initializationPromise: !!manager.initializationPromise 
     }
     
@@ -368,9 +359,9 @@ export default class LocalModeStatusManager { /**
             if (oldConfig[key] !== newConfig[key]) {
                 changed.push({)
                     key }
-                    old: oldConfig[key]) }
+                    old: oldConfig[key]),
                     new: newConfig[key]); 
-    };
+    }
 
             }'}');
         

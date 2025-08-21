@@ -32,13 +32,13 @@ describe('HelpScene Contextual Help Integration', () => {
         mockGameEngine = {
             sceneManager: {
                 hasScene: jest.fn().mockReturnValue(true),
-               , switchScene: jest.fn(').mockReturnValue(true,'
+               , switchScene: jest.fn(').mockReturnValue(true,' };
                 currentScene: {
                     constructor: { name: 'HelpScene' }
                 }
             },
             localizationManager: {,
-                getCurrentLanguage: jest.fn(').mockReturnValue('ja','
+                getCurrentLanguage: jest.fn(').mockReturnValue('ja',' };
                 t: jest.fn().mockImplementation((key, defaultValue) => defaultValue) },
             accessibilityManager: {
                 announceToScreenReader: jest.fn()' }'

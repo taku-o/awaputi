@@ -7,22 +7,22 @@ export interface AnalysisOptions {
     timeRange?: { start: Date, end: Date;
     filters?: Record<string, any>;
     metrics?: string[];
-}
-
+};
 export interface AnalysisResult { success: boolean;
     data?: any;
     insights?: string[];
     recommendations?: string[];
     timestamp: number;
+};
 export class GameBalanceAnalyzer {
     constructor() {
     
-}
+};
         this.balanceMetrics = { }
-            scoreDistribution: {};
-            bubbleFrequency: {};
-            completionRates: {};
-            averagePlayTimes: {};
+            scoreDistribution: {  },
+            bubbleFrequency: {  },
+            completionRates: {  },
+            averagePlayTimes: {  },
             playerPerformance: {;
 } }
     
@@ -39,13 +39,13 @@ export class GameBalanceAnalyzer {
     }
             this.checkScoreDistributionWarnings(balanceData.scoreDistribution, warnings); }
         // バブル出現頻度の異常チェック
-        if (balanceData.bubbleFrequency) { this.checkBubbleFrequencyWarnings(balanceData.bubbleFrequency, warnings) }
+        if (balanceData.bubbleFrequency) { this.checkBubbleFrequencyWarnings(balanceData.bubbleFrequency, warnings);
         // 完了率の異常チェック
-        if (balanceData.completionRate !== undefined) { this.checkCompletionRateWarnings(balanceData.completionRate, warnings) }
+        if (balanceData.completionRate !== undefined) { this.checkCompletionRateWarnings(balanceData.completionRate, warnings);
         // プレイ時間の異常チェック
-        if (balanceData.averagePlayTime) { this.checkPlayTimeWarnings(balanceData.averagePlayTime, warnings) }
+        if (balanceData.averagePlayTime) { this.checkPlayTimeWarnings(balanceData.averagePlayTime, warnings);
         // 警告をログに出力
-        warnings.forEach(warning => { ) }
+        warnings.forEach(warning => { );
             console.warn(`[Game, Balance Warning] ${warning.severity.toUpperCase(}: ${warning.message}`, warning.data);
         };
         
@@ -67,19 +67,19 @@ export class GameBalanceAnalyzer {
         // スコア分布の偏りチェック
         if (maxScore > avgScore * 5) {
             warnings.push({
-                type: 'score_distribution_anomaly',
+                type: 'score_distribution_anomaly,
                 severity: 'high' }''
-                message: 'Extreme score outliers detected') }
+                message: 'Extreme score outliers detected'),
                 data: { avgScore, maxScore, ratio: maxScore / avgScore  }';'
         }
         ';'
         // スコア範囲の異常チェック
         if (maxScore - minScore > avgScore * 10) {
             warnings.push({''
-                type: 'score_range_anomaly',
+                type: 'score_range_anomaly,
                 severity: 'medium' }''
-                message: 'Unusually wide score range detected') }
-                data: { range: maxScore - minScore, avgScore };
+                message: 'Unusually wide score range detected'),
+                data: { range: maxScore - minScore, avgScore }
         }
     /**
      * バブル頻度警告のチェック
@@ -103,10 +103,8 @@ export class GameBalanceAnalyzer {
                     severity: 'medium'
             };
                     message: `High frequency detected for ${bubbleType}`)
-                    data: { bubbleType, frequency, avgFreq, ratio: frequency / avgFreq  },
-                };
-            }
-        };
+                    data: { bubbleType, frequency, avgFreq, ratio: frequency / avgFreq  ,     }
+}
     }
     
     /**
@@ -118,16 +116,16 @@ export class GameBalanceAnalyzer {
 
         if (completionRate < 0.1) {
             warnings.push({''
-                type: 'low_completion_rate',
+                type: 'low_completion_rate,
                 severity: 'high' }''
-                message: 'Very low stage completion rate') }
+                message: 'Very low stage completion rate'),
 
                 data: { completionRate }';} else if (completionRate > 0.95) { warnings.push({''
-                type: 'high_completion_rate',
+                type: 'high_completion_rate' ,
                 severity: 'medium',','
                 message: 'Stage may be too easy'
             }
-                data: { completionRate };
+                data: { completionRate }
         }
     /**
      * プレイ時間警告のチェック
@@ -140,15 +138,15 @@ export class GameBalanceAnalyzer {
 
         if (playTimeRatio < 0.2) {
             warnings.push({''
-                type: 'short_play_time',
+                type: 'short_play_time,
                 severity: 'medium' }''
-                message: 'Players finishing stages very quickly') }
+                message: 'Players finishing stages very quickly'),
 
                 data: { averagePlayTime, ratio: playTimeRatio,';} else if (playTimeRatio > 2.0) { warnings.push({''
-                type: 'long_play_time',
+                type: 'long_play_time,
                 severity: 'medium',','
                 message: 'Players taking unusually long to complete stages'
-            }
+        }
                 data: { averagePlayTime, ratio: playTimeRatio,);
         }
     /**
@@ -173,8 +171,7 @@ export class GameBalanceAnalyzer {
             case 'item_effect':,
                 this.collectItemEffectData(data);
                 break }
-            default:  ,
-}
+            default:   }
                 console.log(`[GameBalanceAnalyzer] Unknown, data type: ${data.type}`} }
     /**
      * スコアデータの収集
@@ -223,8 +220,7 @@ export class GameBalanceAnalyzer {
                 attempts: 0,
     completions: 0
 }
-                totalPlayTime: 0 ,
-    } }
+                totalPlayTime: 0  } }
         
         const stats = this.balanceMetrics.completionRates[key];
         stats.attempts++;
@@ -251,8 +247,7 @@ export class GameBalanceAnalyzer {
                 reactionTimeSum: 0,
     maxComboSum: 0
 }
-                count: 0 ,
-    } }
+                count: 0  } }
         
         const perf = this.balanceMetrics.playerPerformance[key];
         perf.accuracySum += difficultyData.accuracy;
@@ -292,13 +287,11 @@ export class GameBalanceAnalyzer {
     maxCombo: performanceStats.maxComboSum / performanceStats.count 
  } : null;
         return { completionRate,
-            averagePlayTime: this.balanceMetrics.averagePlayTimes[key] || 0 },
-            scoreDistribution: this.balanceMetrics.scoreDistribution[key] || [],
-}
+            averagePlayTime: this.balanceMetrics.averagePlayTimes[key] || 0 ,
+            scoreDistribution: this.balanceMetrics.scoreDistribution[key] || [] }
             bubbleFrequency: this.balanceMetrics.bubbleFrequency[key] || {},
             averagePerformance: avgPerformance,
-    attempts: completionStats.attempts,
-        } }
+    attempts: completionStats.attempts } }
     
     /**
      * 全体バランスレポートの生成
@@ -311,9 +304,9 @@ export class GameBalanceAnalyzer {
 }
             stages: {},
             globalMetrics: { totalAttempts: 0,
-                totalCompletions: 0,
+                totalCompletions: 0 ,
     averageCompletionRate: 0 
-    },
+    ,
         
         // 各ステージのバランス統計を集計
         const allKeys = new Set([...Object.keys(this.balanceMetrics.completionRates);
@@ -323,7 +316,7 @@ export class GameBalanceAnalyzer {
 
         allKeys.forEach(key => {  '),'
             const [stageId, difficulty] = key.split('_),'
-            const stats = this.getBalanceStats(stageId, difficulty) }
+            const stats = this.getBalanceStats(stageId, difficulty);
             if (!report.stages[stageId]) { }
                 report.stages[stageId] = {}
             

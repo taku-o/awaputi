@@ -15,215 +15,193 @@
  */
 
 // 型定義
-export interface ChallengeUIElements { container: HTMLElement;
-    header: HTMLElement;
-    filterControls: HTMLElement;
-    sortControls: HTMLElement;
-    challengeList: HTMLElement;
-    challengeItems: HTMLElement[];
-    progressSection: HTMLElement;
-    footer: HTMLElement;
-    loadingIndicator: HTMLElement;
+export interface ChallengeUIElements { container: HTMLElement,
+    header: HTMLElement,
+    filterControls: HTMLElement,
+    sortControls: HTMLElement,
+    challengeList: HTMLElement,
+    challengeItems: HTMLElement[],
+    progressSection: HTMLElement,
+    footer: HTMLElement,
+    loadingIndicator: HTMLElement,
     errorMessage: HTMLElement;
     announcer?: HTMLElement;
     refreshButton?: HTMLElement;
-     }
-
-export interface UIRenderConfig { styles: UIStyleConfig;
-    accessibility: AccessibilityRenderConfig;
-    layout: LayoutConfig;
-    animation: AnimationConfig;
+     };
+export interface UIRenderConfig { styles: UIStyleConfig,
+    accessibility: AccessibilityRenderConfig,
+    layout: LayoutConfig,
+    animation: AnimationConfig,
     responsive: ResponsiveConfig;
-
-export interface UIStyleConfig { backgroundColor: string;
-    textColor: string;
-    accentColor: string;
-    borderRadius: string;
-    fontSize: string;
-    fontFamily: string;
+    export interface UIStyleConfig { backgroundColor: string,
+    textColor: string,
+    accentColor: string,
+    borderRadius: string,
+    fontSize: string,
+    fontFamily: string,
     theme: UITheme;
     customCSS?: string;
-
-export interface AccessibilityRenderConfig { enabled: boolean;
-    highContrast: boolean;
-    reducedMotion: boolean;
-    screenReaderOptimized: boolean;
-    focusVisible: boolean;
+    export interface AccessibilityRenderConfig { enabled: boolean,
+    highContrast: boolean,
+    reducedMotion: boolean,
+    screenReaderOptimized: boolean,
+    focusVisible: boolean,
     announcements: boolean;
-
-export interface LayoutConfig { maxHeight: string;
-    padding: string;
-    margin: string;
-    gridColumns: number;
-    itemSpacing: string;
+    export interface LayoutConfig { maxHeight: string,
+    padding: string,
+    margin: string,
+    gridColumns: number,
+    itemSpacing: string,
     compactMode: boolean;
-
-export interface AnimationConfig { enabled: boolean;
-    duration: string;
-    easing: string;
-    progressAnimations: boolean;
+    export interface AnimationConfig { enabled: boolean,
+    duration: string,
+    easing: string,
+    progressAnimations: boolean,
     loadingAnimations: boolean;
-
-export interface ResponsiveConfig { breakpoints: ResponsiveBreakpoints;
-    mobileFirst: boolean;
-    adaptiveText: boolean;
+    export interface ResponsiveConfig { breakpoints: ResponsiveBreakpoints,
+    mobileFirst: boolean,
+    adaptiveText: boolean,
     flexibleLayout: boolean;
-
-export interface ResponsiveBreakpoints { mobile: number;
-    tablet: number;
-    desktop: number;
+    export interface ResponsiveBreakpoints { mobile: number,
+    tablet: number,
+    desktop: number,
     widescreen: number;
-
-export interface Challenge { id: string;
-    title: string;
-    description: string;
-    type: ChallengeType;
-    difficulty: ChallengeDifficulty;
-    progress: number;
-    target: number;
-    reward: ChallengeReward;
-    deadline: Date;
+    export interface Challenge { id: string,
+    title: string,
+    description: string,
+    type: ChallengeType,
+    difficulty: ChallengeDifficulty,
+    progress: number,
+    target: number,
+    reward: ChallengeReward,
+    deadline: Date,
     priority: number;
     metadata?: ChallengeMetadata;
-
-export interface ChallengeReward { ap?: number,
+    export interface ChallengeReward { ap?: number,
     title?: string;
     items?: RewardItem[];
     badges?: string[];
     currency?: CurrencyReward[];
-
-export interface RewardItem { type: string;
-    id: string;
+    export interface RewardItem { type: string,
+    id: string,
     quantity: number;
     name?: string;
-
-export interface CurrencyReward { type: CurrencyType;
+    export interface CurrencyReward { type: CurrencyType,
     amount: number;
-
-export interface ChallengeMetadata { category?: string,
+    export interface ChallengeMetadata { category?: string,
     tags?: string[];
     featured?: boolean;
     newBadge?: boolean;
     rarity?: ChallengeRarity;
-
-export interface ChallengeUIState { challenges: Challenge[];
+    export interface ChallengeUIState { challenges: Challenge[],
     loading: boolean;
     error?: string;
     selectedChallenge?: Challenge;
-    filterBy: string;
+    filterBy: string,
     sortBy: string;
     lastUpdated?: Date;
-
-export interface ChallengeUIReference { config: UIRenderConfig;
-    state: ChallengeUIState;
+    export interface ChallengeUIReference { config: UIRenderConfig,
+    state: ChallengeUIState,
     elements: ChallengeUIElements;
-
-export interface ProgressVisualization { bar: HTMLElement;
-    fill: HTMLElement;
-    text: HTMLElement;
-    percentage: number;
+    export interface ProgressVisualization { bar: HTMLElement,
+    fill: HTMLElement,
+    text: HTMLElement,
+    percentage: number,
     animated: boolean;
-
-export interface DifficultyConfig { label: string;
+    export interface DifficultyConfig { label: string,
     color: string;
     icon?: string;
     className: string;
-
-export interface FilterOption { value: string;
+    export interface FilterOption { value: string,
     text: string;
     count?: number;
     disabled?: boolean;
-
-export interface SortOption { value: string;
-    text: string;
+    export interface SortOption { value: string,
+    text: string,
     order: SortOrder;
     icon?: string;
-
-export interface ChallengeItemElements { container: HTMLElement;
-    header: HTMLElement;
-    title: HTMLElement;
-    difficulty: HTMLElement;
-    description: HTMLElement;
-    progress: ProgressVisualization;
-    footer: HTMLElement;
-    deadline: HTMLElement;
+    export interface ChallengeItemElements { container: HTMLElement,
+    header: HTMLElement,
+    title: HTMLElement,
+    difficulty: HTMLElement,
+    description: HTMLElement,
+    progress: ProgressVisualization,
+    footer: HTMLElement,
+    deadline: HTMLElement,
     reward: HTMLElement;
     badges?: HTMLElement[];
-
-export interface RenderOptions { skipAnimations?: boolean,
+    export interface RenderOptions { skipAnimations?: boolean,
     forceRerender?: boolean;
     preserveScroll?: boolean;
     updateOnly?: string[];
-
-export interface StyleInjection { id: string;
-    css: string;
-    element: HTMLStyleElement;
+    export interface StyleInjection { id: string,
+    css: string,
+    element: HTMLStyleElement,
     scope: StyleScope;
-
-export interface MediaQueryState { mobile: boolean;
-    tablet: boolean;
-    desktop: boolean;
-    highDPI: boolean;
-    prefersDarkMode: boolean;
-    prefersReducedMotion: boolean;
+    export interface MediaQueryState { mobile: boolean,
+    tablet: boolean,
+    desktop: boolean,
+    highDPI: boolean,
+    prefersDarkMode: boolean,
+    prefersReducedMotion: boolean,
     prefersHighContrast: boolean;
 
 // 列挙型
 export type ChallengeType = 'daily' | 'weekly' | 'special' | 'event';
-export type ChallengeDifficulty = 'easy' | 'medium' | 'hard';
-export type ChallengeRarity = 'common' | 'rare' | 'epic' | 'legendary';
-export type UITheme = 'light' | 'dark' | 'auto' | 'contrast';
-export type SortOrder = 'asc' | 'desc';
-export type CurrencyType = 'coins' | 'gems' | 'tokens' | 'points';
-export type StyleScope = 'global' | 'component' | 'element';
+    export type ChallengeDifficulty = 'easy' | 'medium' | 'hard';
+    export type ChallengeRarity = 'common' | 'rare' | 'epic' | 'legendary';
+    export type UITheme = 'light' | 'dark' | 'auto' | 'contrast';
+    export type SortOrder = 'asc' | 'desc';
+    export type CurrencyType = 'coins' | 'gems' | 'tokens' | 'points';
+    export type StyleScope = 'global' | 'component' | 'element';
 
 // 定数
-export const DEFAULT_UI_STYLES: UIStyleConfig = {;
-    backgroundColor: '#FFFFFF';
-    textColor: '#333333';
-    accentColor: '#4A90E2';
-    borderRadius: '8px';
-    fontSize: '14px';
-    fontFamily: 'Arial, sans-serif',
+export const DEFAULT_UI_STYLES: UIStyleConfig = {,
+    backgroundColor: '#FFFFFF,
+    textColor: '#333333,
+    accentColor: '#4A90E2,
+    borderRadius: '8px,
+    fontSize: '14px,
+    fontFamily: 'Arial, sans-serif,
     theme: 'auto'
             } as const;
-export const DEFAULT_ACCESSIBILITY_CONFIG: AccessibilityRenderConfig = { enabled: true;
-    highContrast: false;
-    reducedMotion: false;
-    screenReaderOptimized: true;
-    focusVisible: true;
+export const DEFAULT_ACCESSIBILITY_CONFIG: AccessibilityRenderConfig = { enabled: true,
+    highContrast: false,
+    reducedMotion: false,
+    screenReaderOptimized: true,
+    focusVisible: true,
     announcements: true, as const;
 ';'
 
-export const DEFAULT_LAYOUT_CONFIG: LayoutConfig = {;
-    maxHeight: '600px';
-    padding: '16px';
-    margin: '8px';
-    gridColumns: 1;
-    itemSpacing: '8px';
+export const DEFAULT_LAYOUT_CONFIG: LayoutConfig = {,
+    maxHeight: '600px,
+    padding: '16px,
+    margin: '8px,
+    gridColumns: 1,
+    itemSpacing: '8px,
     compactMode: false, as const;
-export const DEFAULT_RESPONSIVE_BREAKPOINTS: ResponsiveBreakpoints = { mobile: 768;
-    tablet: 1024;
-    desktop: 1440;
+export const DEFAULT_RESPONSIVE_BREAKPOINTS: ResponsiveBreakpoints = { mobile: 768,
+    tablet: 1024,
+    desktop: 1440,
     widescreen: 1920  } as const;
 ';'
 
 export const DIFFICULTY_CONFIG: Record<ChallengeDifficulty, DifficultyConfig> = { easy: {''
-        label: '簡単';
-        color: '#4CAF50';
-        icon: '🟢';
+        label: '簡単,
+        color: '#4CAF50,
+        icon: '🟢,
         className: 'challenge-difficulty-easy'
-            };
+        }
     medium: { ''
-        label: '普通';
-        color: '#FF9800';
-        icon: '🟡';
+        label: '普通'  ,
+        color: '#FF9800,
+        icon: '🟡,
         className: 'challenge-difficulty-medium'
             };
     hard: { ''
-        label: '難しい';
-        color: '#F44336';
-        icon: '🔴';
+        label: '難しい'  ,
+        color: '#F44336,
+        icon: '🔴,
         className: 'challenge-difficulty-hard'
             }
 } as const;
@@ -231,17 +209,17 @@ export const DIFFICULTY_CONFIG: Record<ChallengeDifficulty, DifficultyConfig> = 
 
 export const FILTER_OPTIONS: FilterOption[] = [','
     { value: 'all', text: 'すべて'
-            },''
+            ,''
     { value: 'daily', text: 'デイリー'
-            },''
+            ,''
     { value: 'weekly', text: 'ウィークリー'
-            },''
+            ,''
     { value: 'special', text: 'スペシャル'
-            },''
+            ,''
     { value: 'event', text: 'イベント'
-            },''
+            ,''
     { value: 'active', text: '進行中'
-            },]'
+            ,]'
     { value: 'completed', text: '完了済み'
             }]
 ] as const;
@@ -249,15 +227,15 @@ export const FILTER_OPTIONS: FilterOption[] = [','
 
 export const SORT_OPTIONS: SortOption[] = [','
     { value: 'priority', text: '優先度順', order: 'asc', icon: '⭐'
-            },''
+            ,''
     { value: 'difficulty', text: '難易度順', order: 'asc', icon: '📊'
-            },''
+            ,''
     { value: 'progress', text: '進捗順', order: 'desc', icon: '📈'
-            },''
+            ,''
     { value: 'deadline', text: '期限順', order: 'asc', icon: '⏰'
-            },''
+            ,''
     { value: 'title', text: 'タイトル順', order: 'asc', icon: '🔤'
-            },]'
+            ,]'
     { value: 'type', text: 'タイプ順', order: 'asc', icon: '📂'
             }]
 ] as const;
@@ -268,25 +246,24 @@ export const ACCESSIBILITY_STYLES = `;
     .challenge-ui-container select: focus;
     .challenge-item:focus { outline: 3px solid var(--accent-color, #4A90E2) !important,
         outline-offset: 2px !important;
-        box-shadow: 0 0 0 3px var(--accent-color-alpha, rgba(74, 144, 226, 0.25) !important }
-    
+        box-shadow: 0 0 0 3px var(--accent-color-alpha, rgba(74, 144, 226, 0.25) !important };
     /* スクリーンリーダー専用クラス */
-    .sr-only { position: absolute !important;
-        width: 1px !important;
-        height: 1px !important;
-        padding: 0 !important;
-        margin: -1px !important;
-        overflow: hidden !important;
+    .sr-only { position: absolute !important,
+        width: 1px !important,
+        height: 1px !important,
+        padding: 0 !important,
+        margin: -1px !important,
+        overflow: hidden !important,
     clip: rect(0, 0, 0, 0) !important,
-        white-space: nowrap !important;
+        white-space: nowrap !important,
         border: 0 !important  }
     
     /* スキップリンク */
-    .skip-link { position: absolute;
-        top: -40px;
-        left: 6px;
-        background: #000;
-        color: white;
+    .skip-link { position: absolute,
+        top: -40px,
+        left: 6px,
+        background: #000,
+        color: white,
     padding: 8px;
         text-decoration: none;
         z-index: 9999 }
@@ -302,44 +279,43 @@ export const COMPONENT_BASE_STYLES = `;
         --border-color: #E0E0E0;
         --success-color: #4CAF50;
         --warning-color: #FF9800;
-        --error-color: #F44336;
+        --error-color: #F44336,
         
         display: flex;
         flex-direction: column;
-        background-color: var(--background-color;
-        color: var(--text-color;
+        background-color: var(--background-color,
+        color: var(--text-color,
     border: 1px solid var(--border-color);
-        border-radius: 8px;
+        border-radius: 8px,
         overflow: hidden;
-        font-family: Arial, sans-serif }
-    
+        font-family: Arial, sans-serif };
     .challenge-ui-header { display: flex;
         justify-content: space-between;
-        align-items: center;
+        align-items: center,
         padding: 16px;
         border-bottom: 1px solid var(--border-color;
-        background-color: var(--background-color) }
+        background-color: var(--background-color);
     
     .challenge-ui-title { margin: 0;
         font-size: 1.25rem;
-        font-weight: bold;
+        font-weight: bold,
         color: var(--text-color  }
     
-    .challenge-ui-refresh { background: none;
+    .challenge-ui-refresh { background: none,
     border: 1px solid var(--border-color);
-        border-radius: 4px;
-        padding: 8px 12px;
+        border-radius: 4px,
+        padding: 8px 12px,
     cursor: pointer;
-        font-size: 16px;
+        font-size: 16px,
         transition: background-color 0.2s  }
     
-    .challenge-ui-refresh:hover { background-color: var(--accent-color-alpha) }
+    .challenge-ui-refresh:hover { background-color: var(--accent-color-alpha);
     
     .challenge-item { border: 1px solid var(--border-color;
-        border-radius: 6px;
-        padding: 12px;
-        margin: 8px;
-        cursor: pointer;
+        border-radius: 6px,
+        padding: 12px,
+        margin: 8px,
+        cursor: pointer,
     transition: transform 0.2s, box-shadow 0.2s }
     
     .challenge-item: hover { transform: translateY(-2px;
@@ -347,13 +323,13 @@ export const COMPONENT_BASE_STYLES = `;
     
     .challenge-item-completed { opacity: 0.75;
         background-color: var(--success-color-alpha, rgba(76, 175, 80, 0.1);
-        border-color: var(--success-color) }
+        border-color: var(--success-color);
     
-    .challenge-item-progress-bar { width: 100%;
+    .challenge-item-progress-bar { width: 100%,
         height: 8px;
         background-color: var(--border-color;
-        border-radius: 4px;
-        overflow: hidden;
+        border-radius: 4px,
+        overflow: hidden,
     margin: 8px 0  }
     
     .challenge-item-progress-fill { height: 100% }
@@ -365,18 +341,17 @@ export const COMPONENT_BASE_STYLES = `;
 // ユーティリティ関数
 export function formatDeadlineTime(deadline: Date): string { const now = new Date();
     const diff = deadline.getTime() - now.getTime();
-    if (diff < 0) { }
-
-        return '期限切れ'; else if (diff < 60 * 60 * 1000) { const minutes = Math.floor(diff / (60 * 1000) }
+    if (diff < 0) { };
+        return '期限切れ'; else if (diff < 60 * 60 * 1000) { const minutes = Math.floor(diff / (60 * 1000);
         return `あと${minutes}分`;
-    } else if (diff < 24 * 60 * 60 * 1000) { const hours = Math.floor(diff / (60 * 60 * 1000) }
+    } else if (diff < 24 * 60 * 60 * 1000) { const hours = Math.floor(diff / (60 * 60 * 1000);
         return `あと${hours}時間`;
-    } else { const days = Math.floor(diff / (24 * 60 * 60 * 1000) }
+    } else { const days = Math.floor(diff / (24 * 60 * 60 * 1000);
         return `あと${days}日`;
 
 export function formatRewardText(reward: ChallengeReward): string { const parts: string[] = [];
     
-    if (reward.ap) { }
+    if (reward.ap) { };
         parts.push(`${reward.ap} AP`);
     }
     if (reward.title) {
@@ -384,7 +359,7 @@ export function formatRewardText(reward: ChallengeReward): string { const parts:
 }
         parts.push(`称号「${reward.title}」`);
     }
-    if (reward.items && reward.items.length > 0) { const itemTexts = reward.items.map(item => ) }
+    if (reward.items && reward.items.length > 0) { const itemTexts = reward.items.map(item => );
             `${item.name || item.id}×${ item.quantity}`
         }
         parts.push(...itemTexts);
@@ -394,7 +369,7 @@ export function formatRewardText(reward: ChallengeReward): string { const parts:
 
         parts.push(`バッジ: ${reward.badges.join(', '}`);
     }
-    if (reward.currency && reward.currency.length > 0) { const currencyTexts = reward.currency.map(curr => ) }
+    if (reward.currency && reward.currency.length > 0) { const currencyTexts = reward.currency.map(curr => );
 
             `${curr.amount} ${ curr.type}`};' }'
 
@@ -404,14 +379,12 @@ export function formatRewardText(reward: ChallengeReward): string { const parts:
     return parts.length > 0 ? parts.join(', ') : '報酬なし';
 }
 
-export function calculateProgressPercentage(progress: number, target: number): number { return Math.min(Math.round((progress / target) * 100), 100) }
-
+export function calculateProgressPercentage(progress: number, target: number): number { return Math.min(Math.round((progress / target) * 100), 100) };
 export function getDifficultyInfo(difficulty: ChallengeDifficulty): DifficultyConfig { return DIFFICULTY_CONFIG[difficulty] || {'
         label: difficulty,
-        color: '#666666',
+        color: '#666666,
         className: 'challenge-difficulty-unknown'
-            }
-
+            };
 export function createAccessibleId(prefix: string, suffix?: string): string {
     const id = `${prefix}-${Date.now())-${Math.random().toString(36).substr(2, 9}`;
     return suffix ? `${id}-${suffix}` : id;
@@ -446,8 +419,7 @@ export class ChallengeUIRenderer {
         ','
         // メディアクエリの変更監視
         this.setupMediaQueryListeners()
-}
-
+};
         console.log('[ChallengeUIRenderer] Component, initialized'); }'
     }
     
@@ -456,11 +428,11 @@ export class ChallengeUIRenderer {
      */''
     private setupMediaQueryListeners()';'
             { query: '(max-width: 768px')', property: 'mobile'
-            },''
+            ,''
             { query: '(prefers-reduced-motion: reduce')', property: 'prefersReducedMotion'
-            },''
+            ,''
             { query: '(prefers-color-scheme: dark')', property: 'prefersDarkMode'
-            },''
+            ,''
             { query: '(prefers-contrast: high')', property: 'prefersHighContrast'
             }
         ];
@@ -471,7 +443,7 @@ export class ChallengeUIRenderer {
             mediaQuery.addEventListener('change', (e) => {
                 (this.mediaQueryState, as any)[property] = e.matches }
                 this.applyResponsiveStyles(); }
-            };
+            }
         };
     }
     
@@ -754,7 +726,7 @@ export class ChallengeUIRenderer {
         container.appendChild(progressSection);
         container.appendChild(footer);
         
-        if (announcer) { container.appendChild(announcer) }
+        if (announcer) { container.appendChild(announcer);
     }
     
     /**
@@ -771,7 +743,7 @@ export class ChallengeUIRenderer {
             }
             
             this.state.challenges.forEach((challenge, index) => {  const item = this.createChallengeItem(challenge, index);
-                this.elements.challengeItems.push(item) }
+                this.elements.challengeItems.push(item);
                 list.appendChild(item); }
             };
             
@@ -787,7 +759,7 @@ export class ChallengeUIRenderer {
      * チャレンジアイテムの作成'
      */''
     createChallengeItem(challenge: Challenge, index: number): HTMLElement { ''
-        const item = document.createElement('div') }
+        const item = document.createElement('div');
 
         item.className = `challenge-item challenge-item-${challenge.difficulty}`;
         item.setAttribute('role', 'listitem');
@@ -813,12 +785,12 @@ export class ChallengeUIRenderer {
 
             item.classList.add('challenge-item-new');' }'
 
-            item.setAttribute('aria-label', item.getAttribute('aria-label') + '. 新着'};
+            item.setAttribute('aria-label', item.getAttribute('aria-label') + '. 新着'}
         }
 
         if (challenge.metadata?.featured) {
 
-            item.classList.add('challenge-item-featured') }
+            item.classList.add('challenge-item-featured');
 
             item.setAttribute('aria-label', item.getAttribute('aria-label') + '. おすすめ'); }
         }
@@ -835,8 +807,8 @@ export class ChallengeUIRenderer {
         if (elements.badges && elements.badges.length > 0) {
 
             const badgeContainer = document.createElement('div');
-            badgeContainer.className = 'challenge-item-badges',
-            elements.badges.forEach(badge => badgeContainer.appendChild(badge) }
+            badgeContainer.className = 'challenge-item-badges,
+            elements.badges.forEach(badge => badgeContainer.appendChild(badge);
             item.appendChild(badgeContainer); }
         }
         ';'
@@ -853,20 +825,20 @@ export class ChallengeUIRenderer {
      * チャレンジアイテム要素の作成
      */
     private createChallengeItemElements( : undefined, challenge: Challenge
-    );
+    ),
         progressPercent: number,
     isCompleted: boolean';'
     ': ChallengeItemElements { ''
         const difficultyInfo = getDifficultyInfo(challenge.difficulty);
         // ヘッダー
         const header = document.createElement('div');
-        header.className = 'challenge-item-header',
+        header.className = 'challenge-item-header,
 
         const title = document.createElement('h4');
-        title.className = 'challenge-item-title',
+        title.className = 'challenge-item-title,
         title.textContent = challenge.title,
 
-        const difficulty = document.createElement('span') }
+        const difficulty = document.createElement('span');
         difficulty.className = `challenge-item-difficulty ${difficultyInfo.className}`;
         difficulty.textContent = difficultyInfo.icon ? undefined : undefined';'
             `${difficultyInfo.icon} ${difficultyInfo.label}` : difficultyInfo.label;
@@ -940,7 +912,7 @@ export class ChallengeUIRenderer {
         if (challenge.metadata?.tags) {
 
             challenge.metadata.tags.forEach(tag => { '),'
-                const badge = document.createElement('span') }
+                const badge = document.createElement('span');
 
                 badge.className = 'challenge-item-badge'; }
 
@@ -958,7 +930,7 @@ export class ChallengeUIRenderer {
             difficulty,
             description,
             progress: {
-                bar: progressBarContainer,
+                bar: progressBarContainer ,
                 fill: progressFill,
                 text: progressText,
     percentage: progressPercent,
@@ -1054,15 +1026,15 @@ export class ChallengeUIRenderer {
      * ローディング表示の制御'
      */''
     showLoading(show: boolean): void { ''
-        this.elements.loadingIndicator.style.display = show ? 'block' : 'none',
-        this.elements.challengeList.style.display = show ? 'none' : 'block',
+        this.elements.loadingIndicator.style.display = show ? 'block' : 'none,
+        this.elements.challengeList.style.display = show ? 'none' : 'block,
         this.elements.container.setAttribute('aria-busy', show ? 'true' : 'false' }
     
     /**
      * エラー表示'
      */''
     showError(message: string): void { this.elements.errorMessage.textContent = message,
-        this.elements.errorMessage.style.display = 'block',
+        this.elements.errorMessage.style.display = 'block,
         ','
         // 5秒後に自動で隠す
         setTimeout(() => { }'
@@ -1078,7 +1050,7 @@ export class ChallengeUIRenderer {
             this.injectStyle('base', COMPONENT_BASE_STYLES, 'component);'
             
             // アクセシビリティスタイル
-            if (this.config.accessibility.enabled) { this.applyAccessibilityStyles() }
+            if (this.config.accessibility.enabled) { this.applyAccessibilityStyles();
             
             // レスポンシブスタイル
             this.applyResponsiveStyles();
@@ -1089,8 +1061,7 @@ export class ChallengeUIRenderer {
             if (this.config.styles.customCSS) {', ' }
 
                 this.injectStyle('custom', this.config.styles.customCSS, 'component'; }
-
-            } catch (error) { console.error('[ChallengeUIRenderer] Failed to apply styles:', error }
+        } catch (error) { console.error('[ChallengeUIRenderer] Failed to apply styles:', error }
     }
     
     /**
@@ -1100,7 +1071,7 @@ export class ChallengeUIRenderer {
         
         // 高コントラストモード
         if (this.config.accessibility.highContrast || this.mediaQueryState.prefersHighContrast) {
-            accessibilityCSS += `,
+            accessibilityCSS += ,
                 .challenge-ui-container {
                     --background-color: #000000 !important,
                     --text-color: #FFFFFF !important,
@@ -1116,7 +1087,7 @@ export class ChallengeUIRenderer {
         
         // 動きの軽減
         if (this.config.accessibility.reducedMotion || this.mediaQueryState.prefersReducedMotion) {
-            accessibilityCSS += `,
+            accessibilityCSS += ,
                 .challenge-ui-container *,
                 .challenge-item * {
                     animation-duration: 0.01ms !important,
@@ -1128,9 +1099,9 @@ export class ChallengeUIRenderer {
         ;
         // スクリーンリーダー最適化
         if (this.config.accessibility.screenReaderOptimized) {
-            accessibilityCSS += `,
+            accessibilityCSS += ,
                 .challenge-item-progress::after {''
-                    content: "進捗 " attr(data-progress) " パーセント",
+                    content: "進捗 " attr(data-progress) " パーセント,
     position: absolute,
                     left: -10000px; 
     }
@@ -1139,7 +1110,7 @@ export class ChallengeUIRenderer {
                     content: "難易度 " attr(data-difficulty}
                     position: absolute,
     left: -10000px);
-                }"
+                }
             `"";
         ")";
         this.injectStyle('accessibility', accessibilityCSS, 'component';
@@ -1152,7 +1123,7 @@ export class ChallengeUIRenderer {
         let, responsiveCSS = ';'
         );
         if (mobile) {
-        responsiveCSS += `,
+        responsiveCSS += ,
                 .challenge-ui-container {
                     padding: 12px }
                     font-size: 12px }
@@ -1190,7 +1161,7 @@ export class ChallengeUIRenderer {
         
         if (isDark) {
         
-            themeCSS = `,
+            themeCSS = ,
                 .challenge-ui-container {
                     --background-color: #1a1a1a,
                     --text-color: #ffffff,
@@ -1238,14 +1209,13 @@ export class ChallengeUIRenderer {
         
         // 記録
         this.injectedStyles.set(fullId, { id: fullId)
-            css,
-           , element: style),
+            css, element: style),
             scope }
     
     /**
      * 注入されたスタイルの取得
      */
-    getInjectedStyles(): StyleInjection[] { return Array.from(this.injectedStyles.values() }
+    getInjectedStyles(): StyleInjection[] { return Array.from(this.injectedStyles.values()));
     
     /**
      * メディアクエリ状態の取得
@@ -1257,13 +1227,13 @@ export class ChallengeUIRenderer {
      * レンダリング設定の更新
      */
     updateRenderConfig(newConfig: Partial<UIRenderConfig>): void { Object.assign(this.config, newConfig);
-        this.applyStyles() }
+        this.applyStyles();
     
     /**
      * コンポーネントクリーンアップ
      */
     destroy(): void { // 注入されたスタイルを削除
-        this.injectedStyles.forEach(style => { ) }
+        this.injectedStyles.forEach(style => { );
             style.element.remove(); }
         };
         this.injectedStyles.clear()';'

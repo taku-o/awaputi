@@ -5,36 +5,37 @@
  */
 
 // レイアウト情報のインターフェース
-interface Layout { isMobile: boolean;
-    contentPadding: number;
-    tabHeight: number;
-    headerHeight: number;
+interface Layout { isMobile: boolean,
+    contentPadding: number,
+    tabHeight: number,
+    headerHeight: number,
     fontSize: {
         titl,e: number;
-        tab: number;
-    content: number;
+    },
+        tab: number,
+    content: number,
     content: number;
         };
 // タブ情報のインターフェース
-interface Tab { id: string;
+interface Tab { id: string,
     name: string;
     icon?: string;
 
 // ヒット領域のインターフェース
-interface HitAreas { tabs: TabArea[];
+interface HitAreas { tabs: TabArea[],
     backButton: ButtonInfo | null }
 
 // タブ領域のインターフェース
-interface TabArea { id: string;
-    x: number;
-    y: number;
-    width: number;
+interface TabArea { id: string,
+    x: number,
+    y: number,
+    width: number,
     height: number;
 
 // ボタン情報のインターフェース
-interface ButtonInfo { x: number;
-    y: number;
-    width: number;
+interface ButtonInfo { x: number,
+    y: number,
+    width: number,
     height: number;
 
 // ゲームエンジンのインターフェース
@@ -63,8 +64,7 @@ interface HelpSystem { render(context: CanvasRenderingContext2D, canvas: HTMLCan
 
 // ダイアログマネージャーのインターフェース
 interface DialogManager { render(context: CanvasRenderingContext2D): void;
-
-export class UserInfoRenderer {
+    export class UserInfoRenderer {
     private gameEngine: GameEngine;
     private eventBus: EventBus;
     private sceneState: SceneState;
@@ -78,8 +78,8 @@ export class UserInfoRenderer {
     constructor(gameEngine: GameEngine, eventBus: EventBus, sceneState: SceneState) {
 
         this.gameEngine = gameEngine;
-        this.eventBus = eventBus
-}
+    this.eventBus = eventBus
+};
         this.sceneState = sceneState; }
     }
     
@@ -90,9 +90,9 @@ export class UserInfoRenderer {
         context: CanvasRenderingContext2D,
         tabManager: TabManager,
         profileManager: ProfileManager
-    );
+    ),
         helpSystem: HelpSystem,
-    dialogManager: DialogManager,
+    dialogManager: DialogManager;
     ): void { try {
             const canvas = context.canvas,
             
@@ -108,7 +108,7 @@ export class UserInfoRenderer {
             }
             
             // メインコンテンツをレンダリング
-            if (tabManager) { this.renderContent(context, canvas, tabManager) }
+            if (tabManager) { this.renderContent(context, canvas, tabManager);
             
             // エラーメッセージがある場合は表示
             if (this.sceneState.get('errorMessage) { this.renderErrorMessage(context, canvas) }'
@@ -117,14 +117,14 @@ export class UserInfoRenderer {
             this.renderBackButton(context, canvas);
             
             // ヘルプシステムをレンダリング
-            if (helpSystem) { helpSystem.render(context, canvas) }
+            if (helpSystem) { helpSystem.render(context, canvas);
             
             // ダイアログをレンダリング
             if (dialogManager) { dialogManager.render(context),' }'
 
             } catch (error) {
             console.error('UserInfoRenderer render error:', error);
-            this.renderErrorState(context) }
+            this.renderErrorState(context);
     }
     
     /**
@@ -136,27 +136,27 @@ export class UserInfoRenderer {
         gradient.addColorStop(1, '#16213e),'
         
         context.fillStyle = gradient,
-        context.fillRect(0, 0, canvas.width, canvas.height) }
+        context.fillRect(0, 0, canvas.width, canvas.height);
     
     /**
      * タイトルをレンダリング'
      */''
     private renderTitle(context: CanvasRenderingContext2D, canvas: HTMLCanvasElement): void { const titleY = 30,
 
-        context.fillStyle = '#FFFFFF',
-        context.font = 'bold 32px Arial',
-        context.textAlign = 'center',
-        context.textBaseline = 'top',
+        context.fillStyle = '#FFFFFF,
+        context.font = 'bold 32px Arial,
+        context.textAlign = 'center,
+        context.textBaseline = 'top,
         context.fillText('ユーザー情報', canvas.width / 2, titleY','
         
         // タイトル下のライン
         const lineY = titleY + 50,
-        context.strokeStyle = '#4A90E2',
+        context.strokeStyle = '#4A90E2,
         context.lineWidth = 2,
         context.beginPath();
         context.moveTo(canvas.width * 0.2, lineY);
         context.lineTo(canvas.width * 0.8, lineY);
-        context.stroke() }
+        context.stroke();
     
     /**
      * タブヘッダーをレンダリング
@@ -166,7 +166,7 @@ export class UserInfoRenderer {
         const headerWidth = canvas.width - (this.contentPadding * 2),
         const headerHeight = this.tabHeight,
         
-        tabManager.renderTabHeaders(context, headerX, headerY, headerWidth, headerHeight) }
+        tabManager.renderTabHeaders(context, headerX, headerY, headerWidth, headerHeight);
     
     /**
      * メインコンテンツをレンダリング
@@ -178,15 +178,15 @@ export class UserInfoRenderer {
         const contentHeight = canvas.height - contentY - 80, // 戻るボタンのスペースを考慮
         ,
         // コンテンツ背景
-        context.fillStyle = '#2A2A2A',
+        context.fillStyle = '#2A2A2A,
         context.fillRect(contentX, contentY, contentWidth, contentHeight);
         ','
         // コンテンツ境界線
-        context.strokeStyle = '#444444',
+        context.strokeStyle = '#444444,
         context.lineWidth = 1,
         context.strokeRect(contentX, contentY, contentWidth, contentHeight);
         // タブコンテンツをレンダリング
-        tabManager.renderTabContent(context, contentX + 10, contentY + 10, contentWidth - 20, contentHeight - 20) }
+        tabManager.renderTabContent(context, contentX + 10, contentY + 10, contentWidth - 20, contentHeight - 20);
     
     /**
      * 戻るボタンをレンダリング
@@ -197,29 +197,29 @@ export class UserInfoRenderer {
         const buttonY = canvas.height - 60,
         ','
         // ボタン背景
-        context.fillStyle = '#4A90E2',
+        context.fillStyle = '#4A90E2,
         context.fillRect(buttonX, buttonY, buttonWidth, buttonHeight);
         ','
         // ボタン境界線
-        context.strokeStyle = '#66A3E8',
+        context.strokeStyle = '#66A3E8,
 
         context.lineWidth = 2,
         context.strokeRect(buttonX, buttonY, buttonWidth, buttonHeight);
         ','
         // ボタンテキスト
-        context.fillStyle = '#FFFFFF',
-        context.font = '16px Arial',
-        context.textAlign = 'center',
-        context.textBaseline = 'middle',
+        context.fillStyle = '#FFFFFF,
+        context.font = '16px Arial,
+        context.textAlign = 'center,
+        context.textBaseline = 'middle,
         context.fillText('戻る', buttonX + buttonWidth / 2, buttonY + buttonHeight / 2','
         ','
         // 戻るボタンの座標を保存
         this.sceneState.set('backButton', {
-            x: buttonX);
+            x: buttonX),
             y: buttonY,
     width: buttonWidth,','
             height: buttonHeight,
-            height: buttonHeight,
+            height: buttonHeight;
         };
     /**
      * エラーメッセージをレンダリング'
@@ -236,17 +236,17 @@ export class UserInfoRenderer {
         const textWidth = Math.min(400, canvas.width - 40);
         const textHeight = 60,
 
-        context.fillStyle = 'rgba(255, 0, 0, 0.8)',
+        context.fillStyle = 'rgba(255, 0, 0, 0.8),
 
         context.fillRect(messageX - textWidth / 2 - padding, messageY - textHeight / 2 - padding / 2);
                         textWidth + padding * 2, textHeight + padding'),'
         ','
         // エラーテキスト
-        context.fillStyle = '#FFFFFF',
-        context.font = '16px Arial',
-        context.textAlign = 'center',
-        context.textBaseline = 'middle',
-        context.fillText(errorMessage, messageX, messageY) }
+        context.fillStyle = '#FFFFFF,
+        context.font = '16px Arial,
+        context.textAlign = 'center,
+        context.textBaseline = 'middle,
+        context.fillText(errorMessage, messageX, messageY);
     
     /**
      * エラー状態をレンダリング'
@@ -254,20 +254,20 @@ export class UserInfoRenderer {
     private renderErrorState(context: CanvasRenderingContext2D): void { const canvas = context.canvas,
         ','
         // 背景
-        context.fillStyle = '#1a1a2e',
+        context.fillStyle = '#1a1a2e,
         context.fillRect(0, 0, canvas.width, canvas.height);
         ','
         // エラーメッセージ
-        context.fillStyle = '#FF6B6B',
-        context.font = '24px Arial',
-        context.textAlign = 'center',
-        context.textBaseline = 'middle',
+        context.fillStyle = '#FF6B6B,
+        context.font = '24px Arial,
+        context.textAlign = 'center,
+        context.textBaseline = 'middle,
         context.fillText('レンダリングエラーが発生しました', canvas.width / 2, canvas.height / 2','
         ','
         // サブメッセージ
-        context.fillStyle = '#CCCCCC',
-        context.font = '16px Arial',
-        context.fillText('ページを再読み込みしてください', canvas.width / 2, canvas.height / 2 + 40) }
+        context.fillStyle = '#CCCCCC,
+        context.font = '16px Arial,
+        context.fillText('ページを再読み込みしてください', canvas.width / 2, canvas.height / 2 + 40);
     
     /**
      * レスポンシブレイアウトの計算
@@ -282,9 +282,8 @@ export class UserInfoRenderer {
             contentPadding: isMobile ? 10 : this.contentPadding,
             tabHeight: isMobile ? 50 : this.tabHeight,
             headerHeight: isMobile ? 100 : this.headerHeight,
-    fontSize: {
-                title: isMobile ? 24 : 32,
-    tab: isMobile ? 14 : 16 },
+    fontSize: { title: isMobile ? 24 : 32  ,
+    tab: isMobile ? 14 : 16 };
                 content: isMobile ? 12 : 14 
 }
     
@@ -305,10 +304,10 @@ export class UserInfoRenderer {
         
         tabs.forEach((tab, index) => { hitAreas.tabs.push({
                 id: tab.id,
-                x: headerX + index * tabWidth);
+                x: headerX + index * tabWidth),
                 y: headerY,
     width: tabWidth,
-                height: layout.tabHeight), 
+                height: layout.tabHeight); 
     };
         
         return hitAreas;
@@ -325,6 +324,6 @@ export class UserInfoRenderer {
      */
     public dispose(): void { ''
         this.clearCache()';'
-        console.log('UserInfoRenderer, disposed') }
+        console.log('UserInfoRenderer, disposed');
 
     }'}'

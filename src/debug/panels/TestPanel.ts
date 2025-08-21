@@ -2,69 +2,61 @@
  * Test Panel - テスト支援機能パネル  
  */
 
-interface TestResult { type: string;
-    totalTests: number;
-    passedTests: number;
-    failedTests: number;
+interface TestResult { type: string,
+    totalTests: number,
+    passedTests: number,
+    failedTests: number,
     duration: number;
     details?: TestDetail[];
-
-interface TestDetail { name: string;
-    status: 'passed' | 'failed';
+    interface TestDetail { name: string,
+    status: 'passed' | 'failed,
     duration: number;
     error?: string;
-
-interface BenchmarkResult { type: string;
-    duration: number;
-    fps: number;
-    memoryUsage: number;
-    renderTime: number;
+    interface BenchmarkResult { type: string,
+    duration: number,
+    fps: number,
+    memoryUsage: number,
+    renderTime: number,
     score: number;
-
-interface TestSummary { total: number;
-    passed: number;
-    failed: number;
-    successRate: number;
+    interface TestSummary { total: number,
+    passed: number,
+    failed: number,
+    successRate: number,
     duration: number;
-
-interface CategoryStats { [category: string]: {
-        tota,l: number;
-        passed: number;
+    interface CategoryStats { [category: string]: {
+        tota,l: number,
+        passed: number,
     failed: number;
 ';'
 
 interface IntegrationTestResult { name: string,''
-    status: 'passed' | 'failed';
-    message: string;
+    status: 'passed' | 'failed,
+    message: string,
     duration: number;
-
-interface IntegrationTestResults { summary?: TestSummary,
+    interface IntegrationTestResults { summary?: TestSummary,
     categoryStats?: CategoryStats;
     results?: IntegrationTestResult[];
+    interface ValidationResult { id: string,
 
-interface ValidationResult { id: string;
-
-    name: string;
-    status: 'passed' | 'failed';
-    message: string;
+    name: string,
+    status: 'passed' | 'failed,
+    message: string,
     duration: number;
-
-interface ValidationResults { summary?: TestSummary,
+    interface ValidationResults { summary?: TestSummary,
     categoryStats?: CategoryStats;
     results?: ValidationResult[];
+    interface FinalValidationResult { category: string,
 
-interface FinalValidationResult { category: string;
-
-    name: string;
-    status: 'passed' | 'failed';
-    message: string;
+    name: string,
+    status: 'passed' | 'failed,
+    message: string,
     duration: number;
-
-interface FinalValidationResults { summary?: TestSummary,
+    interface FinalValidationResults { summary?: TestSummary,
     targets?: {
         debugOverhea,d: number;
-        memoryIncrease: number;
-        initializationTime: number;
+    },
+        memoryIncrease: number,
+        initializationTime: number,
     panelSwitchTime: number;
     categoryStats?: CategoryStats;
     results?: FinalValidationResult[];
@@ -72,20 +64,18 @@ interface FinalValidationResults { summary?: TestSummary,
 
 interface TestSupportTools { runTests(type: string): Promise<TestResult>;
     generateTestData(dataType: string, count: number): void;
-
-interface GameEngine { testSupportTools?: TestSupportTools,
+    interface GameEngine { testSupportTools?: TestSupportTools,
     playerData?: any;
     activateBonusTime?(duration: number): void;
     activateTimeStop?(duration: number): void;
-interface DebugInterface { runIntegrationTests?(): Promise<IntegrationTestResults>,
+    interface DebugInterface { runIntegrationTests?(): Promise<IntegrationTestResults>,
     runCategoryIntegrationTests?(category: string): Promise<IntegrationTestResults>;
     exportIntegrationTestResults?(): Promise<any>;
     runRequirementsValidation?(): Promise<ValidationResults>;
     exportRequirementsValidationResults?(): Promise<any>;
     runFinalValidation?(): Promise<FinalValidationResults>;
     exportFinalValidationResults?(): Promise<any>;
-
-export class TestPanel {
+    export class TestPanel {
     private gameEngine: GameEngine;
     private debugInterface: DebugInterface;
     private element: HTMLElement | null = null;
@@ -94,8 +84,8 @@ export class TestPanel {
     constructor(gameEngine: GameEngine, debugInterface: DebugInterface) {
 
         this.gameEngine = gameEngine;
-        this.debugInterface = debugInterface
-}
+    this.debugInterface = debugInterface
+};
         this.testSupportTools = gameEngine.testSupportTools; }
     }
 
@@ -232,7 +222,7 @@ export class TestPanel {
         // モックデータ生成
         this.element.querySelector('#generate-bubbles')?.addEventListener('click', () => {  ''
             const countInput = this.element!.querySelector('#bubble-count) as HTMLInputElement,'
-            const count = parseInt(countInput.value) }
+            const count = parseInt(countInput.value);
 
             this.generateMockBubbles(count);' }'
 
@@ -326,9 +316,9 @@ export class TestPanel {
         try { if (this.testSupportTools) {
                 const results = await this.testSupportTools.runTests(type);
                 this.displayTestResults(results) } else {  // フォールバック：基本的なテスト実行
-                const results = await this.runBasicTests(type) }
+                const results = await this.runBasicTests(type);
                 this.displayTestResults(results); }
-            } catch (error) { }
+        } catch (error) { }
 
             this.addTestResult(`テスト実行エラー: ${(error, as, Error'}'.message}`, 'error');
         }
@@ -347,12 +337,12 @@ export class TestPanel {
             failedTests: 2,
             duration: 1234,
     details: ['
-            }'
+            }
 
-                { name: 'GameEngine初期化テスト', status: 'passed', duration: 45  },''
-                { name: 'バブル生成テスト', status: 'passed', duration: 23  },''
+                { name: 'GameEngine初期化テスト', status: 'passed', duration: 45  ,''
+                { name: 'バブル生成テスト', status: 'passed', duration: 23  ,''
                 { name: 'スコア計算テスト', status: 'failed', duration: 67, error: 'Expected 100, got 95' },''
-                { name: 'パーティクル生成テスト', status: 'passed', duration: 34  },]'
+                { name: 'パーティクル生成テスト', status: 'passed', duration: 34  ,]'
                 { name: 'エフェクト表示テスト', status: 'failed', duration: 89, error: 'Timeout after 5000ms'
             }]
             ];
@@ -379,7 +369,7 @@ export class TestPanel {
 
                 if (detail.error} { }'
 
-                    this.addTestResult(`  → ${detail.error}`, 'error'};
+                    this.addTestResult(`  → ${detail.error}`, 'error'}
                 }
             }';'
         }
@@ -395,12 +385,9 @@ export class TestPanel {
             } else {  // フォールバック：基本的なバブル生成シミュレーション
                 for (let, i = 0, i < count, i++) { }
                     // モックバブル生成の簡単なシミュレーション }
-                    console.log(`Mock, bubble ${i + 1} generated`};
-                }
-            }
-
-            this.addTestResult(`${count}個のテスト用バブルを生成しました`, 'success'};
-
+                    console.log(`Mock, bubble ${i + 1} generated`    }
+}
+            this.addTestResult(`${count}個のテスト用バブルを生成しました`, 'success'}
         } catch (error) { }
 
             this.addTestResult(`バブル生成エラー: ${(error, as, Error'}'.message}`, 'error');
@@ -412,9 +399,9 @@ export class TestPanel {
      */
     private generateMockPlayerData(type: string): void { try {
             const mockData: Record<string, any> = { }
-                beginner: { score: 1000, level: 1, playtime: 300  },
-                intermediate: { score: 50000, level: 15, playtime: 18000  },
-                expert: { score: 500000, level: 50, playtime: 180000  },
+                beginner: { score: 1000, level: 1, playtime: 300  ,
+                intermediate: { score: 50000, level: 15, playtime: 18000  ,
+                expert: { score: 500000, level: 50, playtime: 180000  ,
 
             const data = mockData[type];
             if (data && this.gameEngine.playerData) {
@@ -453,8 +440,7 @@ export class TestPanel {
                     break;
             }
 
-            this.addTestResult(`ゲーム状態を${type}に設定しました`, 'success'};
-
+            this.addTestResult(`ゲーム状態を${type}に設定しました`, 'success'}
         } catch (error) { }
 
             this.addTestResult(`ゲーム状態設定エラー: ${(error, as, Error'}'.message}`, 'error');
@@ -469,8 +455,7 @@ export class TestPanel {
         
         try {
             const results = await this.runBenchmarkTest(type}
-            this.displayBenchmarkResults(results};
-
+            this.displayBenchmarkResults(results}
         } catch (error) { }
 
             this.addBenchmarkResult(`ベンチマークエラー: ${(error, as, Error'}'.message}`, 'error');
@@ -534,7 +519,7 @@ export class TestPanel {
             const noResults = results.querySelector('.no-results),'
 
             if (noResults) {''
-                noResults.remove() }
+                noResults.remove();
 
             const div = document.createElement('div'); }
             div.className = `test-result test-${type}`;
@@ -581,10 +566,8 @@ export class TestPanel {
             if (resultsDiv) {
                 // 必要に応じてスクロール位置を調整
         }
-                resultsDiv.scrollTop = resultsDiv.scrollHeight; }
+                resultsDiv.scrollTop = resultsDiv.scrollHeight;     }
 }
-    }
-
     /**
      * 統合テストを実行
      */''
@@ -593,7 +576,7 @@ export class TestPanel {
         
         try { if (this.debugInterface && this.debugInterface.runIntegrationTests) {
                 const results = await this.debugInterface.runIntegrationTests();
-                this.displayIntegrationTestResults(results) }
+                this.displayIntegrationTestResults(results);
 
             } else { }'
 
@@ -609,10 +592,10 @@ export class TestPanel {
      * カテゴリ別統合テストを実行'
      */''
     private async runCategoryIntegrationTests(category: string): Promise<void> { const categoryNames: Record<string, string> = {', 'gameSystemIntegration': 'ゲームシステム統合','
-            'existingSystemCompatibility': '既存システム互換性',
-            'crossBrowserCompatibility': 'クロスブラウザ互換性',
-            'performanceIntegration': 'パフォーマンス統合',
-            'errorHandling': 'エラーハンドリング',
+            'existingSystemCompatibility': '既存システム互換性,
+            'crossBrowserCompatibility': 'クロスブラウザ互換性,
+            'performanceIntegration': 'パフォーマンス統合,
+            'errorHandling': 'エラーハンドリング,
             'memoryManagement': 'メモリ管理' };
 ';'
 
@@ -652,8 +635,8 @@ export class TestPanel {
             const summary = results.summary,
             const successRate = summary.successRate.toFixed(1);
             const summaryDiv = document.createElement('div');
-            summaryDiv.className = 'integration-summary',
-            summaryDiv.innerHTML = `,
+            summaryDiv.className = 'integration-summary,
+            summaryDiv.innerHTML = ,
                 <h5>統合テスト結果サマリー</h5>' }'
 
                 <div class="summary-stats">" }"
@@ -671,7 +654,7 @@ export class TestPanel {
         if (results.categoryStats) {"
 
             Object.entries(results.categoryStats).forEach(([category, stats]) => { ""
-                const categoryDiv = document.createElement('div') }
+                const categoryDiv = document.createElement('div');
 
                 categoryDiv.className = 'category-result'; }
                 categoryDiv.innerHTML = ` }
@@ -683,15 +666,15 @@ export class TestPanel {
                     </div>;
                 `;
                 integrationResults.appendChild(categoryDiv);
-            };
+            }
         }
 ';'
         // 詳細結果表示
         if (results.results && results.results.length > 0) {
 
             const detailsDiv = document.createElement('div');
-            detailsDiv.className = 'integration-details',
-            detailsDiv.innerHTML = '<h6>詳細結果</h6>',
+            detailsDiv.className = 'integration-details,
+            detailsDiv.innerHTML = '<h6>詳細結果</h6>,
 
             ' }'
 
@@ -722,7 +705,7 @@ export class TestPanel {
             if (this.debugInterface && this.debugInterface.exportIntegrationTestResults) {"
 
                 await this.debugInterface.exportIntegrationTestResults(),"
-            }"
+            }
                 this.addTestResult('統合テスト結果をエクスポートしました', 'success'); }
 
             } else { }'
@@ -743,7 +726,7 @@ export class TestPanel {
         
         try { if (this.debugInterface && this.debugInterface.runRequirementsValidation) {
                 const results = await this.debugInterface.runRequirementsValidation();
-                this.displayValidationResults(results) }
+                this.displayValidationResults(results);
 
             } else { }'
 
@@ -769,8 +752,8 @@ export class TestPanel {
             const summary = results.summary,
             const successRate = summary.successRate.toFixed(1);
             const summaryDiv = document.createElement('div');
-            summaryDiv.className = 'validation-summary',
-            summaryDiv.innerHTML = `,
+            summaryDiv.className = 'validation-summary,
+            summaryDiv.innerHTML = ,
                 <h5>要件検証結果サマリー</h5>' }'
 
                 <div class="summary-stats">" }"
@@ -788,7 +771,7 @@ export class TestPanel {
         if (results.categoryStats) {"
 
             Object.entries(results.categoryStats).forEach(([category, stats]) => { ""
-                const categoryDiv = document.createElement('div') }
+                const categoryDiv = document.createElement('div');
 
                 categoryDiv.className = 'category-result'; }
                 categoryDiv.innerHTML = ` }
@@ -800,15 +783,15 @@ export class TestPanel {
                     </div>;
                 `;
                 validationResults.appendChild(categoryDiv);
-            };
+            }
         }
 ';'
         // 詳細結果表示
         if (results.results && results.results.length > 0) {
 
             const detailsDiv = document.createElement('div');
-            detailsDiv.className = 'validation-details',
-            detailsDiv.innerHTML = '<h6>詳細結果</h6>',
+            detailsDiv.className = 'validation-details,
+            detailsDiv.innerHTML = '<h6>詳細結果</h6>,
 
             ' }'
 
@@ -840,7 +823,7 @@ export class TestPanel {
             if (this.debugInterface && this.debugInterface.exportRequirementsValidationResults) {"
 
                 await this.debugInterface.exportRequirementsValidationResults(),"
-            }"
+            }
                 this.addTestResult('要件検証結果をエクスポートしました', 'success'); }
 
             } else { }'
@@ -861,7 +844,7 @@ export class TestPanel {
         
         try { if (this.debugInterface && this.debugInterface.runFinalValidation) {
                 const results = await this.debugInterface.runFinalValidation();
-                this.displayFinalValidationResults(results) }
+                this.displayFinalValidationResults(results);
 
             } else { }'
 
@@ -887,8 +870,8 @@ export class TestPanel {
             const summary = results.summary,
             const successRate = summary.successRate.toFixed(1);
             const summaryDiv = document.createElement('div');
-            summaryDiv.className = 'final-validation-summary',
-            summaryDiv.innerHTML = `,
+            summaryDiv.className = 'final-validation-summary,
+            summaryDiv.innerHTML = ,
                 <h5>最終検証結果サマリー</h5>' }'
 
                 <div class="summary-stats">" }"
@@ -906,8 +889,8 @@ export class TestPanel {
         if (results.targets) {"
 
             const targetsDiv = document.createElement('div');
-            targetsDiv.className = 'performance-targets',
-            targetsDiv.innerHTML = `,
+            targetsDiv.className = 'performance-targets,
+            targetsDiv.innerHTML = ,
                 <h6>パフォーマンス目標</h6>' }'
 
                 <div class="targets"> }
@@ -924,7 +907,7 @@ export class TestPanel {
         if (results.categoryStats) {"
 
             Object.entries(results.categoryStats).forEach(([category, stats]) => { ""
-                const categoryDiv = document.createElement('div') }
+                const categoryDiv = document.createElement('div');
 
                 categoryDiv.className = 'category-result'; }
                 categoryDiv.innerHTML = ` }
@@ -936,15 +919,15 @@ export class TestPanel {
                     </div>;
                 `;
                 finalValidationResults.appendChild(categoryDiv);
-            };
+            }
         }
 ';'
         // 詳細結果表示
         if (results.results && results.results.length > 0) {
 
             const detailsDiv = document.createElement('div');
-            detailsDiv.className = 'final-validation-details',
-            detailsDiv.innerHTML = '<h6>詳細結果</h6>',
+            detailsDiv.className = 'final-validation-details,
+            detailsDiv.innerHTML = '<h6>詳細結果</h6>,
 
             ' }'
 
@@ -976,7 +959,7 @@ export class TestPanel {
             if (this.debugInterface && this.debugInterface.exportFinalValidationResults) {"
 
                 await this.debugInterface.exportFinalValidationResults(),"
-            }"
+            }
                 this.addTestResult('最終検証結果をエクスポートしました', 'success'); }
 
             } else { }'
@@ -993,7 +976,7 @@ export class TestPanel {
      * パネルを破棄
      */'
     destroy(): void { if (this.element && this.element.parentNode) {''
-            this.element.parentNode.removeChild(this.element) }
+            this.element.parentNode.removeChild(this.element);
         this.element = null;
 
     }'}'

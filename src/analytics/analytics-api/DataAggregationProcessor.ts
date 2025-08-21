@@ -9,18 +9,17 @@ export class DataAggregationProcessor {
         
         // 集計キャッシュ（LRUキャッシュ）
         this.aggregationCache = new Map();
-        this.maxCacheSize = 100 }
-    
+        this.maxCacheSize = 100; };
     /**
      * 集計データ取得
      * @param {Object} aggregationRules - 集計ルール
      * @param {Object} options - オプション
      * @returns {Promise<Object>} 集計結果
      */
-    async getAggregatedData(aggregationRules, options: any = {} {
+    async getAggregatedData(aggregationRules, options: any = {}) {
         try {
             const {
-                dataType = 'sessionData',
+                dataType = 'sessionData,
                 groupBy = [] }
                 aggregateBy = {},
                 filters = {},
@@ -43,13 +42,13 @@ export class DataAggregationProcessor {
             
             return this.createSuccessResponse(aggregatedData, {
                 aggregationRules,
-                sourceDataCount: rawData.length;
-    aggregatedGroupCount: Object.keys(aggregatedData).length 
-    };
+                sourceDataCount: rawData.length,
+    aggregatedGroupCount: Object.keys(aggregatedData).length; 
+    }
         } catch (error) {
             console.error('Aggregation error:', error','
-            return this.createErrorResponse('AGGREGATION_ERROR',,
-                'Failed to aggregate data', 500) }
+            return this.createErrorResponse('AGGREGATION_ERROR,
+                'Failed to aggregate data', 500);
     }
     
     /**
@@ -58,9 +57,9 @@ export class DataAggregationProcessor {
      * @param {Object} options - オプション
      * @returns {Promise<Object>} 集計結果
      */
-    async getAdvancedAggregatedData(aggregationRules, options: any = {} {
+    async getAdvancedAggregatedData(aggregationRules, options: any = {}) {
         const startTime = performance.now();
-        const requestId = this.generateRequestId('',
+        const requestId = this.generateRequestId(,
                 dataTypes = ['sessionData'],
                 multiGroupBy = [] }
                 customAggregations = {},
@@ -79,10 +78,8 @@ export class DataAggregationProcessor {
                         cached: true,);
                         requestId }
                         responseTime: performance.now() - startTime 
-    };
-                }
-            }
-            
+        }
+}
             // 複数データタイプからのデータ収集
             const aggregatedResults = {};
             
@@ -104,14 +101,14 @@ export class DataAggregationProcessor {
             // 結果の統合と後処理
             const finalResult = this.consolidateAggregationResults(aggregatedResults, {
                 maxResults
-                sortBy: aggregationRules.sortBy,')',
+                sortBy: aggregationRules.sortBy,'),
                 sortOrder: aggregationRules.sortOrder || 'desc'),
             // キャッシュに保存
             if (cacheKey && this.aggregationCache) {
                 this.aggregationCache.set(cacheKey, {
-                data: finalResult) }
+                data: finalResult),
                     timestamp: Date.now(); 
-    };
+    }
             }
             
             const responseTime = Math.max(performance.now() - startTime, 0.1);
@@ -126,21 +123,19 @@ export class DataAggregationProcessor {
         } catch (error) {
             console.error('Advanced aggregation error:', error','
             return this.createErrorResponse('ADVANCED_AGGREGATION_ERROR' }'
-                error.message, 500, { requestId };
-        }
-    }
-    
+                error.message, 500, { requestId     }
+}
     /**
      * 時系列集計API
      * @param {Object} timeSeriesRules - 時系列集計ルール
      * @param {Object} options - オプション
      * @returns {Promise<Object>} 時系列集計結果
      */
-    async getTimeSeriesAggregation(timeSeriesRules, options: any = {} {
+    async getTimeSeriesAggregation(timeSeriesRules, options: any = {}) {
         const startTime = performance.now();
-        const requestId = this.generateRequestId('',
-                dataType = 'sessionData',
-                timeField = 'timestamp',
+        const requestId = this.generateRequestId(,
+                dataType = 'sessionData,
+                timeField = 'timestamp,
                 interval = 'hour', // hour, day, week, month }
                 aggregateBy = {},
                 filters = {},
@@ -157,7 +152,7 @@ export class DataAggregationProcessor {
             return this.createSuccessResponse([], {}
                     message: 'No data found for time series aggregation');
                     requestId,
-                    responseTime: Math.max(performance.now() - startTime, 0.1 };
+                    responseTime: Math.max(performance.now() - startTime, 0.1 }
             }
             
             // 時系列集計の実行
@@ -176,8 +171,7 @@ export class DataAggregationProcessor {
                 interval);
                 dataPoints: timeSeriesResult.length),
             '
-            }'
-
+            }
         } catch (error) {
             console.error('Time series aggregation error:', error','
             return this.createErrorResponse('TIMESERIES_AGGREGATION_ERROR' }'
@@ -204,7 +198,7 @@ export class DataAggregationProcessor {
             // サマリー統計の計算
             const summary = {
                 overview: {
-                    totalSessions: sessions.length,
+                    totalSessions: sessions.length ,
                     totalInteractions: interactions.length,
     totalPerformanceRecords: performance.length,
                     period  }
@@ -212,8 +206,7 @@ export class DataAggregationProcessor {
                 sessionStats: this.calculateSessionStats(sessions),
                 interactionStats: this.calculateInteractionStats(interactions),
                 performanceStats: this.calculatePerformanceStats(performance,
-    generatedAt: new Date().toISOString(),
-            };
+    generatedAt: new Date().toISOString() };
             
             return summary;
 
@@ -238,7 +231,7 @@ export class DataAggregationProcessor {
         
         // 各グループの集計
         const result = {};
-        for(const [groupKey, groupData] of Object.entries(groups) { result[groupKey] = this.aggregateGroup(groupData, aggregateBy) }
+        for(const [groupKey, groupData] of Object.entries(groups) { result[groupKey] = this.aggregateGroup(groupData, aggregateBy);
         
         return result;
     }
@@ -288,7 +281,7 @@ export class DataAggregationProcessor {
     aggregateGroup(groupData, aggregateBy) {
         const result = {
     }
-            count: groupData.length 
+            count: groupData.length; 
     };
         for(const [field, operations] of Object.entries(aggregateBy) {
         
@@ -399,7 +392,7 @@ export class DataAggregationProcessor {
             bubbleTypes[interaction.bubbleType].totalScore += interaction.scoreGained || 0;
             
             // 反応時間統計
-            if (interaction.reactionTime > 0) { reactionTimes.push(interaction.reactionTime) }
+            if (interaction.reactionTime > 0) { reactionTimes.push(interaction.reactionTime);
             
             totalScore += interaction.scoreGained || 0;
         }
@@ -424,7 +417,7 @@ export class DataAggregationProcessor {
             totalRecords: performanceData.length,
     averageFPS: fpsValues.reduce((sum, fps) => sum + fps, 0) / fpsValues.length || 0,
             minFPS: fpsValues.length > 0 ? Math.min(...fpsValues) : 0,
-            maxFPS: fpsValues.length > 0 ? Math.max(...fpsValues) : 0 },
+            maxFPS: fpsValues.length > 0 ? Math.max(...fpsValues) : 0 ,
             averageMemoryUsage: memoryValues.reduce((sum, mem) => sum + mem, 0) / memoryValues.length || 0 }
         }
     
@@ -434,19 +427,19 @@ export class DataAggregationProcessor {
         const rawData = await this.storageManager.getData(dataType, query);
         if (!Array.isArray(rawData) || rawData.length === 0) { }
             return { groups: {}, metadata: { totalRecords: 0 
-    }
+    } };
         
         // 簡略化実装
         const groupedData = this.groupData(rawData, rules.multiGroupBy);
         const aggregatedResult = {};
         
-        for(const [groupKey, groupData] of Object.entries(groupedData) { aggregatedResult[groupKey] = this.aggregateGroup(groupData, rules.customAggregations) }
+        for(const [groupKey, groupData] of Object.entries(groupedData) { aggregatedResult[groupKey] = this.aggregateGroup(groupData, rules.customAggregations);
         
         return { groups: aggregatedResult,
             metadata: {
-                totalRecords: rawData.length,
-    processedRecords: rawData.length },
-                groupCount: Object.keys(aggregatedResult).length 
+                totalRecords: rawData.length ,
+    processedRecords: rawData.length ,
+                groupCount: Object.keys(aggregatedResult).length; 
     }
     
     performTimeSeriesAggregation(data, rules) { // 時系列集計実装（元の performTimeSeriesAggregation メソッド） }
@@ -478,7 +471,7 @@ export class DataAggregationProcessor {
     datetime: new Date(timeKey).toISOString(),
                 interval }
                 ...aggregated
-            };
+            }
         }
         
         return result;
@@ -510,10 +503,10 @@ export class DataAggregationProcessor {
         return intervals[interval] || intervals['hour'];
     }
     
-    consolidateAggregationResults(aggregatedResults, options: any = {} {
+    consolidateAggregationResults(aggregatedResults, options: any = {}) {
     
 }
-        return { summary: this.createAggregationSummary(aggregatedResults) },
+        return { summary: this.createAggregationSummary(aggregatedResults) ,
             details: aggregatedResults,
     
     createAggregationSummary(aggregatedResults) {
@@ -536,9 +529,8 @@ export class DataAggregationProcessor {
                 if (typeResult.groups) {
     
 }
-                    total += Object.keys(typeResult.groups).length; }
+                    total += Object.keys(typeResult.groups).length;     }
 }
-        }
         return total;
     }
     
@@ -556,7 +548,7 @@ export class DataAggregationProcessor {
             metadata: {
     
 }
-                timestamp: new Date().toISOString() },
+                timestamp: new Date().toISOString() ,
                 ...metadata
             }
         }
@@ -576,7 +568,7 @@ export class DataAggregationProcessor {
      */
     destroy() {
 
-        this.aggregationCache.clear() }
+        this.aggregationCache.clear();
 
         console.log('Data, Aggregation Processor, destroyed'); }
 

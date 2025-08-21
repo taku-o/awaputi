@@ -15,7 +15,7 @@ export class StatisticsEventHandler {
         this.sessionStats = sessionStats;
         this.gameStartTime = null;
         this.lowHpStartTime = null;
-        this.lastComboTime = null }
+        this.lastComboTime = null };
         this.comboStartTime = null; }
     }
 
@@ -25,8 +25,8 @@ export class StatisticsEventHandler {
      */
     onGameStart(stageId) {
         this.gameStartTime = Date.now();
-        this.statistics.totalGamesPlayed++,
-        this.sessionStats.gamesThisSession++,
+        this.statistics.totalGamesPlayed++;
+        this.sessionStats.gamesThisSession++;
         
         // ステージ統計を初期化
         if (!this.statistics.stageStats[stageId]) {
@@ -48,7 +48,7 @@ export class StatisticsEventHandler {
         this.statistics.timeStats.playTimeByMonth[now.getMonth()]++;
         
         // 最初のプレイ日記録
-        if (!this.statistics.timeStats.firstPlayDate) { this.statistics.timeStats.firstPlayDate = Date.now() }
+        if (!this.statistics.timeStats.firstPlayDate) { this.statistics.timeStats.firstPlayDate = Date.now();
         this.statistics.timeStats.lastPlayDate = Date.now();
     }
 
@@ -103,8 +103,8 @@ export class StatisticsEventHandler {
         
         if (completed) {
         
-            stageStats.gamesCompleted++,
-            this.statistics.stagesCompleted++,
+            stageStats.gamesCompleted++;
+            this.statistics.stagesCompleted++;
             
             // パーフェクトゲーム判定
             if (bubblesMissed === 0 && bubblesPopped >= 50) {
@@ -142,7 +142,7 @@ export class StatisticsEventHandler {
         if (this.statistics.bubbleTypeStats[type] !== undefined) { this.statistics.bubbleTypeStats[type]++ }
         
         // 反応時間統計更新
-        if (reactionTime !== undefined) { this.updateReactionTimeStats(reactionTime) }
+        if (reactionTime !== undefined) { this.updateReactionTimeStats(reactionTime);
         
         // 特殊泡効果統計
         if (isSpecial) { this.statistics.specialBubblesPopped = (this.statistics.specialBubblesPopped || 0) + 1 }
@@ -160,7 +160,7 @@ export class StatisticsEventHandler {
         
         if (isBreak) {
         
-            this.statistics.comboBreaks++,
+            this.statistics.comboBreaks++;
             
             // コンボ回復時間の記録
             if (this.lastComboTime) {
@@ -192,7 +192,7 @@ export class StatisticsEventHandler {
         this.statistics.totalDamageTaken += amount;
         
         // 低HP時間の記録開始
-        if (currentHp <= 10 && !this.lowHpStartTime) { this.lowHpStartTime = Date.now() }
+        if (currentHp <= 10 && !this.lowHpStartTime) { this.lowHpStartTime = Date.now();
         
         // クリティカルHP状況の記録
         if (currentHp <= 5) { this.statistics.hpDetailStats.criticalHpEvents++ }
@@ -232,7 +232,7 @@ export class StatisticsEventHandler {
      * 復活時の統計更新
      */
     onRevived() {
-        this.statistics.timesRevived++,
+        this.statistics.timesRevived++;
         
         // 低HP時間をリセット
         if (this.lowHpStartTime) {
@@ -252,35 +252,35 @@ export class StatisticsEventHandler {
         switch(type) {
 
             case 'bonusTime':,
-                this.statistics.bonusTimeActivated++,
+                this.statistics.bonusTimeActivated++;
 
                 break,
             case 'timeStop':,
-                this.statistics.timeStopActivated++,
+                this.statistics.timeStopActivated++;
 
                 break,
             case 'chainReaction':,
-                this.statistics.chainReactionsTriggered++,
+                this.statistics.chainReactionsTriggered++;
 
                 break,
             case 'screenShake':,
-                this.statistics.screenShakesTriggered++,
+                this.statistics.screenShakesTriggered++;
 
                 break,
             case 'shield':,
-                this.statistics.shieldActivations++,
+                this.statistics.shieldActivations++;
 
                 break,
             case 'magnet':,
-                this.statistics.magnetEffectsTriggered++,
+                this.statistics.magnetEffectsTriggered++;
 
                 break,
             case 'freeze':,
-                this.statistics.freezeEffectsUsed++,
+                this.statistics.freezeEffectsUsed++;
 
                 break,
             case 'explosive':,
-                this.statistics.explosiveChains++,
+                this.statistics.explosiveChains++;
 
                 break,
             case 'phantom':,
@@ -635,7 +635,7 @@ let statisticsEventHandlerInstance = null;
  * @returns {StatisticsEventHandler} シングルトンインスタンス
  */
 export function getStatisticsEventHandler(statistics, sessionStats) { if (!statisticsEventHandlerInstance) {
-        statisticsEventHandlerInstance = new StatisticsEventHandler(statistics, sessionStats) }
+        statisticsEventHandlerInstance = new StatisticsEventHandler(statistics, sessionStats) };
     return statisticsEventHandlerInstance;
 }
 
@@ -647,6 +647,5 @@ export function getStatisticsEventHandler(statistics, sessionStats) { if (!stati
  */
 export function reinitializeStatisticsEventHandler(statistics, sessionStats) {,
     statisticsEventHandlerInstance = new StatisticsEventHandler(statistics, sessionStats);
-    return statisticsEventHandlerInstance }
-
+    return statisticsEventHandlerInstance };
 export default StatisticsEventHandler;

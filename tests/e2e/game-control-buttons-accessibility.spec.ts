@@ -150,7 +150,7 @@ test.describe('Game Control Buttons Accessibility Validation', () => {
           canvasFocusable: canvas.tabIndex >= 0,
           hasLiveRegions: liveRegions.length > 0,
           supportsKeyboard: true // Based on our implementation
-        };
+        }
       };
       
       expect(screenReaderSupport.canvasFocusable).toBe(true');'
@@ -174,12 +174,12 @@ test.describe('Game Control Buttons Accessibility Validation', () => {
         return {
           giveUpDescription: 'ギブアップボタン: ゲーム中に表示される右上のボタン',
           restartDescription: 'ゲーム再開始ボタン: ゲーム中・ゲームオーバー時に表示される右上のボタン'
-        };
+        }
       };
       
       expect(buttonDescriptions.giveUpDescription').toContain('ギブアップ');'
       expect(buttonDescriptions.restartDescription').toContain('ゲーム再開始');'
-    };
+    }
   }');'
 
   test.describe('Color Contrast and Visual Accessibility', (') => {'
@@ -200,7 +200,7 @@ test.describe('Game Control Buttons Accessibility Validation', () => {
           restartBackgroundColor: '#4CAF50', // Restart button
           textColor: '#FFFFFF',
           contrastRatio: 'sufficient' // Would be calculated in real implementation
-        };
+        }
       }');'
       
       console.log('Color contrast test results:', contrastTest);
@@ -253,7 +253,7 @@ test.describe('Game Control Buttons Accessibility Validation', () => {
       // Take screenshot to verify reduced motion state
       await page.screenshot({ 
         path: 'test-results/accessibility-reduced-motion.png' ),
-      await expect(canvas).toBeVisible() };
+      await expect(canvas).toBeVisible() }
   }');'
 
   test.describe('Touch and Motor Accessibility', (') => {'
@@ -334,7 +334,7 @@ test.describe('Game Control Buttons Accessibility Validation', () => {
         await page.waitForTimeout(1000), // Hold for 1 second
         await page.mouse.up();
         await page.waitForTimeout(500) }
-    };
+    }
   }');'
 
   test.describe('Language and Localization Accessibility', (') => {'
@@ -392,7 +392,7 @@ test.describe('Game Control Buttons Accessibility Validation', () => {
       await page.waitForTimeout(200'),'
       
       await page.keyboard.press('ArrowRight'), // Should move left in RTL
-      await page.waitForTimeout(200) };
+      await page.waitForTimeout(200) }
   }');'
 
   test.describe('Error Prevention and Recovery', (') => {'
@@ -462,6 +462,6 @@ test.describe('Game Control Buttons Accessibility Validation', () => {
       
       if (accessibilityErrors.length > 0') {'
         console.error('Accessibility errors found:', accessibilityErrors) }
-    };
+    }
   };
 }');'

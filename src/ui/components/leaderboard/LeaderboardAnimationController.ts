@@ -15,59 +15,59 @@ interface GameEngine { // Add specific properties/methods as needed }
 /**
  * Animation configuration interface
  */
-interface AnimationConfig { fadeSpeed: number;
-    scrollSpeed: number;
-    hoverScale: number;
-    selectScale: number;
-    entryHeight: number;
-    transitionDuration: number;
-    easingFunction: string;
-    maxScrollVelocity: number;
+interface AnimationConfig { fadeSpeed: number,
+    scrollSpeed: number,
+    hoverScale: number,
+    selectScale: number,
+    entryHeight: number,
+    transitionDuration: number,
+    easingFunction: string,
+    maxScrollVelocity: number,
     scrollDamping: number;
 
 /**
  * Entry animation interface
  */
-interface EntryAnimation { startTime: number;
-    duration: number;
-    startValue: number;
-    endValue: number;
-    currentValue: number;
-    easing: string;
+interface EntryAnimation { startTime: number,
+    duration: number,
+    startValue: number,
+    endValue: number,
+    currentValue: number,
+    easing: string,
     onComplete: (() => void) | null 
     }
 
 /**
  * Hover animation interface
  */
-interface HoverAnimation { startTime: number;
-    duration: number;
-    startScale: number;
-    targetScale: number;
-    currentScale: number;
-    startOpacity: number;
-    targetOpacity: number;
-    currentOpacity: number;
+interface HoverAnimation { startTime: number,
+    duration: number,
+    startScale: number,
+    targetScale: number,
+    currentScale: number,
+    startOpacity: number,
+    targetOpacity: number,
+    currentOpacity: number,
     persistent: boolean;
 
 /**
  * Select animation interface
  */
-interface SelectAnimation { startTime: number;
-    duration: number;
-    maxIntensity: number;
-    currentIntensity: number;
+interface SelectAnimation { startTime: number,
+    duration: number,
+    maxIntensity: number,
+    currentIntensity: number,
     type: string;
 
 /**
  * Animation state interface
  */
-interface AnimationState { scrollOffset: number;
-    targetScrollOffset: number;
-    scrollVelocity: number;
-    isScrolling: boolean;
-    fadeOpacity: number;
-    targetFadeOpacity: number;
+interface AnimationState { scrollOffset: number,
+    targetScrollOffset: number,
+    scrollVelocity: number,
+    isScrolling: boolean,
+    fadeOpacity: number,
+    targetFadeOpacity: number,
     entryAnimations: Map<string, EntryAnimation>;
     hoverAnimations: Map<string, HoverAnimation>;
     selectAnimations: Map<string, SelectAnimation> }
@@ -75,30 +75,31 @@ interface AnimationState { scrollOffset: number;
 /**
  * Interaction state interface
  */
-interface InteractionState { hoveredEntry: any | null;
-    hoveredButton: any | null;
-    selectedEntry: any | null;
-    lastHoverTime: number;
-    lastClickTime: number;
+interface InteractionState { hoveredEntry: any | null,
+    hoveredButton: any | null,
+    selectedEntry: any | null,
+    lastHoverTime: number,
+    lastClickTime: number,
     hoverDelay: number;
 
 /**
  * Scroll configuration interface
  */
-interface ScrollConfig { wheelSensitivity: number;
-    touchSensitivity: number;
-    scrollBounds: { min: number,, max: number,,
+interface ScrollConfig { wheelSensitivity: number,
+    touchSensitivity: number,
+    scrollBounds: { min: number, max: number,
     snapToEntry: boolean;
-    smoothScrolling: boolean;
+    },
+    smoothScrolling: boolean,
     momentumScrolling: boolean;
 }
 
 /**
  * Performance metrics interface
  */
-interface PerformanceMetrics { frameCount: number;
-    averageFPS: number;
-    lastFrameTime: number;
+interface PerformanceMetrics { frameCount: number,
+    averageFPS: number,
+    lastFrameTime: number,
     animationLoad: number;
 
 /**
@@ -132,59 +133,57 @@ interface EntryAnimationConfig { duration?: number,
  * Performance info interface
  */
 interface PerformanceInfo extends PerformanceMetrics { activeAnimations: {
-        entries: number;
-        hovers: number;
-        selects: number;
-    total: number;
+        entries: number,
+        hovers: number,
+        selects: number,
+    total: number,
     scrolling: boolean;
-}
+} };
 
 /**
  * Update config interface
  */
 interface UpdateConfig { animationConfig?: Partial<AnimationConfig>,
     scrollConfig?: Partial<ScrollConfig>;
-
-type EasingType = 'linear' | 'easeInQuad' | 'easeOutQuad' | 'easeInOutQuad' | 'easeInCubic' | 'easeOutCubic' | 'easeInOutCubic' | 'easeOutBounce' | 'easeOutQuart';
-
-export class LeaderboardAnimationController {
+    type EasingType = 'linear' | 'easeInQuad' | 'easeOutQuad' | 'easeInOutQuad' | 'easeInCubic' | 'easeOutCubic' | 'easeInOutCubic' | 'easeOutBounce' | 'easeOutQuart';
+    export class LeaderboardAnimationController {
     private gameEngine: GameEngine;
     private errorHandler: ErrorHandler;
     // アニメーション設定
     private, animationConfig: AnimationConfig = {
-        fadeSpeed: 0.1;
-        scrollSpeed: 0.2;
-        hoverScale: 1.05;
-        selectScale: 1.1;
-        entryHeight: 50;
-    transitionDuration: 300;
-        easingFunction: 'easeInOutCubic';
-        maxScrollVelocity: 10;
+        fadeSpeed: 0.1,
+    scrollSpeed: 0.2,
+    hoverScale: 1.05,
+    selectScale: 1.1,
+    entryHeight: 50,
+    transitionDuration: 300,
+    easingFunction: 'easeInOutCubic,
+    maxScrollVelocity: 10,
     scrollDamping: 0.85  };
     // アニメーション状態
     private animationState: AnimationState = { scrollOffset: 0
-        targetScrollOffset: 0;
-        scrollVelocity: 0;
-        isScrolling: false;
-        fadeOpacity: 1.0;
-        targetFadeOpacity: 1.0;
-        entryAnimations: new Map();
+        targetScrollOffset: 0,
+        scrollVelocity: 0,
+        isScrolling: false,
+        fadeOpacity: 1.0,
+        targetFadeOpacity: 1.0,
+        entryAnimations: new Map(),
         hoverAnimations: new Map(
     selectAnimations: new Map( }
     
     // ホバー・選択状態
     private interactionState: InteractionState = { hoveredEntry: null
-        hoveredButton: null;
-        selectedEntry: null;
-        lastHoverTime: 0;
-        lastClickTime: 0;
+        hoveredButton: null,
+        selectedEntry: null,
+        lastHoverTime: 0,
+        lastClickTime: 0,
     hoverDelay: 100 // ms };
     // スクロール制御
     private scrollConfig: ScrollConfig = { wheelSensitivity: 1.0
-       , touchSensitivity: 1.5 }
-        scrollBounds: { min: 0, max: 0  };
-        snapToEntry: false;
-        smoothScrolling: true;
+            touchSensitivity: 1.5 }
+        scrollBounds: { min: 0, max: 0  ,
+        snapToEntry: false,
+        smoothScrolling: true,
     momentumScrolling: true;
     },
     
@@ -195,11 +194,11 @@ export class LeaderboardAnimationController {
     private, performanceMetrics: PerformanceMetrics = { frameCount: 0
         averageFPS: 60,
         lastFrameTime: 0,
-    animationLoad: 0 },
+    animationLoad: 0 };
     constructor(gameEngine: GameEngine) {
 
         this.gameEngine = gameEngine;
-        this.errorHandler = getErrorHandler() }
+        this.errorHandler = getErrorHandler();
         this.initialize(); }
     }
     
@@ -219,7 +218,7 @@ export class LeaderboardAnimationController {
      * アニメーションループを開始
      */
     startAnimationLoop(): void { if (this.animationFrame) {
-            cancelAnimationFrame(this.animationFrame) }
+            cancelAnimationFrame(this.animationFrame);
         
         const animate = (currentTime: number) => {  this.updateAnimations(currentTime);
             this.updatePerformanceMetrics(currentTime);
@@ -237,7 +236,7 @@ export class LeaderboardAnimationController {
      */
     stopAnimationLoop(): void { this.isAnimating = false;
         if (this.animationFrame) {
-            cancelAnimationFrame(this.animationFrame) }
+            cancelAnimationFrame(this.animationFrame);
             this.animationFrame = null; }
 }
     
@@ -355,9 +354,8 @@ export class LeaderboardAnimationController {
                 if (!animation.persistent) {
     
 }
-                    this.animationState.hoverAnimations.delete(elementId); }
+                    this.animationState.hoverAnimations.delete(elementId);     }
 }
-        }
     }
     
     /**
@@ -378,10 +376,8 @@ export class LeaderboardAnimationController {
             if (progress >= 1) {
             
                 animation.currentIntensity = animation.maxIntensity }
-                this.animationState.selectAnimations.delete(elementId); }
+                this.animationState.selectAnimations.delete(elementId);     }
 }
-    }
-    
     /**
      * スクロール処理
      * @param {number} deltaY - スクロール量
@@ -408,7 +404,7 @@ export class LeaderboardAnimationController {
                 Math.min(this.scrollConfig.scrollBounds.max, this.animationState.targetScrollOffset);
             
             // スナップ処理
-            if (this.scrollConfig.snapToEntry) { this.snapToNearestEntry() }
+            if (this.scrollConfig.snapToEntry) { this.snapToNearestEntry();
             
             this.startAnimationLoop();
 
@@ -449,14 +445,13 @@ export class LeaderboardAnimationController {
                 startScale: 1.0,
                 targetScale: this.animationConfig.hoverScale,
                 currentScale: 1.0,
-                startOpacity: 1.0);
+                startOpacity: 1.0),
                 targetOpacity: options.targetOpacity || 1.0,
     currentOpacity: 1.0),
                 persistent: true),
             this.startAnimationLoop();
             '
-            }'
-
+            }
         } catch (error) {
             this.errorHandler.handleError(error, 'LeaderboardAnimationController.startHover' }'
     }
@@ -480,7 +475,7 @@ export class LeaderboardAnimationController {
                     startScale: existingAnimation.currentScale,
                     targetScale: 1.0,
                     currentScale: existingAnimation.currentScale,
-                    startOpacity: existingAnimation.currentOpacity);
+                    startOpacity: existingAnimation.currentOpacity),
                     targetOpacity: 1.0,
     currentOpacity: existingAnimation.currentOpacity }
                     persistent: false); 
@@ -504,8 +499,7 @@ export class LeaderboardAnimationController {
                 type: options.type || 'pulse'),
             this.startAnimationLoop();
             '
-            }'
-
+            }
         } catch (error) {
             this.errorHandler.handleError(error, 'LeaderboardAnimationController.startSelectAnimation' }'
     }
@@ -521,14 +515,13 @@ export class LeaderboardAnimationController {
                 startTime: currentTime,
                 duration: animationConfig.duration || this.animationConfig.transitionDuration,
                 startValue: animationConfig.startValue || 0,
-                endValue: animationConfig.endValue || 1);
+                endValue: animationConfig.endValue || 1),
                 currentValue: animationConfig.startValue || 0,
     easing: animationConfig.easing || this.animationConfig.easingFunction),
                 onComplete: animationConfig.onComplete || null),
             this.startAnimationLoop();
             '
-            }'
-
+            }
         } catch (error) {
             this.errorHandler.handleError(error, 'LeaderboardAnimationController.startEntryAnimation' }'
     }
@@ -539,13 +532,13 @@ export class LeaderboardAnimationController {
      * @param {number} duration - アニメーション時間
      */
     startFadeAnimation(targetOpacity: number, duration: number = this.animationConfig.transitionDuration): void { this.animationState.targetFadeOpacity = targetOpacity,
-        this.startAnimationLoop() }
+        this.startAnimationLoop();
     
     /**
      * スクロール境界を設定
      * @param {number} maxScroll - 最大スクロール値
      */
-    setScrollBounds(maxScroll: number): void { this.scrollConfig.scrollBounds.max = Math.max(0, maxScroll) }
+    setScrollBounds(maxScroll: number): void { this.scrollConfig.scrollBounds.max = Math.max(0, maxScroll);
     
     /**
      * スクロール位置を設定
@@ -657,7 +650,7 @@ export class LeaderboardAnimationController {
             const currentFPS = 1000 / deltaTime,
             
             this.performanceMetrics.averageFPS = ,
-                (this.performanceMetrics.averageFPS * 0.9) + (currentFPS * 0.1) }
+                (this.performanceMetrics.averageFPS * 0.9) + (currentFPS * 0.1);
         
         this.performanceMetrics.lastFrameTime = currentTime;
         this.performanceMetrics.frameCount++;
@@ -677,22 +670,21 @@ export class LeaderboardAnimationController {
      */
     getPerformanceInfo(): PerformanceInfo { return { ...this.performanceMetrics,
             activeAnimations: {
-                entries: this.animationState.entryAnimations.size,
+                entries: this.animationState.entryAnimations.size ,
                 hovers: this.animationState.hoverAnimations.size,
                 selects: this.animationState.selectAnimations.size,
     total: this.animationState.entryAnimations.size +,
                        this.animationState.hoverAnimations.size +  };
                        this.animationState.selectAnimations.size }
             },
-            scrolling: this.animationState.isScrolling,
-        } }
+            scrolling: this.animationState.isScrolling } }
     
     /**
      * アニメーション設定を更新
      * @param {Object} newConfig - 新しい設定
      */
     updateConfig(newConfig: UpdateConfig): void { if (newConfig.animationConfig) {
-            Object.assign(this.animationConfig, newConfig.animationConfig) }
+            Object.assign(this.animationConfig, newConfig.animationConfig);
         if (newConfig.scrollConfig) { }
 
             Object.assign(this.scrollConfig, newConfig.scrollConfig); }
@@ -714,6 +706,6 @@ export class LeaderboardAnimationController {
      */'
     dispose(): void { this.stopAnimationLoop();
         this.clearAllAnimations()','
-        console.log('[LeaderboardAnimationController] Animation, controller disposed') }
+        console.log('[LeaderboardAnimationController] Animation, controller disposed');
 
     }'}'

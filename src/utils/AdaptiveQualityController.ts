@@ -5,105 +5,86 @@ import { QualityTransitionController  } from './adaptive-quality-controller/Qual
 import { QualityValidationManager  } from './adaptive-quality-controller/QualityValidationManager.js';
 
 // Type definitions
-interface QualityConfig { enabled: boolean;
-    autoAdjustment: boolean;
-    userOverride: boolean;
-    adjustmentSensitivity: 'aggressive' | 'balanced' | 'conservative';
-    transitionDuration: number;
+interface QualityConfig { enabled: boolean,
+    autoAdjustment: boolean,
+    userOverride: boolean,
+    adjustmentSensitivity: 'aggressive' | 'balanced' | 'conservative,
+    transitionDuration: number,
     stabilizationTime: number;
-
-interface QualityLevel { index: number;
-    label: string;
-    targetFPS: number;
+    interface QualityLevel { index: number,
+    label: string,
+    targetFPS: number,
     minFPS: number;
-
-interface QualityLevels { ultra: QualityLevel;
-    high: QualityLevel;
-    medium: QualityLevel;
-    low: QualityLevel;
+    interface QualityLevels { ultra: QualityLevel,
+    high: QualityLevel,
+    medium: QualityLevel,
+    low: QualityLevel,
     minimal: QualityLevel;
-
-type QualityLevelKey = keyof | QualityLevels;
-
-interface PerformanceMetric { timestamp: number;
-    fps: number;
-    frameTime: number;
-    memoryUsage: number;
+    type QualityLevelKey = keyof | QualityLevels;
+    interface PerformanceMetric { timestamp: number,
+    fps: number,
+    frameTime: number,
+    memoryUsage: number,
     droppedFrames: number;
-
-interface QualityState { currentLevel: QualityLevelKey;
-    targetLevel: QualityLevelKey;
-    isTransitioning: boolean;
-    performanceHistory: PerformanceMetric[];
-    lastAdjustmentTime: number;
+    interface QualityState { currentLevel: QualityLevelKey,
+    targetLevel: QualityLevelKey,
+    isTransitioning: boolean,
+    performanceHistory: PerformanceMetric[],
+    lastAdjustmentTime: number,
     userOverrideActive: boolean;
-
-interface PerformanceMonitoring { enabled: boolean;
-    sampleInterval: number;
+    interface PerformanceMonitoring { enabled: boolean,
+    sampleInterval: number,
     historySize: number;
 ';'
 
 interface AdjustmentAlgorithms { ''
-    sensitivity: 'aggressive' | 'balanced' | 'conservative';
+    sensitivity: 'aggressive' | 'balanced' | 'conservative,
     smoothTransitions: boolean;
-
-interface VisualConsistency { enabled: boolean;
+    interface VisualConsistency { enabled: boolean,
     gradualTransitions: boolean;
-
-interface AdaptiveQualityStats { totalAdjustments: number;
-    rollbacks: number;
+    interface AdaptiveQualityStats { totalAdjustments: number,
+    rollbacks: number,
     userOverrides: number;
-
-interface QualityEvaluationResult { needsAdjustment: boolean;
+    interface QualityEvaluationResult { needsAdjustment: boolean;
     reason?: string;
     recommendedLevel?: QualityLevelKey;
-
-interface QualityTransitionResult { success: boolean;
+    interface QualityTransitionResult { success: boolean;
     reason?: string;
     fromLevel?: QualityLevelKey;
     toLevel?: QualityLevelKey;
     duration?: number;
-
-interface QualityValidationResult { success: boolean;
+    interface QualityValidationResult { success: boolean,
     isValid: boolean;
     metrics?: any;
-    duration?: number,  }
+    duration?: number }
 
 interface QualityTransitionOptions { duration?: number,
     smooth?: boolean;
     force?: boolean;
-
-interface CurrentQuality { level: QualityLevelKey;
+    interface CurrentQuality { level: QualityLevelKey,
     index: number;
-
-interface UserPreferences { lastQualityLevel: QualityLevelKey;
+    interface UserPreferences { lastQualityLevel: QualityLevelKey,
     lastSaved: number;
-
-interface PerformanceStats { averageFPS: number;
-    frameTimeVariance: number;
-    memoryTrend: number;
+    interface PerformanceStats { averageFPS: number,
+    frameTimeVariance: number,
+    memoryTrend: number,
     stabilityScore: number;
-
-interface TransitionStats { totalTransitions: number;
-    successRate: number;
+    interface TransitionStats { totalTransitions: number,
+    successRate: number,
     averageDuration: number;
-
-interface ValidationStats { totalValidations: number;
-    successRate: number;
+    interface ValidationStats { totalValidations: number,
+    successRate: number,
     averageValidationTime: number;
-
-interface QualityStats extends AdaptiveQualityStats { transitionStats: TransitionStats;
+    interface QualityStats extends AdaptiveQualityStats { transitionStats: TransitionStats,
     validationStats: ValidationStats;
-
-interface SystemConfiguration { qualityConfig: QualityConfig;
-    performanceMonitoring: PerformanceMonitoring;
-    adjustmentAlgorithms: AdjustmentAlgorithms;
+    interface SystemConfiguration { qualityConfig: QualityConfig,
+    performanceMonitoring: PerformanceMonitoring,
+    adjustmentAlgorithms: AdjustmentAlgorithms,
     visualConsistency: VisualConsistency;
-
-interface CurrentState { qualityState: QualityState;
-    isTransitioning: boolean;
-    isValidating: boolean;
-    currentTransition: any;
+    interface CurrentState { qualityState: QualityState,
+    isTransitioning: boolean,
+    isValidating: boolean,
+    currentTransition: any,
     currentValidation: any;
 
 /**
@@ -137,37 +118,37 @@ export class AdaptiveQualityController {
     constructor() {
 
         this.errorHandler = getErrorHandler();
-        this.configManager = getConfigurationManager();
+    this.configManager = getConfigurationManager();
         
         // サブコンポーネントを初期化
         this.decisionAnalyzer = new QualityDecisionAnalyzer();
-        this.transitionController = new QualityTransitionController();
-        this.validationManager = new QualityValidationManager('''
-            adjustmentSensitivity: 'balanced';
-    transitionDuration: 2000 }
+    this.transitionController = new QualityTransitionController();
+    this.validationManager = new QualityValidationManager('''
+            adjustmentSensitivity: 'balanced,
+    transitionDuration: 2000 };
             stabilizationTime: 5000 
     };
         // 品質レベル定義（簡素化）
-        this.qualityLevels = { }', 'ultra': { index: 4, label: 'Ultra High', targetFPS: 60, minFPS: 55  },', 'high': { index: 3, label: 'High', targetFPS: 60, minFPS: 50  },', 'medium': { index: 2, label: 'Medium', targetFPS: 60, minFPS: 45  },', 'low': { index: 1, label: 'Low', targetFPS: 50, minFPS: 35  },', 'minimal': { index: 0, label: 'Minimal', targetFPS: 30, minFPS: 25  };'
+        this.qualityLevels = { }', 'ultra': { index: 4, label: 'Ultra High', targetFPS: 60, minFPS: 55  ,', 'high': { index: 3, label: 'High', targetFPS: 60, minFPS: 50  ,', 'medium': { index: 2, label: 'Medium', targetFPS: 60, minFPS: 45  ,', 'low': { index: 1, label: 'Low', targetFPS: 50, minFPS: 35  ,', 'minimal': { index: 0, label: 'Minimal', targetFPS: 30, minFPS: 25  };'
         
         // 現在の品質状態（簡素化）
         this.qualityState = {;
-            currentLevel: 'high',
-            targetLevel: 'high',
+            currentLevel: 'high,
+            targetLevel: 'high,
             isTransitioning: false,
             performanceHistory: [],
             lastAdjustmentTime: 0,
-    userOverrideActive: false,
+    userOverrideActive: false;
         // パフォーマンス監視設定（簡素化）
         this.performanceMonitoring = { enabled: true,
             sampleInterval: 500,
-    historySize: 60  },
+    historySize: 60  };
         // 調整アルゴリズム設定（簡素化）
         this.adjustmentAlgorithms = { sensitivity: this.qualityConfig.adjustmentSensitivity,
-            smoothTransitions: true,
+            smoothTransitions: true;
         // 視覚的一貫性設定（簡素化）
         this.visualConsistency = { enabled: true,
-            gradualTransitions: true,
+            gradualTransitions: true;
         // 統計情報（簡素化）
         this.stats = { totalAdjustments: 0,
             rollbacks: 0,
@@ -198,7 +179,7 @@ export class AdaptiveQualityController {
                     this.qualityState.targetLevel = preferences.lastQualityLevel; }
 
                 }'} catch (error) {'
-            console.warn('[AdaptiveQualityController] 設定読み込みエラー:', error) }
+            console.warn('[AdaptiveQualityController] 設定読み込みエラー:', error);
     }
     
     /**
@@ -211,7 +192,7 @@ export class AdaptiveQualityController {
             localStorage.setItem('adaptiveQuality_userPreferences', JSON.stringify(preferences),' }'
 
         } catch (error) {
-            console.warn('[AdaptiveQualityController] 設定保存エラー:', error) }
+            console.warn('[AdaptiveQualityController] 設定保存エラー:', error);
     }
     
     /**
@@ -234,7 +215,7 @@ export class AdaptiveQualityController {
     private updatePerformanceMetrics(): void { try {
             const currentMetrics = this.gatherPerformanceMetrics();
             this.qualityState.performanceHistory.push({);
-                timestamp: Date.now(),
+                timestamp: Date.now();
                 ...currentMetrics'),'
             ','
 
@@ -251,7 +232,7 @@ export class AdaptiveQualityController {
      */''
     private gatherPerformanceMetrics(): Omit<PerformanceMetric, 'timestamp'> { return { fps: 60,
             frameTime: 16.67,
-    memoryUsage: 0.5 },
+    memoryUsage: 0.5 };
             droppedFrames: 0 
     }
     
@@ -278,7 +259,7 @@ export class AdaptiveQualityController {
             }
         
         const currentQuality: CurrentQuality = { level: this.qualityState.currentLevel,
-            index: this.qualityLevels[this.qualityState.currentLevel]?.index || 2  },
+            index: this.qualityLevels[this.qualityState.currentLevel]?.index || 2  };
         // QualityDecisionAnalyzer に委譲
         return this.decisionAnalyzer.evaluateQualityAdjustment(performanceMetrics, currentQuality);
     }
@@ -288,7 +269,7 @@ export class AdaptiveQualityController {
      */
     public async changeQualityLevel( : undefined);
         targetLevel: QualityLevelKey,
-    options: QualityTransitionOptions = { ): Promise<QualityTransitionResult>,
+    options: QualityTransitionOptions = { ): Promise<QualityTransitionResult>;
         if (!this.qualityLevels[targetLevel]) { }'
 
             return { success: false, reason: 'invalid_level'
@@ -319,9 +300,9 @@ export class AdaptiveQualityController {
      */
     public async validateQualityAdjustment(;
         baseline: any,
-    adjustmentData: any,
+    adjustmentData: any;
     ): Promise<QualityValidationResult> { // QualityValidationManager に委譲
-        return await this.validationManager.startQualityValidation(baseline, adjustmentData) }
+        return await this.validationManager.startQualityValidation(baseline, adjustmentData);
     
     /**
      * 品質を手動設定
@@ -369,13 +350,13 @@ export class AdaptiveQualityController {
     /**
      * パフォーマンス統計を取得
      */
-    public getPerformanceStats(): PerformanceStats { return this.decisionAnalyzer.getPerformanceStats() }
+    public getPerformanceStats(): PerformanceStats { return this.decisionAnalyzer.getPerformanceStats();
     
     /**
      * 品質調整統計を取得
      */
     public getQualityStats(): QualityStats { return { ...this.stats,
-            transitionStats: this.transitionController.getTransitionStats() },
+            transitionStats: this.transitionController.getTransitionStats() };
             validationStats: this.validationManager.getValidationStats(); 
     }
     
@@ -383,9 +364,9 @@ export class AdaptiveQualityController {
      * システム設定を取得
      */
     public getConfiguration(): SystemConfiguration { return { }
-            qualityConfig: { ...this.qualityConfig,
-            performanceMonitoring: { ...this.performanceMonitoring,
-            adjustmentAlgorithms: { ...this.adjustmentAlgorithms,
+            qualityConfig: { ...this.qualityConfig;
+            performanceMonitoring: { ...this.performanceMonitoring;
+            adjustmentAlgorithms: { ...this.adjustmentAlgorithms;
             visualConsistency: { ...this.visualConsistency }
     
     /**
@@ -393,10 +374,10 @@ export class AdaptiveQualityController {
      */
     public getCurrentState(): CurrentState { return { }
             qualityState: { ...this.qualityState,
-            isTransitioning: this.transitionController.isTransitionInProgress(),
+            isTransitioning: this.transitionController.isTransitionInProgress()  ,
             isValidating: this.validationManager.isValidationInProgress(),
             currentTransition: this.transitionController.getCurrentTransition(
-    currentValidation: this.validationManager.getCurrentValidation() }
+    currentValidation: this.validationManager.getCurrentValidation();
     
     // ========================================
     // 公開API - システム制御
@@ -420,8 +401,8 @@ export class AdaptiveQualityController {
      */'
     public reset(): void { ''
         this.stop('''
-            currentLevel: 'high',
-            targetLevel: 'high',
+            currentLevel: 'high,
+            targetLevel: 'high,
             isTransitioning: false,
             performanceHistory: [],
             lastAdjustmentTime: 0,

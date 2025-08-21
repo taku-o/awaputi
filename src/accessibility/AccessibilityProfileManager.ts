@@ -8,20 +8,19 @@ import { getErrorHandler  } from '../utils/ErrorHandler.js';
 
 // Interfaces for profile management
 interface ProfileConfig {
-    enabled: boolean;
-    autoRecommendation: boolean;
-    profileSharing: boolean;
-    cloudSync: boolean;
-    maxProfiles: number;
-    autoSaveInterval: number;
+    enabled: boolean,
+    autoRecommendation: boolean,
+    profileSharing: boolean,
+    cloudSync: boolean,
+    maxProfiles: number,
+    autoSaveInterval: number,
     profileAnalytics: boolean;
-interface ProfileSettings { // Visual settings
+    interface ProfileSettings { // Visual settings
     textScaling?: number;
     colorContrast?: 'normal' | 'high' | 'highest';
     focusIndicators?: boolean;
     screenReaderSupport?: boolean;
     keyboardNavigation?: boolean;
-
     audioFeedback?: boolean;
     motionReduction?: 'none' | 'reduced' | 'minimal';
     
@@ -53,26 +52,24 @@ interface ProfileSettings { // Visual settings
     memoryAids?: boolean;
     taskBreakdown?: boolean;
     errorRecovery?: boolean;
-
-interface ProfileCompatibility { screenReaders?: string[],
+    interface ProfileCompatibility { screenReaders?: string[],
     assistiveTech?: string[];
     browsers?: string[];
     devices?: string[];
     captionFormats?: string[];
     inputDevices?: string[];
-
-interface AccessibilityProfile {
-    id: string;
-    name: string;
+    interface AccessibilityProfile {
+    id: string,
+    name: string,
     description: string;
     icon?: string;
-    category: 'visual' | 'audio' | 'motor' | 'cognitive' | 'custom';
+    category: 'visual' | 'audio' | 'motor' | 'cognitive' | 'custom,
     settings: ProfileSettings;
     compatibility?: ProfileCompatibility;
-    isPreset: boolean;
-    isActive: boolean;
-    createdAt: number;
-    lastModified: number;
+    isPreset: boolean,
+    isActive: boolean,
+    createdAt: number,
+    lastModified: number,
     usageCount: number;
     tags?: string[];
     metadata?: Record<string, any> }
@@ -80,32 +77,33 @@ interface AccessibilityProfile {
 interface PresetProfile extends Omit<AccessibilityProfile, 'isPreset' | 'isActive' | 'createdAt' | 'lastModified' | 'usageCount'> { compatibility: ProfileCompatibility;
 
 interface ProfileValidationResult {
-    isValid: boolean;
-    errors: string[];
-    warnings: string[];
+    isValid: boolean,
+    errors: string[],
+    warnings: string[],
     compatibility: {
         supporte,d: boolean;
-    missingFeatures: string[];
+    },
+    missingFeatures: string[],
     missingFeatures: string[];
         };
 interface ProfileRecommendation {
-    profileId: string;
-    confidence: number;
-    reason: string;
-    matchedFeatures: string[];
+    profileId: string,
+    confidence: number,
+    reason: string,
+    matchedFeatures: string[],
     matchedFeatures: string[];
         };
 interface ProfileAnalytics {
-    totalSwitches: number;
+    totalSwitches: number,
     profileUsage: Map<string, number>;
     averageSessionDuration: Map<string, number>;
     featureUsage: Map<string, number>;
     performanceMetrics: Map<string, any> }
 
-interface ProfileState { activeProfileId: string | null;
-    previousProfileId: string | null;
-    isDirty: boolean;
-    lastSaved: number;
+interface ProfileState { activeProfileId: string | null,
+    previousProfileId: string | null,
+    isDirty: boolean,
+    lastSaved: number,
     transitionInProgress: boolean;
 ';'
 
@@ -113,16 +111,15 @@ interface ProfileMergeOptions { ''
     strategy: 'override' | 'merge' | 'selective';
     keepExisting?: boolean;
     selectedFeatures?: string[];
-
-interface ProfileExportData {
-    version: string;
-    profile: AccessibilityProfile;
-    exportDate: number;
+    interface ProfileExportData {
+    version: string,
+    profile: AccessibilityProfile,
+    exportDate: number,
     checksum: string;
 // AccessibilityManager interface (minimal, definition);
-interface AccessibilityManager { applySettings?: (settings: ProfileSettings) => void;
+    interface AccessibilityManager { applySettings?: (settings: ProfileSettings) => void;
     validateSettings?: (settings: ProfileSettings) => ProfileValidationResult;
-    gameEngine?: any,  }
+    gameEngine?: any }
 }
 
 export class AccessibilityProfileManager {
@@ -143,91 +140,89 @@ export class AccessibilityProfileManager {
         
         // プロファイル管理設定
         this.config = { : undefined
-            enabled: true;
-            autoRecommendation: true;
-            profileSharing: true;
-            cloudSync: false;
-            maxProfiles: 10;
+            enabled: true,
+            autoRecommendation: true,
+            profileSharing: true,
+            cloudSync: false,
+            maxProfiles: 10,
     autoSaveInterval: 30000, // 30秒
-    }
+    };
     }
             profileAnalytics: true;;
         // プリセットプロファイル定義
-        this.presetProfiles = { visualImpairment: {''
-                id: 'visual-impairment';
-                name: '視覚障害対応';
-                description: '視覚障害や弱視の方向けの設定';
-                icon: '👁️‍🗨️';
-                category: 'visual';
+        this.presetProfiles = { visualImpairment: { ''
+                id: 'visual-impairment,
+                name: '視覚障害対応,
+                description: '視覚障害や弱視の方向けの設定,
+                icon: '👁️‍🗨️,
+                category: 'visual,
     settings: {'
-                    textScaling: 1.5;
-                    colorContrast: 'high';
-                    focusIndicators: true;
-                    screenReaderSupport: true;
-    keyboardNavigation: true;
-                    audioFeedback: true;
+                    textScaling: 1.5  ,
+                    colorContrast: 'high,
+                    focusIndicators: true,
+                    screenReaderSupport: true,
+    keyboardNavigation: true,
+                    audioFeedback: true,
                     motionReduction: 'reduced'
             };
                 compatibility: { ''
-                    screenReaders: ['nvda', 'jaws', 'voiceOver'],
+                    screenReaders: ['nvda', 'jaws', 'voiceOver']  },
                     assistiveTech: ['magnifier', 'braille'],
                     browsers: ['chrome', 'firefox', 'safari', 'edge] }'
             },
 
             hearingImpairment: { ''
-                id: 'hearing-impairment';
-                name: '聴覚障害対応';
-                description: '聴覚障害や難聴の方向けの設定';
-                icon: '🔇';
-                category: 'audio';
-    settings: {
-                    visualFeedback: true;
-                    showCaptions: true;
-                    captionSize: 1.2;
-                    vibrationSettings: true;
-                    flashingAlerts: true;
-                    soundVisualization: true;
-    backgroundMusic: false;
+                id: 'hearing-impairment'  ,
+                name: '聴覚障害対応,
+                description: '聴覚障害や難聴の方向けの設定,
+                icon: '🔇,
+                category: 'audio,
+    settings: { visualFeedback: true  ,
+                    showCaptions: true,
+                    captionSize: 1.2,
+                    vibrationSettings: true,
+                    flashingAlerts: true,
+                    soundVisualization: true,
+    backgroundMusic: false,
                 compatibility: { ''
-                    devices: ['vibration', 'visualAlert'],
+                    devices: ['vibration', 'visualAlert']  },
                     captionFormats: ['srt', 'webvtt] }'
             },
 
             motorImpairment: { ''
-                id: 'motor-impairment';
-                name: '運動障害対応';
-                description: '手足の運動機能に制限がある方向けの設定';
-                icon: '🦾';
-                category: 'motor';
-    settings: {
-                    alternativeInput: true;
-                    stickyKeys: true;
-                    slowKeys: true;
-                    keyRepeatDelay: 800;
-    mouseSensitivity: 0.5;
-                    dwellTime: 1000;
-                    timingAdjustments: 'extended';
-    oneHandedMode: true;
+                id: 'motor-impairment'  ,
+                name: '運動障害対応,
+                description: '手足の運動機能に制限がある方向けの設定,
+                icon: '🦾,
+                category: 'motor,
+    settings: { alternativeInput: true  ,
+                    stickyKeys: true,
+                    slowKeys: true,
+                    keyRepeatDelay: 800,
+    mouseSensitivity: 0.5,
+                    dwellTime: 1000,
+                    timingAdjustments: 'extended,
+    oneHandedMode: true,
                 compatibility: { ''
-                    inputDevices: ['switch', 'eyeTracker', 'headMouse'],
+                    inputDevices: ['switch', 'eyeTracker', 'headMouse']  },
                     assistiveTech: ['onScreenKeyboard', 'voiceControl] }'
             },
 
             cognitiveSupport: { ''
-                id: 'cognitive-support';
-                name: '認知サポート';
-                description: '認知機能のサポートが必要な方向けの設定';
-                icon: '🧠';
-                category: 'cognitive';
-                settings: {''
-                    uiSimplification: 'essential';
-                    contextualHelp: true;
-                    reduceAnimations: true;
-                    readingMode: true;
-                    focusMode: true;
-                    memoryAids: true;
-                    taskBreakdown: true;
-    errorRecovery: true;
+                id: 'cognitive-support'  ,
+                name: '認知サポート,
+                description: '認知機能のサポートが必要な方向けの設定,
+                icon: '🧠,
+                category: 'cognitive,
+                settings: { ''
+                    uiSimplification: 'essential'  ,
+                    contextualHelp: true,
+                    reduceAnimations: true,
+                    readingMode: true,
+                    focusMode: true,
+                    memoryAids: true,
+                    taskBreakdown: true,
+    errorRecovery: true,
                 compatibility: { ''
                     assistiveTech: ['textSimplifier', 'readingAssistant] }'
 };
@@ -236,15 +231,15 @@ export class AccessibilityProfileManager {
         this.userProfiles = new Map();
         
         // 状態管理
-        this.state = { activeProfileId: null;
-            previousProfileId: null;
-            isDirty: false;
+        this.state = { activeProfileId: null,
+            previousProfileId: null,
+            isDirty: false,
             lastSaved: Date.now(
     transitionInProgress: false;
         // 分析データ
-        this.analytics = { totalSwitches: 0;
-            profileUsage: new Map();
-            averageSessionDuration: new Map();
+        this.analytics = { totalSwitches: 0,
+            profileUsage: new Map(),
+            averageSessionDuration: new Map(),
             featureUsage: new Map(
     performanceMetrics: new Map(  };
         
@@ -277,7 +272,7 @@ export class AccessibilityProfileManager {
             // プロファイル推奨の実行
             if (this.config.autoRecommendation) {
 
-                this.checkProfileRecommendations() }
+                this.checkProfileRecommendations();
 
             console.log('ProfileManager, initialization completed';
 
@@ -290,7 +285,7 @@ export class AccessibilityProfileManager {
     createProfile(name: string, settings: ProfileSettings, category: AccessibilityProfile['category'] = 'custom': AccessibilityProfile | null { ''
         if (this.userProfiles.size >= this.config.maxProfiles) {
 
-            console.warn('Maximum number of profiles reached') }
+            console.warn('Maximum number of profiles reached');
             return null;
 
         const profileId = this.generateProfileId();
@@ -300,13 +295,13 @@ export class AccessibilityProfileManager {
             description: ','
             category,
             settings: { ...settings)
-            isPreset: false;
-    isActive: false);
-            createdAt: Date.now();
-            lastModified: Date.now();
-            usageCount: 0;
-            tags: [];
-    metadata: { };
+            isPreset: false ,
+    isActive: false),
+            createdAt: Date.now(),
+            lastModified: Date.now(),
+            usageCount: 0,
+            tags: [],
+    metadata: {  },
         // バリデーション
         const validation = this.validateProfile(profile);
         if (!validation.isValid) {
@@ -343,7 +338,7 @@ export class AccessibilityProfileManager {
         this.state.isDirty = true;
         
         // アクティブプロファイルの場合は即座に適用
-        if (this.state.activeProfileId === profileId) { this.applyProfile(profileId) }
+        if (this.state.activeProfileId === profileId) { this.applyProfile(profileId);
         
         return true;
     }
@@ -358,7 +353,7 @@ export class AccessibilityProfileManager {
         }
         
         // アクティブプロファイルの場合は無効化
-        if (this.state.activeProfileId === profileId) { this.deactivateProfile() }
+        if (this.state.activeProfileId === profileId) { this.deactivateProfile();
         
         this.userProfiles.delete(profileId);
         this.saveProfiles();
@@ -373,7 +368,7 @@ export class AccessibilityProfileManager {
     async applyProfile(profileId: string | null): Promise<boolean> { ''
         if (this.state.transitionInProgress) {
 
-            console.warn('Profile, transition already, in progress') }
+            console.warn('Profile, transition already, in progress');
             return false;
         
         this.state.transitionInProgress = true;
@@ -397,7 +392,7 @@ export class AccessibilityProfileManager {
                 }
                 
                 // 設定の適用
-                if (this.accessibilityManager?.applySettings) { await this.accessibilityManager.applySettings(profile.settings) }
+                if (this.accessibilityManager?.applySettings) { await this.accessibilityManager.applySettings(profile.settings);
                 
                 // 使用回数の更新
                 if (!profile.isPreset && this.userProfiles.has(profileId) {
@@ -443,7 +438,7 @@ export class AccessibilityProfileManager {
         this.state.activeProfileId = null;
         
         // デフォルト設定に戻す
-        if (this.accessibilityManager?.applySettings) { this.accessibilityManager.applySettings({) }
+        if (this.accessibilityManager?.applySettings) { this.accessibilityManager.applySettings({);
         
         this.notifyProfileChange(null);
         this.saveActiveProfile();
@@ -470,7 +465,7 @@ export class AccessibilityProfileManager {
         const currentIndex = profiles.findIndex(p => p.id === this.state.activeProfileId);
         const nextIndex = (currentIndex + 1) % profiles.length,
         
-        await this.applyProfile(profiles[nextIndex].id) }
+        await this.applyProfile(profiles[nextIndex].id);
     }
     
     /**
@@ -488,13 +483,13 @@ export class AccessibilityProfileManager {
             errors: [],
             warnings: [],
     compatibility: {
-                supported: true,
+                supported: true ,
     missingFeatures: []  }
         };
         ;
         // 基本バリデーション
         if (!profile.name || profile.name.trim().length === 0') { ''
-            result.errors.push('Profile, name is, required',
+            result.errors.push('Profile, name is, required,
             result.isValid = false }
         
         // 設定値の範囲チェック
@@ -528,13 +523,13 @@ export class AccessibilityProfileManager {
             recommendations.push({)'
                 profileId: 'visual-impairment')','
     confidence: 0.8,
-                reason: 'システムで動きの軽減が有効になっています',')',
+                reason: 'システムで動きの軽減が有効になっています,')',
                 matchedFeatures: ['motionReduction]'}
 
         if(window.matchMedia('(prefers-contrast: high)).matches) { recommendations.push({)'
                 profileId: 'visual-impairment')','
     confidence: 0.9,
-                reason: 'システムで高コントラストが有効になっています',')',
+                reason: 'システムで高コントラストが有効になっています,')',
                 matchedFeatures: ['colorContrast]  }'
         
         // 使用履歴に基づく推奨
@@ -544,8 +539,7 @@ export class AccessibilityProfileManager {
                 confidence: 0.7 - (index * 0.1,
                 reason: '頻繁に使用されているプロファイルです'
             }
-                matchedFeatures: []},
-        };
+                matchedFeatures: [] };
         
         return recommendations.sort((a, b) => b.confidence - a.confidence);
     }
@@ -567,8 +561,8 @@ export class AccessibilityProfileManager {
         const exportData: ProfileExportData = {,
             version: '1.0' }
             profile: { ...profile as AccessibilityProfile,
-            exportDate: Date.now(
-    checksum: this.generateChecksum(profile) },
+            exportDate: Date.now( ,
+    checksum: this.generateChecksum(profile) ,
         
         return exportData;
     }
@@ -584,14 +578,14 @@ export class AccessibilityProfileManager {
             ';'
             // バージョンチェック
             if(exportData.version !== '1.0' { }
-                console.warn(`Unsupported, profile version: ${exportData.version}`};
+                console.warn(`Unsupported, profile version: ${exportData.version}`}
             }
             
             const profile = exportData.profile;
             
             // 既存プロファイルの確認
             if (this.userProfiles.has(profile.id) && !overwrite) { // 新しいIDを生成
-                profile.id = this.generateProfileId() }
+                profile.id = this.generateProfileId();
                 profile.name = `${profile.name} (インポート)`;
             }
             
@@ -624,7 +618,7 @@ export class AccessibilityProfileManager {
         const target = this.getProfile(targetId);
         if (!source || !target || target.isPreset) {
 
-            console.error('Invalid profiles for merge') }
+            console.error('Invalid profiles for merge');
             return false;
 
         switch(options.strategy') {', ' }'
@@ -639,11 +633,10 @@ export class AccessibilityProfileManager {
 
             case 'selective':,
                 if (options.selectedFeatures) {
-                    options.selectedFeatures.forEach(feature => { ) }
+                    options.selectedFeatures.forEach(feature => { );
                         if (feature, in source.settings) { }
-                            (target.settings, as any)[feature] = (source.settings, as any)[feature]; }
-};
-                }
+                            (target.settings, as any)[feature] = (source.settings, as any)[feature];     }
+}
                 break;
         }
         ';'
@@ -654,7 +647,7 @@ export class AccessibilityProfileManager {
         if(!this.config.profileAnalytics) return,
 
         if(action === 'activate' {'
-            this.analytics.totalSwitches++,
+            this.analytics.totalSwitches++;
 
             const usage = this.analytics.profileUsage.get(profileId) || 0 }
 
@@ -674,14 +667,14 @@ export class AccessibilityProfileManager {
             ' }'
 
             this.analytics.averageSessionDuration.set(profileId, newAvg'}';} else if(action === 'activate' {'
-            this.analytics.performanceMetrics.set(`${profileId}_start`, Date.now()};
+            this.analytics.performanceMetrics.set(`${profileId}_start`, Date.now();
         }
     }
     
     /**
      * 最も使用されているプロファイル
      */
-    private getMostUsedProfiles(limit: number): AccessibilityProfile[] { const profiles = Array.from(this.userProfiles.values()
+    private getMostUsedProfiles(limit: number): AccessibilityProfile[] { const profiles = Array.from(this.userProfiles.values()))
             .sort((a, b) => b.usageCount - a.usageCount),
             .slice(0, limit);
         return profiles,
@@ -690,14 +683,12 @@ export class AccessibilityProfileManager {
      * プロファイル変更の通知
      */
     private notifyProfileChange(profile: AccessibilityProfile | null): void { this.profileChangeListeners.forEach(listener => { )
-            try {) }
+            try {);
 
                 listener(profile); }'
 
-            } catch (error) { console.error('Profile change listener error:', error }
-        };
-    }
-    
+            } catch (error) { console.error('Profile change listener error:', error     }
+}
     /**
      * チェックサムの生成
      */
@@ -725,7 +716,7 @@ export class AccessibilityProfileManager {
      * 自動保存の開始
      */
     private startAutoSave(): void { if (this.autoSaveTimer) {
-            clearInterval(this.autoSaveTimer) }
+            clearInterval(this.autoSaveTimer);
         
         this.autoSaveTimer = window.setInterval(() => {  if (this.state.isDirty) { }
                 this.saveProfiles(); }
@@ -749,9 +740,9 @@ export class AccessibilityProfileManager {
             const data = {
                 userProfiles: Array.from(this.userProfiles.entries(
     analytics: {
-                    totalSwitches: this.analytics.totalSwitches,
+                    totalSwitches: this.analytics.totalSwitches ,
     profileUsage: Array.from(this.analytics.profileUsage.entries(
-                    averageSessionDuration: Array.from(this.analytics.averageSessionDuration.entries()  }
+                    averageSessionDuration: Array.from(this.analytics.averageSessionDuration.entries()));
             };
 
             localStorage.setItem('accessibilityProfiles', JSON.stringify(data);
@@ -771,12 +762,12 @@ export class AccessibilityProfileManager {
             const data = JSON.parse(saved);
             
             // ユーザープロファイルの復元
-            if (data.userProfiles) { this.userProfiles = new Map(data.userProfiles) }
+            if (data.userProfiles) { this.userProfiles = new Map(data.userProfiles);
             
             // 分析データの復元
             if (data.analytics) {
                 this.analytics.totalSwitches = data.analytics.totalSwitches || 0;
-                this.analytics.profileUsage = new Map(data.analytics.profileUsage || []) }
+                this.analytics.profileUsage = new Map(data.analytics.profileUsage || []);
                 this.analytics.averageSessionDuration = new Map(data.analytics.averageSessionDuration || []);' }'
 
             } catch (error) { console.error('Failed to load profiles:', error }
@@ -793,8 +784,7 @@ export class AccessibilityProfileManager {
             } else { }'
 
                 localStorage.removeItem('activeAccessibilityProfile'; }
-
-            } catch (error) { console.error('Failed to save active profile:', error }
+        } catch (error) { console.error('Failed to save active profile:', error }
     }
     
     /**
@@ -815,13 +805,13 @@ export class AccessibilityProfileManager {
      */
     getAllProfiles(): AccessibilityProfile[] { const presets = Object.values(this.presetProfiles).map(preset => ({
             ...preset,
-            isPreset: true);
+            isPreset: true),
             isActive: this.state.activeProfileId === preset.id,
     createdAt: 0),
             lastModified: 0,
     usageCount: this.analytics.profileUsage.get(preset.id) || 0  }
         };
-        const users = Array.from(this.userProfiles.values();
+        const users = Array.from(this.userProfiles.values()));
         
         return [...presets, ...users];
     
@@ -835,8 +825,7 @@ export class AccessibilityProfileManager {
                    isActive: this.state.activeProfileId === profileId,
                    createdAt: 0,
                    lastModified: 0,
-    usageCount: this.analytics.profileUsage.get(profileId) || 0  } : null),
-    }
+    usageCount: this.analytics.profileUsage.get(profileId) || 0  } : null);
     
     /**
      * アクティブプロファイルの取得
@@ -846,20 +835,20 @@ export class AccessibilityProfileManager {
     /**
      * プロファイル変更リスナーの追加
      */
-    addProfileChangeListener(listener: (profile: AccessibilityProfile | null) => void): void { this.profileChangeListeners.add(listener) }
+    addProfileChangeListener(listener: (profile: AccessibilityProfile | null) => void): void { this.profileChangeListeners.add(listener);
     
     /**
      * プロファイル変更リスナーの削除
      */
-    removeProfileChangeListener(listener: (profile: AccessibilityProfile | null) => void): void { this.profileChangeListeners.delete(listener) }
+    removeProfileChangeListener(listener: (profile: AccessibilityProfile | null) => void): void { this.profileChangeListeners.delete(listener);
     
     /**
      * 分析データの取得
      */
     getAnalytics(): ProfileAnalytics { return { ...this.analytics,
-            profileUsage: new Map(this.analytics.profileUsage);
+            profileUsage: new Map(this.analytics.profileUsage),
             averageSessionDuration: new Map(this.analytics.averageSessionDuration,
-    featureUsage: new Map(this.analytics.featureUsage) },
+    featureUsage: new Map(this.analytics.featureUsage) ,
             performanceMetrics: new Map(this.analytics.performanceMetrics); 
     }
     
@@ -897,12 +886,12 @@ export class AccessibilityProfileManager {
         
         // 自動保存の停止
         if (this.autoSaveTimer) {
-            clearInterval(this.autoSaveTimer) }
+            clearInterval(this.autoSaveTimer);
             this.autoSaveTimer = null; }
         }
         
         // 最終保存
-        if (this.state.isDirty) { this.saveProfiles() }
+        if (this.state.isDirty) { this.saveProfiles();
         ;
         // リスナーのクリア
         this.profileChangeListeners.clear()';'

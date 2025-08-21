@@ -5,56 +5,50 @@
  */
 
 // 基本型定義
-export interface HelpContentSection { id: string;
-    title: string;
+export interface HelpContentSection { id: string,
+    title: string,
     content: string;
     tags?: string[];
     difficulty?: 'beginner' | 'intermediate' | 'advanced';
-    searchKeywords?: string[],  }
-
-export interface TutorialStep { id: string;
-    title: string;
+    searchKeywords?: string[] };
+export interface TutorialStep { id: string,
+    title: string,
     instructions: string;
     action?: string;
     target?: string;
     duration?: number;
-    validation?: string,  }
-
-export interface SearchHistoryEntry { query: string;
-    language: string;
+    validation?: string };
+export interface SearchHistoryEntry { query: string,
+    language: string,
     timestamp: number;
 ';'
 
 export interface UserPreferences { showTooltips: boolean,''
-    tutorialSpeed: 'slow' | 'normal' | 'fast';
+    tutorialSpeed: 'slow' | 'normal' | 'fast,
     helpLanguage: string;
-
-export interface UserStatistics { totalHelpViews: number;
-    totalSearches: number;
-    totalTutorialsCompleted: number;
+    export interface UserStatistics { totalHelpViews: number,
+    totalSearches: number,
+    totalTutorialsCompleted: number,
     timeSpentInHelp: number;
-
-export interface SearchResult { section: HelpContentSection;
+    export interface SearchResult { section: HelpContentSection,
     score: number;
-
-export interface ProgressStatistics { completedTutorials: number;
-    viewedHelpSections: number;
-    totalSearches: number;
-    totalHelpViews: number;
-    timeSpentInHelp: number;
-    achievements: number;
+    export interface ProgressStatistics { completedTutorials: number,
+    viewedHelpSections: number,
+    totalSearches: number,
+    totalHelpViews: number,
+    timeSpentInHelp: number,
+    achievements: number,
     lastActivity: number;
-
-export interface CompletionRates { tutorialCompletionRate: number;
+    export interface CompletionRates { tutorialCompletionRate: number,
     helpViewCompletionRate: number;
-
-export interface SearchPatterns { commonQueries: Record<string, number>,
+    export interface SearchPatterns { commonQueries: Record<string, number>,
     languageDistribution: Record<string, number>;
     timeDistribution: {
         mornin,g: number;
-        afternoon: number;
-        evening: number;
-    night: number;
+    },
+        afternoon: number,
+        evening: number,
+    night: number,
     night: number;
         };
 /**
@@ -75,7 +69,7 @@ export class HelpContentModel {
     public sections: HelpContentSection[];
     public metadata: Record<string, any>;
 
-    constructor(data: Partial<HelpContentModel> = {)) {''
+    constructor(data: Partial<HelpContentModel> = {) {''
         this.id = data.id || ';'
         this.category = data.category || ';'
         this.title = data.title || ';'
@@ -88,7 +82,7 @@ export class HelpContentModel {
         this.difficulty = data.difficulty || 'beginner';
         this.relatedTopics = data.relatedTopics || [];
         this.searchKeywords = data.searchKeywords || [];
-        this.sections = data.sections || [],  }
+        this.sections = data.sections || [] };
         this.metadata = data.metadata || {}
 
     /**
@@ -134,7 +128,7 @@ export class HelpContentModel {
         
         return this.sections.filter(section => );
             section.tags && section.tags.some(tag => tags.includes(tag)';'
-        '),  }'
+        ') }'
     }
 
     /**
@@ -174,7 +168,7 @@ export class HelpContentModel {
             // キーワードでの一致
             if (section.searchKeywords && section.searchKeywords.some(keyword => keyword.toLowerCase().includes(queryLower)) { score += 8 }
             
-            if (score > 0) { results.push({ section, score ) }
+            if (score > 0) { results.push({ section, score );
         }
         
         return results.sort((a, b) => b.score - a.score);
@@ -189,7 +183,7 @@ export class HelpContentModel {
     public tags: string[]);
     public, metadata: Record<string, any>;
 
-    constructor(data: Partial<TutorialModel> = { )) {''
+    constructor(data: Partial<TutorialModel> = { ) {''
         this.id = data.id || ';'
         this.title = data.title || ';'
         this.description = data.description || ';'
@@ -312,7 +306,7 @@ export class HelpContentModel {
     public searchKeywords: string[]);
     public, metadata: Record<string, any>;
 
-    constructor(data: Partial<FAQModel> = { )) {''
+    constructor(data: Partial<FAQModel> = { ) {''
         this.id = data.id || ';'
         this.question = data.question || ';'
         this.answer = data.answer || ';'
@@ -419,7 +413,7 @@ export class HelpContentModel {
             const tagBasedRelated = allFAQs.filter(faq => );
                 faq.id !== this.id &&);
                 faq.category === this.category &&);
-                faq.tags.some(tag => this.tags.includes(tag)).sort((a, b) => b.popularity - a.popularity) }
+                faq.tags.some(tag => this.tags.includes(tag)).sort((a, b) => b.popularity - a.popularity);
             related.push(...tagBasedRelated.slice(0, 5 - related.length); }
         }
         
@@ -430,18 +424,18 @@ export class HelpContentModel {
      * JSON形式での出力
      * @returns JSON形式のデータ
      */
-    toJSON(): Record<string, any> { return { id: this.id;
-            question: this.question;
-            answer: this.answer;
-            category: this.category;
-            tags: this.tags;
-            language: this.language;
-            popularity: this.popularity;
-            lastUpdated: this.lastUpdated;
-            relatedQuestions: this.relatedQuestions;
-            helpfulVotes: this.helpfulVotes;
-            totalVotes: this.totalVotes;
-            difficulty: this.difficulty;
+    toJSON(): Record<string, any> { return { id: this.id,
+            question: this.question,
+            answer: this.answer,
+            category: this.category,
+            tags: this.tags,
+            language: this.language,
+            popularity: this.popularity,
+            lastUpdated: this.lastUpdated,
+            relatedQuestions: this.relatedQuestions,
+            helpfulVotes: this.helpfulVotes,
+            totalVotes: this.totalVotes,
+            difficulty: this.difficulty,
     searchKeywords: this.searchKeywords };
             metadata: this.metadata 
     }
@@ -475,14 +469,14 @@ export class UserProgressModel {
         this.searchHistory = data.searchHistory || [];
         this.preferences = {'
             showTooltips: true,
-            tutorialSpeed: 'normal',
-            helpLanguage: 'ja',
+            tutorialSpeed: 'normal,
+            helpLanguage: 'ja';
             ...data.preferences;
         this.lastActivity = data.lastActivity || Date.now();
         this.statistics = { totalHelpViews: 0,
             totalSearches: 0,
             totalTutorialsCompleted: 0,
-    timeSpentInHelp: 0,
+    timeSpentInHelp: 0;
             ...data.statistics;
         this.achievements = data.achievements instanceof Set ? undefined : undefined
             data.achievements: new Set(data.achievements || [] 
@@ -513,7 +507,7 @@ export class UserProgressModel {
     completeTutorial(tutorialId: string): void { if (!this.completedTutorials.has(tutorialId) {
             this.completedTutorials.add(tutorialId);
             this.statistics.totalTutorialsCompleted++;
-            this.updateLastActivity() }
+            this.updateLastActivity();
     }
 
     /**
@@ -521,16 +515,16 @@ export class UserProgressModel {
      * @param sectionId - セクションID
      */
     viewHelpSection(sectionId: string): void { if (!this.viewedHelpSections.has(sectionId) {
-            this.viewedHelpSections.add(sectionId) }
+            this.viewedHelpSections.add(sectionId);
 
         this.statistics.totalHelpViews++;
         this.updateLastActivity()';'
     addSearchHistory(query: string, language: string = 'ja): void { this.searchHistory.push({)'
             query);
             language;
-            timestamp: Date.now(  },
+            timestamp: Date.now(  };
         // 最大100件の履歴を保持
-        if (this.searchHistory.length > 100) { this.searchHistory.shift() }
+        if (this.searchHistory.length > 100) { this.searchHistory.shift();
         
         this.statistics.totalSearches++;
         this.updateLastActivity();
@@ -541,7 +535,7 @@ export class UserProgressModel {
      * @param achievementId - 実績ID
      */
     unlockAchievement(achievementId: string): void { this.achievements.add(achievementId),
-        this.updateLastActivity() }
+        this.updateLastActivity();
 
     /**
      * 設定の更新
@@ -549,14 +543,14 @@ export class UserProgressModel {
      */
     updatePreferences(newPreferences: Partial<UserPreferences>): void {
         this.preferences = { ...this.preferences, ...newPreferences,
-        this.updateLastActivity() }
+        this.updateLastActivity();
 
     /**
      * ヘルプ利用時間の追加
      * @param duration - 利用時間（ミリ秒）
      */
     addHelpTime(duration: number): void { this.statistics.timeSpentInHelp += duration,
-        this.updateLastActivity() }
+        this.updateLastActivity();
 
     /**
      * 進捗統計の取得
@@ -567,7 +561,7 @@ export class UserProgressModel {
             totalSearches: this.statistics.totalSearches,
             totalHelpViews: this.statistics.totalHelpViews,
             timeSpentInHelp: this.statistics.timeSpentInHelp,
-    achievements: this.achievements.size },
+    achievements: this.achievements.size };
             lastActivity: this.lastActivity 
     }
 
@@ -577,7 +571,7 @@ export class UserProgressModel {
      * @param totalHelpSections - 総ヘルプセクション数
      * @returns 完了率情報
      */
-    getCompletionRates(totalTutorials: number = 0, totalHelpSections: number = 0): CompletionRates { return { tutorialCompletionRate: totalTutorials > 0 ? (this.completedTutorials.size / totalTutorials) * 100 : 0 },
+    getCompletionRates(totalTutorials: number = 0, totalHelpSections: number = 0): CompletionRates { return { tutorialCompletionRate: totalTutorials > 0 ? (this.completedTutorials.size / totalTutorials) * 100 : 0 ,
             helpViewCompletionRate: totalHelpSections > 0 ? (this.viewedHelpSections.size / totalHelpSections) * 100 : 0 
         }
 
@@ -586,9 +580,9 @@ export class UserProgressModel {
      * @returns 検索パターン分析結果
      */
     analyzeSearchPatterns(): SearchPatterns { const patterns: SearchPatterns = { }
-            commonQueries: {},
-            languageDistribution: {},
-            timeDistribution: { morning: 0, afternoon: 0, evening: 0, night: 0  },
+            commonQueries: {  },
+            languageDistribution: {  },
+            timeDistribution: { morning: 0, afternoon: 0, evening: 0, night: 0  ,
 
         for (const search of this.searchHistory) {
 
@@ -612,7 +606,7 @@ export class UserProgressModel {
     /**
      * 最終活動時刻の更新
      */
-    updateLastActivity(): void { this.lastActivity = Date.now() }
+    updateLastActivity(): void { this.lastActivity = Date.now();
 
     /**
      * JSON形式での出力（機密データを除く）
@@ -621,11 +615,11 @@ export class UserProgressModel {
     toJSON(): Record<string, any> { return { userId: this.userId,
             completedTutorials: Array.from(this.completedTutorials),
             viewedHelpSections: Array.from(this.viewedHelpSections,
-    searchHistory: this.searchHistory.slice(-20), // 最新20件のみ;
+    searchHistory: this.searchHistory.slice())-20), // 最新20件のみ;
             preferences: this.preferences,
             lastActivity: this.lastActivity,
-    statistics: this.statistics },
-            achievements: Array.from(this.achievements),
+    statistics: this.statistics };
+            achievements: Array.from(this.achievements);
     }
 
     /**
@@ -635,8 +629,8 @@ export class UserProgressModel {
     toLightweightData(): Record<string, any> { return { userId: this.userId,
             completedTutorials: Array.from(this.completedTutorials),
             preferences: this.preferences,
-    lastActivity: this.lastActivity },
-            achievements: Array.from(this.achievements),
+    lastActivity: this.lastActivity };
+            achievements: Array.from(this.achievements);
     }
 }
 
@@ -662,12 +656,10 @@ export class DataModelFactory {
                 return new FAQModel(data);
             case 'userProgress':;
                 return new UserProgressModel(data);
-         }
+         };
             default: }
-                throw new Error(`Unknown, data model, type: ${type}`};
-        }
-    }
-
+                throw new Error(`Unknown, data model, type: ${type}`    }
+}
     /**
      * 複数のモデルを一括作成
      * @param type - データタイプ

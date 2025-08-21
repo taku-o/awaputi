@@ -4,96 +4,91 @@
  */
 
 // Interfaces for WCAG rule engine
-interface RuleEngineConfig { enabled: boolean;
-    level: 'A' | 'AA' | 'AAA';
-    includeWarnings: boolean;
+interface RuleEngineConfig { enabled: boolean,
+    level: 'A' | 'AA' | 'AAA,
+    includeWarnings: boolean,
     autoFixEnabled: boolean;
 ';'
 
 interface GuidelineInfo { name: string,''
-    level: 'A' | 'AA' | 'AAA';
+    level: 'A' | 'AA' | 'AAA,
     category: 'perceivable' | 'operable' | 'understandable' | 'robust'
             }
 
-interface ExecutionState { running: boolean;
-    currentTest: string | null;
+interface ExecutionState { running: boolean,
+    currentTest: string | null,
     results: Map<string, TestResult> }
 
-interface TestResult { passed: boolean;
+interface TestResult { passed: boolean,
     issues: TestIssue[];
     warnings?: TestWarning[];
+    interface TestIssue { element?: Element,
 
-interface TestIssue { element?: Element,
-
-    issue: string;
-    severity: 'error' | 'warning';
-    guideline: string;
+    issue: string,
+    severity: 'error' | 'warning,
+    guideline: string,
     suggestion: string;
     details?: any;
+    interface TestWarning { element?: Element,
 
-interface TestWarning { element?: Element,
-
-    issue: string;
-    severity: 'warning';
-    guideline: string;
+    issue: string,
+    severity: 'warning,
+    guideline: string,
     suggestion: string;
-
-interface RGB { r: number;
-    g: number;
+    interface RGB { r: number,
+    g: number,
     b: number;
-
-type TestMethod = (options?: any) => TestResult | Promise<TestResult>;
-
-export class WCAGRuleEngine {
+    type TestMethod = (options?: any) => TestResult | Promise<TestResult>;
+    export class WCAGRuleEngine {
     private config: RuleEngineConfig;
     private, guidelines: Record<string, GuidelineInfo>,
     private testRegistry: Map<string, TestMethod>;
     private executionState: ExecutionState';'
 
-    constructor(config: Partial<RuleEngineConfig> = {)) {
+    constructor(config: Partial<RuleEngineConfig> = {) {
         this.config = {'
-            enabled: true;
-            level: 'AA';
-            includeWarnings: true;
+            enabled: true,
+    level: 'AA,
+    includeWarnings: true,
     autoFixEnabled: false;
             ...config,
 
         // WCAG 2.1 guidelines registry
         this.guidelines = { }', '1.1.1': { name: 'Non-text Content', level: 'A', category: 'perceivable'
-            },', '1.1.2': { name: 'Audio-only and Video-only', level: 'A', category: 'perceivable'
-            },', '1.2.1': { name: 'Audio Control', level: 'A', category: 'perceivable'
-            },', '1.3.1': { name: 'Info and Relationships', level: 'A', category: 'perceivable'
-            },', '1.3.2': { name: 'Meaningful Sequence', level: 'A', category: 'perceivable'
-            },', '1.3.3': { name: 'Sensory Characteristics', level: 'A', category: 'perceivable'
-            },', '1.4.1': { name: 'Use of Color', level: 'A', category: 'perceivable'
-            },', '1.4.2': { name: 'Audio Control', level: 'A', category: 'perceivable'
-            },', '1.4.3': { name: 'Contrast(Minimum)', level: 'AA', category: 'perceivable'
-            },', '1.4.4': { name: 'Resize Text', level: 'AA', category: 'perceivable'
-            },', '1.4.5': { name: 'Images of Text', level: 'AA', category: 'perceivable'
-            },', '2.1.1': { name: 'Keyboard', level: 'A', category: 'operable'
-            },', '2.1.2': { name: 'No Keyboard Trap', level: 'A', category: 'operable'
-            },', '2.2.1': { name: 'Timing Adjustable', level: 'A', category: 'operable'
-            },', '2.2.2': { name: 'Pause, Stop, Hide', level: 'A', category: 'operable'
-            },', '2.4.1': { name: 'Bypass Blocks', level: 'A', category: 'operable'
-            },', '2.4.2': { name: 'Page Titled', level: 'A', category: 'operable'
-            },', '2.4.3': { name: 'Focus Order', level: 'A', category: 'operable'
-            },', '2.4.4': { name: 'Link Purpose(In, Context)', level: 'A', category: 'operable'
-            },', '2.4.5': { name: 'Multiple Ways', level: 'AA', category: 'operable'
-            },', '2.4.6': { name: 'Headings and Labels', level: 'AA', category: 'operable'
-            },', '2.4.7': { name: 'Focus Visible', level: 'AA', category: 'operable'
-            },', '3.1.1': { name: 'Language of Page', level: 'A', category: 'understandable'
-            },', '3.1.2': { name: 'Language of Parts', level: 'AA', category: 'understandable'
-            },', '3.2.1': { name: 'On Focus', level: 'A', category: 'understandable'
-            },', '3.2.2': { name: 'On Input', level: 'A', category: 'understandable'
-            },', '3.2.3': { name: 'Consistent Navigation', level: 'AA', category: 'understandable'
-            },', '3.2.4': { name: 'Consistent Identification', level: 'AA', category: 'understandable'
-            },', '3.3.1': { name: 'Error Identification', level: 'A', category: 'understandable'
-            },', '3.3.2': { name: 'Labels or Instructions', level: 'A', category: 'understandable'
-            },', '3.3.3': { name: 'Error Suggestion', level: 'AA', category: 'understandable'
-            },', '3.3.4': { name: 'Error Prevention', level: 'AA', category: 'understandable'
-            },', '4.1.1': { name: 'Parsing', level: 'A', category: 'robust'
-            },', '4.1.2': { name: 'Name, Role, Value', level: 'A', category: 'robust'
-            },', '4.1.3': { name: 'Status Messages', level: 'AA', category: 'robust'
+            ,', '1.1.2': { name: 'Audio-only and Video-only', level: 'A', category: 'perceivable'
+            ,', '1.2.1': { name: 'Audio Control', level: 'A', category: 'perceivable'
+            ,', '1.3.1': { name: 'Info and Relationships', level: 'A', category: 'perceivable'
+            ,', '1.3.2': { name: 'Meaningful Sequence', level: 'A', category: 'perceivable'
+            ,', '1.3.3': { name: 'Sensory Characteristics', level: 'A', category: 'perceivable'
+            ,', '1.4.1': { name: 'Use of Color', level: 'A', category: 'perceivable'
+            ,', '1.4.2': { name: 'Audio Control', level: 'A', category: 'perceivable'
+            ,', '1.4.3': { name: 'Contrast(Minimum)', level: 'AA', category: 'perceivable'
+            ,', '1.4.4': { name: 'Resize Text', level: 'AA', category: 'perceivable'
+            ,', '1.4.5': { name: 'Images of Text', level: 'AA', category: 'perceivable'
+            ,', '2.1.1': { name: 'Keyboard', level: 'A', category: 'operable'
+            ,', '2.1.2': { name: 'No Keyboard Trap', level: 'A', category: 'operable'
+            ,', '2.2.1': { name: 'Timing Adjustable', level: 'A', category: 'operable'
+            ,', '2.2.2': { name: 'Pause, Stop, Hide', level: 'A', category: 'operable'
+            ,', '2.4.1': { name: 'Bypass Blocks', level: 'A', category: 'operable'
+            ,', '2.4.2': { name: 'Page Titled', level: 'A', category: 'operable'
+            ,', '2.4.3': { name: 'Focus Order', level: 'A', category: 'operable'
+            ,', '2.4.4': { name: 'Link Purpose(In, Context)', level: 'A', category: 'operable'
+            ,', '2.4.5': { name: 'Multiple Ways', level: 'AA', category: 'operable'
+            ,', '2.4.6': { name: 'Headings and Labels', level: 'AA', category: 'operable'
+            ,', '2.4.7': { name: 'Focus Visible', level: 'AA', category: 'operable'
+            ,', '3.1.1': { name: 'Language of Page', level: 'A', category: 'understandable'
+            ,', '3.1.2': { name: 'Language of Parts', level: 'AA', category: 'understandable'
+            ,', '3.2.1': { name: 'On Focus', level: 'A', category: 'understandable'
+            ,', '3.2.2': { name: 'On Input', level: 'A', category: 'understandable'
+            ,', '3.2.3': { name: 'Consistent Navigation', level: 'AA', category: 'understandable'
+            ,', '3.2.4': { name: 'Consistent Identification', level: 'AA', category: 'understandable'
+            ,', '3.3.1': { name: 'Error Identification', level: 'A', category: 'understandable'
+            ,', '3.3.2': { name: 'Labels or Instructions', level: 'A', category: 'understandable'
+            ,', '3.3.3': { name: 'Error Suggestion', level: 'AA', category: 'understandable'
+            ,', '3.3.4': { name: 'Error Prevention', level: 'AA', category: 'understandable'
+            ,', '4.1.1': { name: 'Parsing', level: 'A', category: 'robust'
+            ,', '4.1.2': { name: 'Name, Role, Value', level: 'A', category: 'robust'
+            ,', '4.1.3': { name: 'Status Messages', level: 'AA', category: 'robust'
             };
 
         // Test method registry
@@ -101,8 +96,8 @@ export class WCAGRuleEngine {
         this.setupTestRegistry();
 
         // Rule execution state
-        this.executionState = { running: false;
-            currentTest: null;
+        this.executionState = { running: false,
+            currentTest: null,
     results: new Map(  }
 
     /**
@@ -165,11 +160,11 @@ export class WCAGRuleEngine {
         if (!testMethod) { }'
 
             console.warn(`WCAGRuleEngine: Unknown, test: ${testName}`}';'
-            return { passed: false;
+            return { passed: false,
                 issues: [{ }
 
                     issue: `Test ${testName} not implemented`;
-                    severity: 'error';
+                    severity: 'error,
                     guideline: ',]';
                     suggestion: '],'
                 }]
@@ -182,12 +177,12 @@ export class WCAGRuleEngine {
             this.executionState.results.set(testName, result);
             return result } catch (error) {
             console.error(`WCAGRuleEngine: Error in test ${testName}:`, error);
-            return { passed: false;
+            return { passed: false,
 
                 issues: [{ }'
 
                     issue: `Test, error: ${(error, as, Error'}'.message}`;
-                    severity: 'error';
+                    severity: 'error,
                     guideline: ',]';
                     suggestion: '];'
                 }]
@@ -203,13 +198,13 @@ export class WCAGRuleEngine {
 
         images.forEach((img) => {  ''
             const alt = img.getAttribute('alt');
-            const src = img.getAttribute('src',
+            const src = img.getAttribute('src,
             ','
             // Check for missing alt attribute
             if (alt === null) {
                 issues.push({'
                     element: img,
-                    issue: 'Image missing alt attribute',
+                    issue: 'Image missing alt attribute,
                     severity: 'error' }''
                     guideline: '1.1.1',') }'
 
@@ -219,18 +214,18 @@ export class WCAGRuleEngine {
             // Check for non-descriptive alt text
             else if(alt && (alt.toLowerCase().includes('image' || alt.toLowerCase().includes('picture)' { warnings.push({'
                     element: img,
-                    issue: 'Alt text may not be descriptive enough',
+                    issue: 'Alt text may not be descriptive enough,
                     severity: 'warning',','
-                    guideline: '1.1.1',')',
+                    guideline: '1.1.1,')',
                     suggestion: 'Use more descriptive alt text that conveys the image content'
             }
 
             // Check for overly long alt text
             else if (alt && alt.length > 125) { warnings.push({'
                     element: img,
-                    issue: 'Alt text is very long',
-                    severity: 'warning', ')',
-                    guideline: '1.1.1',')',
+                    issue: 'Alt text is very long,
+                    severity: 'warning, ')',
+                    guideline: '1.1.1,')',
                     suggestion: 'Consider using shorter alt text or longdesc attribute')'
             }
         };
@@ -244,7 +239,7 @@ export class WCAGRuleEngine {
             if (!hasLabel) {
                 issues.push({ : undefined'
                     element: canvas,
-                    issue: 'Canvas element missing accessible name',
+                    issue: 'Canvas element missing accessible name,
                     severity: 'error' }''
                     guideline: '1.1.1',') }'
 
@@ -282,25 +277,25 @@ export class WCAGRuleEngine {
                 if (contrast < requiredContrast) {
     
 }
-                    issues.push({) }
+                    issues.push({);
                         element,' }'
 
-                        issue: `Insufficient color, contrast: ${contrast.toFixed(2}:1 (required: ${requiredContrast}:1'}'`,
-                        severity: 'error',
-                        guideline: '1.4.3',
-                        suggestion: `Increase contrast between text and background colors`,
+                        issue: `Insufficient color, contrast: ${contrast.toFixed(2}:1 (required: ${requiredContrast}:1'}',
+                        severity: 'error,
+                        guideline: '1.4.3,
+                        suggestion: `Increase contrast between text and background colors,
     details: { currentContrast: contrast,
-                            requiredContrast,
-                            textColor: color,
+                            requiredContrast  },
+                            textColor: color;
                             backgroundColor,
                             isLargeText }
                     } else if (contrast < requiredContrast * 1.2) { warnings.push({)'
                         element',' }'
 
-                        issue: `Color contrast is close to minimum, threshold: ${contrast.toFixed(2'}':1`,
-                        severity: 'warning',
-                        guideline: '1.4.3',
-                        suggestion: 'Consider increasing contrast for better accessibility',
+                        issue: `Color contrast is close to minimum, threshold: ${contrast.toFixed(2'}':1,
+                        severity: 'warning,
+                        guideline: '1.4.3,
+                        suggestion: 'Consider increasing contrast for better accessibility';
                     } }
 };
         
@@ -322,11 +317,11 @@ export class WCAGRuleEngine {
 
         focusableElements.forEach(element => { ')'
             // Check tabindex values'),'
-            const tabIndex = element.getAttribute('tabindex',
+            const tabIndex = element.getAttribute('tabindex,
             if (tabIndex && parseInt(tabIndex) > 0') {'
                 warnings.push({'
                     element,
-                    issue: 'Positive tabindex found',
+                    issue: 'Positive tabindex found,
                     severity: 'warning',','
                     guideline: '2.1.1',') }'
 
@@ -343,8 +338,8 @@ export class WCAGRuleEngine {
             if(hasClickHandler && !hasKeyHandler && !['button', 'a', 'input].includes(element.tagName.toLowerCase()) { issues.push({'
                     element,
                     issue: 'Interactive element missing keyboard event handler',','
-                    severity: 'error',')',
-                    guideline: '2.1.1',
+                    severity: 'error,')',
+                    guideline: '2.1.1,
                     suggestion: 'Add keyboard event handlers(keydown/keyup) for interactive elements'
             }
         };
@@ -355,7 +350,7 @@ export class WCAGRuleEngine {
             if(!control.hasAttribute('tabindex)' {'
                 issues.push({'
                     element: control,
-                    issue: 'Custom control missing tabindex',
+                    issue: 'Custom control missing tabindex,
                     severity: 'error',','
                     guideline: '2.1.1',' }'
 
@@ -391,9 +386,8 @@ export class WCAGRuleEngine {
 
                             issue: `Missing required ARIA, property: ${prop} for role="${role}"`;""
                             severity: 'error',';'
-                            guideline: '4.1.2');
-                            suggestion: `Add ${prop} attribute for proper accessibility`),
-                        }
+                            guideline: '4.1.2'),
+                            suggestion: `Add ${prop} attribute for proper accessibility`);
                 }';'
                 ';'
                 // Check for accessible name
@@ -402,8 +396,7 @@ export class WCAGRuleEngine {
                         issue: `Element with role="${role }" missing accessible name`;""
                         severity: 'error',';'
                         guideline: '4.1.2',')';
-                        suggestion: 'Add aria-label or aria-labelledby for accessible name'),
-    };
+                        suggestion: 'Add aria-label or aria-labelledby for accessible name') };
         
         return { passed: issues.length === 0,
             issues };
@@ -482,7 +475,7 @@ export class WCAGRuleEngine {
         const l2 = this.getRelativeLuminance(rgb2);
         const lighter = Math.max(l1, l2);
         const darker = Math.min(l1, l2);
-        return (lighter + 0.05) / (darker + 0.05) }
+        return (lighter + 0.05) / (darker + 0.05);
 
     /**
      * Parse color string to RGB values
@@ -492,7 +485,7 @@ export class WCAGRuleEngine {
         if (rgbMatch) {
             return { : undefined
                 r: parseInt(rgbMatch[1] 
-               , g: parseInt(rgbMatch[2] };)
+            g: parseInt(rgbMatch[2] };)
                 b: parseInt(rgbMatch[3]); 
     }
         
@@ -500,7 +493,7 @@ export class WCAGRuleEngine {
         const hexMatch = color.match(/^#([0-9a-f]{ 6)$/i),
         if (hexMatch) {
             const hex = hexMatch[1],
-            return { r: parseInt(hex.substr(0, 2), 16) }
+            return { r: parseInt(hex.substr(0, 2), 16);
                 g: parseInt(hex.substr(2, 2), 16) };
                 b: parseInt(hex.substr(4, 2), 16); }
             }
@@ -543,8 +536,8 @@ export class WCAGRuleEngine {
         ','
 
         const level = this.config.level,
-        if (level === 'A') return guideline.level === 'A',
-        if (level === 'AA') return guideline.level === 'A' || guideline.level === 'AA',
+        if (level === 'A') return guideline.level === 'A,
+        if (level === 'AA') return guideline.level === 'A' || guideline.level === 'AA,
         if(level === 'AAA) return true,'
         
         return false }
@@ -552,16 +545,16 @@ export class WCAGRuleEngine {
     /**
      * Get test results
      */
-    getTestResults(): Array<{test: string, & TestResult> { return Array.from(this.executionState.results.entries().map(([test, result]) => ({
+    getTestResults(): Array<{test: string, & TestResult> { return Array.from(this.executionState.results.entries())).map(([test, result]) => ({
             test,
             ...result
-        };
+        }
     }
 
     /**
      * Clear test results
      */
-    clearResults(): void { this.executionState.results.clear() }
+    clearResults(): void { this.executionState.results.clear();
 
     /**
      * Update configuration

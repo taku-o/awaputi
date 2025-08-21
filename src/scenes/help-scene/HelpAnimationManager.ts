@@ -4,27 +4,26 @@
  */
 
 // アニメーション状態インターフェース
-interface AnimationState { isActive: boolean;
-    startTime: number;
-    duration: number;
+interface AnimationState { isActive: boolean,
+    startTime: number,
+    duration: number,
     progress: number;
-
-interface ContentTransitionState extends AnimationState { fromContent: any;
-    toContent: any;
+    interface ContentTransitionState extends AnimationState { fromContent: any,
+    toContent: any,
     type: 'slide' | 'fade' | 'scale' }
 
-interface CategoryTransitionState extends AnimationState { fromIndex: number;
+interface CategoryTransitionState extends AnimationState { fromIndex: number,
     toIndex: number;
 
 interface SearchTransitionState extends AnimationState { isEntering: boolean;
 
-interface FocusTransitionState extends AnimationState { fromIndex: number;
+interface FocusTransitionState extends AnimationState { fromIndex: number,
     toIndex: number;
 
 // アニメーション集合インターフェース
-interface AnimationCollection { contentTransition: ContentTransitionState;
-    categoryTransition: CategoryTransitionState;
-    searchTransition: SearchTransitionState;
+interface AnimationCollection { contentTransition: ContentTransitionState,
+    categoryTransition: CategoryTransitionState,
+    searchTransition: SearchTransitionState,
     focusTransition: FocusTransitionState;
 ;
 // イージング関数タイプ
@@ -45,18 +44,18 @@ export class HelpAnimationManager {
     constructor('''
                 type: 'slide' // 'slide', 'fade', 'scale' },
             categoryTransition: { isActive: false,
-                startTime: 0,
+                startTime: 0  ,
                 duration: 200,
                 fromIndex: 0,
                 toIndex: 0,
-    progress: 0 },
+    progress: 0 };
             searchTransition: { isActive: false,
-                startTime: 0,
+                startTime: 0  ,
                 duration: 250,
                 isEntering: true,
-    progress: 0 },
+    progress: 0 };
             focusTransition: { isActive: false,
-                startTime: 0,
+                startTime: 0  ,
                 duration: 150,
                 fromIndex: 0,
                 toIndex: 0,
@@ -103,7 +102,7 @@ export class HelpAnimationManager {
 
         this.animations.categoryTransition = { isActive: true,
             startTime: performance.now(
-    duration: 200,
+    duration: 200;
             fromIndex,
             toIndex,
             progress: 0  })
@@ -118,7 +117,7 @@ export class HelpAnimationManager {
 
         this.animations.searchTransition = { isActive: true,
             startTime: performance.now(
-    duration: 250,
+    duration: 250;
             isEntering,
             progress: 0  })
         return this.animations.searchTransition;
@@ -132,7 +131,7 @@ export class HelpAnimationManager {
 
         this.animations.focusTransition = { isActive: true,
             startTime: performance.now(
-    duration: 150,
+    duration: 150;
             fromIndex,
             toIndex,
             progress: 0  })
@@ -199,7 +198,7 @@ export class HelpAnimationManager {
      * イージング関数の適用'
      */''
     public applyEasing(progress: number, easingType: EasingType = 'easeOut): number { const easingFunction = this.easingFunctions[easingType] || this.easingFunctions.easeOut,'
-        return easingFunction(progress) }
+        return easingFunction(progress);
 
     /**
      * アニメーション状態の取得
@@ -218,11 +217,9 @@ export class HelpAnimationManager {
             this.animations[animationType].progress = 1 }
     }
 
-    public stopAllAnimations(): void { (Object.keys(this.animations) as Array<keyof AnimationCollection>).forEach(type => { ) }
-            this.stopAnimation(type); }
-        };
-    }
-
+    public stopAllAnimations(): void { (Object.keys(this.animations) as Array<keyof AnimationCollection>).forEach(type => { );
+            this.stopAnimation(type);     }
+}
     /**
      * アニメーション設定
      */
@@ -244,16 +241,16 @@ export class HelpAnimationManager {
     /**
      * プリセットアニメーション'
      */''
-    public getSlideTransitionOffset(progress: number, direction: 'horizontal' | 'vertical' = 'horizontal'): { x: number,, y: number; { ''
-        const easedProgress = this.applyEasing(progress, 'easeOut',
+    public getSlideTransitionOffset(progress: number, direction: 'horizontal' | 'vertical' = 'horizontal'): { x: number, y: number; { ''
+        const easedProgress = this.applyEasing(progress, 'easeOut,
         const offset = (1 - easedProgress') * 100,'
 
-        ' }'
+        ' }' };
 
         return direction === 'horizontal' ? { x: offset, y: 0  } : { x: 0, y: offset,
 
     public getFadeTransitionAlpha(progress: number): number { ''
-        return this.applyEasing(progress, 'linear' }'
+        return this.applyEasing(progress, 'linear' }' };
 
     public getScaleTransitionScale(progress: number): number { ''
         const easedProgress = this.applyEasing(progress, 'easeOut),'
@@ -278,18 +275,17 @@ export class HelpAnimationManager {
 export class HelpTransitionRenderer {
     private animationManager: HelpAnimationManager;
     constructor(animationManager: HelpAnimationManager) {
-        this.animationManager = animationManager }
-
+        this.animationManager = animationManager };
     /**
      * コンテンツ遷移の描画
      */
     public renderContentTransition(;
-        ctx: CanvasRenderingContext2D;
-    contentArea: { x: number, y: number, width: number,, height: number ;
-
+        ctx: CanvasRenderingContext2D,
+    contentArea: { x: number, y: number, width: number, height: number ;
+  },
         renderer: any','
     '): boolean {''
-        const transition = this.animationManager.getAnimationState('contentTransition',
+        const transition = this.animationManager.getAnimationState('contentTransition,
         if (!transition || !transition.isActive) {
     
 }
@@ -324,9 +320,9 @@ export class HelpTransitionRenderer {
      */
     private renderSlideTransition(;
         ctx: CanvasRenderingContext2D,
-    contentArea: { x: number, y: number, width: number,, height: number ,
-        transition: ContentTransitionState,
-    progress: number, ,
+    contentArea: { x: number, y: number, width: number, height: number ,
+        transition: ContentTransitionState ,
+    progress: number,
         renderer: any): void {
         const slideOffset = contentArea.width * (1 - progress),
 
@@ -335,7 +331,7 @@ export class HelpTransitionRenderer {
             ctx.save();
             ctx.translate(-slideOffset, 0);
             ctx.globalAlpha = 1 - progress,
-            renderer.renderContentData(ctx, contentArea, transition.fromContent) }
+            renderer.renderContentData(ctx, contentArea, transition.fromContent);
             ctx.restore(); }
         }
 
@@ -344,7 +340,7 @@ export class HelpTransitionRenderer {
             ctx.save();
             ctx.translate(contentArea.width - slideOffset, 0);
             ctx.globalAlpha = progress,
-            renderer.renderContentData(ctx, contentArea, transition.toContent) }
+            renderer.renderContentData(ctx, contentArea, transition.toContent);
             ctx.restore(); }
 }
 
@@ -353,15 +349,15 @@ export class HelpTransitionRenderer {
      */
     private renderFadeTransition(;
         ctx: CanvasRenderingContext2D,
-    contentArea: { x: number, y: number, width: number,, height: number ,
-        transition: ContentTransitionState,
-    progress: number, ,
+    contentArea: { x: number, y: number, width: number, height: number ,
+        transition: ContentTransitionState ,
+    progress: number,
         renderer: any): void {
         // 前のコンテンツ（フェードアウト）
         if (transition.fromContent && renderer) {
             ctx.save();
             ctx.globalAlpha = 1 - progress,
-            renderer.renderContentData(ctx, contentArea, transition.fromContent) }
+            renderer.renderContentData(ctx, contentArea, transition.fromContent);
             ctx.restore(); }
         }
 
@@ -369,7 +365,7 @@ export class HelpTransitionRenderer {
         if (transition.toContent && renderer) {
             ctx.save();
             ctx.globalAlpha = progress,
-            renderer.renderContentData(ctx, contentArea, transition.toContent) }
+            renderer.renderContentData(ctx, contentArea, transition.toContent);
             ctx.restore(); }
 }
 
@@ -378,9 +374,9 @@ export class HelpTransitionRenderer {
      */
     private renderScaleTransition(;
         ctx: CanvasRenderingContext2D,
-    contentArea: { x: number, y: number, width: number,, height: number ,
-        transition: ContentTransitionState,
-    progress: number, ,
+    contentArea: { x: number, y: number, width: number, height: number ,
+        transition: ContentTransitionState ,
+    progress: number,
         renderer: any): void {
         const centerX = contentArea.x + contentArea.width / 2,
         const centerY = contentArea.y + contentArea.height / 2,
@@ -392,7 +388,7 @@ export class HelpTransitionRenderer {
             ctx.scale(1 + progress * 0.2, 1 + progress * 0.2), // わずかに拡大
             ctx.globalAlpha = 1 - progress,
             ctx.translate(-centerX, -centerY);
-            renderer.renderContentData(ctx, contentArea, transition.fromContent) }
+            renderer.renderContentData(ctx, contentArea, transition.fromContent);
             ctx.restore(); }
         }
 
@@ -404,7 +400,7 @@ export class HelpTransitionRenderer {
             ctx.scale(scale, scale);
             ctx.globalAlpha = progress,
             ctx.translate(-centerX, -centerY);
-            renderer.renderContentData(ctx, contentArea, transition.toContent) }
+            renderer.renderContentData(ctx, contentArea, transition.toContent);
             ctx.restore(); }
 }
 
@@ -413,11 +409,11 @@ export class HelpTransitionRenderer {
      */
     public renderCategoryTransition(;
         ctx: CanvasRenderingContext2D,
-        categories: any[] );
+        categories: any[] ),
         layout: any,
     selectedCategory: string';'
     '): boolean { ''
-        const transition = this.animationManager.getAnimationState('categoryTransition',
+        const transition = this.animationManager.getAnimationState('categoryTransition,
         if (!transition || !transition.isActive) {
     
 }
@@ -444,7 +440,7 @@ export class HelpTransitionRenderer {
                     const centerY = itemY + 20,
                     
                     ctx.translate(centerX, centerY);
-                    ctx.scale(scale, scale) }
+                    ctx.scale(scale, scale);
                     ctx.translate(-centerX, -centerY); }
                 }
                 
@@ -462,7 +458,7 @@ export class HelpTransitionRenderer {
      * 検索遷移の描画効果
      */''
     public renderSearchTransition(ctx: CanvasRenderingContext2D, layout: any, isSearching: boolean): boolean { ''
-        const transition = this.animationManager.getAnimationState('searchTransition',
+        const transition = this.animationManager.getAnimationState('searchTransition,
         if (!transition || !transition.isActive) {
     
 }
@@ -481,7 +477,7 @@ export class HelpTransitionRenderer {
             const centerY = layout.searchBar.y + layout.searchBar.height / 2,
             
             ctx.translate(centerX, centerY);
-            ctx.scale(scale, scale) }
+            ctx.scale(scale, scale);
 
             ctx.translate(-centerX, -centerY); }
         }
@@ -496,17 +492,16 @@ export class HelpTransitionRenderer {
 
     private renderCategoryHighlight(;
         ctx: CanvasRenderingContext2D,
-    sidebarLayout: { x: number, y: number, width: number,, height: number ,
-
+    sidebarLayout: { x: number, y: number, width: number, height: number  ,
         categoryIndex: number','
     '): void {'
         const itemY = sidebarLayout.y + categoryIndex * 40,
 
-        ctx.fillStyle = 'rgba(74, 144, 226, 0.3)',
+        ctx.fillStyle = 'rgba(74, 144, 226, 0.3),
         ctx.fillRect(sidebarLayout.x, itemY, sidebarLayout.width, 35);
-        ctx.strokeStyle = '#4A90E2',
+        ctx.strokeStyle = '#4A90E2,
 
         ctx.lineWidth = 2,
-        ctx.strokeRect(sidebarLayout.x, itemY, sidebarLayout.width, 35) }
+        ctx.strokeRect(sidebarLayout.x, itemY, sidebarLayout.width, 35);
 
     }'}'

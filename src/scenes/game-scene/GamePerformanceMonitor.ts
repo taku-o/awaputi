@@ -5,59 +5,53 @@
  */
 
 // Type definitions
-interface PerformanceMetrics { fps: number;
-    frameCount: number;
-    lastFpsUpdate: number;
-    bubbleCount: number;
-    showMetrics: boolean;
-    averageFps: number;
-    minFps: number;
-    maxFps: number;
-    frameHistory: number[];
+interface PerformanceMetrics { fps: number,
+    frameCount: number,
+    lastFpsUpdate: number,
+    bubbleCount: number,
+    showMetrics: boolean,
+    averageFps: number,
+    minFps: number,
+    maxFps: number,
+    frameHistory: number[],
     maxHistorySize: number;
-
-interface PerformanceThresholds { minAcceptableFps: number;
-    targetFps: number;
-    maxBubbleCount: number;
-    memoryWarningThreshold: number;
+    interface PerformanceThresholds { minAcceptableFps: number,
+    targetFps: number,
+    maxBubbleCount: number,
+    memoryWarningThreshold: number,
     frameTimeWarning: number;
-
-interface OptimizationFlags { reducedEffects: boolean;
-    reducedParticles: boolean;
-    simplifiedRendering: boolean;
+    interface OptimizationFlags { reducedEffects: boolean,
+    reducedParticles: boolean,
+    simplifiedRendering: boolean,
     lowQualityMode: boolean;
-
-interface PerformanceStatistics { totalFrames: number;
-    totalGameTime: number;
-    performanceWarnings: number;
-    optimizationTriggers: number;
-    averageUpdateTime: number;
+    interface PerformanceStatistics { totalFrames: number,
+    totalGameTime: number,
+    performanceWarnings: number,
+    optimizationTriggers: number,
+    averageUpdateTime: number,
     averageRenderTime: number;
-
-interface PerformanceStats { metrics: PerformanceMetrics;
-    statistics: PerformanceStatistics;
-    optimizations: OptimizationFlags;
-    thresholds: PerformanceThresholds;
+    interface PerformanceStats { metrics: PerformanceMetrics,
+    statistics: PerformanceStatistics,
+    optimizations: OptimizationFlags,
+    thresholds: PerformanceThresholds,
     recommendations: string[];
-
-interface PerformanceSettings { showMetrics?: boolean,
+    interface PerformanceSettings { showMetrics?: boolean,
     thresholds?: Partial<PerformanceThresholds>;
 
 // Minimal type for GameEngine dependency
-interface GameEngine { canvas: HTMLCanvasElement;
-    bubbleManager: {
-        getBubbleCount(): number;
-        cleanupDestroyedBubbles(): void;
+interface GameEngine { canvas: HTMLCanvasElement,
+    bubbleManager: { getBubbleCount(): number,
+        cleanupDestroyedBubbles(): void  },
 
 // Extended Performance interface for memory checking
 interface ExtendedPerformance extends Performance { memory?: {
-        usedJSHeapSize: number;
-        totalJSHeapSize: number;
-    jsHeapSizeLimit: number;
+        usedJSHeapSize: number,
+        totalJSHeapSize: number,
+    jsHeapSizeLimit: number,
     jsHeapSizeLimit: number;
         };
 // Extended Window interface for garbage collection
-interface ExtendedWindow extends Window { gc?: () => void }
+interface ExtendedWindow extends Window { gc?: () => void } };
 
 export class GamePerformanceMonitor {
     private gameEngine: GameEngine;
@@ -71,34 +65,34 @@ export class GamePerformanceMonitor {
         
         // パフォーマンス測定
         this.performanceMetrics = {
-            fps: 60;
-            frameCount: 0;
-            lastFpsUpdate: Date.now();
-            bubbleCount: 0;
-            showMetrics: false;
-            averageFps: 60;
-            minFps: 60;
-            maxFps: 60;
-    frameHistory: [] }
+            fps: 60,
+            frameCount: 0,
+            lastFpsUpdate: Date.now(),
+            bubbleCount: 0,
+            showMetrics: false,
+            averageFps: 60,
+            minFps: 60,
+            maxFps: 60,
+    frameHistory: [] };
             maxHistorySize: 100 
     };
         // パフォーマンス閾値
-        this.performanceThresholds = { minAcceptableFps: 30;
-            targetFps: 60;
-            maxBubbleCount: 100;
+        this.performanceThresholds = { minAcceptableFps: 30,
+            targetFps: 60,
+            maxBubbleCount: 100,
     memoryWarningThreshold: 50 * 1024 * 1024, // 50MB;
             frameTimeWarning: 33.33 // 30FPS未満の警告  };
         // 最適化フラグ
-        this.optimizations = { reducedEffects: false;
-            reducedParticles: false;
-            simplifiedRendering: false;
+        this.optimizations = { reducedEffects: false,
+            reducedParticles: false,
+            simplifiedRendering: false,
     lowQualityMode: false;
         // 統計情報
-        this.statistics = { totalFrames: 0;
-            totalGameTime: 0;
-            performanceWarnings: 0;
-            optimizationTriggers: 0;
-            averageUpdateTime: 0;
+        this.statistics = { totalFrames: 0,
+            totalGameTime: 0,
+            performanceWarnings: 0,
+            optimizationTriggers: 0,
+            averageUpdateTime: 0,
     averageRenderTime: 0  }
     
     /**
@@ -124,8 +118,8 @@ export class GamePerformanceMonitor {
      * @param deltaTime - 経過時間
      */
     public updatePerformanceMetrics(deltaTime: number): void { const updateStartTime = performance.now();
-        this.performanceMetrics.frameCount++,
-        this.statistics.totalFrames++,
+        this.performanceMetrics.frameCount++;
+        this.statistics.totalFrames++;
         this.statistics.totalGameTime += deltaTime,
         
         const now = Date.now();
@@ -134,7 +128,7 @@ export class GamePerformanceMonitor {
             this.calculateFPS();
             this.updateBubbleCount();
             this.checkPerformanceThresholds();
-            this.updateFrameHistory() }
+            this.updateFrameHistory();
             this.performanceMetrics.lastFpsUpdate = now; }
         }
         
@@ -154,7 +148,7 @@ export class GamePerformanceMonitor {
         this.performanceMetrics.minFps = Math.min(this.performanceMetrics.minFps, currentFps);
         this.performanceMetrics.maxFps = Math.max(this.performanceMetrics.maxFps, currentFps);
         // 平均FPSの計算
-        this.updateAverageFPS(currentFps) }
+        this.updateAverageFPS(currentFps);
     
     /**
      * 平均FPSの更新
@@ -186,7 +180,7 @@ export class GamePerformanceMonitor {
     /**
      * 泡の数を更新
      */
-    private updateBubbleCount(): void { this.performanceMetrics.bubbleCount = this.gameEngine.bubbleManager.getBubbleCount() }
+    private updateBubbleCount(): void { this.performanceMetrics.bubbleCount = this.gameEngine.bubbleManager.getBubbleCount();
     
     /**
      * 平均更新時間の更新
@@ -218,7 +212,7 @@ export class GamePerformanceMonitor {
         }
         
         // 泡の数警告
-        if (bubbleCount > this.performanceThresholds.maxBubbleCount) { this.handleHighBubbleCount(bubbleCount) }
+        if (bubbleCount > this.performanceThresholds.maxBubbleCount) { this.handleHighBubbleCount(bubbleCount);
         
         // メモリ使用量チェック（可能な場合）
         this.checkMemoryUsage();
@@ -228,11 +222,11 @@ export class GamePerformanceMonitor {
      * 低FPSの処理
      * @param fps - 現在のFPS
      */
-    private handleLowFPS(fps: number): void { this.statistics.performanceWarnings++,
+    private handleLowFPS(fps: number): void { this.statistics.performanceWarnings++;
         console.warn(`[GamePerformanceMonitor] Low FPS detected: ${fps)`} // 自動最適化の実行
         if (!this.optimizations.reducedEffects} { }
-            this.enableReducedEffects(};
-        } else if (!this.optimizations.reducedParticles) { this.enableReducedParticles() } else if (!this.optimizations.lowQualityMode) { this.enableLowQualityMode() }
+            this.enableReducedEffects(}
+        } else if (!this.optimizations.reducedParticles) { this.enableReducedParticles() } else if (!this.optimizations.lowQualityMode) { this.enableLowQualityMode();
     }
     
     /**
@@ -256,10 +250,8 @@ export class GamePerformanceMonitor {
             if (memInfo.usedJSHeapSize > this.performanceThresholds.memoryWarningThreshold) {
         }
                 console.warn(`[GamePerformanceMonitor] High memory usage: ${memInfo.usedJSHeapSize / 1024 / 1024}MB`} }
-                this.triggerMemoryCleanup(};
-            }
+                this.triggerMemoryCleanup(    }
 }
-    
     /**
      * 軽減エフェクトの有効化'
      */''
@@ -295,7 +287,7 @@ export class GamePerformanceMonitor {
         this.gameEngine.bubbleManager.cleanupDestroyedBubbles()','
         if('gc' in, extWindow && extWindow.gc' {'
 
-            extWindow.gc() }
+            extWindow.gc();
 
         console.log('[GamePerformanceMonitor] Memory, cleanup triggered'); }'
     }
@@ -319,23 +311,23 @@ export class GamePerformanceMonitor {
         const y = 20,
         ','
         // 背景
-        context.fillStyle = 'rgba(0, 0, 0, 0.7)',
+        context.fillStyle = 'rgba(0, 0, 0, 0.7),
         context.fillRect(x - 10, y - 10, 190, 150);
         ','
         // テキスト設定
-        context.fillStyle = '#FFFFFF',
-        context.font = '12px monospace',
-        context.textAlign = 'left',
+        context.fillStyle = '#FFFFFF,
+        context.font = '12px monospace,
+        context.textAlign = 'left,
         
         // メトリクス表示
         const metrics = [}
-            `FPS: ${this.performanceMetrics.fps}`,
-            `Avg FPS: ${this.performanceMetrics.averageFps.toFixed(1}`,
-            `Min FPS: ${this.performanceMetrics.minFps}`,
-            `Max FPS: ${this.performanceMetrics.maxFps}`,
-            `Bubbles: ${this.performanceMetrics.bubbleCount}`,
-            `Update: ${this.statistics.averageUpdateTime.toFixed(2}ms`,
-            `Render: ${this.statistics.averageRenderTime.toFixed(2}ms`,
+            `FPS: ${this.performanceMetrics.fps},
+            `Avg FPS: ${this.performanceMetrics.averageFps.toFixed(1},
+            `Min FPS: ${this.performanceMetrics.minFps},
+            `Max FPS: ${this.performanceMetrics.maxFps},
+            `Bubbles: ${this.performanceMetrics.bubbleCount},
+            `Update: ${this.statistics.averageUpdateTime.toFixed(2}ms,
+            `Render: ${this.statistics.averageRenderTime.toFixed(2}ms,
             `Warnings: ${this.statistics.performanceWarnings}`]
             `Optimizations: ${this.statistics.optimizationTriggers}`]
         ];
@@ -343,7 +335,7 @@ export class GamePerformanceMonitor {
         metrics.forEach((metric, index) => { context.fillText(metric, x, y + index * 15) };
         // 最適化状態
         if (Object.values(this.optimizations).some(opt => opt)) { ''
-            context.fillStyle = '#FFAA00',
+            context.fillStyle = '#FFAA00,
             context.fillText('Optimized', x, y + metrics.length * 15' }'
     }
     
@@ -351,17 +343,16 @@ export class GamePerformanceMonitor {
      * パフォーマンスサマリーのログ出力'
      */''
     private logPerformanceSummary()';'
-        console.log('[GamePerformanceMonitor] Performance, Summary: ',
+        console.log('[GamePerformanceMonitor] Performance, Summary: ,
         console.log(`  Total Frames: ${ this.statistics.totalFrames}`} }
         console.log(`  Total Game Time: ${(this.statistics.totalGameTime / 1000}.toFixed(2}s`),
         console.log(`  Average, FPS: ${this.performanceMetrics.averageFps.toFixed(1}`),
-        console.log(`  Min, FPS: ${ this.performanceMetrics.minFps)`,
-        console.log(`  Max, FPS: ${this.performanceMetrics.maxFps)`,
-        console.log(`  Performance, Warnings: ${this.statistics.performanceWarnings)`,
+        console.log(`  Min, FPS: ${ this.performanceMetrics.minFps),
+        console.log(`  Max, FPS: ${this.performanceMetrics.maxFps),
+        console.log(`  Performance, Warnings: ${this.statistics.performanceWarnings),
         console.log(`  Optimization, Triggers: ${this.statistics.optimizationTriggers }`} }
         console.log(`  Average Update Time: ${this.statistics.averageUpdateTime.toFixed(2}ms`),
-        console.log(`  Average, Render Time: ${this.statistics.averageRenderTime.toFixed(2}ms`),
-    }
+        console.log(`  Average, Render Time: ${this.statistics.averageRenderTime.toFixed(2}ms`) }
     
     /**
      * パフォーマンス表示の切り替え
@@ -406,7 +397,7 @@ export class GamePerformanceMonitor {
             statistics: { ...this.statistics,
             optimizations: { ...this.optimizations,
             thresholds: { ...this.performanceThresholds,
-            recommendations: this.getPerformanceRecommendations() }
+            recommendations: this.getPerformanceRecommendations();
     
     /**
      * パフォーマンス設定の更新

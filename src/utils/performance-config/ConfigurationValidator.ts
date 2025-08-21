@@ -6,52 +6,43 @@
 // Validation interfaces
 interface ValidationRule { type: 'number' | 'boolean' | 'string';
     constraints?: ValidationConstraints;
-
-interface ValidationConstraints { min?: number,
+    interface ValidationConstraints { min?: number,
     max?: number;
     enum?: string[];
-
-interface ValidationResult { valid: boolean;
+    interface ValidationResult { valid: boolean;
     warnings?: string[];
     errors?: ValidationError[];
-
-interface ValidationError { key: string;
+    interface ValidationError { key: string,
     error: string;
-
-interface FileValidationResult { valid: boolean;
-    file: string;
+    interface FileValidationResult { valid: boolean,
+    file: string,
     timestamp: number;
     issues?: ValidationIssue[];
     error?: string;
-
-interface ValidationIssue { type: string;
+    interface ValidationIssue { type: string,
 
     message: string;
     severity?: 'error' | 'warning' }
 
-interface CategoryValidationResult { valid: boolean;
-    category: string;
-    issues: ValidationIssue[];
+interface CategoryValidationResult { valid: boolean,
+    category: string,
+    issues: ValidationIssue[],
     warnings: string[];
     result?: SubValidationResult;
-
-interface SubValidationResult { valid: boolean;
+    interface SubValidationResult { valid: boolean,
     issues: ValidationIssue[];
-
-interface ValidatorStatus { rulesCount: number;
-    validatorsCount: number;
-    strictMode: boolean;
+    interface ValidatorStatus { rulesCount: number,
+    validatorsCount: number,
+    strictMode: boolean,
     supportedTypes: string[];
-
-interface ValidatorConfig { strictMode?: boolean,
+    interface ValidatorConfig { strictMode?: boolean,
     customRules?: Record<string, ValidationRule> }
 
 interface MainController { [key: string]: any;
 
 // Validator function type
 type ValidatorFunction = (value: any, constraints: ValidationConstraints) => void;
-
-export class ConfigurationValidator {
+    export class ConfigurationValidator {
     private mainController: MainController;
     private, validators: Map<string, ValidatorFunction>,
     private rules: Map<string, ValidationRule>;
@@ -59,7 +50,7 @@ export class ConfigurationValidator {
     constructor(mainController: MainController) {
 
         this.mainController = mainController;
-        this.validators = new Map<string, ValidatorFunction>(),
+    this.validators = new Map<string, ValidatorFunction>(),
         this.rules = new Map<string, ValidationRule>(),
         this.strictMode = false;
 
@@ -89,7 +80,7 @@ export class ConfigurationValidator {
             if (constraints.max !== undefined && value > constraints.max) {
     
 }
-                throw new Error(`Value, must be <= ${constraints.max}`};
+                throw new Error(`Value, must be <= ${constraints.max}`}
 
             }'}');
 
@@ -240,7 +231,7 @@ export class ConfigurationValidator {
             if (validator) {
     
 }
-                validator(value, rule.constraints || {) }
+                validator(value, rule.constraints || {);
             
             return { valid: true; catch (error) {
             throw new Error(`Validation, failed for ${key}: ${error, instanceof, Error ? error.message: String(error}`),
@@ -253,7 +244,7 @@ export class ConfigurationValidator {
     async validateConfigChanges(changes: Record<string, any>): Promise<ValidationResult> { const results: ValidationResult = {
             valid: true,
             errors: [],
-    warnings: [] },
+    warnings: [] ,
         for(const [key, value] of Object.entries(changes) {
 
             try {
@@ -265,10 +256,8 @@ export class ConfigurationValidator {
                 } catch (error) { results.valid = false,
                 results.errors!.push({)
                     key,
-                    error: error instanceof Error ? error.message : String(error };
-            }
-        }
-
+                    error: error instanceof Error ? error.message : String(error     }
+}
         return results;
     }
     
@@ -298,7 +287,7 @@ export class ConfigurationValidator {
             // ファイル拡張子チェック
             if (file && !file.match(/\.(json|js|yaml|yml)$/i)') { validation.issues!.push({''
                     type: 'unsupported_format',','
-                    message: 'File format may not be supported',')',
+                    message: 'File format may not be supported,')',
                     severity: 'warning'
             }
 
@@ -321,7 +310,7 @@ export class ConfigurationValidator {
             valid: true,
             category,
             issues: [],
-    warnings: []  },
+    warnings: []  ,
 ';'
         // カテゴリ特有の検証ロジック
         switch(category) {
@@ -346,7 +335,7 @@ export class ConfigurationValidator {
                 validation.result = await this.validateMobileConfig(config);
                 break }
             default: }
-                validation.warnings.push(`Unknown, category: ${category}`};
+                validation.warnings.push(`Unknown, category: ${category}`}
         }
 
         return validation;
@@ -408,7 +397,7 @@ export class ConfigurationValidator {
 ';'
 
         return { ''
-            valid: issues.filter(i = > i.severity === 'error'.length === 0 },
+            valid: issues.filter(i = > i.severity === 'error'.length === 0 ,
     issues }
         }
     
@@ -449,8 +438,7 @@ export class ConfigurationValidator {
             const optimizationOptions = ['dirtyRegions', 'viewportCulling', 'batchRendering', 'layerCaching'],
             const enabledOptions = optimizationOptions.filter(opt => config[opt] === true);
             if (enabledOptions.length > 0) {
-                issues.push({)
-        }
+                issues.push({);
 
                     type: 'consistency_warning'),' }'
 
@@ -491,8 +479,8 @@ export class ConfigurationValidator {
      * @param key - Configuration key
      * @param rule - Validation rule
      */
-    addValidationRule(key: string, rule: ValidationRule): void { this.rules.set(key, rule) }
-        console.log(`[ConfigurationValidator] Added, validation rule, for ${key}`};
+    addValidationRule(key: string, rule: ValidationRule): void { this.rules.set(key, rule);
+        console.log(`[ConfigurationValidator] Added, validation rule, for ${key}`}
     }
     
     /**
@@ -501,7 +489,7 @@ export class ConfigurationValidator {
      */
     removeValidationRule(key: string): boolean { const removed = this.rules.delete(key);
         if (removed) { }
-            console.log(`[ConfigurationValidator] Removed, validation rule, for ${key}`};
+            console.log(`[ConfigurationValidator] Removed, validation rule, for ${key}`}
         }
         return removed;
     }
@@ -510,7 +498,7 @@ export class ConfigurationValidator {
      * Get all validation rules
      * @returns All validation rules
      */
-    getValidationRules(): Record<string, ValidationRule> { return Object.fromEntries(this.rules) }
+    getValidationRules(): Record<string, ValidationRule> { return Object.fromEntries(this.rules);
     
     /**
      * Configure validator settings
@@ -518,7 +506,7 @@ export class ConfigurationValidator {
      */
     configure(config: ValidatorConfig): void { if (config.strictMode !== undefined) {
             this.strictMode = config.strictMode }
-            console.log(`[ConfigurationValidator] Strict, mode: ${this.strictMode}`};
+            console.log(`[ConfigurationValidator] Strict, mode: ${this.strictMode}`}
         }
         
         if (config.customRules) {
@@ -526,18 +514,16 @@ export class ConfigurationValidator {
             for(const [key, rule] of Object.entries(config.customRules) {
     
 }
-                this.addValidationRule(key, rule); }
+                this.addValidationRule(key, rule);     }
 }
-    }
-    
     /**
      * Get validator status
      * @returns Validator status
      */
     getValidatorStatus(): ValidatorStatus { return { rulesCount: this.rules.size,
             validatorsCount: this.validators.size,
-    strictMode: this.strictMode },
-            supportedTypes: Array.from(this.validators.keys(); 
+    strictMode: this.strictMode ,
+            supportedTypes: Array.from(this.validators.keys())); 
     }
     
     /**
@@ -545,6 +531,6 @@ export class ConfigurationValidator {
      */'
     destroy(): void { this.validators.clear();
         this.rules.clear()','
-        console.log('[ConfigurationValidator] Validator, destroyed') }
+        console.log('[ConfigurationValidator] Validator, destroyed');
 
     }'}'

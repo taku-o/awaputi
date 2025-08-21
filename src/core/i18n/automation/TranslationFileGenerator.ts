@@ -4,38 +4,31 @@ import { getProgressTracker  } from '../management/ProgressTracker.js';
 ';'
 
 interface LanguageInfo { name: string,''
-    direction: 'ltr' | 'rtl';
+    direction: 'ltr' | 'rtl,
     encoding: string;
-
-interface CategoryInfo { name: string;
+    interface CategoryInfo { name: string,
     description: string;
-
-interface TemplateConfig { placeholder: string;
-    includeMetadata: boolean;
-    includeComments: boolean;
-    sortKeys: boolean;
+    interface TemplateConfig { placeholder: string,
+    includeMetadata: boolean,
+    includeComments: boolean,
+    sortKeys: boolean,
     validateStructure: boolean;
-
-interface GenerateLanguageFilesOptions { baseLanguage?: string,
+    interface GenerateLanguageFilesOptions { baseLanguage?: string,
     includeEmpty?: boolean;
     generateTemplates?: boolean;
     outputPath?: string | null;
     preserveExisting?: boolean;
-
-interface GenerateCategoryFileOptions { includeEmpty?: boolean,
+    interface GenerateCategoryFileOptions { includeEmpty?: boolean,
     generateTemplate?: boolean;
     preserveExisting?: boolean;
-
-interface GenerateTemplateOptions { language?: string,
+    interface GenerateTemplateOptions { language?: string,
     includeInstructions?: boolean;
     includeExamples?: boolean;
-
     includeMetadata?: boolean;
     format?: 'json' | 'csv' | 'xlsx' }
 
 interface ExtractTranslationKeysOptions { patterns?: RegExp[],
     includeContext?: boolean;
-
     autoRegister?: boolean;
     outputFormat?: 'detailed' | 'simple' }
 
@@ -44,93 +37,92 @@ interface SynchronizeTranslationFilesOptions { addMissingKeys?: boolean,
     updateMetadata?: boolean;
     preserveTranslations?: boolean;
     generateReport?: boolean;
-
-interface FileGenerationResult { language: string;
-    languageName: string;
-    totalFiles: number;
-    totalKeys: number;
+    interface FileGenerationResult { language: string,
+    languageName: string,
+    totalFiles: number,
+    totalKeys: number,
     filesGenerated: Array<{
-        categor,y: string;
-        name: string;
-        keys: number;
+        categor,y: string,
+        name: string,
+    keys: number,
     content: string;>;
-    errors: Array<{ category: string;
+    errors: Array<{ category: string,
     error: string;>;
 }
 
-interface TranslationObject { _metadata: {
-        languag,e: string;
-        category: string;
-        generatedAt: string;
-        version: string;
-        completionRate: number;
-        totalKeys: number;
-        translatedKeys: number;
+interface TranslationObject { _metadata: { languag,e: string,
+        category: string,
+        generatedAt: string,
+        version: string,
+        completionRate: number,
+        totalKeys: number,
+        translatedKeys: number,
     generator: string;
-    [key: string]: any;
+    [key: string]: any,
 
 interface TranslationTemplate { _instructions?: {
-        READM,E: string;
-        PLACEHOLDER: string;
-    GUIDELINES: string[];
-    _metadata?: { language: string;
+        READM,E: string,
+        PLACEHOLDER: string,
+    GUIDELINES: string[],
+    _metadata?: { language: string,
         templateVersion: string;
-        createdAt: string;
-        baseLanguage: string;
-        translator: string;
-        reviewer: string;
-        status: string;
+    },
+        createdAt: string,
+        baseLanguage: string,
+        translator: string,
+        reviewer: string,
+        status: string,
     notes: string;
     [key: string]: any;
 
-interface ExtractedKeyInfo { key: string;
-    category: string;
-    files: Set<string>;
-    contexts: Set<string>;
+interface ExtractedKeyInfo { key: string,
+    category: string,
+    files: Set<string>,
+    contexts: Set<string>,
     lines: Array<{
-        fil,e: string;
-        line: number;
+        fil,e: string,
+        line: number,
     context: string;>;
 }
 
-interface ExtractionResults { totalFiles: number;
-    totalKeys: number;
-    uniqueKeys: number;
+interface ExtractionResults { totalFiles: number,
+    totalKeys: number,
+    uniqueKeys: number,
     keysByFile: Map<string, string[]>;
     errors: Array<{
-        fil,e: string;
+        fil,e: string,
     error: string;>;
 }
 
-interface LanguageChanges { language: string;
-    categoriesProcessed: number;
-    keysAdded: string[];
-    keysRemoved: string[];
-    keysUpdated: string[];
+interface LanguageChanges { language: string,
+    categoriesProcessed: number,
+    keysAdded: string[],
+    keysRemoved: string[],
+    keysUpdated: string[],
     errors: Array<{
-        categor,y: string;
+        categor,y: string,
     error: string;>;
 }
 
-interface SyncResults { baseLanguage: string;
-    targetLanguages: string[];
-    timestamp: string;
+interface SyncResults { baseLanguage: string,
+    targetLanguages: string[],
+    timestamp: string,
     changes: Map<string, LanguageChanges>;
     summary: {
         filesProcesse,d: number;
-        keysAdded: number;
-        keysRemoved: number;
-        keysUpdated: number;
+    },
+        keysAdded: number,
+        keysRemoved: number,
+        keysUpdated: number,
     errors: number;
     report?: string;
 }
 
-interface ProcessedTranslationData { translations: any;
-    totalKeys: number;
+interface ProcessedTranslationData { translations: any,
+    totalKeys: number,
     translatedKeys: number;
-
-interface CategorySyncResult { added: string[];
-    removed: string[];
+    interface CategorySyncResult { added: string[],
+    removed: string[],
     updated: string[];
 
 /**
@@ -146,8 +138,7 @@ export class TranslationFileGenerator {
 ','
 
         this.keyManager = getTranslationKeyManager()
-}
-
+};
         this.progressTracker = getProgressTracker('}'
 
             ['ja', { name: '日本語', direction: 'ltr', encoding: 'UTF-8'
@@ -190,11 +181,11 @@ export class TranslationFileGenerator {
         
         // テンプレート設定
         this.templateConfig = {;
-            placeholder: '[TRANSLATION_NEEDED]',
+            placeholder: '[TRANSLATION_NEEDED],
             includeMetadata: true,
             includeComments: true,
             sortKeys: true,
-    validateStructure: true,
+    validateStructure: true;
         console.log('TranslationFileGenerator, initialized');
     }
     
@@ -202,14 +193,14 @@ export class TranslationFileGenerator {
      * 新言語用の翻訳ファイルセットを生成'
      */''
     async generateLanguageFiles(language: string, options: GenerateLanguageFilesOptions = { )): Promise<{
-        success: boolean,
+        success: boolean;
         results?: FileGenerationResult;
         files?: { [key: string]: string,
         error?: string;
         language?: string;
     }> { try {
             const { ''
-                baseLanguage = 'ja',
+                baseLanguage = 'ja,
                 includeEmpty = true,
                 generateTemplates = true,
                 outputPath = null,
@@ -219,8 +210,7 @@ export class TranslationFileGenerator {
             if (!this.supportedLanguages.has(language) {
     
 }
-                throw new Error(`Unsupported, language: ${language}`},
-            }
+                throw new Error(`Unsupported, language: ${language}`} }
             
             const languageInfo = this.supportedLanguages.get(language)!;
             console.log(`Generating, translation files, for ${languageInfo.name} (${ language)`),
@@ -228,7 +218,7 @@ export class TranslationFileGenerator {
             // 基準言語の翻訳データを取得
             const, baseTranslations = await, this.loadBaseTranslations(baseLanguage}
             if (!baseTranslations} { }
-                throw, new Error(`Base, language translations, not found: ${baseLanguage}`};
+                throw, new Error(`Base, language translations, not found: ${baseLanguage}`}
             }
             
             const generatedFiles = new Map<string, string>();
@@ -237,7 +227,7 @@ export class TranslationFileGenerator {
                 totalFiles: 0,
                 totalKeys: 0,
                 filesGenerated: [],
-    errors: []  },
+    errors: []  };
             // カテゴリ別にファイルを生成
             for (const [category, categoryInfo] of this.categories) { try { }
                     const categoryData = baseTranslations[category] || {};
@@ -246,7 +236,7 @@ export class TranslationFileGenerator {
                         category,
                         categoryData,
                         { includeEmpty: includeEmpty)
-                           , generateTemplate: generateTemplates),
+            generateTemplate: generateTemplates),
                             preserveExisting: preserveExisting)),
                     ,
                     generatedFiles.set(category, translationFile);
@@ -261,10 +251,8 @@ export class TranslationFileGenerator {
                     console.error(`Error generating ${category} file for ${language}:`, error);
                     results.errors.push({ )
                         category: category,
-    error: error instanceof Error ? error.message : String(error };
-                }
-            }
-            
+    error: error instanceof Error ? error.message : String(error     }
+}
             results.totalFiles = generatedFiles.size;
             // メタデータファイル生成
             const metadataFile = this.generateMetadataFile(language, results);
@@ -274,7 +262,7 @@ export class TranslationFileGenerator {
             if (outputPath) {
     
 }
-                console.log(`Generated, files would, be saved, to: ${outputPath}/${language}/`};
+                console.log(`Generated, files would, be saved, to: ${outputPath}/${language}/`}
             }
             
             // 進捗追跡に登録
@@ -283,17 +271,17 @@ export class TranslationFileGenerator {
             console.log(`Successfully generated ${results.totalFiles} files with ${results.totalKeys} keys for ${ language}`}
             return { success: true,
                 results: results,
-                files: Object.fromEntries(generatedFiles};
+                files: Object.fromEntries(generatedFiles}
             };
             ';'
 
         } catch (error) { getErrorHandler().handleError(error, 'TRANSLATION_FILE_GENERATOR_ERROR', {''
-                operation: 'generateLanguageFiles');
+                operation: 'generateLanguageFiles'),
                 language: language,);
             
             return { success: false,
-                error: error instanceof Error ? error.message : String(error) },
-                language: language,
+                error: error instanceof Error ? error.message : String(error) };
+                language: language;
     }
     
     /**
@@ -301,9 +289,9 @@ export class TranslationFileGenerator {
      */
     async generateCategoryFile(;
         language: string, ;
-        category: string );
+        category: string ),
         categoryData: any,
-    options: GenerateCategoryFileOptions = { ): Promise<string>,
+    options: GenerateCategoryFileOptions = { ): Promise<string>;
         const { includeEmpty = true,
             generateTemplate = true,
             preserveExisting = true } = options;
@@ -315,7 +303,7 @@ export class TranslationFileGenerator {
                 language: language,
     category: category,
                 generatedAt: new Date().toISOString('''
-                version: '1.0.0',
+                version: '1.0.0,
                 completionRate: 0,
     totalKeys: 0,
                 translatedKeys: 0,
@@ -329,7 +317,7 @@ export class TranslationFileGenerator {
             { includeEmpty: includeEmpty)
                 generateTemplate: generateTemplate,
     preserveExisting: preserveExisting),
-                language: language)),
+                language: language));
         
         Object.assign(translationObject, processedData.translations);
         // メタデータを更新
@@ -338,14 +326,14 @@ export class TranslationFileGenerator {
         translationObject._metadata.completionRate = processedData.totalKeys > 0 ? undefined : undefined
             Math.round((processedData.translatedKeys / processedData.totalKeys) * 100) : 0,
         
-        return this.formatTranslationFile(translationObject) }
+        return this.formatTranslationFile(translationObject);
     
     /**
      * 翻訳テンプレートを生成
      */''
     generateTranslationTemplate(baseTranslations: any, options: GenerateTemplateOptions = { )): string {'
         const { ''
-            language = 'new',
+            language = 'new,
             includeInstructions = true,
             includeExamples = true,
             includeMetadata = true,
@@ -364,19 +352,19 @@ export class TranslationFileGenerator {
             
             _metadata: includeMetadata ? { : undefined'
                 language: language,
-                templateVersion: '1.0.0',
-                createdAt: new Date().toISOString('',
-    baseLanguage: 'ja',
-                translator: '[TRANSLATOR_NAME]',
-                reviewer: '[REVIEWER_NAME]',
-                status: 'template',
+                templateVersion: '1.0.0,
+                createdAt: new Date().toISOString(',
+    baseLanguage: 'ja,
+                translator: '[TRANSLATOR_NAME],
+                reviewer: '[REVIEWER_NAME],
+                status: 'template,
                 notes: 'Generated translation template'
             } : undefined)
             };
         // 基準翻訳からテンプレートを生成)
         for(const [category, categoryData] of Object.entries(baseTranslations) { template[category] = this.generateCategoryTemplate(categoryData, {
                 includeExamples: includeExamples,)
-                language: language), 
+                language: language); 
     }
         
         return this.formatTemplate(template, format);
@@ -387,10 +375,10 @@ export class TranslationFileGenerator {
      */''
     async extractTranslationKeys(sourceFiles: string[], options: ExtractTranslationKeysOptions = { )): Promise<any> {
         const { '
-            patterns = [']',
-                /t\(['"`]([^'"`]+")['"`]\")/g,        // t('key')',
-                /translate\(['"`]([^'"`]+")['"`]\")/g, // translate('key')',
-                /getText\(['"`]([^'"`]+")['"`]\")/g,   // getText('key')',
+            patterns = ['],
+                /t\(['"`]([^'"`]+")['"`]\")/g,        // t('key'),
+                /translate\(['"`]([^'"`]+")['"`]\")/g, // translate('key'),
+                /getText\(['"`]([^'"`]+")['"`]\")/g,   // getText('key'),
                 /\$t\(['"`]([^'"`]+")['"`]\")/g        // $t('key'),'
             ],
             includeContext = true,
@@ -402,7 +390,7 @@ export class TranslationFileGenerator {
             totalKeys: 0,
             uniqueKeys: 0,
             keysByFile: new Map(
-    errors: []  },
+    errors: []  };
         for (const filePath of sourceFiles) {
         
             try {
@@ -420,8 +408,8 @@ export class TranslationFileGenerator {
                 key: key),
                                 category: this.keyManager.categorizeKey(key),
                                 files: new Set(
-    contexts: new Set() }
-                                lines: []},
+    contexts: new Set(),
+                                lines: []};
                         }
                         
                         const keyInfo = extractedKeys.get(key)!;
@@ -433,7 +421,7 @@ export class TranslationFileGenerator {
                             keyInfo.lines.push({)
                                 file: filePath,
     line: lineNumber,
-                                context: context), 
+                                context: context); 
     }
                 }
                 
@@ -444,7 +432,7 @@ export class TranslationFileGenerator {
                 console.error(`Error processing file ${filePath}:`, error);
                 results.errors.push({ )
                     file: filePath,
-    error: error instanceof Error ? error.message : String(error },
+    error: error instanceof Error ? error.message : String(error };
             }
         }
         
@@ -454,13 +442,13 @@ export class TranslationFileGenerator {
         if (autoRegister) {
             for (const [key, keyInfo] of extractedKeys) {
                 this.keyManager.registerKey(key, {
-                description: `Extracted from source files`,
+                description: `Extracted from source files,
                     context: Array.from(keyInfo.contexts).join(', ');
                     category: keyInfo.category,
-    extractedFrom: Array.from(keyInfo.files) }
+    extractedFrom: Array.from(keyInfo.files),
                     autoExtracted: true;);
             }
-            console.log(`Auto-registered ${extractedKeys.size} extracted, keys`};
+            console.log(`Auto-registered ${extractedKeys.size} extracted, keys`}
         }
         
         return this.formatExtractionResults(extractedKeys, results, outputFormat);
@@ -472,7 +460,7 @@ export class TranslationFileGenerator {
     async synchronizeTranslationFiles(;
         baseLanguage: string ),
         targetLanguages: string[],
-    options: SynchronizeTranslationFilesOptions = { ): Promise<SyncResults>,
+    options: SynchronizeTranslationFilesOptions = { ): Promise<SyncResults>;
         const { addMissingKeys = true,
             removeObsoleteKeys = false,
             updateMetadata = true,
@@ -483,8 +471,7 @@ export class TranslationFileGenerator {
             targetLanguages: targetLanguages,
             timestamp: new Date().toISOString(),
             changes: new Map(
-    summary: {
-                filesProcessed: 0,
+    summary: { filesProcessed: 0  ,
                 keysAdded: 0,
                 keysRemoved: 0,
                 keysUpdated: 0,
@@ -495,8 +482,7 @@ export class TranslationFileGenerator {
         if (!baseTranslations) {
     
 }
-            throw new Error(`Base, language translations, not found: ${baseLanguage}`},
-        }
+            throw new Error(`Base, language translations, not found: ${baseLanguage}`} }
         
         // 各対象言語を同期
         for (const language of targetLanguages) { try { }
@@ -507,7 +493,7 @@ export class TranslationFileGenerator {
                     keysAdded: [],
                     keysRemoved: [],
                     keysUpdated: [],
-    errors: []  },
+    errors: []  };
                 // カテゴリ別に同期
                 for(const [category, baseCategoryData] of Object.entries(baseTranslations) { try { }
                         const targetCategoryData = await this.loadExistingCategoryFile(language, category) || {};
@@ -528,7 +514,7 @@ export class TranslationFileGenerator {
                         console.error(`Error synchronizing ${category} for ${language}:`, error);
                         languageChanges.errors.push({ )
                             category: category,
-    error: error instanceof Error ? error.message : String(error },
+    error: error instanceof Error ? error.message : String(error };
                     }
                 }
                 
@@ -547,7 +533,7 @@ export class TranslationFileGenerator {
         
         // 同期レポート生成
         if (generateReport) {
-            const report = this.generateSyncReport(syncResults) }
+            const report = this.generateSyncReport(syncResults);
             syncResults.report = report; }
         }
         
@@ -563,25 +549,25 @@ export class TranslationFileGenerator {
         // ここではモック実装
         try {
             const mockTranslations = {
-                common: {''
-                    ok: 'OK',
-                    cancel: 'キャンセル',
-                    save: '保存',
-                    delete: '削除',
-                    edit: '編集',
+                common: { ''
+                    ok: 'OK'  ,
+                    cancel: 'キャンセル,
+                    save: '保存,
+                    delete: '削除,
+                    edit: '編集,
                     close: '閉じる'
             };
                 menu: { ''
-                    play: 'プレイ',
-                    settings: '設定',
-                    help: 'ヘルプ',
+                    play: 'プレイ'  ,
+                    settings: '設定,
+                    help: 'ヘルプ,
                     exit: '終了'
             };
                 game: { ''
-                    score: 'スコア',
-                    level: 'レベル',
-                    time: '時間',
-                    pause: 'ポーズ',
+                    score: 'スコア'  ,
+                    level: 'レベル,
+                    time: '時間,
+                    pause: 'ポーズ,
                     resume: '再開'
             }
             };
@@ -606,12 +592,12 @@ export class TranslationFileGenerator {
         } catch (error) { return null,
     
     private processTranslationData(
-        categoryData: any, ,
-        existingTranslations: any, ,
+        categoryData: any,
+        existingTranslations: any,
         options: { includeEmpty: boolean,
-            generateTemplate: boolean),
+            generateTemplate: boolean)  ,
             preserveExisting: boolean,
-    language: string,
+    language: string;
     ): ProcessedTranslationData {
         const { includeEmpty, generateTemplate, preserveExisting, language } = options;
         const flattenedBase = this.flattenObject(categoryData);
@@ -619,11 +605,11 @@ export class TranslationFileGenerator {
         
         const processedTranslations: { [key: string]: any, = {}
         let totalKeys = 0;
-        let translatedKeys = 0;
+        let translatedKeys = 0 };
         
         // 基準データを処理
         for(const [key, value] of Object.entries(flattenedBase) {
-            totalKeys++,
+            totalKeys++;
             
             if (preserveExisting && flattenedExisting[key]) {
                 // 既存の翻訳を保持
@@ -644,11 +630,11 @@ export class TranslationFileGenerator {
         
         return { translations: nestedTranslations,
             totalKeys: totalKeys,
-            translatedKeys: translatedKeys,
+            translatedKeys: translatedKeys;
     ';'
 
     private formatTranslationFile(translationObject: TranslationObject): string { ''
-        return JSON.stringify(translationObject, null, 2) }
+        return JSON.stringify(translationObject, null, 2);
 
     private formatTemplate(template: TranslationTemplate, format: 'json' | 'csv' | 'xlsx': string { ''
         switch(format) {
@@ -663,20 +649,20 @@ export class TranslationFileGenerator {
                 return JSON.stringify(template, null, 2);
     
     private generateMetadataFile(language: string, results: FileGenerationResult): string { const metadata = {
-            _fileInfo: {'
-                language: language,
-                generatedAt: new Date().toISOString('',
-    generator: 'TranslationFileGenerator',
+            _fileInfo: { '
+                language: language  ,
+                generatedAt: new Date().toISOString(',
+    generator: 'TranslationFileGenerator,
                 version: '1.0.0'
             };
             statistics: { totalFiles: results.totalFiles)
-                totalKeys: results.totalKeys,
+                totalKeys: results.totalKeys  ,
     completionRate: 0),
                 lastUpdated: new Date().toISOString(  }
             categories: results.filesGenerated.map(file => ({ name: file.category)
-               , keys: file.keys),
+            keys: file.keys),
                 completionRate: 0)),
-    errors: results.errors  },
+    errors: results.errors  };
         return JSON.stringify(metadata, null, 2);
     }
 
@@ -686,7 +672,7 @@ export class TranslationFileGenerator {
             const fullKey = prefix ? `${prefix}.${key}` : key;
 
             if (typeof, value === 'object' && value !== null && !Array.isArray(value) { Object.assign(flattened, this.flattenObject(value, fullKey) } else { flattened[fullKey] = value }
-        }
+        } };
         
         return flattened;
     }
@@ -704,7 +690,7 @@ export class TranslationFileGenerator {
                 if (!current[keys[i]]) { }
                     current[keys[i]] = {}
                 current = current[keys[i]];
-            }
+            } };
             
             current[keys[keys.length - 1]] = value;
         }
@@ -727,12 +713,11 @@ export class TranslationFileGenerator {
                         category,
                         translationData)','
                         { category: category,''
-                            version: _metadata?.version || '1.0.0', : undefined')',
+                            version: _metadata?.version || '1.0.0, : undefined')',
                             priority: 'normal')) } catch (error) {
                     console.warn(`Failed to register translation set ${language}/${category}:`, error);
-                }
+                    }
 }
-    }
     ';'
     // These methods are referenced but not implemented in the original file
     private async readSourceFile(filePath: string): Promise<string>,
@@ -751,7 +736,7 @@ export class TranslationFileGenerator {
     
     private generateCategoryTemplate(categoryData: any, options: { includeExamples: boolean,  language: string ): any {
         // Mock implementation }
-        return {}
+        return {} };
 
     private convertToCSV(template: TranslationTemplate): string { // Mock implementation
         return ' }'
@@ -762,49 +747,46 @@ export class TranslationFileGenerator {
     private async synchronizeCategoryFile(;
         baseCategoryData: any ),
         targetCategoryData: any,
-    options: any,
+    options: any;
     ): Promise<CategorySyncResult>,
         // Mock implementation
         return { added: [], removed: [], updated: []  }
     
     private generateSyncReport(syncResults: SyncResults): string { // Mock implementation
-        return JSON.stringify(syncResults, null, 2) }
+        return JSON.stringify(syncResults, null, 2);
     
     /**
      * サポート言語を取得
      */''
     getSupportedLanguages('''
         direction: 'ltr' | 'rtl,'
-    encoding: string),
-    }> { return Array.from(this.supportedLanguages.entries().map(([code, info]) => ({
+    encoding: string);
+    }> { return Array.from(this.supportedLanguages.entries())).map(([code, info]) => ({
             code: code,
             name: info.name,
             direction: info.direction,
-    encoding: info.encoding  }
-        };
-    }
-    
+    encoding: info.encoding      }
+}
     /**
      * サポートカテゴリを取得
      */
     getSupportedCategories(): Array<{ code: string,
         name: string,
-    description: string,> { return Array.from(this.categories.entries().map(([code, info]) => ({
+    description: string,> { return Array.from(this.categories.entries())).map(([code, info]) => ({
             code: code,
             name: info.name,
-    description: info.description  }
-        };
-    }
-    
+    description: info.description      }
+}
     /**
      * 統計情報を取得
      */
     getStats(): { supportedLanguages: number,
-        supportedCategories: number,
+        supportedCategories: number;
+    };
         templateConfig: TemplateConfig,
     generatedFilesCount: number, { return { supportedLanguages: this.supportedLanguages.size,
             supportedCategories: this.categories.size,
-    templateConfig: this.templateConfig },
+    templateConfig: this.templateConfig };
             generatedFilesCount: 0 // 実際の実装では生成ファイル数を追跡 
     }
 }

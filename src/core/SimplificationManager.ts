@@ -12,7 +12,7 @@ import { AdaptiveSimplificationEngine  } from './simplification-manager/Adaptive
 
 export class SimplificationManager {
     /**
-     * SimplificationManagerを初期化 }
+     * SimplificationManagerを初期化 };
      * @param {Object} gameEngine - ゲームエンジンインスタンス
      */
     constructor(gameEngine) {
@@ -24,15 +24,15 @@ export class SimplificationManager {
         this.complexityAnalyzer = new UIComplexityAnalyzer();
         this.interfaceSimplifier = new InterfaceSimplifier();
         this.adaptiveEngine = new AdaptiveSimplificationEngine('''
-            defaultMode: 'standard',
+            defaultMode: 'standard,
     autoSimplification: false,
             adaptiveComplexity: true;;
         // 状態管理
         this.state = { currentSimplification: null,
-            activeAdaptations: [] };
+            activeAdaptations: [] ,
             userPreferences: {}
             sessionMetrics: { startTime: Date.now(),
-                simplificationCount: 0,
+                simplificationCount: 0 ,
     userSatisfaction: null,
         this.setupEventListeners();
     }
@@ -89,7 +89,7 @@ export class SimplificationManager {
                 ...modeConfig.combined.settings);
                 reason,
             // 設定を保存
-            this.modeController.saveToStorage('',
+            this.modeController.saveToStorage(',
             this.logEvent('mode_changed', { )
                 newMode,
                 reason),
@@ -111,7 +111,7 @@ export class SimplificationManager {
         try {
             const customMode = this.modeController.changeLevel(newLevel, reason);
             this.applySimplification(newLevel, {)'
-                reason,')',
+                reason,'),
                 customMode: true','
 
             this.logEvent('level_changed', { newLevel, reason ','
@@ -143,12 +143,12 @@ export class SimplificationManager {
             
                 this.state.currentSimplification = {
                     id: result.id,
-                    level,,
+                    level,
                     options,
-                    timestamp: Date.now('',
+                    timestamp: Date.now(',
                 this.logEvent('simplification_applied', {
                 level);
-                    operationsCount: result.operationsApplied) }
+                    operationsCount: result.operationsApplied);
                 return result; else { throw new Error(result.error),' }'
 
             } catch (error) {
@@ -183,7 +183,7 @@ export class SimplificationManager {
         if (analysis) {''
             this.logEvent('complexity_analyzed', {
                 overallScore: analysis.overallComplexity.score,
-    level: analysis.overallComplexity.level);
+    level: analysis.overallComplexity.level),
                 recommendationsCount: analysis.recommendations.length),
             // 自動簡素化が有効な場合
             if (this.config.autoSimplification) {
@@ -237,8 +237,8 @@ export class SimplificationManager {
         // 推奨を自動適用するかユーザーに確認
     }
         if (recommendation.confidence > 0.8) { }
-            this.changeLevel(recommendation.level, `adaptive: ${recommendation.reason}`};
-        } else { this.notifyUserOfRecommendation(recommendation) }
+            this.changeLevel(recommendation.level, `adaptive: ${recommendation.reason}`}
+        } else { this.notifyUserOfRecommendation(recommendation);
     }
 
     /**
@@ -247,14 +247,14 @@ export class SimplificationManager {
     notifyUserOfRecommendation(recommendation) {
 
         const event = new CustomEvent('simplificationRecommendation', {
-            detail: {)
-                ...recommendation','
+            detail: { )
+                ...recommendation','  },
                 actions: {'
                     accept: () => this.changeLevel(recommendation.level, `accepted: ${recommendation.reason }`} }
 
                     decline: () => this.logEvent('recommendation_declined', recommendation',' }
 
-                    postpone: () => this.logEvent('recommendation_postponed', recommendation};
+                    postpone: () => this.logEvent('recommendation_postponed', recommendation}
                 }
 };
         
@@ -309,7 +309,7 @@ export class SimplificationManager {
         } else {
             this.stopAutoAnalysis( }
 
-        this.logEvent('auto_simplification_toggled', { enabled, criteria ) }
+        this.logEvent('auto_simplification_toggled', { enabled, criteria );
 
     /**
      * 自動分析を開始
@@ -328,26 +328,26 @@ export class SimplificationManager {
      */
     stopAutoAnalysis() {
         if (this.autoAnalysisTimer) {
-            clearInterval(this.autoAnalysisTimer) }
+            clearInterval(this.autoAnalysisTimer);
             this.autoAnalysisTimer = null; }
 }
 
     /**
      * 利用可能なモードを取得
      */
-    getAvailableModes() { return this.modeController.getAvailableModes() }
+    getAvailableModes() { return this.modeController.getAvailableModes();
 
     /**
      * 利用可能なレベルを取得
      */
-    getAvailableLevels() { return this.modeController.getAvailableLevels() }
+    getAvailableLevels() { return this.modeController.getAvailableLevels();
 
     /**
      * 現在の設定を取得
      */
     getCurrentSettings() {
         return { mode: this.modeController.getCurrentModeConfig( }
-            complexity: this.complexityAnalyzer.getCurrentMetrics() },
+            complexity: this.complexityAnalyzer.getCurrentMetrics() ,
             simplification: this.state.currentSimplification }
             config: { ...this.config,
             userPreferences: { ...this.state.userPreferences }
@@ -364,24 +364,23 @@ export class SimplificationManager {
             mode: this.modeController.getStats(),
             complexity: this.complexityAnalyzer.getStats(),
             simplification: this.interfaceSimplifier.getStats(
-    adaptive: this.adaptiveEngine.getStats(),
-        }
+    adaptive: this.adaptiveEngine.getStats() }
 
     /**
      * エラーを報告
      */
     reportError(error, context = { ) {
 
-        this.adaptiveEngine.recordError(error) }
+        this.adaptiveEngine.recordError(error);
 
-        this.logEvent('error_reported', { error, context ) }
+        this.logEvent('error_reported', { error, context );
 
     /**
      * ヘルプリクエストを報告
      */
     reportHelpRequest(context = { ) {
 
-        this.adaptiveEngine.recordHelpRequest(context) }
+        this.adaptiveEngine.recordHelpRequest(context);
 
         this.logEvent('help_requested', context'; }'
     }
@@ -392,14 +391,14 @@ export class SimplificationManager {
     setUserSatisfaction(satisfaction) {
         this.state.sessionMetrics.userSatisfaction = satisfaction }
 
-        this.logEvent('satisfaction_reported', { satisfaction ) }
+        this.logEvent('satisfaction_reported', { satisfaction );
 
     /**
      * 設定を保存
      */
     saveSettings() {
 
-        this.modeController.saveToStorage() }
+        this.modeController.saveToStorage();
 
         localStorage.setItem('bubblePop_simplificationSettings', JSON.stringify(settingsData); }
     }
@@ -427,11 +426,11 @@ export class SimplificationManager {
     resetSettings() {
         this.modeController.reset();
         this.adaptiveEngine.reset('''
-            defaultMode: 'standard',
+            defaultMode: 'standard,
     autoSimplification: false,
             adaptiveComplexity: true;;
         this.state = { currentSimplification: null,
-            activeAdaptations: [] };
+            activeAdaptations: [] ,
             userPreferences: {}''
             sessionMetrics: {,
                 startTime: Date.now()','
@@ -445,7 +444,7 @@ export class SimplificationManager {
     
 }
         if (console && console.log) { }
-            console.log(`[SimplificationManager] ${type}:`, data};
+            console.log(`[SimplificationManager] ${type}:`, data}
         }
         ';'
         // アナリティクスに送信（実装されている場合）

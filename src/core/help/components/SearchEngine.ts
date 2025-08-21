@@ -13,38 +13,30 @@ export interface SearchDocument { id: string;
     lastUpdated?: string;
     viewCount?: number;
     [key: string]: any;
-
-export interface SearchOptions { category?: string,
+    export interface SearchOptions { category?: string,
     language?: string;
     minScore?: number;
     limit?: number;
-
-export interface SearchResult extends SearchDocument { relevanceScore: number;
-    highlights: Record<string, string> }
-
-export interface FieldWeights { title: number;
-    content: number;
-    searchKeywords: number;
+    export interface SearchResult extends SearchDocument { relevanceScore: number,
+    highlights: Record<string, string> };
+export interface FieldWeights { title: number,
+    content: number,
+    searchKeywords: number,
     category: number;
-
-export interface SearchStats { totalSearches: number;
-    cacheHits: number;
-    averageSearchTime: number;
-    popularQueries: Map<string, number> }
-
-export interface CachedSearchResult { result: SearchResult[];
+    export interface SearchStats { totalSearches: number,
+    cacheHits: number,
+    averageSearchTime: number,
+    popularQueries: Map<string, number> };
+export interface CachedSearchResult { result: SearchResult[],
     timestamp: number;
-
-export interface PerformanceStats { totalSearches: number;
-    cacheHitRate: number;
-    averageSearchTime: number;
-    indexSize: number;
-    documentCount: number;
-    cacheSize: number;
-    popularQueries: [string, number][] }
-
-export interface SearchHistoryData { popularQueries: [string, number][] }
-
+    export interface PerformanceStats { totalSearches: number,
+    cacheHitRate: number,
+    averageSearchTime: number,
+    indexSize: number,
+    documentCount: number,
+    cacheSize: number,
+    popularQueries: [string, number][] };
+export interface SearchHistoryData { popularQueries: [string, number][] };
 export interface RelatedContent extends SearchDocument { similarity: number;
 
 export class SearchEngine {
@@ -64,9 +56,9 @@ export class SearchEngine {
         this.textIndex = new Map<string, string[]>(), // 単語 -> [documentId, ...]
         this.documentStore = new Map<string, SearchDocument>(), // documentId -> document
         this.fieldWeights = {
-            title: 3.0;
-            content: 1.0;
-    searchKeywords: 2.0 }
+            title: 3.0,
+            content: 1.0,
+    searchKeywords: 2.0 };
             category: 1.5 
     };
         // パフォーマンス最適化
@@ -75,15 +67,15 @@ export class SearchEngine {
         this.maxCacheSize = 100;
         
         // 検索統計
-        this.searchStats = { totalSearches: 0;
-            cacheHits: 0;
-            averageSearchTime: 0;
+        this.searchStats = { totalSearches: 0,
+            cacheHits: 0,
+            averageSearchTime: 0,
     popularQueries: new Map<string, number>( };
         
         // ストップワード（検索対象外の単語）
-        this.stopWords = new Set<string>(['の', 'に', 'は', 'を', 'が', 'で', 'と', 'て', 'も', 'から',
-            'まで', 'より', 'で', 'ある', 'です', 'だ', 'である',
-            'a', 'an', 'and', 'are', 'as', 'at', 'be', 'by', 'for',
+        this.stopWords = new Set<string>(['の, 'に', 'は', 'を', 'が', 'で', 'と', 'て', 'も', 'から',
+            'まで, 'より', 'で', 'ある', 'です', 'だ', 'である',
+            'a, 'an', 'and', 'are', 'as', 'at', 'be', 'by', 'for',
             'from', 'has', 'he', 'in', 'is', 'it', 'its', 'of', 'on',]';'
             'that', 'the', 'to', 'was', 'were', 'will', 'with']';'
         ]');'
@@ -148,11 +140,9 @@ export class SearchEngine {
                 const tokens = this.tokenize(typeof, text === 'string' ? text: JSON.stringify(text,
                 for (const token of tokens) {
         
-                    this.addToIndex(token, document.id, field, weight) }
-}
-        }
+                    this.addToIndex(token, document.id, field, weight);
     }
-    
+}
     /**
      * 検索実行
      * @param query - 検索クエリ
@@ -204,7 +194,7 @@ export class SearchEngine {
         const documentScores = new Map<string, number>();
         for(const [token, docIds] of tokenResults) {
             for (const docId of docIds) {
-                const score = this.calculateRelevanceScore(token, docId, query) }
+                const score = this.calculateRelevanceScore(token, docId, query);
                 documentScores.set(docId, (documentScores.get(docId) || 0) + score); }
 }
         
@@ -240,9 +230,8 @@ export class SearchEngine {
                 for (const indexedToken of this.textIndex.keys() {
                     if (indexedToken.includes(token) || token.includes(indexedToken) {
             }
-                        expanded.add(indexedToken); }
+                        expanded.add(indexedToken);     }
 }
-            }
         }
         
         return Array.from(expanded);
@@ -261,7 +250,7 @@ export class SearchEngine {
         for(const [field, weight] of Object.entries(this.fieldWeights) {
             const text = document[field],
             if (text) {''
-                const fieldScore = this.calculateFieldScore(token, typeof text === 'string' ? text : JSON.stringify(text), weight) }
+                const fieldScore = this.calculateFieldScore(token, typeof text === 'string' ? text : JSON.stringify(text), weight);
                 score += fieldScore; }
 }
         
@@ -354,10 +343,9 @@ export class SearchEngine {
             if (document) {
                 results.push({)
                     ...document),
-                    relevanceScore: score) }
-                    highlights: this.generateHighlights(document, query); }
-                };
-            }
+                    relevanceScore: score),
+                    highlights: this.generateHighlights(document, query);     }
+}
         }
         
         // スコア順でソート
@@ -370,7 +358,7 @@ export class SearchEngine {
      * 検索語句のハイライト生成
      * @private
      */
-    private generateHighlights(document: SearchDocument, query: string): Record<string, string> { const tokens = this.tokenize(query) }
+    private generateHighlights(document: SearchDocument, query: string): Record<string, string> { const tokens = this.tokenize(query);
         const highlights: Record<string, string> = {};
 
         for(const [field, weight] of Object.entries(this.fieldWeights)) { const text = document[field],
@@ -382,7 +370,7 @@ export class SearchEngine {
 
                     const regex = new RegExp(`(${token)}`, 'gi'};' }'
 
-                    highlightedText = highlightedText.replace(regex, '<mark>$1</mark>'};
+                    highlightedText = highlightedText.replace(regex, '<mark>$1</mark>'}
                 }
                 if (highlightedText !== text) { highlights[field] = highlightedText }
 }
@@ -424,10 +412,8 @@ export class SearchEngine {
             for (const synonym of synonyms) {
                 if (synonym.toLowerCase().startsWith(lowerQuery) {
             }
-                    suggestions.add(synonym); }
+                    suggestions.add(synonym);     }
 }
-        }
-        
         return Array.from(suggestions).slice(0, 10);
     }
     
@@ -447,11 +433,9 @@ export class SearchEngine {
             if (doc.category === document.category) {
                 related.push({)
                     ...doc),
-                    similarity: this.calculateSimilarity(document, doc) }
-                };
-            }
-        }
-        
+                    similarity: this.calculateSimilarity(document, doc);
+                    }
+}
         // 類似度順でソート
         related.sort((a, b) => b.similarity - a.similarity);
         
@@ -469,7 +453,7 @@ export class SearchEngine {
             .toLowerCase()','
             .replace(/[^\w\s]/g, ', ') // 記号を除去,
             .split(/\s+/);
-            .filter(token => token.length > 1 && !this.stopWords.has(token) }
+            .filter(token => token.length > 1 && !this.stopWords.has(token);
     }
     
     /**
@@ -477,10 +461,10 @@ export class SearchEngine {
      * @private
      */
     private addToIndex(token: string, docId: string, field: string, weight: number): void { if (!this.textIndex.has(token) {
-            this.textIndex.set(token, []) }
+            this.textIndex.set(token, []);
         
         const docList = this.textIndex.get(token)!;
-        if (!docList.includes(docId) { docList.push(docId) }
+        if (!docList.includes(docId) { docList.push(docId);
     }
     
     /**
@@ -520,7 +504,7 @@ export class SearchEngine {
         if (cached && Date.now() - cached.timestamp < this.cacheTimeout) {
             return cached.result }
         
-        if (cached) { this.searchCache.delete(key) }
+        if (cached) { this.searchCache.delete(key);
         
         return null;
     }
@@ -532,7 +516,7 @@ export class SearchEngine {
     private setCachedResult(key: string, result: SearchResult[]): void { if (this.searchCache.size >= this.maxCacheSize) {
             // 古いキャッシュを削除
             const oldestKey = this.searchCache.keys().next().value,
-            this.searchCache.delete(oldestKey) }
+            this.searchCache.delete(oldestKey);
         
         this.searchCache.set(key, {
                 result: result,
@@ -544,7 +528,7 @@ export class SearchEngine {
      * 検索統計更新
      * @private
      */
-    private updateSearchStats(query: string, searchTime: number): void { this.searchStats.totalSearches++,
+    private updateSearchStats(query: string, searchTime: number): void { this.searchStats.totalSearches++;
         
         // 平均検索時間更新
         const prevAvg = this.searchStats.averageSearchTime,
@@ -555,7 +539,7 @@ export class SearchEngine {
         const currentCount = this.searchStats.popularQueries.get(query) || 0,
         this.searchStats.popularQueries.set(query, currentCount + 1);
         // 検索履歴保存
-        this.saveSearchHistory() }
+        this.saveSearchHistory();
     
     /**
      * キャッシュクリーンアップ
@@ -565,10 +549,8 @@ export class SearchEngine {
         for(const [key, cached] of this.searchCache) {
             if (now - cached.timestamp > this.cacheTimeout) {
         }
-                this.searchCache.delete(key); }
+                this.searchCache.delete(key);     }
 }
-    }
-    
     /**
      * 検索履歴読み込み
      * @private
@@ -588,7 +570,7 @@ export class SearchEngine {
      */
     private saveSearchHistory(): void { try {
             const data: SearchHistoryData = {''
-                popularQueries: Array.from(this.searchStats.popularQueries.entries() 
+                popularQueries: Array.from(this.searchStats.popularQueries.entries())) 
     };
             localStorage.setItem('search_history', JSON.stringify(data);'} catch (error) { console.warn('Failed to save search history:', error }'
     }
@@ -620,7 +602,7 @@ export class SearchEngine {
             indexSize: this.textIndex.size,
             documentCount: this.documentStore.size,
             cacheSize: this.searchCache.size,
-    popularQueries: Array.from(this.searchStats.popularQueries.entries();
+    popularQueries: Array.from(this.searchStats.popularQueries.entries()));
                 .sort((a b) => b[1] - a[1]) };
                 .slice(0 10); }
         }

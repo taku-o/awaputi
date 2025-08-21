@@ -17,11 +17,11 @@ interface StorageAdapter { set(key: string, value: any): Promise<void>;
     keys(): Promise<string[]>;
     size(): Promise<number>;
     initialize?(): Promise<void>;
-
-interface StorageConfig { retryAttempts: number;
-    retryDelay: number;
-    compressionThreshold: number;
+    interface StorageConfig { retryAttempts: number,
+    retryDelay: number,
+    compressionThreshold: number,
     maxStorageSize: number;
+}
 export class DataStorage {
     private adapters: Map<string, StorageAdapter>;
     private primaryAdapter: string;
@@ -38,10 +38,10 @@ export class DataStorage {
         
         // 設定
         this.config = {
-            retryAttempts: 3;
-            retryDelay: 100;
+            retryAttempts: 3,
+            retryDelay: 100,
     compressionThreshold: 1024, // 1KB以上で圧縮を検討
-    }
+    };
             maxStorageSize: 10 * 1024 * 1024 // 10MB制限 })
         this.initialize();
     }
@@ -56,8 +56,7 @@ export class DataStorage {
             try { const indexedDBAdapter = new IndexedDBAdapter();
                 await indexedDBAdapter.initialize();
                 this.adapters.set('indexedDB', indexedDBAdapter',' }
-
-            } catch (error) { console.warn('IndexedDB not available:', error }
+        } catch (error) { console.warn('IndexedDB not available:', error }
             
             // 利用可能なアダプターの確認
             await this.selectAdapter();
@@ -65,10 +64,8 @@ export class DataStorage {
 
         } catch (error) { getErrorHandler().handleError(error, 'STORAGE_INITIALIZATION_ERROR', {''
                 operation: 'initialize'
-            };
-        }
-    }
-    
+                }
+}
     /**
      * 最適なアダプターの選択
      */
@@ -132,10 +129,10 @@ export class DataStorage {
             const result = await this.currentAdapter.set(key, processedData);
             
             // 検証
-            if (options.verify !== false) { await this.verifyData(key, processedData) }
+            if (options.verify !== false) { await this.verifyData(key, processedData);
             
             return result;
-        };
+        }
     }
     
     /**
@@ -154,7 +151,7 @@ export class DataStorage {
             
             // データの後処理
             return await this.postprocessData(data, options);
-        };
+        }
     }
     
     /**
@@ -168,7 +165,7 @@ export class DataStorage {
             }
             
             return await this.currentAdapter.remove(key);
-        };
+        }
     }
     
     /**
@@ -210,7 +207,7 @@ export class DataStorage {
     
 }
                         totalSize += JSON.stringify(data).length; }
-                    } catch (error) { // エラーは無視して続行 }
+        } catch (error) { // エラーは無視して続行 }
             }
             
             return totalSize;
@@ -229,7 +226,7 @@ export class DataStorage {
             
             // タイムスタンプの追加
             processedData._metadata = { ''
-                timestamp: Date.now('',
+                timestamp: Date.now(',
     version: '1.0.0' })
             // 圧縮の検討)
             const dataSize = JSON.stringify(processedData).length;
@@ -258,7 +255,7 @@ export class DataStorage {
                 if (age > 30 * 24 * 60 * 60 * 1000) { // 30日以上古い
             }
 
-                    console.warn('Loading old data:', { age ) }
+                    console.warn('Loading old data:', { age );
             }
             
             // 圧縮データの展開
@@ -307,8 +304,8 @@ export class DataStorage {
             const dataSize = JSON.stringify(data).length,
             
             if (currentSize + dataSize > this.config.maxStorageSize) { }
-                throw new Error(`Storage, capacity exceeded: ${currentSize + dataSize} > ${this.config.maxStorageSize}`};
-            } catch (error) {
+                throw new Error(`Storage, capacity exceeded: ${currentSize + dataSize} > ${this.config.maxStorageSize}`}
+        } catch (error) {
             getErrorHandler().handleError(error, 'STORAGE_CAPACITY_ERROR', {''
                 operation: 'checkStorageCapacity');
                 key };
@@ -335,9 +332,8 @@ export class DataStorage {
                     ','
                     // アダプターの再選択を試行
                     if(error.message.includes('storage, adapter' { }
-                        await this.selectAdapter(); }
+                        await this.selectAdapter();     }
 }
-            }
         }
         
         throw lastError;
@@ -368,13 +364,13 @@ export class DataStorage {
  * LocalStorageアダプター
  */'
 class LocalStorageAdapter { ''
-    constructor('',
+    constructor(',
         this.prefix = 'bubblePop_' }
     );
     async set(key, data) {
         try {
             const serialized = JSON.stringify(data);
-            localStorage.setItem(this.prefix + key, serialized) }
+            localStorage.setItem(this.prefix + key, serialized);
 
             return true; }'
 
@@ -417,16 +413,15 @@ class LocalStorageAdapter { ''
                 const data = localStorage.getItem(key);
                 if (data) {
         }
-                    size += data.length; }
+                    size += data.length;     }
 }
-        }
         return size;
 
 /**
  * IndexedDBアダプター
  */'
 class IndexedDBAdapter { ''
-    constructor('',
+    constructor(',
         this.dbName = 'BubblePopDB';
 
         this.version = 1;
@@ -444,9 +439,8 @@ class IndexedDBAdapter { ''
             
             request.onupgradeneeded = (event) => {  const db = event.target.result,
                 if (!db.objectStoreNames.contains(this.storeName) { }
-                    db.createObjectStore(this.storeName); }
-};
-    }
+                    db.createObjectStore(this.storeName);     }
+}
     ';'
 
     async set(key, data) { ''
@@ -454,7 +448,7 @@ class IndexedDBAdapter { ''
             const transaction = this.db.transaction([this.storeName], 'readwrite),'
             const store = transaction.objectStore(this.storeName);
             const request = store.put(data, key);
-            request.onerror = () => reject(request.error) }
+            request.onerror = () => reject(request.error);
             request.onsuccess = () => resolve(true); }
         });
     }
@@ -465,7 +459,7 @@ class IndexedDBAdapter { ''
             const transaction = this.db.transaction([this.storeName], 'readonly),'
             const store = transaction.objectStore(this.storeName);
             const request = store.get(key);
-            request.onerror = () => reject(request.error) }
+            request.onerror = () => reject(request.error);
             request.onsuccess = () => resolve(request.result || null); }
         });
     }
@@ -476,7 +470,7 @@ class IndexedDBAdapter { ''
             const transaction = this.db.transaction([this.storeName], 'readwrite),'
             const store = transaction.objectStore(this.storeName);
             const request = store.delete(key);
-            request.onerror = () => reject(request.error) }
+            request.onerror = () => reject(request.error);
             request.onsuccess = () => resolve(true); }
         });
     }
@@ -487,7 +481,7 @@ class IndexedDBAdapter { ''
             const transaction = this.db.transaction([this.storeName], 'readonly),'
             const store = transaction.objectStore(this.storeName);
             const request = store.getAllKeys();
-            request.onerror = () => reject(request.error) }
+            request.onerror = () => reject(request.error);
             request.onsuccess = () => resolve(request.result); }
         });
     }

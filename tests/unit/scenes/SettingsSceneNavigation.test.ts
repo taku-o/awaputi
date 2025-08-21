@@ -9,7 +9,7 @@ interface MockSceneManager {
 interface MockGameEngine {
     sceneManager: MockSceneManager | null }
 interface KeyEvent {
-    key: string;
+    key: string,
     preventDefault: jest.Mock<void, []> }
 // Mock SceneManager
 const mockSceneManager: MockSceneManager = {
@@ -19,7 +19,7 @@ const mockGameEngine: MockGameEngine = {
     sceneManager: mockSceneManager,
 // Mock SettingsScene (essential parts);
 class MockSettingsScene {
-    gameEngine: MockGameEngine | undefined;
+    gameEngine: MockGameEngine | undefined,
     isEditingValue: boolean;
     showingConfirmDialog: boolean;
     constructor() {
@@ -129,7 +129,7 @@ describe('SettingsScene Navigation Tests', () => {
             mockSceneManager.switchScene.mockReturnValue(false);
             settingsScene.goBack();
             expect(consoleErrorSpy').toHaveBeenCalledWith('
-                expect.stringContaining('Failed to navigate to main menu'};
+                expect.stringContaining('Failed to navigate to main menu'}
         };
     }
 }');'

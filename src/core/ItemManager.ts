@@ -7,36 +7,34 @@
 
 import { GameEngine  } from './GameEngine.js';
 
-export interface Item { id: string;
-    name: string;
-    type: ItemType;
-    quantity: number;
-    maxQuantity: number;
+export interface Item { id: string,
+    name: string,
+    type: ItemType,
+    quantity: number,
+    maxQuantity: number,
     description: string;
     effects?: ItemEffect[];
     cooldown?: number;
-    lastUsed?: number,  }
+    lastUsed?: number };
 ';'
 
 export enum ItemType {;
-    REVIVAL = 'revival',
-    POWER_UP = 'power_up',
-    CONSUMABLE = 'consumable',
-    SPECIAL = 'special',
+    REVIVAL = 'revival,
+    POWER_UP = 'power_up,
+    CONSUMABLE = 'consumable,
+    SPECIAL = 'special,
     CURRENCY = 'currency' }
 
-export interface ItemEffect { type: string;
+export interface ItemEffect { type: string,
     value: number;
     duration?: number;
-
-export interface ItemConfig { enableRevivalItems: boolean;
-    maxRevivalsPerGame: number;
-    revivalHPPercentage: number;
+    export interface ItemConfig { enableRevivalItems: boolean,
+    maxRevivalsPerGame: number,
+    revivalHPPercentage: number,
     itemCooldowns: boolean;
-
-export class ItemManager {
+    export class ItemManager {
     private gameEngine: GameEngine | null;
-    private, inventory: Map<string, Item> }
+    private, inventory: Map<string, Item> };
     private activeEffects: Map<string, ItemEffect & { endTime: number;>;
     private config: ItemConfig,
     private revialsUsedThisGame: number,
@@ -63,11 +61,11 @@ export class ItemManager {
      */''
     private initializeDefaultItems('''
         this.itemDefinitions.set('revival_heart', { ''
-            id: 'revival_heart',
-            name: '復活のハート',
+            id: 'revival_heart,
+            name: '復活のハート,
     type: ItemType.REVIVAL,
             maxQuantity: 3,
-            description: 'HPが0になった時に自動的に復活します',
+            description: 'HPが0になった時に自動的に復活します,
             effects: [{''
                 type: 'revival')],
     value: 50 // HP回復率  }]
@@ -76,11 +74,11 @@ export class ItemManager {
 ';'
         // パワーアップアイテムの定義
         this.itemDefinitions.set('power_boost', { ''
-            id: 'power_boost',
-            name: 'パワーブースト',
+            id: 'power_boost,
+            name: 'パワーブースト,
     type: ItemType.POWER_UP,
             maxQuantity: 5,
-            description: 'スコア獲得量が一定時間2倍になります',
+            description: 'スコア獲得量が一定時間2倍になります,
             effects: [{''
                 type: 'score_multiplier),'
                 value: 2'],'
@@ -90,16 +88,16 @@ export class ItemManager {
 ';'
         // 時間延長アイテムの定義
         this.itemDefinitions.set('time_extend', { ''
-            id: 'time_extend',
-            name: '時間延長',
+            id: 'time_extend,
+            name: '時間延長,
     type: ItemType.CONSUMABLE,
             maxQuantity: 10,
-            description: 'ゲーム時間を30秒延長します',
+            description: 'ゲーム時間を30秒延長します,
             effects: [{''
                 type: 'time_extend')],
     value: 30  }]
             }])
-            cooldown: 0),
+            cooldown: 0);
     }
 
     /**
@@ -201,7 +199,7 @@ export class ItemManager {
         }
 
         // 復活エフェクトを再生
-        if (this.gameEngine && this.gameEngine.effectManager) { this.gameEngine.effectManager.createRevivalEffect() }
+        if (this.gameEngine && this.gameEngine.effectManager) { this.gameEngine.effectManager.createRevivalEffect();
 ;
         // 復活サウンドを再生
         if (this.gameEngine && this.gameEngine.audioManager') {', ' }'
@@ -231,7 +229,7 @@ export class ItemManager {
 
             case 'time_extend':
                 // TODO: TimeManagerが実装されたら有効化
-                // if (this.gameEngine && this.gameEngine.timeManager) { //     this.gameEngine.timeManager.addTime(effect.value) }
+                // if (this.gameEngine && this.gameEngine.timeManager) { //     this.gameEngine.timeManager.addTime(effect.value);
                 // }
                 console.log(`Time, extend effect: +${ effect.value) seconds (not, implemented)`},
                 break;
@@ -248,9 +246,8 @@ export class ItemManager {
 
                     this.activeEffects.set('shield', {
                 ...effect);
-                        endTime: Date.now() + effect.duration  }
-                    };
-                }
+                        endTime: Date.now() + effect.duration      }
+}
                 break;
                 
             default:;
@@ -273,7 +270,7 @@ export class ItemManager {
             case 'score_multiplier':','
                 if (this.gameEngine && this.gameEngine.scoreManager) {''
                     this.gameEngine.scoreManager.resetMultiplier()','
-            case 'shield':')',
+            case 'shield':'),
                 console.log('Shield, effect ended) }'
                 break; }
 }
@@ -295,7 +292,7 @@ export class ItemManager {
     /**
      * インベントリを取得
      */
-    getInventory(): Item[] { return Array.from(this.inventory.values() }
+    getInventory(): Item[] { return Array.from(this.inventory.values()));
 
     /**
      * アイテム数を取得
@@ -323,7 +320,7 @@ export class ItemManager {
     /**
      * セーブデータを生成
      */
-    getSaveData(): any { return { inventory: Array.from(this.inventory.entries() },
+    getSaveData(): any { return { inventory: Array.from(this.inventory.entries())) ,
             config: this.config 
     }
 

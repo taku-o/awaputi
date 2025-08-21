@@ -45,7 +45,7 @@ describe('Username Input Performance Tests', () => {  let usernameInputManager: 
                     }'
                 } catch (error) { ''
                 if (this.gameEngine.debug') { }'
-                    console.warn('ResponsiveCanvasManager access failed:', error};
+                    console.warn('ResponsiveCanvasManager access failed:', error}
                 }
             }
             
@@ -63,7 +63,7 @@ describe('Username Input Performance Tests', () => {  let usernameInputManager: 
             if (this._coordinateCache.has(cacheKey) {
     
 }
-                return this._coordinateCache.get(cacheKey};
+                return this._coordinateCache.get(cacheKey}
             }
             // Calculate transformation
             const { scale } = canvasInfo;)

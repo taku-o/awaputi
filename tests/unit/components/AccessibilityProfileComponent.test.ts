@@ -3,17 +3,17 @@ import { AccessibilityProfileComponent  } from '../../../src/components/Accessib
 // Type definitions
 interface MockGameEngine {
     settingsManager: {
-        ge,t: jest.Mock<any, [string]>;
+        ge,t: jest.Mock<any, [string]> };
         set: jest.Mock<void, [string, any]> };
     audioManager: {
-        playUISound: jest.Mock<void, [string]> };
+        playUISound: jest.Mock<void, [string]> }
 }
 interface MockErrorHandler {
     handleError: jest.Mock<void, [Error, string? , any?]> }
 interface MockLocalizationManager { : undefined
     getText: jest.Mock<string, [string]> }
 interface AccessibilityProfile {
-    name: string;
+    name: string,
     displayName: string;
     description: string;
     isCustom?: boolean;
@@ -24,16 +24,16 @@ interface MockAccessibilitySettingsManager {
     getStats: jest.Mock<{ profilesUse,d: number,, currentProfile: string;, []>;
 }
 interface ComponentStats {
-    isInitialized: boolean;
+    isInitialized: boolean,
     currentProfile: string;
-    availableProfilesCount: number;
+    availableProfilesCount: number,
     profilesUsed: number;
 interface Announcer {
     announce: jest.Mock<void, [string]> }
 // モックの作成
 const mockGameEngine: MockGameEngine = {
     settingsManager: {
-        get: jest.fn(
+        get: jest.fn( },
         set: jest.fn( },
     audioManager: {
         playUISound: jest.fn( }

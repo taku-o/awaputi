@@ -24,40 +24,41 @@ export interface PlayOptions { volume?: number,
 /**
  * Quality settings interface
  */
-export interface QualitySettings { sampleRate: number;
-    bufferSize: number;
+export interface QualitySettings { sampleRate: number,
+    bufferSize: number,
     effects: boolean;
 /**
  * Audio manager state interface
  */
-export interface AudioManagerState { isInitialized: boolean;
-    isEnabled: boolean;
+export interface AudioManagerState { isInitialized: boolean,
+    isEnabled: boolean,
     volumes: {
         maste,r: number;
-        sfx: number;
-        bgm: number;
-    muted: boolean;
-    context: any;
-    playback: any;
-    configuration: any;
-    subsystems: any;
+    },
+        sfx: number,
+        bgm: number,
+    muted: boolean,
+    context: any,
+    playback: any,
+    configuration: any,
+    subsystems: any,
     soundGeneration: any;
 }
 /**
  * Audio status interface
  */
-export interface AudioStatus { isEnabled: boolean;
-    masterVolume: number;
-    soundEffectVolume: number;
-    backgroundMusicVolume: number;
-    bgmVolume: number;
-    sfxVolume: number;
-    activeSounds: number;
-    isLoading: boolean;
-    initialized: boolean;
-    muted: boolean;
-    contextState: AudioContextState | 'closed';
-    supportedFormats: string[];
+export interface AudioStatus { isEnabled: boolean,
+    masterVolume: number,
+    soundEffectVolume: number,
+    backgroundMusicVolume: number,
+    bgmVolume: number,
+    sfxVolume: number,
+    activeSounds: number,
+    isLoading: boolean,
+    initialized: boolean,
+    muted: boolean,
+    contextState: AudioContextState | 'closed,
+    supportedFormats: string[],
     qualityMode: string;
 /**
  * Config manager interface
@@ -119,42 +120,42 @@ export class AudioManager {
     constructor(configManager: ConfigManager, audioConfig: AudioConfig) {
 
         this.configManager = configManager;
-        this.audioConfig = audioConfig;
+    this.audioConfig = audioConfig;
         
         // 分割されたコンポーネントを初期化
         this.contextManager = getAudioContextManager();
-        this.soundGenerator = getProceduralSoundGenerator();
-        this.playbackController = getAudioPlaybackController();
-        this.configurationManager = getAudioConfigurationManager();
-        this.subsystemCoordinator = getAudioSubsystemCoordinator();
+    this.soundGenerator = getProceduralSoundGenerator();
+    this.playbackController = getAudioPlaybackController();
+    this.configurationManager = getAudioConfigurationManager();
+    this.subsystemCoordinator = getAudioSubsystemCoordinator();
         
         // 初期化状態
         this.isInitialized = false;
-        this.isEnabled = true;
+    this.isEnabled = true;
         
         // 設定値（キャッシュ）
         this.masterVolume = 0.8;
-        this.sfxVolume = 0.7;
-        this.bgmVolume = 0.5;
-        this._isMuted = false;
+    this.sfxVolume = 0.7;
+    this.bgmVolume = 0.5;
+    this._isMuted = false;
         
         // 従来のプロパティとの互換性維持
         this.audioContext = null;
-        this.masterGainNode = null;
-        this.sfxGainNode = null;
-        this.bgmGainNode = null;
-        this.soundBuffers = new Map();
-        this.activeSources = new Set('';
-        this.qualityMode = 'high'  // 'low', 'medium', 'high', 'ultra'
+    this.masterGainNode = null;
+    this.sfxGainNode = null;
+    this.bgmGainNode = null;
+    this.soundBuffers = new Map();
+    this.activeSources = new Set('';
+    this.qualityMode = 'high'  // 'low', 'medium', 'high', 'ultra'
 
-    }
+    };
         this.qualitySettings = { }
-            low: { sampleRate: 22050, bufferSize: 2048, effects: false;
+            low: { sampleRate: 22050, bufferSize: 2048, effects: false,
             medium: { sampleRate: 44100, bufferSize: 1024, effects: true,)
             high: { sampleRate: 44100, bufferSize: 512, effects: true,)
+            ultra: { sampleRate: 48000, bufferSize: 256, effects: true,
             ultra: { sampleRate: 48000, bufferSize: 256, effects: true;
-            ultra: { sampleRate: 48000, bufferSize: 256, effects: true;
-        };
+         },
         // 外部システムとの統合（遅延読み込み）
         this.bgmSystem = null;
         this.soundEffectSystem = null;
@@ -173,7 +174,7 @@ export class AudioManager {
     async initialize(): Promise<boolean> { try {'
             if (this.isInitialized) {
 
-                console.warn('AudioManager, already initialized') }
+                console.warn('AudioManager, already initialized');
                 return true;
 
             console.log('Initializing, AudioManager (refactored, version')...');'
@@ -204,9 +205,9 @@ export class AudioManager {
                 this.soundBuffers);
             
             // 設定管理システム設定
-            const gainNodes = { masterGainNode: this.masterGainNode!;
-                sfxGainNode: this.sfxGainNode!;
-                bgmGainNode: this.bgmGainNode!;
+            const gainNodes = { masterGainNode: this.masterGainNode!,
+                sfxGainNode: this.sfxGainNode!,
+                bgmGainNode: this.bgmGainNode!,
                 compressor: this.contextManager.getCompressor(
     reverbConvolver: this.contextManager.getReverbConvolver(  };
             this.configurationManager.setDependencies(;
@@ -225,7 +226,7 @@ export class AudioManager {
                 this.playbackController.setDependencies(
                     this.audioContext!);
                     this.sfxGainNode!),
-                    this.masterGainNode!) }
+                    this.masterGainNode!);
                     this.soundBuffers); }
             // 設定監視の開始
             this.configurationManager.setupConfigWatchers();
@@ -248,8 +249,8 @@ export class AudioManager {
 
         } catch (error) { getErrorHandler().handleError(error, 'AUDIO_ERROR', { ''
                 component: 'AudioManager',','
-                operation: 'initialize');
-                userAgent: navigator.userAgent;
+                operation: 'initialize'),
+                userAgent: navigator.userAgent,
     audioContextSupport: !!(window.AudioContext || (window, as any).webkitAudioContext  };
             this.isEnabled = false;
             return false;
@@ -263,7 +264,7 @@ export class AudioManager {
      */
     playSound(soundName: string, options: PlayOptions = { ): AudioBufferSourceNode | null {
         if (!this.isEnabled || this._isMuted) return null,
-        return this.playbackController.playSound(soundName, options) }
+        return this.playbackController.playSound(soundName, options);
     /**
      * 泡破壊音を再生
      * @param bubbleType - 泡タイプ
@@ -450,18 +451,18 @@ export class AudioManager {
      * @param effectType - エフェクトタイプ
      * @param enabled - 有効フラグ
      */
-    setAudioEffect(effectType: string, enabled: boolean): void { this.configurationManager.setAudioEffect(effectType, enabled) }
+    setAudioEffect(effectType: string, enabled: boolean): void { this.configurationManager.setAudioEffect(effectType, enabled);
     /**
      * 品質設定更新
      * @param qualityConfig - 品質設定
      */
-    updateQualitySettings(qualityConfig: any): void { this.configurationManager.updateQualitySettings(qualityConfig) }
+    updateQualitySettings(qualityConfig: any): void { this.configurationManager.updateQualitySettings(qualityConfig);
     /**
      * シーンを設定
      * @param scene - シーン名
      */
     setScene(scene: string): void { this.currentScene = scene }
-        console.log(`AudioManager: Scene, set to ${scene}`};
+        console.log(`AudioManager: Scene, set to ${scene}`}
     }
 
     /**
@@ -471,7 +472,7 @@ export class AudioManager {
     async fadeOutBGM(duration: number = 1000): Promise<void> { return new Promise((resolve) => { }
             console.log(`AudioManager: Fading, out BGM, over ${duration}ms`);
             setTimeout(resolve, duration);
-        };
+        }
     }
 
     /**
@@ -488,20 +489,20 @@ export class AudioManager {
      * @returns 処理成功フラグ
      */
     async onSceneChange(sceneName: string, options: any = {}: Promise<boolean> {
-        return await this.subsystemCoordinator.onSceneChange(sceneName, options) }
+        return await this.subsystemCoordinator.onSceneChange(sceneName, options);
     // ========== AudioContextコントロール ==========
 
     /**
      * AudioContextの再開
      */
-    async resumeContext(): Promise<void> { await this.contextManager.resumeAudioContext() }
+    async resumeContext(): Promise<void> { await this.contextManager.resumeAudioContext();
     // ========== サブシステム委譲メソッド ==========
 
     /**
      * BGMシステムメソッド委譲
      */''
     playBGM(trackName: string, options: any = { )): any {''
-        return this.subsystemCoordinator.delegateToBGMSystem('playBGM', [trackName, options]) }
+        return this.subsystemCoordinator.delegateToBGMSystem('playBGM', [trackName, options]);
 
     stopBGM()';'
         return this.subsystemCoordinator.delegateToBGMSystem('stopBGM', []);
@@ -513,13 +514,13 @@ export class AudioManager {
      * AudioControllerメソッド委譲'
      */''
     setVolumeLevel(category: string, volume: number, fadeTime: number = 0): any { ''
-        return this.subsystemCoordinator.delegateToController('setVolume', [category, volume, fadeTime]) }
+        return this.subsystemCoordinator.delegateToController('setVolume', [category, volume, fadeTime]);
 
     getVolumeLevel(category: string): any { ''
-        return this.subsystemCoordinator.delegateToController('getVolume', [category]) }
+        return this.subsystemCoordinator.delegateToController('getVolume', [category]);
 
     fadeInVolume(category: string, duration: number = 1.0, targetVolume: number | null = null): any { ''
-        return this.subsystemCoordinator.delegateToController('fadeIn', [category, duration, targetVolume]) }
+        return this.subsystemCoordinator.delegateToController('fadeIn', [category, duration, targetVolume]);
 
     fadeOutVolume(category: string, duration: number = 1.0, targetVolume: number = 0): any { ''
         return this.subsystemCoordinator.delegateToController('fadeOut', [category, duration, targetVolume]' }'
@@ -527,27 +528,26 @@ export class AudioManager {
      * AudioVisualizerメソッド委譲'
      */''
     enableVisualization(enabled: boolean): any { ''
-        return this.subsystemCoordinator.delegateToVisualizer('setEnabled', [enabled]) }
+        return this.subsystemCoordinator.delegateToVisualizer('setEnabled', [enabled]);
 
     setVisualizationStyle(style: string): any { ''
-        return this.subsystemCoordinator.delegateToVisualizer('setStyle', [style]) }
+        return this.subsystemCoordinator.delegateToVisualizer('setStyle', [style]);
     // ========== 状態・統計取得 ==========
 
     /**
      * AudioManagerの状態取得
      * @returns 状態情報
      */
-    getAudioManagerState(): AudioManagerState { return { isInitialized: this.isInitialized;
-            isEnabled: this.isEnabled;
-    volumes: {
-                master: this.masterVolume;
-                sfx: this.sfxVolume;
+    getAudioManagerState(): AudioManagerState { return { isInitialized: this.isInitialized,
+            isEnabled: this.isEnabled,
+    volumes: { master: this.masterVolume  ,
+                sfx: this.sfxVolume,
     bgm: this.bgmVolume };
                 muted: this._isMuted ;
     },
-            context: this.contextManager.getContextStatus();
-            playback: this.playbackController.getPlaybackStats();
-            configuration: this.configurationManager.getAllSettings();
+            context: this.contextManager.getContextStatus(),
+            playback: this.playbackController.getPlaybackStats(),
+            configuration: this.configurationManager.getAllSettings(),
             subsystems: this.subsystemCoordinator.getSubsystemStatus(
     soundGeneration: this.soundGenerator.getGenerationStatus();
         }
@@ -647,9 +647,9 @@ export class AudioManager {
     
 }
                     // 実際の設定適用は実装に依存 }
-                    console.log(`[AudioManager] 品質モードを${mode}に変更`};
-                } catch (error) {
-                console.warn('[AudioManager] 品質モードの変更に失敗:', error) }
+                    console.log(`[AudioManager] 品質モードを${mode}に変更`}
+        } catch (error) {
+                console.warn('[AudioManager] 品質モードの変更に失敗:', error);
         }
     /**
      * 現在の品質モードを取得
@@ -681,7 +681,7 @@ export class AudioManager {
             // ログ出力頻度を制御（前回と異なる状態の場合のみ）
             if (this.lastLoggedDisableState !== true) {
 
-                console.log('[AudioManager] オーディオシステムを無効化しました') }
+                console.log('[AudioManager] オーディオシステムを無効化しました');
 
                 this.lastLoggedDisableState = true;' }'
 
@@ -700,7 +700,7 @@ export class AudioManager {
 
             console.log('[AudioManager] オーディオシステムを有効化しました');
         } catch (error) {
-            console.warn('[AudioManager] 有効化中にエラー:', error) }
+            console.warn('[AudioManager] 有効化中にエラー:', error);
     }
 // シングルトンインスタンス管理
 let audioManagerInstance: AudioManager | null = null,
@@ -712,7 +712,7 @@ let audioManagerInstance: AudioManager | null = null,
  * @returns シングルトンインスタンス
  */
 export function getAudioManager(configManager: ConfigManager, audioConfig: AudioConfig): AudioManager { if (!audioManagerInstance) {
-        audioManagerInstance = new AudioManager(configManager, audioConfig) }
+        audioManagerInstance = new AudioManager(configManager, audioConfig) };
     return audioManagerInstance;
 }
 

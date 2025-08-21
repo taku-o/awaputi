@@ -11,28 +11,28 @@ declare global { interface Window {
     
     var testUtils: TestUtils,
     var, HTMLCanvasElement: { prototype: HTMLCanvasElement,
-        new(): HTMLCanvasElement;;
+        new(): HTMLCanvasElement;,
     var Image: { new(): MockImage,
-    var File: { new(bits: any[], name: string, options?: FilePropertyBag): File;;
+    var File: { new(bits: any[], name: string, options?: FilePropertyBag): File;,
     var FileReader: { new(): MockFileReader,
-    var Blob: { new(parts?: any[], options?: BlobPropertyBag): MockBlob;;
+    var Blob: { new(parts?: any[], options?: BlobPropertyBag): MockBlob;,
     var URL: MockURL,
     var ResizeObserver: { new(callback: ResizeObserverCallback): MockResizeObserver,
     var IntersectionObserver: { new(callback: IntersectionObserverCallback): MockIntersectionObserver,
-    var indexedDB: MockIndexedDB,
+    var indexedDB: MockIndexedDB  ,
 
 // モック型定義
-interface MockCanvasRenderingContext2D { fillRect: jest.Mock;
-    clearRect: jest.Mock;
-    strokeRect: jest.Mock;
-    beginPath: jest.Mock;
-    closePath: jest.Mock;
-    moveTo: jest.Mock;
-    lineTo: jest.Mock;
-    arc: jest.Mock;
-    fill: jest.Mock;
-    stroke: jest.Mock;
-    fillText: jest.Mock;
+interface MockCanvasRenderingContext2D { fillRect: jest.Mock,
+    clearRect: jest.Mock,
+    strokeRect: jest.Mock,
+    beginPath: jest.Mock,
+    closePath: jest.Mock,
+    moveTo: jest.Mock,
+    lineTo: jest.Mock,
+    arc: jest.Mock,
+    fill: jest.Mock,
+    stroke: jest.Mock,
+    fillText: jest.Mock,
     strokeText: jest.Mock }
     measureText: jest.Mock<{ width: number;>;
     drawImage: jest.Mock,
@@ -53,58 +53,57 @@ interface MockCanvasRenderingContext2D { fillRect: jest.Mock;
     textAlign: string,
     textBaseline: string,
     globalAlpha: number,
-    globalCompositeOperation: string,
-}
+    globalCompositeOperation: string }
 
-interface MockImage { onload: (() => void) | null;
-    onerror: (() => void) | null;
-    width: number;
-    height: number;
+interface MockImage { onload: (() => void) | null,
+    onerror: (() => void) | null,
+    width: number,
+    height: number,
     src: string;
     _src?: string;
 }
 
-interface MockFileReader { onload: ((event: any) => void) | null;
-    onerror: (() => void) | null;
-    onprogress: (() => void) | null;
-    result: string | null;
-    readyState: number;
-    readAsDataURL: (file: File) => void;
+interface MockFileReader { onload: ((event: any) => void) | null,
+    onerror: (() => void) | null,
+    onprogress: (() => void) | null,
+    result: string | null,
+    readyState: number,
+    readAsDataURL: (file: File) => void,
     readAsText: (file: File) => void 
     }
 
-interface MockBlob { size: number;
-    type: string;
-    parts: any[];
+interface MockBlob { size: number,
+    type: string,
+    parts: any[],
     slice: (start?: number, end?: number, contentType?: string) => MockBlob;
-    stream: () => ReadableStream;
-    text: () => Promise<string>;
+    stream: () => ReadableStream,
+    text: () => Promise<string>,
     arrayBuffer: () => Promise<ArrayBuffer>  }
 }
 
-interface MockURL { createObjectURL: jest.Mock<string>;
+interface MockURL { createObjectURL: jest.Mock<string>,
     revokeObjectURL: jest.Mock }
 
-interface MockResizeObserver { callback: ResizeObserverCallback;
-    observe: () => void;
-    unobserve: () => void;
+interface MockResizeObserver { callback: ResizeObserverCallback,
+    observe: () => void,
+    unobserve: () => void,
     disconnect: () => void 
     }
 
-interface MockIntersectionObserver { callback: IntersectionObserverCallback;
-    observe: () => void;
-    unobserve: () => void;
+interface MockIntersectionObserver { callback: IntersectionObserverCallback,
+    observe: () => void,
+    unobserve: () => void,
     disconnect: () => void 
     }
 
-interface MockStorage { getItem: jest.Mock<string | null>;
-    setItem: jest.Mock;
-    removeItem: jest.Mock;
-    clear: jest.Mock;
-    length: number;
+interface MockStorage { getItem: jest.Mock<string | null>,
+    setItem: jest.Mock,
+    removeItem: jest.Mock,
+    clear: jest.Mock,
+    length: number,
     key: jest.Mock<string | null> }
 
-interface MockIndexedDB { open: jest.Mock;
+interface MockIndexedDB { open: jest.Mock,
     deleteDatabase: jest.Mock }
 
 interface TestUtils { waitForElement: (selector: string, timeout?: number) => Promise<Element>,
@@ -121,45 +120,45 @@ global.TextDecoder = TextDecoder;
 global.HTMLCanvasElement.prototype.getContext = jest.fn((contextType: string): MockCanvasRenderingContext2D | null => {  ''
     if(contextType === '2d' {'
         return { // 描画メソッド
-            fillRect: jest.fn();
-            clearRect: jest.fn();
-            strokeRect: jest.fn();
-            beginPath: jest.fn();
-            closePath: jest.fn();
-            moveTo: jest.fn();
-            lineTo: jest.fn();
-            arc: jest.fn();
+            fillRect: jest.fn(),
+            clearRect: jest.fn(),
+            strokeRect: jest.fn(),
+            beginPath: jest.fn(),
+            closePath: jest.fn(),
+            moveTo: jest.fn(),
+            lineTo: jest.fn(),
+            arc: jest.fn(),
             fill: jest.fn(
-    stroke: jest.fn() }
+    stroke: jest.fn();
             // テキスト描画 }
-            fillText: jest.fn() },
-            strokeText: jest.fn() }
+            fillText: jest.fn() ,
+            strokeText: jest.fn(),
             measureText: jest.fn<{ width: number;>(() => ({ width: 100 }),
             // 画像描画
             drawImage: jest.fn();
             // トランスフォーム
-            save: jest.fn();
-            restore: jest.fn();
-            translate: jest.fn();
-            rotate: jest.fn();
+            save: jest.fn(),
+            restore: jest.fn(),
+            translate: jest.fn(),
+            rotate: jest.fn(),
             scale: jest.fn(
     transform: jest.fn(
-            setTransform: jest.fn('',
-    fillStyle: '#000000',
-            strokeStyle: '#000000',
+            setTransform: jest.fn(,
+    fillStyle: '#000000,
+            strokeStyle: '#000000,
             lineWidth: 1,
-            font: '12px Arial',
-            textAlign: 'start',
-            textBaseline: 'alphabetic',
+            font: '12px Arial,
+            textAlign: 'start,
+            textBaseline: 'alphabetic,
             globalAlpha: 1,';'
             globalCompositeOperation: 'source-over');
             // イメージデータ)
-           , createImageData: jest.fn(() => ({ data: new, Uint8ClampedArray(4);
+            createImageData: jest.fn(() => ({ data: new, Uint8ClampedArray(4);
                 width: 1,
-    height: 1 },
+    height: 1 ,
             getImageData: jest.fn(() => ({ data: new, Uint8ClampedArray(4);
                 width: 1,
-    height: 1 },
+    height: 1 ,
             putImageData: jest.fn();
         }
     return null;
@@ -208,13 +207,13 @@ global.File = class MockFileClass { bits: any[],
     type: string,
     size: number,
     lastModified: number);
-    constructor(bits: any[], name: string, options: FilePropertyBag = {)) {
+    constructor(bits: any[], name: string, options: FilePropertyBag = {) {
         this.bits = bits;
 
         this.name = name;
         this.type = options.type || ';'
         this.size = bits.reduce((size, bit) => size + bit.length, 0),
-        this.lastModified = Date.now() }
+        this.lastModified = Date.now();
 } as any;
 
 global.FileReader = class MockFileReaderClass implements MockFileReader { onload: ((event: any) => void) | null = null,
@@ -264,11 +263,9 @@ global.Blob = class MockBlobClass implements MockBlob { size: number,
     
     stream(): ReadableStream { return new ReadableStream({)
             start(controller) {
-                controller.enqueue(new Uint8Array([1, 2, 3, 4]) }
-                controller.close(); }
-};
-    }
-
+                controller.enqueue(new Uint8Array([1, 2, 3, 4]);
+                controller.close();     }
+}
     text()';'
         return Promise.resolve(this.parts.join();
     }
@@ -278,42 +275,42 @@ global.Blob = class MockBlobClass implements MockBlob { size: number,
 
 // URL API モック
 global.URL = { ''
-    createObjectURL: jest.fn<string>(() => 'blob:http://localhost/test',
+    createObjectURL: jest.fn<string>(() => 'blob:http://localhost/test,
     revokeObjectURL: jest.fn()','
 Object.defineProperty(global.navigator, 'share', {);
     value: jest.fn().mockResolvedValue(undefined,
     writable: true'
-            }'
+            }
 
 }');'
 Object.defineProperty(global.navigator, 'canShare', { );
     value: jest.fn().mockReturnValue(true,
     writable: true'
-            }'
+            }
 
 }');'
 Object.defineProperty(global.navigator, 'userAgent', { '),'
-    value: 'Mozilla/5.0(Test, Environment) AppleWebKit/537.36',
+    value: 'Mozilla/5.0(Test, Environment) AppleWebKit/537.36,
     writable: true'
-            }'
+            }
 
 }');'
 Object.defineProperty(global.navigator, 'platform', { ')'
-    value: 'Test',')',
+    value: 'Test,'),
     writable: true','
 
 Object.defineProperty(global.navigator, 'language', {''
-    value: 'ja-JP',')',
+    value: 'ja-JP,'),
     writable: true','
 
 Object.defineProperty(global.navigator, 'languages', {''
-    value: ['ja-JP', 'ja', 'en-US', 'en'],')',
+    value: ['ja-JP, 'ja, 'en-US', 'en'],')',
     writable: true'),'
 ','
 // Clipboard API モック
 Object.defineProperty(global.navigator, 'clipboard', {)
     value: {),
-        writeText: jest.fn().mockResolvedValue(undefined,
+        writeText: jest.fn().mockResolvedValue(undefined ,
         readText: jest.fn().mockResolvedValue('test, text),'
         write: jest.fn().mockResolvedValue(undefined,
     read: jest.fn().mockResolvedValue([]  }
@@ -321,57 +318,57 @@ Object.defineProperty(global.navigator, 'clipboard', {)
 }','
 // Permissions API モック
 Object.defineProperty(global.navigator, 'permissions', { ''
-    value: {',''
-        query: jest.fn().mockResolvedValue({ state: 'granted  };'
+    value: { ',''
+        query: jest.fn().mockResolvedValue({ state: 'granted   ,' };
     writable: true','
 }','
 // Performance API 強化
 Object.defineProperty(global.performance, 'now', { );
     value: jest.fn(() => Date.now(
     writable: true'
-            }'
+            }
 
 }');'
 Object.defineProperty(global.performance, 'mark', { );
     value: jest.fn(
     writable: true'
-            }'
+            }
 
 }');'
 Object.defineProperty(global.performance, 'measure', { );
     value: jest.fn(
     writable: true'
-            }'
+            }
 
 }');'
 Object.defineProperty(global.performance, 'getEntriesByType', { );
     value: jest.fn(() => [],
     writable: true'
-            }'
+            }
 
 }');'
 Object.defineProperty(global.performance, 'getEntriesByName', { );
     value: jest.fn(() => [],
     writable: true'
-            }'
+            }
 
 }');'
 Object.defineProperty(global.performance, 'clearMarks', { );
     value: jest.fn(
     writable: true'
-            }'
+            }
 
 }');'
 Object.defineProperty(global.performance, 'clearMeasures', { );
     value: jest.fn(
     writable: true'
-            }'
+            }
 
 }');'
 Object.defineProperty(global.performance, 'memory', { value: {
-        usedJSHeapSize: 10000000);
+        usedJSHeapSize: 10000000),
         totalJSHeapSize: 50000000,
-    jsHeapSizeLimit: 2000000000 }
+    jsHeapSizeLimit: 2000000000 } },
     writable: true),
 // ResizeObserver モック
 global.ResizeObserver = class MockResizeObserverClass implements MockResizeObserver { callback: ResizeObserverCallback,
@@ -383,7 +380,7 @@ global.ResizeObserver = class MockResizeObserverClass implements MockResizeObser
             this.callback([{
             });
                 target: document.body) }]
-                contentRect: { width: 800, height: 600  };]
+                contentRect: { width: 800, height: 600   ,]
             } as ResizeObserverEntry]);
         }, 0);
     }
@@ -411,7 +408,7 @@ global.IntersectionObserver = class MockIntersectionObserverClass implements Moc
 // LocalStorage モック
 const localStorageMock = (() => {  }
     let store: Record<string, string> = {};
-    
+
     return { getItem: jest.fn<string | null>((key: string) => store[key] || null,
         setItem: jest.fn((key: string, value: string) => {  },
             store[key] = String(value); }
@@ -439,7 +436,7 @@ global.indexedDB = { open: jest.fn(() => {
                         add: jest.fn(),
                         put: jest.fn(),
                         get: jest.fn(
-    delete: jest.fn() }
+    delete: jest.fn(),
                         clear: jest.fn(),
     );
                 );
@@ -453,8 +450,7 @@ global.indexedDB = { open: jest.fn(() => {
         
         return request;
     },
-    deleteDatabase: jest.fn(),
-};
+    deleteDatabase: jest.fn() };
 
 // Window methods
 global.window.open = jest.fn();
@@ -463,14 +459,14 @@ global.window.focus = jest.fn();
 
 // CSS モック
 global.getComputedStyle = jest.fn(() => ({ ''
-    getPropertyValue: jest.fn(() => '',
-    width: '100px',
-    height: '100px',
-    display: 'block',
-    visibility: 'visible',
-    opacity: '1',
-    transform: 'none',
-    transition: 'none',
+    getPropertyValue: jest.fn(() => ,
+    width: '100px,
+    height: '100px,
+    display: 'block,
+    visibility: 'visible,
+    opacity: '1,
+    transform: 'none,
+    transition: 'none,
     animation: 'none'
             }
 } as CSSStyleDeclaration);
@@ -487,7 +483,7 @@ global.fetch = jest.fn(() =>;
         status: 200,
     json: () => Promise.resolve({),''
         text: () => Promise.resolve(),
-        blob: () => Promise.resolve(new, Blob()  }
+        blob: () => Promise.resolve(new, Blob();
     } as Response)
 );
 
@@ -498,7 +494,7 @@ global.console = { ...originalConsole,
     warn: jest.fn(),
     error: jest.fn(),
     info: jest.fn(
-    debug: jest.fn(  },
+    debug: jest.fn(  ,
 // テスト後のクリーンアップ
 afterEach(() => {  // DOM をクリーンアップ
     document.body.innerHTML = ','
@@ -532,12 +528,12 @@ global.testUtils = { // DOM要素の存在確認
                 if (element) { }
                     resolve(element); }
                 } else if (Date.now() - startTime >= timeout) {
-                    reject(new, Error(`Element ${selector} not, found within ${timeout}ms`}};
-                } else { setTimeout(checkElement, 100) }
+                    reject(new, Error(`Element ${selector} not, found within ${timeout}ms`}}
+                } else { setTimeout(checkElement, 100);
             };
             
             checkElement();
-        };
+        }
     },
     
     // イベントの発火をシミュレート
@@ -557,7 +553,7 @@ global.testUtils = { // DOM要素の存在確認
                         resolve(); }
                     } else if (Date.now() - startTime >= timeout) {
                         reject(new, Error(`Condition, not met, within ${timeout}ms`);
-                    } else { setTimeout(checkCondition, 100) } catch (error) { reject(error) }
+                    } else { setTimeout(checkCondition, 100) } catch (error) { reject(error);
             };
             ';'
 

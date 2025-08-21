@@ -5,185 +5,175 @@
  */
 
 // 型定義
-export interface CulturalAdaptationConfig { enabled: boolean;
-    rtlLanguages: string[];
+export interface CulturalAdaptationConfig { enabled: boolean,
+    rtlLanguages: string[],
     numeralSystems: Record<string, NumeralSystem>;
     dateFormats: Record<string, string>;
     colorMeanings: Record<string, ColorMeanings>;
-    gestureConventions: Record<string, GestureConventions> }
-
+    gestureConventions: Record<string, GestureConventions> };
 export interface ColorMeanings { [color: string]: string;
-
-export interface GestureConventions { [gesture: string]: GestureAppropriateness;
-
-export interface RegionalUISettings { textDirection: TextDirection;
-    fontFamily: string;
-    fontSize: string;
-    lineHeight: number;
-    spacing: SpacingMode;
+    export interface GestureConventions { [gesture: string]: GestureAppropriateness;
+    export interface RegionalUISettings { textDirection: TextDirection,
+    fontFamily: string,
+    fontSize: string,
+    lineHeight: number,
+    spacing: SpacingMode,
     preferredInputMethod: InputMethod;
-
-export interface TimeFormatSettings { time12: boolean;
-    dateFormat: string;
-    timeFormat: string;
-    weekStart: number;
+    export interface TimeFormatSettings { time12: boolean,
+    dateFormat: string,
+    timeFormat: string,
+    weekStart: number,
     era: CalendarEra;
-
-export interface NumberFormatSettings { decimal: string;
-    thousands: string;
-    currency: string;
+    export interface NumberFormatSettings { decimal: string,
+    thousands: string,
+    currency: string,
     currencyPosition: CurrencyPosition;
-
-export interface CulturalAdaptationStats { supportedRTLLanguages: number;
-    supportedNumeralSystems: number;
-    supportedDateFormats: number;
-    supportedColorMeanings: number;
-    supportedGestureConventions: number;
-    regionalUILanguages: number;
-    timeFormatLanguages: number;
+    export interface CulturalAdaptationStats { supportedRTLLanguages: number,
+    supportedNumeralSystems: number,
+    supportedDateFormats: number,
+    supportedColorMeanings: number,
+    supportedGestureConventions: number,
+    regionalUILanguages: number,
+    timeFormatLanguages: number,
     numberFormatLanguages: number;
-
-export interface CulturalDebugInfo { language: string;
-    isRTL: boolean;
-    textDirection: TextDirection;
-    numeralSystem: NumeralSystem;
-    dateFormat: string;
-    uiSettings: RegionalUISettings;
-    timeFormat: TimeFormatSettings;
-    numberFormat: NumberFormatSettings;
+    export interface CulturalDebugInfo { language: string,
+    isRTL: boolean,
+    textDirection: TextDirection,
+    numeralSystem: NumeralSystem,
+    dateFormat: string,
+    uiSettings: RegionalUISettings,
+    timeFormat: TimeFormatSettings,
+    numberFormat: NumberFormatSettings,
     stats: CulturalAdaptationStats;
-
-export interface NumberFormatOptions { style: NumberFormatType;
+    export interface NumberFormatOptions { style: NumberFormatType;
     currency?: string;
 
 // 列挙型
 export type NumeralSystem = 'latin' | 'arab' | 'persian' | 'thai' | 'devanagari';
-export type TextDirection = 'ltr' | 'rtl';
-export type SpacingMode = 'compact' | 'normal' | 'comfortable' | 'wide';
-export type InputMethod = 'mouse' | 'keyboard' | 'touch' | 'mixed';
-export type GestureAppropriateness = 'acceptable' | 'avoid' | 'ok' | 'approval';
-export type CalendarEra = 'ad' | 'hijri';
-export type CurrencyPosition = 'before' | 'after';
-export type NumberFormatType = 'decimal' | 'currency' | 'percent';
-
-export class CulturalAdaptationHandler {
+    export type TextDirection = 'ltr' | 'rtl';
+    export type SpacingMode = 'compact' | 'normal' | 'comfortable' | 'wide';
+    export type InputMethod = 'mouse' | 'keyboard' | 'touch' | 'mixed';
+    export type GestureAppropriateness = 'acceptable' | 'avoid' | 'ok' | 'approval';
+    export type CalendarEra = 'ad' | 'hijri';
+    export type CurrencyPosition = 'before' | 'after';
+    export type NumberFormatType = 'decimal' | 'currency' | 'percent';
+    export class CulturalAdaptationHandler {
     private culturalAdaptation: CulturalAdaptationConfig;
     private, regionalUISettings: Record<string, RegionalUISettings>,
     private timeFormats: Record<string, TimeFormatSettings>;
     private numberFormats: Record<string, NumberFormatSettings>;
-
     constructor('''
             rtlLanguages: ['ar', 'he', 'fa', 'ur'];
-            numeralSystems: {', 'ar': 'arab';'
-                'fa': 'persian',
-                'th': 'thai',
+    numeralSystems: {', 'ar': 'arab';'
+                'fa': 'persian,
+                'th': 'thai,
                 'hi': 'devanagari' },
 
             dateFormats: { ', 'ja': 'YYYY年MM月DD日';'
-                'en': 'MM/DD/YYYY',
-                'en-GB': 'DD/MM/YYYY',
-                'de': 'DD.MM.YYYY',
+                'en': 'MM/DD/YYYY,
+                'en-GB': 'DD/MM/YYYY,
+                'de': 'DD.MM.YYYY,
                 'fr': 'DD/MM/YYYY' },
 
             colorMeanings: { }', 'ja': { red: 'danger', green: 'safety', blue: 'trust'
-            },', 'en': { red: 'danger', green: 'success', blue: 'information'
-            },', 'zh': { red: 'luck', gold: 'prosperity', white: 'purity'
-            },
+            ,', 'en': { red: 'danger', green: 'success', blue: 'information'
+            ,', 'zh': { red: 'luck', gold: 'prosperity', white: 'purity'
+            ,
 
             gestureConventions: { }', 'ja': { pointing: 'avoid', thumbUp: 'ok'
-            },', 'en': { pointing: 'acceptable', thumbUp: 'approval'
-            },', 'ar': { leftHand: 'avoid', thumbUp: 'acceptable'
+            ,', 'en': { pointing: 'acceptable', thumbUp: 'approval'
+            ,', 'ar': { leftHand: 'avoid', thumbUp: 'acceptable'
             }
         };
         
         // 地域固有の UI 設定
         this.regionalUISettings = { ', 'ja': {''
-                textDirection: 'ltr',
-                fontFamily: 'Noto Sans JP, "Hiragino Kaku Gothic ProN", Meiryo, sans-serif',
-                fontSize: '14px',
+                textDirection: 'ltr,
+                fontFamily: 'Noto Sans JP, "Hiragino Kaku Gothic ProN, Meiryo, sans-serif',
+                fontSize: '14px,
                 lineHeight: 1.6,
-                spacing: 'comfortable',
+                spacing: 'comfortable,
                 preferredInputMethod: 'keyboard'
-            }
+            } }
 
             },', 'en': { ''
-                textDirection: 'ltr',
-                fontFamily: 'Roboto, "Segoe UI", sans-serif',
-                fontSize: '14px',
+                textDirection: 'ltr,
+                fontFamily: 'Roboto, "Segoe UI, sans-serif',
+                fontSize: '14px,
                 lineHeight: 1.4,
-                spacing: 'normal',
+                spacing: 'normal,
                 preferredInputMethod: 'mouse'
             }
 
             },', 'ar': { ''
-                textDirection: 'rtl',
-                fontFamily: 'Noto Sans Arabic, "Traditional Arabic", sans-serif',
-                fontSize: '16px',
+                textDirection: 'rtl,
+                fontFamily: 'Noto Sans Arabic, "Traditional Arabic, sans-serif',
+                fontSize: '16px,
                 lineHeight: 1.8,
-                spacing: 'wide',
+                spacing: 'wide,
                 preferredInputMethod: 'keyboard'
             }
 
             },', 'zh': {;'
-                textDirection: 'ltr',
-                fontFamily: 'Noto Sans SC, "Microsoft YaHei", sans-serif',
-                fontSize: '14px',
+                textDirection: 'ltr,
+                fontFamily: 'Noto Sans SC, "Microsoft YaHei, sans-serif',
+                fontSize: '14px,
                 lineHeight: 1.5,
-                spacing: 'compact',
+                spacing: 'compact,
                 preferredInputMethod: 'mixed'
             }
         };
         // 時刻・日付フォーマット
         this.timeFormats = {;
             'ja': {'
-                time12: false,
-                dateFormat: 'YYYY/MM/DD',
-                timeFormat: 'HH:mm',
+                time12: false };
+                dateFormat: 'YYYY/MM/DD,
+                timeFormat: 'HH:mm,
                 weekStart: 1, // Monday,
                 era: 'ad'
             }
 
             },', 'en': { time12: true,''
-                dateFormat: 'MM/DD/YYYY',
-                timeFormat: 'h:mm A',
+                dateFormat: 'MM/DD/YYYY,
+                timeFormat: 'h:mm A,
                 weekStart: 0, // Sunday,
                 era: 'ad'
             }
 
             },', 'ar': { time12: true,''
-                dateFormat: 'DD/MM/YYYY',
-                timeFormat: 'h:mm A',
+                dateFormat: 'DD/MM/YYYY,
+                timeFormat: 'h:mm A,
                 weekStart: 6, // Saturday,
                 era: 'hijri' // イスラム暦オプション  }
         };
         // 数値・通貨フォーマット
         this.numberFormats = { ', 'ja': {''
-                decimal: '.',
-                thousands: ',',
-                currency: '¥',
+                decimal: '.,
+                thousands: ,',
+                currency: '¥,
                 currencyPosition: 'before'
-            }
+            } }
 
             },', 'en': { ''
-                decimal: '.',
-                thousands: ',',
-                currency: '$',
+                decimal: '.,
+                thousands: ,',
+                currency: '$,
                 currencyPosition: 'before'
             }
 
             },', 'de': { ''
-                decimal: ',',
-                thousands: '.',
-                currency: '€',
+                decimal: ,',
+                thousands: '.,
+                currency: '€,
                 currencyPosition: 'after'
             }
 
             },', 'ar': { ''
-                decimal: '.',
-                thousands: ',',
-                currency: 'ر.س',
+                decimal: '.,
+                thousands: ,',
+                currency: 'ر.س,
                 currencyPosition: 'after'
-            }'
+            }
     }
     
     /**
@@ -192,7 +182,7 @@ export class CulturalAdaptationHandler {
      * @returns RTLかどうか
      */'
     isRTLLanguage(language: string): boolean {,
-        return this.culturalAdaptation.rtlLanguages.includes(language) }
+        return this.culturalAdaptation.rtlLanguages.includes(language);
     
     /**
      * 言語に応じた文字方向を取得'
@@ -270,9 +260,9 @@ export class CulturalAdaptationHandler {
         const timeSettings = this.getTimeFormat(language);
         try {
             return new Intl.DateTimeFormat(language, {''
-                year: 'numeric',
+                year: 'numeric,
                 month: '2-digit',','
-                day: '2-digit',')',
+                day: '2-digit,')',
                 calendar: timeSettings.era === 'hijri' ? 'islamic' : 'gregory')).format(date  } catch (error) { // フォールバック
             const year = date.getFullYear();
             const month = String(date.getMonth() + 1').padStart(2, '0','
@@ -281,7 +271,7 @@ export class CulturalAdaptationHandler {
 
             return format','
                 .replace('YYYY', year.toString())','
-                .replace('MM', month'',
+                .replace('MM, month'',
                 .replace('DD', day' }'
     }
     
@@ -296,12 +286,12 @@ export class CulturalAdaptationHandler {
         try {
             return new Intl.DateTimeFormat(language, {''
                 hour: '2-digit',','
-                minute: '2-digit');
+                minute: '2-digit'),
                 hour12: timeSettings.time12)).format(date  } catch (error) { // フォールバック
             const hours = timeSettings.time12 ,
                 ? date.getHours() % 12 || 12,
                 : date.getHours();
-            const minutes = String(date.getMinutes()).padStart(2, '0',
+            const minutes = String(date.getMinutes()).padStart(2, '0,
 
             const ampm = timeSettings.time12 ','
                 ? (date.getHours() >= 12 ? 'PM' : 'AM')','
@@ -341,11 +331,11 @@ export class CulturalAdaptationHandler {
      * @returns 通貨コード'
      */''
     getCurrencyCode(language: string): string { const currencyMap: Record<string, string> = {', 'ja': 'JPY','
-            'en': 'USD',
-            'en-GB': 'GBP',
-            'de': 'EUR',
-            'fr': 'EUR',
-            'ar': 'SAR',
+            'en': 'USD,
+            'en-GB': 'GBP,
+            'de': 'EUR,
+            'fr': 'EUR,
+            'ar': 'SAR,
             'zh': 'CNY' 
     };
         return currencyMap[language] || 'USD';
@@ -358,7 +348,7 @@ export class CulturalAdaptationHandler {
      */
     applyCSSDirection(element: HTMLElement, language: string): void { if (element) {
             element.dir = this.getTextDirection(language);
-            element.style.direction = this.getTextDirection(language) }
+            element.style.direction = this.getTextDirection(language);
     }
     
     /**
@@ -370,14 +360,14 @@ export class CulturalAdaptationHandler {
             const settings = this.getRegionalUISettings(language);
             element.style.fontFamily = settings.fontFamily,
             element.style.fontSize = settings.fontSize,
-            element.style.lineHeight = settings.lineHeight.toString() }
+            element.style.lineHeight = settings.lineHeight.toString();
     }
     
     /**
      * 文化的適応設定を更新
      * @param newSettings 新しい設定
      */
-    updateCulturalSettings(newSettings: Partial<CulturalAdaptationConfig>): void { Object.assign(this.culturalAdaptation, newSettings) }
+    updateCulturalSettings(newSettings: Partial<CulturalAdaptationConfig>): void { Object.assign(this.culturalAdaptation, newSettings);
     
     /**
      * 地域UI設定を更新
@@ -385,7 +375,7 @@ export class CulturalAdaptationHandler {
      * @param settings UI設定
      */
     updateRegionalUISettings(language: string, settings: Partial<RegionalUISettings>): void { this.regionalUISettings[language] = { 
-            ...this.regionalUISettings[language], ,
+            ...this.regionalUISettings[language],
             ...settings }
     
     /**
@@ -423,7 +413,7 @@ export class CulturalAdaptationHandler {
      * @param language 言語コード
      * @returns サポートされているかどうか
      */
-    isLanguageSupported(language: string): boolean { return this.getSupportedLanguages().includes(language) }
+    isLanguageSupported(language: string): boolean { return this.getSupportedLanguages().includes(language);
     
     /**
      * 文化的適応の統計情報を取得
@@ -435,8 +425,8 @@ export class CulturalAdaptationHandler {
             supportedColorMeanings: Object.keys(this.culturalAdaptation.colorMeanings).length,
             supportedGestureConventions: Object.keys(this.culturalAdaptation.gestureConventions).length,
             regionalUILanguages: Object.keys(this.regionalUISettings).length,
-    timeFormatLanguages: Object.keys(this.timeFormats).length },
-            numberFormatLanguages: Object.keys(this.numberFormats).length 
+    timeFormatLanguages: Object.keys(this.timeFormats).length ,
+            numberFormatLanguages: Object.keys(this.numberFormats).length; 
     }
     
     /**
@@ -445,13 +435,13 @@ export class CulturalAdaptationHandler {
      * @returns デバッグ情報
      */
     getDebugInfo(language: string): CulturalDebugInfo { return { language,
-            isRTL: this.isRTLLanguage(language);
-            textDirection: this.getTextDirection(language);
-            numeralSystem: this.getNumeralSystem(language);
-            dateFormat: this.getDateFormat(language);
-            uiSettings: this.getRegionalUISettings(language);
+            isRTL: this.isRTLLanguage(language),
+            textDirection: this.getTextDirection(language),
+            numeralSystem: this.getNumeralSystem(language),
+            dateFormat: this.getDateFormat(language),
+            uiSettings: this.getRegionalUISettings(language),
             timeFormat: this.getTimeFormat(language,
-    numberFormat: this.getNumberFormat(language) },
+    numberFormat: this.getNumberFormat(language) ,
             stats: this.getCulturalAdaptationStats(); 
     }
     
@@ -460,7 +450,7 @@ export class CulturalAdaptationHandler {
      * @returns 全設定のJSON表現
      */
     exportSettings(): string { return JSON.stringify({
-            culturalAdaptation: this.culturalAdaptation);
+            culturalAdaptation: this.culturalAdaptation),
             regionalUISettings: this.regionalUISettings,
     timeFormats: this.timeFormats),
             numberFormats: this.numberFormats), null, 2 }

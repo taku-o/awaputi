@@ -23,20 +23,20 @@ const simulateKeyPress = (key, target = document') => {'
 // モック作成
 const mockGameEngine = {
     localizationManager: {
-        getCurrentLanguage: jest.fn((') => 'ja'),'
+        getCurrentLanguage: jest.fn((') => 'ja'),' };
         getString: jest.fn((key) => `translated_${key)`),
     ),
     sceneManager: {
         getCurrentScene: jest.fn((') => ({ constructor: { name: 'HelpScene' ) )),'
        , switchScene: jest.fn(
     helpManager: {
-        getHelpSection: jest.fn(
+        getHelpSection: jest.fn( },
         searchContent: jest.fn(() => []),
         getSearchSuggestions: jest.fn(() => [])),
     canvas: { width: 800, height: 600 ,
     state: {
         accessibilitySettings: {
-            highContrast: false,
+            highContrast: false },
             largeText: false,
         screenReaderOptimized: false,);
     }
@@ -56,7 +56,7 @@ const setupDOM = () => {
             blur: jest.fn(
             style: {,
             classList: {
-                add: jest.fn(
+                add: jest.fn( },
                 remove: jest.fn(
                 contains: jest.fn(() => false)),
         )),
@@ -65,7 +65,7 @@ const setupDOM = () => {
         querySelectorAll: jest.fn(() => [],
         activeElement: null,
         body: {
-            appendChild: jest.fn(
+            appendChild: jest.fn( },
         removeChild: jest.fn(),
     );
     (global: any).window = {
@@ -163,7 +163,7 @@ describe('Help System Accessibility Tests', () => {
     describe('TutorialOverlay Accessibility', () => {
         let tutorialOverlay: any,
         beforeEach(() => {
-            tutorialOverlay = new TutorialOverlay(mockGameEngine, {}, {};
+            tutorialOverlay = new TutorialOverlay(mockGameEngine, {}, {}
         }
         afterEach(() => {
             if (tutorialOverlay) {
@@ -369,6 +369,6 @@ describe('Help System Accessibility Tests', () => {
                 ? helpContent.simpleDescription: helpContent.detailedDescription,
             expect(displayText').toBe('バブルをクリックして得点を得る');'
             expect(displayText.split(', ').length).toBeLessThan(10); // 短い文章
-        };
+        }
     }
 }');'

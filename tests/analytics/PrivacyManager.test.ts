@@ -13,9 +13,9 @@ import { PrivacyManager } from '../../src/analytics/PrivacyManager';
         addEventListener: jest.fn()
     )),
     body: {
-        appendChild: jest.fn(),
+        appendChild: jest.fn() },
     head: {
-        appendChild: jest.fn(),
+        appendChild: jest.fn() },
     getElementById: jest.fn(() => null),
     );
 // LocalStorageのモック
@@ -81,7 +81,7 @@ describe('PrivacyManager', () => {
             manager.saveConsentStatus();
             expect(localStorageMock.setItem').toHaveBeenCalledWith('
                 'bubblePopAnalyticsConsent',
-                expect.stringContaining('"status":true'};
+                expect.stringContaining('"status":true'}
         }');'
         test('保存エラーが適切に処理される', () => {
             localStorageMock.setItem.mockImplementation((') => {'
@@ -175,7 +175,7 @@ describe('PrivacyManager', () => {
         test('ネストされたオブジェクトが匿名化される', (') => {'
             const data = {
                 session: {
-                    sessionId: 'test-session',
+                    sessionId: 'test-session' },
                     user: {
                         ipAddress: '192.168.1.100'
                     }
@@ -285,6 +285,6 @@ describe('PrivacyManager', () => {
             
             const result = await manager.requestConsent();
             expect(result).toBe(true);
-            expect(global.document.createElement).not.toHaveBeenCalled() };
+            expect(global.document.createElement).not.toHaveBeenCalled() }
     }
 }');'

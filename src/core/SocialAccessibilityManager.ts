@@ -5,7 +5,7 @@
 
 import { ErrorHandler  } from '../utils/ErrorHandler.js';
 
-export class SocialAccessibilityManager {'
+export class SocialAccessibilityManager {
 
     constructor(socialSharingManager) {
         this.socialSharingManager = socialSharingManager;
@@ -13,69 +13,69 @@ export class SocialAccessibilityManager {'
         // 設定
         this.config = {
             // WCAG 準拠設定
-            wcag: {''
-                level: 'AA', // A, AA, AAA;
+            wcag: { ''
+                level: 'AA', // A, AA, AAA  },
                 colorContrast: {
                     normal: 4.5 }
                     large: 3.0 
     };
                 focusIndicator: { ''
-                    width: '3px';
+                    width: '3px' ,
                     color: '#005fcc'
             }
             };
             // スクリーンリーダー設定
-            screenReader: { enabled: true;
-                announcements: true;
-    verbose: false;
+            screenReader: { enabled: true,
+                announcements: true  ,
+    verbose: false,
                 language: 'ja'
             };
             // キーボードナビゲーション設定
             keyboard: { enabled: true,''
-                tabSequence: 'logical';
-                shortcuts: true;
+                tabSequence: 'logical' ,
+                shortcuts: true,
     focusTrapping: true;
             // 高コントラスト設定
             highContrast: { enabled: false,''
-                backgroundColor: '#000000';
-                textColor: '#ffffff';
+                backgroundColor: '#000000' ,
+                textColor: '#ffffff,
                 borderColor: '#ffffff'
             };
             // 動きの軽減設定
-            reducedMotion: { enabled: false;
-                animations: false;
+            reducedMotion: { enabled: false,
+                animations: false  ,
     transitions: false;
         // 状態管理
-        this.state = { enabled: true;
-            currentFocus: null;
-            focusHistory: [];
-            announcements: [];
+        this.state = { enabled: true,
+            currentFocus: null,
+            focusHistory: [],
+            announcements: [],
     screenReaderActive: false;
         // DOM要素管理
-        this.elements = { announcer: null;
-            skipLinks: null;
-            focusIndicator: null;
+        this.elements = { announcer: null,
+            skipLinks: null,
+            focusIndicator: null,
     contrastOverlay: null;
         // イベントハンドラー
-        this.handlers = { keydown: this.handleKeydown.bind(this;
-            focus: this.handleFocus.bind(this);
-            blur: this.handleBlur.bind(this;
-    preferredColorSchemeChange: this.handlePreferredColorSchemeChange.bind(this;
+        this.handlers = { keydown: this.handleKeydown.bind(this,
+            focus: this.handleFocus.bind(this),
+            blur: this.handleBlur.bind(this,
+    preferredColorSchemeChange: this.handlePreferredColorSchemeChange.bind(this,
             preferredReducedMotionChange: this.handlePreferredReducedMotionChange.bind(this  };
         
         // ショートカットキー定義
         this.shortcuts = {
             'Alt+1': 'focusMainShareButton';
-            'Alt+2': 'showShareDialog',
-            'Alt+3': 'toggleHighContrast',
-            'Alt+4': 'announceCurrentState',
+            'Alt+2': 'showShareDialog,
+            'Alt+3': 'toggleHighContrast,
+            'Alt+4': 'announceCurrentState,
             'Escape': 'closeCurrentDialog' };
         
         // 統計
-        this.stats = { focusChanges: 0;
-            announcements: 0;
+        this.stats = { focusChanges: 0,
+            announcements: 0,
     keyboardInteractions: 0 }
-            shortcutUses: {};
+            shortcutUses: {},
             accessibilityViolations: 0;
         },
         
@@ -128,7 +128,7 @@ export class SocialAccessibilityManager {'
         this.config.screenReader.language = language.split('-')[0];
 
         this.log('ユーザー設定検出完了', { highContrast: this.config.highContrast.enabled)
-           , reducedMotion: this.config.reducedMotion.enabled,','
+            reducedMotion: this.config.reducedMotion.enabled,','
             language: this.config.screenReader.language  }
     
     /**
@@ -182,7 +182,7 @@ export class SocialAccessibilityManager {'
         const focusColor = this.config.wcag.focusIndicator.color,
         const focusWidth = this.config.wcag.focusIndicator.width,
         
-        return `,
+        return ,
             /* ソーシャル機能のフォーカススタイル */
             .share-button-main:focus,
             .share-button-platform:focus,
@@ -191,8 +191,7 @@ export class SocialAccessibilityManager {'
             .challenge-item:focus { }
                 outline: ${focusWidth} solid ${focusColor} !important,
                 outline-offset: 2px !important,
-                box-shadow: 0 0 0 ${focusWidth} ${focusColor} !important,
-            }
+                box-shadow: 0 0 0 ${focusWidth} ${focusColor} !important }
             
             /* スキップリンクのスタイル */
             .skip-links { position: fixed,
@@ -226,8 +225,7 @@ export class SocialAccessibilityManager {'
             .high-contrast-mode .leaderboard-container {
                 background: ${this.config.highContrast.backgroundColor} !important,
                 color: ${this.config.highContrast.textColor} !important,
-                border: 2px solid ${this.config.highContrast.borderColor} !important,
-            }
+                border: 2px solid ${this.config.highContrast.borderColor} !important }
             
             /* 動きの軽減 */
             .reduced-motion-mode * { animation-duration: 0.01ms !important,
@@ -259,7 +257,7 @@ export class SocialAccessibilityManager {'
      */
     detectScreenReader() {
         // 一般的なスクリーンリーダーの検出
-        const userAgent = navigator.userAgent.toLowerCase('',
+        const userAgent = navigator.userAgent.toLowerCase(',
         const screenReaders = ['nvda', 'jaws', 'voiceover', 'talkback', 'orca'],', ')','
         this.state.screenReaderActive = screenReaders.some(sr => userAgent.includes(sr)),
         ','
@@ -277,7 +275,7 @@ export class SocialAccessibilityManager {'
                 // より詳細な検出ロジック)'; }'
         }
 
-        this.log('スクリーンリーダー検出', { active: this.state.screenReaderActive };
+        this.log('スクリーンリーダー検出', { active: this.state.screenReaderActive }
     }
     
     /**
@@ -289,7 +287,7 @@ export class SocialAccessibilityManager {'
             this.enableHighContrast(); }
         }
         
-        if (this.config.reducedMotion.enabled) { this.enableReducedMotion() }
+        if (this.config.reducedMotion.enabled) { this.enableReducedMotion();
     }
     
     /**
@@ -297,9 +295,9 @@ export class SocialAccessibilityManager {'
      */''
     setupLiveRegions('''
             { id: 'social-urgent-announcements', priority: 'assertive', label: '緊急通知'
-            },''
+            ,''
             { id: 'social-status-announcements', priority: 'polite', label: 'ステータス通知'
-            },''
+            ,''
             { id: 'social-progress-announcements', priority: 'polite', label: '進捗通知'
             }
         ];
@@ -310,23 +308,21 @@ export class SocialAccessibilityManager {'
             element.id = region.id,
             element.setAttribute('aria-live', region.priority','
             element.setAttribute('aria-label', region.label','
-            element.className = 'sr-only',
+            element.className = 'sr-only,
             element.style.cssText = this.elements.announcer.style.cssText }
-            document.body.appendChild(element); }
-        };
-    }
-    
+            document.body.appendChild(element);     }
+}
     /**
      * キーボードイベントハンドラー
      */
     handleKeydown(event) {
-        this.stats.keyboardInteractions++,
+        this.stats.keyboardInteractions++;
         
         // ショートカットキーの処理
         const shortcutKey = this.getShortcutKey(event);
         if (shortcutKey && this.shortcuts[shortcutKey]) {
             event.preventDefault();
-            this.executeShortcut(this.shortcuts[shortcutKey]) }
+            this.executeShortcut(this.shortcuts[shortcutKey]);
             return; }
         }
         ';'
@@ -351,10 +347,10 @@ export class SocialAccessibilityManager {'
      */
     getShortcutKey(event) {
         const modifiers = [],
-        if(event.ctrlKey) modifiers.push('Ctrl',
-        if(event.altKey) modifiers.push('Alt',
-        if(event.shiftKey) modifiers.push('Shift',
-        if(event.metaKey) modifiers.push('Meta') }
+        if(event.ctrlKey) modifiers.push('Ctrl,
+        if(event.altKey) modifiers.push('Alt,
+        if(event.shiftKey) modifiers.push('Shift,
+        if(event.metaKey) modifiers.push('Meta');
 
         const key = event.key;' }'
 
@@ -371,20 +367,20 @@ export class SocialAccessibilityManager {'
             case 'focusMainShareButton':','
                 this.focusMainShareButton('''
             case 'showShareDialog': ','
-                this.showShareDialog('',
+                this.showShareDialog(',
             case 'toggleHighContrast':','
-                this.toggleHighContrast('',
+                this.toggleHighContrast(',
             case 'announceCurrentState':','
                 this.announceCurrentState()','
             case 'closeCurrentDialog':),
-                this.closeCurrentDialog() }
+                this.closeCurrentDialog();
                 break; }
 }
     
     /**
      * フォーカスイベントハンドラー
      */
-    handleFocus(event) { this.stats.focusChanges++,
+    handleFocus(event) { this.stats.focusChanges++;
         this.state.currentFocus = event.target,
         this.state.focusHistory.push({)
             element: event.target }
@@ -392,7 +388,7 @@ export class SocialAccessibilityManager {'
     };
         
         // フォーカス履歴の管理（最新100件まで）
-        if (this.state.focusHistory.length > 100) { this.state.focusHistory.shift() }
+        if (this.state.focusHistory.length > 100) { this.state.focusHistory.shift();
         
         // ARIA属性の動的更新
         this.updateAriaState(event.target);
@@ -414,7 +410,7 @@ export class SocialAccessibilityManager {'
     updateAriaState(element) {
         // 共有ボタンの状態更新
         if(element.classList.contains('share-button-main)' {''
-            const expanded = element.getAttribute('aria-expanded') === 'true',
+            const expanded = element.getAttribute('aria-expanded') === 'true,
             if (expanded) {
     }
 
@@ -426,10 +422,8 @@ export class SocialAccessibilityManager {'
             const dialog = element.closest('.share-dialog');
             if (dialog.style.display !== 'none') {', ' }
 
-                this.announce('共有ダイアログが開いています'); }
+                this.announce('共有ダイアログが開いています');     }
 }
-    }
-    
     /**
      * アナウンスの実行'
      */''
@@ -496,7 +490,7 @@ export class SocialAccessibilityManager {'
         if (this.config.highContrast.enabled) {
     }
             this.disableHighContrast(); }
-        } else { this.enableHighContrast() }
+        } else { this.enableHighContrast();
     }
     
     /**
@@ -528,7 +522,7 @@ export class SocialAccessibilityManager {'
         const mainButton = document.querySelector('.share-button-main);'
         if (mainButton) {
 
-            mainButton.focus() }
+            mainButton.focus();
 
             this.announce('メイン共有ボタンにフォーカスしました'; }'
 }
@@ -551,7 +545,7 @@ export class SocialAccessibilityManager {'
      */
     announceCurrentState() {
 
-        const state = this.getCurrentState() }
+        const state = this.getCurrentState();
 
         this.announce(state, 'assertive'; }'
     }
@@ -565,7 +559,7 @@ export class SocialAccessibilityManager {'
         ')';
         if (this.state.currentFocus) {
         const element = this.state.currentFocus,
-            const role = element.getAttribute('role) || element.tagName.toLowerCase()',
+            const role = element.getAttribute('role) || element.tagName.toLowerCase(),
             const label = element.getAttribute('aria-label) || element.textContent }'
             state += `現在フォーカス中: ${role} ${label}。`;
         }
@@ -593,7 +587,7 @@ export class SocialAccessibilityManager {'
             const closeButton = openDialog.querySelector('.dialog-close),'
 
             if (closeButton) {''
-                closeButton.click() }
+                closeButton.click();
 
                 this.announce('ダイアログを閉じました'; }'
 }
@@ -606,7 +600,7 @@ export class SocialAccessibilityManager {'
         if (event.matches) {
     }
             this.enableHighContrast(); }
-        } else { this.disableHighContrast() }
+        } else { this.disableHighContrast();
     }
     
     /**
@@ -616,7 +610,7 @@ export class SocialAccessibilityManager {'
         if (event.matches) {
     }
             this.enableReducedMotion(); }
-        } else { this.disableReducedMotion() }
+        } else { this.disableReducedMotion();
     }
     
     /**
@@ -646,17 +640,15 @@ export class SocialAccessibilityManager {'
         if (event.shiftKey) {
             // Shift+Tab
             if (document.activeElement === firstElement) {
-                event.preventDefault() }
+                event.preventDefault();
                 lastElement.focus(); }
 } else {  // Tab
             if (document.activeElement === lastElement) {
     
 }
                 event.preventDefault(); }
-                firstElement.focus(); }
+                firstElement.focus();     }
 }
-    }
-    
     /**
      * Escapeキーの処理
      */''
@@ -668,10 +660,8 @@ export class SocialAccessibilityManager {'
             const closeButton = topModal.querySelector('[aria-label*="閉じる"], .dialog-close),'
             if (closeButton) {
     }
-                closeButton.click(); }
+                closeButton.click();     }
 }
-    }
-    
     /**
      * 矢印キーナビゲーションの処理'
      */''
@@ -691,7 +681,7 @@ export class SocialAccessibilityManager {'
      */''
     handlePlatformButtonNavigation(event) {
 
-        const buttons = Array.from(document.querySelectorAll('.share-button-platform),'
+        const buttons = Array.from(document.querySelectorAll())'.share-button-platform),'
         const currentIndex = buttons.indexOf(event.target);
         if (currentIndex === -1) return,
         ','
@@ -700,7 +690,7 @@ export class SocialAccessibilityManager {'
         switch(event.key) {''
             case 'ArrowUp':','
             case 'ArrowLeft':','
-                event.preventDefault('',
+                event.preventDefault(',
             case 'ArrowDown':','
             case 'ArrowRight':);
                 event.preventDefault();
@@ -717,7 +707,7 @@ export class SocialAccessibilityManager {'
      */''
     handleLeaderboardNavigation(event) {
 
-        const entries = Array.from(document.querySelectorAll('.leaderboard-entry),'
+        const entries = Array.from(document.querySelectorAll())'.leaderboard-entry),'
         const currentIndex = entries.indexOf(event.target);
         if (currentIndex === -1) return,
         ','
@@ -755,15 +745,14 @@ export class SocialAccessibilityManager {'
         // ARIA属性の検証
         const ariaElements = document.querySelectorAll('[aria-label], [aria-labelledby], [aria-describedby]';
         ariaElements.forEach(element => { '),'
-            const labelledby = element.getAttribute('aria-labelledby',
+            const labelledby = element.getAttribute('aria-labelledby,
             if(labelledby && !document.getElementById(labelledby)) {
                 violations.push({)'
                     type: 'INVALID_ARIA_LABELLEDBY' }
 
                     element,') }'
 
-                    message: `aria-labelledbyで参照されているID "${labelledby}" が存在しません`),
-                }";"
+                    message: `aria-labelledbyで参照されているID "${labelledby}" が存在しません`) }";"
             }""
         }");"
         ";"
@@ -773,10 +762,10 @@ export class SocialAccessibilityManager {'
             const contrast = this.calculateColorContrast(button);
             if (contrast < this.config.wcag.colorContrast.normal) {
                 violations.push({ }''
-                    type: 'INSUFFICIENT_COLOR_CONTRAST') }
-                    element: button) }
+                    type: 'INSUFFICIENT_COLOR_CONTRAST'),
+                    element: button),
                     message: `カラーコントラストが不十分です (${contrast.toFixed(2}:1)`
-                };
+                }
             }
         };
         
@@ -801,7 +790,7 @@ export class SocialAccessibilityManager {'
         const bgLuminance = this.calculateLuminance(bgcolor);
         const fgLuminance = this.calculateLuminance(color);
         const lighter = Math.max(bgLuminance, fgLuminance);
-        const darker = Math.min(bgLuminance, fgLuminance) }
+        const darker = Math.min(bgLuminance, fgLuminance);
         return (lighter + 0.05) / (darker + 0.05);
     
     /**
@@ -833,8 +822,8 @@ export class SocialAccessibilityManager {'
             reducedMotionEnabled: this.config.reducedMotion.enabled,
     currentFocus: this.state.currentFocus?.tagName || null, : undefined
     
-            focusHistoryLength: this.state.focusHistory.length },
-            announcementsCount: this.state.announcements.length 
+            focusHistoryLength: this.state.focusHistory.length ,
+            announcementsCount: this.state.announcements.length; 
     }
     
     /**
@@ -845,21 +834,21 @@ export class SocialAccessibilityManager {'
 }
         this.config = { ...this.config, ...newConfig,
         this.applyInitialSettings()','
-        this.log('アクセシビリティ設定更新', newConfig) }
+        this.log('アクセシビリティ設定更新', newConfig);
     
     /**
      * アクセシビリティレポートの生成
      */
     generateAccessibilityReport() {
         const violations = this.validateAccessibility();
-        return { timestamp: new Date().toISOString();
+        return { timestamp: new Date().toISOString(),
             wcagLevel: this.config.wcag.level,
     stats: this.getStats();
             violations,
             recommendations: this.generateRecommendations(violations,
     userPreferences: {
                 highContrast: this.config.highContrast.enabled }
-                reducedMotion: this.config.reducedMotion.enabled },
+                reducedMotion: this.config.reducedMotion.enabled ,
                 screenReader: this.state.screenReaderActive 
     }
     
@@ -875,7 +864,7 @@ export class SocialAccessibilityManager {'
     }
 
         if(violations.some(v => v.type === 'INVALID_ARIA_LABELLEDBY)' { ''
-            recommendations.push('ARIA属性の参照先IDを確認してください') }
+            recommendations.push('ARIA属性の参照先IDを確認してください');
 
         if(violations.some(v => v.type === 'FOCUSABLE_ELEMENT_WITHOUT_TABINDEX)' { ''
             recommendations.push('フォーカス可能要素にtabindex属性を追加してください' }'
@@ -908,8 +897,7 @@ export class SocialAccessibilityManager {'
             type,
             error: error.message || error,
             context }
-            timestamp: Date.now(),
-    };
+            timestamp: Date.now() };
 
         if (ErrorHandler) {', ' }
 
@@ -926,7 +914,7 @@ export class SocialAccessibilityManager {'
         const logEntry = {''
             timestamp: Date.now('''
         const, consoleMethod = level === 'error' ? 'error' : ' }''
-                            level === 'warn' ? 'warn' : 'log';) }
+                            level === 'warn' ? 'warn' : 'log';);
 
         console[consoleMethod](`[SocialAccessibilityManager] ${message}`, data || '');
 

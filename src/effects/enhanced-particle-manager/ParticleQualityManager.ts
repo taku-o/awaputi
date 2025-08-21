@@ -4,35 +4,31 @@ import { getErrorHandler  } from '../../utils/ErrorHandler.js';
 type ErrorHandler = ReturnType<typeof getErrorHandler>;
 
 // Export interfaces
-export interface QualitySettings { countMultiplier: number;
-    sizeMultiplier: number;
+export interface QualitySettings { countMultiplier: number,
+    sizeMultiplier: number,
     complexityLevel: number;
-
-export interface QualityLevels { low: QualitySettings;
-    medium: QualitySettings;
-    high: QualitySettings;
+    export interface QualityLevels { low: QualitySettings,
+    medium: QualitySettings,
+    high: QualitySettings,
     ultra: QualitySettings;
     [key: string]: QualitySettings;
-
-export interface OptimizationSettings { batchRendering: boolean;
-    aggressiveCulling: boolean;
-    smoothTransitions: boolean;
-    interpolation: boolean;
-    easingEnabled: boolean;
-    colorPalettes: string[];
+    export interface OptimizationSettings { batchRendering: boolean,
+    aggressiveCulling: boolean,
+    smoothTransitions: boolean,
+    interpolation: boolean,
+    easingEnabled: boolean,
+    colorPalettes: string[],
     physicsEnhancements: boolean;
-
-export interface ColorPalettes { default: string[];
-    warm: string[];
-    cool: string[];
-    nature: string[];
-    fire: string[];
+    export interface ColorPalettes { default: string[],
+    warm: string[],
+    cool: string[],
+    nature: string[],
+    fire: string[],
     ocean: string[];
     [key: string]: string[];
-
-export type QualityLevel = 'low' | 'medium' | 'high' | 'ultra';
-export type PaletteName = 'default' | 'warm' | 'cool' | 'nature' | 'fire' | 'ocean';
-export type EffectType = 'basic' | 'glow' | 'trail' | 'energy' | 'plasma';
+    export type QualityLevel = 'low' | 'medium' | 'high' | 'ultra';
+    export type PaletteName = 'default' | 'warm' | 'cool' | 'nature' | 'fire' | 'ocean';
+    export type EffectType = 'basic' | 'glow' | 'trail' | 'energy' | 'plasma';
 
 /**
  * Particle Quality Manager
@@ -51,16 +47,16 @@ export class ParticleQualityManager {
     constructor() {
 
         this.errorHandler = getErrorHandler('';
-        this.currentQualityLevel = 'high'
+    this.currentQualityLevel = 'high'
         
         // パフォーマンス最適化設定
         this.optimizationSettings = {
-            batchRendering: false;
-            aggressiveCulling: false;
-            smoothTransitions: false;
-            interpolation: false;
-            easingEnabled: false;
-    colorPalettes: [] }
+            batchRendering: false,
+    aggressiveCulling: false,
+    smoothTransitions: false,
+    interpolation: false,
+    easingEnabled: false,
+    colorPalettes: [] };
             physicsEnhancements: false;)'
         // 色パレット
         this.colorPalettes = {;
@@ -178,7 +174,7 @@ export class ParticleQualityManager {
     
 }
                 this.optimizationSettings.colorPalettes = this.colorPalettes[paletteName]; }
-                console.log(`[ParticleQualityManager] 色パレット「${paletteName}」を設定しました`};
+                console.log(`[ParticleQualityManager] 色パレット「${paletteName}」を設定しました`}
             } else {  }
                 console.warn(`[ParticleQualityManager] 未知の色パレット: ${paletteName}`}');'
 
@@ -196,7 +192,7 @@ export class ParticleQualityManager {
 
             console.log(`[ParticleQualityManager] 物理演算強化: ${enabled ? '有効' : '無効}`}';} catch (error) { this.errorHandler.handleError(error as Error, {)'
                 context: 'ParticleQualityManager.setPhysicsEnhancements'
-            };
+            }
         }
     }
     
@@ -259,10 +255,10 @@ export class ParticleQualityManager {
             this.qualitySettings[name] = {
                 countMultiplier: settings.countMultiplier || 1.0,
                 sizeMultiplier: settings.sizeMultiplier || 1.0,
-    complexityLevel: settings.complexityLevel || 2 },
+    complexityLevel: settings.complexityLevel || 2 ,
             ';'
 
-            console.log(`[ParticleQualityManager] カスタム品質設定「${name}」を登録しました`};
+            console.log(`[ParticleQualityManager] カスタム品質設定「${name}」を登録しました`}
         } catch (error) { this.errorHandler.handleError(error as Error, {)'
                 context: 'ParticleQualityManager.registerCustomQualitySettings',' }'
 

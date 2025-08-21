@@ -7,48 +7,42 @@
 interface ThresholdValues { min?: number,
     target: number;
     max?: number;
-    critical: number;
+    critical: number,
     warning: number;
-
-interface ThresholdConfig { adaptiveThresholds: boolean;
+    interface ThresholdConfig { adaptiveThresholds: boolean,
     staticThresholds: Map<string, ThresholdValues>;
     dynamicThresholds: Map<string, ThresholdValues>;
-    violationSensitivity: number;
+    violationSensitivity: number,
     adaptationRate: number;
-
-interface BaselinePoint { timestamp: number;
+    interface BaselinePoint { timestamp: number,
     value: number;
-
-interface BaselineStats { count: number;
-    mean: number;
-    median: number;
-    std: number;
-    min: number;
-    max: number;
-    p25: number;
-    p75: number;
+    interface BaselineStats { count: number,
+    mean: number,
+    median: number,
+    std: number,
+    min: number,
+    max: number,
+    p25: number,
+    p75: number,
     p95: number;
     p90?: number;
     updated: number;
-
-interface ThresholdViolation { timestamp: number;
-    metricId: string;
-    value: number;
-    thresholds: ThresholdValues;
-    type: 'critical_low' | 'warning_low' | 'critical_high' | 'warning_high';
-    severity: 'critical' | 'warning' | 'high' | 'medium' | 'low';
+    interface ThresholdViolation { timestamp: number,
+    metricId: string,
+    value: number,
+    thresholds: ThresholdValues,
+    type: 'critical_low' | 'warning_low' | 'critical_high' | 'warning_high,
+    severity: 'critical' | 'warning' | 'high' | 'medium' | 'low,
     deviation: number;
-
-interface ViolationStats { total: number;
-    recent: number;
+    interface ViolationStats { total: number,
+    recent: number,
     by_severity: Record<string, number>;
     by_metric: Record<string, number>;
     rate_per_minute: number;
-
-interface ExportedData { timestamp: number;
-    config: ThresholdConfig;
+    interface ExportedData { timestamp: number,
+    config: ThresholdConfig,
     baselineStats: Record<string, BaselineStats>;
-    violations: ThresholdViolation[];
+    violations: ThresholdViolation[],
     violationCounters: Record<string, number> }
 
 interface ImportData { config?: Partial<ThresholdConfig>,
@@ -58,8 +52,7 @@ interface ImportData { config?: Partial<ThresholdConfig>,
 
 interface MainController {
     errorHandler: any;
-
-export class PerformanceThresholdManager {
+    export class PerformanceThresholdManager {
     private mainController: MainController;
     private errorHandler: any;
     private thresholdConfig: ThresholdConfig;
@@ -67,18 +60,17 @@ export class PerformanceThresholdManager {
     private, violationCounters: Map<string, number>,
     private baselineHistory: Map<string, BaselinePoint[]>;
     private baselineStats: Map<string, BaselineStats>;
-
     constructor(mainController: MainController) {
 
         this.mainController = mainController;
-        this.errorHandler = mainController.errorHandler;
+    this.errorHandler = mainController.errorHandler;
         
         // Threshold configuration
         this.thresholdConfig = {
-            adaptiveThresholds: true;
-            staticThresholds: new Map();
-            dynamicThresholds: new Map(
-    violationSensitivity: 0.8 }
+            adaptiveThresholds: true,
+    staticThresholds: new Map(),
+    dynamicThresholds: new Map(
+    violationSensitivity: 0.8 };
             adaptationRate: 0.1 
     };
         // Threshold violations tracking
@@ -98,9 +90,9 @@ export class PerformanceThresholdManager {
      */''
     private initializeDefaultThresholds('''
         this.thresholdConfig.staticThresholds.set('fps', { min: 30,
-            target: 60);
+            target: 60),
             max: 120','
-    critical: 15,')',
+    critical: 15,'),
             warning: 45','
             warning: 45','
         };
@@ -108,7 +100,7 @@ export class PerformanceThresholdManager {
             min: 8,      // ~120 FPS,
             target: 16.67, // 60 FPS,
             max: 33.33,   // 30 FPS','
-            critical: 66.67, // 15 FPS')',
+            critical: 66.67, // 15 FPS'),
             warning: 22.22   // 45 FPS','
             warning: 22.22   // 45 FPS','
         };
@@ -116,7 +108,7 @@ export class PerformanceThresholdManager {
             min: 50,     // MB,
             target: 200,  // MB,
             max: 1000,   // MB','
-            critical: 2000, // MB')',
+            critical: 2000, // MB'),
             warning: 800    // MB','
             warning: 800    // MB','
         };
@@ -125,12 +117,12 @@ export class PerformanceThresholdManager {
     target: 50,   // ms,
             max: 200,     // ms,
             critical: 1000, // ms);
-            warning: 300    // ms),
+            warning: 300    // ms);
         // Initialize dynamic thresholds to match static ones
         for(const [metricId, thresholds] of this.thresholdConfig.staticThresholds) {
     
 }
-            this.thresholdConfig.dynamicThresholds.set(metricId, { ...thresholds ) }
+            this.thresholdConfig.dynamicThresholds.set(metricId, { ...thresholds );
     }
     
     /**
@@ -152,13 +144,13 @@ export class PerformanceThresholdManager {
         history.push({ timestamp: Date.now(), value };
         
         // Keep reasonable history size
-        if (history.length > 1000) { history.shift() }
+        if (history.length > 1000) { history.shift();
         
         // Update baseline statistics
         this.updateBaselineStats(metricId, history);
         
         // Update dynamic thresholds if adaptive mode is enabled
-        if (this.thresholdConfig.adaptiveThresholds) { this.updateDynamicThresholds(metricId, value) }
+        if (this.thresholdConfig.adaptiveThresholds) { this.updateDynamicThresholds(metricId, value);
     }
     
     /**
@@ -180,7 +172,7 @@ export class PerformanceThresholdManager {
             p75: this.calculatePercentile(values, 75);
             p90: this.calculatePercentile(values, 90);
             p95: this.calculatePercentile(values, 95);
-            updated: Date.now()  }
+            updated: Date.now();
         };
         
         this.baselineStats.set(metricId, stats);
@@ -225,10 +217,8 @@ export class PerformanceThresholdManager {
         // Apply exponential smoothing to threshold updates
         for(const [key, newValue] of Object.entries(newThresholds)) { ''
             if(dynamicThresholds[key, as keyof, ThresholdValues] !== undefined && typeof, newValue === 'number' { }
-                (dynamicThresholds, as any)[key] = adaptationRate * newValue + (1 - adaptationRate) * (dynamicThresholds, as any)[key]; }
+                (dynamicThresholds, as any)[key] = adaptationRate * newValue + (1 - adaptationRate) * (dynamicThresholds, as any)[key];     }
 }
-    }
-    
     /**
      * Calculate FPS-specific thresholds
      * @param stats - Baseline statistics
@@ -284,7 +274,7 @@ export class PerformanceThresholdManager {
      * @returns New thresholds
      */
     private calculateGenericThresholds(stats: BaselineStats, staticThresholds: ThresholdValues): Partial<ThresholdValues> { return { target: stats.median,
-            warning: stats.p75 + stats.std },
+            warning: stats.p75 + stats.std ,
             critical: stats.p95 + stats.std * 2 
     }
     
@@ -310,7 +300,7 @@ export class PerformanceThresholdManager {
                     violationSeverity = 'critical'; }
 
                 } else if (value < thresholds.warning) { ''
-                    violationType = 'warning_low',
+                    violationType = 'warning_low,
                     violationSeverity = 'warning' }
                 break;
 
@@ -324,7 +314,7 @@ export class PerformanceThresholdManager {
                     violationSeverity = 'critical'; }
 
                 } else if (value > thresholds.warning) { ''
-                    violationType = 'warning_high',
+                    violationType = 'warning_high,
                     violationSeverity = 'warning' }
                 break;
         }
@@ -336,7 +326,7 @@ export class PerformanceThresholdManager {
                 metricId }
                 value }
                 thresholds: { ...thresholds,
-                type: violationType,
+                type: violationType ,
                 severity: violationSeverity,
     deviation: this.calculateDeviation(value, thresholds, metricId) };
             
@@ -387,7 +377,7 @@ export class PerformanceThresholdManager {
         const counterId = `${violation.metricId}_${violation.severity}`;
         this.violationCounters.set(counterId, (this.violationCounters.get(counterId) || 0) + 1);
         
-        console.log(`[PerformanceThresholdManager] Threshold, violation: ${violation.metricId} (${violation.severity}`};
+        console.log(`[PerformanceThresholdManager] Threshold, violation: ${violation.metricId} (${violation.severity}`}
     }
     
     /**
@@ -422,8 +412,7 @@ export class PerformanceThresholdManager {
     recent: recentViolations.length }
             by_severity: {},
             by_metric: {},
-            rate_per_minute: recentViolations.length / 5 // last 5 minutes,
-        },
+            rate_per_minute: recentViolations.length / 5 // last 5 minutes ,
         
         // Count by severity
         for (const violation of recentViolations) {
@@ -472,7 +461,7 @@ export class PerformanceThresholdManager {
                 Object.assign(this.thresholdConfig, data.config); }
             }
             
-            if (data.baselineStats) { this.baselineStats = new Map(Object.entries(data.baselineStats) }
+            if (data.baselineStats) { this.baselineStats = new Map(Object.entries(data.baselineStats);
             
             if (data.violations && Array.isArray(data.violations) { this.violations.push(...data.violations);
             
@@ -517,6 +506,6 @@ export class PerformanceThresholdManager {
         this.baselineStats.clear();
         this.thresholdConfig.staticThresholds.clear();
         this.thresholdConfig.dynamicThresholds.clear()','
-        console.log('[PerformanceThresholdManager] Threshold, manager destroyed') }
+        console.log('[PerformanceThresholdManager] Threshold, manager destroyed');
 
     }'}'

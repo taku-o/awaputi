@@ -50,31 +50,31 @@ describe('Help System Integration', () => {
                 return null),
             createElement: jest.fn(() => ({
                 style: {,
-                addEventListener: jest.fn(
+                addEventListener: jest.fn( },
         removeEventListener: jest.fn()),
             body: {
-                appendChild: jest.fn(
+                appendChild: jest.fn( },
         removeChild: jest.fn(),
         // Mock game engine
         mockGameEngine = {
             canvas: mockCanvas,
             ctx: mockContext,
             localizationManager: {
-                getCurrentLanguage: (') => 'ja','
+                getCurrentLanguage: (') => 'ja',' };
                 t: (key) => key,
                 translate: (key) => key
             },
             sceneManager: {
-                switchScene: jest.fn(
+                switchScene: jest.fn( },
                 hasScene: jest.fn(() => true)),
             keyboardShortcutManager: new KeyboardShortcutManager(
             responsiveCanvasManager: {
-                getCanvasToDisplayRatio: () => 1,
+                getCanvasToDisplayRatio: () => 1 },
                 getDisplayToCanvasRatio: () => 1,
                 scaleCoordinates: (x, y) => ({ x, y )) }),
             helpManager: {
                 searchEngine: {
-                    search: jest.fn(() => []),
+                    search: jest.fn(() => []) },
         buildIndex: jest.fn()
                 ),
                 getContent: jest.fn(() => ({)),
@@ -289,6 +289,6 @@ describe('Help System Integration', () => {
                 expect((') => {'
                     helpScene.helpAccessibilityManager.announceNavigation('category selection') }.not.toThrow();
             }
-        };
+        }
     }
 }');'

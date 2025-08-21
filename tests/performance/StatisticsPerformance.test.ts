@@ -136,7 +136,7 @@ describe('統計システムパフォーマンステスト', () => {
                 statisticsExporter,
                 statisticsPerformanceOptimizer
             }
-        };
+        }
     }
     
     /**
@@ -162,13 +162,13 @@ describe('統計システムパフォーマンステスト', () => {
             initialized: true,
             componentCount: 3,
             components: {
-                dataCollection: !!dataCollectionTests,
+                dataCollection: !!dataCollectionTests },
                 analysisRendering: !!analysisRenderingTests,
                 exportMemoryOptimization: !!exportMemoryOptimizationTests
             },
             performanceConfig,
             environmentThresholds
-        };
+        }
     }
     
     // Make helper functions available globally for compatibility

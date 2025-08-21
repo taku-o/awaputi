@@ -4,16 +4,16 @@
 import { jest, describe, test, expect, beforeAll  } from '@jest/globals';
 // Interfaces for Configuration Error Handler
 interface ErrorStats {
-    total: number;
+    total: number,
     recovered: number;
-    failed: number;
+    failed: number,
     byType: Map<string, number>;
-    errorRate: string;
+    errorRate: string,
     recoveryRate: string;
 interface FallbackState {
-    useDefaultValues: boolean;
+    useDefaultValues: boolean,
     disableValidation: boolean;
-    disableCache: boolean;
+    disableCache: boolean,
     safeMode: boolean;
 interface ValidationConstraints {
     type: string;
@@ -31,14 +31,14 @@ interface CalculationParams {
 // Type definitions for the Configuration Error Handler
 interface ConfigurationErrorHandlerType {
     errorTypes: {
-        CONFIGURATION_ACCES,S: string;
+        CONFIGURATION_ACCES,S: string },
         CALCULATION_ERROR: string;
         CACHE_ERROR: string,,
     recoveryStrategies: Map<string, any>;
     errorStats: {
-        total: number;
+        total: number },
         recovered: number;
-        failed: number;
+        failed: number,
         byType: Map<string, number> };
     fallbackState: FallbackState;
     _correctValue(value: any, constraints: ValidationConstraints): any;
@@ -119,7 +119,7 @@ describe('ConfigurationErrorHandler', () => {
         test('NaNと無限値の修正', () => {
             const errorHandler = new ConfigurationErrorHandler('),'
             const params: CalculationParams = {
-                score: NaN;
+                score: NaN,
                 multiplier: Infinity;
                 count: -5
             };
@@ -205,6 +205,6 @@ describe('ConfigurationErrorHandler', () => {
             expect(errorHandler._shouldBePositive('score', 'scoreCalculation').toBe(true'),'
             expect(errorHandler._shouldBePositive('count', 'countCalculation').toBe(true'),'
             expect(errorHandler._shouldBePositive('level', 'levelCalculation').toBe(true'),'
-            expect(errorHandler._shouldBePositive('offset', 'positionCalculation').toBe(false) };
+            expect(errorHandler._shouldBePositive('offset', 'positionCalculation').toBe(false) }
     }
 }');'

@@ -5,39 +5,39 @@ interface MockDataStorage {
     save: jest.Mock<(ke,y: string, data => Promise<void>>);
     load: jest.Mock<(ke,y: string) => Promise<any>> }
 interface MockSyncManager {
-    sync: jest.Mock<() => Promise<void>>;
+    sync: jest.Mock<() => Promise<void>>,
     cloudStorage: {
-        set: jest.Mock<(ke,y: string, data => Promise<boolean>>);
+        set: jest.Mock<(ke,y: string, data => Promise<boolean>>) };
         remove: jest.Mock<(ke,y: string') => Promise<boolean>> };'
 }
 interface OfflineOperation {
-    id: string;
+    id: string,
     type: 'save' | 'remove';
     key: string;
     data?: any;
-    timestamp: number;
+    timestamp: number,
     retries: number;
     status: 'pending' | 'processing' | 'failed';
     lastError?: string;
 interface OfflineState {
-    isOnline: boolean;
+    isOnline: boolean,
     connectionQuality: 'unknown' | 'good' | 'poor' | 'unstable' | 'offline';
     lastOnlineTime?: number;
     lastOfflineTime?: number;
-    heartbeatFailures: number;
+    heartbeatFailures: number,
     offlineOperations: OfflineOperation[];
 interface OfflineStatus {
-    isOnline: boolean;
+    isOnline: boolean,
     connectionQuality: string;
     offlineOperations: number;
     offlineDuration?: number;
 interface MockPerformance {
     now: jest.Mock<(') => number> }'
 interface MockDocument {
-    addEventListener: jest.Mock;
+    addEventListener: jest.Mock,
     hidden: boolean;
 interface MockWindow {
-    addEventListener: jest.Mock;
+    addEventListener: jest.Mock,
     removeEventListener: jest.Mock }
 describe('OfflineManager', () => {
     let offlineManager: OfflineManager,
@@ -55,7 +55,7 @@ describe('OfflineManager', () => {
         mockSyncManager = {
             sync: jest.fn(
             cloudStorage: {
-                set: jest.fn(
+                set: jest.fn( },
         remove: jest.fn( }
         };
         
@@ -66,7 +66,7 @@ describe('OfflineManager', () => {
             headers: {,
                 get: jest.fn(() => Date.now().toString()),
         )');'
-        global.fetch = mockFetch as any;
+        global.fetch = mockFetch as any };
         
         // navigator.onLine mock
         Object.defineProperty(navigator, 'onLine', {
@@ -142,7 +142,7 @@ describe('OfflineManager', () => {
                 isOnline: false,
                 previousState: true,
                 timestamp: expect.any(Number},
-            };
+            }
         }
     }');'
     describe('オフライン操作記録', (') => {'
@@ -446,6 +446,6 @@ describe('OfflineManager', () => {
             offlineManager.startHeartbeat();
             offlineManager.destroy();
             expect(offlineManager.heartbeatTimer).toBeNull();
-            expect(offlineManager.eventListeners.size).toBe(0) };
+            expect(offlineManager.eventListeners.size).toBe(0) }
     }
 }');'

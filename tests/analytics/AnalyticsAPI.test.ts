@@ -31,7 +31,7 @@ class MockStorageManager {
                 const bVal = b[query.sortBy],
                 if (aVal < bVal) return -1 * sortOrder,
                 if (aVal > bVal) return 1 * sortOrder,
-                return 0 };
+                return 0 }
         }
         
         // 制限処理
@@ -504,7 +504,7 @@ describe('AnalyticsAPI', () => {
             const aggregationRules = {
                 dataTypes: ['sessionData'],
                 timeWindow: {
-                    windowSize: 24 * 60 * 60 * 1000, // 24時間
+                    windowSize: 24 * 60 * 60 * 1000, // 24時間 };
                     windowType: 'sliding',
         baseTime: Date.now( }
             };
@@ -758,7 +758,7 @@ describe('AnalyticsAPI', () => {
                 format: 'json',
                 filters: {
                     sessionId: 'session_1'
-                };
+                }
             };
             expect(result.success).toBe(true);
             expect(result.data).toBeDefined();
@@ -793,6 +793,6 @@ describe('AnalyticsAPI', () => {
                 expect(analyticsAPI.aggregationCache.size).toBe(0) }
             
             consoleSpy.mockRestore();
-        };
+        }
     }
 }');'

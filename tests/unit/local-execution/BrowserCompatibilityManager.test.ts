@@ -9,63 +9,63 @@
 import { jest  } from '@jest/globals';
 // Type definitions
 interface BrowserInfo {
-    name: string;
+    name: string,
     version: number;
-    isSupported: boolean;
+    isSupported: boolean,
     supportedFeatures: string[];
-    restrictions: string[];
+    restrictions: string[],
     fallbacksRequired: string[];
 interface CanvasSupport {
-    available: boolean;
+    available: boolean,
     context2d: boolean;
-    toDataURL: boolean;
+    toDataURL: boolean,
     toBlob: boolean;
-    fallbackMethod: string | null;
+    fallbackMethod: string | null,
     errorMessage: string | null }
 interface LocalStorageSupport {
-    available: boolean;
+    available: boolean,
     readable: boolean;
-    writable: boolean;
+    writable: boolean,
     quotaExceeded: boolean;
-    fallbackMethod: string | null;
+    fallbackMethod: string | null,
     errorMessage: string | null;
     estimatedQuota: number;
 interface ModulesSupport {
-    available: boolean;
+    available: boolean,
     dynamicImport: boolean;
-    staticImport: boolean;
+    staticImport: boolean,
     workerModules: boolean;
-    fallbackMethod: string | null;
+    fallbackMethod: string | null,
     errorMessage: string | null }
 interface ComprehensiveSupport {
-    browser: BrowserInfo;
+    browser: BrowserInfo,
     canvas: CanvasSupport;
-    localStorage: LocalStorageSupport;
+    localStorage: LocalStorageSupport,
     modules: ModulesSupport;
     recommendations: Recommendation[];
 interface Recommendation {
-    type: string;
+    type: string,
     message: string;
     priority: string;
 interface CanvasFallbackResult {
-    success: boolean;
+    success: boolean,
     dataUrl: string;
-    method: string;
+    method: string,
     size: number;
 interface FallbackStorage {
-    getItem: (ke,y: string) => string | null;
-    setItem: (ke,y: string, value: string) => void;
-    removeItem: (ke,y: string) => void;
+    getItem: (ke,y: string) => string | null,
+    setItem: (ke,y: string, value: string) => void,
+    removeItem: (ke,y: string) => void,
     clear: (') => void;'
     _storageType: string;
 interface MockCanvas {
     getContext: jest.Mock<any, [string]>;
     toDataURL: jest.Mock<string, []>;
     toBlob: jest.Mock<void, []>;
-    width: number;
+    width: number,
     height: number;
 interface MockContext {
-    fillStyle: string;
+    fillStyle: string,
     fillRect: jest.Mock<void, [number, number, number, number]>;
     beginPath: jest.Mock<void, []>;
     arc: jest.Mock<void, [number, number, number, number, number]>;
@@ -74,8 +74,8 @@ interface MockContext {
 interface MockDocument {
     createElement: jest.Mock<MockCanvas | null, [string]> }
 interface MockWindow {
-    location: { protoco,l: string;
-    localStorage: Map<string, string>;
+    location: { protoco,l: string,
+    localStorage: Map<string, string> };
     Worker: Function;
 interface MockNavigator {
     userAgent: string;
@@ -83,7 +83,7 @@ interface MockNavigator {
 const BrowserCompatibilityManager = {
     BROWSER_SUPPORT: {
         chrome: { minVersion: 60, features: ['canvas', 'localStorage', 'es6modules'] },
-        firefox: { minVersion: 55, features: ['canvas', 'localStorage'], restrictions: ['localStorage-file-protocol'] };
+        firefox: { minVersion: 55, features: ['canvas', 'localStorage'], restrictions: ['localStorage-file-protocol'] },
         safari: { minVersion: 12, features: ['canvas'], restrictions: ['localStorage-private', 'canvas-limited'] },
         edge: { minVersion: 79, features: ['canvas', 'localStorage', 'es6modules'] },
         ie: { minVersion: 11, features: [], fallbackRequired: true;
@@ -93,72 +93,72 @@ const BrowserCompatibilityManager = {
         
         if (userAgent.includes('Chrome')') {'
             return { : undefined
-                name: 'chrome';
+                name: 'chrome',
                 version: 91;
-                isSupported: true;
+                isSupported: true,
                 supportedFeatures: ['canvas', 'localStorage', 'es6modules'],
-                restrictions: [];
+                restrictions: [],
                 fallbacksRequired: []
-            };
+            }
         }
         
         return {
-            name: 'unknown';
+            name: 'unknown',
             version: 0;
-            isSupported: false;
+            isSupported: false,
             supportedFeatures: [];
-            restrictions: [];
+            restrictions: [],
             fallbacksRequired: ['all']
-        };
+        }
     },
     getCanvasSupport(): CanvasSupport {
         const canvas = (global as any').document? .createElement('canvas'),'
         const context = canvas?.getContext('2d');
         return { : undefined
-            available: !!canvas;
+            available: !!canvas,
             context2d: !!context;
             toDataURL: !!(canvas? .toDataURL), : undefined
             toBlob: !!(canvas? .toBlob), : undefined
-            fallbackMethod: null;
+            fallbackMethod: null,
             errorMessage: null };
     getLocalStorageSupport(): LocalStorageSupport {
         const localStorage = (global: any).localStorage;
         
         return {
-            available: !!localStorage;
+            available: !!localStorage,
             readable: true;
-            writable: true;
+            writable: true,
             quotaExceeded: false;
-            fallbackMethod: null;
+            fallbackMethod: null,
             errorMessage: null;
             estimatedQuota: 5000000
-        };
+        }
     },
     getModulesSupport('): ModulesSupport {'
         return {
-            available: true;
+            available: true,
             dynamicImport: typeof import === 'function';
-           , staticImport: true;
+           , staticImport: true,
             workerModules: typeof Worker !== 'undefined';
-            fallbackMethod: null;
+            fallbackMethod: null,
             errorMessage: null };
     async implementCanvasFallback(size: number, config: any = {}'): Promise<CanvasFallbackResult> {'
         return {
-            success: true;
+            success: true,
             dataUrl: 'data:image/svg+xml,base64,PHN2ZyB3aWR0aD0iMTYi...',
             method: 'svg-fallback';
             size
-        };
+        }
     },
     implementLocalStorageFallback(): FallbackStorage {
         const memoryStorage = new Map<string, string>(),
         return {
-            getItem: (key: string) => memoryStorage.get(key) || null;
+            getItem: (key: string) => memoryStorage.get(key) || null,
             setItem: (key: string, value: string) => memoryStorage.set(key, value);
-            removeItem: (key: string) => memoryStorage.delete(key);
+            removeItem: (key: string) => memoryStorage.delete(key),
             clear: () => memoryStorage.clear('),'
             _storageType: 'memory-fallback'
-        };
+        }
     },
     getComprehensiveSupport(): ComprehensiveSupport {
         return {
@@ -167,7 +167,7 @@ const BrowserCompatibilityManager = {
             localStorage: this.getLocalStorageSupport(
             modules: this.getModulesSupport(','
             recommendations: []
-        };
+        }
     }
 };
 describe('BrowserCompatibilityManager', () => {
@@ -181,7 +181,7 @@ describe('BrowserCompatibilityManager', () => {
             getContext: jest.fn(
             toDataURL: jest.fn(
             toBlob: jest.fn(','
-            width: 16;
+            width: 16,
             height: 16
         };
         mockContext = {
@@ -194,7 +194,7 @@ describe('BrowserCompatibilityManager', () => {
         mockDocument = {
             createElement: jest.fn().mockReturnValue(mockCanvas)','
         mockWindow = {
-            location: { protocol: 'http:' };
+            location: { protocol: 'http:' },
             localStorage: new Map(
             Worker: function() {}
         };
@@ -224,11 +224,11 @@ describe('BrowserCompatibilityManager', () => {
             
             // Firefox検出のモック実装
             const firefoxInfo: BrowserInfo = {
-                name: 'firefox';
+                name: 'firefox',
                 version: 89;
-                isSupported: true;
+                isSupported: true,
                 supportedFeatures: ['canvas', 'localStorage'],
-                restrictions: ['localStorage-file-protocol'];
+                restrictions: ['localStorage-file-protocol'],
                 fallbacksRequired: []
             };
             
@@ -241,9 +241,9 @@ describe('BrowserCompatibilityManager', () => {
             
             // Safari検出のモック実装
             const safariInfo: BrowserInfo = {
-                name: 'safari';
+                name: 'safari',
                 version: 605;
-                isSupported: true;
+                isSupported: true,
                 supportedFeatures: ['canvas'];
                 restrictions: ['localStorage-private', 'canvas-limited'],
                 fallbacksRequired: []
@@ -290,7 +290,7 @@ describe('BrowserCompatibilityManager', () => {
     describe('localStorage Support', (') => {'
         test('should detect full localStorage support', () => {
             (global: any).localStorage = {
-                getItem: jest.fn().mockReturnValue(null;
+                getItem: jest.fn().mockReturnValue(null,
                 setItem: jest.fn(
         removeItem: jest.fn( };
             
@@ -307,7 +307,7 @@ describe('BrowserCompatibilityManager', () => {
             expect(storageSupport.fallbackMethod').toBe('cookie-storage') }');
         test('should handle quota exceeded error', () => {
             (global: any).localStorage = {
-                getItem: jest.fn().mockReturnValue(null;
+                getItem: jest.fn().mockReturnValue(null,
                 setItem: jest.fn().mockImplementation((') => {'
                     const error = new Error('QuotaExceededError');
                     error.name = 'QuotaExceededError',
@@ -368,13 +368,13 @@ describe('BrowserCompatibilityManager', () => {
             
             // IE固有の情報をモック
             const ieSupport: ComprehensiveSupport = {
-                browser: { name: 'ie', version: 11, isSupported: false, supportedFeatures: [], restrictions: [], fallbacksRequired: ['all'] };
+                browser: { name: 'ie', version: 11, isSupported: false, supportedFeatures: [], restrictions: [], fallbacksRequired: ['all'] },
                 canvas: { available: false, context2d: false, toDataURL: false, toBlob: false, fallbackMethod: null, errorMessage: null,,
-                localStorage: { available: false, writable: false, readable: false, quotaExceeded: false, fallbackMethod: null, errorMessage: null, estimatedQuota: 0 };
+                localStorage: { available: false, writable: false, readable: false, quotaExceeded: false, fallbackMethod: null, errorMessage: null, estimatedQuota: 0 },
                 modules: { available: false, dynamicImport: false, staticImport: false, workerModules: false, fallbackMethod: null, errorMessage: null,,
                 recommendations: [
                     {
-                        type: 'browser-upgrade';
+                        type: 'browser-upgrade',
                         message: 'Consider upgrading ie for better compatibility';
                         priority: 'high'
                     }
@@ -444,13 +444,13 @@ describe('BrowserCompatibilityManager', () => {
             // Safari プライベートブラウジングモードのシミュレーション
             (global: any).localStorage = {
                 getItem: jest.fn().mockImplementation((') => {'
-                    throw new Error('localStorage disabled') };
+                    throw new Error('localStorage disabled') }
             };
             
             const storageSupport = BrowserCompatibilityManager.getLocalStorageSupport();
             expect(storageSupport.available).toBe(true);
             expect(storageSupport.readable).toBe(false);
             expect(storageSupport.fallbackMethod').toBe('memory-storage');'
-        };
+        }
     }
 }');'

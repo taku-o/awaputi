@@ -18,17 +18,17 @@ import { EffectsCalculator  } from '../../src/core/EffectsCalculator.js';
 import { ValidationSystem  } from '../../src/core/ValidationSystem.js';
 import { LoggingSystem  } from '../../src/core/LoggingSystem.js';
 interface ConfigChangeEntry {
-    category: string;
+    category: string,
     key: string;
-    oldValue: any;
+    oldValue: any,
     newValue: any;
     timestamp: number;
 interface AccessStats {
-    totalAccesses: number;
+    totalAccesses: number,
     cacheHits: number;
     frequentKeys: Map<string, number> }
 interface CacheStats {
-    totalRequests: number;
+    totalRequests: number,
     hits: number;
     misses: number;
 interface PerformanceStats {
@@ -93,13 +93,13 @@ describe('Configuration System Integration Tests', () => {
             expect(configManager.get('game', 'scoring.combo.multiplier').toBe(1.5'),'
             // 計算エンジンを通じてスコア計算
             const score = (calculationEngine.calculate('score', 'calculateBaseScore', {
-                bubbleType: 'normal';
+                bubbleType: 'normal',
                 ageRatio: 0.5);
             // 計算結果が返されることを確認（具体的な値は実装に依存）
             expect(typeof score').toBe('number'),'
             // キャッシュが正しく動作することを確認
             const cachedScore = (calculationEngine.calculate('score', 'calculateBaseScore', {
-                bubbleType: 'normal';
+                bubbleType: 'normal',
                 ageRatio: 0.5);
             expect(cachedScore).toBe(score);
             const, cacheStats: CacheStats = calculationEngine.getCacheStats(
@@ -119,7 +119,7 @@ describe('Configuration System Integration Tests', () => {
         test('検証システムとの連携', (') => {'
             // 検証ルールを設定
             configManager.setValidationRule('game.scoring.baseScores.normal', {
-                validate: (value => typeof value === 'number' && value >= 1 && value <= 100;
+                validate: (value => typeof value === 'number' && value >= 1 && value <= 100,
                 errorMessage: 'Value must be a number between 1 and 100' }');'
             // 有効な値を設定
             const validResult = configManager.set('game.scoring.baseScores.normal', 20);
@@ -233,8 +233,8 @@ describe('Configuration System Integration Tests', () => {
             // 100回の計算処理（負荷を軽減）
             for (let i = 0, i < 100, i++') {'
                 (calculationEngine.calculate('score', 'calculateBaseScore', {
-                    bubbleType: 'normal';
-                    ageRatio: Math.random(};
+                    bubbleType: 'normal',
+                    ageRatio: Math.random(}
                 };
             }
             
@@ -283,7 +283,7 @@ describe('Configuration System Integration Tests', () => {
         }
         test('計算結果のキャッシュ効果', (') => {'
             const params = {
-                bubbleType: 'normal';
+                bubbleType: 'normal',
                 ageRatio: 0.5
             };
             
@@ -302,7 +302,7 @@ describe('Configuration System Integration Tests', () => {
         test('設定システムエラーからのリカバリ', (') => {'
             // 検証ルールを設定
             configManager.setValidationRule('game', 'scoring.baseScores.normal', {
-                type: 'number';
+                type: 'number',
                 min: 1 }');'
             // 無効な設定を設定しようとする
             const result1 = configManager.set('game', 'scoring.baseScores.normal', null');'
@@ -325,7 +325,7 @@ describe('Configuration System Integration Tests', () => {
             expect(result1).toBeNull(');'
             // システムが正常に動作し続けることを確認
             const result2 = (calculationEngine.calculate('score', 'calculateBaseScore', {
-                bubbleType: 'normal';
+                bubbleType: 'normal',
                 ageRatio: 0.5);
             expect(typeof result2').toBe('number') }');
         test('設定監視エラーの処理', () => {
@@ -369,8 +369,8 @@ describe('Configuration System Integration Tests', () => {
             // 複数回計算を実行
             for (let i = 0, i < 10, i++') {'
                 (calculationEngine.calculate('score', 'calculateBaseScore', {
-                    bubbleType: 'normal';
-                    ageRatio: Math.random(};
+                    bubbleType: 'normal',
+                    ageRatio: Math.random(}
                 };
             }
             
@@ -416,7 +416,7 @@ describe('Configuration System Integration Tests', () => {
                 configManager.set('game', 'scoring.baseScores.normal', 10 + round'),'
                 // 計算の実行
                 const result = (calculationEngine.calculate('score', 'calculateBaseScore', {
-                    bubbleType: 'normal';
+                    bubbleType: 'normal',
                     ageRatio: 0.5);
                 // 結果が正常であることを確認
                 expect(typeof result').toBe('number'),'
@@ -427,6 +427,6 @@ describe('Configuration System Integration Tests', () => {
             expect(accessStats.totalAccesses).toBeGreaterThan(0);
             const cacheStats: CacheStats = calculationEngine.getCacheStats(
             expect(cacheStats.totalRequests).toBeGreaterThan(0);
-        };
+        }
     }
 }');'

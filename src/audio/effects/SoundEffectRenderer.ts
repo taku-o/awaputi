@@ -10,9 +10,9 @@ import { getConfigurationManager  } from '../../core/ConfigurationManager';
 /**
  * エンベロープ設定インターフェース
  */
-interface EnvelopeConfig { attack: number;
-    decay: number;
-    sustain: number;
+interface EnvelopeConfig { attack: number,
+    decay: number,
+    sustain: number,
     release: number;
 
 /**
@@ -24,30 +24,30 @@ interface HarmonicsConfig { harmonics?: number[];
  * モジュレーション設定インターフェース
  */
 interface ModulationConfig { modulation?: {
-        rat,e: number;
+        rat,e: number,
     depth: number;
 
 /**
  * フィルタースイープ設定インターフェース
  */
 interface FilterSweepConfig { filterSweep?: {
-        start: number;
+        start: number,
     end: number;
 
 /**
  * ピッチスライド設定インターフェース
  */
 interface PitchSlideConfig { pitchSlide?: {
-        start: number;
+        start: number,
     end: number;
 
 /**
  * サウンド設定ベースインターフェース
  */
-interface BaseSoundConfig { baseFreq: number;
+interface BaseSoundConfig { baseFreq: number,
 
-    duration: number;
-    waveType: OscillatorType | 'noise';
+    duration: number,
+    waveType: OscillatorType | 'noise,
     envelope: EnvelopeConfig;
 
 /**
@@ -63,25 +63,25 @@ interface UISoundConfig extends BaseSoundConfig { chord?: number[];
 /**
  * コンボサウンド設定インターフェース
  */
-interface ComboSoundConfig { baseFreq: number;
-    duration: number;
+interface ComboSoundConfig { baseFreq: number,
+    duration: number,
     harmonics: number[];
 
 /**
  * 実績サウンド設定インターフェース
  */
-interface AchievementSoundConfig { baseFreq: number;
-    duration: number;
-    waveType: OscillatorType | 'noise';
+interface AchievementSoundConfig { baseFreq: number,
+    duration: number,
+    waveType: OscillatorType | 'noise,
     melody: number[];
 
 /**
  * サウンド生成設定インターフェース
  */
-interface GenerationConfig { sampleRate: number;
-    defaultDuration: number;
-    fadeTime: number;
-    maxFrequency: number;
+interface GenerationConfig { sampleRate: number,
+    defaultDuration: number,
+    fadeTime: number,
+    maxFrequency: number,
     minFrequency: number;
 
 /**
@@ -102,18 +102,18 @@ type AchievementRarity = 'common' | 'rare' | 'epic' | 'legendary';
 /**
  * バリエーションオプションインターフェース
  */
-interface VariationOptions { pitchShift: number;
-    timeStretch: number;
+interface VariationOptions { pitchShift: number,
+    timeStretch: number,
     volumeVariation: number;
 
 /**
  * レンダリング統計インターフェース
  */
-interface RenderingStatistics { supportedBubbleTypes: number;
-    supportedUITypes: number;
-    supportedComboLevels: number;
-    supportedAchievementRarities: number;
-    sampleRate: number;
+interface RenderingStatistics { supportedBubbleTypes: number,
+    supportedUITypes: number,
+    supportedComboLevels: number,
+    supportedAchievementRarities: number,
+    sampleRate: number,
     defaultDuration: number;
 
 /**
@@ -125,8 +125,7 @@ interface ConfigurationManager { get(category: string): any;
  * ErrorHandler インターフェース（型定義用）
  */
 interface ErrorHandler { handleError(error: any, context: string): void;
-
-export class SoundEffectRenderer {
+    export class SoundEffectRenderer {
     private audioContext: AudioContext;
     private configManager: ConfigurationManager;
     private errorHandler: ErrorHandler;
@@ -143,95 +142,94 @@ export class SoundEffectRenderer {
     
     // 実績サウンド設定
     private achievementSoundConfigs: Record<AchievementRarity, AchievementSoundConfig>;
-
     constructor(audioContext: AudioContext) {
 
         this.audioContext = audioContext;
-        this.configManager = getConfigurationManager();
-        this.errorHandler = getErrorHandler('}'
+    this.configManager = getConfigurationManager();
+    this.errorHandler = getErrorHandler('}'
 
                 waveType: 'sine'
             }
-                envelope: { attack: 0.05, decay: 0.1, sustain: 0.3, release: 0.15  },
+                envelope: { attack: 0.05, decay: 0.1, sustain: 0.3, release: 0.15  ,
             stone: { baseFreq: 300,
-    duration: 0.4,
+    duration: 0.4  ,
                 waveType: 'sawtooth'
             }
-                envelope: { attack: 0.1, decay: 0.2, sustain: 0.2, release: 0.2  },
+                envelope: { attack: 0.1, decay: 0.2, sustain: 0.2, release: 0.2  ,
             iron: { baseFreq: 250,
-    duration: 0.5,
+    duration: 0.5  ,
                 waveType: 'square'
             }
-                envelope: { attack: 0.1, decay: 0.15, sustain: 0.25, release: 0.25  },
+                envelope: { attack: 0.1, decay: 0.15, sustain: 0.25, release: 0.25  ,
             diamond: { baseFreq: 1200,
-    duration: 0.6,
+    duration: 0.6  ,
                 waveType: 'triangle'
             }
-                envelope: { attack: 0.05, decay: 0.1, sustain: 0.4, release: 0.3  },
+                envelope: { attack: 0.05, decay: 0.1, sustain: 0.4, release: 0.3  ,
             rainbow: { baseFreq: 600,
-    duration: 0.8,
+    duration: 0.8  ,
                 waveType: 'sine'
             }
-                envelope: { attack: 0.1, decay: 0.2, sustain: 0.3, release: 0.4  },
+                envelope: { attack: 0.1, decay: 0.2, sustain: 0.3, release: 0.4  ,
                 harmonics: [1, 1.5, 2, 2.5, 3];
             },
             electric: { baseFreq: 1000,
-    duration: 0.2,
+    duration: 0.2  ,
                 waveType: 'sawtooth'
             }
-                envelope: { attack: 0.01, decay: 0.05, sustain: 0.1, release: 0.1  },
-                modulation: { rate: 20, depth: 0.3  },
+                envelope: { attack: 0.01, decay: 0.05, sustain: 0.1, release: 0.1  ,
+                modulation: { rate: 20, depth: 0.3  ,
             golden: { baseFreq: 900,
-    duration: 0.7,
+    duration: 0.7  ,
                 waveType: 'triangle'
             }
-                envelope: { attack: 0.1, decay: 0.2, sustain: 0.35, release: 0.35  },
+                envelope: { attack: 0.1, decay: 0.2, sustain: 0.35, release: 0.35  ,
                 harmonics: [1, 2, 3];
             },
             frozen: { baseFreq: 400,
-    duration: 0.4,
+    duration: 0.4  ,
                 waveType: 'sine'
             }
-                envelope: { attack: 0.2, decay: 0.1, sustain: 0.1, release: 0.2  },
-                filterSweep: { start: 2000, end: 200  },
+                envelope: { attack: 0.2, decay: 0.1, sustain: 0.1, release: 0.2  ,
+                filterSweep: { start: 2000, end: 200  ,
             boss: { baseFreq: 150,
-    duration: 1.0,
+    duration: 1.0  ,
                 waveType: 'square'
             }
-                envelope: { attack: 0.15, decay: 0.3, sustain: 0.4, release: 0.4  },
+                envelope: { attack: 0.15, decay: 0.3, sustain: 0.4, release: 0.4  ,
                 harmonics: [1, 0.5, 0.25, 0.125],
-                modulation: { rate: 5, depth: 0.2  },
+                modulation: { rate: 5, depth: 0.2  ,
             escaping: { baseFreq: 1200,
-    duration: 0.15,
+    duration: 0.15  ,
                 waveType: 'sine'
             }
-                envelope: { attack: 0.01, decay: 0.05, sustain: 0.05, release: 0.05  },
+                envelope: { attack: 0.01, decay: 0.05, sustain: 0.05, release: 0.05  ,
                 pitchSlide: { start: 1200, end: 1800  }
         };
         
         // UIサウンド設定
         this.uiSoundConfigs = { click: { 
                 baseFreq: 1000,
-                baseFreq: 1000,
-        };
+                baseFreq: 1000;
+        } };
                 duration: 0.1,
                 waveType: 'square'
             }
-                envelope: { attack: 0.01, decay: 0.02, sustain: 0.05, release: 0.03  },
+                envelope: { attack: 0.01, decay: 0.02, sustain: 0.05, release: 0.03  ,
             hover: { baseFreq: 800,
-    duration: 0.15,
+    duration: 0.15  ,
                 waveType: 'sine'
             }
-                envelope: { attack: 0.02, decay: 0.03, sustain: 0.08, release: 0.05  },
+                envelope: { attack: 0.02, decay: 0.03, sustain: 0.08, release: 0.05  ,
             success: { baseFreq: 600,
-    duration: 0.4,
+    duration: 0.4  ,
                 waveType: 'triangle'
             }
-                envelope: { attack: 0.05, decay: 0.1, sustain: 0.15, release: 0.2  },
+                envelope: { attack: 0.05, decay: 0.1, sustain: 0.15, release: 0.2  ,
                 chord: [1, 1.25, 1.5] // メジャーコード;
             },
             error: { baseFreq: 200,
-    duration: 0.3,
+    duration: 0.3  ,
                 waveType: 'sawtooth'
             }
                 envelope: { attack: 0.05, decay: 0.1, sustain: 0.1, release: 0.15  }
@@ -239,31 +237,30 @@ export class SoundEffectRenderer {
         
         // コンボサウンド設定
         this.comboSoundConfigs = {
-            1: { baseFreq: 500, duration: 0.2, harmonics: [1]  },
+            1: { baseFreq: 500, duration: 0.2, harmonics: [1]  ,
             2: { baseFreq: 600, duration: 0.25, harmonics: [1, 1.5] },
             3: { baseFreq: 700, duration: 0.3, harmonics: [1, 1.5, 2] },
             4: { baseFreq: 800, duration: 0.35, harmonics: [1, 1.5, 2, 2.5] },
-            5: { baseFreq: 900, duration: 0.4, harmonics: [1, 1.5, 2, 2.5, 3] };
+            5: { baseFreq: 900, duration: 0.4, harmonics: [1, 1.5, 2, 2.5, 3]  },
         
         // 実績サウンド設定
         this.achievementSoundConfigs = { common: { 
                 baseFreq: 600,
-                baseFreq: 600,
-        };
+                baseFreq: 600 } };
                 duration: 0.8,
-                waveType: 'triangle',
+                waveType: 'triangle,
     melody: [1, 1.25, 1.5, 2] },
             rare: { baseFreq: 700,
-    duration: 1.0,
-                waveType: 'sine',
+    duration: 1.0 ,
+                waveType: 'sine,
     melody: [1, 1.33, 1.67, 2, 2.5] },
             epic: { baseFreq: 800,
-    duration: 1.2,
-                waveType: 'triangle',
+    duration: 1.2 ,
+                waveType: 'triangle,
     melody: [1, 1.25, 1.5, 1.75, 2, 2.5, 3] },
             legendary: { baseFreq: 900,
-    duration: 1.5, ')',
-                waveType: 'sine',
+    duration: 1.5, ')'  },
+                waveType: 'sine,
     melody: [1, 1.2, 1.4, 1.6, 1.8, 2, 2.2, 2.5, 3] }
         }
     
@@ -276,7 +273,7 @@ export class SoundEffectRenderer {
 
                 console.warn(`[SoundEffectRenderer] Unknown bubble type: ${bubbleType}`},' }'
 
-                return this.generateBubbleSound('normal', variation};
+                return this.generateBubbleSound('normal', variation}
             }
             
             const duration = config.duration;
@@ -343,7 +340,7 @@ export class SoundEffectRenderer {
     
 }
                 console.warn(`[SoundEffectRenderer] Unknown UI sound type: ${uiType}`} }
-                return this.generateFallbackSound(0.1};
+                return this.generateFallbackSound(0.1}
             }
             
             const duration = config.duration;
@@ -360,11 +357,11 @@ export class SoundEffectRenderer {
                 if (config.chord) {
     
 }
-                    config.chord.forEach(ratio => { ) }
+                    config.chord.forEach(ratio => { );
                         sample += this.generateWaveform(config.waveType, config.baseFreq * ratio, time); }
                     };
                     sample /= config.chord.length;
-                } else { sample = this.generateWaveform(config.waveType, config.baseFreq, time) }
+                } else { sample = this.generateWaveform(config.waveType, config.baseFreq, time);
                 
                 channelData[i] = sample * amplitude * 0.2;
             }
@@ -426,7 +423,7 @@ export class SoundEffectRenderer {
                 if (noteIndex < melody.length) {
                     const frequency = config.baseFreq * melody[noteIndex],
                     let amplitude = this.calculateNoteEnvelope(noteTime);
-                    let sample = this.generateWaveform(config.waveType, frequency, time) }
+                    let sample = this.generateWaveform(config.waveType, frequency, time);
                     channelData[i] = sample * amplitude * 0.3; }
                 } else { channelData[i] = 0 }
             }
@@ -434,7 +431,7 @@ export class SoundEffectRenderer {
             return buffer;
 
         } catch (error) {
-            this.errorHandler.handleError(error, 'SoundEffectRenderer.generateAchievementSound',
+            this.errorHandler.handleError(error, 'SoundEffectRenderer.generateAchievementSound,
             return this.generateFallbackSound(0.8);
     /**
      * 波形を生成'
@@ -470,7 +467,7 @@ export class SoundEffectRenderer {
             return 0.7 } else if (sampleIndex < totalSamples) { // Release
             const releaseStart = attackSamples + decaySamples + sustainSamples,
             const releaseProgress = (sampleIndex - releaseStart) / releaseSamples,
-            return 0.7 * (1 - releaseProgress) }
+            return 0.7 * (1 - releaseProgress);
         
         return 0;
     }
@@ -590,11 +587,9 @@ export class SoundEffectRenderer {
      * 泡サウンド設定を更新
      */
     updateBubbleSoundConfig(bubbleType: BubbleType, config: Partial<BubbleSoundConfig>): void { if (this.bubbleSoundConfigs[bubbleType]) {
-            Object.assign(this.bubbleSoundConfigs[bubbleType], config) }
-            console.log(`[SoundEffectRenderer] Bubble sound config updated for ${bubbleType}:`, config};
-        }
-    }
-    
+            Object.assign(this.bubbleSoundConfigs[bubbleType], config);
+            console.log(`[SoundEffectRenderer] Bubble sound config updated for ${bubbleType}:`, config    }
+}
     /**
      * レンダリング統計を取得
      */
@@ -602,6 +597,6 @@ export class SoundEffectRenderer {
             supportedUITypes: Object.keys(this.uiSoundConfigs).length,
             supportedComboLevels: Object.keys(this.comboSoundConfigs).length,
             supportedAchievementRarities: Object.keys(this.achievementSoundConfigs).length,
-    sampleRate: this.generationConfig.sampleRate },
+    sampleRate: this.generationConfig.sampleRate ,
             defaultDuration: this.generationConfig.defaultDuration 
     }'}'

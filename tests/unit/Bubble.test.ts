@@ -49,7 +49,7 @@ describe('Bubble Class Tests', () => {
         // Mock GameEngine
         mockGameEngine = {
             canvas: { width: 800, height: 600 ','
-            ctx: mockContext,
+            ctx: mockContext },
             currentStage: { name: 'normal' },
             getInputManager: jest.fn(() => ({
                 isMousePressed: jest.fn(() => false),
@@ -268,6 +268,6 @@ describe('Bubble Class Tests', () => {
             expect(config.score).toBeGreaterThan(0);
             expect(config.maxAge).toBeGreaterThan(0);
             expect(config.color).toBeTruthy();
-        };
+        }
     }
 }');'

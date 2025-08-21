@@ -1,56 +1,57 @@
 export interface InsightType { PERFORMANCE: 'performance',''
-    TREND: 'trend';
-    ANOMALY: 'anomaly';
-    OPPORTUNITY: 'opportunity';
-    WARNING: 'warning';
-    ACHIEVEMENT: 'achievement';
-    PATTERN: 'pattern';
+    TREND: 'trend,
+    ANOMALY: 'anomaly,
+    OPPORTUNITY: 'opportunity,
+    WARNING: 'warning,
+    ACHIEVEMENT: 'achievement,
+    PATTERN: 'pattern,
     RECOMMENDATION: 'recommendation'
-            }
+            };
 ';'
 
 export interface PriorityLevel {;
-    CRITICAL: 'critical';
-    HIGH: 'high';
-    MEDIUM: 'medium';
-    LOW: 'low';
+    CRITICAL: 'critical,
+    HIGH: 'high,
+    MEDIUM: 'medium,
+    LOW: 'low,
     INFORMATIONAL: 'informational'
-            }
-export interface InsightConfig { thresholds: {
-        significant_chang,e: number;
-        concerning_decline: number;
-        excellent_improvement: number;
-        volatility_warning: number;
-    streak_achievement: number;
-    patterns: { min_data_points: number;
+            };
+export interface InsightConfig { thresholds: { significant_chang,e: number,
+        concerning_decline: number,
+        excellent_improvement: number,
+        volatility_warning: number,
+    streak_achievement: number,
+    patterns: { min_data_points: number,
         trend_consistency: number;
-        cycle_detection_window: number;
-    outlier_threshold: number;
-    recommendations: { max_recommendations: number;
+    },
+        cycle_detection_window: number,
+    outlier_threshold: number,
+    recommendations: { max_recommendations: number,
         action_confidence_threshold: number;
-    priority_scoring_weights: {
-            impact: number;
-            urgency: number;
+    },
+    priority_scoring_weights: { impact: number;
+    },
+            urgency: number,
     feasibility: number;
 }
 
-export interface Insight { id: string;
-    type: string;
-    title: string;
-    description: string;
-    priority: string;
-    timestamp: number;
+export interface Insight { id: string,
+    type: string,
+    title: string,
+    description: string,
+    priority: string,
+    timestamp: number,
     context: Record<string, any>;
     confidence: number;
-export interface Recommendation { id: string;
-    type: string;
-    title: string;
-    description: string;
-    actionItems: string[];
-    priority: string;
-    estimatedImpact: string;
+    export interface Recommendation { id: string,
+    type: string,
+    title: string,
+    description: string,
+    actionItems: string[],
+    priority: string,
+    estimatedImpact: string,
     timeToImplement: string;
-export interface StatisticsData { basic?: any,
+    export interface StatisticsData { basic?: any,
     bubbles?: any;
     combos?: any;
     health?: any;
@@ -59,17 +60,18 @@ export interface StatisticsData { basic?: any,
     progress?: any;
     timeSeries?: any;
     session?: any;
-export interface InsightResult { generationId: string;
-    timestamp: number;
-    dataSource: string;
-    insights: Insight[];
-    recommendations: Recommendation[];
-    summary: any;
+    export interface InsightResult { generationId: string,
+    timestamp: number,
+    dataSource: string,
+    insights: Insight[],
+    recommendations: Recommendation[],
+    summary: any,
     metadata: {
         totalInsight,s: number;
-        criticalInsights: number;
-        dataQuality: any;
-    analysisConfidence: number;
+    },
+        criticalInsights: number,
+        dataQuality: any,
+    analysisConfidence: number,
     analysisConfidence: number;
         };
 /**
@@ -83,27 +85,26 @@ export class InsightGenerator {
     private, insightTemplates: Record<string, any>;
 
     constructor('''
-            PERFORMANCE: 'performance';
-            TREND: 'trend';
-            ANOMALY: 'anomaly';
-            OPPORTUNITY: 'opportunity';
-            WARNING: 'warning';
-            ACHIEVEMENT: 'achievement';
-            PATTERN: 'pattern';
+            PERFORMANCE: 'performance,
+            TREND: 'trend,
+            ANOMALY: 'anomaly,
+            OPPORTUNITY: 'opportunity,
+            WARNING: 'warning,
+            ACHIEVEMENT: 'achievement,
+            PATTERN: 'pattern,
             RECOMMENDATION: 'recommendation'
             };
         ';'
 
         this.priorityLevels = {;
-            CRITICAL: 'critical',
-            HIGH: 'high',
-            MEDIUM: 'medium',
-            LOW: 'low',
+            CRITICAL: 'critical,
+            HIGH: 'high,
+            MEDIUM: 'medium,
+            LOW: 'low,
             INFORMATIONAL: 'informational'
             };
         this.insightConfigs = { // 洞察生成の閾値
-            thresholds: {
-                significant_change: 15,      // 15%以上の変化で有意な変化;
+            thresholds: { significant_change: 15,      // 15%以上の変化で有意な変化  },
                 concerning_decline: -10,     // 10%以上の低下で警告;
                 excellent_improvement: 25,   // 25%以上の向上で優秀;
                 volatility_warning: 30,      // 変動係数30%以上で不安定;
@@ -111,15 +112,14 @@ export class InsightGenerator {
  };
             // パターン検出設定
             patterns: { min_data_points: 5,
-                trend_consistency: 0.7,
+                trend_consistency: 0.7  ,
                 cycle_detection_window: 14,
     outlier_threshold: 2.5 
 };
             // 推奨事項生成設定
             recommendations: { max_recommendations: 5,
-                action_confidence_threshold: 0.6,
-    priority_scoring_weights: {
-                    impact: 0.4,
+                action_confidence_threshold: 0.6  ,
+    priority_scoring_weights: { impact: 0.4  ,
                     urgency: 0.3,
     feasibility: 0.3 
     })
@@ -133,7 +133,7 @@ export class InsightGenerator {
     generate(statisticsData: StatisticsData, options: Partial<InsightConfig> = { ): InsightResult { }
         const config = { ...this.insightConfigs, ...options,
         
-        if (!statisticsData || Object.keys(statisticsData).length === 0) { return this.createEmptyInsights() }
+        if (!statisticsData || Object.keys(statisticsData).length === 0) { return this.createEmptyInsights();
         const insights = [];
         
         // 各カテゴリの分析
@@ -146,7 +146,7 @@ export class InsightGenerator {
         insights.push(...this.analyzeProgress(statisticsData.progress);
         
         // 時系列データがある場合の追加分析
-        if (statisticsData.timeSeries && statisticsData.timeSeries.available) { insights.push(...this.analyzeTimeSeriesInsights(statisticsData.timeSeries) }
+        if (statisticsData.timeSeries && statisticsData.timeSeries.available) { insights.push(...this.analyzeTimeSeriesInsights(statisticsData.timeSeries);
         // クロス分析（複数指標の関連性）
         insights.push(...this.performCrossAnalysis(statisticsData);
         
@@ -167,10 +167,10 @@ export class InsightGenerator {
             recommendations: recommendations,
             summary: summary,
             // メタデータ
-           , metadata: {
-                totalInsights: filteredInsights.length,
+            metadata: {
+                totalInsights: filteredInsights.length ,
                 criticalInsights: filteredInsights.filter(i => i.priority === this.priorityLevels.CRITICAL).length,
-                dataQuality: this.assessDataQuality(statisticsData) },
+                dataQuality: this.assessDataQuality(statisticsData) ,
                 analysisConfidence: this.calculateAnalysisConfidence(statisticsData, filteredInsights); }
         }
     
@@ -237,16 +237,16 @@ export class InsightGenerator {
 
                 'Excellent Accuracy')' }'
 
-                `バブル精度${accuracy.toFixed(1'}'%は非常に優秀です！正確な判断力と集中力を持っています。`,
+                `バブル精度${accuracy.toFixed(1'}'%は非常に優秀です！正確な判断力と集中力を持っています。,
 
                 this.priorityLevels.MEDIUM,
                 { metric: 'accuracy', value: accuracy,
 
             ';} else if (accuracy < 60) { insights.push(this.createInsight()'
-                this.insightTypes.OPPORTUNITY,')',
+                this.insightTypes.OPPORTUNITY,'),
                 'Accuracy Improvement Opportunity')' }'
 
-                `バブル精度${accuracy.toFixed(1'}'%に改善の余地があります。落ち着いてタイミングを見極めることで向上できます。`,
+                `バブル精度${accuracy.toFixed(1'}'%に改善の余地があります。落ち着いてタイミングを見極めることで向上できます。,
 
                 this.priorityLevels.HIGH,
                 { metric: 'accuracy', value: accuracy,
@@ -261,16 +261,16 @@ export class InsightGenerator {
 
                 'Lightning Fast Reflexes')' }'
 
-                `平均反応時間${reactionTime.toFixed(0'}'msは非常に速いです！優れた反射神経を持っています。`,
+                `平均反応時間${reactionTime.toFixed(0'}'msは非常に速いです！優れた反射神経を持っています。,
 
                 this.priorityLevels.MEDIUM,
                 { metric: 'reaction_time', value: reactionTime,
 
             ';} else if (reactionTime > 800) { insights.push(this.createInsight()'
-                this.insightTypes.OPPORTUNITY,')',
+                this.insightTypes.OPPORTUNITY,'),
                 'Reaction Time Improvement')' }'
 
-                `反応時間${reactionTime.toFixed(0'}'msをもう少し短縮できれば、さらに高いスコアが期待できます。`,
+                `反応時間${reactionTime.toFixed(0'}'msをもう少し短縮できれば、さらに高いスコアが期待できます。,
 
                 this.priorityLevels.MEDIUM,
                 { metric: 'reaction_time', value: reactionTime,
@@ -286,7 +286,7 @@ export class InsightGenerator {
 
                     'High Efficiency Player')' }'
 
-                    `毎分${efficiency.toFixed(1'}'個のバブル処理は高効率です。安定したペースを維持できています。`,
+                    `毎分${efficiency.toFixed(1'}'個のバブル処理は高効率です。安定したペースを維持できています。,
 
                     this.priorityLevels.INFORMATIONAL,
                     { metric: 'efficiency', value: efficiency,
@@ -303,7 +303,7 @@ export class InsightGenerator {
             }''
                 `${favType}バブルを最も多く処理しています。特定タイプへの適応力が高いようです。`,')'
                 this.priorityLevels.INFORMATIONAL'';
-                { metric: 'favorite_bubble', value: favType )  }
+                { metric: 'favorite_bubble', value: favType );
         return insights;
     }
     
@@ -324,14 +324,14 @@ export class InsightGenerator {
                 `最高コンボ${comboStats.highestCombo}は素晴らしい集中力の証です！`,')'
                 this.priorityLevels.MEDIUM'';
                 { metric: 'highest_combo', value: comboStats.highestCombo '','
-            }'
+            }
 
         } else if (comboStats.highestCombo < 5) { insights.push(this.createInsight('
                 this.insightTypes.OPPORTUNITY,','
                 'Combo Building Opportunity')','
-                `コンボ継続に注力することで、より高いスコアが期待できます。`,')',
-                this.priorityLevels.HIGH'',
-                { metric: 'highest_combo', value: comboStats.highestCombo )  }
+                `コンボ継続に注力することで、より高いスコアが期待できます。,')',
+                this.priorityLevels.HIGH',
+                { metric: 'highest_combo', value: comboStats.highestCombo );
         // コンボ成功率の分析
         const successRate = parseFloat(comboStats.comboSuccessRate);
         if (successRate > 80) {
@@ -340,7 +340,7 @@ export class InsightGenerator {
 
                 'Consistent Combo Performance')' }'
 
-                `コンボ成功率${successRate.toFixed(1'}'%は安定した技術力を示しています。`,
+                `コンボ成功率${successRate.toFixed(1'}'%は安定した技術力を示しています。,
 
                 this.priorityLevels.MEDIUM,
                 { metric: 'combo_success_rate', value: successRate,
@@ -365,16 +365,16 @@ export class InsightGenerator {
 
                 'Excellent Survival Skills')' }'
 
-                `生存率${survivalRate.toFixed(1'}'%は優れた危機管理能力を示しています。`,
+                `生存率${survivalRate.toFixed(1'}'%は優れた危機管理能力を示しています。,
 
                 this.priorityLevels.MEDIUM,
                 { metric: 'survival_rate', value: survivalRate,
 
             ';} else if (survivalRate < 50) { insights.push(this.createInsight()'
-                this.insightTypes.WARNING,')',
+                this.insightTypes.WARNING,'),
                 'Health Management Needed')' }'
 
-                `生存率${survivalRate.toFixed(1'}'%が低いです。防御的な戦略を検討してみてください。`,
+                `生存率${survivalRate.toFixed(1'}'%が低いです。防御的な戦略を検討してみてください。,
 
                 this.priorityLevels.HIGH,
                 { metric: 'survival_rate', value: survivalRate,
@@ -385,8 +385,8 @@ export class InsightGenerator {
         if (healthStats.timesRevived > 10) { insights.push(this.createInsight(','
                 this.insightTypes.OPPORTUNITY,','
                 'Resilience Indicator')','
-                `復活回数が多いです。諦めない精神力がありますが、予防策も重要です。`,')',
-                this.priorityLevels.MEDIUM'',
+                `復活回数が多いです。諦めない精神力がありますが、予防策も重要です。,')',
+                this.priorityLevels.MEDIUM',
                 { metric: 'times_revived', value: healthStats.timesRevived  }
             ); }
         return insights;
@@ -427,8 +427,8 @@ export class InsightGenerator {
         if (playstyleStats.dragOperations > 0) { insights.push(this.createInsight(','
                 this.insightTypes.PATTERN,','
                 'Strategic Player')','
-                `ドラッグ操作を活用する戦略的なプレイスタイルです。`,')',
-                this.priorityLevels.INFORMATIONAL'',
+                `ドラッグ操作を活用する戦略的なプレイスタイルです。,')',
+                this.priorityLevels.INFORMATIONAL',
                 { metric: 'drag_operations', value: playstyleStats.dragOperations  }
             ); }
         return insights;
@@ -454,7 +454,7 @@ export class InsightGenerator {
                 `朝の時間帯（${peakHour.name}）にプレイすることが多いです。集中力が高い時間を活用していますね。`,')'
                 this.priorityLevels.INFORMATIONAL'';
                 { metric: 'peak_hour', value: peakHour.hour '','
-            }'
+            }
 
         } else if (peakHour.hour >= 22 || peakHour.hour <= 2) { insights.push(this.createInsight('
                 this.insightTypes.PATTERN,
@@ -475,7 +475,7 @@ export class InsightGenerator {
             }''
                 `週末（${peakDay.name}）にプレイすることが多いです。リラックス時間を楽しんでいますね。`,')'
                 this.priorityLevels.INFORMATIONAL'';
-                { metric: 'peak_day', value: peakDay.day )  }
+                { metric: 'peak_day', value: peakDay.day );
         return insights;
     }
     
@@ -508,7 +508,7 @@ export class InsightGenerator {
             }''
                 `${progressStats.achievementsUnlocked}個の実績解除は素晴らしい探求心の表れです！`,')'
                 this.priorityLevels.MEDIUM'';
-                { metric: 'achievements_unlocked', value: progressStats.achievementsUnlocked )  }
+                { metric: 'achievements_unlocked', value: progressStats.achievementsUnlocked );
         return insights;
     }
     
@@ -525,8 +525,8 @@ export class InsightGenerator {
             insights.push(this.createInsight(','
                 this.insightTypes.TREND,','
                 'Improving Performance')','
-                `スコアが継続的に向上しています。成長が見られる素晴らしいトレンドです！`,')',
-                this.priorityLevels.HIGH'',
+                `スコアが継続的に向上しています。成長が見られる素晴らしいトレンドです！,')',
+                this.priorityLevels.HIGH',
                 { metric: 'score_trend', value: scoreTrend.overall.changePercent '}'
 
             '); }'
@@ -534,8 +534,8 @@ export class InsightGenerator {
         } else if (scoreTrend && scoreTrend.overall.trend === 'declining') { insights.push(this.createInsight('
                 this.insightTypes.WARNING,','
                 'Performance Decline')','
-                `最近スコアが低下傾向にあります。休息や戦略見直しを検討してみてください。`,')',
-                this.priorityLevels.HIGH'',
+                `最近スコアが低下傾向にあります。休息や戦略見直しを検討してみてください。,')',
+                this.priorityLevels.HIGH',
                 { metric: 'score_trend', value: scoreTrend.overall.changePercent '''
             '}'
         // 効率トレンドの分析
@@ -543,8 +543,8 @@ export class InsightGenerator {
         if (efficiencyTrend && efficiencyTrend.overall.trend === 'improving') { insights.push(this.createInsight(','
                 this.insightTypes.TREND,','
                 'Efficiency Growth')','
-                `プレイ効率が向上しています。技術の上達が見られます。`,')',
-                this.priorityLevels.MEDIUM'',
+                `プレイ効率が向上しています。技術の上達が見られます。,')',
+                this.priorityLevels.MEDIUM',
                 { metric: 'efficiency_trend', value: efficiencyTrend.overall.changePercent  }
             ); }
         return insights;
@@ -564,8 +564,8 @@ export class InsightGenerator {
                 insights.push(this.createInsight(','
                     this.insightTypes.PATTERN,','
                     'Accuracy-Score Correlation')','
-                    `高い精度と高スコアが連動しています。安定した技術力を持っています。`,')',
-                    this.priorityLevels.MEDIUM'',
+                    `高い精度と高スコアが連動しています。安定した技術力を持っています。,')',
+                    this.priorityLevels.MEDIUM',
                     { metrics: ['accuracy', 'average_score'], correlation: 'positive'
             }
                 ); }
@@ -579,8 +579,8 @@ export class InsightGenerator {
                 insights.push(this.createInsight(
                     this.insightTypes.PATTERN)','
                     'Endurance Performance')','
-                    `長時間プレイでも高いパフォーマンスを維持できています。集中力に優れています。`,')',
-                    this.priorityLevels.MEDIUM'',
+                    `長時間プレイでも高いパフォーマンスを維持できています。集中力に優れています。,')',
+                    this.priorityLevels.MEDIUM',
                     { metrics: ['session_length', 'session_score'], pattern: 'endurance'
             }
                 ); }
@@ -606,19 +606,19 @@ export class InsightGenerator {
         
         // 一般的な推奨事項
         if (statisticsData.bubbles && parseFloat(statisticsData.bubbles.accuracy) < 70) { recommendations.push({);
-                id: this.generateRecommendationId('',
-    type: 'skill_improvement',
-                title: '精度向上のための練習',
-                description: '短時間の集中練習セッションで精度を向上させましょう。',
+                id: this.generateRecommendationId(',
+    type: 'skill_improvement,
+                title: '精度向上のための練習,
+                description: '短時間の集中練習セッションで精度を向上させましょう。,
                 actionItems: [','
-                    '5分間の精度重視プレイ',
+                    '5分間の精度重視プレイ,
                     '特定バブルタイプに特化した練習',]','
                     '反応時間の測定と改善']);
                 ]','
                 priority: this.priorityLevels.HIGH,
-                estimatedImpact: 'medium',
+                estimatedImpact: 'medium,
                 timeToImplement: 'short'
-            };
+            }
         }
         
         return recommendations.slice(0, this.insightConfigs.recommendations.max_recommendations);
@@ -635,23 +635,21 @@ export class InsightGenerator {
             priority: priority,
             timestamp: Date.now(
     context: context,
-            confidence: this.calculateInsightConfidence(context),
-    }
+            confidence: this.calculateInsightConfidence(context) }
 
     private createRecommendationFromInsight(insight: Insight, statisticsData: StatisticsData): Recommendation | null { // 簡略化された実装
         if(insight.context.metric === 'accuracy' && insight.context.value < 60' {'
             return { ''
-                id: this.generateRecommendationId('',
-    type: 'accuracy_improvement',
-                title: '精度向上のための集中練習',
-                description: '短時間の練習で精度を改善しましょう。',
+                id: this.generateRecommendationId(',
+    type: 'accuracy_improvement,
+                title: '精度向上のための集中練習,
+                description: '短時間の練習で精度を改善しましょう。,
                 actionItems: ['ゆっくりと正確にクリック', '画面の中央に集中],'
                 priority: insight.priority }
 
                 estimatedImpact: 'high',' };'
 
-                timeToImplement: 'short' })
-        }
+                timeToImplement: 'short' });
         return null;
     }
     );
@@ -684,7 +682,7 @@ export class InsightGenerator {
         return { totalInsights: insights.length,
             byCategory: categories,
             byPriority: priorities,
-    topInsight: insights[0] || null },
+    topInsight: insights[0] || null ,
             keyTakeaways: this.extractKeyTakeaways(insights); 
     }
     
@@ -694,9 +692,9 @@ export class InsightGenerator {
                 insight.priority === this.priorityLevels.CRITICAL || ),
                 insight.priority === this.priorityLevels.HIGH),
             .slice(0, 3);
-            .map(insight => insight.description) }
+            .map(insight => insight.description);
     private formatTime(milliseconds: number): string { const minutes = Math.floor(milliseconds / 60000);
-        const seconds = Math.floor((milliseconds % 60000) / 1000) }
+        const seconds = Math.floor((milliseconds % 60000) / 1000);
         return `${minutes}分${seconds}秒`;
     }
     
@@ -715,10 +713,9 @@ export class InsightGenerator {
     private assessDataQuality(statisticsData: StatisticsData): any {
         return { score: 0.9, issues: []  }
     private calculateAnalysisConfidence(statisticsData: StatisticsData, insights: Insight[]): number { return 0.85 }
-    private createEmptyInsights(): InsightResult { return { insights: [] },
-            recommendations: [],
-}
-            summary: { totalInsights: 0 },
+    private createEmptyInsights(): InsightResult { return { insights: [] ,
+            recommendations: [] }
+            summary: { totalInsights: 0 ,
             metadata: { totalInsights: 0 
 }
 

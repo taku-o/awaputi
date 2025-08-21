@@ -6,31 +6,31 @@
 import { getErrorHandler  } from '../../core/ErrorHandler.js';
 
 // Configuration interfaces
-interface MonitoringConfig { interval: number;
-    enableDashboard: boolean;
-    enableHistory: boolean;
-    enableAlerts: boolean;
-    enableRealtimeStream: boolean;
-    metricsFilter: string[];
-    retention: number;
-    bufferSize: number;
+interface MonitoringConfig { interval: number,
+    enableDashboard: boolean,
+    enableHistory: boolean,
+    enableAlerts: boolean,
+    enableRealtimeStream: boolean,
+    metricsFilter: string[],
+    retention: number,
+    bufferSize: number,
     samplingRate: number;
 
 // Event detection interfaces
 interface EventDetector { threshold: number;
     duration?: number;
     samples?: number;
-    condition: ((value: number, threshold: number) => boolean) | ((values: HistoryEntry[]) => boolean},
-    active: boolean,
+    condition: ((value: number, threshold: number) => boolean) | ((values: HistoryEntry[]) => boolean,
+    active: boolean;
     startTime?: number | null;
     history?: HistoryEntry[];
     }
 
-interface HistoryEntry { value: number;
+interface HistoryEntry { value: number,
     timestamp: number;
 
 // Performance event interfaces
-interface PerformanceEvent { type: string;
+interface PerformanceEvent { type: string,
     detected: number;
     resolved?: number;
     duration?: number;
@@ -38,12 +38,11 @@ interface PerformanceEvent { type: string;
     severity?: string;
 
 // Stream interfaces
-interface RealtimeStream { active: boolean;
-    buffer: StreamDataPoint[];
-    bufferSize: number;
+interface RealtimeStream { active: boolean,
+    buffer: StreamDataPoint[],
+    bufferSize: number,
     lastFlush: number;
-
-interface StreamDataPoint { timestamp: number;
+    interface StreamDataPoint { timestamp: number,
     metrics: Record<string, any>;
     events: string[];
 
@@ -61,7 +60,7 @@ interface PerformanceMonitoringSystem { ''
 // Navigator extensions
 declare global { interface Navigator {
         connection?: {
-            downlin,k?: number,  };
+            downlin,k?: number };
         battery?: any;
         getBattery?(): any;
     }
@@ -99,14 +98,14 @@ export class RealTimePerformanceMonitor {
         // Real-time monitoring configuration
         this.monitoringConfig = {
             interval: 1000, // 1秒間隔;
-            enableDashboard: true;
-            enableHistory: true;
-            enableAlerts: true;
-            enableRealtimeStream: true;
+            enableDashboard: true,
+            enableHistory: true,
+            enableAlerts: true,
+            enableRealtimeStream: true,
     metricsFilter: [], // 空の場合は全メトリクス;
             retention: 24 * 60 * 60 * 1000, // 24時間;
             bufferSize: 1000, // データポイント数
-    }
+    };
             samplingRate: 1.0 // 100%サンプリング 
     };
         // Monitoring state
@@ -162,18 +161,18 @@ export class RealTimePerformanceMonitor {
      */''
     private setupEventDetectors()';'
         this.eventDetectors.set('fps_drop', { threshold: 45)
-           , duration: 3000, // 3秒間);
+            duration: 3000, // 3秒間);
             condition: (value: number, threshold: number) => value < threshold,
             active: false,
     startTime: null'
-            }'
+            }
 
         }');'
         ';'
         // Memory leak detector
         this.eventDetectors.set('memory_leak', { threshold: 10, // 10MB/min growth)
             samples: 10),
-            condition: (values: HistoryEntry[]) => this.detectMemoryLeak(values);
+            condition: (values: HistoryEntry[]) => this.detectMemoryLeak(values),
             active: false),
             history: []')  }'
 
@@ -185,7 +184,7 @@ export class RealTimePerformanceMonitor {
             condition: (value: number, threshold: number) => value > threshold,
             active: false'
             
-            }'
+            }
 
         }');'
         ';'
@@ -195,7 +194,7 @@ export class RealTimePerformanceMonitor {
             condition: (value: number, threshold: number) => value > threshold,
             active: false'
             
-            }'
+            }
 
         }');'
         ';'
@@ -203,8 +202,7 @@ export class RealTimePerformanceMonitor {
         this.eventDetectors.set('input_lag', {
                 threshold: 100, // 100ms);
             condition: (value: number, threshold: number) => value > threshold,
-            active: false,)
-        };
+            active: false,);
     }
     
     /**
@@ -232,7 +230,7 @@ export class RealTimePerformanceMonitor {
             if (this.monitoringConfig.enableRealtimeStream) {
 
                 this.initializeStream()','
-            console.log('[RealTimePerformanceMonitor] Real-time, monitoring started') }
+            console.log('[RealTimePerformanceMonitor] Real-time, monitoring started');
 
             ' }'
 
@@ -267,10 +265,8 @@ export class RealTimePerformanceMonitor {
 
         } catch (error) { this.errorHandler.handleError(error, {')'
                 context: 'RealTimePerformanceMonitor.stopMonitoring'
-            };
-        }
-    }
-    
+                }
+}
     /**
      * Collect real-time performance data
      */
@@ -305,17 +301,15 @@ export class RealTimePerformanceMonitor {
             this.detectEvents(filteredMetrics, timestamp);
             
             // Stream data
-            if (this.monitoringConfig.enableRealtimeStream) { this.streamData(timestamp, filteredMetrics) }
+            if (this.monitoringConfig.enableRealtimeStream) { this.streamData(timestamp, filteredMetrics);
             
             // Notify monitoring system
             if (this.performanceMonitoringSystem && this.performanceMonitoringSystem.onRealTimeData) { this.performanceMonitoringSystem.onRealTimeData(timestamp, filteredMetrics),' }'
 
             } catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'RealTimePerformanceMonitor.collectRealTimeData'
-            };
-        }
-    }
-    
+                }
+}
     /**
      * Filter metrics based on configuration
      * @param metrics - Raw metrics
@@ -346,7 +340,7 @@ export class RealTimePerformanceMonitor {
                     // Event started
                     detector.active = true,
                     detector.startTime = timestamp,
-                    this.onEventDetected(eventType, metrics, timestamp) }
+                    this.onEventDetected(eventType, metrics, timestamp);
                 } else if (!detected && detector.active) { // Event ended
                     detector.active = false,
                     this.onEventResolved(eventType, metrics, timestamp, detector.startTime || timestamp) } catch (error) {
@@ -374,7 +368,7 @@ export class RealTimePerformanceMonitor {
             case 'network_spike':','
                 return this.checkNetworkSpikeEvent(detector, metrics);
             case 'input_lag':,
-                return this.checkInputLagEvent(detector, metrics) }
+                return this.checkInputLagEvent(detector, metrics);
             default: return false,
     
     /**
@@ -502,7 +496,7 @@ export class RealTimePerformanceMonitor {
         this.detectedEvents.push(event);
         
         // Keep events history manageable
-        if (this.detectedEvents.length > 100) { this.detectedEvents.shift() }
+        if (this.detectedEvents.length > 100) { this.detectedEvents.shift();
         ;
         // Notify monitoring system
         if (this.performanceMonitoringSystem && this.performanceMonitoringSystem.onPerformanceEvent) { }
@@ -510,7 +504,7 @@ export class RealTimePerformanceMonitor {
             this.performanceMonitoringSystem.onPerformanceEvent('detected', event); }
         }
         
-        console.log(`[RealTimePerformanceMonitor] Performance, event detected: ${eventType}`};
+        console.log(`[RealTimePerformanceMonitor] Performance, event detected: ${eventType}`}
     }
     
     /**
@@ -542,7 +536,7 @@ export class RealTimePerformanceMonitor {
             this.performanceMonitoringSystem.onPerformanceEvent('resolved', event); }
         }
         
-        console.log(`[RealTimePerformanceMonitor] Performance, event resolved: ${eventType} (duration: ${event.duration}ms}`};
+        console.log(`[RealTimePerformanceMonitor] Performance, event resolved: ${eventType} (duration: ${event.duration}ms}`}
     }
     
     /**
@@ -555,38 +549,38 @@ export class RealTimePerformanceMonitor {
         switch(eventType) {
 
             case 'fps_drop':','
-                const fps = metrics.get('fps',
-                if(fps < 20) return 'critical',
-                if(fps < 30) return 'high',
-                return 'medium',
+                const fps = metrics.get('fps,
+                if(fps < 20) return 'critical,
+                if(fps < 30) return 'high,
+                return 'medium,
 
             case 'memory_leak':','
-                const memoryGrowth = metrics.get('memory_growth',
-                if(memoryGrowth > 20) return 'critical',
-                if(memoryGrowth > 15) return 'high',
-                return 'medium',
+                const memoryGrowth = metrics.get('memory_growth,
+                if(memoryGrowth > 20) return 'critical,
+                if(memoryGrowth > 15) return 'high,
+                return 'medium,
 
             case 'frame_spike':','
-                const frameTime = metrics.get('frame_time',
-                if(frameTime > 100) return 'critical',
-                if(frameTime > 75) return 'high',
-                return 'medium',
+                const frameTime = metrics.get('frame_time,
+                if(frameTime > 100) return 'critical,
+                if(frameTime > 75) return 'high,
+                return 'medium,
 
             case 'network_spike':','
-                const latency = metrics.get('network_latency',
-                if(latency > 1000) return 'critical',
-                if(latency > 750) return 'high',
-                return 'medium',
+                const latency = metrics.get('network_latency,
+                if(latency > 1000) return 'critical,
+                if(latency > 750) return 'high,
+                return 'medium,
 
             case 'input_lag':','
-                const inputLag = metrics.get('input_lag',
-                if(inputLag > 200) return 'critical',
-                if(inputLag > 150) return 'high',
-                return 'medium',
+                const inputLag = metrics.get('input_lag,
+                if(inputLag > 200) return 'critical,
+                if(inputLag > 150) return 'high,
+                return 'medium,
 
                 ' }'
 
-            default: return 'low',
+            default: return 'low,
     
     /**
      * Initialize real-time data stream
@@ -608,13 +602,13 @@ export class RealTimePerformanceMonitor {
         const dataPoint: StreamDataPoint = {
             timestamp,
             metrics: Object.fromEntries(metrics,
-    events: this.getActiveEvents(  },
+    events: this.getActiveEvents(  ,
         
         // Add to stream buffer
         this.realtimeStream.buffer.push(dataPoint);
         
         // Keep buffer size manageable
-        if (this.realtimeStream.buffer.length > this.realtimeStream.bufferSize) { this.realtimeStream.buffer.shift() }
+        if (this.realtimeStream.buffer.length > this.realtimeStream.bufferSize) { this.realtimeStream.buffer.shift();
         
         // Notify subscribers
         this.notifyStreamSubscribers(dataPoint);
@@ -657,9 +651,9 @@ export class RealTimePerformanceMonitor {
      * Get currently active events
      * @returns Active events
      */
-    private getActiveEvents(): string[] { return Array.from(this.eventDetectors.entries()
+    private getActiveEvents(): string[] { return Array.from(this.eventDetectors.entries()))
             .filter(([, detector]) => detector.active),
-            .map(([type]) => type) }
+            .map(([type]) => type);
     }
     
     /**
@@ -669,7 +663,7 @@ export class RealTimePerformanceMonitor {
      */
     getEventsHistory(timeRange: number = 3600000): PerformanceEvent[] { const now = Date.now();
         return this.detectedEvents.filter(event => );
-            now - event.detected < timeRange) }
+            now - event.detected < timeRange);
     }
     
     /**
@@ -688,10 +682,8 @@ export class RealTimePerformanceMonitor {
     
 }
             Object.assign(detector, config); }
-            console.log(`[RealTimePerformanceMonitor] Event, detector configured: ${eventType}`};
-        }
-    }
-    
+            console.log(`[RealTimePerformanceMonitor] Event, detector configured: ${eventType}`    }
+}
     /**
      * Get monitoring statistics
      * @returns Monitoring statistics
@@ -704,13 +696,13 @@ export class RealTimePerformanceMonitor {
             activeEvents: this.getActiveEvents().length,
             totalEventsDetected: this.detectedEvents.length,
     eventDetectors: Object.fromEntries();
-                Array.from(this.eventDetectors.entries().map(([type, detector]) => [type, ,
+                Array.from(this.eventDetectors.entries())).map(([type, detector]) => [type,
                     { 
-                        active: detector.active },
+                        active: detector.active ,
                         threshold: detector.threshold  }]
                     }]
                 ]);
-            ) }
+            );
     
     /**
      * Cleanup monitoring resources
@@ -735,7 +727,7 @@ class FrameDataCollector implements IDataCollector { private lastFrameTime: numb
     async collect(): Promise<Map<string, any>> { const now = performance.now();
         const frameTime = now - this.lastFrameTime,
         this.lastFrameTime = now;
-        this.frameCount++,
+        this.frameCount++;
         
         this.frameTimes.push(frameTime);
         if (this.frameTimes.length > 60) {
@@ -764,7 +756,7 @@ class MemoryDataCollector implements IDataCollector { private baselineMemory: nu
     private, lastMemoryCheck: number = 0;
     async initialize(): Promise<void> {
         this.baselineMemory = (performance, as any).memory?.usedJSHeapSize || 0,
-        this.lastMemoryCheck = Date.now(),  }
+        this.lastMemoryCheck = Date.now();
      : undefined
     async collect(): Promise<Map<string, any>> { const memory = (performance, as any).memory,
         if (!memory) return new Map();
@@ -776,11 +768,11 @@ class MemoryDataCollector implements IDataCollector { private baselineMemory: nu
         this.lastMemoryCheck = now;
         ','
 
-        return new Map([']',
+        return new Map(['],
             ['memory_used', memoryUsed],
             ['memory_growth', memoryGrowth],
             ['gc_frequency', 0] // Simplified);
-        ]) }
+        ]);
 }
 
 class RenderDataCollector implements IDataCollector { private lastRenderTime: number = 0
@@ -791,10 +783,10 @@ class RenderDataCollector implements IDataCollector { private lastRenderTime: nu
 
     async, collect(): Promise<Map<string, any>> { const now = performance.now();
         const renderTime = Math.random()','
-            ['render_time', renderTime],')',
+            ['render_time, renderTime],')',
             ['draw_calls', Math.floor(Math.random() * 50') + 10],'
             ['triangles', Math.floor(Math.random() * 10000) + 1000],
-        ]) }
+        ]);
 }
 
 class NetworkDataCollector implements IDataCollector { private connection: any
@@ -804,23 +796,23 @@ class NetworkDataCollector implements IDataCollector { private connection: any
     ';'
 
     async collect(): Promise<Map<string, any>> { ''
-        const latency = Math.random('',
+        const latency = Math.random(',
             ['network_latency', latency],','
-            ['bandwidth', bandwidth * 125], // Convert to KB/s')',
+            ['bandwidth, bandwidth * 125], // Convert to KB/s')',
             ['error_rate', Math.random() * 2],
-        ]) }
+        ]);
 }
 
 class InteractionDataCollector implements IDataCollector { : undefined
     private lastInputTime: number = 0;
     async initialize(): Promise<void> {
-        this.lastInputTime = Date.now(),  }
+        this.lastInputTime = Date.now();
     ';'
     async collect(): Promise<Map<string, any>> { const inputLag = Math.random() * 30 + 5, // Simulated input lag
-        const responseTime = Math.random('',
+        const responseTime = Math.random(',
             ['input_lag', inputLag],','
             ['response_time', responseTime]);
-        ]) }
+        ]);
 }
 
 class BatteryDataCollector implements IDataCollector { private battery: any
@@ -832,7 +824,7 @@ class BatteryDataCollector implements IDataCollector { private battery: any
         const thermalState = Math.floor(Math.random() * 3), // 0-2 thermal levels
         ','
 
-        return new Map([']',
+        return new Map(['],
             ['power_consumption', powerConsumption],
             ['thermal_state', thermalState]','
         ]') }'

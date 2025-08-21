@@ -80,7 +80,7 @@ describe('StageSelectScene Event Integration Tests', () => {  let stageSelectSce
                     startTime: Date.now() + 3600000, // 1 hour from now,
                     endTime: Date.now() + 86400000 * 7, // 7 days from now,
                     participationConditions: {
-                        minLevel: 5,
+                        minLevel: 5 },
                         requiredAP: 100 }
                     }
                 }'
@@ -345,7 +345,7 @@ describe('StageSelectScene Event Integration Tests', () => {  let stageSelectSce
         test('should handle missing event manager gracefully', () => {
             mockGameEngine.eventStageManager = null }
             expect(() => { }
-                stageSelectScene.initialize(};
+                stageSelectScene.initialize(}
             }.not.toThrow();'
             expect(stageSelectScene.eventList).toEqual([]);'}');
         test('should handle event manager errors gracefully', () => {  ''
@@ -353,7 +353,7 @@ describe('StageSelectScene Event Integration Tests', () => {  let stageSelectSce
                 throw new Error('Event manager error'); }
             };
             expect(() => {  }
-                stageSelectScene.initialize(};
+                stageSelectScene.initialize(}
             }.not.toThrow();'
             expect(stageSelectScene.eventList).toEqual([]);'}');
         test('should handle rendering errors gracefully', () => {  stageSelectScene.initialize();

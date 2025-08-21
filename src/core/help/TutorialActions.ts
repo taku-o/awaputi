@@ -15,139 +15,130 @@ export interface GameEngine { eventBus?: EventBus,
     playerData?: PlayerData;
     currentScene?: Scene;
     gameTime?: number;
-
-export interface EventBus { on(event: string, callback: (data: any) => void): void;
+    export interface EventBus { on(event: string, callback: (data: any) => void): void;
     off?(event: string, callback: (data: any) => void): void;
-
-export interface BubbleManager { popBubble(bubble: Bubble): boolean;
+    export interface BubbleManager { popBubble(bubble: Bubble): boolean;
     getActiveBubbleCount(): number;
-
-export interface InputManager { on(event: string, callback: (data: DragData) => void): void;
-}
-
+    export interface InputManager { on(event: string, callback: (data: DragData) => void): void;
+};
 export interface ScoreManager { getCurrentScore(): number,
     getCurrentCombo(): number;
     getComboScore(): number;
     getComboMultiplier(): number;
-
-export interface PlayerData { getCurrentHP(): number;
-
-export interface Scene {
+    export interface PlayerData { getCurrentHP(): number;
+    export interface Scene {
+    constructor: { nam,e: string,
     constructor: { nam,e: string;
-    constructor: { nam,e: string;
-        };
-export interface Bubble { id: string;
-    type: string;
-    x: number;
+         },
+export interface Bubble { id: string,
+    type: string,
+    x: number,
     y: number;
     score?: number;
-
-export interface Position { x: number;
-    y: number;
+    export interface Position { x: number,
+    y: number,
     y: number;
         };
-export interface DragData { targetType: string;
-    targetId: string;
-    startX: number;
-    startY: number;
-    endX: number;
-    endY: number;
+export interface DragData { targetType: string,
+    targetId: string,
+    startX: number,
+    startY: number,
+    endX: number,
+    endY: number,
     endY: number;
         };
-export interface ActionData { actionType: string;
-    timestamp: number;
+export interface ActionData { actionType: string,
+    timestamp: number,
     gameState: GameState;
     [key: string]: any;
-
-export interface BubblePopData extends ActionData { bubbleId: string;
-    bubbleType: string;
-    position: Position;
-    score: number;
-    comboMultiplier: number;
+    export interface BubblePopData extends ActionData { bubbleId: string,
+    bubbleType: string,
+    position: Position,
+    score: number,
+    comboMultiplier: number,
     comboMultiplier: number;
         };
-export interface BubbleDragData extends ActionData { bubbleId: string;
-    startPosition: Position;
-    endPosition: Position;
-    dragDistance: number;
+export interface BubbleDragData extends ActionData { bubbleId: string,
+    startPosition: Position,
+    endPosition: Position,
+    dragDistance: number,
+    dragDirection: number,
     dragDirection: number;
-    dragDirection: number;
         };
-export interface SpecialBubblePopData extends ActionData { bubbleId: string;
-    bubbleType: string;
-    specialEffect: string;
-    affectedBubbles: string[];
+export interface SpecialBubblePopData extends ActionData { bubbleId: string,
+    bubbleType: string,
+    specialEffect: string,
+    affectedBubbles: string[],
+    effectDuration: number,
     effectDuration: number;
-    effectDuration: number;
         };
-export interface ComboAchievedData extends ActionData { comboCount: number;
-    comboScore: number;
-    comboMultiplier: number;
+export interface ComboAchievedData extends ActionData { comboCount: number,
+    comboScore: number,
+    comboMultiplier: number,
+    comboDuration: number,
     comboDuration: number;
-    comboDuration: number;
         };
-export interface ScoreReachedData extends ActionData { score: number;
-    milestone: number;
-    previousScore: number;
+export interface ScoreReachedData extends ActionData { score: number,
+    milestone: number,
+    previousScore: number,
+    scoreIncrease: number,
     scoreIncrease: number;
-    scoreIncrease: number;
         };
-export interface HPChangedData extends ActionData { currentHP: number;
-    previousHP: number;
-    hpChange: number;
+export interface HPChangedData extends ActionData { currentHP: number,
+    previousHP: number,
+    hpChange: number,
+    changeReason: string,
     changeReason: string;
-    changeReason: string;
         };
-export interface KeyPressedData extends ActionData { key: string;
-    code: string;
-    ctrlKey: boolean;
-    shiftKey: boolean;
+export interface KeyPressedData extends ActionData { key: string,
+    code: string,
+    ctrlKey: boolean,
+    shiftKey: boolean,
+    altKey: boolean,
     altKey: boolean;
-    altKey: boolean;
         };
-export interface ClickData extends ActionData { position: Position;
-    target: string;
+export interface ClickData extends ActionData { position: Position,
+    target: string,
+    button: number,
     button: number;
-    button: number;
         };
-export interface TouchStartData extends ActionData { position: Position;
+export interface TouchStartData extends ActionData { position: Position,
+    touchCount: number,
     touchCount: number;
-    touchCount: number;
         };
-export interface GameState { currentScene: string;
-    score: number;
-    combo: number;
-    hp: number;
-    activeBubbles: number;
-    gameTime: number;
+export interface GameState { currentScene: string,
+    score: number,
+    combo: number,
+    hp: number,
+    activeBubbles: number,
+    gameTime: number,
     gameTime: number;
         };
-export interface ActionListenerInfo { callback: ActionCallback;
-    options: ActionOptions;
-    registeredAt: number;
-    triggerCount: number;
+export interface ActionListenerInfo { callback: ActionCallback,
+    options: ActionOptions,
+    registeredAt: number,
+    triggerCount: number,
     triggerCount: number;
         };
 export interface ActionOptions { requiredCombo?: number,
     requiredScore?: number;
     [key: string]: any;
-
-export interface ActionStats { totalActions: number;
+    export interface ActionStats { totalActions: number,
     actionsByType: Map<string, number>;
     averageResponseTime: Map<string, number>;
-    lastActionTime: number;
+    lastActionTime: number,
     lastActionTime: number;
         };
-export interface ActionStatistics { totalActions: number;
+export interface ActionStatistics { totalActions: number,
     actionsByType: Record<string, number>;
     averageResponseTime: Record<string, number>;
-    activeListeners: number;
+    activeListeners: number,
     stateWatchers: number;
 ';'
 
 export type ActionCallback = (data: ActionData) => void;
-export type StateWatcher = () => void;
-export type ActionType = 'bubble_pop' | 'bubble_drag' | 'special_bubble_pop' | 'combo_achieved' | 'score_reached' | 'hp_changed' | 'key_pressed' | 'click' | 'touch_start';
+    export type StateWatcher = () => void;
+    export type ActionType = 'bubble_pop' | 'bubble_drag' | 'special_bubble_pop' | 'combo_achieved' | 'score_reached' | 'hp_changed' | 'key_pressed' | 'click' | 'touch_start';
 
 /**
  * チュートリアルアクション検出クラス
@@ -169,8 +160,8 @@ export class TutorialActions {
     constructor(gameEngine: GameEngine) {
 
         this.gameEngine = gameEngine;
-        this.loggingSystem = LoggingSystem.getInstance ? LoggingSystem.getInstance() : new LoggingSystem();
-        this.stateMonitoringInterval = null;
+    this.loggingSystem = LoggingSystem.getInstance ? LoggingSystem.getInstance() : new LoggingSystem();
+    this.stateMonitoringInterval = null;
         
         // アクションリスナー管理
         this.activeListeners = new Map<string, any[]>(),
@@ -182,9 +173,9 @@ export class TutorialActions {
         
         // アクション統計
         this.actionStats = {
-            totalActions: 0;
+            totalActions: 0,
     actionsByType: new Map<string, number>();
-            averageResponseTime: new Map<string, number>() }
+    averageResponseTime: new Map<string, number>() };
             lastActionTime: 0 
     };
         this.initialize();
@@ -219,7 +210,7 @@ export class TutorialActions {
                 callback,
                 options,
                 registeredAt: Date.now(
-    triggerCount: 0  },
+    triggerCount: 0  };
             this.actionCallbacks.set(actionType, listenerInfo);
             ';'
             // アクションタイプ別の監視設定
@@ -237,7 +228,7 @@ export class TutorialActions {
      */
     unregisterActionListener(actionType: string): void { try {
             if (this.actionCallbacks.has(actionType) {
-                this.actionCallbacks.delete(actionType) }
+                this.actionCallbacks.delete(actionType);
 
                 this.cleanupActionListeners(actionType);' }'
 
@@ -296,36 +287,36 @@ export class TutorialActions {
 
                     bubbleType: eventData.bubbleType || 'normal'
             }
-                    position: eventData.position || { x: 0, y: 0  },
+                    position: eventData.position || { x: 0, y: 0  ,
 
                     score: eventData.score || 0,
                     comboMultiplier: this.getCurrentComboMultiplier('''
             case 'bubble_drag':
                 return { ...baseData };
                     bubbleId: eventData.bubbleId }
-                    startPosition: eventData.startPosition || { x: 0, y: 0  },
-                    endPosition: eventData.endPosition || { x: 0, y: 0  },
+                    startPosition: eventData.startPosition || { x: 0, y: 0  ,
+                    endPosition: eventData.endPosition || { x: 0, y: 0  ,
                     dragDistance: eventData.dragDistance || 0,
-    dragDirection: eventData.dragDirection || 0,
+    dragDirection: eventData.dragDirection || 0;
                 },
 
             case 'special_bubble_pop': return { ...baseData,
                     bubbleId: eventData.bubbleId,
                     bubbleType: eventData.bubbleType,
                     specialEffect: eventData.specialEffect,
-    affectedBubbles: eventData.affectedBubbles || [] },
+    affectedBubbles: eventData.affectedBubbles || [] };
                     effectDuration: eventData.effectDuration || 0 
     };
             case 'combo_achieved': return { ...baseData,
                     comboCount: eventData.comboCount || 0,
                     comboScore: eventData.comboScore || 0,
-    comboMultiplier: eventData.comboMultiplier || 1 },
+    comboMultiplier: eventData.comboMultiplier || 1 };
                     comboDuration: eventData.comboDuration || 0 
     };
             case 'score_reached': return { ...baseData,
                     score: eventData.score || 0,
                     milestone: eventData.milestone || 0,
-    previousScore: eventData.previousScore || 0 },
+    previousScore: eventData.previousScore || 0 };
                     scoreIncrease: eventData.scoreIncrease || 0 
     };
             case 'hp_changed': return { ...baseData,
@@ -381,7 +372,7 @@ export class TutorialActions {
 
                 this.triggerAction('score_reached', {
             };
-                    ...data) }
+                    ...data);
                     milestone }
                 }';'
 
@@ -405,7 +396,7 @@ export class TutorialActions {
         document.addEventListener('keydown', (event: KeyboardEvent) => { ''
             this.triggerAction('key_pressed', {
                 key: event.key,
-                code: event.code);
+                code: event.code),
                 ctrlKey: event.ctrlKey,
     shiftKey: event.shiftKey }
                 altKey: event.altKey); 
@@ -425,8 +416,7 @@ export class TutorialActions {
             this.triggerAction('touch_start', {
             };
                 position: { x: touch.clientX, y: touch.clientY  }
-                touchCount: event.touches.length),
-            };
+                touchCount: event.touches.length) }
         }';'
     }
 
@@ -451,7 +441,7 @@ export class TutorialActions {
                 break,
 
             case 'score_reached':,
-                this.setupScoreListener(options) }
+                this.setupScoreListener(options);
                 break; }
 }
 
@@ -467,11 +457,10 @@ export class TutorialActions {
                 if (result) {''
                     this.triggerAction('bubble_pop', {
             };
-                        bubbleId: bubble.id) }
+                        bubbleId: bubble.id),
                         bubbleType: bubble.type }
                         position: { x: bubble.x, y: bubble.y  }
-                        score: bubble.score || 0),
-                    }';'
+                        score: bubble.score || 0) }';'
                 }
                 
                 return result;
@@ -496,13 +485,13 @@ export class TutorialActions {
 
                     this.triggerAction('bubble_drag', {
             };
-                        bubbleId: data.targetId) }
-                        startPosition: { x: data.startX, y: data.startY  },
+                        bubbleId: data.targetId),
+                        startPosition: { x: data.startX, y: data.startY  ,
                         endPosition: { x: data.endX, y: data.endY ,
-                        dragDistance: dragDistance,
-    dragDirection: Math.atan2(data.endY - data.startY, data.endX - data.startX };
+                        dragDistance: dragDistance ,
+    dragDirection: Math.atan2(data.endY - data.startY, data.endX - data.startX }
                 }
-            };
+            }
         }
     }
 
@@ -520,13 +509,13 @@ export class TutorialActions {
                 const currentCombo = scoreManager.getCurrentCombo();
                 if(currentCombo > lastComboCount && currentCombo >= (options.requiredCombo || 1)) {''
                     this.triggerAction('combo_achieved', {
-                comboCount: currentCombo) }
-                        comboScore: scoreManager.getComboScore() }
+                comboCount: currentCombo),
+                        comboScore: scoreManager.getComboScore(),
                         comboMultiplier: scoreManager.getComboMultiplier(); 
-    };
+    }
                 }
                 lastComboCount = currentCombo;
-            };
+            }
         }
     }
 
@@ -546,13 +535,12 @@ export class TutorialActions {
                     if (currentScore >= milestone && lastScore < milestone) {''
                         this.triggerAction('score_reached', {
                             score: currentScore,
-    milestone: milestone)
-         }
-                            previousScore: lastScore) }
+    milestone: milestone),
+                            previousScore: lastScore),
                             scoreIncrease: currentScore - lastScore); 
     }
                 lastScore = currentScore;
-            };
+            }
         }
     }
 
@@ -621,7 +609,7 @@ export class TutorialActions {
      * @param actionType - アクションタイプ
      * @param actionData - アクションデータ
      */
-    updateActionStats(actionType: string, actionData: ActionData): void { this.actionStats.totalActions++,
+    updateActionStats(actionType: string, actionData: ActionData): void { this.actionStats.totalActions++;
         
         const typeCount = this.actionStats.actionsByType.get(actionType) || 0,
         this.actionStats.actionsByType.set(actionType, typeCount + 1);
@@ -644,7 +632,7 @@ export class TutorialActions {
      * @param stateData - 状態データ
      */
     updateGameState(stateData: Record<string, any>): void { for(const [key, value] of Object.entries(stateData) {
-            this.lastKnownStates.set(key, value) }
+            this.lastKnownStates.set(key, value);
     }
 
     /**
@@ -654,7 +642,7 @@ export class TutorialActions {
     cleanupActionListeners(actionType: string): void { // アクション固有のクリーンアップ
         if (this.activeListeners.has(actionType) {
             const listeners = this.activeListeners.get(actionType);
-            listeners?.forEach(listener => { ) }
+            listeners?.forEach(listener => { );
                 if (listener.remove) { }
                     listener.remove(); }
 };
@@ -667,9 +655,9 @@ export class TutorialActions {
      * @returns 統計情報
      */ : undefined
     getActionStats(): ActionStatistics { return { ...this.actionStats,
-            actionsByType: Object.fromEntries(this.actionStats.actionsByType);
+            actionsByType: Object.fromEntries(this.actionStats.actionsByType),
             averageResponseTime: Object.fromEntries(this.actionStats.averageResponseTime,
-    activeListeners: this.actionCallbacks.size },
+    activeListeners: this.actionCallbacks.size ,
             stateWatchers: this.gameStateWatchers.size 
     }
 
@@ -679,12 +667,12 @@ export class TutorialActions {
     cleanup(): void { try {
             // 状態監視の停止
             if (this.stateMonitoringInterval) {
-                clearInterval(this.stateMonitoringInterval) }
+                clearInterval(this.stateMonitoringInterval);
                 this.stateMonitoringInterval = null; }
             }
             
             // すべてのリスナーをクリーンアップ
-            for (const actionType of this.actionCallbacks.keys() { this.cleanupActionListeners(actionType) }
+            for (const actionType of this.actionCallbacks.keys() { this.cleanupActionListeners(actionType);
             
             // データのクリア
             this.actionCallbacks.clear();
@@ -711,7 +699,7 @@ let tutorialActionsInstance: TutorialActions | null = null,
  * @returns TutorialActionsインスタンス
  */
 export function getTutorialActions(gameEngine: GameEngine): TutorialActions { if (!tutorialActionsInstance) {
-        tutorialActionsInstance = new TutorialActions(gameEngine) }
+        tutorialActionsInstance = new TutorialActions(gameEngine) };
     return tutorialActionsInstance;
 }
 

@@ -9,20 +9,17 @@ interface ServiceWorkerMessage { type: string;
     resources?: string[];
     error?: string;
     [key: string]: any;
-
-interface ServiceWorkerStats { registration: boolean;
-    active: boolean;
+    interface ServiceWorkerStats { registration: boolean,
+    active: boolean,
     updateAvailable: boolean;
     scope?: string;
     error?: string;
     [key: string]: any;
-
-interface ManifestInfo { valid: boolean;
+    interface ManifestInfo { valid: boolean;
     manifest?: any;
     url?: string;
     error?: string;
-
-interface AppManifestConfig { name?: string,
+    interface AppManifestConfig { name?: string,
     shortName?: string;
     description?: string;
     startUrl?: string;
@@ -32,8 +29,8 @@ interface AppManifestConfig { name?: string,
     orientation?: string;
     scope?: string;
     icons?: Array<{
-        sr,c: string;
-        sizes: string;
+        sr,c: string,
+        sizes: string,
     type: string;>;
     categories?: string[];
     lang?: string;
@@ -51,7 +48,7 @@ export class PWAServiceWorkerManager {
 
         this.pwaManager = pwaManager;
         this.registration = null;
-        this.isRegistering = false }
+        this.isRegistering = false };
         this.updateAvailable = false; }
     }
 
@@ -65,7 +62,7 @@ export class PWAServiceWorkerManager {
 
         if (this.isRegistering') {'
 
-            console.log('[PWAServiceWorkerManager] Registration, already in, progress') }
+            console.log('[PWAServiceWorkerManager] Registration, already in, progress');
             return false;
 ';'
 
@@ -196,7 +193,7 @@ export class PWAServiceWorkerManager {
     private handleCacheUpdate(data: any): void { ''
         console.log('[PWAServiceWorkerManager] Cache updated:', data);
         // キャッシュ更新通知をPWAManagerに送信
-        this.pwaManager.handleCacheUpdate?.(data) }
+        this.pwaManager.handleCacheUpdate?.(data);
 
     /**
      * オフライン準備完了の処理
@@ -211,9 +208,9 @@ export class PWAServiceWorkerManager {
      * @param {Object} data メッセージデータ'
      */''
     private handleSyncAvailable(data: any): void { ''
-        console.log('[PWAServiceWorkerManager] Background, sync available',
+        console.log('[PWAServiceWorkerManager] Background, sync available,
         // バックグラウンド同期の設定
-        this.setupBackgroundSync() }
+        this.setupBackgroundSync();
 
     /**
      * 更新メッセージの処理
@@ -222,7 +219,7 @@ export class PWAServiceWorkerManager {
     private handleUpdateMessage(data: any): void { ''
         console.log('[PWAServiceWorkerManager] Update message received:', data);
         this.updateAvailable = true;
-        this.pwaManager.showUpdateNotification() }
+        this.pwaManager.showUpdateNotification();
 
     /**
      * バックグラウンド同期の設定
@@ -258,7 +255,7 @@ export class PWAServiceWorkerManager {
             messageChannel.port1.onmessage = (event) => {
                 if (event.data.error) { }
                     reject(new, Error(event.data.error); }
-                } else { resolve(event.data) }
+                } else { resolve(event.data);
             };
 ';'
 
@@ -274,9 +271,9 @@ export class PWAServiceWorkerManager {
     async manageCache(action: string, options: any = {}): Promise<any> {
         try {
             const result = await this.postMessage({)'
-                type: 'CACHE_MANAGEMENT',
+                type: 'CACHE_MANAGEMENT,
     action: action),
-                options: options) },
+                options: options) ,
             console.log(`[PWAServiceWorkerManager] Cache ${action} completed:`, result};
             return result;
         } catch (error) {
@@ -292,7 +289,7 @@ export class PWAServiceWorkerManager {
      */''
     async precacheResources(resources: string[]): Promise<boolean> { try {
             const result = await this.postMessage({)'
-                type: 'PRECACHE_RESOURCES',')',
+                type: 'PRECACHE_RESOURCES,')',
                 resources: resources','
 ','
 
@@ -313,7 +310,7 @@ export class PWAServiceWorkerManager {
             return { registration: !!this.registration,
                 active: !!this.registration?.active, : undefined
                 updateAvailable: this.updateAvailable,
-    scope: this.registration?.scope },
+    scope: this.registration?.scope ,
                 ...result
 
             }; : undefined'} catch (error: any) {'
@@ -361,7 +358,7 @@ export class PWAServiceWorkerManager {
             if (!response.ok) {
     
 }
-                throw new Error(`Failed, to fetch, manifest: ${response.status}`};
+                throw new Error(`Failed, to fetch, manifest: ${response.status}`}
             }
 
             const manifest = await response.json();
@@ -384,31 +381,30 @@ export class PWAServiceWorkerManager {
      * @returns {Object} 作成されたマニフェスト'
      */''
     createAppManifest(config: AppManifestConfig): any { const manifest = {''
-            name: config.name || 'BubblePop Game',
-            short_name: config.shortName || 'BubblePop',
-            description: config.description || 'HTML5バブルポップパズルゲーム',
-            start_url: config.startUrl || '/',
-            display: config.display || 'standalone',
-            theme_color: config.themeColor || '#4CAF50',
-            background_color: config.backgroundColor || '#ffffff',
-            orientation: config.orientation || 'portrait',
-            scope: config.scope || '/',
+            name: config.name || 'BubblePop Game,
+            short_name: config.shortName || 'BubblePop,
+            description: config.description || 'HTML5バブルポップパズルゲーム,
+            start_url: config.startUrl || '/,
+            display: config.display || 'standalone,
+            theme_color: config.themeColor || '#4CAF50,
+            background_color: config.backgroundColor || '#ffffff,
+            orientation: config.orientation || 'portrait,
+            scope: config.scope || '/,
             icons: config.icons || [{''
-                    src: '/icons/icon-192x192.png',
-                    sizes: '192x192',
+                    src: '/icons/icon-192x192.png,
+                    sizes: '192x192,
                     type: 'image/png'
             };
                 { ''
-                    src: '/icons/icon-512x512.png',
-                    sizes: '512x512',
+                    src: '/icons/icon-512x512.png,
+                    sizes: '512x512,
                     type: 'image/png'
             }]
                 }]'
             ],
             categories: config.categories || ['games', 'entertainment'],
-            lang: config.lang || 'ja',
-            dir: config.dir || 'ltr',
-        },
+            lang: config.lang || 'ja,
+            dir: config.dir || 'ltr' ,
 
         console.log('[PWAServiceWorkerManager] Manifest created:', manifest);
         return manifest;

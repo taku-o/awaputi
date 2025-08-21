@@ -16,8 +16,7 @@ import { MobileTestReporter  } from './mobile-test-suite/MobileTestReporter.js';
 interface TestResult { passed: boolean;
     performance?: Record<string, any>;
     error?: Error;
-
-interface TestFunction { name: string;
+    interface TestFunction { name: string,
     run: (context?: any) => Promise<TestResult>;
     setup?: (context: any) => Promise<void>;
     cleanup?: (context: any) => Promise<void>;
@@ -25,60 +24,59 @@ interface TestFunction { name: string;
 }
 
 interface TestSuiteInterface { getTests(): TestFunction[];
-
-interface TestResults { passed: number;
-    failed: number;
-    skipped: number;
-    errors: TestError[];
+    interface TestResults { passed: number,
+    failed: number,
+    skipped: number,
+    errors: TestError[],
     performance: Map<string, PerformanceResult>;
     compatibility: Map<string, CompatibilityResult> }
 
-interface TestError { suite: string;
-    test: string;
+interface TestError { suite: string,
+    test: string,
     error: string;
     stack?: string;
     timestamp: number;
-
-interface PerformanceResult { duration: number;
+    interface PerformanceResult { duration: number,
     metrics: Record<string, any>;
     timestamp: number;
-
-interface CompatibilityResult { device: string;
-    browser: string;
+    interface CompatibilityResult { device: string,
+    browser: string,
     results: Record<string, any>;
     timestamp: number;
-
-interface DeviceUtils { createTouchEvent: (type: string, touches: any[]) => Event;
+    interface DeviceUtils { createTouchEvent: (type: string, touches: any[]) => Event,
     createTouch: (x: number, y: number, id?: number) => any;
-    createDeviceInfo: (device: string) => any;
-    measurePerformance: (testFunction: () => Promise<void>) => Promise<number>;
-    wait: (ms: number) => Promise<void>;
+    createDeviceInfo: (device: string) => any,
+    measurePerformance: (testFunction: () => Promise<void>) => Promise<number>,
+    wait: (ms: number) => Promise<void>,
     randomDelay: (min: number, max: number) => Promise<void>  }
 }
 
 interface DebugInfo { mainController: {
-        testSuite,s: string[];
+        testSuite,s: string[],
     testResultsSummary: {
             passe,d: number;
-            failed: number;
-            errors: number;
-            performance: number;
-    compatibility: number;
-    testRunner: any;
-    deviceSimulator: any;
-    components: { testRunner: boolean;
+    },
+            failed: number,
+            errors: number,
+            performance: number,
+    compatibility: number,
+    testRunner: any,
+    deviceSimulator: any,
+    components: { testRunner: boolean,
         deviceSimulator: boolean;
-    testReporter: boolean;
+    },
+    testReporter: boolean,
     testReporter: boolean;
         };
-interface HealthCheckResult { healthy: boolean;
-    issues: string[];
+interface HealthCheckResult { healthy: boolean,
+    issues: string[],
     componentStatus: {
         testRunne,r: boolean;
-        deviceSimulator: boolean;
-        testReporter: boolean;
-        testSuites: number;
-    testContainer: boolean;
+    },
+        deviceSimulator: boolean,
+        testReporter: boolean,
+        testSuites: number,
+    testContainer: boolean,
     testContainer: boolean;
         };
 // 既存のテストスイートクラス（変更なし）
@@ -88,9 +86,9 @@ class TouchTestSuite implements TestSuiteInterface { private mobileTestSuite: Mo
         this.mobileTestSuite = mobileTestSuite }
 
     getTests()';'
-            { name: 'touch_basic', run: () => this.testBasicTouch()  }
+            { name: 'touch_basic', run: () => this.testBasicTouch();
 
-            { name: 'touch_multipoint', run: () => this.testMultiPointTouch()  }
+            { name: 'touch_multipoint', run: () => this.testMultiPointTouch();
         ];
     }
     
@@ -99,8 +97,7 @@ class TouchTestSuite implements TestSuiteInterface { private mobileTestSuite: Mo
     }
     
     async testMultiPointTouch(): Promise<TestResult> {
-        return { passed: true, performance: { multiTouchSupport: true,
-}
+        return { passed: true, performance: { multiTouchSupport: true } };
 
 class GestureTestSuite implements TestSuiteInterface { private mobileTestSuite: MobileTestSuite
 
@@ -108,9 +105,9 @@ class GestureTestSuite implements TestSuiteInterface { private mobileTestSuite: 
         this.mobileTestSuite = mobileTestSuite }
 
     getTests()';'
-            { name: 'gesture_swipe', run: () => this.testSwipeGesture()  }
+            { name: 'gesture_swipe', run: () => this.testSwipeGesture();
 
-            { name: 'gesture_pinch', run: () => this.testPinchGesture()  }
+            { name: 'gesture_pinch', run: () => this.testPinchGesture();
         ];
     }
     
@@ -128,9 +125,9 @@ class ResponsiveTestSuite implements TestSuiteInterface { private mobileTestSuit
         this.mobileTestSuite = mobileTestSuite }
 
     getTests()';'
-            { name: 'responsive_layout', run: () => this.testResponsiveLayout()  }
+            { name: 'responsive_layout', run: () => this.testResponsiveLayout();
 
-            { name: 'responsive_images', run: () => this.testResponsiveImages()  }
+            { name: 'responsive_images', run: () => this.testResponsiveImages();
         ];
     }
     
@@ -148,9 +145,9 @@ class PerformanceTestSuite implements TestSuiteInterface { private mobileTestSui
         this.mobileTestSuite = mobileTestSuite }
 
     getTests()';'
-            { name: 'performance_fps', run: () => this.testFPS()  }
+            { name: 'performance_fps', run: () => this.testFPS();
 
-            { name: 'performance_memory', run: () => this.testMemoryUsage()  }
+            { name: 'performance_memory', run: () => this.testMemoryUsage();
         ];
     }
     
@@ -168,9 +165,9 @@ class PWATestSuite implements TestSuiteInterface { private mobileTestSuite: Mobi
         this.mobileTestSuite = mobileTestSuite }
 
     getTests()';'
-            { name: 'pwa_install', run: () => this.testPWAInstallation()  }
+            { name: 'pwa_install', run: () => this.testPWAInstallation();
 
-            { name: 'pwa_offline', run: () => this.testOfflineCapability()  }
+            { name: 'pwa_offline', run: () => this.testOfflineCapability();
         ];
     }
     
@@ -188,9 +185,9 @@ class AccessibilityTestSuite implements TestSuiteInterface { private mobileTestS
         this.mobileTestSuite = mobileTestSuite }
 
     getTests()';'
-            { name: 'a11y_contrast', run: () => this.testColorContrast()  }
+            { name: 'a11y_contrast', run: () => this.testColorContrast();
 
-            { name: 'a11y_navigation', run: () => this.testKeyboardNavigation()  }
+            { name: 'a11y_navigation', run: () => this.testKeyboardNavigation();
         ];
     }
     
@@ -208,9 +205,9 @@ class CompatibilityTestSuite implements TestSuiteInterface { private mobileTestS
         this.mobileTestSuite = mobileTestSuite }
 
     getTests()';'
-            { name: 'compat_browser', run: () => this.testBrowserCompatibility()  }
+            { name: 'compat_browser', run: () => this.testBrowserCompatibility();
 
-            { name: 'compat_device', run: () => this.testDeviceCompatibility()  }
+            { name: 'compat_device', run: () => this.testDeviceCompatibility();
         ];
     }
     
@@ -240,11 +237,11 @@ export class MobileTestSuite {
         
         // テスト結果（従来との互換性のため維持）
         this.testResults = {
-            passed: 0;
-            failed: 0;
-            skipped: 0;
-            errors: [];
-    performance: new Map<string, PerformanceResult>() }
+            passed: 0,
+            failed: 0,
+            skipped: 0,
+            errors: [],
+    performance: new Map<string, PerformanceResult>() };
             compatibility: new Map<string, CompatibilityResult>(); }
         };
         
@@ -280,7 +277,7 @@ export class MobileTestSuite {
     /**
      * テスト環境セットアップ（簡略化）
      */
-    private setupTestEnvironment(): void { this.createTestContainer() }
+    private setupTestEnvironment(): void { this.createTestContainer();
     
     /**
      * テストコンテナ作成（従来との互換性のため維持）'
@@ -294,7 +291,7 @@ export class MobileTestSuite {
             left: -9999px,
             width: 375px,
             height: 667px,
-    overflow: hidden,
+    overflow: hidden;
         `;
         document.body.appendChild(this.testContainer);
     }
@@ -331,17 +328,17 @@ export class MobileTestSuite {
     /**
      * 全テスト実行（MobileTestRunnerに委譲）
      */
-    async runAllTests(): Promise<any> { return await this.testRunner.runAllTests() }
+    async runAllTests(): Promise<any> { return await this.testRunner.runAllTests();
     
     /**
      * 特定テストスイート実行（MobileTestRunnerに委譲）
      */
-    async runSpecificSuite(suiteName: string): Promise<any> { return await this.testRunner.runSpecificSuite(suiteName) }
+    async runSpecificSuite(suiteName: string): Promise<any> { return await this.testRunner.runSpecificSuite(suiteName);
     
     /**
      * 特定テスト実行（MobileTestRunnerに委譲）
      */
-    async runSpecificTest(suiteName: string, testName: string): Promise<any> { return await this.testRunner.runSpecificTest(suiteName, testName) }
+    async runSpecificTest(suiteName: string, testName: string): Promise<any> { return await this.testRunner.runSpecificTest(suiteName, testName);
     
     /**
      * テスト実行中断（MobileTestRunnerに委譲）
@@ -354,13 +351,13 @@ export class MobileTestSuite {
     /**
      * デバイスシミュレーション停止（MobileDeviceSimulatorに委譲）
      */
-    async, stopDeviceSimulation(): Promise<void> { return await this.deviceSimulator.stopSimulation() }
+    async, stopDeviceSimulation(): Promise<void> { return await this.deviceSimulator.stopSimulation();
     
     /**
      * デバイス設定（MobileDeviceSimulatorに委譲）
      */'
     setDevice(deviceName: string): void { ''
-        return this.deviceSimulator.setDevice(deviceName) }
+        return this.deviceSimulator.setDevice(deviceName);
     
     /**
      * デバイス向き設定（MobileDeviceSimulatorに委譲）'
@@ -371,13 +368,13 @@ export class MobileTestSuite {
      * テストレポート生成（MobileTestReporterに委譲）
      */'
     generateTestReport(options: Record<string, any> = { ): any {''
-        return this.testReporter.generateTestReport(options) }
+        return this.testReporter.generateTestReport(options);
     
     /**
      * レポート出力（MobileTestReporterに委譲）'
      */''
     exportReport(format: string = 'json', options: Record<string, any> = { ): any {
-        return this.testReporter.exportReport(format, options) }
+        return this.testReporter.exportReport(format, options);
     
     // ========================================
     // 従来との互換性メソッド
@@ -402,13 +399,13 @@ export class MobileTestSuite {
             test: testName || 'unknown',';'
             error: typeof error === 'string' ? error : error.message,')';
             stack: typeof error === 'object' && error.stack ? error.stack : undefined,
-    timestamp: Date.now(  },
+    timestamp: Date.now(  };
     }
     
     /**
      * テスト失敗記録
      */
-    recordTestFailure(suiteName: string, testName: string, error: Error | string): void { this.recordTestError(suiteName, testName, error) }
+    recordTestFailure(suiteName: string, testName: string, error: Error | string): void { this.recordTestError(suiteName, testName, error);
     
     /**
      * パフォーマンス結果記録
@@ -417,7 +414,7 @@ export class MobileTestSuite {
         this.testResults.performance.set(testName, {
                 duration);
             metrics;
-            timestamp: Date.now(  }),
+            timestamp: Date.now(  });
     }
     
     /**
@@ -429,7 +426,7 @@ export class MobileTestSuite {
                 device
             browser);
             results;
-            timestamp: Date.now(  },
+            timestamp: Date.now(  };
     }
     
     // ========================================
@@ -439,22 +436,22 @@ export class MobileTestSuite {
     /**
      * デバイスUser Agent取得（MobileDeviceSimulatorに委譲）
      */
-    getDeviceUserAgent(device: string): string { return this.deviceSimulator.getDeviceUserAgent(device) }
+    getDeviceUserAgent(device: string): string { return this.deviceSimulator.getDeviceUserAgent(device);
     
     /**
      * デバイス画面サイズ取得（MobileDeviceSimulatorに委譲）
      */
-    getDeviceScreen(device: string): any { return this.deviceSimulator.getDeviceScreen(device) }
+    getDeviceScreen(device: string): any { return this.deviceSimulator.getDeviceScreen(device);
     
     /**
      * デバイスピクセル比取得（MobileDeviceSimulatorに委譲）
      */
-    getDevicePixelRatio(device: string): number { return this.deviceSimulator.getDevicePixelRatio(device) }
+    getDevicePixelRatio(device: string): number { return this.deviceSimulator.getDevicePixelRatio(device);
     
     /**
      * 利用可能デバイス一覧取得（MobileDeviceSimulatorに委譲）
      */
-    getAvailableDevices(): string[] { return this.deviceSimulator.getAvailableDevices() }
+    getAvailableDevices(): string[] { return this.deviceSimulator.getAvailableDevices();
     
     // ========================================
     // 状態取得メソッド
@@ -463,22 +460,22 @@ export class MobileTestSuite {
     /**
      * 実行状態取得（MobileTestRunnerに委譲）
      */
-    getExecutionState(): any { return this.testRunner.getExecutionState() }
+    getExecutionState(): any { return this.testRunner.getExecutionState();
     
     /**
      * デバイス状態取得（MobileDeviceSimulatorに委譲）
      */
-    getCurrentDevice(): any { return this.deviceSimulator.getCurrentDevice() }
+    getCurrentDevice(): any { return this.deviceSimulator.getCurrentDevice();
     
     /**
      * シミュレーション状態取得（MobileDeviceSimulatorに委譲）
      */
-    getSimulationState(): any { return this.deviceSimulator.getSimulationState() }
+    getSimulationState(): any { return this.deviceSimulator.getSimulationState();
     
     /**
      * レポート履歴取得（MobileTestReporterに委譲）
      */
-    getReportHistory(): any[] { return this.testReporter.getReportHistory() }
+    getReportHistory(): any[] { return this.testReporter.getReportHistory();
     
     // ========================================
     // 設定メソッド
@@ -487,12 +484,12 @@ export class MobileTestSuite {
     /**
      * テスト実行設定更新（MobileTestRunnerに委譲）
      */
-    updateExecutionConfig(newConfig: Record<string, any>): void { return this.testRunner.updateConfig(newConfig) }
+    updateExecutionConfig(newConfig: Record<string, any>): void { return this.testRunner.updateConfig(newConfig);
     
     /**
      * レポート設定更新（MobileTestReporterに委譲）
      */
-    updateReportConfig(newConfig: Record<string, any>): void { return this.testReporter.updateConfig(newConfig) }
+    updateReportConfig(newConfig: Record<string, any>): void { return this.testReporter.updateConfig(newConfig);
     
     // ========================================
     // デバッグ・診断メソッド
@@ -501,19 +498,18 @@ export class MobileTestSuite {
     /**
      * 総合デバッグ情報取得
      */
-    getDebugInfo(): DebugInfo { return { mainController: {
-                testSuites: Array.from(this.testSuites.keys(
+    getDebugInfo(): DebugInfo { return { mainController: { testSuites: Array.from(this.testSuites.keys(
     testResultsSummary: {
-                    passed: this.testResults.passed,
+                    passed: this.testResults.passed   ,
                     failed: this.testResults.failed,
                     errors: this.testResults.errors.length,
-    performance: this.testResults.performance.size },
+    performance: this.testResults.performance.size };
                     compatibility: this.testResults.compatibility.size 
     };
-            testRunner: this.testRunner.getDebugInfo(),
+            testRunner: this.testRunner.getDebugInfo())),
             deviceSimulator: this.deviceSimulator.getDebugInfo(
     components: { testRunner: !!this.testRunner,
-                deviceSimulator: !!this.deviceSimulator,
+                deviceSimulator: !!this.deviceSimulator   ,
     testReporter: !!this.testReporter 
     }
     
@@ -538,11 +534,10 @@ export class MobileTestSuite {
         
         return { healthy: issues.length === 0,
             issues;
-            componentStatus: {
-                testRunner: !!this.testRunner,
+            componentStatus: { testRunner: !!this.testRunner   ,
                 deviceSimulator: !!this.deviceSimulator,
                 testReporter: !!this.testReporter,
-    testSuites: this.testSuites.size },
+    testSuites: this.testSuites.size };
                 testContainer: !!this.testContainer 
     }
     
@@ -562,7 +557,7 @@ export class MobileTestSuite {
             }
             
             // テスト実行中断
-            if (this.testRunner) { this.testRunner.abortTests() }
+            if (this.testRunner) { this.testRunner.abortTests();
             
             // テストコンテナ削除
             if (this.testContainer && this.testContainer.parentNode) { }

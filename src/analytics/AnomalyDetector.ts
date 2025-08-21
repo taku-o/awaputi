@@ -14,17 +14,17 @@ export class AnomalyDetector {
             statistical: 2.5,      // 統計的異常値（標準偏差倍数）;
             behavioral: 0.8,       // 行動パターン異常値（0-1）;
             performance: 3.0,      // パフォーマンス異常値（標準偏差倍数）
-    }
+    };
             temporal: 0.9          // 時間的異常値（0-1） 
     };
         // 異常パターンタイプ
         this.anomalyTypes = { SCORE_OUTLIER: 'score_outlier',''
-            ACCURACY_DROP: 'accuracy_drop';
-            PLAY_TIME_ANOMALY: 'play_time_anomaly';
-            COMBO_INCONSISTENCY: 'combo_inconsistency';
-            BUBBLE_INTERACTION_ANOMALY: 'bubble_interaction_anomaly';
-            SESSION_FREQUENCY_ANOMALY: 'session_frequency_anomaly';
-            PERFORMANCE_DEGRADATION: 'performance_degradation';
+            ACCURACY_DROP: 'accuracy_drop,
+            PLAY_TIME_ANOMALY: 'play_time_anomaly,
+            COMBO_INCONSISTENCY: 'combo_inconsistency,
+            BUBBLE_INTERACTION_ANOMALY: 'bubble_interaction_anomaly,
+            SESSION_FREQUENCY_ANOMALY: 'session_frequency_anomaly,
+            PERFORMANCE_DEGRADATION: 'performance_degradation,
             UNUSUAL_QUIT_PATTERN: 'unusual_quit_pattern'
             };
         this.initializeDetectionRules();
@@ -44,49 +44,49 @@ export class AnomalyDetector {
         // 精度急降下検出
         this.detectionRules.set(this.anomalyTypes.ACCURACY_DROP, { );
             detect: (data) => this.detectAccuracyDrop(data,
-            severity: 'high',
+            severity: 'high,
             description: '精度が急激に低下しています'
             }
         };
         // プレイ時間異常検出
         this.detectionRules.set(this.anomalyTypes.PLAY_TIME_ANOMALY, { );
             detect: (data) => this.detectPlayTimeAnomaly(data,
-            severity: 'low',
+            severity: 'low,
             description: 'プレイ時間に異常なパターンが見られます'
             }
         };
         // コンボ一貫性異常検出
         this.detectionRules.set(this.anomalyTypes.COMBO_INCONSISTENCY, { );
             detect: (data) => this.detectComboInconsistency(data,
-            severity: 'medium',
+            severity: 'medium,
             description: 'コンボパフォーマンスに一貫性がありません'
             }
         };
         // バブルインタラクション異常検出
         this.detectionRules.set(this.anomalyTypes.BUBBLE_INTERACTION_ANOMALY, { );
             detect: (data) => this.detectBubbleInteractionAnomaly(data,
-            severity: 'high',
+            severity: 'high,
             description: 'バブル操作パターンに異常が検出されました'
             }
         };
         // セッション頻度異常検出
         this.detectionRules.set(this.anomalyTypes.SESSION_FREQUENCY_ANOMALY, { );
             detect: (data) => this.detectSessionFrequencyAnomaly(data,
-            severity: 'low',
+            severity: 'low,
             description: 'セッション頻度に異常なパターンがあります'
             }
         };
         // パフォーマンス劣化検出
         this.detectionRules.set(this.anomalyTypes.PERFORMANCE_DEGRADATION, { );
             detect: (data) => this.detectPerformanceDegradation(data,
-            severity: 'high',
+            severity: 'high,
             description: 'システムパフォーマンスの劣化が検出されました'
             }
         };
         // 異常な終了パターン検出
         this.detectionRules.set(this.anomalyTypes.UNUSUAL_QUIT_PATTERN, { );
             detect: (data) => this.detectUnusualQuitPattern(data,
-            severity: 'medium',
+            severity: 'medium,
             description: '異常な終了パターンが検出されました'}
 
         }');'
@@ -102,7 +102,7 @@ export class AnomalyDetector {
         try {
             const {'
                 startDate = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
-                endDate = new Date('',
+                endDate = new Date(',
             const sessionData = await this.storageManager.getData('sessions', {''
                 startDate,'),'
 
@@ -142,9 +142,8 @@ export class AnomalyDetector {
                             type: type),
                             severity: rule.severity,
     description: rule.description),
-                            anomalies: anomalies) }
-                            detectedAt: new Date() },
-                    } catch (error) {
+                            anomalies: anomalies),
+                            detectedAt: new Date()  } catch (error) {
                     console.warn(`異常検出エラー (${type}:`, error);
                 }
             }
@@ -167,15 +166,15 @@ export class AnomalyDetector {
             return { success: true,
                 anomalies: filteredResults,
                 totalAnomalies: filteredResults.length,
-                severityBreakdown: this.calculateSeverityBreakdown(filteredResults);
+                severityBreakdown: this.calculateSeverityBreakdown(filteredResults),
                 summary: summary,
                 recommendations: recommendations,
     detectionPeriod: {
-                    start: startDate,
+                    start: startDate ,
                     end: endDate; catch (error) {
             console.error('異常パターン検出エラー:', error);
             return { success: false,
-                error: error.message },
+                error: error.message ,
                 anomalies: [] 
     }
     }
@@ -200,11 +199,10 @@ export class AnomalyDetector {
                     sessionId: session.sessionId,
                     timestamp: session.startTime,
                     value: session.finalScore,
-    expectedRange: [mean - 2 * stdDev, mean + 2 * stdDev])
-    }
-                    zScore: zScore) }
+    expectedRange: [mean - 2 * stdDev, mean + 2 * stdDev]);
+                    zScore: zScore),
                     deviation: session.finalScore - mean); 
-    };
+    }
             }
         };
 
@@ -215,7 +213,7 @@ export class AnomalyDetector {
      * 精度急降下を検出
      */
     detectAccuracyDrop(data) {
-        const accuracies = data.sessions.map(s => { ) }
+        const accuracies = data.sessions.map(s => { );
             const total = (s.bubblesPopped || 0) + (s.bubblesMissed || 0); }
             return total > 0 ? (s.bubblesPopped || 0) / total: 0;);
 
@@ -231,12 +229,10 @@ export class AnomalyDetector {
                     sessionId: data.sessions[i].sessionId),
                     timestamp: data.sessions[i].startTime,
     currentAccuracy: currentAccuracy),
-                    previousAccuracy: recentAvg) }
+                    previousAccuracy: recentAvg),
                     dropPercentage: ((recentAvg - currentAccuracy) / recentAvg) * 100 
-    };
-            }
         }
-
+}
         return drops;
     }
 
@@ -244,7 +240,7 @@ export class AnomalyDetector {
      * プレイ時間異常を検出
      */
     detectPlayTimeAnomaly(data) {
-        const playTimes = data.sessions.map(s => { ) }
+        const playTimes = data.sessions.map(s => { );
             if (s.endTime && s.startTime) { }
                 return (s.endTime - s.startTime) / 1000;
             return s.duration || 0;
@@ -272,7 +268,7 @@ export class AnomalyDetector {
                     zScore: zScore,') }'
 
                     anomalyType: playTime > mean ? 'unusually_long' : 'unusually_short'); 
-    };
+    }
             }
         };
 
@@ -306,8 +302,7 @@ export class AnomalyDetector {
                     timestamp: data.sessions[i].startTime,
                     currentCombo: currentCombo),
                     expectedCombo: windowMean,
-    consistencyScore: consistency)
-    }
+    consistencyScore: consistency),
                     variability: windowStdDev); 
     }
 
@@ -322,7 +317,7 @@ export class AnomalyDetector {
 
         // セッション別にインタラクションを分析
         const sessionGroups = new Map();
-        data.interactions.forEach(interaction => { ) }
+        data.interactions.forEach(interaction => { );
             if (!sessionGroups.has(interaction.sessionId) { }
                 sessionGroups.set(interaction.sessionId, []); }
             }
@@ -347,11 +342,10 @@ export class AnomalyDetector {
                 anomalies.push({
                     sessionId: sessionId,
                     timestamp: interactions[0].timestamp,
-                    anomalyType: 'slow_reactions',
+                    anomalyType: 'slow_reactions,
                     averageReactionTime: mean,
-    slowReactionCount: slowReactions.length)
-             }
-                    totalReactions: reactionTimes.length) }
+    slowReactionCount: slowReactions.length),
+                    totalReactions: reactionTimes.length),
                     slowReactionRatio: slowReactions.length / reactionTimes.length); 
     };
 
@@ -366,12 +360,12 @@ export class AnomalyDetector {
 
         // 日別セッション数を計算
         const dailySessions = new Map();
-        data.sessions.forEach(session => { ) }
+        data.sessions.forEach(session => { );
             const date = new Date(session.startTime).toDateString(); }
             dailySessions.set(date, (dailySessions.get(date) || 0) + 1); }
         };
 
-        const sessionCounts = Array.from(dailySessions.values();
+        const sessionCounts = Array.from(dailySessions.values()));
         const mean = sessionCounts.reduce((a, b) => a + b, 0) / sessionCounts.length;
         const stdDev = Math.sqrt();
             sessionCounts.reduce((sum, count) => sum + Math.pow(count - mean, 2), 0) / sessionCounts.length;
@@ -390,7 +384,7 @@ export class AnomalyDetector {
                     zScore: zScore,') }'
 
                     anomalyType: count > mean ? 'excessive_sessions' : 'insufficient_sessions'); 
-    };
+    }
             }
         };
 
@@ -444,10 +438,9 @@ export class AnomalyDetector {
 ';'
 
             return [{ ''
-                timestamp: Date.now(']',
+                timestamp: Date.now('],
     pattern: averageQuitTime < 60 ? 'early_quit' : 'mid_game_quit' }])
-            }])
-        }
+            }]);
 
         return [];
     }
@@ -459,7 +452,7 @@ export class AnomalyDetector {
     
 }
         const breakdown = { low: 0, medium: 0, high: 0, critical: 0  }
-        results.forEach(result => {  ) }
+        results.forEach(result => {  );
             breakdown[result.severity] = (breakdown[result.severity] || 0) + 1; }
         };
         return breakdown;
@@ -488,11 +481,11 @@ export class AnomalyDetector {
 
         // 最も一般的な異常タイプを特定
         const typeCount = new Map();
-        results.forEach(result => {  ) }
+        results.forEach(result => {  );
             typeCount.set(result.type, (typeCount.get(result.type) || 0) + 1); }
         };
 
-        const mostCommonType = Array.from(typeCount.entries();
+        const mostCommonType = Array.from(typeCount.entries()));
             .sort((a, b) => b[1] - a[1])[0];
 
         if (mostCommonType) {
@@ -509,8 +502,8 @@ export class AnomalyDetector {
      */
     generateRecommendations(results) {
         const recommendations = [],
-        const typeCount = new Map() }
-        results.forEach(result => { ) }
+        const typeCount = new Map();
+        results.forEach(result => { );
             typeCount.set(result.type, (typeCount.get(result.type) || 0) + 1); }
         };
 
@@ -528,12 +521,12 @@ export class AnomalyDetector {
      */''
     getRecommendationForType(type, count) {
         const recommendations = {''
-            [this.anomalyTypes.SCORE_OUTLIER]: 'スコアの変動が大きいです。ゲームバランスの調整を検討してください。',
-            [this.anomalyTypes.ACCURACY_DROP]: '精度が低下しています。操作方法の確認や練習をお勧めします。',
-            [this.anomalyTypes.PLAY_TIME_ANOMALY]: 'プレイ時間に変化があります。プレイスタイルの見直しを検討してください。',
-            [this.anomalyTypes.COMBO_INCONSISTENCY]: 'コンボの安定性に課題があります。集中力の維持を心がけてください。',
-            [this.anomalyTypes.BUBBLE_INTERACTION_ANOMALY]: '操作レスポンスに問題があります。デバイスや設定の確認をお勧めします。',
-            [this.anomalyTypes.SESSION_FREQUENCY_ANOMALY]: 'プレイ頻度に変化があります。適度な休憩を取ることをお勧めします。',
+            [this.anomalyTypes.SCORE_OUTLIER]: 'スコアの変動が大きいです。ゲームバランスの調整を検討してください。,
+            [this.anomalyTypes.ACCURACY_DROP]: '精度が低下しています。操作方法の確認や練習をお勧めします。,
+            [this.anomalyTypes.PLAY_TIME_ANOMALY]: 'プレイ時間に変化があります。プレイスタイルの見直しを検討してください。,
+            [this.anomalyTypes.COMBO_INCONSISTENCY]: 'コンボの安定性に課題があります。集中力の維持を心がけてください。,
+            [this.anomalyTypes.BUBBLE_INTERACTION_ANOMALY]: '操作レスポンスに問題があります。デバイスや設定の確認をお勧めします。,
+            [this.anomalyTypes.SESSION_FREQUENCY_ANOMALY]: 'プレイ頻度に変化があります。適度な休憩を取ることをお勧めします。,
             [this.anomalyTypes.PERFORMANCE_DEGRADATION]: 'システム性能に問題があります。デバイスの最適化を検討してください。'
             }
 
@@ -548,12 +541,12 @@ export class AnomalyDetector {
      */''
     getTypeDisplayName(type) {
         const displayNames = {''
-            [this.anomalyTypes.SCORE_OUTLIER]: 'スコア異常',
-            [this.anomalyTypes.ACCURACY_DROP]: '精度低下',
-            [this.anomalyTypes.PLAY_TIME_ANOMALY]: 'プレイ時間異常',
-            [this.anomalyTypes.COMBO_INCONSISTENCY]: 'コンボ不安定',
-            [this.anomalyTypes.BUBBLE_INTERACTION_ANOMALY]: '操作異常',
-            [this.anomalyTypes.SESSION_FREQUENCY_ANOMALY]: '頻度異常',
+            [this.anomalyTypes.SCORE_OUTLIER]: 'スコア異常,
+            [this.anomalyTypes.ACCURACY_DROP]: '精度低下,
+            [this.anomalyTypes.PLAY_TIME_ANOMALY]: 'プレイ時間異常,
+            [this.anomalyTypes.COMBO_INCONSISTENCY]: 'コンボ不安定,
+            [this.anomalyTypes.BUBBLE_INTERACTION_ANOMALY]: '操作異常,
+            [this.anomalyTypes.SESSION_FREQUENCY_ANOMALY]: '頻度異常,
             [this.anomalyTypes.PERFORMANCE_DEGRADATION]: '性能劣化'
             }
 
@@ -570,14 +563,13 @@ export class AnomalyDetector {
         const timestamp = Date.now();
         results.forEach(result => {
             });
-            this.alertHistory.push({) }
+            this.alertHistory.push({);
                 ...result);
-                id: `alert_${timestamp)_${Math.random().toString(36).substr(2, 9}`,
-                timestamp: timestamp,
-            } };
+                id: `alert_${timestamp)_${Math.random().toString(36).substr(2, 9},
+                timestamp: timestamp } };
 
         // 履歴サイズを制限
-        if (this.alertHistory.length > this.maxAlertHistory) { this.alertHistory = this.alertHistory.slice(-this.maxAlertHistory) }
+        if (this.alertHistory.length > this.maxAlertHistory) { this.alertHistory = this.alertHistory.slice(-this.maxAlertHistory);
     }
 
     /**
@@ -585,7 +577,7 @@ export class AnomalyDetector {
      */
     getAlertHistory(limit = 50) {
         return this.alertHistory;
-            .slice(-limit) }
+            .slice(-limit);
             .sort((a, b) => b.timestamp - a.timestamp); }
     }
 

@@ -25,63 +25,63 @@ interface MockCanvasContext {
     rotate: jest.Mock<void, [number]>;
     setTransform: jest.Mock<void, [number, number, number, number, number, number]>;
     canvas: {
-        widt,h: number;
+        widt,h: number },
         height: number;
 }
 interface CanvasGradient {
     addColorStop: jest.Mock<void, [number, string]> }
 interface TransitionEffect {
-    id: number;
+    id: number,
     transitionType: string;
-    duration: number;
+    duration: number,
     elapsed: number;
     options: any;
     completed?: boolean;
 interface LightSource {
-    id: number;
+    id: number,
     x: number;
-    y: number;
+    y: number,
     intensity: number;
-    color: string;
+    color: string,
     radius: number;
 interface ShadowCaster {
-    id: number;
+    id: number,
     object: any;
     lightSource: any;
     direction?: { ,x: number,, y: number;
 }
 interface ReflectionSurface {
-    id: number;
+    id: number,
     surface: any;
     intensity: number;
 interface BackgroundEffect {
-    id: number;
+    id: number,
     type: string;
-    intensity: number;
+    intensity: number,
     duration: number;
     elapsed: number;
     completed?: boolean;
 interface EnhancedTransform {
-    depthOfField: number;
+    depthOfField: number,
     motionBlur: {
-        ,x: number;
+        ,x: number },
         y: number;
         intensity: number,,
-    chromatic: number;
+    chromatic: number,
     vignette: number;
-    noise: number;
+    noise: number,
     scanlines: number;
     glitch: {
-        intensity: number;
+        intensity: number },
         frequency: number;
 }
 interface RenderSettings {
-    enableLighting: boolean;
+    enableLighting: boolean,
     enableShadows: boolean;
-    enablePostProcessing: boolean;
+    enablePostProcessing: boolean,
     qualityLevel: string;
 interface PerformanceMetrics {
-    effectCount: number;
+    effectCount: number,
     renderTime: number;
     memoryUsage: number;
 // Mock Canvas API
@@ -100,15 +100,15 @@ interface PerformanceMetrics {
     fill: jest.fn(
     stroke: jest.fn(
     createLinearGradient: jest.fn(() => ({
-        addColorStop: jest.fn());
+        addColorStop: jest.fn()),
     createRadialGradient: jest.fn(() => ({
-        addColorStop: jest.fn());
+        addColorStop: jest.fn()),
     translate: jest.fn(
     scale: jest.fn(
     rotate: jest.fn(
     setTransform: jest.fn(
     canvas: {
-        width: 800;
+        width: 800 },
         height: 600
             };
 ))');'
@@ -147,7 +147,7 @@ describe('EnhancedEffectManager', () => {
     describe('Screen Transition Effects', (') => {'
         test('should create fade transition effect', (') => {'
             const effectId = effectManager.addTransitionEffect('fade', 1000, { : undefined
-                direction: 'in';
+                direction: 'in',
                 color: '#000000' };
             expect(typeof effectId').toBe('number');'
             expect(effectManager.transitionEffects.length).toBe(1);
@@ -158,7 +158,7 @@ describe('EnhancedEffectManager', () => {
         }');'
         test('should create slide transition effect', (') => {'
             const effectId = effectManager.addTransitionEffect('slide', 800, {
-                direction: 'left';
+                direction: 'left',
                 easing: 'easeOut' };
             expect(typeof effectId').toBe('number');'
             const effect = effectManager.transitionEffects.find(e => e.id === effectId);
@@ -168,8 +168,8 @@ describe('EnhancedEffectManager', () => {
         }');'
         test('should create zoom transition effect', (') => {'
             const effectId = effectManager.addTransitionEffect('zoom', 600, {
-                scale: 1.5;
-                origin: { x: 400, y: 300 };
+                scale: 1.5,
+                origin: { x: 400, y: 300 }
             };
             expect(typeof effectId').toBe('number');'
             const effect = effectManager.transitionEffects.find(e => e.id === effectId);
@@ -218,7 +218,7 @@ describe('EnhancedEffectManager', () => {
             // Add animation to light source
             if (effectManager.animateLightSource) {
                 effectManager.animateLightSource(lightId, { : undefined
-                    intensity: { target: 0.5, duration: 1000 };
+                    intensity: { target: 0.5, duration: 1000 }
             }
             effectManager.updateLightSources(500); // 500ms
             const updatedLight = effectManager.lightSources.find(l => l.id === lightId);
@@ -266,7 +266,7 @@ describe('EnhancedEffectManager', () => {
     describe('Reflection Effect System', (') => {'
         test('should add reflection effect for surfaces', (') => {'
             const surface = { : undefined
-                x: 0, y: 500, width: 800, height: 100;
+                x: 0, y: 500, width: 800, height: 100,
                 type: 'water'
             };
             const reflectionId = effectManager.addReflectionEffect(surface, 0.6);
@@ -491,9 +491,9 @@ describe('EnhancedEffectManager', () => {
         }');'
         test('should handle configuration updates', (') => {'
             const newConfig = {
-                enableLighting: false;
+                enableLighting: false,
                 enableShadows: true;
-                qualityLevel: 'medium';
+                qualityLevel: 'medium',
                 enablePostProcessing: false;
                 enablePostProcessing: false;
         };
@@ -567,6 +567,6 @@ describe('EnhancedEffectManager', () => {
             
             if (effectManager.getPerformanceMetrics) {
                 expect(finalMemory).toBeLessThanOrEqual(initialMemory) }
-        };
+        }
     }
 }'); : undefined'

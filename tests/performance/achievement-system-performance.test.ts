@@ -9,10 +9,10 @@ import { AchievementStatsUI  } from '../../src/core/AchievementStatsUI';
 // Performance testing utilities
 class PerformanceMonitor {
     constructor() {
-        this.measurements = {};
+        this.measurements = {}
     }
     start(label {
-        this.measurements[label] = { start: performance.now() };
+        this.measurements[label] = { start: performance.now() }
     }
     end(label {
         if (this.measurements[label]) {
@@ -31,13 +31,13 @@ class PerformanceMonitor {
 class MockPlayerData {
     constructor() {
         this.data = {
-            totalBubblesPopped: 0;
+            totalBubblesPopped: 0,
             totalScore: 0;
-            totalPlayTime: 0;
+            totalPlayTime: 0,
             consecutiveDays: 0;
-            maxCombo: 0;
+            maxCombo: 0,
             stages: {};
-            accuracy: 100;
+            accuracy: 100,
         achievements: new Set(
     );
     }
@@ -54,11 +54,11 @@ class MockPlayerData {
     getDetailedStatistics() {
         return {
             bubbleTypes: {
-                normal: { popped: this.data.totalBubblesPopped };
+                normal: { popped: this.data.totalBubblesPopped },
                 stone: { popped: Math.floor(this.data.totalBubblesPopped * 0.2) }
             },
             sessionData: {
-                lastSessionDate: new Date().toISOString();
+                lastSessionDate: new Date().toISOString() },
                 consecutiveDays: this.data.consecutiveDays
             },
             combos: {
@@ -67,7 +67,7 @@ class MockPlayerData {
             accuracy: {
                 overall: this.data.accuracy
             }
-        };
+        }
     }
 }
 class MockAudioManager {
@@ -440,7 +440,7 @@ describe('Achievement System Performance Tests', () => {
             // 各操作が合理的な時間で完了することを確認
             Object.values(benchmarks.forEach(duration => {);
                 expect(duration.toBeLessThan(100), // 100操作が100ms以下
-            };
+            }
         }
     }');'
 }

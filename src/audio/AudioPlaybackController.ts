@@ -20,22 +20,22 @@ interface PlaybackOptions { volume?: number,
 /**
  * 音響カテゴリ設定インターフェース
  */
-interface SoundCategoryConfig { volume: number;
+interface SoundCategoryConfig { volume: number,
     priority: number;
 /**
  * 再生統計インターフェース
  */
-interface PlaybackStats { totalPlayed: number;
-    activeCount: number;
-    peakConcurrency: number;
+interface PlaybackStats { totalPlayed: number,
+    activeCount: number,
+    peakConcurrency: number,
     errors: number;
 /**
  * エフェクト設定インターフェース
  */
-interface EffectConfig { maxPitchShift: number;
-    maxVolumeScale: number;
-    maxPan: number;
-    fadeInDuration: number;
+interface EffectConfig { maxPitchShift: number,
+    maxVolumeScale: number,
+    maxPan: number,
+    fadeInDuration: number,
     fadeOutDuration: number;
 /**
  * 音響エフェクトインターフェース
@@ -83,7 +83,7 @@ export class AudioPlaybackController {
     private playbackStats: PlaybackStats;
     // エフェクト設定
     private effectConfig: EffectConfig;
-    // 音響カテゴリ設定  }
+    // 音響カテゴリ設定  };
     private soundCategories: { [key: string]: SoundCategoryConfig,
     constructor() {
         // AudioContext・ノード（外部から注入される）
@@ -104,8 +104,8 @@ export class AudioPlaybackController {
             activeCount: 0,
     peakConcurrency: 0
 }
-            errors: 0 ,
-    },
+            errors: 0 ;
+    } };
         
         // エフェクト設定
         this.effectConfig = { maxPitchShift: 2.0,
@@ -116,11 +116,11 @@ export class AudioPlaybackController {
  };
         // 音響カテゴリ設定
         this.soundCategories = {
-            bubble: { volume: 1.0, priority: 3  },
-            ui: { volume: 0.8, priority: 2  },
-            combo: { volume: 1.2, priority: 4  },
-            achievement: { volume: 1.1, priority: 5  },
-            gamestate: { volume: 1.0, priority: 3  },
+            bubble: { volume: 1.0, priority: 3  ,
+            ui: { volume: 0.8, priority: 2  ,
+            combo: { volume: 1.2, priority: 4  ,
+            achievement: { volume: 1.1, priority: 5  ,
+            gamestate: { volume: 1.0, priority: 3  ,
             ambient: { volume: 0.6, priority: 1  }
 
     /**
@@ -133,7 +133,7 @@ export class AudioPlaybackController {
     setDependencies(;
         audioContext: AudioContext,
         sfxGainNode: GainNode
-    );
+    ),
         masterGainNode: GainNode,
     soundBuffers: Map<string, AudioBuffer>;
     ): void { this.audioContext = audioContext;
@@ -162,14 +162,14 @@ export class AudioPlaybackController {
             }
 
             // 同時再生数制限チェック
-            if (this.activeSources.size >= this.maxConcurrentSounds) { this.stopOldestSound() }
+            if (this.activeSources.size >= this.maxConcurrentSounds) { this.stopOldestSound();
             return this._playSound(buffer, options);
 ';'
 
-        } catch (error) { this.playbackStats.errors++,
+        } catch (error) { this.playbackStats.errors++;
             getErrorHandler().handleError(error, 'AUDIO_ERROR', {''
                 component: 'AudioPlaybackController',','
-                operation: 'playSound'),
+                operation: 'playSound');
                 soundName };
             return null;
     /**
@@ -210,16 +210,16 @@ export class AudioPlaybackController {
             // パンナー作成（ステレオパン）
             let pannerNode: StereoPannerNode | null = null,
             if (pan !== 0) {
-                pannerNode = this.audioContext.createStereoPanner() }
+                pannerNode = this.audioContext.createStereoPanner();
                 pannerNode.pan.value = Math.max(-1, Math.min(1, pan); }
             // ピッチシフト（playbackRateで近似）
-            if (pitch !== 1.0) { source.playbackRate.value = Math.max(0.25, Math.min(4.0, pitch) }
+            if (pitch !== 1.0) { source.playbackRate.value = Math.max(0.25, Math.min(4.0, pitch);
             // ノード接続
             source.connect(gainNode);
             if (pannerNode) {
-                gainNode.connect(pannerNode) }
+                gainNode.connect(pannerNode);
                 pannerNode.connect(this.sfxGainNode); }
-            } else { gainNode.connect(this.sfxGainNode) }
+            } else { gainNode.connect(this.sfxGainNode);
             // フェードイン処理
             if (fadeIn) {
                 gainNode.gain.exponentialRampToValueAtTime(
@@ -228,7 +228,7 @@ export class AudioPlaybackController {
             // フェードアウト処理
             if (fadeOut && buffer.duration > this.effectConfig.fadeOutDuration) {
                 const fadeStartTime = this.audioContext.currentTime + buffer.duration - this.effectConfig.fadeOutDuration + delay,
-                gainNode.gain.setValueAtTime(finalVolume, fadeStartTime) }
+                gainNode.gain.setValueAtTime(finalVolume, fadeStartTime);
                 gainNode.gain.exponentialRampToValueAtTime(0.001, fadeStartTime + this.effectConfig.fadeOutDuration); }
             // 再生開始
             const startTime = this.audioContext.currentTime + delay;
@@ -245,17 +245,17 @@ export class AudioPlaybackController {
                 this.playbackStats.activeCount = this.activeSources.size,
                 try {
                     source.disconnect();
-                    gainNode.disconnect() }
+                    gainNode.disconnect();
                     if (pannerNode) pannerNode.disconnect(); }
-                } catch (disconnectError) { // 既に切断済みの場合は無視 }
+        } catch (disconnectError) { // 既に切断済みの場合は無視 }
             };
 
             return source;
 ';'
 
-        } catch (error) { this.playbackStats.errors++,
+        } catch (error) { this.playbackStats.errors++;
             getErrorHandler().handleError(error, 'AUDIO_ERROR', {''
-                component: 'AudioPlaybackController',')',
+                component: 'AudioPlaybackController,')',
                 operation: '_playSound'
             }';'
             return null;
@@ -267,14 +267,14 @@ export class AudioPlaybackController {
      * @returns 音源ノード'
      */''
     playBubbleSound(bubbleType: BubbleType, comboLevel: number = 0, options: PlaybackOptions = { )): AudioBufferSourceNode | null {''
-        const soundName = comboLevel > 0 ? 'pop_combo' : 'pop',
+        const soundName = comboLevel > 0 ? 'pop_combo' : 'pop,
         
         // コンボレベルに応じた音響調整
         const comboOptions: PlaybackOptions = {
             ...options,
-            category: 'bubble',
+            category: 'bubble,
             pitch: 1.0 + (comboLevel * 0.1,
-    volume: (options.volume || 1.0) * (1.0 + comboLevel * 0.2  },
+    volume: (options.volume || 1.0) * (1.0 + comboLevel * 0.2  };
         
         return this.playSound(soundName, comboOptions);
     }
@@ -288,14 +288,14 @@ export class AudioPlaybackController {
     playUISound(actionType: UIActionType, options: PlaybackOptions = { )): AudioBufferSourceNode | null { }
 
         const uiSoundMap: { [key in UIActionType]: string, = { ', 'click': 'click','
-            'hover': 'hover',
-            'error': 'error',
-            'success': 'success',
-            'button': 'click',
-            'switch': 'click',
-            'tab': 'click',
-            'menu_open': 'success',
-            'menu_close': 'click' };
+            'hover': 'hover,
+            'error': 'error,
+            'success': 'success,
+            'button': 'click,
+            'switch': 'click,
+            'tab': 'click,
+            'menu_open': 'success,
+            'menu_close': 'click' } };
 
         const soundName = uiSoundMap[actionType] || 'click';
         ';'
@@ -312,7 +312,7 @@ export class AudioPlaybackController {
     playComboSound(comboLevel: number, options: PlaybackOptions = { )): AudioBufferSourceNode | null {
         const comboOptions: PlaybackOptions = {'
             ...options,
-            category: 'combo',
+            category: 'combo,
             pitch: 1.0 + (comboLevel * 0.15,
             volume: (options.volume || 1.0) * Math.min(2.0, 1.0 + comboLevel * 0.3 };
 
@@ -327,7 +327,7 @@ export class AudioPlaybackController {
      */''
     playAchievementSound(rarity: AchievementRarity, options: PlaybackOptions = { )): AudioBufferSourceNode | null { }
 
-        const rarityMap: { [key in AchievementRarity]: { sound: string, pitch: number,, volume: number, = { }', 'common': { sound: 'success', pitch: 1.0, volume: 1.0  },', 'rare': { sound: 'bonus', pitch: 1.1, volume: 1.2  },', 'epic': { sound: 'bonus', pitch: 1.2, volume: 1.4  },', 'legendary': { sound: 'bonus', pitch: 1.3, volume: 1.6  },
+        const rarityMap: { [key in AchievementRarity]: { sound: string, pitch: number, volume: number, = { }', 'common': { sound: 'success', pitch: 1.0, volume: 1.0  ,', 'rare': { sound: 'bonus', pitch: 1.1, volume: 1.2  ,', 'epic': { sound: 'bonus', pitch: 1.2, volume: 1.4  ,', 'legendary': { sound: 'bonus', pitch: 1.3, volume: 1.6  ,
 
         const config = rarityMap[rarity] || rarityMap.common;
         ';'
@@ -336,8 +336,8 @@ export class AudioPlaybackController {
             category: 'achievement'),
             pitch: (options.pitch || 1.0) * config.pitch,
     volume: (options.volume || 1.0) * config.volume 
- };
-    }
+ }
+    } };
 
     /**
      * ゲーム状態音を再生
@@ -348,16 +348,16 @@ export class AudioPlaybackController {
     playGameStateSound(stateType: GameStateType, options: PlaybackOptions = { )): AudioBufferSourceNode | null { }
 
         const stateMap: { [key in GameStateType]: string, = { ', 'game_start': 'game_start','
-            'game_over': 'game_over',
-            'warning': 'warning',
-            'levelup': 'success',
-            'timeup': 'error',
-            'stageclear': 'success',
-            'bonus_start': 'bonus',
-            'health_low': 'warning',
-            'powerup': 'success',
-            'pause': 'click',
-            'resume': 'click' };
+            'game_over': 'game_over,
+            'warning': 'warning,
+            'levelup': 'success,
+            'timeup': 'error,
+            'stageclear': 'success,
+            'bonus_start': 'bonus,
+            'health_low': 'warning,
+            'powerup': 'success,
+            'pause': 'click,
+            'resume': 'click' } };
 
         const soundName = stateMap[stateType] || 'success';
         ';'
@@ -370,16 +370,16 @@ export class AudioPlaybackController {
      */
     stopAllSounds(): void { try {
             this.activeSources.forEach(source => { )
-                try {) }
+                try {);
                     source.stop(); }
-                } catch (error) { // 既に停止済みの場合は無視 }
+        } catch (error) { // 既に停止済みの場合は無視 }
             };
             this.activeSources.clear();
             this.playbackStats.activeCount = 0;
         } catch (error) { getErrorHandler().handleError(error, 'AUDIO_ERROR', {''
-                component: 'AudioPlaybackController',')',
+                component: 'AudioPlaybackController,')',
                 operation: 'stopAllSounds'
-            };
+            }
         }
     /**
      * 最古の音響を停止
@@ -415,9 +415,9 @@ export class AudioPlaybackController {
             ';'
 
         } catch (error) { getErrorHandler().handleError(error, 'AUDIO_ERROR', {''
-                component: 'AudioPlaybackController',')',
+                component: 'AudioPlaybackController,')',
                 operation: 'applyAudioEffects'
-            };
+            }
         }
     /**
      * アクティブソース管理
@@ -429,10 +429,10 @@ export class AudioPlaybackController {
                 // プレイバック状態チェック),
                 if((source, as any).playbackState === 'finished') { }
                     invalidSources.push(source); }
-                } catch (error) { invalidSources.push(source) }
+        } catch (error) { invalidSources.push(source);
         };
 
-        invalidSources.forEach(source => {  ) }
+        invalidSources.forEach(source => {  );
             this.activeSources.delete(source); }
         };
 
@@ -445,7 +445,7 @@ export class AudioPlaybackController {
      * @param volume - 音量 (0.0-1.0)
      */
     setCategoryVolume(category: string, volume: number): void { if (this.soundCategories[category]) {
-            this.soundCategories[category].volume = Math.max(0, Math.min(1, volume) }
+            this.soundCategories[category].volume = Math.max(0, Math.min(1, volume);
     }
 
     /**
@@ -465,7 +465,7 @@ export class AudioPlaybackController {
      * @returns 再生統計
      */
     getPlaybackStats(): PlaybackStats & { maxConcurrent: number,
-        categories: Array<{ name: string, volume: number,, priority: number;> 
+        categories: Array<{ name: string, volume: number, priority: number;> 
     } { return { ...this.playbackStats,
             activeCount: this.activeSources.size,
             maxConcurrent: this.maxConcurrentSounds,
@@ -514,7 +514,7 @@ let audioPlaybackControllerInstance: AudioPlaybackController | null = null,
  * @returns シングルトンインスタンス
  */
 export function getAudioPlaybackController(): AudioPlaybackController { if (!audioPlaybackControllerInstance) {
-        audioPlaybackControllerInstance = new AudioPlaybackController() }
+        audioPlaybackControllerInstance = new AudioPlaybackController() };
     return audioPlaybackControllerInstance;
 }
 

@@ -1,16 +1,13 @@
 import { getErrorHandler  } from '../utils/ErrorHandler.js';
 
 interface DataStorage { [key: string]: unknown;
-
-interface ValidationManager { [key: string]: unknown;
-
-interface BackupConfig { autoBackupInterval: number;
-    maxBackups: number;
-    maxBackupAge: number;
-    compressionEnabled: boolean;
+    interface ValidationManager { [key: string]: unknown;
+    interface BackupConfig { autoBackupInterval: number,
+    maxBackups: number,
+    maxBackupAge: number,
+    compressionEnabled: boolean,
     encryptionEnabled: boolean;
-
-interface BackupJob { [key: string]: unknown;
+    interface BackupJob { [key: string]: unknown;
 
 /**
  * バックアップ管理クラス - 自動・手動バックアップシステム
@@ -32,17 +29,16 @@ export class BackupManager {
 
     constructor(dataStorage: DataStorage, validationManager: ValidationManager | null = null) {
         this.storage = dataStorage;
-
-        this.validation = validationManager;
-        this.version = '1.0.0';
+    this.validation = validationManager;
+    this.version = '1.0.0';
         
         // バックアップ設定
         this.config = {
             autoBackupInterval: 5 * 60 * 1000, // 5分間隔;
-            maxBackups: 10, // 最大保持数;
-            maxBackupAge: 30 * 24 * 60 * 60 * 1000, // 30日;
-            compressionEnabled: true;
-            encryptionEnabled: false // SecurityManagerと統合時に有効化 
+    maxBackups: 10, // 最大保持数;
+    maxBackupAge: 30 * 24 * 60 * 60 * 1000, // 30日;
+    compressionEnabled: true,
+    encryptionEnabled: false // SecurityManagerと統合時に有効化 
     };
         // バックアップ管理
         this.backupQueue = [];
@@ -51,12 +47,12 @@ export class BackupManager {
         this.lastBackupTime = null;
         
         // バックアップ統計
-        this.statistics = { totalBackups: 0;
-            successfulBackups: 0;
-            failedBackups: 0;
-            autoBackups: 0;
-            manualBackups: 0;
-            averageBackupSize: 0;
+        this.statistics = { totalBackups: 0,
+            successfulBackups: 0,
+            failedBackups: 0,
+            autoBackups: 0,
+            manualBackups: 0,
+            averageBackupSize: 0,
     averageBackupTime: 0  };
         this.initialize();
     }
@@ -70,7 +66,6 @@ export class BackupManager {
             // 自動バックアップの開始
             this.startAutoBackup()','
             console.log('BackupManager, initialized' }
-
         } catch (error') {'
             getErrorHandler().handleError(error, 'BACKUP_MANAGER_INITIALIZATION_ERROR', {''
                 operation: 'initialize'),' }'
@@ -119,9 +114,9 @@ export class BackupManager {
             const backupKey = `backup_${backupId}`;
             
             const finalBackupData = { metadata,
-                data: backupData,
+                data: backupData;
             await this.storage.save(backupKey, finalBackupData, { )
-                compress: this.config.compressionEnabled),
+                compress: this.config.compressionEnabled);
             // バックアップ履歴の更新,
             await this.updateBackupHistory(backupId, metadata);
             // 古いバックアップの清理
@@ -143,7 +138,7 @@ export class BackupManager {
                 backupId,
                 metadata,
                 duration };
-                size: JSON.stringify(finalBackupData).length 
+                size: JSON.stringify(finalBackupData).length; 
     };
             ';'
 
@@ -163,7 +158,7 @@ export class BackupManager {
      */''
     async createAutoBackup()';'
             const result = await this.createBackup('all', { automatic: true)
-               , validate: true),
+            validate: true),
             if (result.success) {
     
 }
@@ -256,7 +251,7 @@ export class BackupManager {
      * バックアップIDの生成
      */
     generateBackupId() {
-        const timestamp = Date.now() }
+        const timestamp = Date.now();
         const random = Math.random().toString(36).substring(2, 8); }
         return `${timestamp}_${random}`;
     }
@@ -306,10 +301,8 @@ export class BackupManager {
         } catch (error) {
             getErrorHandler().handleError(error, 'BACKUP_HISTORY_UPDATE_ERROR', {''
                 operation: 'updateBackupHistory');
-                backupId };
-        }
-    }
-    
+                backupId     }
+}
     /**
      * バックアップの一覧取得
      */
@@ -324,12 +317,11 @@ export class BackupManager {
                     try { }
                         const backupData = await this.storage.load(`backup_${backup.id}`);
                         return { ...backup,
-                            exists: !!backupData },
-                            metadata: backupData?.metadata || null 
-    } catch (error) { return { ...backup, : undefined
+                            exists: !!backupData ,
+                            metadata: backupData?.metadata || null  }
+        } catch (error) { return { ...backup, : undefined
                             exists: false,
-                            metadata: null,
-            };
+                            metadata: null };
             );
             
             return backupList;
@@ -386,8 +378,8 @@ export class BackupManager {
             };
             
             // 削除の実行
-            for (const backup of toDelete) { await this.deleteBackup(backup.id) }
-                console.log(`Deleted, old backup: ${backup.id}`};
+            for (const backup of toDelete) { await this.deleteBackup(backup.id);
+                console.log(`Deleted, old backup: ${backup.id}`}
             }
             
             return toDelete.length;
@@ -421,10 +413,8 @@ export class BackupManager {
 
         } catch (error) { getErrorHandler().handleError(error, 'AUTO_BACKUP_START_ERROR', {''
                 operation: 'startAutoBackup'
-            };
-        }
-    }
-    
+                }
+}
     /**
      * 自動バックアップの停止
      */
@@ -438,10 +428,8 @@ export class BackupManager {
 
             } catch (error) { getErrorHandler().handleError(error, 'AUTO_BACKUP_STOP_ERROR', {''
                 operation: 'stopAutoBackup'
-            };
-        }
-    }
-    
+                }
+}
     /**
      * バックアップ設定の更新
      */
@@ -450,24 +438,22 @@ export class BackupManager {
             
             // 自動バックアップ間隔の更新
             if (newConfig.autoBackupInterval && this.autoBackupTimer) {
-                this.stopAutoBackup() }
+                this.stopAutoBackup();
                 this.startAutoBackup(); }
-            } catch (error) {
+        } catch (error) {
             getErrorHandler().handleError(error, 'BACKUP_CONFIG_UPDATE_ERROR', {''
                 operation: 'updateConfig');
-                newConfig };
-        }
-    }
-    
+                newConfig     }
+}
     /**
      * 統計の更新
      */
     updateStatistics(success, duration, size, isAuto) {
         try {
-            this.statistics.totalBackups++,
+            this.statistics.totalBackups++;
             
             if (success) {
-                this.statistics.successfulBackups++,
+                this.statistics.successfulBackups++;
                 
                 // 平均サイズの更新
                 const totalSize = this.statistics.averageBackupSize * (this.statistics.successfulBackups - 1) + size,
@@ -489,7 +475,7 @@ export class BackupManager {
      */
     getStatus() {
         return { isBackupInProgress: this.isBackupInProgress }
-            lastBackupTime: this.lastBackupTime },
+            lastBackupTime: this.lastBackupTime ,
             autoBackupEnabled: !!this.autoBackupTimer }
             config: { ...this.config,
             statistics: { ...this.statistics,
@@ -499,10 +485,10 @@ export class BackupManager {
      * 特定のバックアップの取得
      */
     async getBackup(backupId) { try {
-            const backupData = await this.storage.load(`backup_${backupId)`};
+            const backupData = await this.storage.load(`backup_${backupId)`} };
             
             if (!backupData} { }
-                throw, new Error(`Backup, not found: ${backupId}`};
+                throw, new Error(`Backup, not found: ${backupId}`}
             }
             
             return backupData;
@@ -522,7 +508,6 @@ export class BackupManager {
         try {'
             this.stopAutoBackup()','
             console.log('BackupManager, destroyed' }
-
         } catch (error') {'
             getErrorHandler().handleError(error, 'BACKUP_MANAGER_DESTROY_ERROR', {''
                 operation: 'destroy'),' }'

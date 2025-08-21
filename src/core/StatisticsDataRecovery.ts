@@ -15,27 +15,27 @@ export class StatisticsDataRecovery {
         // 復旧設定
         this.config = {
             recovery: {
-                autoRecoveryEnabled: true;
-                maxRetryAttempts: 3;
-                retryDelayMs: 1000;
+                autoRecoveryEnabled: true ,
+                maxRetryAttempts: 3,
+                retryDelayMs: 1000,
     backupRetentionDays: 30 }
                 corruptionThreshold: 0.7 // 70%以上のデータが有効であれば復旧可能 
     };
-            validation: { strictMode: false;
-                validateChecksums: true;
-                validateStructure: true;
-    validateRanges: true;
-            notification: { showRecoveryProgress: true;
-                showSuccessMessage: true;
-                showFailureMessage: true;
+            validation: { strictMode: false,
+                validateChecksums: true  ,
+                validateStructure: true,
+    validateRanges: true,
+            notification: { showRecoveryProgress: true,
+                showSuccessMessage: true  ,
+                showFailureMessage: true,
     autoCloseDelay: 5000 
     };
         // 復旧状態管理
-        this.recoveryState = { isRecovering: false;
-            currentStep: null;
-            progress: 0;
-            lastRecoveryTime: null;
-            recoveryHistory: [];
+        this.recoveryState = { isRecovering: false,
+            currentStep: null,
+            progress: 0,
+            lastRecoveryTime: null,
+            recoveryHistory: [],
     failedAttempts: 0  };
         // サブコンポーネントの初期化（依存注入）
         this.strategies = new RecoveryStrategies(this);
@@ -50,7 +50,7 @@ export class StatisticsDataRecovery {
      * 初期化
      */
     initialize() {
-        this.userGuidance.initialize() }
+        this.userGuidance.initialize();
         this.setupAutomaticRecovery(); }
     }
     
@@ -101,7 +101,7 @@ export class StatisticsDataRecovery {
             ','
 
             this.recoveryState.isRecovering = true,
-            this.recoveryState.currentStep = 'analyzing',
+            this.recoveryState.currentStep = 'analyzing,
             this.recoveryState.progress = 0,
             
             // データを取得
@@ -124,7 +124,7 @@ export class StatisticsDataRecovery {
             
             return result;
             
-        } catch (error) { this.recoveryState.failedAttempts++,
+        } catch (error) { this.recoveryState.failedAttempts++;
             this.recordRecoveryFailure(error);
             throw error } finally { this.recoveryState.isRecovering = false,
             this.recoveryState.currentStep = null,
@@ -141,14 +141,14 @@ export class StatisticsDataRecovery {
      */
     async initiateRecovery(strategy, options = { ) {
         try {
-            console.log(`[StatisticsDataRecovery] Initiating, recovery with, strategy: ${strategy)`,
+            console.log(`[StatisticsDataRecovery] Initiating, recovery with, strategy: ${strategy),
             
             this.recoveryState.isRecovering = true,
             this.recoveryState.lastRecoveryTime = Date.now();
             // ユーザーガイダンスに復旧開始を通知
             this.userGuidance.notifyRecoveryStart({)
                 strategy,
-                totalSteps: 5,')',
+                totalSteps: 5,'),
                 options'),'
             ','
             // データ取得・分析
@@ -279,35 +279,35 @@ export class StatisticsDataRecovery {
      * @param {Object} data 分析対象データ
      * @returns {Promise<Object>} 破損分析結果
      */
-    async analyzeDataCorruption(data) { return await this.validation.analyzeDataCorruption(data) }
+    async analyzeDataCorruption(data) { return await this.validation.analyzeDataCorruption(data);
     
     /**
      * データ整合性を分析
      * @param {Object} data 検証対象データ
      * @returns {Promise<Object>} 整合性分析結果
      */
-    async analyzeDataIntegrity(data) { return await this.validation.analyzeDataIntegrity(data) }
+    async analyzeDataIntegrity(data) { return await this.validation.analyzeDataIntegrity(data);
     
     /**
      * チェックサムを計算
      * @param {Object} data データオブジェクト
      * @returns {string} チェックサム
      */
-    calculateChecksum(data) { return this.validation.calculateChecksum(data) }
+    calculateChecksum(data) { return this.validation.calculateChecksum(data);
     
     /**
      * データ構造を検証
      * @param {Object} data データオブジェクト
      * @returns {Object} 検証結果
      */
-    validateDataStructure(data) { return this.validation.validateDataStructure(data) }
+    validateDataStructure(data) { return this.validation.validateDataStructure(data);
     
     /**
      * データ範囲を検証
      * @param {Object} data データオブジェクト
      * @returns {Object} 検証結果
      */
-    validateDataRanges(data) { return this.validation.validateDataRanges(data) }
+    validateDataRanges(data) { return this.validation.validateDataRanges(data);
     
     /**
      * オブジェクト構造を修復
@@ -364,8 +364,7 @@ export class StatisticsDataRecovery {
             result,
             duration: this.recoveryState.lastRecoveryTime ? undefined : undefined
     
-                     Date.now() - this.recoveryState.lastRecoveryTime: null,
-        };
+                     Date.now() - this.recoveryState.lastRecoveryTime: null };
         ';'
 
         this.recoveryState.recoveryHistory.push(record);
@@ -397,7 +396,7 @@ export class StatisticsDataRecovery {
      * @param {number} limit 取得件数制限
      * @returns {Array} 復旧履歴
      */
-    getRecoveryHistory(limit = 50) { return this.userGuidance.getRecoveryHistory(limit) }
+    getRecoveryHistory(limit = 50) { return this.userGuidance.getRecoveryHistory(limit);
     
     // ========== 通知システム連携 ==========
     
@@ -405,13 +404,13 @@ export class StatisticsDataRecovery {
      * 通知コールバックを登録
      * @param {Function} callback 通知コールバック関数
      */
-    registerNotificationCallback(callback) { this.userGuidance.registerNotificationCallback(callback) }
+    registerNotificationCallback(callback) { this.userGuidance.registerNotificationCallback(callback);
     
     /**
      * 通知コールバックを解除
      * @param {Function} callback 通知コールバック関数
      */
-    unregisterNotificationCallback(callback) { this.userGuidance.unregisterNotificationCallback(callback) }
+    unregisterNotificationCallback(callback) { this.userGuidance.unregisterNotificationCallback(callback);
     
     // ========== 状態・設定管理 ==========
     
@@ -422,8 +421,8 @@ export class StatisticsDataRecovery {
     getRecoveryStatus() { return {  };
             ...this.recoveryState }
             config: { ...this.config,
-            strategies: this.strategies.getStrategyStats(),
-            validation: this.validation.getValidationStats() guidance: this.userGuidance.getStats() }
+            strategies: this.strategies.getStrategyStats() ,
+            validation: this.validation.getValidationStats() guidance: this.userGuidance.getStats();
     
     /**
      * 設定を更新
@@ -472,7 +471,7 @@ export class StatisticsDataRecovery {
         if (this.validation') {'
         ','
 
-            this.validation.resetValidationStats() }
+            this.validation.resetValidationStats();
 
         console.log('[StatisticsDataRecovery] Main, Controller cleanup, completed'); }
 

@@ -17,7 +17,7 @@ export class VolumeControlIntegrationExample {
     constructor(gameEngine: GameEngine) {
 
         this.gameEngine = gameEngine;
-        this.volumeControl = null }
+        this.volumeControl = null };
         this.container = null; }
     }
     
@@ -30,7 +30,7 @@ export class VolumeControlIntegrationExample {
         this.volumeControl = new VolumeControlComponent(this.gameEngine);
         ','
         // 音響設定セクションに追加
-        const audioSection = document.getElementById('audio-settings-section',
+        const audioSection = document.getElementById('audio-settings-section,
         if (!audioSection) {
 
             console.error('Audio settings section not found' }
@@ -40,7 +40,7 @@ export class VolumeControlIntegrationExample {
 
         if (!success') {'
 
-            console.error('Failed, to initialize, volume control') }
+            console.error('Failed, to initialize, volume control');
             return false;
 
         console.log('Volume, control initialized, successfully');
@@ -107,7 +107,7 @@ export class VolumeControlIntegrationExample {
      * 音量設定の保存"
      */""
     private saveVolumeSettings(volume: number): void { // ゲーム設定に保存""
-        // this.gameEngine.settingsManager.set('masterVolume', volume) }
+        // this.gameEngine.settingsManager.set('masterVolume', volume);
     
     /**
      * 音量制御の状態を取得
@@ -116,7 +116,7 @@ export class VolumeControlIntegrationExample {
             return null }
         
         return { isEnabled: this.volumeControl.isEnabled(
-            currentVolume: this.volumeControl.getCurrentVolume() },
+            currentVolume: this.volumeControl.getCurrentVolume() ,
             stats: this.volumeControl.getStats(); 
     }
     
@@ -124,28 +124,28 @@ export class VolumeControlIntegrationExample {
      * 音量制御の表示/非表示切り替え
      */
     setVolumeControlVisible(visible: boolean): void { if (this.volumeControl) {
-            this.volumeControl.setVisible(visible) }
+            this.volumeControl.setVisible(visible);
     }
     
     /**
      * プログラム的に音量を設定
      */
     setVolumeLevel(volume: number): void { if (this.volumeControl) {
-            this.volumeControl.setVolume(volume) }
+            this.volumeControl.setVolume(volume);
     }
     
     /**
      * 外部から音量変更を通知（他のシステムから）
      */
     onExternalVolumeChange(volume: number): void { if (this.volumeControl) {
-            this.volumeControl.onVolumeChanged(volume) }
+            this.volumeControl.onVolumeChanged(volume);
     }
     
     /**
      * アクセシビリティ属性の更新
      */
     updateAccessibility(): void { if (this.volumeControl) {
-            this.volumeControl.updateAccessibility() }
+            this.volumeControl.updateAccessibility();
     }
     
     /**
@@ -154,14 +154,14 @@ export class VolumeControlIntegrationExample {
     dispose(): void { try {
             // VolumeControlComponentを破棄
             if (this.volumeControl) {
-                this.volumeControl.dispose() }
+                this.volumeControl.dispose();
                 this.volumeControl = null; }
             }
             
             // DOM要素を削除
             if (this.container && this.container.parentNode) {
 
-                this.container.parentNode.removeChild(this.container) }
+                this.container.parentNode.removeChild(this.container);
                 this.container = null; }
             }
 
@@ -174,11 +174,11 @@ export class VolumeControlIntegrationExample {
      * 統合例のベストプラクティス情報'
      */''
     static getBestPractices('';
-            'VolumeControlComponentは設定画面の音響セクションに配置する',
-            '音量変更時は他の音響コンポーネントにも通知する',
-            '設定値はゲームの設定システムに保存する',
-            'アクセシビリティ属性を適切に設定する',
-            'コンポーネントのライフサイクルを適切に管理する',
+            'VolumeControlComponentは設定画面の音響セクションに配置する,
+            '音量変更時は他の音響コンポーネントにも通知する,
+            '設定値はゲームの設定システムに保存する,
+            'アクセシビリティ属性を適切に設定する,
+            'コンポーネントのライフサイクルを適切に管理する,
             'エラーハンドリングを忘れずに実装する';
         ];
     }

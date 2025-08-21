@@ -8,103 +8,85 @@ import { LoggingSystem  } from '../LoggingSystem.js';
 import { ErrorHandler  } from '../../utils/ErrorHandler.js';
 
 // 型定義
-export interface SearchConfig { minQueryLength: number;
-    maxResults: number;
-    searchTimeout: number;
-    fuzzyThreshold: number;
+export interface SearchConfig { minQueryLength: number,
+    maxResults: number,
+    searchTimeout: number,
+    fuzzyThreshold: number,
     stopWords: string[];
-
-export interface SearchStats { totalSearches: number;
+    export interface SearchStats { totalSearches: number,
     popularQueries: Map<string, number>;
-    averageResponseTime: number;
+    averageResponseTime: number,
     lastUpdated: number;
-
-export interface IndexData { id: string;
-    type: string;
-    title: string;
-    content: string;
-    category: string;
-    tags: string[];
-    language: string;
-    difficulty: 'beginner' | 'intermediate' | 'advanced';
-    popularity: number;
-    lastUpdated: number;
+    export interface IndexData { id: string,
+    type: string,
+    title: string,
+    content: string,
+    category: string,
+    tags: string[],
+    language: string,
+    difficulty: 'beginner' | 'intermediate' | 'advanced,
+    popularity: number,
+    lastUpdated: number,
     searchKeywords: string[];
-
-export interface SearchOptions { language?: string,
+    export interface SearchOptions { language?: string,
     category?: string | null;
-
     tags?: string[];
     difficulty?: 'beginner' | 'intermediate' | 'advanced' | null;
     contentType?: string;
     fuzzySearch?: boolean;
-
     maxResults?: number;
-    sortBy?: 'relevance' | 'date' | 'popularity' }
-
-export interface SearchResultItem { content: IndexData;
-    score: number;
+    sortBy?: 'relevance' | 'date' | 'popularity' };
+export interface SearchResultItem { content: IndexData,
+    score: number,
     matches: SearchMatch[];
-
-export interface SearchMatch { field: string;
-    term: string;
+    export interface SearchMatch { field: string,
+    term: string,
     preview: string;
-
-export interface SearchResult { results: SearchResultItem[];
-    totalCount: number;
+    export interface SearchResult { results: SearchResultItem[],
+    totalCount: number,
     suggestions: string[];
     hasMore?: boolean;
     filters?: SearchFilters;
     error?: string;
     metadata?: SearchMetadata;
-
-export interface SearchFilters { availableCategories: CategoryInfo[];
-    availableTags: TagInfo[];
+    export interface SearchFilters { availableCategories: CategoryInfo[],
+    availableTags: TagInfo[],
     availableDifficulties: string[];
-
-export interface CategoryInfo { name: string;
+    export interface CategoryInfo { name: string,
     count: number;
-
-export interface TagInfo { name: string;
+    export interface TagInfo { name: string,
     count: number;
-
-export interface SearchMetadata { query?: string,
+    export interface SearchMetadata { query?: string,
     options?: SearchOptions;
     responseTime?: number;
     timestamp: number;
 ';'
 
 export interface Suggestion { text: string,''
-    type: 'popular' | 'term' | 'category';
-    score: number;
+    type: 'popular' | 'term' | 'category,
+    score: number,
     source: string;
-
-export interface SuggestionOptions { maxSuggestions?: number,
+    export interface SuggestionOptions { maxSuggestions?: number,
     includePopular?: boolean;
     language?: string;
-
-export interface IndexStatistics { totalContentItems: number;
-    totalTerms: number;
-    totalCategories: number;
-    totalTags: number;
+    export interface IndexStatistics { totalContentItems: number,
+    totalTerms: number,
+    totalCategories: number,
+    totalTags: number,
     totalLanguages: number;
-
-export interface SearchStatistics { totalSearches: number;
+    export interface SearchStatistics { totalSearches: number,
     popularQueries: Map<string, number>;
-    averageResponseTime: number;
-    lastUpdated: number;
-    indexStats: IndexStatistics;
-    topQueries: Array<{ query: string,, count: number;> }
-
-export interface SearchHistoryEntry { query: string;
+    averageResponseTime: number,
+    lastUpdated: number,
+    indexStats: IndexStatistics,
+    topQueries: Array<{ query: string, count: number;> };
+export interface SearchHistoryEntry { query: string,
     timestamp: number;
-
-export interface ContentBase { id: string;
+    export interface ContentBase { id: string;
     title?: string;
     content?: string;
     category?: string;
     tags?: string[];
-
     language?: string;
     difficulty?: 'beginner' | 'intermediate' | 'advanced';
     popularity?: number;
@@ -132,7 +114,7 @@ export class SearchEngine {
         this.loggingSystem = LoggingSystem.getInstance ? LoggingSystem.getInstance() : new LoggingSystem()';'
                 'の', 'に', 'は', 'を', 'が', 'で', 'と', 'た', 'て', 'だ', 'である', 'です', 'ます')','
                 // 英語ストップワード
-                'the', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'of', 'with', 'by', 'is', 'are', 'was', 'were' }
+                'the', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'of', 'with', 'by', 'is', 'are', 'was', 'were' };
             ] }
         };
         
@@ -147,7 +129,7 @@ export class SearchEngine {
         this.searchStats = { totalSearches: 0,
             popularQueries: new Map<string, number>(),
             averageResponseTime: 0,
-    lastUpdated: Date.now(  },
+    lastUpdated: Date.now(  };
         
         // 検索履歴（最大1000件）
         this.searchHistory = [];
@@ -165,7 +147,7 @@ export class SearchEngine {
             this.clearAllIndexes()';'
             this.loggingSystem.info('SearchEngine', 'Search engine initialized successfully';} catch (error) {
             this.loggingSystem.error('SearchEngine', 'Failed to initialize search engine', error','
-            ErrorHandler.handle(error, 'SearchEngine.initialize') }
+            ErrorHandler.handle(error, 'SearchEngine.initialize');
     }
 
     /**
@@ -178,11 +160,10 @@ export class SearchEngine {
             // インデックスのクリア
             this.clearAllIndexes(} }
 
-            this.loggingSystem.info('SearchEngine', `Search index built successfully for ${language}`};
-
+            this.loggingSystem.info('SearchEngine', `Search index built successfully for ${language}`}
         } catch (error) {
             this.loggingSystem.error('SearchEngine', 'Failed to build search index', error','
-            ErrorHandler.handle(error, 'SearchEngine.buildIndex') }
+            ErrorHandler.handle(error, 'SearchEngine.buildIndex');
     }
 
     /**
@@ -192,7 +173,7 @@ export class SearchEngine {
      */''
     indexContent(contents: ContentBase[], contentType: string = 'help': void { try {'
             if(!Array.isArray(contents)) {''
-                throw new Error('Contents, must be, an array') }
+                throw new Error('Contents, must be, an array');
 
             this.loggingSystem.info('SearchEngine', `Indexing ${contents.length} ${ contentType) contents...`};
             
@@ -240,11 +221,11 @@ export class SearchEngine {
 
             // 検索オプションの設定
             const searchOptions: Required<SearchOptions> = { ''
-                language: 'ja',
+                language: 'ja,
                 category: null,
     tags: [],
                 difficulty: null,
-                contentType: 'all',
+                contentType: 'all,
     fuzzySearch: true,
                 maxResults: this.config.maxResults,
                 sortBy: 'relevance', // relevance, date, popularity,
@@ -263,11 +244,10 @@ export class SearchEngine {
             this.loggingSystem.info('SearchEngine', `Search completed: "${query}" (${processedResults.results.length} results, ${ responseTime)ms}`};
             
             return { ...processedResults,
-                metadata: {
-                    query,
-                    options: searchOptions,
+                metadata: { query  },
+                    options: searchOptions;
                     responseTime }
-                    timestamp: Date.now()),
+                    timestamp: Date.now());
     };
             ";"
         } catch (error) {
@@ -278,9 +258,8 @@ export class SearchEngine {
                 totalCount: 0,
                 suggestions: [],
                 error: error instanceof Error ? error.message : String(error,
-    metadata: {
-                    query,
-                    responseTime };
+    metadata: { query,
+                    responseTime  },
                     timestamp: Date.now();
     }
     }
@@ -300,7 +279,7 @@ export class SearchEngine {
 
             const suggestionOptions: Required<SuggestionOptions> = { maxSuggestions: 10,"
                 includePopular: true,
-                language: 'ja',
+                language: 'ja,
                 ...options,
 
             const, suggestions: Suggestion[] = [],
@@ -314,8 +293,7 @@ export class SearchEngine {
                             type: 'popular')','
     score: count * 10,' }'
 
-                            source: 'history'),
-    }
+                            source: 'history');
             }
 
             // インデックスからのサジェスト
@@ -329,8 +307,7 @@ export class SearchEngine {
     score: contentIds.length,')'
             }
 
-                            source: 'index'),
-    }
+                            source: 'index');
             }
 
             // カテゴリからのサジェスト
@@ -340,8 +317,7 @@ export class SearchEngine {
                         type: 'category')','
     score: contentIds.length * 5,' }'
 
-                        source: 'category'),
-    }
+                        source: 'category');
 
             // スコア順にソート
             suggestions.sort((a, b) => b.score - a.score);
@@ -358,13 +334,13 @@ export class SearchEngine {
      */
     getSearchStatistics(): SearchStatistics { return { ...this.searchStats,
             indexStats: {
-                totalContentItems: this.contentIndex.size,
+                totalContentItems: this.contentIndex.size ,
                 totalTerms: this.termIndex.size,
                 totalCategories: this.categoryIndex.size,
-    totalTags: this.tagIndex.size },
+    totalTags: this.tagIndex.size ,
                 totalLanguages: this.languageIndex.size 
     };
-            topQueries: Array.from(this.searchStats.popularQueries.entries(),
+            topQueries: Array.from(this.searchStats.popularQueries.entries())),
                 .sort((a, b) => b[1] - a[1]);
                 .slice(0, 10);
                 .map(([query, count]) => ({ query, count });
@@ -381,11 +357,11 @@ export class SearchEngine {
             let totalIndexed = 0,
             for(const [contentType, contents] of contentMap.entries() {
 
-                this.indexContent(contents, contentType) }
+                this.indexContent(contents, contentType);
                 totalIndexed += contents.length; }
             }
 
-            this.loggingSystem.info('SearchEngine', `Index rebuilt: ${totalIndexed} items indexed`},
+            this.loggingSystem.info('SearchEngine', `Index rebuilt: ${totalIndexed} items indexed`}
         } catch (error) {
             this.loggingSystem.error('SearchEngine', 'Failed to rebuild index', error','
             ErrorHandler.handle(error, 'SearchEngine.rebuildIndex' }'
@@ -409,13 +385,13 @@ export class SearchEngine {
             type: contentType,
             title: content.title || content.question || ','
             content: content.content || content.answer || ','
-            category: content.category || 'general',
+            category: content.category || 'general,
             tags: content.tags || [],
-            language: content.language || 'ja',
-            difficulty: content.difficulty || 'beginner',
+            language: content.language || 'ja,
+            difficulty: content.difficulty || 'beginner,
             popularity: content.popularity || 0,
             lastUpdated: content.lastUpdated || Date.now(
-    searchKeywords: content.searchKeywords || []  },
+    searchKeywords: content.searchKeywords || []  ,
         this.contentIndex.set(content.id, indexData);
 
         // 言語インデックス
@@ -437,7 +413,7 @@ export class SearchEngine {
         ].join(', ');
 
         const terms = this.extractTerms(allText);
-        for (const term of terms) { this.addToIndex(this.termIndex, term, content.id) }
+        for (const term of terms) { this.addToIndex(this.termIndex, term, content.id);
     }
 
     /**
@@ -508,10 +484,8 @@ export class SearchEngine {
                         const reversePartialScore = this.calculateRelevanceScore(content, indexTerm, query) * 0.8;
                         const currentScore = contentScores.get(contentId) || 0;
                         contentScores.set(contentId, currentScore + reversePartialScore);
-                    }
+                        }
 }
-        }
-
         // 直接的な部分文字列検索（タイトルとコンテンツ内での検索）
         for (const term of queryTerms) {
             for(const [contentId, content] of this.contentIndex.entries() {
@@ -535,12 +509,10 @@ export class SearchEngine {
                 if (contentLower.includes(termLower) {
                     const substringScore = this.calculateRelevanceScore(content, term, query) * 0.8,
                     const currentScore = contentScores.get(contentId) || 0 }
-                    contentScores.set(contentId, currentScore + substringScore); }
+                    contentScores.set(contentId, currentScore + substringScore);     }
 }
-        }
-
         // ファジー検索（設定で有効な場合）
-        if (options.fuzzySearch && queryTerms.length > 0) { await this.performFuzzySearch(queryTerms, options, contentScores) }
+        if (options.fuzzySearch && queryTerms.length > 0) { await this.performFuzzySearch(queryTerms, options, contentScores);
 
         // 結果の作成
         for(const [contentId, score] of contentScores.entries() {
@@ -549,9 +521,8 @@ export class SearchEngine {
                 results.push({)
                     content),
                     score }
-                    matches: this.findMatches(content, query); }
-                };
-            }
+                    matches: this.findMatches(content, query);     }
+}
         }
 
         // ソート
@@ -567,7 +538,7 @@ export class SearchEngine {
      * @param contentScores - コンテンツスコアマップ
      */
     private async performFuzzySearch(;
-        queryTerms: string[] );
+        queryTerms: string[] ),
         options: Required<SearchOptions>),
         contentScores: Map<string, number>;
     ): Promise<void> { for (const queryTerm of queryTerms) {
@@ -584,9 +555,8 @@ export class SearchEngine {
                         const fuzzyScore = this.calculateRelevanceScore(content, indexTerm, queryTerm) * similarity;
                         const currentScore = contentScores.get(contentId) || 0;
                         contentScores.set(contentId, currentScore + fuzzyScore);
-                    }
+                        }
 }
-        }
     }
 
     /**
@@ -598,7 +568,7 @@ export class SearchEngine {
      */
     private processSearchResults(;
         results: SearchResultItem[]
-    );
+    ),
         query: string,
     options: Required<SearchOptions>,
     ): SearchResult { const totalCount = results.length,
@@ -611,7 +581,7 @@ export class SearchEngine {
             suggestions,
             hasMore: totalCount >= options.maxResults,
             filters: {'
-                availableCategories: this.getAvailableCategories(options.language,
+                availableCategories: this.getAvailableCategories(options.language ,
                 availableTags: this.getAvailableTags(options.language),' };'
 
                 availableDifficulties: ['beginner', 'intermediate', 'advanced] }'
@@ -709,10 +679,8 @@ export class SearchEngine {
                 } else { matrix[i][j] = Math.min(
                         matrix[i - 1][j - 1] + 1);
                         matrix[i][j - 1] + 1 }
-                        matrix[i - 1][j] + 1); }
+                        matrix[i - 1][j] + 1);     }
 }
-        }
-
         const maxLength = Math.max(str1.length, str2.length);
         return (maxLength - matrix[str2.length][str1.length]) / maxLength;
     }
@@ -745,7 +713,7 @@ export class SearchEngine {
      * @param contentId - コンテンツID
      */
     private addToIndex(index: Map<string, string[]>, key: string, contentId: string): void { if (!index.has(key) {
-            index.set(key, []) }
+            index.set(key, []);
         const contentIds = index.get(key)!;
         if (!contentIds.includes(contentId) { }
 
@@ -770,7 +738,7 @@ export class SearchEngine {
                 break,
             case 'relevance':,
             default:,
-                results.sort((a, b) => b.score - a.score) }
+                results.sort((a, b) => b.score - a.score);
                 break; }
 }
 
@@ -791,18 +759,15 @@ export class SearchEngine {
                 matches.push({)'
                     field: 'title'),
                     term }
-                    preview: this.createPreview(content.title, term); }
-                };
-            }
+                    preview: this.createPreview(content.title, term);     }
+}
 ';'
             // コンテンツでのマッチ
             if (content.content.toLowerCase().includes(termLower)) { matches.push({)'
                     field: 'content'),
                     term,
-                    preview: this.createPreview(content.content, term };
-            }
-        }
-
+                    preview: this.createPreview(content.content, term     }
+}
         return matches;
     }
 
@@ -820,7 +785,7 @@ export class SearchEngine {
 
         let preview = text.substring(start, end);
         if(start > 0) preview = '...' + preview,
-        if(end < text.length) preview += '...',
+        if(end < text.length) preview += '...,
 
         return preview }
 
@@ -848,14 +813,12 @@ export class SearchEngine {
 
         // 人気の検索語をサジェスト
         if (suggestions.length < 3) {
-            const popularQueries = Array.from(this.searchStats.popularQueries.entries();
+            const popularQueries = Array.from(this.searchStats.popularQueries.entries()));
                 .sort((a, b) => b[1] - a[1]),
-                .slice(0, 3 - suggestions.length) }
+                .slice(0, 3 - suggestions.length);
             for (const [popularQuery] of, popularQueries) { }
-                suggestions.push(`「${popularQuery}」を検索`};
-            }
-        }
-
+                suggestions.push(`「${popularQuery}」を検索`    }
+}
         return suggestions;
     }
 
@@ -866,14 +829,12 @@ export class SearchEngine {
      */
     private getAvailableCategories(language: string): CategoryInfo[] { const categories: CategoryInfo[] = [],
         for(const [category, contentIds] of this.categoryIndex.entries() {
-            const hasLanguageContent = contentIds.some(id => { )
-        }
+            const hasLanguageContent = contentIds.some(id => { );
                 const content = this.contentIndex.get(id); }
                 return content && content.language === language;);
             if (hasLanguageContent) { categories.push({)
                     name: category,
-                    count: contentIds.length), 
-    };
+                    count: contentIds.length);
             }
         }
         return categories.sort((a, b) => b.count - a.count);
@@ -886,14 +847,12 @@ export class SearchEngine {
      */
     private getAvailableTags(language: string): TagInfo[] { const tags: TagInfo[] = [],
         for(const [tag, contentIds] of this.tagIndex.entries() {
-            const hasLanguageContent = contentIds.some(id => { )
-        }
+            const hasLanguageContent = contentIds.some(id => { );
                 const content = this.contentIndex.get(id); }
                 return content && content.language === language;);
             if (hasLanguageContent) { tags.push({)
                     name: tag,
-                    count: contentIds.length), 
-    };
+                    count: contentIds.length);
             }
         }
         return tags.sort((a, b) => b.count - a.count);
@@ -916,7 +875,7 @@ export class SearchEngine {
      * 検索統計の更新
      * @param query - クエリ
      */
-    private updateSearchStats(query: string): void { this.searchStats.totalSearches++,
+    private updateSearchStats(query: string): void { this.searchStats.totalSearches++;
         
         const currentCount = this.searchStats.popularQueries.get(query) || 0,
         this.searchStats.popularQueries.set(query, currentCount + 1);
@@ -925,7 +884,7 @@ export class SearchEngine {
             query,
             timestamp: Date.now(  };
         // 履歴サイズ制限
-        if (this.searchHistory.length > 1000) { this.searchHistory.shift() }
+        if (this.searchHistory.length > 1000) { this.searchHistory.shift();
         
         this.searchStats.lastUpdated = Date.now();
     }
@@ -944,7 +903,7 @@ export class SearchEngine {
         this.termIndex.clear();
         this.categoryIndex.clear();
         this.tagIndex.clear();
-        this.languageIndex.clear() }
+        this.languageIndex.clear();
 
     /**
      * リソースのクリーンアップ
@@ -954,13 +913,13 @@ export class SearchEngine {
             this.searchHistory = [];
             this.searchStats = {
                 totalSearches: 0,
-    popularQueries: new Map<string, number>(),,
+    popularQueries: new Map<string, number>(),
                 averageResponseTime: 0,
                 lastUpdated: Date.now()','
             this.loggingSystem.info('SearchEngine', 'Search engine destroyed',' }'
 
         } catch (error) {
-            this.loggingSystem.error('SearchEngine', 'Failed to destroy search engine', error) }
+            this.loggingSystem.error('SearchEngine', 'Failed to destroy search engine', error);
 }
 
 // シングルトンインスタンス管理
@@ -971,7 +930,7 @@ let searchEngineInstance: SearchEngine | null = null,
  * @returns SearchEngineインスタンス
  */
 export function getSearchEngine(): SearchEngine { if (!searchEngineInstance) {
-        searchEngineInstance = new SearchEngine() }
+        searchEngineInstance = new SearchEngine() };
     return searchEngineInstance;
 }
 

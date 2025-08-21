@@ -232,7 +232,7 @@ describe('Performance Debug Splitting Integration', () => {
                 expect(typeof component').toBe('object');'
                 // 基本的な公開メソッドの存在確認
                 expect(component.constructor.name).toBeTruthy();
-            };
+            }
         }
     }');'
     describe('Error Handling and Fallback Mechanisms', (') => {'
@@ -257,6 +257,6 @@ describe('Performance Debug Splitting Integration', () => {
             try {
                 await performanceTestSuite.runTest('failing-test') } catch (error) {
                 expect(error.message').toContain('Component failure') }'
-        };
+        }
     }
 }');'

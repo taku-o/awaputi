@@ -8,31 +8,30 @@
 import { seoLogger  } from '../SEOLogger.js';
 import { seoErrorHandler  } from '../SEOErrorHandler.js';
 
-interface MainController { baseUrl: string;
+interface MainController { baseUrl: string,
     validationRules: Map<string, ValidationRules> }
 
 interface ValidationRules { required: string[];
     titleLength?: {
         mi,n: number;
+    },
     max: number;
-    descriptionLength?: { min: number;
+    descriptionLength?: { min: number,
     max: number;
     cardTypes?: string[];
 }
 
-interface TestResult { name: string;
-    passed: boolean;
+interface TestResult { name: string,
+    passed: boolean,
     message: string;
-
-interface ValidationResults { category: string;
-    tests: TestResult[];
-    passed: number;
-    failed: number;
+    interface ValidationResults { category: string,
+    tests: TestResult[],
+    passed: number,
+    failed: number,
     warnings: number;
-
-interface MetaTags { title: string;
-    description: string;
-    charset: string;
+    interface MetaTags { title: string,
+    description: string,
+    charset: string,
     keywords: string;
 ';'
 
@@ -47,15 +46,14 @@ interface TwitterCardTags { ', 'twitter: card': string,'
     'twitter: title': string;
     'twitter: description': string;
     'twitter: image': string;
-
-export class MetaTagValidator {
+    export class MetaTagValidator {
     private mainController: MainController;
     private, baseUrl: string;
     constructor(mainController: MainController) {
 
         this.mainController = mainController
 
-    }
+    };
         this.baseUrl = mainController.baseUrl; }
     }
 
@@ -81,7 +79,7 @@ export class MetaTagValidator {
             ';'
             // 必須タグの存在確認
             for (const requiredTag of rules.required) { const test: TestResult = { }
-                    name: `Required meta, tag: ${requiredTag}`,
+                    name: `Required meta, tag: ${requiredTag},
                     passed: false,
                     message: ';'
                 },
@@ -100,17 +98,16 @@ export class MetaTagValidator {
             // タイトル長の検証
             if (metaTags.title && rules.titleLength) {
                 const titleTest: TestResult = {''
-                    name: 'Title length validation',
+                    name: 'Title length validation,
                     passed: false,
-                    passed: false,
-        };
+                    passed: false };
                     message: '};'
                 const titleLength = metaTags.title.length;
                 if (titleLength >= rules.titleLength.min && titleLength <= rules.titleLength.max) { titleTest.passed = true }
-                    titleTest.message = `✅ Title length optimal: ${titleLength} characters`,
+                    titleTest.message = `✅ Title length optimal: ${titleLength} characters,
                     results.passed++;
                 } else {  }
-                    titleTest.message = `⚠️ Title length suboptimal: ${titleLength} characters (recommended: ${rules.titleLength.min}-${rules.titleLength.max}}`,
+                    titleTest.message = `⚠️ Title length suboptimal: ${titleLength} characters (recommended: ${rules.titleLength.min}-${rules.titleLength.max}},
                     results.warnings++;
                 }
                 
@@ -120,16 +117,16 @@ export class MetaTagValidator {
             // 説明文長の検証
             if (metaTags.description && rules.descriptionLength) {
                 const descTest: TestResult = {''
-                    name: 'Description length validation',
+                    name: 'Description length validation,
                     passed: false,
 
                     message: '};'
                 const descLength = metaTags.description.length;
                 if (descLength >= rules.descriptionLength.min && descLength <= rules.descriptionLength.max) { descTest.passed = true }
-                    descTest.message = `✅ Description length optimal: ${descLength} characters`,
+                    descTest.message = `✅ Description length optimal: ${descLength} characters,
                     results.passed++;
                 } else {  }
-                    descTest.message = `⚠️ Description length suboptimal: ${descLength} characters (recommended: ${rules.descriptionLength.min}-${rules.descriptionLength.max}}`,
+                    descTest.message = `⚠️ Description length suboptimal: ${descLength} characters (recommended: ${rules.descriptionLength.min}-${rules.descriptionLength.max}},
                     results.warnings++;
                 }
 
@@ -140,14 +137,14 @@ export class MetaTagValidator {
             return results;
 
         } catch (error) {
-            return seoErrorHandler.handle(error, 'validateMetaTags',
+            return seoErrorHandler.handle(error, 'validateMetaTags,
 
     /**
      * Open Graphタグの検証
      * @returns Promise<ValidationResults>'
      */''
     async validateOpenGraphTags('''
-                category: 'Open, Graph',
+                category: 'Open, Graph,
                 tests: [],
                 passed: 0,
                 failed: 0,
@@ -164,7 +161,7 @@ export class MetaTagValidator {
             ';'
             // 必須OGタグの存在確認
             for (const requiredTag of rules.required) { const test: TestResult = { }
-                    name: `Required OG, tag: ${requiredTag}`,
+                    name: `Required OG, tag: ${requiredTag},
                     passed: false,
                     message: ';'
                 },
@@ -183,16 +180,16 @@ export class MetaTagValidator {
             // OG画像の検証
             if (ogTags['og:image]''
                 const imageTest: TestResult =''
-                    name: 'OG image validation',
+                    name: 'OG image validation,
                     passed: false,
 
                     message: '};'
                 const imageUrl = ogTags['og: image],'
                 if(this._isValidImageUrl(imageUrl) { imageTest.passed = true }
-                    imageTest.message = `✅ Valid OG image URL: ${imageUrl}`,
+                    imageTest.message = `✅ Valid OG image URL: ${imageUrl},
                     results.passed++;
                 } else {  }
-                    imageTest.message = `❌ Invalid OG image URL: ${imageUrl}`,
+                    imageTest.message = `❌ Invalid OG image URL: ${imageUrl},
                     results.failed++;
                 }
                 
@@ -202,14 +199,14 @@ export class MetaTagValidator {
             return results;
 
         } catch (error) {
-            return seoErrorHandler.handle(error, 'validateOpenGraphTags',
+            return seoErrorHandler.handle(error, 'validateOpenGraphTags,
 
     /**
      * Twitter Cardタグの検証
      * @returns Promise<ValidationResults>'
      */''
     async validateTwitterCardTags('''
-                category: 'Twitter, Card',
+                category: 'Twitter, Card,
                 tests: [],
                 passed: 0,
                 failed: 0,
@@ -226,7 +223,7 @@ export class MetaTagValidator {
             ';'
             // 必須Twitterタグの存在確認
             for (const requiredTag of rules.required) { const test: TestResult = { }
-                    name: `Required Twitter, tag: ${requiredTag}`,
+                    name: `Required Twitter, tag: ${requiredTag},
                     passed: false,
                     message: ';'
                 },
@@ -245,16 +242,16 @@ export class MetaTagValidator {
             // Cardタイプの検証
             if (twitterTags['twitter:card] && rules.cardTypes''
                 const cardTest: TestResult =''
-                    name: 'Twitter card type validation',
+                    name: 'Twitter card type validation,
                     passed: false,
 
                     message: '};'
                 const cardType = twitterTags['twitter: card],'
                 if(rules.cardTypes.includes(cardType) { cardTest.passed = true }
-                    cardTest.message = `✅ Valid card type: ${cardType}`,
+                    cardTest.message = `✅ Valid card type: ${cardType},
                     results.passed++;
                 } else {  }
-                    cardTest.message = `❌ Invalid card type: ${cardType}`,
+                    cardTest.message = `❌ Invalid card type: ${cardType},
                     results.failed++;
                 }
                 
@@ -264,18 +261,18 @@ export class MetaTagValidator {
             return results;
 
         } catch (error) {
-            return seoErrorHandler.handle(error, 'validateTwitterCardTags',
+            return seoErrorHandler.handle(error, 'validateTwitterCardTags,
 
     /**
      * ソーシャルメディア最適化の検証
      * @returns Promise<ValidationResults>'
      */''
     async validateSocialMediaOptimization('''
-                category: 'Social, Media Optimization',
+                category: 'Social, Media Optimization,
                 tests: [],
                 passed: 0,
                 failed: 0,
-    warnings: 0) }
+    warnings: 0);
             // 画像の最適化確認
             const socialImages = await this._extractSocialMediaImages();
             
@@ -286,7 +283,7 @@ export class MetaTagValidator {
     
 }
                     const test: TestResult = { }
-                        name: `${platform} image optimization`,
+                        name: `${platform} image optimization,
                         passed: false,
                         message: ';'
                     },
@@ -307,7 +304,7 @@ export class MetaTagValidator {
             return results;
 
         } catch (error) {
-            return seoErrorHandler.handle(error, 'validateSocialMediaOptimization',
+            return seoErrorHandler.handle(error, 'validateSocialMediaOptimization,
 
     // プライベートメソッド
     
@@ -316,9 +313,9 @@ export class MetaTagValidator {
      * @private
      */''
     private async _extractMetaTags('''
-            title: 'BubblePop - 泡割りゲーム',
-            description: 'HTML5 Canvas を使用したバブルポップゲーム。18種類以上の特殊な泡を割って高スコアを目指そう！',
-            charset: 'UTF-8',
+            title: 'BubblePop - 泡割りゲーム,
+            description: 'HTML5 Canvas を使用したバブルポップゲーム。18種類以上の特殊な泡を割って高スコアを目指そう！,
+            charset: 'UTF-8,
             keywords: 'バブルポップ,ゲーム,HTML5,ブラウザゲーム,無料' }
     
     /**
@@ -326,20 +323,19 @@ export class MetaTagValidator {
      * @private'
      */''
     private async _extractOpenGraphTags('';
-            'og:title': 'BubblePop - 泡割りゲーム',
-            'og:description': 'HTML5 Canvas を使用したバブルポップゲーム',
+            'og:title': 'BubblePop - 泡割りゲーム,
+            'og:description': 'HTML5 Canvas を使用したバブルポップゲーム,
             'og:image': `${this.baseUrl}/assets/images/og-image.png`,', 'og:url': this.baseUrl,'
-            'og: type': 'website',
-        }
+            'og: type': 'website' }
     
     /**
      * Twitter Cardタグの抽出
      * @private'
      */''
     private async _extractTwitterCardTags('';
-            'twitter:card': 'summary_large_image',
-            'twitter:title': 'BubblePop - 泡割りゲーム',
-            'twitter:description': 'HTML5 Canvas を使用したバブルポップゲーム',
+            'twitter:card': 'summary_large_image,
+            'twitter:title': 'BubblePop - 泡割りゲーム,
+            'twitter:description': 'HTML5 Canvas を使用したバブルポップゲーム,
             'twitter:image': `${this.baseUrl}/assets/images/twitter-card.png`
         }
     

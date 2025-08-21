@@ -208,7 +208,7 @@ test.describe('言語切り替えE2Eテスト', () => {
             return Array.from(elements.map(el => ({ : undefined
                 element: el.tagName,
                 label: el.getAttribute('aria-label'},
-            };
+            }
         };
         
         // 英語のARIAラベルが設定されていることを確認
@@ -218,7 +218,7 @@ test.describe('言語切り替えE2Eテスト', () => {
             expect(item.label').not.toContain('}}');'
             // 日本語が含まれていないことを確認（基本的なチェック）
             expect(item.label).not.toMatch(/[\u3040-\u309F\u30A0-\u30FF]/);
-        };
+        }
     }');'
 
     test('言語切り替え時のエラーハンドリング', async ({ page ) => {
@@ -229,7 +229,7 @@ test.describe('言語切り替えE2Eテスト', () => {
                 if (url.includes('/locales/')') {'
                     return Promise.reject(new Error('Network error') }
                 return originalFetch.apply(this, arguments);
-            };
+            }
         };
         
         // 言語切り替えを試行
@@ -272,7 +272,7 @@ test.describe('言語切り替えE2Eテスト', () => {
                 return {
                     usedJSHeapSize: performance.memory.usedJSHeapSize,
                     totalJSHeapSize: performance.memory.totalJSHeapSize
-                };
+                }
             }
             return null;
         };
@@ -322,7 +322,7 @@ test.describe('言語切り替えE2Eテスト', () => {
                     if (text && (text.includes('{{') || text.includes('}}')) {
                         untranslatedTexts.push({
                             element: el.tagName),
-                           , text: text.substring(0, 100) };
+                           , text: text.substring(0, 100) }
                     }
                 };
                 
@@ -337,7 +337,7 @@ test.describe('言語切り替えE2Eテスト', () => {
         
         // 各言語で未翻訳テキストがないことを確認
         Object.entries(incompleteness.forEach(([language, untranslated]) => {
-            expect(untranslated.length).toBe(0) };
+            expect(untranslated.length).toBe(0) }
     };
 }');'
 
@@ -401,5 +401,5 @@ test.describe('言語切り替えのアクセシビリティテスト', () => {
         
         // アニメーションが軽減されていることを確認（素早く完了）
         expect(duration).toBeLessThan(1000);
-    };
+    }
 }');'

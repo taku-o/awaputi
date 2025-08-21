@@ -39,7 +39,7 @@ describe('EffectManager統合テスト', () => {
                 fillStyle: '#000000',
                 globalCompositeOperation: 'source-over',
                 filter: 'none'
-            };
+            }
         };
         // 設定システムの初期化
         effectsConfig = getEffectsConfig();
@@ -278,6 +278,6 @@ describe('EffectManager統合テスト', () => {
             
             // 設定が適用されている
             expect(effect.intensity).toBeLessThan(0.6), // flash.intensityが適用される
-        };
+        }
     }
 }');'

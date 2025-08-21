@@ -75,7 +75,7 @@ class MockIDBObjectStore {
                     setTimeout(() => {
                         if (index < values.length) {
                             cursor.value = values[index],
-                            if (request.onsuccess) request.onsuccess({ target: { result: cursor, };
+                            if (request.onsuccess) request.onsuccess({ target: { result: cursor, }
                         } else {
                             if (request.onsuccess) request.onsuccess({ target: { result: null, );
                         }
@@ -87,7 +87,7 @@ class MockIDBObjectStore {
             };
             
             if (values.length > 0) {
-                if (request.onsuccess) request.onsuccess({ target: { result: cursor, };
+                if (request.onsuccess) request.onsuccess({ target: { result: cursor, }
             } else {
                 if (request.onsuccess) request.onsuccess({ target: { result: null, );
             }
@@ -153,7 +153,7 @@ class MockIDBTransaction {
             if (request.onsuccess) request.onsuccess();
         }, 0);
         return request;
-    };
+    }
 };
 (global as any').IDBKeyRange = {'
     only: jest.fn(value => ({ type: 'only', value )),
@@ -322,7 +322,7 @@ describe('IndexedDBStorageManager', () => {
             const result = await manager.aggregateData('bubbleInteractions', {
                 fields: {
                     scoreGained: { type: 'sum' }
-                };
+                }
             };
             expect(result.count).toBe(3);
             expect(result.scoreGained).toBe(45);
@@ -331,7 +331,7 @@ describe('IndexedDBStorageManager', () => {
             const result = await manager.aggregateData('bubbleInteractions', {
                 fields: {
                     scoreGained: { type: 'avg' }
-                };
+                }
             };
             expect(result.scoreGained).toBe(15);
         }');'
@@ -339,7 +339,7 @@ describe('IndexedDBStorageManager', () => {
             const result = await manager.aggregateData('bubbleInteractions', {
                 fields: {
                     bubbleType: { type: 'group' }
-                };
+                }
             };
             expect(result.bubbleType.normal).toBe(2);
             expect(result.bubbleType.stone).toBe(1);
@@ -412,6 +412,6 @@ describe('IndexedDBStorageManager', () => {
             await manager.initialize();
             expect(manager.db).not.toBeNull();
             manager.close();
-            expect(manager.db).toBeNull() };
+            expect(manager.db).toBeNull() }
     }
 }');'

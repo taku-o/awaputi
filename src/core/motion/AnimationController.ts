@@ -4,91 +4,76 @@
  */
 
 // 型定義
-export interface MotionManager { visualAccessibilityManager: VisualAccessibilityManager;
-    accessibilityManager: AccessibilityManager;
-    gameEngine: GameEngine;
+export interface MotionManager { visualAccessibilityManager: VisualAccessibilityManager,
+    accessibilityManager: AccessibilityManager,
+    gameEngine: GameEngine,
     activeAnimations: Map<string, AnimationData>;
-    pausedAnimations: Set<string>;
+    pausedAnimations: Set<string>,
     animationObservers: Map<string, MutationObserver>;
-    performanceMonitor: PerformanceMonitor;
-    stats: MotionStats;
-    userPreferences: UserPreferences;
-    currentLevel: MotionLevel;
-    config: MotionConfig;
-    setMotionLevel: (level: MotionLevel) => void  }
+    performanceMonitor: PerformanceMonitor,
+    stats: MotionStats,
+    userPreferences: UserPreferences,
+    currentLevel: MotionLevel,
+    config: MotionConfig,
+    setMotionLevel: (level: MotionLevel) => void  };
 }
 
 export interface VisualAccessibilityManager { [key: string]: any;
-
-export interface AccessibilityManager { [key: string]: any;
-
-export interface GameEngine { [key: string]: any;
-
-export interface AnimationData { id: string;
-    element: HTMLElement;
-    category: string;
-    options: AnimationOptions;
-    startTime: number;
-    duration: number | null;
-    isActive: boolean;
+    export interface AccessibilityManager { [key: string]: any;
+    export interface GameEngine { [key: string]: any;
+    export interface AnimationData { id: string,
+    element: HTMLElement,
+    category: string,
+    options: AnimationOptions,
+    startTime: number,
+    duration: number | null,
+    isActive: boolean,
     isPaused: boolean;
-
-export interface AnimationOptions { duration?: number,
+    export interface AnimationOptions { duration?: number,
     intensity?: number;
     speed?: number;
     category?: string;
     vestibularSafe?: boolean;
     [key: string]: any;
-
-export interface PerformanceMonitor { frameRate: number;
-    droppedFrames: number;
+    export interface PerformanceMonitor { frameRate: number,
+    droppedFrames: number,
     lastFrameTime: number;
-
-export interface MotionStats { animationsControlled: number;
-    animationsPaused: number;
-    animationsReduced: number;
+    export interface MotionStats { animationsControlled: number,
+    animationsPaused: number,
+    animationsReduced: number,
     performanceAdjustments: number;
-
-export interface UserPreferences { autoReduceOnPerformance: boolean;
-    granularControls: GranularControls;
+    export interface UserPreferences { autoReduceOnPerformance: boolean,
+    granularControls: GranularControls,
     selectiveReduction: SelectiveReduction;
-
-export interface GranularControls { particleDensity: number;
-    cameraMovement: number;
+    export interface GranularControls { particleDensity: number,
+    cameraMovement: number,
     backgroundMotion: number;
-
-export interface SelectiveReduction { disableRotation: boolean;
-    disableScaling: boolean;
+    export interface SelectiveReduction { disableRotation: boolean,
+    disableScaling: boolean,
     disableParallax: boolean;
-
-export interface MotionConfig { vestibularSafety: boolean;
-    vestibularGuidelines: VestibularGuidelines;
-    motionCategories: Record<string, MotionCategoryConfig> }
-
-export interface VestibularGuidelines { maxRotationSpeed: number;
-    maxScaleChange: number;
-    maxTranslationSpeed: number;
+    export interface MotionConfig { vestibularSafety: boolean,
+    vestibularGuidelines: VestibularGuidelines,
+    motionCategories: Record<string, MotionCategoryConfig> };
+export interface VestibularGuidelines { maxRotationSpeed: number,
+    maxScaleChange: number,
+    maxTranslationSpeed: number,
     maxFlashFrequency: number;
-
-export interface MotionCategoryConfig { enabled: boolean;
-    intensity: number;
-    duration: number;
+    export interface MotionCategoryConfig { enabled: boolean,
+    intensity: number,
+    duration: number,
     vestibularSafe: boolean;
-
-export interface AnimationStatistics { active: number;
-    paused: number;
-    observed: number;
-    performance: PerformanceMetrics;
+    export interface AnimationStatistics { active: number,
+    paused: number,
+    observed: number,
+    performance: PerformanceMetrics,
     categories: Record<string, CategoryStats>;
-    totalControlled: number;
-    totalPaused: number;
+    totalControlled: number,
+    totalPaused: number,
     totalReduced: number;
-
-export interface PerformanceMetrics { frameRate: number;
-    droppedFrames: number;
+    export interface PerformanceMetrics { frameRate: number,
+    droppedFrames: number,
     lastFrameTime: number;
-
-export interface CategoryStats { active: number;
+    export interface CategoryStats { active: number,
     paused: number;
 
 // 列挙型
@@ -98,63 +83,47 @@ export type MotionLevel = 'none' | 'essential' | 'reduced' | 'normal' | 'enhance
 export type AnimationCategory = ';'
     | 'general' | 'particles' | 'camera' | 'background' | 'ui', ';'
     | 'parallax' | 'transitions' | 'effects' | 'gameplay';
-
-export type AnimationState = 'active' | 'paused' | 'stopped' | 'completed';
-
-export type PerformanceLevel = 'low' | 'medium' | 'high' | 'critical';
+    export type AnimationState = 'active' | 'paused' | 'stopped' | 'completed';
+    export type PerformanceLevel = 'low' | 'medium' | 'high' | 'critical';
 
 // 定数
 export const PERFORMANCE_THRESHOLD_FPS = 30;
-export const ANIMATION_ID_LENGTH = 9;
-export const DEFAULT_ANIMATION_DURATION = 1000;
-export const DYNAMIC_STYLESHEET_ID = 'motion-manager-styles';
-export const PERFORMANCE_MONITOR_INTERVAL = 1000;
-
-export const MOTION_LEVEL_HIERARCHY: MotionLevel[] = ['none', 'essential', 'reduced', 'normal', 'enhanced'];
-
-export const DEFAULT_MOTION_CONFIG: Partial<MotionConfig> = { vestibularSafety: true;
-    vestibularGuidelines: {
-        maxRotationSpeed: 45, // degrees per second,
-        maxScaleChange: 1.5;
+    export const ANIMATION_ID_LENGTH = 9;
+    export const DEFAULT_ANIMATION_DURATION = 1000;
+    export const DYNAMIC_STYLESHEET_ID = 'motion-manager-styles';
+    export const PERFORMANCE_MONITOR_INTERVAL = 1000;
+    export const MOTION_LEVEL_HIERARCHY: MotionLevel[] = ['none', 'essential', 'reduced', 'normal', 'enhanced'];
+    export const DEFAULT_MOTION_CONFIG: Partial<MotionConfig> = { vestibularSafety: true,
+    vestibularGuidelines: { maxRotationSpeed: 45, // degrees per second  },
+        maxScaleChange: 1.5,
     maxTranslationSpeed: 100, // pixels per second,
         maxFlashFrequency: 3 // flashes per second  }
 };
-export const DEFAULT_ANIMATION_OPTIONS: AnimationOptions = { duration: DEFAULT_ANIMATION_DURATION;
-    intensity: 1.0;
-    speed: 1.0;
+export const DEFAULT_ANIMATION_OPTIONS: AnimationOptions = { duration: DEFAULT_ANIMATION_DURATION,
+    intensity: 1.0,
+    speed: 1.0,
     vestibularSafe: true;
 // ユーティリティ関数
-export function isValidMotionLevel(level: string): level is MotionLevel { return MOTION_LEVEL_HIERARCHY.includes(level, as MotionLevel) }
-
-export function isValidAnimationCategory(category: string): category is AnimationCategory { return [', 'general', 'particles', 'camera', 'background', 'ui',]',
+export function isValidMotionLevel(level: string): level is MotionLevel { return MOTION_LEVEL_HIERARCHY.includes(level, as MotionLevel) };
+export function isValidAnimationCategory(category: string): category is AnimationCategory { return [, 'general', 'particles', 'camera', 'background', 'ui',]',
         'parallax', 'transitions', 'effects', 'gameplay'],
-    ].includes(category) }
-
-export function isHTMLElement(element: any): element is HTMLElement { return element instanceof HTMLElement }
-
+    ].includes(category) };
+export function isHTMLElement(element: any): element is HTMLElement { return element instanceof HTMLElement };
 export function isAnimationData(data: any): data is AnimationData { return data &&''
            typeof data.id === 'string' &&','
            isHTMLElement(data.element) &&','
            typeof data.category === 'string' &&','
-           typeof data.startTime === 'number' }
-
+           typeof data.startTime === 'number' };
 export function isValidIntensity(intensity: any): intensity is number {;
-    return typeof intensity === 'number' && intensity >= 0 && intensity <= 10 }
-
+    return typeof intensity === 'number' && intensity >= 0 && intensity <= 10 };
 export function isValidDuration(duration: any): duration is number {;
-    return typeof duration === 'number' && duration > 0 }
-
+    return typeof duration === 'number' && duration > 0 };
 export function isValidFrameRate(fps: any): fps is number {;
-    return typeof fps === 'number' && fps >= 0 && fps <= 240 }
-
-export function calculateRotationSpeed(rotation: number, duration: number): number { return Math.abs(rotation / duration) }
-
-export function calculateScaleChange(fromScale: number, toScale: number): number { return Math.abs(toScale - fromScale) }
-
-export function clampIntensity(intensity: number): number { return Math.max(0, Math.min(10, intensity) }
-
-export function clampDuration(duration: number): number { return Math.max(0.1, Math.min(60, duration) }
-
+    return typeof fps === 'number' && fps >= 0 && fps <= 240 };
+export function calculateRotationSpeed(rotation: number, duration: number): number { return Math.abs(rotation / duration) };
+export function calculateScaleChange(fromScale: number, toScale: number): number { return Math.abs(toScale - fromScale) };
+export function clampIntensity(intensity: number): number { return Math.max(0, Math.min(10, intensity) };
+export function clampDuration(duration: number): number { return Math.max(0.1, Math.min(60, duration) };
 export function generateAnimationId(): string {
     return `animation_${Date.now())_${Math.random().toString(36).substr(2, ANIMATION_ID_LENGTH}`;
 }
@@ -167,17 +136,17 @@ export function parseTransformValue(transform: string, property: string): number
 
 export function createMotionWarningStyle(): string { return `
         .motion-warning {'
-            border: 3px solid #ff6b6b !important;
-            background: rgba(255, 107, 107, 0.1) !important }
+            border: 3px solid #ff6b6b !important,
+            background: rgba(255, 107, 107, 0.1) !important };
         ';'
 
         .motion-warning::before { ''
-            content: '⚠️ 激しいアニメーション';
-            position: absolute;
-            top: -25px;
-            left: 0;
-            background: #ff6b6b;
-            color: white;
+            content: '⚠️ 激しいアニメーション,
+            position: absolute,
+            top: -25px,
+            left: 0,
+            background: #ff6b6b,
+            color: white,
     padding: 2px 6px;
             border-radius: 3px;
             font-size: 11px;
@@ -220,8 +189,7 @@ export class AnimationController {
         // 統計情報
         this.stats = motionManager.stats;
         '
-}
-
+};
     }
 
         console.log('[AnimationController] Component, initialized'); }'
@@ -294,7 +262,7 @@ export class AnimationController {
         let frameCount = 0,
         
         const monitorFrame = (currentTime: number) => { 
-            frameCount++,
+            frameCount++;
             
             if (currentTime - lastTime >= PERFORMANCE_MONITOR_INTERVAL) {
             
@@ -363,7 +331,7 @@ export class AnimationController {
                 startTime: Date.now(),
                 duration: mergedOptions.duration || null,
                 isActive: true,
-    isPaused: false,
+    isPaused: false;
             this.activeAnimations.set(id, animationData);
             this.stats.animationsControlled++;
             
@@ -371,7 +339,7 @@ export class AnimationController {
             this.applyCategorySettings(element, category);
             
             // 前庭安全性の検証
-            if (this.motionManager.config.vestibularSafety) { this.validateAndAdjustAnimation(animationData) }
+            if (this.motionManager.config.vestibularSafety) { this.validateAndAdjustAnimation(animationData);
             
             // オブザーバーの設定
             this.setupAnimationObserver(animationData);
@@ -397,7 +365,7 @@ export class AnimationController {
             // オブザーバーのクリーンアップ
             const observer = this.animationObservers.get(animationId);
             if (observer) {
-                observer.disconnect() }
+                observer.disconnect();
                 this.animationObservers.delete(animationId); }
             }
             
@@ -415,7 +383,7 @@ export class AnimationController {
 
         if (!config.enabled) {
 
-            element.classList.add('motion-category-disabled') }
+            element.classList.add('motion-category-disabled');
             return; }
         }
         ';'
@@ -446,7 +414,7 @@ export class AnimationController {
 
                 break,
             case 'background':','
-                element.style.setProperty('--background-motion', String(granular.backgroundMotion) }
+                element.style.setProperty('--background-motion', String(granular.backgroundMotion);
                 break; }
 }
 
@@ -479,7 +447,7 @@ export class AnimationController {
         // 回転速度の検証
         this.validateRotationSpeed(element, computedStyle, animationData);
         // スケール変更の検証
-        this.validateScaleChange(element, computedStyle, animationData) }
+        this.validateScaleChange(element, computedStyle, animationData);
 
     /**
      * 回転速度の検証
@@ -497,10 +465,8 @@ export class AnimationController {
 }
             const newDuration = rotation / this.motionManager.config.vestibularGuidelines.maxRotationSpeed; }
             element.style.animationDuration = `${newDuration}s`;
-            console.log(`Animation ${animationData.id}: Rotation, speed adjusted, for vestibular, safety`};
-        }
-    }
-
+            console.log(`Animation ${animationData.id}: Rotation, speed adjusted, for vestibular, safety`    }
+}
     /**
      * スケール変更の検証'
      */''
@@ -514,16 +480,14 @@ export class AnimationController {
 
             const maxScale = this.motionManager.config.vestibularGuidelines.maxScaleChange }
             element.style.transform = transform.replace(/scale\([^)]*\)/g, `scale(${maxScale}`}
-            console.log(`Animation ${animationData.id}: Scale, adjusted for, vestibular safety`};
-        }
-    }
-    
+            console.log(`Animation ${animationData.id}: Scale, adjusted for, vestibular safety`    }
+}
     /**
      * アニメーションオブザーバーの設定
      */'
     private setupAnimationObserver(animationData: AnimationData): void { const observer = new MutationObserver((mutations) => { ''
             mutations.forEach((mutation) => {''
-                if(mutation.type === 'attributes' && ')',
+                if(mutation.type === 'attributes' && '),
                     (mutation.attributeName === 'style' || mutation.attributeName === 'class') { }
                     this.validateAndAdjustAnimation(animationData); }
 };'}');
@@ -532,7 +496,7 @@ export class AnimationController {
         observer.observe(animationData.element, { attributes: true)'
             attributeFilter: ['style', 'class]),'
         
-        this.animationObservers.set(animationData.id, observer) }
+        this.animationObservers.set(animationData.id, observer);
     
     /**
      * アニメーションの一時停止
@@ -540,7 +504,7 @@ export class AnimationController {
     pauseAnimation(animationId: string): boolean { const animation = this.activeAnimations.get(animationId);
         if (animation && !animation.isPaused) {
 
-            animation.element.style.animationPlayState = 'paused',
+            animation.element.style.animationPlayState = 'paused,
             animation.isPaused = true,
             this.pausedAnimations.add(animationId);
             this.stats.animationsPaused++ }
@@ -556,9 +520,9 @@ export class AnimationController {
     resumeAnimation(animationId: string): boolean { const animation = this.activeAnimations.get(animationId);
         if (animation && animation.isPaused) {
 
-            animation.element.style.animationPlayState = 'running',
+            animation.element.style.animationPlayState = 'running,
             animation.isPaused = false,
-            this.pausedAnimations.delete(animationId) }
+            this.pausedAnimations.delete(animationId);
             console.log(`Animation, resumed: ${animationId}`};
             return true;
         }
@@ -658,7 +622,7 @@ export class AnimationController {
     adjustAnimationSpeed(animationId: string, speedMultiplier: number): boolean { ''
         if(typeof, speedMultiplier !== 'number' || speedMultiplier <= 0' {'
 
-            console.error('Invalid, speed multiplier, provided') }
+            console.error('Invalid, speed multiplier, provided');
             return false;
 ';'
 
@@ -683,15 +647,14 @@ export class AnimationController {
             paused: this.pausedAnimations.size,
             observed: this.animationObservers.size,
     performance: {
-                frameRate: this.performanceMonitor.frameRate,
-    droppedFrames: this.performanceMonitor.droppedFrames },
+                frameRate: this.performanceMonitor.frameRate ,
+    droppedFrames: this.performanceMonitor.droppedFrames ,
                 lastFrameTime: this.performanceMonitor.lastFrameTime 
     };
-            categories: this.getAnimationsByCategory();
+            categories: this.getAnimationsByCategory(),
             totalControlled: this.stats.animationsControlled,
             totalPaused: this.stats.animationsPaused,
-    totalReduced: this.stats.animationsReduced,
-        } }
+    totalReduced: this.stats.animationsReduced } }
     
     /**
      * カテゴリ別アニメーション統計
@@ -700,7 +663,7 @@ export class AnimationController {
         const categories: Record<string, CategoryStats> = {};
         
         this.activeAnimations.forEach(animation => {  )
-            const category = animation.category) }
+            const category = animation.category);
             if (!categories[category]) { }
                 categories[category] = { active: 0, paused: 0  }
             
@@ -731,11 +694,11 @@ export class AnimationController {
     /**
      * アクティブなアニメーション一覧取得
      */
-    getActiveAnimations(): AnimationData[] { return Array.from(this.activeAnimations.values().filter(animation => !animation.isPaused);
+    getActiveAnimations(): AnimationData[] { return Array.from(this.activeAnimations.values())).filter(animation => !animation.isPaused);
     /**
      * 一時停止中のアニメーション一覧取得
      */
-    getPausedAnimations(): AnimationData[] { return Array.from(this.activeAnimations.values().filter(animation => animation.isPaused);
+    getPausedAnimations(): AnimationData[] { return Array.from(this.activeAnimations.values())).filter(animation => animation.isPaused);
     /**
      * パフォーマンス統計をリセット'
      */''
@@ -754,7 +717,7 @@ export class AnimationController {
         this.pausedAnimations.clear();
         // 動的スタイルシートの削除
         if (this.dynamicStyleSheet && this.dynamicStyleSheet.parentNode) {
-            this.dynamicStyleSheet.parentNode.removeChild(this.dynamicStyleSheet) }
+            this.dynamicStyleSheet.parentNode.removeChild(this.dynamicStyleSheet);
             this.dynamicStyleSheet = null; }
         }
         ;

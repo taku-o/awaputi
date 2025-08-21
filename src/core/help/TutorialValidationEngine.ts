@@ -13,28 +13,21 @@ export interface GameEngine { bubbleManager?: BubbleManager,
     sceneManager?: SceneManager;
     settingsManager?: SettingsManager;
     eventBus?: EventBus;
-
-export interface BubbleManager { getBubbleById(id: string): Bubble | null }
-
-export interface Bubble { id: string;
-    type: string;
+    export interface BubbleManager { getBubbleById(id: string): Bubble | null };
+export interface Bubble { id: string,
+    type: string,
     isPopped: boolean;
-
-export interface ScoreManager { getCurrentCombo(): number,
+    export interface ScoreManager { getCurrentCombo(): number,
     getCurrentScore(): number;
-
-export interface SceneManager { currentScene?: Scene;
-
-export interface Scene {
+    export interface SceneManager { currentScene?: Scene;
+    export interface Scene {
+    constructor: { nam,e: string,
     constructor: { nam,e: string;
-    constructor: { nam,e: string;
-        };
+         },
 export interface SettingsManager { getSetting(key: string): any;
-
-export interface EventBus { emit(event: string, data: any): void;
-
-export interface StepAction {
-    type: string;
+    export interface EventBus { emit(event: string, data: any): void;
+    export interface StepAction {
+    type: string,
     type: string;
         };
 export interface TutorialStep { id: string;
@@ -48,25 +41,21 @@ export interface TutorialStep { id: string;
     targetSetting?: string;
     targetValue?: any;
     timeoutMessage?: string;
-
-export interface ActionResult { bubbleId?: string,
+    export interface ActionResult { bubbleId?: string,
     bubbleType?: string;
     dragDistance?: number;
     [key: string]: any;
-
-export interface ValidationResult { success: boolean;
+    export interface ValidationResult { success: boolean;
     error?: string | null;
     details?: any;
-
-export interface TutorialData { id: string;
-    steps: TutorialStep[];
+    export interface TutorialData { id: string,
+    steps: TutorialStep[],
     steps: TutorialStep[];
         };
 export interface TutorialOverlay { showError(error: string): Promise<void>;
     showTimeout(message: string): Promise<void>;
-
-export type ValidationFunction = (actionResult: ActionResult, step: TutorialStep, gameEngine: GameEngine) => Promise<ValidationResult>;
-export type InteractionHandler = (...args: any[]) => void;
+    export type ValidationFunction = (actionResult: ActionResult, step: TutorialStep, gameEngine: GameEngine) => Promise<ValidationResult>;
+    export type InteractionHandler = (...args: any[]) => void;
 
 /**
  * チュートリアルバリデーション・実行エンジンクラス
@@ -80,12 +69,12 @@ export class TutorialValidationEngine {
     constructor(gameEngine: GameEngine, loggingSystem?: LoggingSystem) {
 
         this.gameEngine = gameEngine;
-        this.loggingSystem = loggingSystem || (LoggingSystem.getInstance ? LoggingSystem.getInstance() : new LoggingSystem();
+    this.loggingSystem = loggingSystem || (LoggingSystem.getInstance ? LoggingSystem.getInstance() : new LoggingSystem();
         
         // インタラクション検出
         this.interactionHandlers = new Map<string, InteractionHandler>(),
         this.validationFunctions = new Map<string, ValidationFunction>(),
-        this.stepTimer = null }
+        this.stepTimer = null };
         this.initialize(); }
     }
     
@@ -158,7 +147,7 @@ export class TutorialValidationEngine {
                     error: '特殊な泡をクリックしてください'
             }
                     details: { expectedTypes: specialTypes, actualType: bubbleType,
-            ';'
+            ';'  },
 
             return { success: true, details: { bubbleType  }'}'),
         ';'
@@ -175,11 +164,10 @@ export class TutorialValidationEngine {
             if (currentCombo >= requiredCombo) {
     
 }
-                return { success: true, details: { combo: currentCombo,
-            }
+                return { success: true, details: { combo: currentCombo } };
             
             return { success: false,
-                error: `${requiredCombo}コンボ以上を達成してください（現在: ${currentCombo}）`};}');'
+                error: `${requiredCombo}コンボ以上を達成してください（現在: ${currentCombo}）`}}');'
         ';'
         // メニューナビゲーションバリデーション
         this.validationFunctions.set('validateMenuNavigation', async (actionResult, step, gameEngine) => {  const targetScene = step.targetScene,
@@ -194,11 +182,10 @@ export class TutorialValidationEngine {
             if (currentScene === targetScene) {
     
 }
-                return { success: true, details: { scene: currentScene,
-            }
+                return { success: true, details: { scene: currentScene } };
             
             return { success: false,
-                error: `${targetScene}画面に移動してください`};}');'
+                error: `${targetScene}画面に移動してください`}}');'
         ';'
         // スコア達成バリデーション
         this.validationFunctions.set('validateScore', async (actionResult, step, gameEngine) => {  const scoreManager = gameEngine?.scoreManager,' }'
@@ -213,11 +200,10 @@ export class TutorialValidationEngine {
             if (currentScore >= requiredScore) {
     
 }
-                return { success: true, details: { score: currentScore,
-            }
+                return { success: true, details: { score: currentScore } };
             
             return { success: false,
-                error: `${requiredScore}点以上を達成してください（現在: ${currentScore}点）`};}');'
+                error: `${requiredScore}点以上を達成してください（現在: ${currentScore}点）`}}');'
         ';'
         // 設定変更バリデーション
         this.validationFunctions.set('validateSettingsChange', async (actionResult, step, gameEngine) => {  const targetSetting = step.targetSetting,
@@ -240,12 +226,11 @@ export class TutorialValidationEngine {
             if (currentValue === targetValue) {
     
 }
-                return { success: true, details: { setting: targetSetting, value: currentValue,
-            }
+                return { success: true, details: { setting: targetSetting, value: currentValue } };
             
             return { success: false,
                 error: `${targetSetting}設定を${targetValue}に変更してください` 
-            };
+            }
     }
     
     /**
@@ -267,7 +252,7 @@ export class TutorialValidationEngine {
 
                 return { success: result, error: result ? null : 'Validation failed' 
             return { success: result.success || false,
-                error: result.error || null },
+                error: result.error || null };
                 details: result.details || null 
     };
             ';'
@@ -298,11 +283,11 @@ export class TutorialValidationEngine {
             if(!actionType) return null;
              : undefined';'
             const actionToValidation: Record<string, string> = { ', 'click_bubble': 'validateBubblePop','
-                'drag_bubble': 'validateBubbleDrag',
-                'click_special_bubble': 'validateSpecialBubblePop',
-                'achieve_combo': 'validateCombo',
-                'navigate_menu': 'validateMenuNavigation',
-                'achieve_score': 'validateScore',
+                'drag_bubble': 'validateBubbleDrag,
+                'click_special_bubble': 'validateSpecialBubblePop,
+                'achieve_combo': 'validateCombo,
+                'navigate_menu': 'validateMenuNavigation,
+                'achieve_score': 'validateScore,
                 'change_setting': 'validateSettingsChange' };
             
             return actionToValidation[actionType] || null;
@@ -326,11 +311,11 @@ export class TutorialValidationEngine {
             if(!actionType) return 'wait_click';
              : undefined';'
             const actionToWait: Record<string, string> = { ', 'click_bubble': 'wait_bubble_click','
-                'drag_bubble': 'wait_bubble_drag',
-                'click_special_bubble': 'wait_special_bubble_click',
-                'achieve_combo': 'wait_combo',
-                'navigate_menu': 'wait_scene_change',
-                'achieve_score': 'wait_score_change',
+                'drag_bubble': 'wait_bubble_drag,
+                'click_special_bubble': 'wait_special_bubble_click,
+                'achieve_combo': 'wait_combo,
+                'navigate_menu': 'wait_scene_change,
+                'achieve_score': 'wait_score_change,
                 'change_setting': 'wait_setting_change' };
 
             return actionToWait[actionType] || 'wait_click';
@@ -345,18 +330,18 @@ export class TutorialValidationEngine {
      * @param eventType - イベントタイプ
      * @param handler - ハンドラー関数
      */
-    addInteractionHandler(eventType: string, handler: InteractionHandler): void { this.interactionHandlers.set(eventType, handler) }
+    addInteractionHandler(eventType: string, handler: InteractionHandler): void { this.interactionHandlers.set(eventType, handler);
     
     /**
      * インタラクションハンドラーを削除
      * @param eventType - イベントタイプ
      */
-    removeInteractionHandler(eventType: string): void { this.interactionHandlers.delete(eventType) }
+    removeInteractionHandler(eventType: string): void { this.interactionHandlers.delete(eventType);
     
     /**
      * すべてのインタラクションハンドラーをクリア
      */
-    clearInteractionHandlers(): void { this.interactionHandlers.clear() }
+    clearInteractionHandlers(): void { this.interactionHandlers.clear();
     
     /**
      * ステップタイマーをセット
@@ -390,7 +375,7 @@ export class TutorialValidationEngine {
      */
     async showValidationError(error: string, tutorialOverlay?: TutorialOverlay, currentTutorial?: TutorialData, currentStep?: number): Promise<void>;
         try { if (tutorialOverlay) {
-                await tutorialOverlay.showError(error) }
+                await tutorialOverlay.showError(error);
             ';'
             // エラーイベントの発火
             if (this.gameEngine && this.gameEngine.eventBus) {
@@ -398,7 +383,7 @@ export class TutorialValidationEngine {
                 this.gameEngine.eventBus.emit('tutorial_validation_error', {
                     tutorialId: currentTutorial?.id, : undefined);
                     stepId: currentTutorial?.steps[currentStep || 0]?.id, : undefined 
-                    error: error) }
+                    error: error);
 
             } catch (err) { }
 
@@ -415,7 +400,7 @@ export class TutorialValidationEngine {
     async showTimeoutMessage(step: TutorialStep, tutorialOverlay?: TutorialOverlay, currentTutorial?: TutorialData): Promise<void>;
 
         try {'
-            const message = step.timeoutMessage || 'このステップの制限時間を超過しました。もう一度お試しください。',
+            const message = step.timeoutMessage || 'このステップの制限時間を超過しました。もう一度お試しください。,
             if (tutorialOverlay) {
     
 }
@@ -443,8 +428,7 @@ export class TutorialValidationEngine {
     registerValidationFunction(name: string, func: ValidationFunction): void { try {
             this.validationFunctions.set(name, func),' }'
 
-            this.loggingSystem.log(`カスタムバリデーション関数が登録されました: ${name}`, 'info', 'TutorialValidationEngine'};
-
+            this.loggingSystem.log(`カスタムバリデーション関数が登録されました: ${name}`, 'info', 'TutorialValidationEngine'}
         } catch (error) { }
 
             this.loggingSystem.log(`バリデーション関数登録エラー: ${(error, as, Error'}'.message}`, 'error', 'TutorialValidationEngine');
@@ -458,8 +442,7 @@ export class TutorialValidationEngine {
     unregisterValidationFunction(name: string): void { try {
             this.validationFunctions.delete(name),' }'
 
-            this.loggingSystem.log(`バリデーション関数が削除されました: ${name}`, 'info', 'TutorialValidationEngine'};
-
+            this.loggingSystem.log(`バリデーション関数が削除されました: ${name}`, 'info', 'TutorialValidationEngine'}
         } catch (error) { }
 
             this.loggingSystem.log(`バリデーション関数削除エラー: ${(error, as, Error'}'.message}`, 'error', 'TutorialValidationEngine');
@@ -470,7 +453,7 @@ export class TutorialValidationEngine {
      * 登録されているバリデーション関数一覧を取得
      * @returns バリデーション関数名の配列
      */
-    getRegisteredValidationFunctions(): string[] { return Array.from(this.validationFunctions.keys() }
+    getRegisteredValidationFunctions(): string[] { return Array.from(this.validationFunctions.keys()));
     
     /**
      * リソースをクリーンアップ
@@ -497,7 +480,7 @@ let tutorialValidationEngineInstance: TutorialValidationEngine | null = null,
  * @returns シングルトンインスタンス
  */
 export function getTutorialValidationEngine(gameEngine: GameEngine, loggingSystem?: LoggingSystem): TutorialValidationEngine { if (!tutorialValidationEngineInstance) {
-        tutorialValidationEngineInstance = new TutorialValidationEngine(gameEngine, loggingSystem) }
+        tutorialValidationEngineInstance = new TutorialValidationEngine(gameEngine, loggingSystem) };
     return tutorialValidationEngineInstance;
 }
 

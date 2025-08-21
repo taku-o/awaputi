@@ -9,18 +9,17 @@ import { getConfigurationManager  } from '../core/ConfigurationManager.js';
 import { getErrorHandler  } from './ErrorHandler.js';
 
 // Type definitions
-interface ConfigurationSource { name: string;
-    priority: number;
-    loader: () => Promise<any>;
+interface ConfigurationSource { name: string,
+    priority: number,
+    loader: () => Promise<any>,
     validator: (config: any') => boolean  }'
 }
 
-interface SourceConfigData { config: any;
-    source: ConfigurationSource;
+interface SourceConfigData { config: any,
+    source: ConfigurationSource,
     loadTime: number;
     error?: string;
-
-interface BubbleConfig { score?: number,
+    interface BubbleConfig { score?: number,
     health?: number;
     size?: number;
     healAmount?: number;
@@ -28,8 +27,7 @@ interface BubbleConfig { score?: number,
     shakeIntensity?: number;
     disableDuration?: number;
     bonusTimeMs?: number;
-
-interface BubbleConfigMap { normal?: BubbleConfig,
+    interface BubbleConfigMap { normal?: BubbleConfig,
     boss?: BubbleConfig;
     stone?: BubbleConfig;
     iron?: BubbleConfig;
@@ -42,67 +40,59 @@ interface BubbleConfigMap { normal?: BubbleConfig,
 
 interface ConfigurationData { bubbles?: BubbleConfigMap,
     [key: string]: any;
-
-interface Discrepancy { type: string;
+    interface Discrepancy { type: string;
     bubbleType?: string;
-    key: string;
+    key: string,
     values: Array<[string, SourceValue]>;
-    severity: 'LOW' | 'MEDIUM' | 'HIGH';
-    impact: string;
+    severity: 'LOW' | 'MEDIUM' | 'HIGH,
+    impact: string,
     detectedAt: number;
-
-interface SourceValue { value: any;
-    source: string;
+    interface SourceValue { value: any,
+    source: string,
     priority: number;
-
-interface Recommendation { action: string;
+    interface Recommendation { action: string,
     description: string;
     targetValue?: any;
     affectedFiles?: string[];
-    priority: string;
+    priority: string,
     estimatedEffort: string;
     discrepancyId?: string;
-
-interface ValidationResult { timestamp: number;
+    interface ValidationResult { timestamp: number;
     sourceCount?: number;
-    discrepancyCount: number;
-    discrepancies: Discrepancy[];
+    discrepancyCount: number,
+    discrepancies: Discrepancy[],
     sourceConfigs: Record<string, SerializedSourceConfig>;
     recommendations: Recommendation[];
     error?: string;
-
-interface SerializedSourceConfig { name: string;
-    priority: number;
-    loadTime: number;
-    hasConfig: boolean;
+    interface SerializedSourceConfig { name: string,
+    priority: number,
+    loadTime: number,
+    hasConfig: boolean,
     error: string | null }
 
-interface SyncHistory { timestamp: number;
-    action: string;
+interface SyncHistory { timestamp: number,
+    action: string,
     result: string;
-
-interface SyncReport { timestamp: number;
-    discrepancyCount: number;
-    discrepancies: Discrepancy[];
-    syncHistory: SyncHistory[];
-    sources: string[];
+    interface SyncReport { timestamp: number,
+    discrepancyCount: number,
+    discrepancies: Discrepancy[],
+    syncHistory: SyncHistory[],
+    sources: string[],
     status: 'SYNCHRONIZED' | 'INCONSISTENT'
             }
 
-interface SyncFixes { applied: number;
+interface SyncFixes { applied: number,
     failed: number;
-
-export class ConfigurationSynchronizer {
+    export class ConfigurationSynchronizer {
     public configManager: any;
     public, errorHandler: any;
     public configurationSources: Map<string, ConfigurationSource>;
     public discrepancies: Discrepancy[];
     public syncHistory: SyncHistory[];
-
     constructor() {
 
         this.configManager = getConfigurationManager();
-        this.errorHandler = getErrorHandler();
+    this.errorHandler = getErrorHandler();
         
         // 設定ソースの定義
         this.configurationSources = new Map<string, ConfigurationSource>(),
@@ -113,8 +103,7 @@ export class ConfigurationSynchronizer {
         // 同期履歴
         this.syncHistory = [];
         // 設定ソースを登録
-        this._registerConfigurationSources() }
-
+        this._registerConfigurationSources() };
     }
 
         console.log('[ConfigurationSynchronizer] 初期化完了'); }'
@@ -126,41 +115,41 @@ export class ConfigurationSynchronizer {
      */''
     private _registerConfigurationSources()';'
         this.configurationSources.set('gameBalance', { '),'
-            name: 'GameBalance.js(ORIGINAL_BALANCE_CONFIG)',
+            name: 'GameBalance.js(ORIGINAL_BALANCE_CONFIG),
     priority: 2, // 中優先度,
-            loader: () => this._loadGameBalanceConfig();
+            loader: () => this._loadGameBalanceConfig(),
             validator: (config) => this._validateGameBalanceConfig(config),'
-            }'
+            }
 
         }');'
         ';'
         // Bubble.jsからの設定ソース
         this.configurationSources.set('bubbleImplementation', { '),'
-            name: 'Bubble.js(getTypeConfig)',
+            name: 'Bubble.js(getTypeConfig),
     priority: 3, // 最高優先度（実装値）,
-            loader: () => this._loadBubbleImplementationConfig();
+            loader: () => this._loadBubbleImplementationConfig(),
             validator: (config) => this._validateBubbleImplementationConfig(config),'
-            }'
+            }
 
         }');'
         ';'
         // テストからの設定ソース
         this.configurationSources.set('testExpectations', { '),'
-            name: 'Test expectations(*.test.js)',
+            name: 'Test expectations(*.test.js),
     priority: 1, // 低優先度,
-            loader: () => this._loadTestExpectationConfig();
+            loader: () => this._loadTestExpectationConfig(),
             validator: (config) => this._validateTestExpectationConfig(config),'
-            }'
+            }
 
         }');'
         ';'
         // ConfigurationManagerからの設定ソース
         this.configurationSources.set('configurationManager', { '),'
-            name: 'ConfigurationManager(unified)',
+            name: 'ConfigurationManager(unified),
     priority: 4, // 最高優先度（統一システム）,
-            loader: () => this._loadConfigurationManagerConfig();
-            validator: (config) => this._validateConfigurationManagerConfig(config)  }
-        };
+            loader: () => this._loadConfigurationManagerConfig(),
+            validator: (config) => this._validateConfigurationManagerConfig(config);
+        }
     }
     
     /**
@@ -184,25 +173,23 @@ export class ConfigurationSynchronizer {
     }');'} catch (error) { this.errorHandler.handleError(error, 'CONFIGURATION_ERROR', {''
                         context: 'ConfigurationSynchronizer.validateConsistency),'
                         sourceId),
-                        sourceName: source.name  },
+                        sourceName: source.name  };
                     
                     sourceConfigs.set(sourceId, { config: null)
                         source,
                         loadTime: Date.now(
-    error: error.message };
-                }
-            }
-            
+    error: error.message     }
+}
             // 不整合を検出
             const discrepancies = this._detectDiscrepancies(sourceConfigs);
             
             // 結果を整理
             const result = { timestamp: Date.now(
                 sourceCount: sourceConfigs.size,
-    discrepancyCount: discrepancies.length,
+    discrepancyCount: discrepancies.length;
                 discrepancies,
                 sourceConfigs: this._serializeSourceConfigs(sourceConfigs,
-    recommendations: this._generateRecommendations(discrepancies  },
+    recommendations: this._generateRecommendations(discrepancies  };
             
             // 不整合リストを更新
             this.discrepancies = discrepancies
@@ -216,13 +203,11 @@ export class ConfigurationSynchronizer {
             };
             
             return { timestamp: Date.now(
-                error: error.message },
+                error: error.message ,
                 discrepancies: [] }
                 sourceConfigs: {},
-                recommendations: [],
-            } }
-    }
-    
+                recommendations: []     }
+}
     /**
      * 設定ソース間の不整合を検出
      * @param sourceConfigs - ソース設定
@@ -261,13 +246,12 @@ export class ConfigurationSynchronizer {
                     type: 'BUBBLE_SCORE_INCONSISTENCY'),
                     bubbleType,
                     key: `bubbles.${bubbleType'.score`,'
-                    values: Array.from(scoreValues.entries( },
+                    values: Array.from(scoreValues.entries( ,
                     severity: this._calculateSeverity(scoreValues}
 
                     impact: 'Score calculation and game balance tests will not match implementation'
             }
-                    detectedAt: Date.now()),
-                };
+                    detectedAt: Date.now());
             }
             
             // 体力値の比較
@@ -277,13 +261,12 @@ export class ConfigurationSynchronizer {
                     type: 'BUBBLE_HEALTH_INCONSISTENCY'),
                     bubbleType,
                     key: `bubbles.${bubbleType'.health`,'
-                    values: Array.from(healthValues.entries( },
+                    values: Array.from(healthValues.entries( ,
                     severity: this._calculateSeverity(healthValues}
 
                     impact: 'Bubble durability tests will not match implementation'
             }
-                    detectedAt: Date.now()),
-                };
+                    detectedAt: Date.now());
             }
             
             // サイズ値の比較
@@ -293,13 +276,12 @@ export class ConfigurationSynchronizer {
                     type: 'BUBBLE_SIZE_INCONSISTENCY'),
                     bubbleType,
                     key: `bubbles.${bubbleType'.size`,'
-                    values: Array.from(sizeValues.entries( },
+                    values: Array.from(sizeValues.entries( ,
                     severity: this._calculateSeverity(sizeValues}
 
                     impact: 'Visual appearance and collision detection tests may not match implementation'
             }
-                    detectedAt: Date.now()),
-                };
+                    detectedAt: Date.now());
             }
         }
         
@@ -319,13 +301,13 @@ export class ConfigurationSynchronizer {
         if (electricIntensityValues.size > 1) {
             discrepancies.push({''
                 type: 'ELECTRIC_INTENSITY_INCONSISTENCY',','
-                bubbleType: 'electric',')',
+                bubbleType: 'electric,')',
                 key: 'bubbles.electric.shakeIntensity,'
                 values: Array.from(electricIntensityValues.entries(
                 severity: this._calculateSeverity(electricIntensityValues,
                 impact: 'Screen shake effect tests will not match implementation' }
-                detectedAt: Date.now(); 
-    };
+                detectedAt: Date.now())); 
+    }
         }
         ';'
 
@@ -333,13 +315,13 @@ export class ConfigurationSynchronizer {
         if (electricDurationValues.size > 1) {
             discrepancies.push({''
                 type: 'ELECTRIC_DURATION_INCONSISTENCY',','
-                bubbleType: 'electric',')',
+                bubbleType: 'electric,')',
                 key: 'bubbles.electric.disableDuration,'
                 values: Array.from(electricDurationValues.entries(
                 severity: this._calculateSeverity(electricDurationValues,
                 impact: 'Input disable effect tests will not match implementation' }
-                detectedAt: Date.now(); 
-    };
+                detectedAt: Date.now())); 
+    }
         }
         
         // Rainbow泡の効果チェック
@@ -347,13 +329,13 @@ export class ConfigurationSynchronizer {
         if (rainbowDurationValues.size > 1) {
             discrepancies.push({''
                 type: 'RAINBOW_DURATION_INCONSISTENCY',','
-                bubbleType: 'rainbow',')',
+                bubbleType: 'rainbow,')',
                 key: 'bubbles.rainbow.bonusTimeMs,'
                 values: Array.from(rainbowDurationValues.entries(
                 severity: this._calculateSeverity(rainbowDurationValues,
                 impact: 'Bonus time effect tests will not match implementation' }
-                detectedAt: Date.now(); 
-    };
+                detectedAt: Date.now())); 
+    }
         }
         
         return discrepancies;
@@ -365,8 +347,8 @@ export class ConfigurationSynchronizer {
      * @returns 重要度レベル
      * @private'
      */''
-    private _calculateSeverity(values: Map<string, SourceValue>): 'LOW' | 'MEDIUM' | 'HIGH' { const valuesArray = Array.from(values.values().map(v => v.value);
-        if(valuesArray.length < 2) return 'LOW',
+    private _calculateSeverity(values: Map<string, SourceValue>): 'LOW' | 'MEDIUM' | 'HIGH' { const valuesArray = Array.from(values.values())).map(v => v.value);
+        if(valuesArray.length < 2) return 'LOW,
         
         const min = Math.min(...valuesArray);
         const max = Math.max(...valuesArray);
@@ -400,8 +382,7 @@ export class ConfigurationSynchronizer {
                         targetValue: this._getImplementationValue(discrepancy.values,
                         affectedFiles: ['tests/unit/Bubble.test.js],'
                         priority: discrepancy.severity,
-                        estimatedEffort: 'LOW',
-                    },
+                        estimatedEffort: 'LOW' ,
                     break;
 
                 case 'BUBBLE_HEALTH_INCONSISTENCY':';'
@@ -413,8 +394,7 @@ export class ConfigurationSynchronizer {
                         targetValue: this._getImplementationValue(discrepancy.values,
                         affectedFiles: ['tests/unit/Bubble.test.js],'
                         priority: discrepancy.severity,
-                        estimatedEffort: 'LOW',
-                    },
+                        estimatedEffort: 'LOW' ,
                     break;
 
                 case 'ELECTRIC_INTENSITY_INCONSISTENCY':';'
@@ -427,8 +407,7 @@ export class ConfigurationSynchronizer {
                         targetValue: this._getImplementationValue(discrepancy.values,
                         affectedFiles: ['tests/unit/Bubble.test.js],'
                         priority: discrepancy.severity,
-                        estimatedEffort: 'LOW',
-                    },
+                        estimatedEffort: 'LOW' ,
                     break;
                     
                 default:';'
@@ -436,9 +415,8 @@ export class ConfigurationSynchronizer {
                         action: 'MANUAL_REVIEW' }
 
                         description: `Manual review required for ${discrepancy.type}`,''
-                        priority: 'MEDIUM',
-                        estimatedEffort: 'MEDIUM',
-                    } }
+                        priority: 'MEDIUM,
+                        estimatedEffort: 'MEDIUM' } }
 
             recommendation.discrepancyId = discrepancy.type + '_' + (discrepancy.bubbleType || 'unknown');
             recommendations.push(recommendation);
@@ -467,14 +445,14 @@ export class ConfigurationSynchronizer {
             // ConfigurationManagerが既に読み込んだ値を使用
             return {  };
                 bubbles: { }
-                    normal: { score: 15 },
-                    boss: { health: 5 }, // ORIGINAL_BALANCE_CONFIGの値
-                    pink: { healAmount: 25 },
+                    normal: { score: 15 ,
+                    boss: { health: 5 , // ORIGINAL_BALANCE_CONFIGの値
+                    pink: { healAmount: 25 ,
                     poison: { damageAmount: 10 
-    };'} catch (error) {'
-            console.warn('[ConfigurationSynchronizer] GameBalance.js読み込みエラー:', error) }
+     ,'} catch (error) {'
+            console.warn('[ConfigurationSynchronizer] GameBalance.js読み込みエラー:', error);
             return {};
-    
+
     /**
      * Bubble.jsの実装から設定を読み込み
      * @returns 設定オブジェクト
@@ -484,19 +462,19 @@ export class ConfigurationSynchronizer {
             // Bubble.jsの実装値（実際の値）
             return {  };
                 bubbles: { }
-                    normal: { score: 15, health: 1, size: 50  },
-                    boss: { health: 8, size: 90, score: 800  },
-                    stone: { health: 2, size: 55  },
-                    iron: { health: 3, size: 60  },
-                    diamond: { health: 4, size: 65  },
-                    pink: { healAmount: 25 },
-                    poison: { damageAmount: 8 },
-                    electric: { shakeIntensity: 15, disableDuration: 1500  },
+                    normal: { score: 15, health: 1, size: 50  ,
+                    boss: { health: 8, size: 90, score: 800  ,
+                    stone: { health: 2, size: 55  ,
+                    iron: { health: 3, size: 60  ,
+                    diamond: { health: 4, size: 65  ,
+                    pink: { healAmount: 25 ,
+                    poison: { damageAmount: 8 ,
+                    electric: { shakeIntensity: 15, disableDuration: 1500  ,
                     rainbow: { bonusTimeMs: 8000 
-    };'} catch (error) {'
-            console.warn('[ConfigurationSynchronizer] Bubble.js読み込みエラー:', error) }
+     ,'} catch (error) {'
+            console.warn('[ConfigurationSynchronizer] Bubble.js読み込みエラー:', error);
             return {};
-    
+
     /**
      * テスト期待値から設定を読み込み
      * @returns 設定オブジェクト
@@ -506,14 +484,14 @@ export class ConfigurationSynchronizer {
             // テストファイルで期待されている値
             return {  };
                 bubbles: { }
-                    normal: { score: 10 }, // Bubble.test.js:266の期待値
-                   , boss: { health: 5, size: 100  }, // Bubble.test.js:33-34の期待値
-                   , electric: { shakeIntensity: 20, disableDuration: 2000  }, // Bubble.test.js:241-242
-                   , rainbow: { bonusTimeMs: 5000 } // Bubble.test.js: 230
+                    normal: { score: 10 , // Bubble.test.js:266の期待値
+            boss: { health: 5, size: 100  , // Bubble.test.js:33-34の期待値
+            electric: { shakeIntensity: 20, disableDuration: 2000  , // Bubble.test.js:241-242
+            rainbow: { bonusTimeMs: 5000 } // Bubble.test.js: 230
     };'} catch (error) {'
             console.warn('[ConfigurationSynchronizer] テスト期待値読み込みエラー:', error' }'
             return {};
-    
+
     /**
      * ConfigurationManagerから設定を読み込み
      * @returns 設定オブジェクト
@@ -525,12 +503,12 @@ export class ConfigurationSynchronizer {
                     },
 
                     boss: { ''
-                        health: this.configManager.get('game', 'bubbles.boss.health', 8','
+                        health: this.configManager.get('game', 'bubbles.boss.health', 8','  },
                         size: this.configManager.get('game', 'bubbles.boss.size', 90 }
 };'} catch (error) {'
-            console.warn('[ConfigurationSynchronizer] ConfigurationManager読み込みエラー:', error) }
+            console.warn('[ConfigurationSynchronizer] ConfigurationManager読み込みエラー:', error);
             return {};
-    
+
     /**
      * ソース設定をシリアライズ
      * @param sourceConfigs - ソース設定

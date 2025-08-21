@@ -7,9 +7,9 @@ import { HTMLJavaScriptChecker  } from '../../../src/utils/syntax-validation/HTM
 import { JavaScriptModuleValidator  } from '../../../src/utils/syntax-validation/JavaScriptModuleValidator';
 // Test interfaces
 interface ValidationResult {
-    isValid: boolean;
+    isValid: boolean,
     errors: ValidationError[];
-    warnings: ValidationWarning[];
+    warnings: ValidationWarning[],
     scriptBlockCount: number;
 interface ValidationError {
     type: string;
@@ -23,9 +23,10 @@ interface ValidationWarning {
 interface ModuleValidationResult extends ValidationResult {
     statistics: ModuleStatistics;
 interface ModuleStatistics {
-    imports: number;
+    imports: number,
     exports: number;
-    classes: number;
+}
+    classes: number,
     functions: number;
     variables: number;
 describe('Syntax Validation', (') => {'
@@ -131,9 +132,9 @@ describe('Syntax Validation', (') => {'
             expect(errors[0].type').toBe('INVALID_ESCAPE') }');
         test('should generate proper summary', (') => {'
             const result: ValidationResult = {
-                isValid: true;
+                isValid: true,
                 errors: [];
-                warnings: [{ type: 'TEST_WARNING' }];
+                warnings: [{ type: 'TEST_WARNING' }],
                 scriptBlockCount: 2
             };
             const summary = checker.generateSummary(result);
@@ -153,8 +154,7 @@ describe('Syntax Validation', (') => {'
                 export class TestClass extends Component {
                     constructor() {
                         super('),'
-                        this.name = 'test' }
-                    
+                        this.name = 'test' };
                     getName() {
                         return this.name }
                 }
@@ -173,7 +173,7 @@ describe('Syntax Validation', (') => {'
             const moduleWithUnmatchedBrackets = `
                 export class TestClass {
                     constructor() {
-                        this.items = [1, 2, 3 }
+                        this.items = [1, 2, 3 };
                 // 波括弧が閉じていない
             `;
             const result = await validator.validateModule(moduleWithUnmatchedBrackets) as ModuleValidationResult;
@@ -195,7 +195,7 @@ describe('Syntax Validation', (') => {'
             const moduleWithSuspiciousComparison = `
                 export function checkValue(x, y) {
                     if (x ===== y) {  // 疑わしい比較演算子
-                        return true }
+                        return true };
                     return false;
                 }
             `;
@@ -207,11 +207,11 @@ describe('Syntax Validation', (') => {'
         test('should validate class naming conventions', async () => {
             const moduleWithBadNaming = `
                 export class badClassName {  // PascalCaseでない
-                    constructor() {}
+                    constructor() {};
                 }
                 
                 export function BadFunctionName() {  // camelCaseでない
-                    return true }
+                    return true };
             `;
             const result = await validator.validateModule(moduleWithBadNaming) as ModuleValidationResult;
             
@@ -223,7 +223,7 @@ describe('Syntax Validation', (') => {'
                 export function testFunction() {
                     if (
                     // 不完全なif文
-                }
+                };
             `;
             const result = await validator.validateModule(moduleWithIncompleteStatements) as ModuleValidationResult;
             
@@ -238,10 +238,9 @@ describe('Syntax Validation', (') => {'
                 let variable2 = 42;
                 var variable3 = true;
                 
-                export class ClassA {}
-                export class ClassB {}
-                
-                export function functionA() {}
+                export class ClassA {};
+                export class ClassB {};
+                export function functionA() {};
                 export async function functionB() {}
                 
                 export default ClassA;
@@ -261,7 +260,7 @@ describe('Syntax Validation', (') => {'
                 warnings: [{ type: 'TEST_WARNING' }],
                 scriptBlockCount: 0,
                 statistics: {
-                    imports: 2,
+                    imports: 2 },
                     exports: 3,
                     classes: 1,
                     functions: 2,
@@ -314,8 +313,7 @@ describe('Syntax Validation', (') => {'
                         
                         this.translationDataManager = new TranslationDataManager();
                         this.culturalAdaptationHandler = new CulturalAdaptationHandler();
-                        this.integrationController = new I18nIntegrationController() }
-                    
+                        this.integrationController = new I18nIntegrationController() };
                     async initializeAsync() {
                         // 初期化処理
                     }

@@ -8,55 +8,55 @@ import type { ErrorHandler } from '../../utils/ErrorHandler.js';
 /**
  * Volume Slider Options
  */
-interface VolumeSliderOptions { id: string;
-    label: string;
-    icon: string;
-    category: 'master' | 'bgm' | 'sfx';
-    defaultValue: number;
+interface VolumeSliderOptions { id: string,
+    label: string,
+    icon: string,
+    category: 'master' | 'bgm' | 'sfx,
+    defaultValue: number,
     previewSound: string | null  }
 
 /**
  * Toggle Option Options
  */
-interface ToggleOptionOptions { id: string;
-    label: string;
-    icon: string;
-    defaultValue: boolean;
+interface ToggleOptionOptions { id: string,
+    label: string,
+    icon: string,
+    defaultValue: boolean,
     onChange: (value: boolean) => void 
     }
 
 /**
  * Radio Group Options
  */
-interface RadioGroupOptions { id: string;
-    label: string;
-    icon: string;
-    options: Array<{ value: string,, label: string;>,
-    defaultValue: string;
+interface RadioGroupOptions { id: string,
+    label: string,
+    icon: string,
+    options: Array<{ value: string, label: string;>,
+    defaultValue: string,
     onChange: (value: string) => void;
 }
 
 /**
  * Dropdown Options
  */
-interface DropdownOptions { id: string;
-    label: string;
-    icon: string;
-    options: Array<{ value: number | string,, label: string;>,
-    defaultValue: number | string;
+interface DropdownOptions { id: string,
+    label: string,
+    icon: string,
+    options: Array<{ value: number | string, label: string;>,
+    defaultValue: number | string,
     onChange: (value: string) => void;
 }
 
 /**
  * Vertical Slider Options
  */
-interface VerticalSliderOptions { id: string;
-    label: string;
-    icon: string;
-    min: number;
-    max: number;
-    defaultValue: number;
-    unit: string;
+interface VerticalSliderOptions { id: string,
+    label: string,
+    icon: string,
+    min: number,
+    max: number,
+    defaultValue: number,
+    unit: string,
     onChange: (value: number) => void  }
 }
 
@@ -86,7 +86,7 @@ export class AudioSettingsUIComponentFactory {
         this.audioManager = audioManager;
         this.configManager = configManager;
         this.localizationManager = getLocalizationManager()
-}
+};
         this.errorHandler = getErrorHandler(); }
     }
     
@@ -100,22 +100,22 @@ export class AudioSettingsUIComponentFactory {
      */''
     createVolumeSlider(container: HTMLElement, options: VolumeSliderOptions): void { ''
         const sliderGroup = document.createElement('div');
-        sliderGroup.className = 'slider-group',
-        sliderGroup.style.cssText = `,
+        sliderGroup.className = 'slider-group,
+        sliderGroup.style.cssText = ,
             margin-bottom: 20px,
             padding: 15px,
             background-color: rgba(255, 255, 255, 0.05);
             border-radius: 10px,
-        `,
+        ,
         ','
         // ラベル
         const labelContainer = document.createElement('div');
-        labelContainer.style.cssText = `,
+        labelContainer.style.cssText = ,
             display: flex,
             justify-content: space-between,
             align-items: center,
             margin-bottom: 10px,
-        `,
+        ,
 
         const label = document.createElement('label),'
         label.htmlFor = options.id }
@@ -163,12 +163,12 @@ export class AudioSettingsUIComponentFactory {
             border-radius: 4px,
             outline: none,
     cursor: pointer,
-        `,
+        ,
         ','
         // プレビューボタン
         const, previewButton = document.createElement('button');
-        previewButton.className = 'preview-button',
-        previewButton.innerHTML = '🔊',
+        previewButton.className = 'preview-button,
+        previewButton.innerHTML = '🔊,
 
         previewButton.style.cssText = `','
             background-color: rgba(0, 255, 255, 0.2}
@@ -201,7 +201,7 @@ export class AudioSettingsUIComponentFactory {
             this._playPreviewSound(options);
             ','
             // ボタンアニメーション
-            previewButton.style.transform = 'scale(0.95)',
+            previewButton.style.transform = 'scale(0.95),
             setTimeout(() => { }'
 
                 previewButton.style.transform = 'scale(1)'; }
@@ -223,8 +223,8 @@ export class AudioSettingsUIComponentFactory {
      */''
     createToggleOption(container: HTMLElement, options: ToggleOptionOptions): void { ''
         const toggleGroup = document.createElement('div');
-        toggleGroup.className = 'toggle-group',
-        toggleGroup.style.cssText = `,
+        toggleGroup.className = 'toggle-group,
+        toggleGroup.style.cssText = ,
             display: flex,
             justify-content: space-between,
             align-items: center,
@@ -234,11 +234,11 @@ export class AudioSettingsUIComponentFactory {
             border-radius: 10px,
             cursor: pointer,
     transition: all 0.3s ease,
-        `,
+        ,
         ','
         // ラベル
         const label = document.createElement('label),'
-        label.htmlFor = options.id,  }
+        label.htmlFor = options.id }
         label.innerHTML = `${options.icon} ${this.localizationManager.getText(options.label}`;
         label.style.cssText = `;
             color: #ffffff,
@@ -271,13 +271,13 @@ export class AudioSettingsUIComponentFactory {
      */''
     createRadioGroup(container: HTMLElement, options: RadioGroupOptions): void { ''
         const radioGroup = document.createElement('div');
-        radioGroup.className = 'radio-group',
-        radioGroup.style.cssText = `,
+        radioGroup.className = 'radio-group,
+        radioGroup.style.cssText = ,
             margin-bottom: 20px,
             padding: 15px,
             background-color: rgba(255, 255, 255, 0.05);
             border-radius: 10px,
-        `,
+        ,
         ','
         // ラベル
         const groupLabel = document.createElement('h3' }'
@@ -298,7 +298,7 @@ export class AudioSettingsUIComponentFactory {
         `;
         
         options.options.forEach(option => {  );
-            const optionLabel = this._createRadioOption(option, options) }
+            const optionLabel = this._createRadioOption(option, options);
             optionsContainer.appendChild(optionLabel); }
         };
         
@@ -311,13 +311,13 @@ export class AudioSettingsUIComponentFactory {
      */''
     createDropdown(container: HTMLElement, options: DropdownOptions): void { ''
         const dropdownGroup = document.createElement('div');
-        dropdownGroup.className = 'dropdown-group',
-        dropdownGroup.style.cssText = `,
+        dropdownGroup.className = 'dropdown-group,
+        dropdownGroup.style.cssText = ,
             margin-bottom: 20px,
             padding: 15px,
             background-color: rgba(255, 255, 255, 0.05);
             border-radius: 10px,
-        `,
+        ,
         ','
         // ラベル
         const label = document.createElement('label),'
@@ -343,16 +343,16 @@ export class AudioSettingsUIComponentFactory {
      */''
     createVerticalSlider(container: HTMLElement, options: VerticalSliderOptions): void { ''
         const sliderGroup = document.createElement('div');
-        sliderGroup.className = 'vertical-slider-group',
-        sliderGroup.style.cssText = `,
+        sliderGroup.className = 'vertical-slider-group,
+        sliderGroup.style.cssText = ,
             display: inline-block,
             text-align: center,
             margin: 0 15px,
             vertical-align: top,
-        `,
+        ,
         ','
         // 値表示
-        const valueDisplay = document.createElement('div') }
+        const valueDisplay = document.createElement('div');
 
         valueDisplay.id = `${options.id}-value`;
         valueDisplay.textContent = `${options.defaultValue >= 0 ? '+' : '}${options.defaultValue}${options.unit}`;'
@@ -413,26 +413,26 @@ export class AudioSettingsUIComponentFactory {
      */''
     private _createToggleSwitch(options: ToggleOptionOptions): HTMLElement { ''
         const switchContainer = document.createElement('div');
-        switchContainer.style.cssText = `,
+        switchContainer.style.cssText = ,
             position: relative,
             width: 60px,
             height: 30px,
-        `,
+        ,
 
         const checkbox = document.createElement('input');
-        checkbox.type = 'checkbox',
+        checkbox.type = 'checkbox,
         checkbox.id = options.id,
         checkbox.checked = options.defaultValue,
-        checkbox.style.cssText = `,
+        checkbox.style.cssText = ,
             position: absolute,
             opacity: 0,
             width: 0,
             height: 0,
-        `,
+        ,
 
         const switchLabel = document.createElement('label');
         switchLabel.htmlFor = options.id,
-        switchLabel.style.cssText = `,
+        switchLabel.style.cssText = ,
             position: absolute,
             cursor: pointer,
             top: 0,
@@ -448,7 +448,7 @@ export class AudioSettingsUIComponentFactory {
         const switchKnob = document.createElement('span');
         switchKnob.style.cssText = `;
             position: absolute,
-            content: "",
+            content: ",
     height: 22px,
             width: 22px,
             left: ${checkbox.checked ? '34px' : '4px'},
@@ -465,8 +465,8 @@ export class AudioSettingsUIComponentFactory {
         checkbox.addEventListener('change', (e) => {  const target = e.target as HTMLInputElement,
 
             const isChecked = target.checked,
-            switchLabel.style.backgroundColor = isChecked ? '#00ffff' : '#333333',
-            switchKnob.style.left = isChecked ? '34px' : '4px',
+            switchLabel.style.backgroundColor = isChecked ? '#00ffff' : '#333333,
+            switchKnob.style.left = isChecked ? '34px' : '4px,
             
             if (options.onChange) { }
                 options.onChange(isChecked); }
@@ -491,7 +491,7 @@ export class AudioSettingsUIComponentFactory {
      */''
     private _createRadioOption(option: { value: string,  label: string ), parentOptions: RadioGroupOptions'): HTMLElement {''
         const optionLabel = document.createElement('label),'
-        optionLabel.style.cssText = `,
+        optionLabel.style.cssText = ,
             display: flex,
             align-items: center,
             padding: 10px,
@@ -499,24 +499,23 @@ export class AudioSettingsUIComponentFactory {
             border-radius: 8px,
             cursor: pointer,
     transition: all 0.3s ease,
-        `,
+        ,
 
         const radio = document.createElement('input');
-        radio.type = 'radio',
+        radio.type = 'radio,
         radio.name = parentOptions.id,
         radio.value = option.value,
         radio.checked = option.value === parentOptions.defaultValue,
-        radio.style.cssText = `,
+        radio.style.cssText = ,
             margin-right: 8px,
             cursor: pointer,
-        `,
+        ,
 
-        const text = document.createElement('span',
+        const text = document.createElement('span,
         text.textContent = this.localizationManager.getText(option.label);
-        text.style.cssText = `,
-           , color: #ffffff,
+        text.style.cssText = `, color: #ffffff,
             font-size: 14px,
-        `,
+        ,
 
         radio.addEventListener('change', (e) => { 
             const target = e.target as HTMLInputElement,
@@ -553,7 +552,7 @@ export class AudioSettingsUIComponentFactory {
     private _createSelectElement(options: DropdownOptions): HTMLSelectElement { ''
         const select = document.createElement('select),'
         select.id = options.id,
-        select.style.cssText = `,
+        select.style.cssText = ,
             width: 100%,
     padding: 10px,
             background-color: rgba(0, 0, 0, 0.5);
@@ -563,13 +562,13 @@ export class AudioSettingsUIComponentFactory {
             font-size: 14px,
             cursor: pointer,
     transition: all 0.3s ease,
-        `,
+        ,
 
         options.options.forEach(option => { '),'
             const optionElement = document.createElement('option),'
             optionElement.value = option.value.toString();
             optionElement.textContent = option.label,
-            optionElement.selected = option.value === options.defaultValue,  }
+            optionElement.selected = option.value === options.defaultValue }
 
             select.appendChild(optionElement);' }'
 
@@ -605,12 +604,12 @@ export class AudioSettingsUIComponentFactory {
      */''
     private _createVerticalSliderElement(options: VerticalSliderOptions, valueDisplay: HTMLElement): HTMLInputElement { ''
         const slider = document.createElement('input');
-        slider.type = 'range',
+        slider.type = 'range,
         slider.id = options.id,
         slider.min = options.min.toString();
         slider.max = options.max.toString();
         slider.value = options.defaultValue.toString();
-        slider.style.cssText = `,
+        slider.style.cssText = ,
             position: absolute,
             width: 150px,
             height: 40px,
@@ -622,7 +621,7 @@ export class AudioSettingsUIComponentFactory {
             border-radius: 4px,
             outline: none,
     cursor: pointer,
-        `,
+        ,
         ','
         // スライダースタイル追加
         this._addVerticalSliderStyles(options.id);
@@ -638,7 +637,7 @@ export class AudioSettingsUIComponentFactory {
             slider.style.background = `linear-gradient(to right, #333333 0%, #333333 ${percentage}%, #00ffff ${ percentage)%, #00ffff, 100%}`;
             
             if (options.onChange} { }
-                options.onChange(value};
+                options.onChange(value}
             }
         };
         
@@ -682,7 +681,7 @@ export class AudioSettingsUIComponentFactory {
         }
         
         // 新しいタイムアウトを設定
-        const timeout = setTimeout(() => {  this._playPreviewSound(options) }
+        const timeout = setTimeout(() => {  this._playPreviewSound(options);
             this.previewTimeouts.delete(options.id); }
         }, 500);
         
@@ -702,7 +701,7 @@ export class AudioSettingsUIComponentFactory {
             if (currentBGM && currentBGM.isPlaying) {
                 // 一時的に音量を上げる
                 const originalVolume = this.audioManager.getVolume('bgm),'
-                (this.audioManager, as any).setBGMVolume?.(1.0, 0.2) }
+                (this.audioManager, as any).setBGMVolume?.(1.0, 0.2);
                 setTimeout(() => {  }
 
                     (this.audioManager, as any).setBGMVolume?.(originalVolume, 0.2);' }'
@@ -723,7 +722,7 @@ export class AudioSettingsUIComponentFactory {
      * @private
      */
     private _showSaveStatus(): void { if (this.onSettingsChange) {
-            this.onSettingsChange() }
+            this.onSettingsChange();
     }
     
     /**

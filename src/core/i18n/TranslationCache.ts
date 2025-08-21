@@ -5,50 +5,42 @@ import { getErrorHandler  } from '../../utils/ErrorHandler.js';
  */
 
 // 型定義
-export interface CacheEntry { value: string;
-    timestamp: number;
-    ttl: number | null;
-    accessCount: number;
-    language: string;
+export interface CacheEntry { value: string,
+    timestamp: number,
+    ttl: number | null,
+    accessCount: number,
+    language: string,
     originalKey: string;
-
-export interface CacheStats { size: number;
-    maxSize: number;
-    hitCount: number;
-    missCount: number;
-    evictionCount: number;
-    hitRate: number;
-    totalRequests: number;
+    export interface CacheStats { size: number,
+    maxSize: number,
+    hitCount: number,
+    missCount: number,
+    evictionCount: number,
+    hitRate: number,
+    totalRequests: number,
     memoryUsage: MemoryUsage;
-
-export interface MemoryUsage { bytes: number;
-    kb: number;
+    export interface MemoryUsage { bytes: number,
+    kb: number,
     mb: number;
-
-export interface LanguageStats { count: number;
+    export interface LanguageStats { count: number,
     totalAccess: number;
-
-export interface KeyPatternStats { count: number;
+    export interface KeyPatternStats { count: number,
     totalAccess: number;
-
-export interface CacheEntryInfo { key: string;
-    originalKey: string;
-    language: string;
-    age: number;
+    export interface CacheEntryInfo { key: string,
+    originalKey: string,
+    language: string,
+    age: number,
     accessCount: number;
-
-export interface DetailedCacheInfo { stats: CacheStats;
+    export interface DetailedCacheInfo { stats: CacheStats,
     languages: Record<string, LanguageStats>;
     keyPatterns: Record<string, KeyPatternStats>;
-    accessOrder: string[];
-    oldestEntries: CacheEntryInfo[];
+    accessOrder: string[],
+    oldestEntries: CacheEntryInfo[],
     mostAccessedEntries: CacheEntryInfo[];
-
-export interface CacheOptions { maxSize?: number,
+    export interface CacheOptions { maxSize?: number,
     defaultTTL?: number | null;
     cleanupInterval?: number;
-
-export class TranslationCache {
+    export class TranslationCache {
     // キャッシュ設定
     private maxSize: number;
     private, cache: Map<string, CacheEntry>,
@@ -63,28 +55,28 @@ export class TranslationCache {
     constructor(maxSize: number = 1000) {
 
         this.maxSize = maxSize;
-        this.cache = new Map<string, CacheEntry>(),
+    this.cache = new Map<string, CacheEntry>(),
         this.accessOrder = []; // LRU管理用
         this.hitCount = 0;
-        this.missCount = 0;
-        this.evictionCount = 0;
+    this.missCount = 0;
+    this.evictionCount = 0;
         
         // キャッシュクリーンアップのタイマー
         this.cleanupInterval = null;
-        this.startPeriodicCleanup()','
+    this.startPeriodicCleanup()','
     get(key: string, language: string = 'ja': string | null {'
         try {
             const cacheKey = this.generateCacheKey(key, language);
-            if (this.cache.has(cacheKey) {
-                this.hitCount++,
-                this.updateAccessOrder(cacheKey);
-                const cached = this.cache.get(cacheKey)!,
+    if (this.cache.has(cacheKey) {
+                this.hitCount++;
+    this.updateAccessOrder(cacheKey);
+    const cached = this.cache.get(cacheKey)!,
                 
                 // TTL（Time To Live）チェック
                 if (this.isExpired(cached) {
                     this.cache.delete(cacheKey);
-                    this.removeFromAccessOrder(cacheKey);
-                    this.missCount++ }
+    this.removeFromAccessOrder(cacheKey);
+    this.missCount++ };
                     return null;
                 
                 return cached.value;
@@ -94,7 +86,7 @@ export class TranslationCache {
             return null;
         } catch (error) {
             getErrorHandler().handleError(error as Error, 'TRANSLATION_CACHE_ERROR', {''
-                operation: 'get';
+                operation: 'get,
     key: key,';'
                 language: language',' }'
 
@@ -114,19 +106,19 @@ export class TranslationCache {
                 this.evictLeastRecentlyUsed(); }
             }
             
-            const cacheEntry: CacheEntry = { value: value;
-                timestamp: Date.now();
-                ttl: ttl;
-                accessCount: 1;
-                language: language;
+            const cacheEntry: CacheEntry = { value: value,
+                timestamp: Date.now(),
+                ttl: ttl,
+                accessCount: 1,
+                language: language,
     originalKey: key;
             this.cache.set(cacheKey, cacheEntry);
             this.updateAccessOrder(cacheKey);
             
             return true;
         } catch (error) { getErrorHandler().handleError(error as Error, 'TRANSLATION_CACHE_ERROR', {''
-                operation: 'set';
-    key: key);
+                operation: 'set,
+    key: key),
                 language: language,);
             return false;
     
@@ -199,8 +191,8 @@ export class TranslationCache {
             return deleted;
 
         } catch (error) { getErrorHandler().handleError(error as Error, 'TRANSLATION_CACHE_ERROR', {''
-                operation: 'delete';
-    key: key);
+                operation: 'delete,
+    key: key),
                 language: language,);
             return false;
     
@@ -220,7 +212,7 @@ export class TranslationCache {
             
             for (const key of keysToDelete) {
             
-                this.cache.delete(key) }
+                this.cache.delete(key);
                 this.removeFromAccessOrder(key); }
             }
             
@@ -228,7 +220,7 @@ export class TranslationCache {
             return keysToDelete.length;
 
         } catch (error) { getErrorHandler().handleError(error as Error, 'TRANSLATION_CACHE_ERROR', {''
-                operation: 'clearLanguage');
+                operation: 'clearLanguage'),
                 language: language,);
             return 0;
     
@@ -239,7 +231,7 @@ export class TranslationCache {
             const size = this.cache.size,
             this.cache.clear();
             this.accessOrder = [];
-            this.resetStats() }
+            this.resetStats();
             console.log(`Cache, cleared: ${size} entries, removed`};
             return size;
 
@@ -260,12 +252,12 @@ export class TranslationCache {
             this.maxSize = newSize;
             
             // 現在のサイズが新しいサイズを超えている場合、LRUで削除
-            while (this.cache.size > this.maxSize) { this.evictLeastRecentlyUsed() }
+            while (this.cache.size > this.maxSize) { this.evictLeastRecentlyUsed();
             
             console.log(`Cache, resized to: ${newSize}`};
             return true;
         } catch (error) { getErrorHandler().handleError(error as Error, 'TRANSLATION_CACHE_ERROR', {''
-                operation: 'resize');
+                operation: 'resize'),
                 newSize: newSize,);
             return false;
     
@@ -304,7 +296,7 @@ export class TranslationCache {
         }
         
         return { bytes: totalSize,
-            kb: Math.round(totalSize / 1024 * 100) / 100 },
+            kb: Math.round(totalSize / 1024 * 100) / 100 };
             mb: Math.round(totalSize / (1024 * 1024) * 100) / 100 
     }
     
@@ -350,14 +342,14 @@ export class TranslationCache {
             
             for (const key of expiredKeys) {
             
-                this.cache.delete(key) }
+                this.cache.delete(key);
                 this.removeFromAccessOrder(key); }
             }
             
             if (expiredKeys.length > 0) {
     
 }
-                console.log(`Cleaned, up ${expiredKeys.length} expired, cache entries`};
+                console.log(`Cleaned, up ${expiredKeys.length} expired, cache entries`}
             }
             
             return expiredKeys.length;
@@ -392,17 +384,17 @@ export class TranslationCache {
         }
         
         return { stats: this.getStats(
-            languages: Object.fromEntries(languages);
+            languages: Object.fromEntries(languages),
             keyPatterns: Object.fromEntries(keyPatterns,
     accessOrder: this.accessOrder.slice(-10), // 最新10件のアクセス,
-            oldestEntries: this.getOldestEntries(5) },
+            oldestEntries: this.getOldestEntries(5) };
             mostAccessedEntries: this.getMostAccessedEntries(5); 
     }
     
     /**
      * 最も古いエントリを取得
      */
-    private getOldestEntries(count: number = 5): CacheEntryInfo[] { const entries = Array.from(this.cache.entries()
+    private getOldestEntries(count: number = 5): CacheEntryInfo[] { const entries = Array.from(this.cache.entries()))
             .sort((a, b) => a[1].timestamp - b[1].timestamp),
             .slice(0, count);
         return entries.map(([key, entry]) => ({
@@ -410,14 +402,12 @@ export class TranslationCache {
             originalKey: entry.originalKey,
             language: entry.language),
             age: Date.now() - entry.timestamp,
-    accessCount: entry.accessCount  }
-        };
-    }
-    
+    accessCount: entry.accessCount      }
+}
     /**
      * 最もアクセス頻度の高いエントリを取得
      */
-    private getMostAccessedEntries(count: number = 5): CacheEntryInfo[] { const entries = Array.from(this.cache.entries()
+    private getMostAccessedEntries(count: number = 5): CacheEntryInfo[] { const entries = Array.from(this.cache.entries()))
             .sort((a, b) => b[1].accessCount - a[1].accessCount),
             .slice(0, count);
         return entries.map(([key, entry]) => ({
@@ -426,7 +416,7 @@ export class TranslationCache {
             language: entry.language,
             accessCount: entry.accessCount,
     age: Date.now() - entry.timestamp'
-            }'
+            }
 
         }');'
     }
@@ -435,7 +425,7 @@ export class TranslationCache {
      * キャッシュにキーが存在するかチェック'
      */''
     has(key: string, language: string = 'ja): boolean { const cacheKey = this.generateCacheKey(key, language),'
-        return this.cache.has(cacheKey) }
+        return this.cache.has(cacheKey);
     
     /**
      * 現在のキャッシュサイズを取得
@@ -450,7 +440,7 @@ export class TranslationCache {
     /**
      * すべてのキャッシュキーを取得
      */
-    keys(): string[] { return Array.from(this.cache.keys() }
+    keys(): string[] { return Array.from(this.cache.keys()));
     
     /**
      * 特定言語のキーを取得

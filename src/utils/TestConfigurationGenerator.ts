@@ -19,67 +19,59 @@ interface TestConfigurationOptions { projectRoot?: string,
     configSourceDir?: string;
     backupEnabled?: boolean;
     dryRun?: boolean;
-
-interface ErrorHandler { handleError: (error: Error, context: string, details?: any) => void 
+    interface ErrorHandler { handleError: (error: Error, context: string, details?: any) => void 
     }
 
 interface ConfigurationManager { get: (namespace: string, path: string) => any  }
 }
 
-interface TestFilePatterns { bubble: string;
-    gameBalance: string;
+interface TestFilePatterns { bubble: string,
+    gameBalance: string,
     bubbleManager: string;
-
-interface Component { initialized: boolean;
+    interface Component { initialized: boolean;
     parseAllConfigurations?: () => any;
     generateTestCode?: (expectations: any, testType: string) => string | null;
     updateTestFile?: (testType: string, testCode: string, options: any) => UpdateResult;
     validateConfigurationSync?: (canonical: any) => ValidationResult;
     clearCache?: () => void;
     cleanup?: () => void;
-    initialize?: () => Promise<void>,  }
+    initialize?: () => Promise<void> }
 }
 
-interface ComponentDefinition { name: string;
+interface ComponentDefinition { name: string,
     class: new (controller: TestConfigurationGenerator) => Component  }
 }
 
-interface ExpectationMetadata { extractedAt: number;
-    sourceFiles: string[];
+interface ExpectationMetadata { extractedAt: number,
+    sourceFiles: string[],
     generatorVersion: string;
-
-interface CanonicalExpectations { bubbleTypes: Record<string, any>,
+    interface CanonicalExpectations { bubbleTypes: Record<string, any>,
     gameBalance: Record<string, any>;
     metadata: ExpectationMetadata;
-
-interface UpdateResult { success: boolean;
+    interface UpdateResult { success: boolean;
     error?: string;
     testType?: string;
     [key: string]: any;
-
-interface UpdateOptions { testTypes?: string[],
+    interface UpdateOptions { testTypes?: string[],
     [key: string]: any;
-
-interface UpdateResults { updated: UpdateResult[];
+    interface UpdateResults { updated: UpdateResult[],
     failed: Array<{ testType?: string, error: string;>,
-    skipped: UpdateResult[];
+    skipped: UpdateResult[],
     backups: UpdateResult[];
     }
 
-interface ValidationResult { valid: boolean;
-    issues: string[];
-    warnings: string[];
-    bubbleTypesCount: number;
+interface ValidationResult { valid: boolean,
+    issues: string[],
+    warnings: string[],
+    bubbleTypesCount: number,
     sourceFiles: string[];
-
-interface GenerationStatistics { totalExpectations: number;
-    lastGenerated: number | null;
-    bubbleTypesProcessed: number;
-    sourceFilesProcessed: number;
-    cacheSize: number;
+    interface GenerationStatistics { totalExpectations: number,
+    lastGenerated: number | null,
+    bubbleTypesProcessed: number,
+    sourceFilesProcessed: number,
+    cacheSize: number,
     componentsInitialized: number;
-
-export class TestConfigurationGenerator {
+    export class TestConfigurationGenerator {
     private components: Map<string, Component>;
     private initialized: boolean;
     private errorHandler: ErrorHandler;
@@ -99,7 +91,7 @@ export class TestConfigurationGenerator {
         this.initialized = false;
         
         // 軽量エラーハンドラー（Node.js環境用）
-        this.errorHandler = {}
+        this.errorHandler = {};
             handleError: (error: Error, context: string, details?: any) => { }
                 console.error(`[ERROR] ${context}: ${error.message}`);
                 if (details) {', ' }
@@ -112,7 +104,7 @@ export class TestConfigurationGenerator {
         this.configurationManager = { ''
             get: (namespace: string, path: string') => {,'
                 // Node.js環境では実際の設定ファイルから直接読み取る
-                console.warn('[TestConfigurationGenerator] ConfigurationManager.get() is not available in Node.js environment')  }
+                console.warn('[TestConfigurationGenerator] ConfigurationManager.get() is not available in Node.js environment');
                 return undefined;
         ';'
         // 設定
@@ -124,8 +116,8 @@ export class TestConfigurationGenerator {
         
         // テストファイルパターン
         this.testFilePatterns = {;
-            bubble: 'Bubble.test.js',
-            gameBalance: 'GameBalance.test.js',
+            bubble: 'Bubble.test.js,
+            gameBalance: 'GameBalance.test.js,
             bubbleManager: 'BubbleManager.test.js'
             };
         // 生成された期待値のキャッシュ（後方互換性のため保持）
@@ -139,9 +131,9 @@ export class TestConfigurationGenerator {
      * コンポーネントを初期化'
      */''
     async initializeComponents('''
-                { name: 'parser', class: ConfigurationParser,,''
-                { name: 'generator', class: ExpectationGenerator,,''
-                { name: 'fileOperations', class: TestFileOperations,,''
+                { name: 'parser', class: ConfigurationParser,''
+                { name: 'generator', class: ExpectationGenerator,''
+                { name: 'fileOperations', class: TestFileOperations,''
                 { name: 'validator', class: ConfigurationValidator,
             ];
 );
@@ -171,7 +163,7 @@ export class TestConfigurationGenerator {
      */
     createFallbackComponent(name: string): Component { return { initialized: false,
             // 基本的なフォールバック実装
-            parseAllConfigurations: () => null },
+            parseAllConfigurations: () => null };
             generateTestCode: () => null,' }'
 
             updateTestFile: () => ({ success: false, error: 'Component not available'
@@ -182,7 +174,7 @@ export class TestConfigurationGenerator {
     /**
      * コンポーネントを取得
      */
-    getComponent(name: string): Component | undefined { return this.components.get(name) }
+    getComponent(name: string): Component | undefined { return this.components.get(name);
     
     // === 公開API（後方互換性維持） ===
 
@@ -204,10 +196,10 @@ export class TestConfigurationGenerator {
         
         // フォールバック：最小限の期待値を返す
         const fallbackExpectations: CanonicalExpectations = {
-            bubbleTypes: {},
-            gameBalance: {},
+            bubbleTypes: {  },
+            gameBalance: {  },
             metadata: { ''
-                extractedAt: Date.now('',
+                extractedAt: Date.now(''  ,
     generatorVersion: '1.0.0' }'};')'
         this.generatedExpectations.set('canonical', fallbackExpectations';'
         return fallbackExpectations;
@@ -254,7 +246,7 @@ describe('${ testType} Tests', ('} => { }'
                 
                     try {
                         // テストコードを生成
-                        const testCode = generator.generateTestCode(expectations, testType) }
+                        const testCode = generator.generateTestCode(expectations, testType);
                         if (!testCode) { }
                             results.failed.push({ testType, error: `Failed to generate test code for ${testType }` ),
                             continue;
@@ -274,15 +266,13 @@ describe('${ testType} Tests', ('} => { }'
 
                             results.failed.push({ testType, error: result.error || 'Unknown error  } catch (updateError) { results.failed.push({ )'
                             testType,
-                            error: (updateError, as Error).message  };
-                    }
-                }
-                
+                            error: (updateError, as Error).message      }
+}
                 console.log(`[TestConfigurationGenerator] テストファイル更新完了: ${results.updated.length}件成功, ${results.failed.length}件失敗`};
                 return results;
 
             } catch (error) {
-                this.errorHandler.handleError(error as Error, 'TEST_GENERATOR_UPDATE_FILES', {) }
+                this.errorHandler.handleError(error as Error, 'TEST_GENERATOR_UPDATE_FILES', {);
                     expectationsKeys: Object.keys(expectations || {};
                     options;
                 };
@@ -291,17 +281,14 @@ describe('${ testType} Tests', ('} => { }'
 
                     failed: [{ error: (error, as Error').message }];'
                     skipped: [],
-    backups: [],
-                } }
-        }
-        
+    backups: []     }
+}
         // フォールバック：エラー結果を返す
         return { updated: [],' }'
 
             failed: [{ error: 'Components not available' }],
             skipped: [],
-    backups: [],
-        } }
+    backups: [] } }
 
     /**
      * 設定同期の検証（後方互換性維持）'
@@ -319,7 +306,7 @@ describe('${ testType} Tests', ('} => { }'
         return { valid: false,''
             issues: ['Component validation not available],'
             warnings: [],
-    bubbleTypesCount: 0 },
+    bubbleTypesCount: 0 ,
             sourceFiles: [] 
     }
 
@@ -344,7 +331,7 @@ describe('${ testType} Tests', ('} => { }'
         for (const component of this.components.values() {
             if (component.clearCache) {
         
-                component.clearCache() }
+                component.clearCache();
 }
         ;
         // レガシーキャッシュもクリア
@@ -375,7 +362,7 @@ let testGeneratorInstance: TestConfigurationGenerator | null = null,
  * TestConfigurationGeneratorのシングルトンインスタンスを取得
  */
 export function getTestConfigurationGenerator(options: TestConfigurationOptions = {}: TestConfigurationGenerator { if (!testGeneratorInstance') {''
-        testGeneratorInstance = new TestConfigurationGenerator(options) }
+        testGeneratorInstance = new TestConfigurationGenerator(options);
     return testGeneratorInstance;
 }
 

@@ -95,7 +95,7 @@ describe('Phase G統合テストスイート', () => {
             createElement: jest.fn().mockReturnValue(mockCanvas),
            , getElementById: jest.fn().mockReturnValue(mockCanvas,
             body: {,
-                appendChild: jest.fn(
+                appendChild: jest.fn( },
         removeChild: jest.fn( },
             addEventListener: jest.fn(
             removeEventListener: jest.fn(
@@ -130,7 +130,7 @@ describe('Phase G統合テストスイート', () => {
                     runQuickTests: jest.fn().mockResolvedValue({ passed: 5, failed: 0 ,
                     runBalanceTests: jest.fn().mockResolvedValue({ passed: 3,
         failed: 1 },
-                },
+                } };
                 exporter: {
                     saveChanges: jest.fn().mockResolvedValue({ success: true, appliedChanges: [] ,
                     exportBatchChanges: jest.fn().mockResolvedValue(true
@@ -182,7 +182,7 @@ describe('Phase G統合テストスイート', () => {
                     updateSettings: jest.fn().mockResolvedValue(true),
                    , resetSettings: jest.fn().mockResolvedValue(true,
                 eventManager: {
-                    recordEvent: jest.fn(
+                    recordEvent: jest.fn( },
                     getEventHistory: jest.fn(() => []),
                     getStatistics: jest.fn(() => ({ events: 0 ))),
                 legacyAdapter: {
@@ -192,7 +192,7 @@ describe('Phase G統合テストスイート', () => {
                , getStatus: jest.fn(() => ({ 
                     initialized: true, 
                     components: {
-                        description: true,
+                        description: true },
                         cue: true,
                         feedback: true,
                         settings: true,
@@ -272,13 +272,13 @@ describe('Phase G統合テストスイート', () => {
                 constructor(') {'
                     this.initialized = true;
                     this.components = ['dataLoader', 'calculator', 'validator', 'exporter'] }
-                getStatus() { return { initialized: this.initialized, components: this.components }; }
+                getStatus() { return { initialized: this.initialized, components: this.components } }
             }();
             const audioSupport = new (class MockAudioAccessibilitySupport {
                 constructor(') {'
                     this.initialized = true;
                     this.components = ['description', 'cue', 'feedback', 'settings', 'event', 'legacy'] }
-                getStatus() { return { initialized: this.initialized, components: this.components }; }
+                getStatus() { return { initialized: this.initialized, components: this.components } }
             }();
             expect(balanceAdjuster.getStatus().initialized).toBe(true);
             expect(audioSupport.getStatus().initialized).toBe(true);
@@ -358,6 +358,6 @@ describe('Phase G統合テストスイート', () => {
             
             expect(results.toHaveLength(4);
             expect(responseTime.toBeLessThan(100), // Should complete within 100ms
-        };
+        }
     }
 }');'

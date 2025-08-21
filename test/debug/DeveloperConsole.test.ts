@@ -10,9 +10,9 @@ const dom = new JSDOM('<!DOCTYPE html><html><body></body></html>');
 (global: any).document = dom.window.document,
 (global: any).window = dom.window,
 // Mock function type
-interface MockFunction<T = any> extends Function { mockReturnValue: (value: T) => MockFunction<T>;
-    mockImplementation: (impl: Function) => MockFunction<T>;
-    toHaveBeenCalledWith: (...args: any[]) => void;
+interface MockFunction<T = any> extends Function { mockReturnValue: (value: T) => MockFunction<T>,
+    mockImplementation: (impl: Function) => MockFunction<T>,
+    toHaveBeenCalledWith: (...args: any[]) => void,
     toHaveBeenCalled: () => void,';'
     mockRestore: () => void,';'
     mockClear: (') => void }'
@@ -23,11 +23,11 @@ jest.mock('../src/utils/ErrorHandler.js', () => ({ getErrorHandler: jest.fn(() =
     ))
 ));
 // Configuration interfaces
-interface ConfigurationManager { get: MockFunction<any>;
+interface ConfigurationManager { get: MockFunction<any>,
     set: MockFunction<boolean>;
-    getDefault: MockFunction<any>;
+    getDefault: MockFunction<any>,
     getAll: MockFunction<any>;
-    getAllDefaults: MockFunction<any>;
+    getAllDefaults: MockFunction<any>,
     validate: MockFunction<boolean>;
     validateAll: MockFunction<boolean>;
     };
@@ -36,22 +36,22 @@ interface PerformanceOptimizer { getCurrentFPS: MockFunction<number>;
 }
 // Game engine interface
 interface MockGameEngine {
-    canvas: { moc,k: string;
-    sceneManager: { mock: string;
-    inputManager: { mock: string;
-    performanceOptimizer: PerformanceOptimizer;
+    canvas: { moc,k: string,
+    sceneManager: { mock: string,
+    inputManager: { mock: string,
+    performanceOptimizer: PerformanceOptimizer };
     configurationManager: ConfigurationManager;
 // Console interfaces
-interface ConsoleState { visible: boolean;
+interface ConsoleState { visible: boolean,
     focused: boolean;
-    history: string[];
+    history: string[],
     historyIndex: number;
     maxHistorySize?: number;
 }
-interface OutputLine { text: string;
+interface OutputLine { text: string,
     type: string;
 }
-interface ConsoleOutput { lines: OutputLine[];
+interface ConsoleOutput { lines: OutputLine[],
     maxLines: number;
     timestampFormat?: string;
 }
@@ -63,19 +63,19 @@ interface CommandConfig { description?: string,
     execute: (arg,s: string[]) => any;
     getCompletions?: (arg,s: string[]) => string[] }
 }
-interface ParsedInput { command: string | null;
+interface ParsedInput { command: string | null,
     args: string[];
 }
-interface ConsoleLike { print: MockFunction<void>;
+interface ConsoleLike { print: MockFunction<void>,
     printError: MockFunction<void>;
 }
-interface DeveloperConsole { gameEngine: MockGameEngine;
+interface DeveloperConsole { gameEngine: MockGameEngine,
     element: HTMLDivElement;
-    inputElement: HTMLInputElement;
+    inputElement: HTMLInputElement,
     outputElement: HTMLDivElement;
-    commandRegistry: CommandRegistry;
+    commandRegistry: CommandRegistry,
     state: ConsoleState;
-    output: ConsoleOutput;
+    output: ConsoleOutput,
     configurationCommands: { destroy: MockFunction<void>;
     show(): void,
     hide(): void;
@@ -121,7 +121,7 @@ interface CommandRegistry { commands: Map<string, CommandConfig>,
     performanceOptimizer: { getCurrentFPS: jest.fn(() => 60) as unknown as MockFunction<number> }
     }),
     configurationManager: { get: jest.fn() as unknown as MockFunction<any>,
-        set: jest.fn() as unknown as MockFunction<boolean>,
+        set: jest.fn() as unknown as MockFunction<boolean> },
         getDefault: jest.fn() as unknown as MockFunction<any>,
         getAll: jest.fn() as unknown as MockFunction<any>,
         getAllDefaults: jest.fn() as unknown as MockFunction<any>,

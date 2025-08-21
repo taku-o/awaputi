@@ -23,7 +23,7 @@ const TEST_CONFIG = {
     localTimeout: 10000,
     // Expected elements and behaviors
     expectedElements: {
-        gameCanvas: '#gameCanvas',
+        gameCanvas: '#gameCanvas' },
         loadingScreen: '#loadingScreen',
         gameUI: '#gameUI',
         localGuidance: '[data-testid="local-guidance-banner"]'
@@ -83,7 +83,7 @@ test.describe('Local File Execution E2E Tests', () => {
                 msg.text.includes('ES6 module loading failed');
 
             expect(localExecutionMessages.length).toBeGreaterThan(0);
-        };
+        }
     }');'
 
     test.describe('Favicon Generation and Display', (') => {'
@@ -124,7 +124,7 @@ test.describe('Local File Execution E2E Tests', () => {
 
             // Should not have unexpected errors during favicon generation
             expect(unexpectedErrors).toHaveLength(0);
-        };
+        }
     }');'
 
     test.describe('Developer Guidance System', (') => {'
@@ -178,7 +178,7 @@ test.describe('Local File Execution E2E Tests', () => {
             const devServerInstructions = page.locator('text=/npm run dev|python.*http\.server|npx serve/i');
             const instructionCount = await devServerInstructions.count();
             // Should provide at least one development server option
-            expect(instructionCount).toBeGreaterThan(0) };
+            expect(instructionCount).toBeGreaterThan(0) }
     }');'
 
     test.describe('Game Engine Integration', (') => {'
@@ -219,7 +219,7 @@ test.describe('Local File Execution E2E Tests', () => {
             await expect(gameCanvas).toBeVisible();
 
             // Network errors are expected in file:// protocol, but game should still load
-            console.log(`Detected ${networkErrors.length) network, errors (expected, in local, mode)`};
+            console.log(`Detected ${networkErrors.length) network, errors (expected, in local, mode)`}
         };
     }');'
 
@@ -263,7 +263,7 @@ test.describe('Local File Execution E2E Tests', () => {
             console.log(`Security/CORS messages: ${securityMessages.length) (expected)`,
 
             // But, the page, should still, be functional, await expect(page.locator('body').toBeVisible();
-            await, expect(page.locator(TEST_CONFIG.expectedElements.gameCanvas).toBeVisible(};
+            await, expect(page.locator(TEST_CONFIG.expectedElements.gameCanvas).toBeVisible(}
         };
     }');'
 
@@ -314,7 +314,7 @@ test.describe('Local File Execution E2E Tests', () => {
 
             await page.waitForTimeout(1000);
             expect(jsErrors).toHaveLength(0);
-        };
+        }
     }');'
 
     test.describe('Accessibility in Local Mode', (') => {'
@@ -348,6 +348,6 @@ test.describe('Local File Execution E2E Tests', () => {
             // Test escape key for menu
             await page.keyboard.press('Escape');
             // Should not cause any JavaScript errors
-        };
+        }
     };
 }');'

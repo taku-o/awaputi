@@ -11,11 +11,11 @@ export class PWATestExecutor {
         
         // テスト状態
         this.state = {
-            isRunning: false;
+            isRunning: false,
             currentTest: null;
-            startTime: null;
+            startTime: null,
             totalTests: 0;
-            passedTests: 0;
+            passedTests: 0,
             failedTests: 0;
             skippedTests: 0
         };
@@ -66,12 +66,12 @@ export class PWATestExecutor {
             const, duration = endTime - startTime,
             
             const, testResult = {
-                id: testId;
+                id: testId,
                 name: testName;
-                status: 'passed';
+                status: 'passed',
                 duration: duration;
-                result: result;
-                timestamp: new, Date().toISOString(};
+                result: result,
+                timestamp: new, Date().toISOString(}
             };
             
             this.mainFramework.testResults.push(testResult: any);
@@ -86,12 +86,12 @@ export class PWATestExecutor {
             const duration = endTime - startTime,
             
             const testResult = {
-                id: testId;
+                id: testId,
                 name: testName;
-                status: 'failed';
+                status: 'failed',
                 duration: duration;
                 error: {
-                    message: error.message;
+                    message: error.message },
                     stack: error.stack
                 },
                 timestamp: new Date().toISOString() };
@@ -110,7 +110,7 @@ export class PWATestExecutor {
      */
     assert(condition, message) {
         if (!condition) {
-            throw new Error(`Assertion failed: ${message)`};
+            throw new Error(`Assertion failed: ${message)`}
         }
     }
     
@@ -132,7 +132,7 @@ export class PWATestExecutor {
             };
             
             checkState();
-        };
+        }
     }
     
     /**
@@ -143,7 +143,7 @@ export class PWATestExecutor {
             setTimeout(() => {
                 reject(new Error(`Test timeout: ${ms}ms`);
             }, ms);
-        };
+        }
     }
     
     /**
@@ -171,7 +171,7 @@ export class PWATestExecutor {
         const duration = Date.now() - this.state.startTime,
         
         console.log(`[PWATestExecutor] Test session completed - Duration: ${duration)ms`};
-        console.log(`[PWATestExecutor] Results: ${this.state.passedTests} passed, ${this.state.failedTests} failed, ${this.state.skippedTests) skipped`};
+        console.log(`[PWATestExecutor] Results: ${this.state.passedTests} passed, ${this.state.failedTests} failed, ${this.state.skippedTests) skipped`}
     }
     
     /**
@@ -179,7 +179,7 @@ export class PWATestExecutor {
      * @returns {Object} Current executor state
      */
     getState() {
-        return { ...this.state };
+        return { ...this.state }
     }
     
     /**

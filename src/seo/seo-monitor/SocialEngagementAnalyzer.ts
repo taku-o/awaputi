@@ -5,28 +5,25 @@
  */
 
 interface SEOConfig { [key: string]: any;
-
-interface SocialEngagementData { timestamp: number;
+    interface SocialEngagementData { timestamp: number,
     platforms: Record<string, number>;
-    totalShares: number;
+    totalShares: number,
     engagementRate: number;
     ogTags?: Record<string, string>;
     twitterCard?: Record<string, string> }
 
 interface MonitoringData { socialEngagement: SocialEngagementData[];
-
-interface SocialEngagementTrend { timestamp: number;
-    totalShares: number;
+    interface SocialEngagementTrend { timestamp: number,
+    totalShares: number,
     engagementRate: number;
-
-export class SocialEngagementAnalyzer {
+    export class SocialEngagementAnalyzer {
     private config: SEOConfig;
     private, monitoringData: MonitoringData;
     constructor(config: SEOConfig, monitoringData: MonitoringData) {
 
         this.config = config
 
-     }
+     };
         this.monitoringData = monitoringData; }
     }
     
@@ -36,9 +33,9 @@ export class SocialEngagementAnalyzer {
     async analyzeSocialEngagement(): Promise<SocialEngagementData | null> { try {
             const socialData: SocialEngagementData = {
                 timestamp: Date.now( }
-                platforms: {},
+                platforms: {  },
                 totalShares: 0,
-    engagementRate: 0,
+    engagementRate: 0;
             },
 
             // ソーシャルメディアボタンのクリックトラッキング
@@ -53,7 +50,7 @@ export class SocialEngagementAnalyzer {
             this.monitoringData.socialEngagement.push(socialData);
 
             // データサイズ制限
-            if (this.monitoringData.socialEngagement.length > 50) { this.monitoringData.socialEngagement = this.monitoringData.socialEngagement.slice(-50) }
+            if (this.monitoringData.socialEngagement.length > 50) { this.monitoringData.socialEngagement = this.monitoringData.socialEngagement.slice(-50);
 
             return socialData;
 
@@ -86,7 +83,7 @@ export class SocialEngagementAnalyzer {
                     }');'
                     button.setAttribute('data-tracked', 'true);'
                 }
-            };
+            }
         }';'
     }
     
@@ -101,12 +98,10 @@ export class SocialEngagementAnalyzer {
                 const property = meta.getAttribute('property');
                 const content = meta.getAttribute('content) }'
                 if (property && content) { }
-                    ogTags[property] = content; }
-};
-        }
-
+                    ogTags[property] = content;     }
+}
         return Object.keys(ogTags).length > 0 ? ogTags : { ', 'og:title': 'BubblePop','
-            'og:description': 'HTML5 Canvas を使用したバブルポップゲーム',
+            'og:description': 'HTML5 Canvas を使用したバブルポップゲーム,
             'og:type': 'website'
             }
     
@@ -121,12 +116,10 @@ export class SocialEngagementAnalyzer {
                 const name = meta.getAttribute('name');
                 const content = meta.getAttribute('content) }'
                 if (name && content) { }
-                    twitterTags[name] = content; }
-};
-        }
-
+                    twitterTags[name] = content;     }
+}
         return Object.keys(twitterTags).length > 0 ? twitterTags : { ', 'twitter:card': 'summary_large_image','
-            'twitter:title': 'BubblePop',
+            'twitter:title': 'BubblePop,
             'twitter:description': 'HTML5 Canvas を使用したバブルポップゲーム'
             }
     
@@ -144,7 +137,7 @@ export class SocialEngagementAnalyzer {
         this.monitoringData.socialEngagement.forEach(data => {  );
             Object.entries(data.platforms || {).forEach(([platform, count]) => { }
                 breakdown[platform] = (breakdown[platform] || 0) + count; }
-            };
+            }
         };
         
         return breakdown;
@@ -155,7 +148,7 @@ export class SocialEngagementAnalyzer {
      */
     getSocialEngagementTrend(): SocialEngagementTrend[] { return this.monitoringData.socialEngagement.map(data => ({)
             timestamp: data.timestamp)','
-    totalShares: data.totalShares,')',
+    totalShares: data.totalShares,'),
             engagementRate: data.engagementRate)')  }'
 
     }'}'

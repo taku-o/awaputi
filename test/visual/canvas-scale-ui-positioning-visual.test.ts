@@ -21,7 +21,7 @@ describe('Canvas Scale UI Positioning Visual Tests', () => {  let dom: any,
         `, {"
             pretendToBeVisual: true," }"
             resources: "usable"
-            };
+            }
         },
         (global: any).window = dom.window,
         (global: any).document = dom.window.document,
@@ -96,7 +96,7 @@ describe('Canvas Scale UI Positioning Visual Tests', () => {  let dom: any,
                 const renderSnapshot = renderUISnapshot();
                 snapshots[resolution.name] = createRenderingSnapshot(renderSnapshot) }
                 // 各解像度でのスナップショット比較 }
-                expect(snapshots[resolution.name]).toMatchSnapshot(`ui-proportions-${resolution.name)`};
+                expect(snapshots[resolution.name]).toMatchSnapshot(`ui-proportions-${resolution.name)`}
             }
             
             // 異なる解像度間での相対的な位置関係の一貫性を確認'
@@ -255,7 +255,7 @@ describe('Canvas Scale UI Positioning Visual Tests', () => {  let dom: any,
             
             // リサイズとレンダリングの合計時間が許容範囲内であることを確認
             expect(totalTime.toBeLessThan(1000); // 1000ms以下
-        };
+        }
     }
     // ヘルパー関数
     function createMockContext() { return { save: jest.fn(
@@ -311,7 +311,7 @@ describe('Canvas Scale UI Positioning Visual Tests', () => {  let dom: any,
             fillRectCalls: [...context.fillRect.mock.calls],
             strokeRectCalls: [...context.strokeRect.mock.calls] },
         canvasInfo: responsiveCanvasManager.scaledCoordinateManager.getCanvasInfo(); }
-        };
+        }
     }
     function createRenderingSnapshot(renderSnapshot) { return { textElements: renderSnapshot.fillTextCalls.map((call) => ({
                 text: call[0]),

@@ -18,109 +18,95 @@ interface ValidationContext { configKey?: string,
     player?: any;
     stage?: any;
     [key: string]: any;
-
-interface ValidationError { rule: string;
-    message: string;
-    severity: 'low' | 'medium' | 'high' | 'critical';
+    interface ValidationError { rule: string,
+    message: string,
+    severity: 'low' | 'medium' | 'high' | 'critical,
     category: string;
     context?: any;
-
-interface ValidationWarning { rule: string;
-    message: string;
-    severity: 'low' | 'medium' | 'high';
+    interface ValidationWarning { rule: string,
+    message: string,
+    severity: 'low' | 'medium' | 'high,
     category: string;
     context?: any;
-
-interface ValidationSuggestion { rule: string;
+    interface ValidationSuggestion { rule: string,
     message: string;
     recommendedValue?: any;
     action?: string;
     category: string;
-
-interface ValidationResult { valid: boolean;
-    errors: ValidationError[];
-    warnings: ValidationWarning[];
-    suggestions: ValidationSuggestion[];
-    autoFixAvailable: boolean;
-    autoFixedValue: any;
-    rulesApplied: string[];
+    interface ValidationResult { valid: boolean,
+    errors: ValidationError[],
+    warnings: ValidationWarning[],
+    suggestions: ValidationSuggestion[],
+    autoFixAvailable: boolean,
+    autoFixedValue: any,
+    rulesApplied: string[],
     timestamp: number;
     engineSummary?: any;
-
-interface ValidationRule { name: string;
-    category: string;
-    enabled: boolean;
-    priority: number;
+    interface ValidationRule { name: string,
+    category: string,
+    enabled: boolean,
+    priority: number,
     validator: (oldValue: any, newValue: any, context: ValidationContext) => ValidationResult;
     description?: string;
-    applicableContexts?: string[],  }
+    applicableContexts?: string[] }
 }
 
 interface RuleFilters { category?: string,
     enabled?: boolean;
     priority?: number;
     [key: string]: any;
-
-interface BubbleHealthLimits { min: number;
-    max: number;
+    interface BubbleHealthLimits { min: number,
+    max: number,
     default: number;
-
-interface ScoreLimits { min: number;
-    max: number;
+    interface ScoreLimits { min: number,
+    max: number,
     default: number;
-
-interface ValidationAnalytics { totalValidations: number;
-    successRate: number;
-    errorRate: number;
-    warningRate: number;
-    mostCommonErrors: string[];
+    interface ValidationAnalytics { totalValidations: number,
+    successRate: number,
+    errorRate: number,
+    warningRate: number,
+    mostCommonErrors: string[],
     averageExecutionTime: number;
-
-interface EngineMetrics { totalExecutions: number;
-    averageExecutionTime: number;
-    rulesExecuted: number;
+    interface EngineMetrics { totalExecutions: number,
+    averageExecutionTime: number,
+    rulesExecuted: number,
     errorsEncountered: number;
-
-interface EngineStatistics { rulesCount: number;
-    activeRules: number;
-    disabledRules: number;
+    interface EngineStatistics { rulesCount: number,
+    activeRules: number,
+    disabledRules: number,
     categoryCounts: Record<string, number> }
 
-interface ExecutionHistoryEntry { timestamp: number;
-    ruleCount: number;
-    executionTime: number;
-    result: ValidationResult;
+interface ExecutionHistoryEntry { timestamp: number,
+    ruleCount: number,
+    executionTime: number,
+    result: ValidationResult,
     context: ValidationContext;
-
-interface EngineConfig { maxExecutionTime?: number,
+    interface EngineConfig { maxExecutionTime?: number,
     enableProfiling?: boolean;
     [key: string]: any;
-
-interface ProcessorConfig { enableAnalytics?: boolean,
+    interface ProcessorConfig { enableAnalytics?: boolean,
     maxHistorySize?: number;
     [key: string]: any;
-
-interface SystemConfig { engine?: EngineConfig,
+    interface SystemConfig { engine?: EngineConfig,
     processor?: ProcessorConfig;
-
-interface ComponentHealth { status: string;
+    interface ComponentHealth { status: string;
     metrics?: any;
     ruleCount?: number;
     statistics?: any;
     analytics?: any;
-
-interface SystemHealth { engine: ComponentHealth;
-    definitions: ComponentHealth;
-    processor: ComponentHealth;
+    interface SystemHealth { engine: ComponentHealth,
+    definitions: ComponentHealth,
+    processor: ComponentHealth,
     overall: {
         initialize,d: boolean;
-        totalRules: number;
-    lastSyncTime: number;
+    },
+        totalRules: number,
+    lastSyncTime: number,
     lastSyncTime: number;
         };
-interface ComponentReferences { engine: ValidationRuleEngine;
-    definitions: ValidationRuleDefinitions;
-    processor: ValidationResultProcessor;
+interface ComponentReferences { engine: ValidationRuleEngine,
+    definitions: ValidationRuleDefinitions,
+    processor: ValidationResultProcessor,
     processor: ValidationResultProcessor;
         };
 export class BalanceAdjustmentValidationRules {
@@ -146,8 +132,7 @@ export class BalanceAdjustmentValidationRules {
         this.rules = new Map(); // Will be synced from sub-components
         ,
         // Initialize the validation system
-        this.initialize() }
-
+        this.initialize() };
     }
 
         console.log('[BalanceAdjustmentValidationRules] Main, controller initialized, successfully'); }'
@@ -160,8 +145,8 @@ export class BalanceAdjustmentValidationRules {
             // Initialize rule definitions
             this.ruleDefinitions.initializeRules();
             // Sync legacy properties for backward compatibility
-            this.syncLegacyProperties() }
-            console.log(`[BalanceAdjustmentValidationRules] Validation, system initialized, with ${this.rules.size} rules`};
+            this.syncLegacyProperties();
+            console.log(`[BalanceAdjustmentValidationRules] Validation, system initialized, with ${this.rules.size} rules`}
         } catch (error) {
             this.errorHandler.handleError(error, 'VALIDATION_SYSTEM_INIT');
             console.error('[BalanceAdjustmentValidationRules] Failed, to initialize, validation system') }'
@@ -209,13 +194,13 @@ export class BalanceAdjustmentValidationRules {
             
             return { valid: false,
 
-                errors: [{ },
+                errors: [{ };
 
                     rule: 'system', ' }'
 
-                    message: `Validation process, failed: ${error, instanceof Error ? error.message: String(error'}'`,
+                    message: `Validation process, failed: ${error, instanceof Error ? error.message: String(error'}',
                     severity: 'high',]';'
-                    category: 'system'],
+                    category: 'system'];
                 }],
                 warnings: [],
                 suggestions: [],
@@ -236,10 +221,8 @@ export class BalanceAdjustmentValidationRules {
 
         } catch (error) { }
 
-            this.errorHandler.handleError(error, 'VALIDATION_RULE_ADD', { name, rule };
-        }
-    }
-    
+            this.errorHandler.handleError(error, 'VALIDATION_RULE_ADD', { name, rule     }
+}
     /**
      * Remove validation rule - delegated to rule definitions
      */
@@ -256,7 +239,7 @@ export class BalanceAdjustmentValidationRules {
     /**
      * Get rule statistics - delegated to rule definitions
      */
-    public getRuleStatistics(): any { return this.ruleDefinitions.getStatistics() }
+    public getRuleStatistics(): any { return this.ruleDefinitions.getStatistics();
     
     /**
      * Enable/disable rule - delegated to rule definitions
@@ -302,22 +285,22 @@ export class BalanceAdjustmentValidationRules {
      * Get applicable rules based on context - delegated to engine
      */
     public _getApplicableRules(context: ValidationContext): ValidationRule[] { const allRules = this.ruleDefinitions.getRules(),
-        return this.ruleEngine.getApplicableRules(allRules, context) }
+        return this.ruleEngine.getApplicableRules(allRules, context);
     
     /**
      * Get bubble health limits - delegated to rule definitions
      */
-    public _getBubbleHealthLimits(bubbleType: string): BubbleHealthLimits { return this.ruleDefinitions.getBubbleHealthLimits(bubbleType) }
+    public _getBubbleHealthLimits(bubbleType: string): BubbleHealthLimits { return this.ruleDefinitions.getBubbleHealthLimits(bubbleType);
     
     /**
      * Get score limits - delegated to rule definitions
      */
-    public _getScoreLimits(bubbleType: string): ScoreLimits { return this.ruleDefinitions.getScoreLimits(bubbleType) }
+    public _getScoreLimits(bubbleType: string): ScoreLimits { return this.ruleDefinitions.getScoreLimits(bubbleType);
     
     /**
      * Get change threshold - delegated to rule definitions
      */
-    public _getChangeThreshold(bubbleType: string, propertyType: string): number { return this.ruleDefinitions.getChangeThreshold(bubbleType, propertyType) }
+    public _getChangeThreshold(bubbleType: string, propertyType: string): number { return this.ruleDefinitions.getChangeThreshold(bubbleType, propertyType);
     
     // ===== LEGACY RULE INITIALIZATION METHODS - Maintained for compatibility =====
     
@@ -325,77 +308,77 @@ export class BalanceAdjustmentValidationRules {
      * Initialize rules - delegated to rule definitions
      */
     public _initializeRules(): void { this.ruleDefinitions.initializeRules();
-        this.syncLegacyProperties() }
+        this.syncLegacyProperties();
     
     /**
      * Add bubble health rules - delegated to rule definitions
      */
     public _addBubbleHealthRules(): void { this.ruleDefinitions.addBubbleHealthRules();
-        this.syncLegacyProperties() }
+        this.syncLegacyProperties();
     
     /**
      * Add score rules - delegated to rule definitions
      */
     public _addScoreRules(): void { this.ruleDefinitions.addScoreRules();
-        this.syncLegacyProperties() }
+        this.syncLegacyProperties();
     
     /**
      * Add size rules - delegated to rule definitions
      */
     public _addSizeRules(): void { this.ruleDefinitions.addSizeRules();
-        this.syncLegacyProperties() }
+        this.syncLegacyProperties();
     
     /**
      * Add time rules - delegated to rule definitions
      */
     public _addTimeRules(): void { this.ruleDefinitions.addTimeRules();
-        this.syncLegacyProperties() }
+        this.syncLegacyProperties();
     
     /**
      * Add special effect rules - delegated to rule definitions
      */
     public _addSpecialEffectRules(): void { this.ruleDefinitions.addSpecialEffectRules();
-        this.syncLegacyProperties() }
+        this.syncLegacyProperties();
     
     /**
      * Add system rules - delegated to rule definitions
      */
     public _addSystemRules(): void { this.ruleDefinitions.addSystemRules();
-        this.syncLegacyProperties() }
+        this.syncLegacyProperties();
     
     // ===== PUBLIC API METHODS - Enhanced with sub-component functionality =====
     
     /**
      * Generate detailed validation report
      */
-    public generateDetailedReport(validationResult: ValidationResult): string { return this.resultProcessor.generateDetailedReport(validationResult) }
+    public generateDetailedReport(validationResult: ValidationResult): string { return this.resultProcessor.generateDetailedReport(validationResult);
     
     /**
      * Get validation analytics
      */
-    public getValidationAnalytics(): ValidationAnalytics { return this.resultProcessor.getAnalytics() }
+    public getValidationAnalytics(): ValidationAnalytics { return this.resultProcessor.getAnalytics();
     
     /**
      * Get engine performance metrics
      */
-    public getEngineMetrics(): EngineMetrics { return this.ruleEngine.getPerformanceMetrics() }
+    public getEngineMetrics(): EngineMetrics { return this.ruleEngine.getPerformanceMetrics();
     
     /**
      * Get engine statistics
      */
-    public getEngineStatistics(): EngineStatistics { return this.ruleEngine.getStatistics() }
+    public getEngineStatistics(): EngineStatistics { return this.ruleEngine.getStatistics();
     
     /**
      * Get execution history
      */
     public getExecutionHistory(filters: Record<string, any> = { ): ExecutionHistoryEntry[] {
-        return this.ruleEngine.getExecutionHistory(filters) }
+        return this.ruleEngine.getExecutionHistory(filters);
     
     /**
      * Configure validation components
      */
     public configure(config: SystemConfig): void { if (config.engine) {
-            this.ruleEngine.configure(config.engine) }
+            this.ruleEngine.configure(config.engine);
         
         if (config.processor) {
         ','
@@ -426,7 +409,7 @@ export class BalanceAdjustmentValidationRules {
      * Get component references for advanced usage
      */
     public getComponents(): ComponentReferences { return { engine: this.ruleEngine,
-            definitions: this.ruleDefinitions },
+            definitions: this.ruleDefinitions };
             processor: this.resultProcessor 
     }
     
@@ -434,7 +417,7 @@ export class BalanceAdjustmentValidationRules {
      * Get system health status'
      */''
     public getSystemHealth('''
-                status: 'active',
+                status: 'active,
                 metrics: this.ruleEngine.getStatistics()';'
                 status: 'active')','
     ruleCount: this.ruleDefinitions.rules.size,
@@ -443,7 +426,7 @@ export class BalanceAdjustmentValidationRules {
                 analytics: this.resultProcessor.getAnalytics();
             },
             overall: { initialized: true,
-                totalRules: this.rules.size,
+                totalRules: this.rules.size  ,
     lastSyncTime: Date.now( 
     }
     

@@ -44,7 +44,7 @@ describe('多言語対応パフォーマンステスト', () => {
           return keys.reduce((acc, key) => {
             acc[key] = `translated_${key}`;
             return acc;
-          }, {};
+          }, {}
         },
         preloadLanguages: jest.fn().mockResolvedValue(
         clearCache: jest.fn( },
@@ -177,7 +177,7 @@ describe('多言語対応パフォーマンステスト', () => {
           await localizationManager.setLanguage(language);
           // 翻訳を大量取得してメモリ使用量を増加させる
           for (let j = 0, j < 50, j++) {
-            localizationManager.t(`test.key.${j)`};
+            localizationManager.t(`test.key.${j)`}
           }
         }
       }
@@ -320,7 +320,7 @@ describe('多言語対応パフォーマンステスト', () => {
       // すべてのベンチマークが閾値内であることを確認
       expect(results.languageSwitch).toBeLessThan(benchmarks.languageSwitch);
       expect(results.translationGet).toBeLessThan(benchmarks.translationGet);
-      expect(results.batchTranslation).toBeLessThan(benchmarks.batchTranslation};
+      expect(results.batchTranslation).toBeLessThan(benchmarks.batchTranslation}
     };
   }
 };
@@ -330,9 +330,9 @@ describe('多言語対応パフォーマンステスト', () => {
 export class I18nPerformanceMonitor {
   constructor() {
     this.metrics = {
-      languageSwitches: [];
+      languageSwitches: [],
       translationGets: [];
-      memorySnapshots: [];
+      memorySnapshots: [],
       errors: []
     };
     this.isMonitoring = false;
@@ -366,7 +366,7 @@ export class I18nPerformanceMonitor {
     
     this.metrics.memorySnapshots.push({);
       timestamp: performance.now(
-        memory: process.memoryUsage( };
+        memory: process.memoryUsage( }
   }
   recordError(error, context) {
     if (!this.isMonitoring) return,
@@ -379,7 +379,7 @@ export class I18nPerformanceMonitor {
     const report = {
       monitoringDuration: this.endTime - this.startTime,
       summary: {
-        languageSwitches: this.metrics.languageSwitches.length,
+        languageSwitches: this.metrics.languageSwitches.length },
         translationGets: this.metrics.translationGets.length,
         memorySnapshots: this.metrics.memorySnapshots.length,
         errors: this.metrics.errors.length
@@ -395,7 +395,7 @@ export class I18nPerformanceMonitor {
         max: Math.max(...switchDurations,
         min: Math.min(...switchDurations,
         count: switchDurations.length
-      };
+      }
     }
     if (this.metrics.translationGets.length > 0) {
       const getDurations = this.metrics.translationGets.map(g => g.duration);
@@ -404,7 +404,7 @@ export class I18nPerformanceMonitor {
         max: Math.max(...getDurations,
         min: Math.min(...getDurations,
         count: getDurations.length
-      };
+      }
     }
     // 推奨事項の生成
     if (report.performance.languageSwitch? .average > PERFORMANCE_THRESHOLDS.languageSwitch') {'
@@ -412,7 +412,7 @@ export class I18nPerformanceMonitor {
     if (report.performance.translationGet?.average > 10') {'
       report.recommendations.push('翻訳取得が遅いです。翻訳キャッシュの最適化を検討してください。') }
     if (this.metrics.errors.length > 0) {
-      report.recommendations.push(`${this.metrics.errors.length)個のエラーが発生しました。エラーハンドリングの改善を検討してください。`};
+      report.recommendations.push(`${this.metrics.errors.length)個のエラーが発生しました。エラーハンドリングの改善を検討してください。`}
     }
     return report;
   }

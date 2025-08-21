@@ -6,49 +6,49 @@ import { describe, test, beforeEach, afterEach, expect, jest  } from '@jest/glob
 import { AnalyticsPerformanceOptimizer  } from '../../src/analytics/AnalyticsPerformanceOptimizer.js';
 // Type definitions for test objects
 interface PerformanceHistory {
-    timestamp: number;
+    timestamp: number,
     fps: number;
 interface EventData {
     [key: string]: any;
 interface EventHandler {
     (type: string, data: EventData): void;
 interface QueuedEvent {
-    type: string;
+    type: string,
     timestamp: number;
     data: EventData;
     handler?: EventHandler;
 interface GroupedEvents {
     [type: string]: QueuedEvent[];
 interface OptimizerConfig {
-    batchSize: number;
+    batchSize: number,
     batchTimeout: number;
     cacheSize: number;
     performanceCheckInterval?: number;
     cacheTimeout?: number;
     memoryWarningThreshold?: number;
 interface PerformanceMetrics {
-    memoryUsage: number;
+    memoryUsage: number,
     cacheHitRate: number;
     fps?: number;
 interface MemoryUsage {
     current: number;
 interface OptimizationStats {
-    batchesProcessed: number;
+    batchesProcessed: number,
     cacheHits: number;
-    cacheMisses: number;
+    cacheMisses: number,
     performanceWarnings: number;
     memoryCleanups: number;
 interface OptimizationStatsResponse extends OptimizationStats {
-    performanceMetrics: PerformanceMetrics;
+    performanceMetrics: PerformanceMetrics,
     memoryUsage: MemoryUsage;
-    config: OptimizerConfig;
+    config: OptimizerConfig,
     eventQueueSize: number;
     cacheSize: number;
 interface PerformanceReportSummary {
-    batchesProcessed: number;
+    batchesProcessed: number,
     cacheHitRate: string;
 interface PerformanceReport {
-    summary: PerformanceReportSummary;
+    summary: PerformanceReportSummary,
     recommendations: string[];
     detailedStats: OptimizationStatsResponse;
 // モックAnalyticsManager
@@ -186,7 +186,7 @@ describe('AnalyticsPerformanceOptimizer', () => {
                 writable: true,
                 value: {
                     usedJSHeapSize: 50 * 1024 * 1024 // 50MB
-                };
+                }
             };
             optimizer.checkPerformanceMetrics();
             expect(optimizer.performanceMetrics.memoryUsage).toBe(50 * 1024 * 1024);
@@ -205,7 +205,7 @@ describe('AnalyticsPerformanceOptimizer', () => {
                 writable: true,
                 value: {
                     usedJSHeapSize: optimizer.config.memoryWarningThreshold! + 1024 * 1024
-                };
+                }
             };
             optimizer.checkPerformanceMetrics();
             expect(consoleSpy').toHaveBeenCalledWith('High memory usage detected, performing aggressive cleanup');'
@@ -279,7 +279,7 @@ describe('AnalyticsPerformanceOptimizer', () => {
                 performanceWarnings: 0,
                 memoryCleanups: 0,
                 performanceMetrics: {
-                    cacheHitRate: 60, // 低いキャッシュヒット率
+                    cacheHitRate: 60, // 低いキャッシュヒット率 };
                     memoryUsage: 0,
                     fps: 25 // 低いFPS
                 },
@@ -334,7 +334,7 @@ describe('AnalyticsPerformanceOptimizer', () => {
             
             await optimizer.fallbackToIndividualProcessing(events);
             events.forEach(event => {);
-                expect(event.handler!).toHaveBeenCalledWith(event.type, event.data) };
+                expect(event.handler!).toHaveBeenCalledWith(event.type, event.data) }
         }
     }');'
     describe('破棄処理', (') => {'

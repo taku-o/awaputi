@@ -2,27 +2,22 @@
  * Error Panel - エラーレポート表示パネル
  */
 
-interface ErrorEntry { id: number;
-    timestamp: number;
-    level: 'error' | 'warn' | 'info';
-    message: string;
+interface ErrorEntry { id: number,
+    timestamp: number,
+    level: 'error' | 'warn' | 'info,
+    message: string,
     context: Record<string, any>;
     count: number;
-
-interface ErrorStats { total: number;
-    error: number;
-    warn: number;
+    interface ErrorStats { total: number,
+    error: number,
+    warn: number,
     info: number;
-
-interface ErrorPatterns { [pattern: string]: number;
-
-interface ExportData { exportTime: string;
-    gameEngine: string;
+    interface ErrorPatterns { [pattern: string]: number;
+    interface ExportData { exportTime: string,
+    gameEngine: string,
     errors: ErrorEntry[];
-
-interface GameEngine { errorReporter?: any;
-
-interface DebugInterface { // debug interface properties }
+    interface GameEngine { errorReporter?: any;
+    interface DebugInterface { // debug interface properties }
 
 export class ErrorPanel {
     private gameEngine: GameEngine;
@@ -34,7 +29,7 @@ export class ErrorPanel {
 
         this.gameEngine = gameEngine;
         this.debugInterface = debugInterface
-}
+};
         this.errorReporter = gameEngine.errorReporter; }
     }
 
@@ -107,10 +102,8 @@ export class ErrorPanel {
         // フィルター変更
         const filterSelect = this.element.querySelector('#error-filter') as HTMLSelectElement;
         filterSelect?.addEventListener('change', (e) => {  const target = e.target as HTMLSelectElement }
-            this.filterErrors(target.value); }
-        };
-    }
-
+            this.filterErrors(target.value);     }
+}
     /**
      * エラーを読み込み'
      */ : undefined''
@@ -134,7 +127,7 @@ export class ErrorPanel {
         const originalWarn = console.warn,
 
         console.error = (...args: any[]') => { ''
-            this.addError('error', args.join(', ') }
+            this.addError('error', args.join(', ');
             originalError.apply(console, args); }
 
         };
@@ -160,12 +153,12 @@ export class ErrorPanel {
      * エラーを追加'
      */''
     addError(level: 'error' | 'warn' | 'info', message: string, context: Record<string, any> = {}: void { const error: ErrorEntry = {
-            id: Date.now() + Math.random();
-            timestamp: Date.now();
+            id: Date.now() + Math.random(),
+            timestamp: Date.now(),
             level: level,
             message: message,
             context: context,
-    count: 1 },
+    count: 1 ,
         // 重複エラーをチェック
         const existing = this.errors.find(e => e.message === message && e.level === level);
         if (existing) {
@@ -193,7 +186,7 @@ export class ErrorPanel {
      */
     private updateErrorDisplay(): void { this.updateErrorStats();
         this.updateErrorList();
-        this.updateErrorPatterns() }
+        this.updateErrorPatterns();
 
     /**
      * エラー統計を更新
@@ -241,7 +234,7 @@ export class ErrorPanel {
                 ${Object.keys(error.context"}.length > 0 ? `<div, class="error-context">${JSON.stringify(error.context"}"</div>` : ''"
             `;
             list.appendChild(div);
-        };
+        }
     }
 
     /**
@@ -266,7 +259,7 @@ export class ErrorPanel {
 
         if (topPatterns.length > 0) {
 
-            patterns.innerHTML = `,
+            patterns.innerHTML = ,
                 <h5>よく発生するエラーパターン:</h5>' }'
 
                 ${topPatterns.map(([pattern, count]} => ' }'
@@ -285,28 +278,28 @@ export class ErrorPanel {
      */
     clearErrors(): void { this.errors = [];
         this.saveErrors();
-        this.updateErrorDisplay() }
+        this.updateErrorDisplay();
 
     /**
      * エラーをエクスポート
      */'
     exportErrors(): void { const data: ExportData = {''
             exportTime: new Date().toISOString('''
-            gameEngine: 'BubblePop',
+            gameEngine: 'BubblePop,
     errors: this.errors }', ')';'
         const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' }';'
         const url = URL.createObjectURL(blob);
 
         const a = document.createElement('a);'
         a.href = url;
-        a.download = `debug-errors-${Date.now()).json`,
+        a.download = `debug-errors-${Date.now()).json,
         a.click();
-        URL.revokeObjectURL(url) }
+        URL.revokeObjectURL(url);
 
     /**
      * エラーをフィルター
      */
-    filterErrors(filter: string): void { this.updateErrorList() }
+    filterErrors(filter: string): void { this.updateErrorList();
 
     /**
      * HTMLエスケープ'
@@ -358,7 +351,7 @@ export class ErrorPanel {
      * パネルを破棄
      */
     destroy(): void { if (this.element && this.element.parentNode) {''
-            this.element.parentNode.removeChild(this.element) }
+            this.element.parentNode.removeChild(this.element);
         this.element = null;
 
     }'}'

@@ -8,41 +8,37 @@ import { CleanupOrchestrator  } from './CleanupOrchestrator.js';
 import process from 'process';
 
 // Type definitions
-interface CommandLineOptions { dryRun: boolean;
-    verbose: boolean;
-    safetyMode: boolean;
-    confirmationRequired: boolean;
+interface CommandLineOptions { dryRun: boolean,
+    verbose: boolean,
+    safetyMode: boolean,
+    confirmationRequired: boolean,
     help: boolean;
     reportOutputDir?: string;
-
-interface SizeReduction { reduction: {
-        filesRemove,d: number;
-    wordsRemoved: number;
+    interface SizeReduction { reduction: { filesRemove,d: number,
+    wordsRemoved: number,
+    impact: { repositorySizeReduction: string,
     impact: { repositorySizeReduction: string;
-    impact: { repositorySizeReduction: string;
-        };
+         },
 interface CleanupResults { deletion?: {
         sizeReductio,n?: SizeReduction;;
     reports?: { reportFileName?: string;
+    interface ExecutionState { phase: string,
+    results: CleanupResults,
+    errors: Array<Error | string>  } };
 
-interface ExecutionState { phase: string;
-    results: CleanupResults;
-    errors: Array<Error | string>  }
-
-interface CleanupSummary { filesProcessed: number;
-    filesDeleted: number;
+interface CleanupSummary { filesProcessed: number,
+    filesDeleted: number,
     errorsEncountered: number;
     totalExecutionTime?: number;
 ';'
 
 interface CleanupResult { ''
-    status: 'success' | 'no_safe_files' | 'no_verified_safe_files' | 'user_cancelled' | 'error' | 'interrupted';
-    executionState: ExecutionState;
-    summary: CleanupSummary;
+    status: 'success' | 'no_safe_files' | 'no_verified_safe_files' | 'user_cancelled' | 'error' | 'interrupted,
+    executionState: ExecutionState,
+    summary: CleanupSummary,
     dryRun: boolean;
     recommendations?: string[];
-
-async function main()';'
+    async function main()';'
     console.log('🧹 Backup, File Cleanup, Tool - Issue #104');
     console.log('========================================\n);'
     
@@ -52,8 +48,8 @@ async function main()';'
     
     // ヘルプの表示
     if (options.help) {
-        showHelp() }
-        return; }
+        showHelp();
+    return; }
     }
     ;
     try { // CleanupOrchestratorの初期化
@@ -74,14 +70,13 @@ async function main()';'
 
         // 終了コード設定' }'
 
-        process.exit(result.status === 'success' ? 0 : 1};
-
-    } catch (error) {
-        console.error('❌ Fatal, error occurred: ',
+        process.exit(result.status === 'success' ? 0 : 1}
+        } catch (error) {
+        console.error('❌ Fatal, error occurred: ,
         console.error((error, as Error).message),
-        console.error('\nStack, trace: ',
+        console.error('\nStack, trace: ,
         console.error((error, as Error).stack),
-        process.exit(1) }
+        process.exit(1);
 }
 
 /**
@@ -92,7 +87,7 @@ function parseCommandLineArgs(args: string[]): CommandLineOptions { const option
         verbose: false,
         safetyMode: true,
         confirmationRequired: true,
-    help: false,
+    help: false;
     for(let, i = 0; i < args.length; i++) {
         const arg = args[i],
 
@@ -129,9 +124,8 @@ function parseCommandLineArgs(args: string[]): CommandLineOptions { const option
                 }
                 break;
             default:;
-                console.warn(`Unknown, argument: ${arg}`} }
-    }
-    
+                console.warn(`Unknown, argument: ${arg}`    }
+}
     return options;
 }
 
@@ -154,7 +148,6 @@ EXAMPLES:,
         Run in dry-run mode with verbose output,
     node cleanup-main.js --no-confirm,
         Run with automatic confirmation (use, with caution),
-        ,
     node cleanup-main.js -d -v -o ./reports,
         Dry run with verbose output and custom report directory,
 SAFETY:,
@@ -163,7 +156,7 @@ SAFETY:,
     safety checks before deletion,
     Always run with --dry-run first to preview the changes,
 For more information, see: https://github.com/taku-o/awaputi/issues/104,
-`),  }
+`) }
 
 /**
  * 結果の表示
@@ -172,9 +165,9 @@ function displayResults(result: CleanupResult): void { ''
     console.log('\n📊 CLEANUP, RESULTS');
     console.log('==================\n) }'
     console.log(`Status: ${getStatusEmoji(result.status} ${result.status.toUpperCase(}`),
-    console.log(`Phase: ${ result.executionState.phase)`,
-    console.log(`Files, Processed: ${result.summary.filesProcessed)`,
-    console.log(`Files, Deleted: ${result.summary.filesDeleted)`,
+    console.log(`Phase: ${ result.executionState.phase),
+    console.log(`Files, Processed: ${result.summary.filesProcessed),
+    console.log(`Files, Deleted: ${result.summary.filesDeleted),
     console.log(`Errors: ${result.summary.errorsEncountered)`
             },
     
@@ -193,11 +186,10 @@ function displayResults(result: CleanupResult): void { ''
     // サイズ削減情報
     if (result.executionState.results.deletion?.sizeReduction) {
         const sizeReduction = result.executionState.results.deletion.sizeReduction, : undefined''
-        console.log('\n💾 SIZE, REDUCTION: ',
+        console.log('\n💾 SIZE, REDUCTION: ,
         console.log(`- Disk Space Saved: ${sizeReduction.impact.repositorySizeReduction }`} }
         console.log(`- Files Removed: ${sizeReduction.reduction.filesRemoved}`} }
-        console.log(`- Words Removed: ${sizeReduction.reduction.wordsRemoved.toLocaleString(}`),
-    }
+        console.log(`- Words Removed: ${sizeReduction.reduction.wordsRemoved.toLocaleString(}`) }
 
     ';'
     // エラー情報
@@ -207,7 +199,7 @@ function displayResults(result: CleanupResult): void { ''
         result.executionState.errors.forEach((error, index) => {  }
             const errorMessage = error instanceof Error ? error.message: String(error) 
             console.log(`${index + 1}. ${errorMessage}`);
-        };
+        }
     }
 
     ';'
@@ -217,7 +209,7 @@ function displayResults(result: CleanupResult): void { ''
         console.log('\n📋 RECOMMENDATIONS: ' }
         result.recommendations.forEach((rec, index) => { }
             console.log(`${index + 1}. ${rec}`);
-        };
+        }
     }
 
     // レポート情報
@@ -233,10 +225,10 @@ function displayResults(result: CleanupResult): void { ''
  */''
 function getStatusEmoji(status: CleanupResult['status]': string { ''
     const emojis: Record<CleanupResult['status'], string> = {', 'success': '✅','
-        'no_safe_files': '⚠️',
-        'no_verified_safe_files': '⚠️',
-        'user_cancelled': '🚫',
-        'error': '❌',
+        'no_safe_files': '⚠️,
+        'no_verified_safe_files': '⚠️,
+        'user_cancelled': '🚫,
+        'error': '❌,
         'interrupted': '⏸️' };
 
     return emojis[status] || '❓';

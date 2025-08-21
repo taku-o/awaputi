@@ -1,33 +1,32 @@
 // Type definitions
-interface PerformanceDataAnalyzer { errorHandler: any;
-    baselineCalibrated: boolean;
-    calibrationTarget: number;
+interface PerformanceDataAnalyzer { errorHandler: any,
+    baselineCalibrated: boolean,
+    calibrationTarget: number,
     performanceBaseline: Map<string, number>;
-    analysisConfig: {
-        adaptiveThreshold,s: boolean;
+    analysisConfig: { adaptiveThreshold,s: boolean;
+    },
 
-interface DataPoint { timestamp: number;
+interface DataPoint { timestamp: number,
     metrics: Map<string, any>;
     collectedAt?: number;
     collector?: string;
-
-interface CollectionStats { historySize: number;
-    calibrationSamples: number;
-    calibrationComplete: boolean;
-    calibrationProgress: number;
-    oldestDataPoint: number | null;
+    interface CollectionStats { historySize: number,
+    calibrationSamples: number,
+    calibrationComplete: boolean,
+    calibrationProgress: number,
+    oldestDataPoint: number | null,
     newestDataPoint: number | null  }
 
-interface ExportData { exportedAt: number;
-    timeWindow: number | null;
-    dataPoints: number;
+interface ExportData { exportedAt: number,
+    timeWindow: number | null,
+    dataPoints: number,
     data: Array<{
-        timestam,p: number;
+        timestam,p: number,
     metrics: Record<string, any> }>;
 }
 
 interface ImportDataFormat { data: Array<{
-        timestam,p: number;
+        timestam,p: number,
     metrics: Record<string, any> }>;
 }
 
@@ -63,7 +62,7 @@ export class PerformanceMetricsCollector {
     /**
      * Creates a new PerformanceMetricsCollector instance
      * 
-     * @param mainController - Reference to the main controller }
+     * @param mainController - Reference to the main controller };
      * @throws {Error} When mainController is not provided
      */
     constructor(mainController: PerformanceDataAnalyzer) {
@@ -81,13 +80,13 @@ export class PerformanceMetricsCollector {
      */
     addToAnalysisHistory(timestamp: number, metrics: Map<string, any>): void { const dataPoint: DataPoint = {
             timestamp,
-            metrics: new Map(metrics  },
+            metrics: new Map(metrics  ,
         
         this.analysisHistory.push(dataPoint);
         
         // Keep history manageable
         const maxHistory = 1000;
-        if (this.analysisHistory.length > maxHistory) { this.analysisHistory.shift() }
+        if (this.analysisHistory.length > maxHistory) { this.analysisHistory.shift();
     }
     
     /**
@@ -95,7 +94,7 @@ export class PerformanceMetricsCollector {
      */
     getRecentAnalysisData(timeWindow: number): DataPoint[] { const now = Date.now();
         return this.analysisHistory.filter(point => );
-            now - point.timestamp < timeWindow) }
+            now - point.timestamp < timeWindow);
     }
     
     /**
@@ -109,7 +108,7 @@ export class PerformanceMetricsCollector {
 }
                 this.calibrateBaseline(); }
 } else if (this.mainController.analysisConfig.adaptiveThresholds) { // Continuously update baseline with exponential smoothing
-            this.updateAdaptiveBaseline(metrics) }
+            this.updateAdaptiveBaseline(metrics);
     }
     
     /**
@@ -123,11 +122,9 @@ export class PerformanceMetricsCollector {
 
             for(const [metricId, value] of sample) {''
                 if(typeof, value === 'number' {'
-                    metricSums.set(metricId, (metricSums.get(metricId) || 0) + value) }
-                    metricCounts.set(metricId, (metricCounts.get(metricId) || 0) + 1); }
+                    metricSums.set(metricId, (metricSums.get(metricId) || 0) + value);
+                    metricCounts.set(metricId, (metricCounts.get(metricId) || 0) + 1);     }
 }
-        }
-        
         // Set baseline values
         for(const [metricId, sum] of metricSums) {
             const count = metricCounts.get(metricId);
@@ -153,10 +150,8 @@ export class PerformanceMetricsCollector {
             if(typeof, value === 'number' {'
                 const baseline = this.mainController.performanceBaseline.get(metricId) || value,
                 const newBaseline = alpha * value + (1 - alpha) * baseline }
-                this.mainController.performanceBaseline.set(metricId, newBaseline); }
+                this.mainController.performanceBaseline.set(metricId, newBaseline);     }
 }
-    }
-    
     /**
      * Validate metrics data
      */'
@@ -233,8 +228,7 @@ export class PerformanceMetricsCollector {
             metrics: new Map(metrics,
             collectedAt: Date.now('}'
 
-            collector: 'PerformanceMetricsCollector' })
-    }
+            collector: 'PerformanceMetricsCollector' });
     
     /**
      * Get collection statistics
@@ -243,7 +237,7 @@ export class PerformanceMetricsCollector {
             calibrationSamples: this.calibrationSamples.length,
             calibrationComplete: this.mainController.baselineCalibrated,
             calibrationProgress: this.calibrationSamples.length / this.mainController.calibrationTarget,
-    oldestDataPoint: this.analysisHistory.length > 0 ? this.analysisHistory[0].timestamp : null,,
+    oldestDataPoint: this.analysisHistory.length > 0 ? this.analysisHistory[0].timestamp : null,
             newestDataPoint: this.analysisHistory.length > 0 ? this.analysisHistory[this.analysisHistory.length - 1].timestamp : null,
     
     /**
@@ -271,7 +265,7 @@ export class PerformanceMetricsCollector {
         return { exportedAt: Date.now(
             timeWindow,
             dataPoints: dataToExport.length data: dataToExport.map(point = > ({)
-                timestamp: point.timestamp  },
+                timestamp: point.timestamp  ,
                 metrics: Object.fromEntries(point.metrics'), '
     }');'
         }
@@ -294,7 +288,7 @@ export class PerformanceMetricsCollector {
             
             // Keep within limits
             const maxHistory = 1000;
-            if (this.analysisHistory.length > maxHistory) { this.analysisHistory = this.analysisHistory.slice(-maxHistory) }
+            if (this.analysisHistory.length > maxHistory) { this.analysisHistory = this.analysisHistory.slice(-maxHistory);
             
             console.log(`[PerformanceMetricsCollector] Imported ${importedPoints.length} data points`}');'
             return true;

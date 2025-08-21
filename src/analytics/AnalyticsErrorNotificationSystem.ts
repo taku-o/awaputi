@@ -6,17 +6,17 @@
 export class AnalyticsErrorNotificationSystem {
     constructor(options: any = {) {
         this.options = {
-            enableErrorNotifications: true;
-            enableErrorReporting: true;
-            enableAutoRecovery: true;
-            maxErrorHistory: 100;
-            errorReportingEndpoint: null;
-            enableContextCollection: true;
-            enableStackTrace: true;
-            enableUserFeedback: true;
+            enableErrorNotifications: true,
+            enableErrorReporting: true,
+            enableAutoRecovery: true,
+            maxErrorHistory: 100,
+            errorReportingEndpoint: null,
+            enableContextCollection: true,
+            enableStackTrace: true,
+            enableUserFeedback: true,
     notificationTimeout: 8000, // 8秒;
             criticalErrorTimeout: 15000, // 15秒
-    }
+    };
             ...options
         };
 
@@ -35,7 +35,7 @@ export class AnalyticsErrorNotificationSystem {
     initialize() {
         this.setupErrorTypes();
         this.createNotificationContainer();
-        this.setupGlobalErrorHandlers() }
+        this.setupGlobalErrorHandlers();
         this.isInitialized = true; }
     }
 
@@ -43,61 +43,56 @@ export class AnalyticsErrorNotificationSystem {
      * エラータイプの設定
      */
     setupErrorTypes() { this.errorTypes.set('javascript', {''
-            name: 'JavaScript エラー',
-            icon: '💥',
+            name: 'JavaScript エラー,
+            icon: '💥,
             color: '#f44336',','
             severity: 'error')','
-    recoverable: false,')',
+    recoverable: false,'),
             actions: ['詳細表示', 'レポート送信', '再読み込み]'),
 
         this.errorTypes.set('network', {''
-            name: 'ネットワークエラー',
-            icon: '🌐',
+            name: 'ネットワークエラー,
+            icon: '🌐,
             color: '#ff9800',','
             severity: 'warning')','
-    recoverable: true,')',
+    recoverable: true,'),
             actions: ['再試行', '詳細表示', 'オフラインモード]'),
-            actions: ['再試行', '詳細表示', 'オフラインモード]'),
-        };
+            actions: ['再試行', '詳細表示', 'オフラインモード]') };
         this.errorTypes.set('resource', {''
-            name: 'リソースエラー',
-            icon: '📁',
+            name: 'リソースエラー,
+            icon: '📁,
             color: '#2196f3',','
             severity: 'warning')','
-    recoverable: true,')',
+    recoverable: true,'),
             actions: ['再読み込み', '詳細表示', 'キャッシュクリア]'),
-            actions: ['再読み込み', '詳細表示', 'キャッシュクリア]'),
-        };
+            actions: ['再読み込み', '詳細表示', 'キャッシュクリア]') };
         this.errorTypes.set('permission', {''
-            name: '権限エラー',
-            icon: '🔒',
+            name: '権限エラー,
+            icon: '🔒,
             color: '#9c27b0',','
             severity: 'warning')','
-    recoverable: false,')',
+    recoverable: false,'),
             actions: ['権限設定', '詳細表示', 'ヘルプ]'),
-            actions: ['権限設定', '詳細表示', 'ヘルプ]'),
-        };
+            actions: ['権限設定', '詳細表示', 'ヘルプ]') };
         this.errorTypes.set('storage', {''
-            name: 'ストレージエラー',
-            icon: '💾',
+            name: 'ストレージエラー,
+            icon: '💾,
             color: '#607d8b',','
             severity: 'error')','
-    recoverable: true,')',
+    recoverable: true,'),
             actions: ['ストレージクリア', '詳細表示', 'データエクスポート]'),
-            actions: ['ストレージクリア', '詳細表示', 'データエクスポート]'),
-        };
+            actions: ['ストレージクリア', '詳細表示', 'データエクスポート]') };
         this.errorTypes.set('performance', {''
-            name: 'パフォーマンスエラー',
-            icon: '⚡',
+            name: 'パフォーマンスエラー,
+            icon: '⚡,
             color: '#ff5722',','
             severity: 'warning')','
-    recoverable: true,')',
+    recoverable: true,'),
             actions: ['品質設定', '詳細表示', '最適化]'),
-            actions: ['品質設定', '詳細表示', '最適化]'),
-        };
+            actions: ['品質設定', '詳細表示', '最適化]') };
         this.errorTypes.set('security', {''
-            name: 'セキュリティエラー',
-            icon: '🛡️',
+            name: 'セキュリティエラー,
+            icon: '🛡️,
             color: '#d32f2f',','
             severity: 'critical')','
     recoverable: false,' }'
@@ -115,17 +110,17 @@ export class AnalyticsErrorNotificationSystem {
         ';'
 
         Object.assign(this.notificationContainer.style, { ''
-            position: 'fixed',
-            bottom: '20px',
-            right: '20px',
-            width: '400px',
-            maxWidth: '90vw',
-            zIndex: '10002',
+            position: 'fixed,
+            bottom: '20px,
+            right: '20px,
+            width: '400px,
+            maxWidth: '90vw,
+            zIndex: '10002,
             fontFamily: 'Arial, sans-serif',','
-            fontSize: '14px',')',
+            fontSize: '14px,')',
             pointerEvents: 'none'),
         document.body.appendChild(this.notificationContainer);
-        this.applyNotificationStyles(),  }
+        this.applyNotificationStyles();
 
     /**
      * 通知スタイルの適用'
@@ -145,7 +140,7 @@ export class AnalyticsErrorNotificationSystem {
                 transform: translateX(100%,
     animation: slideInError 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) forwards,
                 transition: all 0.3s ease,
-                backdrop-filter: blur(10px) }
+                backdrop-filter: blur(10px);
             .error-notification.critical { animation: slideInError 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) forwards,
                           pulseError 2s infinite 0.4s,
                 box-shadow: 0 8px 32px rgba(255, 0, 0, 0.4 }
@@ -161,7 +156,7 @@ export class AnalyticsErrorNotificationSystem {
                 color: white,
                 font-size: 16px }
             .error-icon { font-size: 20px,
-                filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3) }
+                filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3);
             .error-severity { font-size: 11px,
                 padding: 4px 8px,
                 border-radius: 12px,
@@ -185,7 +180,7 @@ export class AnalyticsErrorNotificationSystem {
                 font-family: 'Courier New', monospace,
                 max-height: 100px,
                 overflow-y: auto,
-                border: 1px solid rgba(255, 255, 255, 0.1) }
+                border: 1px solid rgba(255, 255, 255, 0.1);
             .error-context { background: rgba(255, 255, 255, 0.05);
                 padding: 8px,
                 border-radius: 6px,
@@ -212,8 +207,8 @@ export class AnalyticsErrorNotificationSystem {
                 font-weight: 500 }
             .error-action:hover { background: rgba(255, 255, 255, 0.25);
                 transform: translateY(-1px  }
-            .error-action.primary { background: linear-gradient(135deg, #2196f3, #1976d2) }
-            .error-action.danger { background: linear-gradient(135deg, #f44336, #d32f2f) }
+            .error-action.primary { background: linear-gradient(135deg, #2196f3, #1976d2);
+            .error-action.danger { background: linear-gradient(135deg, #f44336, #d32f2f);
             .error-close { background: none,
                 border: none,
                 color: #999,
@@ -258,16 +253,14 @@ export class AnalyticsErrorNotificationSystem {
                 }
                 to { 
                     transform: translateX(0}
-                    opacity: 1, 
-    }
+                    opacity: 1 }
             @keyframes slideOutError { from {  }
                     transform: translateX(0}
                     opacity: 1, ;
                 }
                 to { 
                     transform: translateX(100%}
-                    opacity: 0),
-                }
+                    opacity: 0);
             );
             @keyframes pulseError { 0%, 100% { 
                     box-shadow: 0 8px 32px rgba(255, 0, 0, 0.4 }
@@ -283,34 +276,33 @@ export class AnalyticsErrorNotificationSystem {
      */''
     setupGlobalErrorHandlers()';'
         window.addEventListener('error', (event) => {  this.handleError({''
-                type: 'javascript',
+                type: 'javascript,
                 message: event.message,
                 filename: event.filename,
-                lineno: event.lineno);
+                lineno: event.lineno),
                 colno: event.colno,
     error: event.error,','
-                stack: event.error?.stack', : undefined',
+                stack: event.error?.stack, : undefined',
                 timestamp: Date.now()','
         window.addEventListener('unhandledrejection', (event) => {'
             this.handleError({''
-                type: 'javascript',
+                type: 'javascript,
                 message: event.reason?.message || 'Unhandled Promise Rejection', : undefined);
                 error: event.reason,','
-                stack: event.reason?.stack', : undefined',
+                stack: event.reason?.stack, : undefined',
                 timestamp: Date.now()','
         window.addEventListener('error', (event) => {''
             if (event.target !== window && event.target.tagName) {
     
 }
 
-                this.handleError({) }
+                this.handleError({);
 
-                    type: 'resource') }
-                    message: `Failed to load ${event.target.tagName.toLowerCase(}: ${event.target.src || event.target.href}`,
+                    type: 'resource'),
+                    message: `Failed to load ${event.target.tagName.toLowerCase(}: ${event.target.src || event.target.href},
                     element: event.target.tagName,
                     src: event.target.src || event.target.href,
-    timestamp: Date.now(),
-    }, true);
+    timestamp: Date.now() , true);
     }
 
     /**
@@ -329,7 +321,7 @@ export class AnalyticsErrorNotificationSystem {
         }
 
         // エラーレポート送信
-        if (this.options.enableErrorReporting) { this.sendErrorReport(processedError) }
+        if (this.options.enableErrorReporting) { this.sendErrorReport(processedError);
 
         // カスタムイベント発火
         this.dispatchErrorEvent(processedError);
@@ -383,9 +375,9 @@ export class AnalyticsErrorNotificationSystem {
         try {
             return { : undefined
                 url: window.location.href }
-                userAgent: navigator.userAgent },
-                timestamp: new Date().toISOString() }
-                viewport: `${window.innerWidth}x${window.innerHeight}`,
+                userAgent: navigator.userAgent ,
+                timestamp: new Date().toISOString(),
+                viewport: `${window.innerWidth}x${window.innerHeight},
                 language: navigator.language,
                 online: navigator.onLine,
     memory: performance.memory ? { : undefined
@@ -407,7 +399,7 @@ export class AnalyticsErrorNotificationSystem {
                 usage: null,
             if (navigator.storage && navigator.storage.estimate) {
 
-                navigator.storage.estimate().then(estimate => { ) }
+                navigator.storage.estimate().then(estimate => { );
                     localStorage.quota = Math.round(estimate.quota / 1024 / 1024); }
                     localStorage.usage = Math.round(estimate.usage / 1024 / 1024); }
                 }
@@ -435,7 +427,7 @@ export class AnalyticsErrorNotificationSystem {
     showErrorNotification(errorData) {
         if (!this.notificationContainer) return,
 
-        const errorType = this.errorTypes.get(errorData.type) }
+        const errorType = this.errorTypes.get(errorData.type);
 
         const notification = document.createElement('div'); }
         notification.className = `error-notification ${errorData.severity}`;
@@ -446,7 +438,7 @@ export class AnalyticsErrorNotificationSystem {
             this.options.criticalErrorTimeout: this.options.notificationTimeout,
 
         notification.innerHTML = `';'
-            <div class="error-progress" style="width: 100%"></div>"",
+            <div class="error-progress" style="width: 100%"></div>",
             <div class="error-header">"";
                 <div class="error-title">"";
                     <span class="error-icon">${errorType.icon}</span>
@@ -465,14 +457,14 @@ export class AnalyticsErrorNotificationSystem {
             ` : '}'
 
             ${ errorData.context ? `''
-                <div, class="error-context">"",
+                <div, class="error-context">",
                     <div, class="context-item"> : undefined","
                         <span>URL:</span>"
-            }"
+            }
                         <span>${errorData.context.url?.split('/}.pop('}' || 'Unknown'}</span>'
                     </div>';'
                     <div class="context-item"> : undefined";"
-                        <span>Time: </span>"",
+                        <span>Time: </span>",
                         <span>${new, Date(errorData.timestamp}.toLocaleTimeString("}"</span>"
                     </div>";"
                     ${ errorData.context.memory ? `""
@@ -482,7 +474,7 @@ export class AnalyticsErrorNotificationSystem {
                         </div>"";
                     ` : '}''
                     <div class="context-item">";"
-                        <span>Online: </span>"",
+                        <span>Online: </span>",
                         <span>${errorData.context.online ? 'Yes' : 'No'}</span>
                     </div>';'
                 </div>';'
@@ -510,7 +502,7 @@ export class AnalyticsErrorNotificationSystem {
             const progress = Math.max(0, 100 - (elapsed / timeout) * 100); }
             progressBar.style.width = `${progress}%`;
             
-            if (progress > 0 && document.contains(notification) { requestAnimationFrame(updateProgress) }
+            if (progress > 0 && document.contains(notification) { requestAnimationFrame(updateProgress);
         };
         requestAnimationFrame(updateProgress);
 
@@ -562,7 +554,7 @@ export class AnalyticsErrorNotificationSystem {
                     recovered = await this.recoverFromStorageError(errorData);
                     break,
                 case 'performance':,
-                    recovered = await this.recoverFromPerformanceError(errorData) }
+                    recovered = await this.recoverFromPerformanceError(errorData);
                     break; }
             }
 
@@ -578,8 +570,7 @@ export class AnalyticsErrorNotificationSystem {
             } else { }'
 
                 this.showRecoveryStatus(errorData.id, 'failed'; }
-
-            } catch (e) {
+        } catch (e) {
             this.showRecoveryStatus(errorData.id, 'failed' }'
     }
 
@@ -595,8 +586,8 @@ export class AnalyticsErrorNotificationSystem {
 ';'
 
         const statusTexts = { ''
-            attempting: '<div class="recovery-status"><div class="recovery-spinner"></div>復旧を試行中...</div>',
-            success: '<div class="recovery-status">✅ 自動復旧に成功しました</div>',
+            attempting: '<div class="recovery-status"><div class="recovery-spinner"></div>復旧を試行中...</div>,
+            success: '<div class="recovery-status">✅ 自動復旧に成功しました</div>,
             failed: '<div class="recovery-status" style="color: #f44336,">❌ 自動復旧に失敗しました</div>'
             };
 
@@ -626,7 +617,7 @@ export class AnalyticsErrorNotificationSystem {
      */''
     async recoverFromStorageError(errorData) { try {
             // ストレージテスト
-            const testKey = '__storage_test__',
+            const testKey = '__storage_test__,
             localStorage.setItem(testKey, 'test),'
             localStorage.removeItem(testKey);
             return true } catch (e) { return false,
@@ -652,11 +643,11 @@ export class AnalyticsErrorNotificationSystem {
         try {
             await fetch(this.options.errorReportingEndpoint, {)'
                 method: 'POST')','
-    headers: {', 'Content-Type': 'application/json'),'
+    headers: { ', 'Content-Type': 'application/json'),'
                 body: JSON.stringify({)
                     error: errorData),
                     userAgent: navigator.userAgent,
-    timestamp: Date.now(  };'} catch (e) { console.warn('Failed to send error report:', e }'
+    timestamp: Date.now(   ,'} catch (e) { console.warn('Failed to send error report:', e }'
     }
 
     /**
@@ -676,28 +667,28 @@ export class AnalyticsErrorNotificationSystem {
                 break,
             case '再読み込み':','
                 window.location.reload()','
-            case '再試行':')',
+            case '再試行':'),
                 this.attemptAutoRecovery(errorData);
                 break,
             case 'オフラインモード':','
                 this.enableOfflineMode('''
             case 'キャッシュクリア': ','
-                this.clearCache('',
+                this.clearCache(',
             case '権限設定':','
-                this.showPermissionGuide('',
+                this.showPermissionGuide(',
             case 'ストレージクリア':','
-                this.clearStorage('',
+                this.clearStorage(',
             case 'データエクスポート':','
-                this.exportUserData('',
+                this.exportUserData(',
             case '品質設定':','
-                this.showQualitySettings('',
+                this.showQualitySettings(',
             case '最適化':','
                 this.optimizePerformance()','
-            case 'ヘルプ':')',
+            case 'ヘルプ':'),
                 this.showHelp(errorData.type);
                 break,
             case 'セキュリティヘルプ':,
-                this.showSecurityHelp() }
+                this.showSecurityHelp();
                 break; }
 }
 
@@ -705,8 +696,8 @@ export class AnalyticsErrorNotificationSystem {
      * エラー詳細の表示
      */
     showErrorDetails(errorData) { const details = [}
-            `エラーID: ${errorData.id}`,
-            `タイプ: ${errorData.type}`,
+            `エラーID: ${errorData.id},
+            `タイプ: ${errorData.type},
 
             `重要度: ${errorData.severity}`,''
             `時刻: ${ new, Date(errorData.timestamp).toLocaleString(']', '],'
@@ -742,10 +733,8 @@ export class AnalyticsErrorNotificationSystem {
             const errorData = this.errorHistory.find(e => e.id === errorId);
             if (errorData) {
     }
-                errorData.userFeedback = feedback; }
+                errorData.userFeedback = feedback;     }
 }
-    }
-
     /**
      * エラーの削除
      */''
@@ -756,7 +745,7 @@ export class AnalyticsErrorNotificationSystem {
             notification.classList.add('dismissing}'
             setTimeout(() => {  }
                 if (notification.parentNode) { }
-                    notification.parentNode.removeChild(notification};
+                    notification.parentNode.removeChild(notification}
                 }
             }, 300);
         }
@@ -777,7 +766,7 @@ export class AnalyticsErrorNotificationSystem {
     dispatchErrorEvent(errorData) {
 
         const event = new CustomEvent('error-notification-displayed', {
-            detail: errorData)) }
+            detail: errorData));
         window.dispatchEvent(event); }
     }
 
@@ -817,7 +806,7 @@ export class AnalyticsErrorNotificationSystem {
      */
     destroy() {
         if (this.notificationContainer) {
-            this.notificationContainer.remove() }
+            this.notificationContainer.remove();
             this.notificationContainer = null; }
         }
         

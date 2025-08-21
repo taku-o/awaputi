@@ -38,61 +38,61 @@ export class PerformanceTestUtils {
     const thresholds = {
       ci: {
         frameRate: {
-          min: 25,      // Lower expectations for CI
-          target: 30;
+          min: 25,      // Lower expectations for CI };
+          target: 30,
           max: 45
         },
         renderTime: {
-          max: 50,      // More lenient for CI
-          average: 35;
+          max: 50,      // More lenient for CI };
+          average: 35,
           target: 25
         },
         memoryUsage: {
-          max: 100 * 1024 * 1024,  // 100MB max for CI
+          max: 100 * 1024 * 1024,  // 100MB max for CI };
           growth: 10 * 1024 * 1024  // 10MB growth tolerance
         },
         loadTime: {
-          max: 5000,    // 5 seconds max load time
+          max: 5000,    // 5 seconds max load time };
           target: 3000
         }
       },
       local: {
         frameRate: {
-          min: 35;
+          min: 35 },
           target: 45;
           max: 60
         },
         renderTime: {
-          max: 35;
+          max: 35 },
           average: 25;
           target: 16
         },
         memoryUsage: {
-          max: 150 * 1024 * 1024,  // 150MB max for local
+          max: 150 * 1024 * 1024,  // 150MB max for local };
           growth: 15 * 1024 * 1024  // 15MB growth tolerance
         },
         loadTime: {
-          max: 3000;
+          max: 3000 },
           target: 2000
         }
       },
       production: {
         frameRate: {
-          min: 45;
+          min: 45 },
           target: 55;
           max: 60
         },
         renderTime: {
-          max: 25;
+          max: 25 },
           average: 18;
           target: 16
         },
         memoryUsage: {
-          max: 200 * 1024 * 1024,  // 200MB max for production
+          max: 200 * 1024 * 1024,  // 200MB max for production };
           growth: 20 * 1024 * 1024  // 20MB growth tolerance
         },
         loadTime: {
-          max: 2000;
+          max: 2000 },
           target: 1500
         }
       }
@@ -163,7 +163,7 @@ export class PerformanceTestUtils {
       finalError.attempts = attempts;
       finalError.environment = env;
       throw finalError;
-    };
+    }
   }
 
   /**
@@ -224,9 +224,9 @@ export class PerformanceTestUtils {
             mockTime += frameTime,
             
             frames.push({
-              frameNumber: frameCount++;
+              frameNumber: frameCount++,
               startTime: frameStart;
-              endTime: mockTime;
+              endTime: mockTime,
               duration: frameTime) }
 
           const totalTime = mockTime - startTime;
@@ -238,12 +238,12 @@ export class PerformanceTestUtils {
             frameCount,
             totalTime,
             averageFrameTime,
-            minFrameTime: Math.min(...frames.map(f => f.duration;
+            minFrameTime: Math.min(...frames.map(f => f.duration,
             maxFrameTime: Math.max(...frames.map(f => f.duration)','
-            environment: env;
+            environment: env,
             thresholds: threshold;
             passed: fps >= threshold.min
-          };
+          }
 
         } finally {
           // Restore original performance.now
@@ -291,10 +291,10 @@ export class PerformanceTestUtils {
           maxTime,
           times,
           iterations,
-          environment: env;
+          environment: env,
           thresholds: threshold;
           passed: averageTime <= threshold.max
-        };
+        }
       },
       { retries, environment: env, thresholdType: 'renderTime' }
     )();
@@ -323,7 +323,7 @@ export class PerformanceTestUtils {
           usedJSHeapSize: env === 'ci' ? 50 * 1024 * 1024 : 
                          env === 'local' ? 70 * 1024 * 1024 : 
                          60 * 1024 * 1024,
-          totalJSHeapSize: 200 * 1024 * 1024;
+          totalJSHeapSize: 200 * 1024 * 1024,
           jsHeapSizeLimit: 2 * 1024 * 1024 * 1024
         };
 
@@ -346,9 +346,9 @@ export class PerformanceTestUtils {
             
             const afterMemory = performance.memory.usedJSHeapSize,
             measurements.push({
-              iteration: i;
+              iteration: i,
               before: beforeMemory;
-              after: afterMemory;
+              after: afterMemory,
               growth: afterMemory - beforeMemory);
             await new Promise(resolve => setTimeout(resolve, 50) }
 
@@ -362,10 +362,10 @@ export class PerformanceTestUtils {
             totalGrowth,
             averageGrowth,
             measurements,
-            environment: env;
+            environment: env,
             thresholds: threshold;
             passed: totalGrowth <= threshold.growth
-          };
+          }
 
         } finally {
           // Restore original performance.memory
@@ -389,9 +389,9 @@ export class PerformanceTestUtils {
     return {
       environment: env;
       thresholds,
-      retries: env === 'ci' ? 3 : 2;
+      retries: env === 'ci' ? 3 : 2,
       timeout: env === 'ci' ? 15000 : 10000;
-      stabilizationDelay: env === 'ci' ? 2000 : 1000;
+      stabilizationDelay: env === 'ci' ? 2000 : 1000,
       measurementIterations: env === 'ci' ? 5 : 10;
       frameRateDuration: env === 'ci' ? 500 : 1000;
       
@@ -412,7 +412,7 @@ export class PerformanceTestUtils {
         enabled: true;
         ...thresholds.loadTime
       }
-    };
+    }
   }
 
   /**
@@ -428,7 +428,7 @@ export class PerformanceTestUtils {
       testType,
       results,
       thresholds,
-      issues: [];
+      issues: [],
       recommendations: []
     };
 
@@ -458,7 +458,7 @@ export class PerformanceTestUtils {
         break;
 
       default:
-        validation.issues.push(`Unknown test, type: ${testType)`};
+        validation.issues.push(`Unknown test, type: ${testType)`}
     }
 
     return validation;

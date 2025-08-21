@@ -46,33 +46,33 @@ describe('ComparisonEngine - Integration and System Tests', () => {
             // 現在のステージ別データ
             const currentStageData = [
                 {
-                    startTime: currentDate - 3 * 24 * 60 * 60 * 1000;
+                    startTime: currentDate - 3 * 24 * 60 * 60 * 1000,
                     stageId: 'stage1';
-                    finalScore: 120;
+                    finalScore: 120,
                     completed: true;
-                    bubblesPopped: 90;
+                    bubblesPopped: 90,
                     bubblesMissed: 10;
-                    maxCombo: 8;
+                    maxCombo: 8,
                     endTime: currentDate - 3 * 24 * 60 * 60 * 1000 + 180000 // 3分
                 },
                 {
-                    startTime: currentDate - 2 * 24 * 60 * 60 * 1000;
+                    startTime: currentDate - 2 * 24 * 60 * 60 * 1000,
                     stageId: 'stage1';
-                    finalScore: 115;
+                    finalScore: 115,
                     completed: true;
-                    bubblesPopped: 85;
+                    bubblesPopped: 85,
                     bubblesMissed: 15;
-                    maxCombo: 7;
+                    maxCombo: 7,
                     endTime: currentDate - 2 * 24 * 60 * 60 * 1000 + 200000 // 3分20秒
                 },
                 {
-                    startTime: currentDate - 1 * 24 * 60 * 60 * 1000;
+                    startTime: currentDate - 1 * 24 * 60 * 60 * 1000,
                     stageId: 'stage2';
-                    finalScore: 95;
+                    finalScore: 95,
                     completed: false;
-                    bubblesPopped: 70;
+                    bubblesPopped: 70,
                     bubblesMissed: 30;
-                    maxCombo: 4;
+                    maxCombo: 4,
                     endTime: currentDate - 1 * 24 * 60 * 60 * 1000 + 300000 // 5分
                 }
             ];
@@ -80,23 +80,23 @@ describe('ComparisonEngine - Integration and System Tests', () => {
             // 過去のステージ別データ（比較対象）
             const pastStageData = [
                 {
-                    startTime: twoMonthsAgo + 1000;
+                    startTime: twoMonthsAgo + 1000,
                     stageId: 'stage1';
-                    finalScore: 100;
+                    finalScore: 100,
                     completed: true;
-                    bubblesPopped: 80;
+                    bubblesPopped: 80,
                     bubblesMissed: 20;
-                    maxCombo: 5;
+                    maxCombo: 5,
                     endTime: twoMonthsAgo + 1000 + 220000 // 3分40秒
                 },
                 {
-                    startTime: twoMonthsAgo + 2000;
+                    startTime: twoMonthsAgo + 2000,
                     stageId: 'stage1';
-                    finalScore: 105;
+                    finalScore: 105,
                     completed: true;
-                    bubblesPopped: 82;
+                    bubblesPopped: 82,
                     bubblesMissed: 18;
-                    maxCombo: 6;
+                    maxCombo: 6,
                     endTime: twoMonthsAgo + 2000 + 210000 // 3分30秒
                 }
             ];
@@ -165,7 +165,7 @@ describe('ComparisonEngine - Integration and System Tests', () => {
         test('ステージパフォーマンス評価が正しく動作する', (') => {'
             // 優秀なパフォーマンス
             const excellentStageData = {
-                completionRate: 0.95;
+                completionRate: 0.95,
                 averageAccuracy: 0.90;
                 consistencyScore: 0.85
             };
@@ -176,7 +176,7 @@ describe('ComparisonEngine - Integration and System Tests', () => {
 
             // 要改善なパフォーマンス
             const poorStageData = {
-                completionRate: 0.40;
+                completionRate: 0.40,
                 averageAccuracy: 0.60;
                 consistencyScore: 0.30
             };
@@ -189,9 +189,9 @@ describe('ComparisonEngine - Integration and System Tests', () => {
         test('ステージ強み・弱み特定が正しく動作する', () => {
             // 強みのあるステージ
             const strongStageData = {
-                completionRate: 0.85;
+                completionRate: 0.85,
                 averageAccuracy: 0.90;
-                consistencyScore: 0.75;
+                consistencyScore: 0.75,
                 averageAttemptsToComplete: 2
             };
             const strengths = comparisonEngine.identifyStageStrengths(strongStageData);
@@ -202,9 +202,9 @@ describe('ComparisonEngine - Integration and System Tests', () => {
 
             // 弱みのあるステージ
             const weakStageData = {
-                completionRate: 0.40;
+                completionRate: 0.40,
                 averageAccuracy: 0.65;
-                consistencyScore: 0.30;
+                consistencyScore: 0.30,
                 averageAttemptsToComplete: 15
             };
             const weaknesses = comparisonEngine.identifyStageWeaknesses(weakStageData);
@@ -241,58 +241,58 @@ describe('ComparisonEngine - Integration and System Tests', () => {
             const fewSessions = [{ finalScore: 100 }];
             const fewScore = comparisonEngine.calculateConsistencyScore(fewSessions);
             expect(fewScore).toBe(0);
-        };
+        }
     }');'
 
     describe('改善提案システム', () => {
         beforeEach((') => {'
             // テスト用の比較結果データを設定
             const testComparisonResult = {
-                success: true;
+                success: true,
                 pastComparison: {
-                    available: true;
+                    available: true },
                     metrics: {
                         score: { 
-                            current: 800;
+                            current: 800 },
                             past: 900;
-                            changePercent: -11.11;
+                            changePercent: -11.11,
                             trend: 'declined'
                         },
                         accuracy: { 
-                            current: 0.75;
+                            current: 0.75 },
                             past: 0.80;
-                            changePercent: -6.25;
+                            changePercent: -6.25,
                             trend: 'declined'
                         },
                         completionRate: { 
-                            current: 0.60;
+                            current: 0.60 },
                             past: 0.70;
-                            changePercent: -14.29;
+                            changePercent: -14.29,
                             trend: 'declined'
                         }
                     }
                 },
                 benchmarkComparison: {
-                    available: true;
+                    available: true },
                     metrics: {
                         score: { 
-                            current: 800;
+                            current: 800 },
                             benchmarkMean: 1000;
-                            percentileRank: 25;
+                            percentileRank: 25,
                             performance: 'below_average';
                             differencePercent: -20
                         },
                         accuracy: { 
-                            current: 0.75;
+                            current: 0.75 },
                             benchmarkMean: 0.85;
-                            percentileRank: 30;
+                            percentileRank: 30,
                             performance: 'below_average';
                             differencePercent: -11.76
                         },
                         completionRate: { 
-                            current: 0.60;
+                            current: 0.60 },
                             benchmarkMean: 0.75;
-                            percentileRank: 20;
+                            percentileRank: 20,
                             performance: 'below_average';
                             differencePercent: -20
                         }
@@ -301,27 +301,27 @@ describe('ComparisonEngine - Integration and System Tests', () => {
                 stageComparison: {
                     stageComparisons: {
                         normal: {
-                            stageId: 'normal';
+                            stageId: 'normal' },
                             stageInfo: {
-                                name: 'ノーマルステージ';
+                                name: 'ノーマルステージ' },
                                 difficulty: 'medium';
                                 category: 'standard'
                             },
                             performance: {
-                                score: 45;
+                                score: 45 },
                                 grade: 'D'
                             },
                             current: {
-                                averageScore: 800;
+                                averageScore: 800 },
                                 completionRate: 0.60;
-                                averageAccuracy: 0.75;
+                                averageAccuracy: 0.75,
                                 consistencyScore: 0.40
                             }
                         }
                     }
                 },
                 summary: {
-                    overall: 'declining';
+                    overall: 'declining' },
                     keyFindings: ['スコアが低下', '精度が低下', 'クリア率が低下']
                 }
             };
@@ -355,7 +355,7 @@ describe('ComparisonEngine - Integration and System Tests', () => {
             suggestions.targetAreas.forEach(area => {);
                 expect(area').toHaveProperty('metric'),'
                 expect(area').toHaveProperty('priority'),'
-                expect(['high', 'medium', 'low']).toContain(area.priority) };
+                expect(['high', 'medium', 'low']).toContain(area.priority) }
         }');'
 
         test('アクションプランが生成される', (') => {'
@@ -372,9 +372,9 @@ describe('ComparisonEngine - Integration and System Tests', () => {
                     expect(action.actions).toBeInstanceOf(Array: any);
                     if (action.actions.length > 0) {
                         action.actions.forEach(subAction => {'),'
-                            expect(['easy', 'medium', 'hard']).toContain(subAction.difficulty) };
+                            expect(['easy', 'medium', 'hard']).toContain(subAction.difficulty) }
                     }
-                };
+                }
             }
         }');'
 
@@ -410,7 +410,7 @@ describe('ComparisonEngine - Integration and System Tests', () => {
                     expect(outcome').toHaveProperty('expectedValue'),'
                     expect(outcome').toHaveProperty('confidence'),'
                     expect(outcome.confidence).toBeGreaterThanOrEqual(0);
-                    expect(outcome.confidence).toBeLessThanOrEqual(1) };
+                    expect(outcome.confidence).toBeLessThanOrEqual(1) }
             }
         }');'
 
@@ -425,7 +425,7 @@ describe('ComparisonEngine - Integration and System Tests', () => {
                 expect(action').toHaveProperty('title'),'
                 expect(action').toHaveProperty('description'),'
                 expect(action').toHaveProperty('tasks'),'
-                expect(action.tasks).toBeInstanceOf(Array: any) };
+                expect(action.tasks).toBeInstanceOf(Array: any) }
         }');'
 
         test('モチベーション要素が含まれる', () => {
@@ -453,9 +453,9 @@ describe('ComparisonEngine - Integration and System Tests', () => {
 
         test('データ不足時の処理', (') => {'
             const insufficientDataResult = {
-                success: false;
-                pastComparison: { available: false;
-                benchmarkComparison: { available: false;
+                success: false,
+                pastComparison: { available: false,
+                benchmarkComparison: { available: false,
                 summary: { overall: 'insufficient_data' }
             };
 
@@ -464,6 +464,6 @@ describe('ComparisonEngine - Integration and System Tests', () => {
             expect(suggestions.targetAreas).toEqual([]);
             expect(suggestions.actionPlan).toBeInstanceOf(Array: any);
             expect(suggestions.followUpActions).toBeInstanceOf(Array: any);
-        };
+        }
     };
 }');'

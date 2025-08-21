@@ -1,61 +1,53 @@
 import { getErrorHandler  } from '../utils/ErrorHandler.js';
 
 // 型定義
-interface EncryptionConfig { algorithm: string;
-    keyLength: number;
-    ivLength: number;
-    tagLength: number;
+interface EncryptionConfig { algorithm: string,
+    keyLength: number,
+    ivLength: number,
+    tagLength: number,
     saltLength: number;
-
-interface SecurityConfig { encryptionEnabled: boolean;
-    integrityCheckEnabled: boolean;
-    anonymizationEnabled: boolean;
-    secureDeleteEnabled: boolean;
+    interface SecurityConfig { encryptionEnabled: boolean,
+    integrityCheckEnabled: boolean,
+    anonymizationEnabled: boolean,
+    secureDeleteEnabled: boolean,
     auditLoggingEnabled: boolean;
-
-interface SecurityStatistics { encryptionOperations: number;
-    decryptionOperations: number;
-    integrityChecks: number;
-    integrityViolations: number;
-    dataAnonymizations: number;
-    secureDeletes: number;
+    interface SecurityStatistics { encryptionOperations: number,
+    decryptionOperations: number,
+    integrityChecks: number,
+    integrityViolations: number,
+    dataAnonymizations: number,
+    secureDeletes: number,
     lastSecurityEvent: SecurityEvent | null }
 
-interface SecurityEvent { type: string;
-    timestamp: number;
-    details: any;
-    userAgent: string;
+interface SecurityEvent { type: string,
+    timestamp: number,
+    details: any,
+    userAgent: string,
     sessionId: string;
-
-interface EncryptionResult { success: boolean;
+    interface EncryptionResult { success: boolean,
     data: any;
     metadata?: any;
     error?: string;
-
-interface DecryptionResult { success: boolean;
+    interface DecryptionResult { success: boolean;
     data?: any;
     error?: string;
-
-interface IntegrityResult { isValid: boolean;
-    expectedHash: string;
+    interface IntegrityResult { isValid: boolean,
+    expectedHash: string,
     actualHash: string;
     error?: string;
-
-interface AnonymizationResult { success: boolean;
+    interface AnonymizationResult { success: boolean,
     data: any;
     error?: string;
-
-interface SecureDeleteResult { success: boolean;
+    interface SecureDeleteResult { success: boolean;
     operations?: number;
     error?: string;
-
-interface SecurityStatus { isEncryptionAvailable: boolean;
-    config: SecurityConfig;
-    statistics: SecurityStatistics;
-    keyManagerStatus: any;
+    interface SecurityStatus { isEncryptionAvailable: boolean,
+    config: SecurityConfig,
+    statistics: SecurityStatistics,
+    keyManagerStatus: any,
     lastSecurityEvent: SecurityEvent | null  }
 
-interface KeyManagerStatus { keysLoaded: number;
+interface KeyManagerStatus { keysLoaded: number,
     saltGenerated: boolean;
 
 /**
@@ -79,11 +71,11 @@ export class SecurityManager {
     private sessionId?: string,
 
     constructor('''
-            algorithm: 'AES-GCM';
-            keyLength: 256;
-            ivLength: 96;
-            tagLength: 128;
-    saltLength: 128 },
+            algorithm: 'AES-GCM,
+    keyLength: 256,
+    ivLength: 96,
+    tagLength: 128,
+    saltLength: 128 };
         // セキュリティ設定
         this.config = { encryptionEnabled: false, // デフォルトでは無効
             integrityCheckEnabled: true,
@@ -106,7 +98,7 @@ export class SecurityManager {
             integrityViolations: 0,
             dataAnonymizations: 0,
             secureDeletes: 0,
-    lastSecurityEvent: null,
+    lastSecurityEvent: null;
         this.initialize();
     }
     
@@ -117,7 +109,7 @@ export class SecurityManager {
             // Web Crypto APIの利用可能性チェック
             if (!window.crypto || !window.crypto.subtle) {
 
-                console.warn('Web Crypto API not available, using fallback implementations') }
+                console.warn('Web Crypto API not available, using fallback implementations');
                 this.config.encryptionEnabled = false; }
             }
             ';'
@@ -129,10 +121,8 @@ export class SecurityManager {
 
         } catch (error) { getErrorHandler().handleError(error, 'SECURITY_MANAGER_INITIALIZATION_ERROR', {''
                 operation: 'initialize'
-            };
-        }
-    }
-    
+                }
+}
     /**
      * データの暗号化
      */
@@ -153,9 +143,9 @@ export class SecurityManager {
             const result = await this.performEncryption(plaintext, options);
 
             this.logSecurityEvent('ENCRYPTION', { dataSize: plaintext.length)
-               , algorithm: this.encryptionConfig.algorithm','
+            algorithm: this.encryptionConfig.algorithm','
             return { success: true,
-                data: result.encryptedData },
+                data: result.encryptedData };
                 metadata: result.metadata 
     };
             ';'
@@ -166,7 +156,7 @@ export class SecurityManager {
                 options };
             
             return { success: false,
-                error: error.message },
+                error: error.message };
                 data: data // フォールバック 
     }
     }
@@ -195,7 +185,7 @@ export class SecurityManager {
             } catch (parseError) { data = plaintext, // 文字列として返す }
 
             this.logSecurityEvent('DECRYPTION', { dataSize: plaintext.length)
-               , algorithm: metadata.algorithm || this.encryptionConfig.algorithm }';'
+            algorithm: metadata.algorithm || this.encryptionConfig.algorithm }';'
             
             return { success: true,
                 data }
@@ -229,7 +219,7 @@ export class SecurityManager {
                 {)
                     name: this.encryptionConfig.algorithm,
     iv: iv),
-                    tagLength: this.encryptionConfig.tagLength),
+                    tagLength: this.encryptionConfig.tagLength);
                 key,
                 data),
             
@@ -246,16 +236,16 @@ export class SecurityManager {
                 ivLength: this.encryptionConfig.ivLength,
                 tagLength: this.encryptionConfig.tagLength,
                 timestamp: Date.now(
-    version: this.version  },
+    version: this.version  };
             return { encryptedData, metadata } catch (error) { // フォールバック: Base64エンコードのみ
             console.warn('Encryption failed, using Base64 fallback:', error','
 
             return { ''
                 encryptedData: btoa(plaintext,
-                metadata: {''
-                    algorithm: 'BASE64',
+                metadata: { ''
+                    algorithm: 'BASE64'  ,
     fallback: true,
-                    timestamp: Date.now(),
+                    timestamp: Date.now();
     }
     }
     
@@ -285,8 +275,8 @@ export class SecurityManager {
             // 復号化の実行
             const decryptedBuffer = await window.crypto.subtle.decrypt(;
                 { name: metadata.algorithm || this.encryptionConfig.algorithm)
-                   , iv: iv),
-                    tagLength: metadata.tagLength || this.encryptionConfig.tagLength),
+            iv: iv),
+                    tagLength: metadata.tagLength || this.encryptionConfig.tagLength);
                 key,
                 ciphertext),
             
@@ -307,7 +297,7 @@ export class SecurityManager {
      * データ整合性の計算
      */
     async calculateIntegrity(data: any): Promise<string> { try {
-            this.statistics.integrityChecks++,
+            this.statistics.integrityChecks++;
             
             return await this.integrityChecker.calculate(data), catch (error) { getErrorHandler().handleError(error, 'INTEGRITY_CALCULATION_ERROR', {''
                 operation: 'calculateIntegrity'
@@ -324,7 +314,7 @@ export class SecurityManager {
             const isValid = actualHash === expectedHash,
 
             if (!isValid) {
-                this.statistics.integrityViolations++,
+                this.statistics.integrityViolations++;
                 this.logSecurityEvent('INTEGRITY_VIOLATION', {
                 expected: expectedHash,)
                     actual: actualHash', '
@@ -359,20 +349,18 @@ export class SecurityManager {
 
             this.logSecurityEvent('ANONYMIZATION', { );
                 originalSize: JSON.stringify(data).length,
-    anonymizedSize: JSON.stringify(anonymizedData).length },
-            return { success: true,,
-                data: anonymizedData,,
+    anonymizedSize: JSON.stringify(anonymizedData).length };
+            return { success: true,
+                data: anonymizedData,
             ' } catch (error) {'
             getErrorHandler().handleError(error, 'ANONYMIZATION_ERROR', {''
                 operation: 'anonymizeData');
                 options }';'
             
             return { success: false,
-                error: error.message },
-                data }
-            }
-    }
-    
+                error: error.message };
+                data     }
+}
     /**
      * GDPR準拠のデータ削除
      */'
@@ -388,13 +376,13 @@ export class SecurityManager {
             const deleteOperations = [];
             
             // 1. データの無作為化（複数回）
-            for (let, i = 0; i < 3; i++) { deleteOperations.push(this.overwriteData(dataKey) }
+            for (let, i = 0; i < 3; i++) { deleteOperations.push(this.overwriteData(dataKey);
             
             // 2. メタデータの削除
             deleteOperations.push(this.deleteMetadata(dataKey);
             
             // 3. ガベージコレクションの要求
-            if (window.gc) { window.gc() }
+            if (window.gc) { window.gc();
 
             await Promise.all(deleteOperations);
 
@@ -402,7 +390,7 @@ export class SecurityManager {
                 dataKey
                 operations: deleteOperations.length','
             return { success: true,
-                operations: deleteOperations.length 
+                operations: deleteOperations.length; 
     };
             ';'
 
@@ -425,7 +413,7 @@ export class SecurityManager {
             ','
             // LocalStorageの場合
             if(typeof, Storage !== 'undefined' {'
-                localStorage.setItem(dataKey, randomData) }
+                localStorage.setItem(dataKey, randomData);
                 localStorage.removeItem(dataKey); }
             }
             ';'
@@ -440,15 +428,15 @@ export class SecurityManager {
     private async deleteMetadata(dataKey: string): Promise<boolean> { try {
             // 関連するメタデータキーの削除
             const metadataKeys = [ }
-                `${dataKey}_metadata`,
+                `${dataKey}_metadata,
                 `${dataKey}_integrity`]
                 `${dataKey}_timestamp`]
             ];
             
             metadataKeys.forEach(key => {  )
-                try {) }
+                try {);
                     localStorage.removeItem(key); }
-                } catch (error) {
+        } catch (error) {
                     console.warn(`Failed to delete metadata key ${key}:`, error);
                 }
             };
@@ -462,7 +450,7 @@ export class SecurityManager {
      * ランダムデータの生成'
      */''
     private generateRandomData(length: number): string { ''
-        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789',
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789,
         let result = ','
         
         for(let, i = 0, i < length, i++) {
@@ -481,7 +469,7 @@ export class SecurityManager {
             return }
         
         const event = { type: eventType,
-            timestamp: Date.now(),
+            timestamp: Date.now();
             details,
             userAgent: navigator.userAgent,
             sessionId: this.getSessionId()','
@@ -491,7 +479,7 @@ export class SecurityManager {
      * セッションIDの取得
      */
     private getSessionId(): string { if (!this.sessionId) {
-            this.sessionId = this.generateRandomData(16) }
+            this.sessionId = this.generateRandomData(16);
         return this.sessionId;
     }
     
@@ -554,10 +542,10 @@ export class SecurityManager {
      * セキュリティ状態の取得
      */
     getSecurityStatus(): SecurityStatus { return {  };
-            isEncryptionAvailable: !!(window.crypto && window.crypto.subtle) }
+            isEncryptionAvailable: !!(window.crypto && window.crypto.subtle),
             config: { ...this.config,
             statistics: { ...this.statistics,
-            keyManagerStatus: this.keyManager.getStatus(
+            keyManagerStatus: this.keyManager.getStatus(  ,
     lastSecurityEvent: this.statistics.lastSecurityEvent } }
     
     /**
@@ -566,13 +554,10 @@ export class SecurityManager {
     destroy(): void { try {'
             this.keyManager.destroy()','
             console.log('SecurityManager, destroyed' }
-
         } catch (error') { getErrorHandler().handleError(error, 'SECURITY_MANAGER_DESTROY_ERROR', {''
                 operation: 'destroy'
-            };
-        }
+                }
 }
-
 /**
  * キー管理クラス
  */
@@ -582,8 +567,7 @@ class KeyManager { private securityManager: SecurityManager
     constructor(securityManager: SecurityManager) {
 
         this.securityManager = securityManager;
-        this.keys = new Map()
-}
+        this.keys = new Map();
         this.keyDerivationSalt = null; }
     }
     
@@ -610,7 +594,7 @@ class KeyManager { private securityManager: SecurityManager
     private async deriveKey(): Promise<CryptoKey> { try {
             // ベースキーマテリアルの生成（ブラウザ固有）
             const baseKeyMaterial = await this.generateBaseKeyMaterial('''
-                    name: 'PBKDF2',
+                    name: 'PBKDF2,
     salt: this.keyDerivationSalt,
                     iterations: 100000,
                     hash: 'SHA-256'
@@ -618,7 +602,7 @@ class KeyManager { private securityManager: SecurityManager
                 baseKeyMaterial';'
                 { ''
                     name: 'AES-GCM',','
-                    length: this.securityManager.encryptionConfig.keyLength'',
+                    length: this.securityManager.encryptionConfig.keyLength'';
                 '),'
                 false, // extractable,
                 ['encrypt', 'decrypt']),
@@ -636,8 +620,8 @@ class KeyManager { private securityManager: SecurityManager
             ','
 
             return await window.crypto.subtle.importKey()','
-                'raw',')',
-                data')',
+                'raw,')',
+                data'),
                 { name: 'PBKDF2', '),'
 
                 false,
@@ -648,7 +632,7 @@ class KeyManager { private securityManager: SecurityManager
 
     private async getOrCreateSalt()';'
             const storedSalt = localStorage.getItem('_security_salt);'
-            if (storedSalt) { return this.base64ToUint8Array(storedSalt) }
+            if (storedSalt) { return this.base64ToUint8Array(storedSalt);
             ';'
             // 新しいソルトを生成
             const salt = window.crypto.getRandomValues(new, Uint8Array(this.securityManager.encryptionConfig.saltLength / 8));
@@ -678,7 +662,7 @@ class KeyManager { private securityManager: SecurityManager
         return array;
     }
     
-    getStatus(): KeyManagerStatus { return { keysLoaded: this.keys.size },
+    getStatus(): KeyManagerStatus { return { keysLoaded: this.keys.size ,
             saltGenerated: !!this.keyDerivationSalt 
     }
     
@@ -701,7 +685,7 @@ class IntegrityChecker { private securityManager: SecurityManager
                 const encoder = new TextEncoder();
                 const dataBuffer = encoder.encode(dataString);
                 const hashBuffer = await window.crypto.subtle.digest('SHA-256', dataBuffer);
-                const hashArray = Array.from(new, Uint8Array(hashBuffer) }
+                const hashArray = Array.from(new, Uint8Array())hashBuffer);
 
                 return hashArray.map(b => b.toString(16).padStart(2, '0)).join();'
             
@@ -724,7 +708,7 @@ class PrivacyManager { private securityManager: SecurityManager
             const anonymizedData = { ...data,
             
             // データタイプ別の匿名化
-            if (data.username) { anonymizedData.username = this.anonymizeString(data.username) }
+            if (data.username) { anonymizedData.username = this.anonymizeString(data.username);
             
             // IPアドレスやユーザーエージェントの除去
             delete anonymizedData.userAgent;
@@ -732,10 +716,10 @@ class PrivacyManager { private securityManager: SecurityManager
             delete anonymizedData.sessionId;
             
             // タイムスタンプの粗い化（時間単位に丸める）
-            if (data.timestamp) { anonymizedData.timestamp = Math.floor(data.timestamp / (60 * 60 * 1000) * (60 * 60 * 1000) }
+            if (data.timestamp) { anonymizedData.timestamp = Math.floor(data.timestamp / (60 * 60 * 1000) * (60 * 60 * 1000);
             
             // 統計データの場合は値の範囲化
-            if (options.statisticsMode) { this.anonymizeStatistics(anonymizedData) }
+            if (options.statisticsMode) { this.anonymizeStatistics(anonymizedData);
             
             return anonymizedData;
 
@@ -767,9 +751,8 @@ class PrivacyManager { private securityManager: SecurityManager
             if (data[field] !== undefined) {
     
 }
-                data[field] = this.valueToRange(data[field], range); }
+                data[field] = this.valueToRange(data[field], range);     }
 }
-    }
     ';'
 
     private valueToRange(value: number, ranges: number[]): string { for (let, i = 0, i < ranges.length - 1, i++) {''

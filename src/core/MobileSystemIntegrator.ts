@@ -13,38 +13,38 @@ class MobileSystemIntegrator { constructor(gameEngine) {
         ','
         // モバイルシステム構成
         this.mobileComponents = new Map('';
-                'DeviceSpecificHandler',
-                'EnhancedTouchManager',
-                'AdvancedResponsiveLayoutManager',
-                'MobilePerformanceOptimizer',
-                'AdvancedGestureRecognitionSystem',
-                'MobileUIUXManager',
-                'MobileAccessibilityManager',
+                'DeviceSpecificHandler,
+                'EnhancedTouchManager,
+                'AdvancedResponsiveLayoutManager,
+                'MobilePerformanceOptimizer,
+                'AdvancedGestureRecognitionSystem,
+                'MobileUIUXManager,
+                'MobileAccessibilityManager,
                 'PWAManager'
             ],
             errorRecovery: {
-                enabled: true;
-                maxRetries: 3;
-                retryDelay: 1000;
-    fallbackMode: true;
-                gracefulDegradation: true;
+                enabled: true ,
+                maxRetries: 3,
+                retryDelay: 1000,
+    fallbackMode: true,
+                gracefulDegradation: true,
             healthCheck: { interval: 30000, // 30秒間隔
-                enabled: true;
-    autoRepair: true;
+                enabled: true ,
+    autoRepair: true,
             monitoring: { performanceThresholds: {
-                    maxInitTime: 5000;
-                    maxResponseTime: 100;
+                    maxInitTime: 5000,
+                    maxResponseTime: 100,
     maxMemoryUsage: 100 * 1024 * 1024, // 100MB;
-                    minFPS: 30  };
-                errorThresholds: { maxErrorsPerMinute: 10;
+                    minFPS: 30  } },
+                errorThresholds: { maxErrorsPerMinute: 10,
     maxCriticalErrors: 3 
-    };
+     ,
         // システム状態
-        this.systemState = { initialized: false;
-            loading: false;
-            errors: []);
-            warnings: []);
-            performance: new Map();
+        this.systemState = { initialized: false,
+            loading: false,
+            errors: []),
+            warnings: []),
+            performance: new Map(),
             components: new Map(
     lastHealthCheck: null;
         // エラーハンドリング
@@ -109,8 +109,8 @@ class MobileSystemIntegrator { constructor(gameEngine) {
         
         // 必要なAPIの確認
         const requiredAPIs = [';'
-            'requestAnimationFrame',
-            'addEventListener',
+            'requestAnimationFrame,
+            'addEventListener,
             'querySelector',]';'
             'getComputedStyle'];
         ];
@@ -137,13 +137,12 @@ class MobileSystemIntegrator { constructor(gameEngine) {
             es6: (() => { '
                 try { }
 
-                    new Function('(a = 0) => a') }
+                    new Function('(a = 0) => a');
                     return true; catch { return false }'}'(),''
             touchEvents: 'ontouchstart' in window,
             pointerEvents: 'PointerEvent' in window,
             intersectionObserver: 'IntersectionObserver' in window,
-            resizeObserver: 'ResizeObserver' in window,
-        },
+            resizeObserver: 'ResizeObserver' in window ,
 
         const essential = ['es6', 'touchEvents'];
         const missingEssential = essential.filter(feature => !compatibility[feature]);
@@ -220,7 +219,7 @@ class MobileSystemIntegrator { constructor(gameEngine) {
         if (failed > 0) {
     
 }
-            throw new Error(`${failed}個のクリティカルコンポーネントの読み込みに失敗しました`};
+            throw new Error(`${failed}個のクリティカルコンポーネントの読み込みに失敗しました`}
         }
 
         if (fallbacks > 0) { }'
@@ -269,15 +268,14 @@ class MobileSystemIntegrator { constructor(gameEngine) {
                 return getPWAManager(this.gameEngine);
                 
             default:;
-                throw new Error(`未知のコンポーネント: ${componentName}`} }
-    }
-    
+                throw new Error(`未知のコンポーネント: ${componentName}`    }
+}
     /**
      * クリティカルコンポーネント判定'
      */''
     isCriticalComponent(componentName) {
         const criticalComponents = [','
-            'DeviceSpecificHandler',
+            'DeviceSpecificHandler,
             'EnhancedTouchManager',]','
             'AdvancedResponsiveLayoutManager'],
         ] }
@@ -292,9 +290,9 @@ class MobileSystemIntegrator { constructor(gameEngine) {
         '
 
         return { name: componentName,''
-            type: 'fallback',
+            type: 'fallback,
     enabled: false,
-            initialize: () => Promise.resolve() },
+            initialize: () => Promise.resolve() ,
 
             cleanup: () => Promise.resolve(),' }'
 
@@ -353,9 +351,8 @@ class MobileSystemIntegrator { constructor(gameEngine) {
             this.mobileComponents.forEach((component, name) => { }
 
                 if (name !== 'MobilePerformanceOptimizer' && component.setPerformanceConstraints) { }
-                    component.setPerformanceConstraints(perfOptimizer.getCurrentConstraints(); }
-};
-        }
+                    component.setPerformanceConstraints(perfOptimizer.getCurrentConstraints();     }
+}
     }
     
     /**
@@ -367,9 +364,8 @@ class MobileSystemIntegrator { constructor(gameEngine) {
     }
 
             touchManager.addEventListener('touch', (event) => {  }
-                gestureSystem.processTouchEvent(event); }
-            };
-        }
+                gestureSystem.processTouchEvent(event);     }
+}
     }
     
     /**
@@ -400,18 +396,16 @@ class MobileSystemIntegrator { constructor(gameEngine) {
             'error', 'warning', 'state-change'],
         ],
         
-        eventTypes.forEach(eventType => { ) }
+        eventTypes.forEach(eventType => { );
             if (component.addEventListener) { }
                 component.addEventListener(eventType, (event) => { }
-                    const mobileEvent = new CustomEvent(`mobile:${eventType}`, { detail: {
-                            component: componentName);
+                    const mobileEvent = new CustomEvent(`mobile:${eventType}`, { detail: { component: componentName),
                             originalEvent: event,
     timestamp: Date.now( 
-    };
+     ,
                     this.mobileEventBus.dispatchEvent(mobileEvent);
-                };
-            }
-        };
+                    }
+}
     }
     
     /**
@@ -434,7 +428,7 @@ class MobileSystemIntegrator { constructor(gameEngine) {
         // メモリ警告
         if('memory' in, performance' {'
 
-            this.monitorMemoryPressure() }
+            this.monitorMemoryPressure();
 
         window.addEventListener('beforeunload', () => {  }
             this.cleanup(); }
@@ -454,12 +448,12 @@ class MobileSystemIntegrator { constructor(gameEngine) {
         
         // データ同期
         this.mobileComponents.forEach((component, name) => {  if (component.getSharedData) {
-                const data = component.getSharedData() }
+                const data = component.getSharedData();
                 this.sharedData[name] = data; }
             }
             
-            if (component.setSharedDataAccess) { component.setSharedDataAccess(this.sharedData) }
-        };
+            if (component.setSharedDataAccess) { component.setSharedDataAccess(this.sharedData);
+        }
     }
     
     /**
@@ -490,9 +484,8 @@ class MobileSystemIntegrator { constructor(gameEngine) {
     
 }
                     if (accessibilityManager.handleUIChange) { }
-                        accessibilityManager.handleUIChange(event); }
-};
-            }
+                        accessibilityManager.handleUIChange(event);     }
+}
             ';'
             // アクセシビリティ設定をUIに反映
             if (accessibilityManager.addEventListener) {
@@ -500,9 +493,8 @@ class MobileSystemIntegrator { constructor(gameEngine) {
                 accessibilityManager.addEventListener('settings-change', (event) => { 
             }
                     if (uiManager.applyAccessibilitySettings) { }
-                        uiManager.applyAccessibilitySettings(event.detail); }
-};
-            }
+                        uiManager.applyAccessibilitySettings(event.detail);     }
+}
 }
     
     /**
@@ -519,9 +511,8 @@ class MobileSystemIntegrator { constructor(gameEngine) {
 }
 
                 perfOptimizer.addEventListener('constraints-update', (event) => {  }
-                    this.distributePerformanceConstraints(event.detail); }
-                };
-            }
+                    this.distributePerformanceConstraints(event.detail);     }
+}
 }
     
     /**
@@ -538,9 +529,8 @@ class MobileSystemIntegrator { constructor(gameEngine) {
 }
 
                 pwaManager.addEventListener('offline-state-change', (event) => {  }
-                    this.handleOfflineStateChange(event.detail); }
-                };
-            }
+                    this.handleOfflineStateChange(event.detail);     }
+}
 }
     
     /**
@@ -551,10 +541,8 @@ class MobileSystemIntegrator { constructor(gameEngine) {
         this.mobileComponents.forEach((component, name) => { }
 
             if (name !== 'MobilePerformanceOptimizer' && component.applyPerformanceConstraints) { }
-                component.applyPerformanceConstraints(constraints); }
-};
-    }
-    
+                component.applyPerformanceConstraints(constraints);     }
+}
     /**
      * オフライン状態変更処理
      */
@@ -562,10 +550,8 @@ class MobileSystemIntegrator { constructor(gameEngine) {
         this.mobileComponents.forEach((component, name) => { 
     }
             if (component.setOfflineMode) { }
-                component.setOfflineMode(isOffline); }
-};
-    }
-    
+                component.setOfflineMode(isOffline);     }
+}
     /**
      * モバイルエラーハンドリング設定'
      */''
@@ -593,7 +579,7 @@ class MobileSystemIntegrator { constructor(gameEngine) {
             handle: (error, context) => this.handleTouchError(error, context);
             critical: false,
             retryable: true'
-            }'
+            }
 
         }');'
         ';'
@@ -602,7 +588,7 @@ class MobileSystemIntegrator { constructor(gameEngine) {
             handle: (error, context) => this.handleGestureError(error, context);
             critical: false,
             retryable: true'
-            }'
+            }
 
         }');'
         ';'
@@ -611,7 +597,7 @@ class MobileSystemIntegrator { constructor(gameEngine) {
             handle: (error, context) => this.handleLayoutError(error, context);
             critical: true,
             retryable: true'
-            }'
+            }
 
         }');'
         ';'
@@ -620,7 +606,7 @@ class MobileSystemIntegrator { constructor(gameEngine) {
             handle: (error, context) => this.handlePerformanceError(error, context);
             critical: false,
             retryable: false'
-            }'
+            }
 
         }');'
         ';'
@@ -629,7 +615,7 @@ class MobileSystemIntegrator { constructor(gameEngine) {
             handle: (error, context) => this.handlePWAError(error, context);
             critical: false,
             retryable: true'
-            }'
+            }
 
         }');'
         ';'
@@ -637,8 +623,7 @@ class MobileSystemIntegrator { constructor(gameEngine) {
         this.errorHandlers.set('accessibility-error', { );
             handle: (error, context) => this.handleAccessibilityError(error, context);
             critical: false,
-    retryable: true,
-        };
+    retryable: true }
     }
     
     /**
@@ -647,28 +632,28 @@ class MobileSystemIntegrator { constructor(gameEngine) {
     setupFallbackStrategies()';'
         this.fallbackStrategies.set('touch', { ','
             fallback: () => this.enableBasicTouchHandling()','
-            description: '基本タッチ処理に切り替え')  }
+            description: '基本タッチ処理に切り替え');
 
         }');'
         ';'
         // ジェスチャーフォールバック
         this.fallbackStrategies.set('gesture', { ','
             fallback: () => this.enableBasicGestureHandling()','
-            description: '基本ジェスチャー処理に切り替え')  }
+            description: '基本ジェスチャー処理に切り替え');
 
         }');'
         ';'
         // レスポンシブフォールバック
         this.fallbackStrategies.set('responsive', { ','
             fallback: () => this.enableFixedLayout()','
-            description: '固定レイアウトに切り替え')  }
+            description: '固定レイアウトに切り替え');
 
         }');'
         ';'
         // パフォーマンスフォールバック
         this.fallbackStrategies.set('performance', { ','
             fallback: () => this.enableLowPerformanceMode()','
-            description: '低パフォーマンスモードに切り替え')  }
+            description: '低パフォーマンスモードに切り替え');
         }';'
     }
     
@@ -725,7 +710,7 @@ class MobileSystemIntegrator { constructor(gameEngine) {
         this.errorAnalyzer.start();
         
         // ヘルスチェック
-        if (this.integrationConfig.healthCheck.enabled) { this.startHealthCheck() }
+        if (this.integrationConfig.healthCheck.enabled) { this.startHealthCheck();
     }
     
     /**
@@ -742,8 +727,7 @@ class MobileSystemIntegrator { constructor(gameEngine) {
     async performHealthCheck()';'
             overall: 'healthy'),
             components: new Map(
-    issues: [],
-        },
+    issues: [] ,
         
         // 各コンポーネントのヘルスチェック
         for(const [name, component] of this.mobileComponents) {
@@ -760,9 +744,8 @@ class MobileSystemIntegrator { constructor(gameEngine) {
                     healthStatus.issues.push(`${name}: ${status.message || 'Unknown, issue}`}';} catch (error) { }
 
                 healthStatus.components.set(name, { status: 'error', error: error.message  };
-                healthStatus.issues.push(`${name}: Health, check failed`};
-            }
-        }
+                healthStatus.issues.push(`${name}: Health, check failed`    }
+}
         ';'
         // 全体ステータス決定
         const errorCount = Array.from(healthStatus.components.values())';'
@@ -776,9 +759,9 @@ class MobileSystemIntegrator { constructor(gameEngine) {
         this.systemState.lastHealthCheck = healthStatus;
         ';'
         // 問題がある場合の自動修復
-        if (healthStatus.overall !== 'healthy' && this.integrationConfig.healthCheck.autoRepair) { await this.attemptAutoRepair(healthStatus) }
+        if (healthStatus.overall !== 'healthy' && this.integrationConfig.healthCheck.autoRepair) { await this.attemptAutoRepair(healthStatus);
         
-        console.log(`[MobileSystemIntegrator] ヘルスチェック完了: ${healthStatus.overall}`, healthStatus};
+        console.log(`[MobileSystemIntegrator] ヘルスチェック完了: ${healthStatus.overall}`, healthStatus}
     }
     
     /**
@@ -815,8 +798,7 @@ class MobileSystemIntegrator { constructor(gameEngine) {
             try {'
                 const result = await test(' }''
                 results.push({ test: test.name, status: 'passed', result ',' }
-
-            } catch (error) { }
+        } catch (error) { }
 
                 results.push({ test: test.name, status: 'failed', error: error.message  }';'
                 this.reportError('integration-test', `統合テスト失敗: ${test.name}`, error';'
@@ -845,7 +827,7 @@ class MobileSystemIntegrator { constructor(gameEngine) {
 
             const testEvent = new CustomEvent('test-touch', {
             };
-                detail: { x: 100, y: 100, timestamp: Date.now(  };
+                detail: { x: 100, y: 100, timestamp: Date.now(   ,
             let received = false;
 
             const timeout = setTimeout(() => {  ''
@@ -865,16 +847,16 @@ class MobileSystemIntegrator { constructor(gameEngine) {
             }
             
             // 送信
-            if (touchManager.dispatchEvent) { touchManager.dispatchEvent(testEvent) }
+            if (touchManager.dispatchEvent) { touchManager.dispatchEvent(testEvent);
             
             // 結果待機
             await new Promise(resolve => {  const, check = () => {
                     if (received) { }
                         resolve(); }
-                    } else { setTimeout(check, 10) }
+                    } else { setTimeout(check, 10);
                 };
                 check();
-            };
+            }
         }
         
         return { communicationWorking: true,
@@ -927,14 +909,14 @@ class MobileSystemIntegrator { constructor(gameEngine) {
         ','
         // 基本的なタッチイベントリスナーを設定
         document.addEventListener('touchstart', this.basicTouchHandler.bind(this), { passive: true,'),'
-        document.addEventListener('touchend', this.basicTouchHandler.bind(this), { passive: true,) }
+        document.addEventListener('touchend', this.basicTouchHandler.bind(this), { passive: true,);
     
     basicTouchHandler(event) { // 最小限のタッチ処理
         const touch = event.touches[0] || event.changedTouches[0],
         if (touch) {''
             const customEvent = new CustomEvent('basic-touch', {
                 detail: {
-                    x: touch.clientX,
+                    x: touch.clientX ,
     y: touch.clientY  }
                     type: event.type 
     }
@@ -987,10 +969,8 @@ class MobileSystemIntegrator { constructor(gameEngine) {
     
 }
             if (component.setNetworkState) { }
-                component.setNetworkState(isOnline); }
-};
-    }
-    
+                component.setNetworkState(isOnline);     }
+}
     /**
      * ユーティリティメソッド
      */
@@ -1000,7 +980,7 @@ class MobileSystemIntegrator { constructor(gameEngine) {
             error: error ? error.message : null,
             stack: error ? error.stack : null,
     timestamp: Date.now(  }
-            components: Array.from(this.systemState.components.keys(); 
+            components: Array.from(this.systemState.components.keys())); 
     };
         
         this.systemState.errors.push(errorReport);
@@ -1020,7 +1000,7 @@ class MobileSystemIntegrator { constructor(gameEngine) {
 
     reportPerformanceWarning(metric, value') { }'
 
-        this.reportWarning('performance', `${metric} が閾値を超過: ${value}ms`};
+        this.reportWarning('performance', `${metric} が閾値を超過: ${value}ms`}
     }
     
     /**
@@ -1031,7 +1011,7 @@ class MobileSystemIntegrator { constructor(gameEngine) {
             components: Object.fromEntries(this.systemState.components
             errorCount: this.systemState.errors.length,
     warningCount: this.systemState.warnings.length  }
-            lastHealthCheck: this.systemState.lastHealthCheck) },
+            lastHealthCheck: this.systemState.lastHealthCheck) ,
             uptime: this.systemState.initialized ? Date.now() - this.initTimestamp : 0 
         }
     
@@ -1045,10 +1025,10 @@ class MobileSystemIntegrator { constructor(gameEngine) {
             return { message: 'デバッグモードが無効です' }
         
         return { systemState: this.systemState,
-            components: Array.from(this.mobileComponents.keys();
+            components: Array.from(this.mobileComponents.keys())),
             sharedData: this.sharedData,
             errorHandlers: Array.from(this.errorHandlers.keys(
-    fallbackStrategies: Array.from(this.fallbackStrategies.keys()) },
+    fallbackStrategies: Array.from(this.fallbackStrategies.keys()) ,
             performance: this.performanceMonitor ? this.performanceMonitor.getMetrics() : null,
     
     /**
@@ -1058,18 +1038,18 @@ class MobileSystemIntegrator { constructor(gameEngine) {
             console.log('[MobileSystemIntegrator] クリーンアップ開始);'
             
             // タイマー停止
-            if (this.healthCheckTimer) { clearInterval(this.healthCheckTimer) }
-            if (this.recoveryTimer) { clearInterval(this.recoveryTimer) }
+            if (this.healthCheckTimer) { clearInterval(this.healthCheckTimer);
+            if (this.recoveryTimer) { clearInterval(this.recoveryTimer);
             
             // 監視システム停止
-            if (this.performanceMonitor) { this.performanceMonitor.stop() }
-            if (this.errorAnalyzer) { this.errorAnalyzer.stop() }
+            if (this.performanceMonitor) { this.performanceMonitor.stop();
+            if (this.errorAnalyzer) { this.errorAnalyzer.stop();
             
             // 各コンポーネントのクリーンアップ
             this.mobileComponents.forEach((component name) => {  try {
                     if (component.cleanup) { }
                         component.cleanup(); }
-                    } catch (error) {
+        } catch (error) {
                     console.error(`[MobileSystemIntegrator] ${name} クリーンアップエラー: ` error');'
     }');'
             
@@ -1086,7 +1066,7 @@ class MobileSystemIntegrator { constructor(gameEngine) {
  */
 class MobilePerformanceMonitor { constructor(integrator) {
         this.integrator = integrator;
-        this.metrics = new Map() }
+        this.metrics = new Map();
         this.running = false; }
     }
     
@@ -1100,7 +1080,7 @@ class MobilePerformanceMonitor { constructor(integrator) {
     
     async monitorLoop() { while (this.running) {
             await this.collectMetrics();
-            await new Promise(resolve => setTimeout(resolve, 1000) }
+            await new Promise(resolve => setTimeout(resolve, 1000);
 }
     ';'
     async collectMetrics() { // FPS測定
@@ -1111,7 +1091,7 @@ class MobilePerformanceMonitor { constructor(integrator) {
         // メモリ使用量
         if (performance.memory) { const memory = performance.memory.usedJSHeapSize,' }'
 
-            this.metrics.set('memory', { value: memory, timestamp: Date.now(  };
+            this.metrics.set('memory', { value: memory, timestamp: Date.now(  }
         }
         
         // 閾値チェック
@@ -1122,16 +1102,16 @@ class MobilePerformanceMonitor { constructor(integrator) {
             let, frames = 0)
             const startTime = performance.now();
             const countFrame = () => {
-                frames++,
+                frames++;
                 const elapsed = performance.now() - startTime,
                 
                 if (elapsed < 1000) { }
                     requestAnimationFrame(countFrame); }
-                } else { resolve((frames / elapsed) * 1000) }
+                } else { resolve((frames / elapsed) * 1000);
             };
             
             requestAnimationFrame(countFrame);
-        };
+        }
     }
 
     checkThresholds()';'
@@ -1168,7 +1148,7 @@ let mobileSystemIntegratorInstance = null;
 ';'
 
 export function getMobileSystemIntegrator(gameEngine = null) { if (!mobileSystemIntegratorInstance && gameEngine) {''
-        mobileSystemIntegratorInstance = new MobileSystemIntegrator(gameEngine) }
+        mobileSystemIntegratorInstance = new MobileSystemIntegrator(gameEngine) };
     return mobileSystemIntegratorInstance;
 }
 

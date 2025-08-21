@@ -3,10 +3,10 @@ import { getErrorHandler  } from '../../utils/ErrorHandler.js';
 /**
  * Special effect configuration interface
  */
-interface SpecialEffectConfig { name: string;
-    particleCount: number;
-    colors: string[];
-    duration: number;
+interface SpecialEffectConfig { name: string,
+    particleCount: number,
+    colors: string[],
+    duration: number,
     priority: number;
 
 /**
@@ -17,25 +17,25 @@ interface SpecialEffects { [key: string]: SpecialEffectConfig;
 /**
  * Particle interface
  */
-interface Particle { x: number;
-    y: number;
-    vx: number;
-    vy: number;
-    size: number;
-    color: string;
-    life: number;
-    maxLife: number;
-    alpha: number;
-    gravity: number;
+interface Particle { x: number,
+    y: number,
+    vx: number,
+    vy: number,
+    size: number,
+    color: string,
+    life: number,
+    maxLife: number,
+    alpha: number,
+    gravity: number,
     friction: number;
     bounce?: number;
     type: string;
     rotationSpeed?: number;
     scaleSpeed?: number;
-    maxTrailLength?: number,  }
-    trail?: Array<{ x: number,, y: number;>;
+    maxTrailLength?: number }
+    trail?: Array<{ x: number, y: number;>;
     pulseSpeed?: number;
-    vortexCenter?: { x: number,, y: number,
+    vortexCenter?: { x: number, y: number,
     vortexStrength?: number;
 }
 
@@ -62,69 +62,69 @@ export class SpecialEffectRenderer {
         // 特殊効果の定義
         this.specialEffects = {
             // 基本効果
-            explosion: {''
-                name: '爆発';
-                particleCount: 20;
-                colors: ['#FF4500', '#FF6347', '#FF8C00', '#FFA500];'
+            explosion: { ''
+                name: '爆発'  ,
+                particleCount: 20,
+    colors: ['#FF4500', '#FF6347', '#FF8C00', '#FFA500];'
                 duration: 1200 }
                 priority: 6 
     };
             implosion: { ''
-                name: '内破';
-                particleCount: 15;
+                name: '内破'  ,
+                particleCount: 15,
                 colors: ['#4B0082', '#8A2BE2', '#9932CC', '#BA55D3];'
-                duration: 800;
+                duration: 800,
     priority: 5  };
             vortex: { ''
-                name: '渦';
-                particleCount: 25;
+                name: '渦'  ,
+                particleCount: 25,
                 colors: ['#00CED1', '#20B2AA', '#48D1CC', '#00FFFF];'
-                duration: 2000;
+                duration: 2000,
     priority: 7  };
             // エネルギー効果
             energy_discharge: { ''
-                name: 'エネルギー放出';
-                particleCount: 30;
+                name: 'エネルギー放出'  ,
+                particleCount: 30,
                 colors: ['#00FF00', '#32CD32', '#7FFF00', '#ADFF2F];'
-                duration: 1500;
+                duration: 1500,
     priority: 8  };
             plasma_wave: { ''
-                name: 'プラズマ波';
-                particleCount: 18;
+                name: 'プラズマ波'  ,
+                particleCount: 18,
                 colors: ['#FF00FF', '#DA70D6', '#EE82EE', '#DDA0DD];'
-                duration: 1000;
+                duration: 1000,
     priority: 7  };
             // 魔法効果
             magic_circle: { ''
-                name: '魔法陣';
-                particleCount: 12;
+                name: '魔法陣'  ,
+                particleCount: 12,
                 colors: ['#4169E1', '#6495ED', '#87CEEB', '#B0E0E6];'
-                duration: 3000;
+                duration: 3000,
     priority: 9  };
             teleport: { ''
-                name: 'テレポート';
-                particleCount: 16;
+                name: 'テレポート' ,
+                particleCount: 16,
                 colors: ['#9370DB', '#8B008B', '#9400D3', '#9932CC];'
-                duration: 1200;
+                duration: 1200,
     priority: 8  };
             // 自然効果
             wind_gust: { ''
-                name: '突風';
-                particleCount: 22;
+                name: '突風' ,
+                particleCount: 22,
                 colors: ['#F0F8FF', '#E6E6FA', '#D3D3D3', '#C0C0C0];'
-                duration: 1800;
+                duration: 1800,
     priority: 4  };
             fire_burst: { ''
-                name: '炎上';
-                particleCount: 28;
+                name: '炎上' ,
+                particleCount: 28,
                 colors: ['#DC143C', '#B22222', '#FF0000', '#FF4500];'
-                duration: 2200;
+                duration: 2200,
     priority: 7  };
             ice_shatter: { ''
-                name: '氷砕';
-                particleCount: 20;
+                name: '氷砕' ,
+                particleCount: 20,
                 colors: ['#B0E0E6', '#ADD8E6', '#87CEEB', '#E0FFFF];'
-                duration: 1600;
+                duration: 1600,
     priority: 6  }
         };
         console.log('[SpecialEffectRenderer] 初期化完了);'
@@ -184,15 +184,12 @@ export class SpecialEffectRenderer {
                     this.createIceShatterEffect(x, y, intensity, effectConfig);
                     break,
                 default:,
-                    this.createGenericSpecialEffect(x, y, effectType, intensity, effectConfig) }
+                    this.createGenericSpecialEffect(x, y, effectType, intensity, effectConfig);
                     break; }
-
-            } catch (error) { getErrorHandler().handleError(error, 'SPECIAL_EFFECT_ERROR', {''
+        } catch (error) { getErrorHandler().handleError(error, 'SPECIAL_EFFECT_ERROR', {''
                 context: 'SpecialEffectRenderer.createSpecialEffect'
-            };
-        }
-    }
-    
+                }
+}
     /**
      * 爆発効果
      * @param {number} x - X座標
@@ -261,7 +258,7 @@ export class SpecialEffectRenderer {
             particle.gravity = 0,
 
             particle.friction = 0.98,
-            particle.type = 'glow_circle',
+            particle.type = 'glow_circle,
             particle.pulseSpeed = 8 }
             this.particleManager.particles.push(particle); }
         }
@@ -272,7 +269,7 @@ export class SpecialEffectRenderer {
                 particleCount: Math.floor(config.particleCount * 0.6),' }'
 
                 colors: ['#FFFFFF', '#E6E6FA', '#D3D3D3] }'
-            };
+            }
         }, config.duration * 0.4);
     }
     
@@ -300,8 +297,8 @@ export class SpecialEffectRenderer {
             particle.life = config.duration * (0.8 + Math.random() * 0.4),
 
             particle.maxLife = particle.life,
-            particle.alpha = 0.6 + Math.random('',
-            particle.type = 'advanced_circle',
+            particle.alpha = 0.6 + Math.random(',
+            particle.type = 'advanced_circle,
             particle.rotationSpeed = 10,
             particle.maxTrailLength = 5,
             particle.trail = [] }
@@ -339,7 +336,7 @@ export class SpecialEffectRenderer {
             particle.gravity = 0,
 
             particle.friction = 0.96,
-            particle.type = 'energy_orb',
+            particle.type = 'energy_orb,
             particle.pulseSpeed = 12,
             particle.maxTrailLength = 6,
             particle.trail = [] }
@@ -409,7 +406,7 @@ export class SpecialEffectRenderer {
                 particle.gravity = 0,
 
                 particle.friction = 0.999,
-                particle.type = 'magic_sparkle',
+                particle.type = 'magic_sparkle,
                 particle.pulseSpeed = 6 - ring }
                 this.particleManager.particles.push(particle); }
 }
@@ -425,18 +422,18 @@ export class SpecialEffectRenderer {
      * @param {number} intensity - 強度
      */
     createCenterFlash(x: number, y: number, intensity: number): void { ''
-        const particle = this.particleManager.getParticleFromPool('',
-        particle.color = '#FFFFFF',
+        const particle = this.particleManager.getParticleFromPool(',
+        particle.color = '#FFFFFF,
         particle.life = 200,
         particle.maxLife = particle.life,
         particle.alpha = 1.0,
         particle.gravity = 0,
 
         particle.friction = 1,
-        particle.type = 'glow_circle',
+        particle.type = 'glow_circle,
         particle.scaleSpeed = -4)
         ),
-        this.particleManager.particles.push(particle) }
+        this.particleManager.particles.push(particle);
     
     /**
      * エネルギーコアを作成
@@ -460,11 +457,11 @@ export class SpecialEffectRenderer {
             particle.gravity = 0,
 
             particle.friction = 1,
-            particle.type = 'energy_orb',
+            particle.type = 'energy_orb,
             particle.pulseSpeed = 8 + i * 2,
             particle.scaleSpeed = -0.5,
             
-            this.particleManager.particles.push(particle) }
+            this.particleManager.particles.push(particle);
     }
     
     /**
@@ -492,11 +489,11 @@ export class SpecialEffectRenderer {
             particle.gravity = 0,
 
             particle.friction = 1,
-            particle.type = 'diamond',
+            particle.type = 'diamond,
             particle.rotationSpeed = 5,
             particle.pulseSpeed = 3,
             
-            this.particleManager.particles.push(particle) }
+            this.particleManager.particles.push(particle);
     }
     
     /**
@@ -567,7 +564,7 @@ export class SpecialEffectRenderer {
      * 利用可能な特殊効果のリストを取得
      * @returns {Array} 効果名のリスト
      */
-    getAvailableEffects(): string[] { return Object.keys(this.specialEffects) }
+    getAvailableEffects(): string[] { return Object.keys(this.specialEffects);
     
     /**
      * 特殊効果の情報を取得

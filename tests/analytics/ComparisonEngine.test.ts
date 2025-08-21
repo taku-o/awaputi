@@ -43,17 +43,17 @@ class MockStorageManager {
 class TestDataFactory {
     static createSessionData(options = {)') {'
         const defaults = {
-            sessionId: 'test_session';
+            sessionId: 'test_session',
             startTime: Date.now() - 300000;
             endTime: Date.now(
-            finalScore: 1000;
+            finalScore: 1000,
             bubblesPopped: 80;
-            bubblesMissed: 20;
+            bubblesMissed: 20,
             maxCombo: 15;
-            completed: true;
+            completed: true,
             completed: true;
         };
-        return { ...defaults, ...options };
+        return { ...defaults, ...options }
     }
     static createBenchmarkData(playerCount = 3) {
         const sessions: any[] = [];
@@ -61,12 +61,12 @@ class TestDataFactory {
             for (let j = 1, j <= 3, j++) {
                 sessions.push(this.createSessionData({
                     sessionId: `player${i}_session${j}`;);
-                    playerId: `player${i)`;
+                    playerId: `player${i)`,
                     startTime: Date.now() - (i * 7 + j) * 24 * 60 * 60 * 1000;
-                    finalScore: 800 + i * 200 + Math.random() * 100;
+                    finalScore: 800 + i * 200 + Math.random() * 100,
                     bubblesPopped: 70 + i * 10 + Math.random() * 20;
                     bubblesMissed: 30 - i * 5 + Math.random(} * 10
-                };
+                }
             }
         }
         return sessions;
@@ -75,9 +75,9 @@ class TestDataFactory {
         const sessions: any[] = [];
         for (let i = 0, i < sessionCount, i++) {
             sessions.push(this.createSessionData({);
-                sessionId: `${stageId}_session_${i)`;
+                sessionId: `${stageId}_session_${i)`,
                 stageId: stageId;
-                startTime: Date.now() - (i + 1) * 24 * 60 * 60 * 1000;
+                startTime: Date.now() - (i + 1) * 24 * 60 * 60 * 1000,
                 finalScore: 900 + Math.random() * 200;
                 completed: Math.random(} > 0.3
             }');'
@@ -125,7 +125,7 @@ describe('ComparisonEngine - Main Test Suite', () => {
             expect(comparisonEngine).toBeInstanceOf(ComparisonEngine);
             expect(comparisonEngine.storageManager).toBe(mockStorageManager) }');'
         test('CoreComparisonEngineインスタンスが正常に作成される', () => {
-            expect(coreComparisonEngine).toBeInstanceOf(CoreComparisonEngine) };
+            expect(coreComparisonEngine).toBeInstanceOf(CoreComparisonEngine) }
     }
 }');'
 // Export shared utilities for use in split test components

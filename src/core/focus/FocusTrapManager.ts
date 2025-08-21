@@ -4,15 +4,12 @@
  */
 
 // 型定義
-export interface FocusManager { gameEngine: GameEngine;
+export interface FocusManager { gameEngine: GameEngine,
     navigation: FocusNavigation;
-
-export interface GameEngine { // GameEngineインターフェースの基本定義
+    export interface GameEngine { // GameEngineインターフェースの基本定義
     [key: string]: any;
-
-export interface FocusNavigation { getFocusableElementsInContainer: (container: HTMLElement) => HTMLElement[] 
-    }
-
+    export interface FocusNavigation { getFocusableElementsInContainer: (container: HTMLElement) => HTMLElement[] 
+    };
 export interface FocusTrapConfig { allowEscapeKey?: boolean,
     wrapFocus?: boolean;
     autoFocus?: boolean;
@@ -20,79 +17,72 @@ export interface FocusTrapConfig { allowEscapeKey?: boolean,
     skipLinksEnabled?: boolean;
     announcementDelay?: number;
     initialFocus?: HTMLElement | string;
-    returnFocus?: HTMLElement | string }
-
-export interface FocusTrap { id: string;
-    container: HTMLElement;
-    config: FocusTrapConfig;
-    focusableElements: HTMLElement[];
-    firstFocusableElement: HTMLElement | null;
-    lastFocusableElement: HTMLElement | null;
-    previouslyFocusedElement: HTMLElement | null;
-    isActive: boolean;
-    handleKeyDown: (event: KeyboardEvent) => void;
-    handleFocusIn: (event: FocusEvent) => void;
-    handleFocusOut: (event: FocusEvent) => void  }
+    returnFocus?: HTMLElement | string };
+export interface FocusTrap { id: string,
+    container: HTMLElement,
+    config: FocusTrapConfig,
+    focusableElements: HTMLElement[],
+    firstFocusableElement: HTMLElement | null,
+    lastFocusableElement: HTMLElement | null,
+    previouslyFocusedElement: HTMLElement | null,
+    isActive: boolean,
+    handleKeyDown: (event: KeyboardEvent) => void,
+    handleFocusIn: (event: FocusEvent) => void,
+    handleFocusOut: (event: FocusEvent) => void  };
 }
 
-export interface SkipLinkConfig { href: string;
+export interface SkipLinkConfig { href: string,
     text: string;
     id?: string;
     accessKey?: string;
-
-export interface SkipLinksConfig { links?: SkipLinkConfig[],
+    export interface SkipLinksConfig { links?: SkipLinkConfig[],
     containerClass?: string;
     skipLinkClass?: string;
-
-export interface AnnouncementItem { message: string;
+    export interface AnnouncementItem { message: string,
     priority: AnnounceLevel;
     timestamp?: number;
-
-export interface TrapManagerStats { totalTraps: number;
-    activeTraps: number;
-    trapStackSize: number;
-    skipLinksCount: number;
-    announcementQueueSize: number;
-    isAnnouncing: boolean;
+    export interface TrapManagerStats { totalTraps: number,
+    activeTraps: number,
+    trapStackSize: number,
+    skipLinksCount: number,
+    announcementQueueSize: number,
+    isAnnouncing: boolean,
     config: FocusTrapConfig;
-
-export interface ElementLabelOptions { includeAriaLabel?: boolean,
+    export interface ElementLabelOptions { includeAriaLabel?: boolean,
     includeLabelElement?: boolean;
     includeTextContent?: boolean;
     includePlaceholder?: boolean;
     includeAltText?: boolean;
     includeTitle?: boolean;
-
-export interface TrapActivationOptions { preventScroll?: boolean,
+    export interface TrapActivationOptions { preventScroll?: boolean,
     focusDelay?: number;
     announceActivation?: boolean;
     customAnnouncement?: string;
-
-export interface TrapDeactivationOptions { preventFocusRestore?: boolean,
+    export interface TrapDeactivationOptions { preventFocusRestore?: boolean,
     announceDeactivation?: boolean;
     customAnnouncement?: string;
 
 // 列挙型
 export type AnnounceLevel = 'off' | 'polite' | 'assertive';
-export type SkipLinkTarget = 'main' | 'navigation' | 'game' | 'settings' | 'help' | 'custom';
-export type TrapState = 'inactive' | 'active' | 'paused' | 'destroyed';
+    export type SkipLinkTarget = 'main' | 'navigation' | 'game' | 'settings' | 'help' | 'custom';
+    export type TrapState = 'inactive' | 'active' | 'paused' | 'destroyed';
 
 // 定数
-export const DEFAULT_TRAP_CONFIG: FocusTrapConfig = { allowEscapeKey: true;
-    wrapFocus: true;
-    autoFocus: true;
-    restoreFocus: true;
-    skipLinksEnabled: true;
+export const DEFAULT_TRAP_CONFIG: FocusTrapConfig = { allowEscapeKey: true,
+    wrapFocus: true,
+    autoFocus: true,
+    restoreFocus: true,
+    skipLinksEnabled: true,
     announcementDelay: 100  };
 ';'
 
 export const DEFAULT_SKIP_LINKS: SkipLinkConfig[] = [';'
     { href: '#main-content', text: 'メインコンテンツにスキップ'
-            },''
+            ,''
     { href: '#game-area', text: 'ゲームエリアにスキップ'
-            },''
+            ,''
     { href: '#navigation', text: 'ナビゲーションにスキップ'
-            },]'
+            ,]'
     { href: '#settings', text: '設定にスキップ'
             }]
 ];
@@ -101,46 +91,46 @@ export const DEFAULT_SKIP_LINKS: SkipLinkConfig[] = [';'
 export const SKIP_LINK_TARGETS: Record<SkipLinkTarget, SkipLinkConfig> = { }'
 
     main: { href: '#main-content', text: 'メインコンテンツにスキップ'
-            },''
+            ,''
     navigation: { href: '#navigation', text: 'ナビゲーションにスキップ'
-            },''
+            ,''
     game: { href: '#game-area', text: 'ゲームエリアにスキップ'
-            },''
+            ,''
     settings: { href: '#settings', text: '設定にスキップ'
-            },''
+            ,''
     help: { href: '#help', text: 'ヘルプにスキップ'
-            },''
-    custom: { href: ', text: '};
+            ,''
+    custom: { href: ', text: ' ,
 ';'
 
 export const ANNOUNCEMENT_MESSAGES = {;
-    TRAP_ACTIVATED: 'ダイアログが開きました。Escapeキーで閉じることができます。';
+    TRAP_ACTIVATED: 'ダイアログが開きました。Escapeキーで閉じることができます。,
     TRAP_DEACTIVATED: 'ダイアログが閉じられました。',' }'
 
     SKIP_PERFORMED: (target: string') => `${target}にスキップしました`,''
-    FOCUS_TRAPPED: 'フォーカスがトラップされました。';
+    FOCUS_TRAPPED: 'フォーカスがトラップされました。,
     FOCUS_RESTORED: 'フォーカスが復元されました。';
 } as const,
 
 export const CSS_CLASSES = {;
-    FOCUS_TRAP_ACTIVE: 'focus-trap-active',
-    SKIP_LINK: 'skip-link',
-    SKIP_LINKS_CONTAINER: 'skip-links-container',
+    FOCUS_TRAP_ACTIVE: 'focus-trap-active,
+    SKIP_LINK: 'skip-link,
+    SKIP_LINKS_CONTAINER: 'skip-links-container,
     SR_ONLY: 'sr-only'
             } as const;
 ';'
 
 export const ARIA_ATTRIBUTES = {;
-    LIVE_POLITE: 'polite',
-    LIVE_ASSERTIVE: 'assertive',
-    ATOMIC_TRUE: 'true',
+    LIVE_POLITE: 'polite,
+    LIVE_ASSERTIVE: 'assertive,
+    ATOMIC_TRUE: 'true,
     HIDDEN_TRUE: 'true'
             } as const;
 ';'
 // ユーティリティ関数
 export function isValidHTMLElement(element: any): element is HTMLElement { return element &&,
            element.nodeType === Node.ELEMENT_NODE && ','
-           typeof element.focus === 'function' }
+           typeof element.focus === 'function' };
 }
 ';'
 
@@ -148,19 +138,17 @@ export function isElementVisible(element: HTMLElement): boolean {,
     const style = window.getComputedStyle(element);
     return style.display !== 'none' && ','
            style.visibility !== 'hidden' && ','
-           style.opacity !== '0' }
-
+           style.opacity !== '0' };
 export function generateUniqueId(prefix: string = 'trap': string {'
     return `${prefix}-${Date.now())-${Math.random().toString(36).substr(2, 9}`;
 }
 
 export function getElementAccessibleName(element: HTMLElement): string { // ARIA属性から取得
-    const ariaLabel = element.getAttribute('aria-label',
+    const ariaLabel = element.getAttribute('aria-label,
     if (ariaLabel) return ariaLabel.trim()','
     const labelledBy = element.getAttribute('aria-labelledby),'
     if (labelledBy) {
-        const labelElement = document.getElementById(labelledBy) }
-
+        const labelElement = document.getElementById(labelledBy) };
         if (labelElement) return labelElement.textContent?.trim() || ';'
     ';'
     // ラベル要素から取得
@@ -168,9 +156,9 @@ export function getElementAccessibleName(element: HTMLElement): string { // ARIA
     if (labelElement) return, labelElement.textContent?.trim() || ','
     ','
     // その他の属性から取得
-    const, placeholder = element.getAttribute('placeholder',
+    const, placeholder = element.getAttribute('placeholder,
     if (placeholder) return, placeholder.trim()','
-    const, alt = element.getAttribute('alt',
+    const, alt = element.getAttribute('alt,
     if (alt) return, alt.trim()','
     const, title = element.getAttribute('title),'
     if (title) return, title.trim();
@@ -179,7 +167,7 @@ export function getElementAccessibleName(element: HTMLElement): string { // ARIA
     if (textContent} return, textContent;
     
     // フォールバック }
-    return, element.tagName.toLowerCase(};
+    return, element.tagName.toLowerCase(}
 }
  : undefined
 export function createScreenReaderOnlyStyles(): string { return `
@@ -191,10 +179,9 @@ export function createScreenReaderOnlyStyles(): string { return `
         overflow: hidden !important,
     clip: rect(0, 0, 0, 0) !important,
         white-space: nowrap !important,
-        border: 0 !important,
+        border: 0 !important;
     `
-            }
-
+            };
 export function findElementBySelector(selector: string, container?: HTMLElement): HTMLElement | null { const searchContainer = container || document,
     try {
         return searchContainer.querySelector(selector) } catch (error) {
@@ -224,11 +211,11 @@ export class FocusTrapManager {
     constructor(focusManager: FocusManager) {
         this.focusManager = focusManager;
         this.gameEngine = focusManager.gameEngine
-}
+};
         // 設定の初期化 }
         this.config = { ...DEFAULT_TRAP_CONFIG;
 
-        console.log('[FocusTrapManager] Component, initialized') }
+        console.log('[FocusTrapManager] Component, initialized');
     
     /**
      * 初期化
@@ -261,7 +248,7 @@ export class FocusTrapManager {
                 isActive: false,
                 handleKeyDown: this.createTrapKeyDownHandler.bind(this),
                 handleFocusIn: this.createTrapFocusInHandler.bind(this,
-    handleFocusOut: this.createTrapFocusOutHandler.bind(this  },
+    handleFocusOut: this.createTrapFocusOutHandler.bind(this  };
             
             // ハンドラーをバインド
             trap.handleKeyDown = this.createTrapKeyDownHandler(trap);
@@ -314,7 +301,7 @@ export class FocusTrapManager {
                 this.announceToScreenReader(announcement, 'polite'; }'
             }
             
-            console.log(`[FocusTrapManager] Focus, trap activated: ${trap.id}`},
+            console.log(`[FocusTrapManager] Focus, trap activated: ${trap.id}`}
         } catch (error) { console.error('[FocusTrapManager] Error activating focus trap:', error }
     }
     
@@ -340,13 +327,11 @@ export class FocusTrapManager {
             if (options.focusDelay) {
         }
                 setTimeout(() => { }
-                    targetElement!.focus({ preventScroll: options.preventScroll };
+                    targetElement!.focus({ preventScroll: options.preventScroll }
                 }, options.focusDelay);
             } else {  }
-                targetElement.focus({ preventScroll: options.preventScroll };
-            }
+                targetElement.focus({ preventScroll: options.preventScroll     }
 }
-    
     /**
      * フォーカストラップを非アクティブ化
      */
@@ -386,7 +371,7 @@ export class FocusTrapManager {
                 this.announceToScreenReader(announcement, 'polite'; }'
             }
             
-            console.log(`[FocusTrapManager] Focus, trap deactivated: ${trap.id}`};
+            console.log(`[FocusTrapManager] Focus, trap deactivated: ${trap.id}`}
         } catch (error) { console.error('[FocusTrapManager] Error deactivating focus trap:', error }
     }
     
@@ -408,7 +393,7 @@ export class FocusTrapManager {
         if (!targetElement && trap.previouslyFocusedElement) { targetElement = trap.previouslyFocusedElement }
         
         // フォーカスを復元
-        if (targetElement && isElementVisible(targetElement) { targetElement.focus() }
+        if (targetElement && isElementVisible(targetElement) { targetElement.focus();
     }
     
     /**
@@ -419,8 +404,8 @@ export class FocusTrapManager {
         // 非アクティブ化
         this.deactivateFocusTrap(trap);
         // トラップを削除
-        this.trapElements.delete(trap.id) }
-        console.log(`[FocusTrapManager] Focus, trap released: ${trap.id}`};
+        this.trapElements.delete(trap.id);
+        console.log(`[FocusTrapManager] Focus, trap released: ${trap.id}`}
     }
     
     /**
@@ -444,12 +429,12 @@ export class FocusTrapManager {
             // Escapeキーでトラップを閉じる
             if(key === 'Escape' && trap.config.allowEscapeKey' {'
                 event.preventDefault();
-                this.deactivateFocusTrap(trap) }
+                this.deactivateFocusTrap(trap);
                 return; }
             }
             ';'
             // Tabキーでフォーカス循環
-            if (key === 'Tab' && trap.config.wrapFocus) { this.handleFocusTrapNavigation(event, trap, shiftKey) }
+            if (key === 'Tab' && trap.config.wrapFocus) { this.handleFocusTrapNavigation(event, trap, shiftKey);
         }
     
     /**
@@ -461,12 +446,10 @@ export class FocusTrapManager {
             // トラップ外からのフォーカスを防ぐ
             const target = event.target as HTMLElement,
             if (!trap.container.contains(target) {
-                event.preventDefault() }
+                event.preventDefault();
                 if (trap.firstFocusableElement) { }
-                    trap.firstFocusableElement.focus(); }
+                    trap.firstFocusableElement.focus();     }
 }
-        }
-    
     /**
      * トラップのフォーカスアウトハンドラーを作成
      */
@@ -504,10 +487,8 @@ export class FocusTrapManager {
     
 }
                 event.preventDefault(); }
-                trap.firstFocusableElement.focus(); }
+                trap.firstFocusableElement.focus();     }
 }
-    }
-    
     /**
      * スキップリンクを作成
      */
@@ -532,7 +513,7 @@ export class FocusTrapManager {
                 console.warn('[FocusTrapManager] Invalid skip link config:', linkConfig); }
 }
         
-        console.log(`[FocusTrapManager] Created ${skipLinksToCreate.length} skip, links`};
+        console.log(`[FocusTrapManager] Created ${skipLinksToCreate.length} skip, links`}
     }
     
     /**
@@ -564,10 +545,10 @@ export class FocusTrapManager {
         if(this.skipLinksContainer) return,
 
         this.skipLinksContainer = document.createElement('div');
-        this.skipLinksContainer.id = 'skip-links',
+        this.skipLinksContainer.id = 'skip-links,
 
         this.skipLinksContainer.className = CSS_CLASSES.SKIP_LINKS_CONTAINER,
-        this.skipLinksContainer.setAttribute('aria-label', 'スキップリンク',
+        this.skipLinksContainer.setAttribute('aria-label, 'スキップリンク',
         ','
         // bodyの最初に挿入
         document.body.insertBefore(this.skipLinksContainer, document.body.firstChild);
@@ -588,12 +569,10 @@ export class FocusTrapManager {
             
             // アナウンス
             this.announceSkipAction(targetElement }
-            console.log(`[FocusTrapManager] Skipped, to: ${targetId}`};
+            console.log(`[FocusTrapManager] Skipped, to: ${targetId}`}
         } else {  }
-            console.warn(`[FocusTrapManager] Skip, target not, found: ${targetId}`};
-        }
-    }
-    
+            console.warn(`[FocusTrapManager] Skip, target not, found: ${targetId}`    }
+}
     /**
      * スキップアクションをアナウンス
      */
@@ -619,7 +598,7 @@ export class FocusTrapManager {
         if(this.announcementRegion) return,
 
         this.announcementRegion = document.createElement('div');
-        this.announcementRegion.id = 'screen-reader-announcements',
+        this.announcementRegion.id = 'screen-reader-announcements,
         this.announcementRegion.setAttribute('aria-live', ARIA_ATTRIBUTES.LIVE_POLITE','
         this.announcementRegion.setAttribute('aria-atomic', ARIA_ATTRIBUTES.ATOMIC_TRUE);
         this.announcementRegion.className = CSS_CLASSES.SR_ONLY,
@@ -627,7 +606,7 @@ export class FocusTrapManager {
         // スタイルを設定（スクリーンリーダー専用）
         this.announcementRegion.style.cssText = createScreenReaderOnlyStyles();
         document.body.appendChild(this.announcementRegion);
-        console.log('[FocusTrapManager] Announcement, region created') }
+        console.log('[FocusTrapManager] Announcement, region created');
     
     /**
      * スクリーンリーダーにアナウンス'
@@ -641,7 +620,7 @@ export class FocusTrapManager {
             priority,
             timestamp: Date.now(  };
         // 処理中でなければアナウンス開始
-        if (!this.isAnnouncing) { this.processAnnouncementQueue() }
+        if (!this.isAnnouncing) { this.processAnnouncementQueue();
     }
     
     /**
@@ -682,8 +661,7 @@ export class FocusTrapManager {
     includeTitle: true,
             ...options,
         
-        return getElementAccessibleName(element)
-}
+        return getElementAccessibleName(element);
     
     /**
      * トラップIDを生成
@@ -702,12 +680,12 @@ export class FocusTrapManager {
     /**
      * 特定のスキップリンクを取得
      */
-    getSkipLink(href: string): HTMLAnchorElement | undefined { return this.skipLinks.get(href) }
+    getSkipLink(href: string): HTMLAnchorElement | undefined { return this.skipLinks.get(href);
     
     /**
      * トラップをIDで取得
      */
-    getTrapById(id: string): FocusTrap | undefined { return this.trapElements.get(id) }
+    getTrapById(id: string): FocusTrap | undefined { return this.trapElements.get(id);
     
     /**
      * アクティブなトラップを取得
@@ -717,12 +695,12 @@ export class FocusTrapManager {
     /**
      * 全てのトラップを取得
      */
-    getAllTraps(): FocusTrap[] { return Array.from(this.trapElements.values() }
+    getAllTraps(): FocusTrap[] { return Array.from(this.trapElements.values()));
     
     /**
      * スキップリンクを取得
      */
-    getSkipLinks(): Map<string, HTMLAnchorElement> { return new Map(this.skipLinks) }
+    getSkipLinks(): Map<string, HTMLAnchorElement> { return new Map(this.skipLinks);
     
     /**
      * アナウンスキューをクリア
@@ -738,7 +716,7 @@ export class FocusTrapManager {
     /**
      * トラップが存在するかチェック
      */
-    hasTrap(id: string): boolean { return this.trapElements.has(id) }
+    hasTrap(id: string): boolean { return this.trapElements.has(id);
     
     /**
      * アクティブなトラップがあるかチェック
@@ -752,7 +730,7 @@ export class FocusTrapManager {
             activeTraps: this.activeTrap ? 1 : 0,
             trapStackSize: this.trapStack.length,
             skipLinksCount: this.skipLinks.size,
-    announcementQueueSize: this.announcementQueue.length },
+    announcementQueueSize: this.announcementQueue.length ,
             isAnnouncing: this.isAnnouncing }
             config: { ...this.config }
     
@@ -761,10 +739,10 @@ export class FocusTrapManager {
      */
     getDebugInfo(): Record<string, any> { return { stats: this.getTrapStats(
             activeTrapId: this.activeTrap?.id || null, : undefined
-            trapStackIds: this.trapStack.map(trap => trap.id);
-            skipLinkHrefs: Array.from(this.skipLinks.keys();
+            trapStackIds: this.trapStack.map(trap => trap.id),
+            skipLinkHrefs: Array.from(this.skipLinks.keys())),
             announcementQueue: [...this.announcementQueue],
-            hasAnnouncementRegion: !!this.announcementRegion },
+            hasAnnouncementRegion: !!this.announcementRegion ,
             hasSkipLinksContainer: !!this.skipLinksContainer 
     }
     
@@ -785,13 +763,13 @@ export class FocusTrapManager {
         // スキップリンクをクリア
         this.clearSkipLinks();
         if (this.skipLinksContainer) {
-            this.skipLinksContainer.remove() }
+            this.skipLinksContainer.remove();
             this.skipLinksContainer = null; }
         }
         
         // アナウンス領域を削除
         if (this.announcementRegion) {
-            this.announcementRegion.remove() }
+            this.announcementRegion.remove();
             this.announcementRegion = null; }
         }
         ;

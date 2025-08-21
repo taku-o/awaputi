@@ -9,25 +9,21 @@ interface EventData { event_category?: string,
     session_id?: string;
     game_version?: string;
     [key: string]: any;
-
-interface WebVitalMetric { name: string;
-    id: string;
+    interface WebVitalMetric { name: string,
+    id: string,
     value: number;
-
-interface MemoryInfo { used: number;
-    total: number;
+    interface MemoryInfo { used: number,
+    total: number,
     limit: number;
-
-interface PerformanceDetails { fps?: number,
+    interface PerformanceDetails { fps?: number,
     timestamp?: number;
     [key: string]: any;
-
-interface ErrorData { error_message: string;
+    interface ErrorData { error_message: string;
     error_stack?: string;
-    context: string;
-    session_id: string;
-    timestamp: number;
-    user_agent: string;
+    context: string,
+    session_id: string,
+    timestamp: number,
+    user_agent: string,
     url: string;
 
 // グローバル変数の型定義
@@ -37,26 +33,25 @@ declare global { const __PROD__: boolean;
     const __SENTRY_DSN__: string;
     const __VERSION__: string;
     const __BUILD_TIME__: string;
-    
     interface Window {
         gtag?: (command: string, targetId: string, parameters?: any) => void;
-        Sentry?: {
-            init: (config: any) => void;
-            setTag: (key: string, value: string) => void;
+    Sentry?: {
+            init: (config: any) => void };
+            setTag: (key: string, value: string) => void,
             captureException: (error: Error, options?: any) => void 
     };
-        webVitals?: { getCLS: (callback: (metric: WebVitalMetric) => void) => void;
-            getFID: (callback: (metric: WebVitalMetric) => void) => void;
-            getFCP: (callback: (metric: WebVitalMetric) => void) => void;
-            getLCP: (callback: (metric: WebVitalMetric) => void) => void;
+        webVitals?: { getCLS: (callback: (metric: WebVitalMetric) => void) => void,
+            getFID: (callback: (metric: WebVitalMetric) => void) => void };
+            getFCP: (callback: (metric: WebVitalMetric) => void) => void,
+            getLCP: (callback: (metric: WebVitalMetric) => void) => void,
             getTTFB: (callback: (metric: WebVitalMetric) => void) => void 
     }
 
     interface Performance { memory?: {
-            usedJSHeapSiz,e: number;
-            totalJSHeapSize: number;
+            usedJSHeapSiz,e: number,
+            totalJSHeapSize: number,
     jsHeapSizeLimit: number;
-}
+} };
 
 class Analytics { private isEnabled: boolean
     private sessionId: string;
@@ -70,7 +65,7 @@ class Analytics { private isEnabled: boolean
         
         if (this.isEnabled) {
             this.initializeAnalytics();
-            this.initializeErrorTracking() }
+            this.initializeErrorTracking();
             this.initializePerformanceTracking(); }
 }
 
@@ -80,7 +75,7 @@ class Analytics { private isEnabled: boolean
     private initializeAnalytics('''
         const analyticsId = typeof __ANALYTICS_ID__ !== 'undefined' ? __ANALYTICS_ID__: ','
         const version = typeof __VERSION__ !== 'undefined' ? __VERSION__: ',';
-        const buildTime = typeof __BUILD_TIME__ !== 'undefined' ? __BUILD_TIME__: ')',
+        const buildTime = typeof __BUILD_TIME__ !== 'undefined' ? __BUILD_TIME__: '),
 
         if (analyticsId && typeof, window.gtag !== 'undefined') {
             // Google Analytics 4
@@ -94,7 +89,7 @@ class Analytics { private isEnabled: boolean
             ';'
             // Set custom dimensions
             window.gtag('config', analyticsId, { game_version: version)
-               , build_time: buildTime,
+            build_time: buildTime,
 
     /**
      * Initialize error tracking (Sentry, or similar)'
@@ -102,13 +97,13 @@ class Analytics { private isEnabled: boolean
     private initializeErrorTracking('''
         const sentryDsn = typeof __SENTRY_DSN__ !== 'undefined' ? __SENTRY_DSN__: ','
         const isProd = typeof __PROD__ !== 'undefined' ? __PROD__: false,';'
-        const version = typeof __VERSION__ !== 'undefined' ? __VERSION__: ')',
+        const version = typeof __VERSION__ !== 'undefined' ? __VERSION__: '),
 
         if (sentryDsn && typeof, window.Sentry !== 'undefined') {
             window.Sentry.init({'
                 dsn: sentryDsn,','
                 environment: isProd ? 'production' : 'development'),
-                release: version),
+                release: version);
                 beforeSend(event: any) {
                     // Filter out non-critical errors
                     if (event.exception) {
@@ -135,7 +130,7 @@ class Analytics { private isEnabled: boolean
             window.webVitals.getCLS(this.sendWebVital.bind(this);
             window.webVitals.getFID(this.sendWebVital.bind(this);
             window.webVitals.getFCP(this.sendWebVital.bind(this);
-            window.webVitals.getLCP(this.sendWebVital.bind(this) }
+            window.webVitals.getLCP(this.sendWebVital.bind(this);
             window.webVitals.getTTFB(this.sendWebVital.bind(this); }
         }
 
@@ -151,10 +146,10 @@ class Analytics { private isEnabled: boolean
 
         const version = typeof __VERSION__ !== 'undefined' ? __VERSION__: ','
         const eventData: EventData = {''
-            event_category: 'game',
+            event_category: 'game,
             event_label: eventName,
             session_id: this.sessionId,
-    game_version: version,
+    game_version: version;
             ...parameters,
 
         if (typeof, window.gtag !== 'undefined') {', '
@@ -176,7 +171,7 @@ class Analytics { private isEnabled: boolean
     trackGameStart(stageName: string): void { ''
         this.trackEvent('game_start', {
                 stage_name: stageName,
-    timestamp: Date.now(  }),
+    timestamp: Date.now(  });
     }
 
     /**
@@ -184,11 +179,11 @@ class Analytics { private isEnabled: boolean
      */''
     trackGameEnd(stageName: string, score: number, duration: number, reason: string): void { ''
         this.trackEvent('game_end', {
-            stage_name: stageName);
+            stage_name: stageName),
             final_score: score','
-    game_duration: duration,')',
+    game_duration: duration,'),
             end_reason: reason, // 'completed', 'game_over', 'quit'),
-            timestamp: Date.now(  };
+            timestamp: Date.now(  }
     }
 
     /**
@@ -199,18 +194,18 @@ class Analytics { private isEnabled: boolean
             bubble_type: bubbleType,','
             action: action, // 'popped', 'missed', 'expired');
             score_gained: score,
-            score_gained: score,
+            score_gained: score;
         };
     /**
      * Track performance issues'
      */''
     trackPerformanceIssue(issueType: string, details: PerformanceDetails): void { ''
         this.trackEvent('performance_issue', {
-                issue_type: issueType);
+                issue_type: issueType),
             details: JSON.stringify(details,
     user_agent: navigator.userAgent)','
             timestamp: Date.now(),' 
-            }'
+            }
 
         }');'
     }
@@ -241,7 +236,7 @@ class Analytics { private isEnabled: boolean
 
             window.gtag('event', 'exception', {)
                 description: error.message,
-    fatal: false,
+    fatal: false;
                 ...errorData';'
         }
     }
@@ -253,13 +248,11 @@ class Analytics { private isEnabled: boolean
         if (typeof, window.gtag !== 'undefined') {
 
             window.gtag('event', metric.name, {''
-                event_category: 'Web Vitals',')',
+                event_category: 'Web Vitals,')',
                 event_label: metric.id','
-                value: Math.round(metric.name === 'CLS' ? metric.value * 1000 : metric.value, non_interaction: true)  }
-            };
-        }
-    }
-
+                value: Math.round(metric.name === 'CLS' ? metric.value * 1000 : metric.value, non_interaction: true);
+                }
+}
     /**
      * Track custom performance metrics
      */
@@ -267,7 +260,7 @@ class Analytics { private isEnabled: boolean
         let frameCount = 0,
         let lastTime = performance.now();
         const trackFPS = (): void => { 
-            frameCount++,
+            frameCount++;
             const currentTime = performance.now();
             if (currentTime - lastTime >= 1000) {
             
@@ -317,9 +310,9 @@ class Analytics { private isEnabled: boolean
     trackVisibilityChange()';'
         document.addEventListener('visibilitychange', () => {  ''
             this.trackEvent('visibility_change', {
-                visible: !document.hidden) }
+                visible: !document.hidden),
                 timestamp: Date.now(); 
-    };
+    }
         };
     }
 
@@ -358,7 +351,7 @@ class Analytics { private isEnabled: boolean
             if (engagementTime > 0) {
 
                 this.trackEvent('user_engagement', { }
-                    engagement_time: engagementTime) }
+                    engagement_time: engagementTime),
                     session_duration: Date.now() - this.startTime 
     };
                 engagementTime = 0;

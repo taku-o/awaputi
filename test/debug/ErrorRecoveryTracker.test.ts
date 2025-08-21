@@ -21,7 +21,7 @@ const createMockGameEngine = () => ({ canvas: {
         disable: jest.fn() }
     },
     audioManager: { stop: jest.fn().mockResolvedValue(),'
-        initialize: jest.fn().mockResolvedValue(),','
+        initialize: jest.fn().mockResolvedValue(),',' };
         mute: jest.fn()') }'
     },'
     sceneManager: { }'

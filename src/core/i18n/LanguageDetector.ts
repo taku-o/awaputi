@@ -8,8 +8,7 @@ import { getErrorHandler  } from '../../utils/ErrorHandler.js';
 // 型定義
 export interface LocalizationManager { getCurrentLanguage(): string,
     setLanguage(language: string): void;
-    // その他必要なメソッド }
-
+    // その他必要なメソッド };
 export type DetectionMethod = () => string | null;
 
 /**
@@ -25,7 +24,7 @@ export class LanguageDetector {
         
         // 検出メソッドの優先順位（上から順に試行）
         this.detectionMethods = [this.detectFromURL.bind(this);
-            this.detectFromStorage.bind(this),,
+            this.detectFromStorage.bind(this),
             this.detectFromBrowser.bind(this),]','
             this.detectFromDefault.bind(this)],
         ],
@@ -33,8 +32,7 @@ export class LanguageDetector {
 
         // サポート言語リスト
 
-    }
-
+    };
         this.supportedLanguages = new Set(['ja', 'en]); }'
     }
     
@@ -43,7 +41,7 @@ export class LanguageDetector {
      */
     detect(): string { try {
             for (const method of this.detectionMethods) {
-                const language = method() }
+                const language = method();
 
                 if (language && this.isSupported(language) { }'
 
@@ -51,12 +49,12 @@ export class LanguageDetector {
                     return language;
             ';'
             // Ultimate fallback
-            console.warn('No supported language detected, using default: en',
+            console.warn('No supported language detected, using default: en,
             return 'en';
 
         } catch (error) {
             getErrorHandler().handleError(error, 'LANGUAGE_DETECTION_ERROR', {''
-                operation: 'detect',
+                operation: 'detect,
                 supportedLanguages: Array.from(this.supportedLanguages),' }'
 
             }');'
@@ -88,7 +86,7 @@ export class LanguageDetector {
     private detectFromStorage()','
             const storedLang = localStorage.getItem('bubblePop_language),'
             
-            if (storedLang) { const normalized = this.normalizeLanguageCode(storedLang) }
+            if (storedLang) { const normalized = this.normalizeLanguageCode(storedLang);
                 console.log(`Stored, language detected: ${normalized}`};
                 return normalized;
             }
@@ -105,7 +103,7 @@ export class LanguageDetector {
             // navigator.languageが最も優先度が高い
             const primaryLang = navigator.language,
             if (primaryLang) {
-                const normalized = this.normalizeLanguageCode(primaryLang) }
+                const normalized = this.normalizeLanguageCode(primaryLang);
                 if (this.isSupported(normalized) { }
                     console.log(`Browser, primary language, detected: ${normalized}`};
                     return normalized;
@@ -113,7 +111,7 @@ export class LanguageDetector {
             // navigator.languagesもチェック
             if (navigator.languages && navigator.languages.length > 0) {
                 for (const lang of navigator.languages) {
-                    const normalized = this.normalizeLanguageCode(lang) }
+                    const normalized = this.normalizeLanguageCode(lang);
                     if (this.isSupported(normalized) { }
                         console.log(`Browser, language list, detected: ${normalized}`};
                         return normalized;
@@ -121,7 +119,7 @@ export class LanguageDetector {
             // レガシーサポート
             const userLanguage = (navigator, as any).userLanguage;
             if (userLanguage) {
-                const normalized = this.normalizeLanguageCode(userLanguage) }
+                const normalized = this.normalizeLanguageCode(userLanguage);
                 if (this.isSupported(normalized) { }
                     console.log(`Browser, user language, detected: ${normalized}`};
                     return normalized;
@@ -135,7 +133,7 @@ export class LanguageDetector {
      * デフォルト言語を返す'
      */''
     private detectFromDefault()','
-        console.log('Using, project default, language: ja',
+        console.log('Using, project default, language: ja,
         return 'ja' }
     
     /**
@@ -150,13 +148,13 @@ export class LanguageDetector {
         
         // 特殊なケースの処理
         const mapping: Record<string, string> = { ', 'zh-cn': 'zh-CN','
-            'zh-tw': 'zh-TW',
-            'zh-hk': 'zh-HK',
-            'zh-sg': 'zh-CN',
-            'zh': 'zh-CN',
-            'ko': 'ko',
-            'korean': 'ko',
-            'jp': 'ja',
+            'zh-tw': 'zh-TW,
+            'zh-hk': 'zh-HK,
+            'zh-sg': 'zh-CN,
+            'zh': 'zh-CN,
+            'ko': 'ko,
+            'korean': 'ko,
+            'jp': 'ja,
             'japanese': 'ja' };
         
         return mapping[normalized] || normalized;
@@ -193,7 +191,7 @@ export class LanguageDetector {
             return false;
 
         } catch (error) { getErrorHandler().handleError(error, 'LANGUAGE_DETECTION_ERROR', {''
-                operation: 'addSupportedLanguage');
+                operation: 'addSupportedLanguage'),
                 language: language,);
             return false;
     
@@ -212,14 +210,14 @@ export class LanguageDetector {
             return false;
 
         } catch (error) { getErrorHandler().handleError(error, 'LANGUAGE_DETECTION_ERROR', {''
-                operation: 'removeSupportedLanguage');
+                operation: 'removeSupportedLanguage'),
                 language: language,);
             return false;
     
     /**
      * サポート言語リストを取得
      */
-    getSupportedLanguages(): string[] { return Array.from(this.supportedLanguages).sort() }
+    getSupportedLanguages(): string[] { return Array.from(this.supportedLanguages).sort();
     
     /**
      * 言語設定をローカルストレージに保存
@@ -227,14 +225,14 @@ export class LanguageDetector {
     saveLanguagePreference(language: string): boolean { try {
             const normalized = this.normalizeLanguageCode(language);
             if(normalized && this.isSupported(normalized)) {''
-                localStorage.setItem('bubblePop_language', normalized) }
+                localStorage.setItem('bubblePop_language', normalized);
                 console.log(`Language, preference saved: ${normalized}`};
                 return true;
             }
             return false;
 
         } catch (error) { getErrorHandler().handleError(error, 'LANGUAGE_DETECTION_ERROR', {''
-                operation: 'saveLanguagePreference');
+                operation: 'saveLanguagePreference'),
                 language: language,);
             return false;
     
@@ -242,10 +240,10 @@ export class LanguageDetector {
      * 言語検出の統計情報を取得
      */
     getDetectionStats(): any { return { supportedLanguages: this.getSupportedLanguages(
-            detectionMethods: this.detectionMethods.map(method => method.name);
-            currentDetectedLanguage: this.detect();
+            detectionMethods: this.detectionMethods.map(method => method.name),
+            currentDetectedLanguage: this.detect(),
             browserSettings: {
-                primary: navigator.language,
+                primary: navigator.language ,
                 list: navigator.languages || [],' };'
 
                 userLanguage: (navigator, as any').userLanguage || null }'
@@ -255,7 +253,7 @@ export class LanguageDetector {
             urlSettings: { ''
                 params: new, URLSearchParams(window.location.search).get('lang' || ','
                        new URLSearchParams(window.location.search).get('language'
-            }'
+            }
         }
     
     /**

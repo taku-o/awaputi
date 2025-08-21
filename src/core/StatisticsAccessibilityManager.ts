@@ -11,38 +11,38 @@ export class StatisticsAccessibilityManager {
         // アクセシビリティ設定
         this.config = {
             screenReader: {
-                enabled: true;
-                verboseMode: false;
+                enabled: true ,
+                verboseMode: false,
     announcementDelay: 1000, // 1秒のデレイ;
-                maxAnnouncementLength: 300;
-    autoAnnouncements: true;
-                customDescriptions: true;
-            keyboard: { enabled: true;
-                tabOrder: true;
-                shortcuts: true;
-                focusVisible: true;
-    skipLinks: true;
-            visual: { highContrast: false;
-                largeText: false;
-                colorBlindSupport: true;
-                animations: true;
-    reducedMotion: false;
-            audio: { enabled: false;
-                soundCues: false;
-                speechSynthesis: false;
+                maxAnnouncementLength: 300,
+    autoAnnouncements: true,
+                customDescriptions: true,
+            keyboard: { enabled: true,
+                tabOrder: true  ,
+                shortcuts: true,
+                focusVisible: true,
+    skipLinks: true,
+            visual: { highContrast: false,
+                largeText: false  ,
+                colorBlindSupport: true,
+                animations: true,
+    reducedMotion: false,
+            audio: { enabled: false,
+                soundCues: false  ,
+                speechSynthesis: false,
     volume: 0.5 };
             general: { timeout: 30000, // 30秒のタイムアウト
-                errorRecovery: true;
-                progressIndicators: true;
+                errorRecovery: true ,
+                progressIndicators: true,
     contextHelp: true;
         };
         // 状態管理
-        this.state = { currentFocus: null;
-            navigationHistory: [];
-            announcementQueue: [];
-            isAnnouncing: false;
-            lastAnnouncement: null;
-            keyboardMode: false;
+        this.state = { currentFocus: null,
+            navigationHistory: [],
+            announcementQueue: [],
+            isAnnouncing: false,
+            lastAnnouncement: null,
+            keyboardMode: false,
     screenReaderActive: false;
         // ARIA要素管理
         this.ariaElements = new Map();
@@ -75,7 +75,7 @@ export class StatisticsAccessibilityManager {
         this.setupKeyboardNavigation();
         this.setupLiveRegions();
         this.setupVisualAccessibility();
-        this.setupAudioCues() }
+        this.setupAudioCues();
         this.bindEvents(); }
     }
     
@@ -104,7 +104,7 @@ export class StatisticsAccessibilityManager {
     setupARIAStructure() {
         // メインコンテナにroleを設定
         if (this.uiContainer) {''
-            this.uiContainer.setAttribute('role', 'main') }
+            this.uiContainer.setAttribute('role', 'main');
 
             this.uiContainer.setAttribute('aria-label', '統計情報ダッシュボード'; }
         }
@@ -117,11 +117,11 @@ export class StatisticsAccessibilityManager {
             ','
             // 代替テキスト用の隠し要素を作成
             const altTextContainer = document.createElement('div');
-            altTextContainer.className = 'canvas-alt-text sr-only',
+            altTextContainer.className = 'canvas-alt-text sr-only,
             altTextContainer.setAttribute('aria-live', 'polite');
             altTextContainer.setAttribute('aria-atomic', 'true),'
 
-            this.canvas.parentNode.insertBefore(altTextContainer, this.canvas.nextSibling) }
+            this.canvas.parentNode.insertBefore(altTextContainer, this.canvas.nextSibling);
 
             this.ariaElements.set('canvas-alt', altTextContainer); }
         }
@@ -134,11 +134,11 @@ export class StatisticsAccessibilityManager {
      * 統計用ARIA構造の作成
      */''
     createStatisticsARIAStructure('''
-            { id: 'game-stats', label: 'ゲームプレイ統計', level: 2  },''
-            { id: 'score-stats', label: 'スコア統計', level: 2  },''
-            { id: 'bubble-stats', label: 'バブル統計', level: 2  },''
-            { id: 'combo-stats', label: 'コンボ統計', level: 2  },''
-            { id: 'trend-analysis', label: 'トレンド分析', level: 2  },''
+            { id: 'game-stats', label: 'ゲームプレイ統計', level: 2  ,''
+            { id: 'score-stats', label: 'スコア統計', level: 2  ,''
+            { id: 'bubble-stats', label: 'バブル統計', level: 2  ,''
+            { id: 'combo-stats', label: 'コンボ統計', level: 2  ,''
+            { id: 'trend-analysis', label: 'トレンド分析', level: 2  ,''
             { id: 'achievements', label: '実績', level: 2  }
         ];
         );
@@ -173,7 +173,7 @@ export class StatisticsAccessibilityManager {
             
             this.ariaElements.set(section.id, container);
             this.descriptions.set(section.id, description);
-        };
+        }
     }
     
     /**
@@ -205,11 +205,11 @@ export class StatisticsAccessibilityManager {
 
         const skipLinks = [';'
             { href: '#main-content', text: 'メインコンテンツへスキップ'
-            },''
+            ,''
             { href: '#statistics-summary', text: '統計サマリーへスキップ'
-            },''
+            ,''
             { href: '#charts-section', text: 'グラフセクションへスキップ'
-            },]'
+            ,]'
             { href: '#navigation-controls', text: 'ナビゲーションコントロールへスキップ'
             }]
         ];
@@ -219,7 +219,7 @@ export class StatisticsAccessibilityManager {
             skipLink.href = link.href,
 
             skipLink.textContent = link.text,
-            skipLink.className = 'skip-link',
+            skipLink.className = 'skip-link,
             skipLink.addEventListener('focus', () => { }
 
                 skipLink.classList.add('visible'; }
@@ -241,32 +241,32 @@ export class StatisticsAccessibilityManager {
      * フォーカス可能要素の更新
      */''
     updateFocusableElements()';'
-            'button:not([disabled])',
-            'input:not([disabled])',
-            'select:not([disabled])',
-            'textarea:not([disabled])',
-            'a[href]',
+            'button:not([disabled]),
+            'input:not([disabled]),
+            'select:not([disabled]),
+            'textarea:not([disabled]),
+            'a[href],
             '[tabindex]:not([tabindex="-1"]",'
-            '[role="button"]:not([disabled])',
+            '[role="button"]:not([disabled]),
             '[role="link"]:not([disabled])'';'
         ].join(', ');
         
-        this.focusableElements = Array.from(document.querySelectorAll(selector);
+        this.focusableElements = Array.from(document.querySelectorAll())selector);
         
         // タブ順序の設定
-        if (this.config.keyboard.tabOrder) { this.setTabOrder() }
+        if (this.config.keyboard.tabOrder) { this.setTabOrder();
     }
     
     /**
      * タブ順序の設定'
      */''
     setTabOrder('';
-            '.skip-link',
-            '.main-navigation',
-            '.statistics-filter',
-            '.statistics-chart',
-            '.statistics-data',
-            '.action-button',
+            '.skip-link,
+            '.main-navigation,
+            '.statistics-filter,
+            '.statistics-chart,
+            '.statistics-data,
+            '.action-button,
             '.help-button';
         ];
         
@@ -277,7 +277,7 @@ export class StatisticsAccessibilityManager {
                 if(!element.hasAttribute('tabindex)' { }
 
                     element.setAttribute('tabindex', tabIndex++); }
-};
+}
         }';'
     }
     
@@ -309,10 +309,8 @@ export class StatisticsAccessibilityManager {
         ]),
         
         shortcuts.forEach((shortcut, key) => {  }
-            this.keyboardHandlers.set(key, shortcut); }
-        };
-    }
-    
+            this.keyboardHandlers.set(key, shortcut);     }
+}
     /**
      * フォーカス表示の設定'
      */''
@@ -367,11 +365,11 @@ export class StatisticsAccessibilityManager {
      */''
     setupLiveRegions('''
             { id: 'announcements', politeness: 'polite', atomic: 'true'
-            },''
+            ,''
             { id: 'status', politeness: 'polite', atomic: 'false'
-            },''
+            ,''
             { id: 'errors', politeness: 'assertive', atomic: 'true'
-            },''
+            ,''
             { id: 'progress', politeness: 'polite', atomic: 'false'
             }
         ];
@@ -389,7 +387,7 @@ export class StatisticsAccessibilityManager {
             
             document.body.appendChild(element);
             this.liveRegions.set(region.id, element);
-        };
+        }
     }
     
     /**
@@ -472,16 +470,14 @@ export class StatisticsAccessibilityManager {
      * 音声キューの生成
      */
     generateAudioCues() { const cues = { }
-            success: { frequency: 800, duration: 0.2  },
-            error: { frequency: 300, duration: 0.5  },
-            focus: { frequency: 600, duration: 0.1  },
-            navigation: { frequency: 500, duration: 0.1  },
+            success: { frequency: 800, duration: 0.2  ,
+            error: { frequency: 300, duration: 0.5  ,
+            focus: { frequency: 600, duration: 0.1  ,
+            navigation: { frequency: 500, duration: 0.1  ,
         
-        Object.entries(cues).forEach(([name, config]) => {  const buffer = this.createTone(config.frequency, config.duration) }
-            this.audioBuffers.set(name, buffer); }
-        };
-    }
-    
+        Object.entries(cues).forEach(([name, config]) => {  const buffer = this.createTone(config.frequency, config.duration);
+            this.audioBuffers.set(name, buffer);     }
+}
     /**
      * トーン生成
      */
@@ -527,7 +523,7 @@ export class StatisticsAccessibilityManager {
         const handler = this.keyboardHandlers.get(event.key);
         if (handler && (event.altKey || event.ctrlKey || event.metaKey) {
             event.preventDefault();
-            this[handler.action]?.() }
+            this[handler.action]?.();
             return; }
         }
         ';'
@@ -555,11 +551,11 @@ export class StatisticsAccessibilityManager {
             case 'ArrowUp':','
                 this.navigateUp('''
             case 'ArrowDown': ','
-                this.navigateDown('',
+                this.navigateDown(',
             case 'ArrowLeft':','
-                this.navigateLeft('',
+                this.navigateLeft(',
             case 'ArrowRight':','
-                this.navigateRight() }
+                this.navigateRight();
 
         this.playAudioCue('navigation'; }'
     }
@@ -604,7 +600,7 @@ export class StatisticsAccessibilityManager {
 
         ' }'
 
-        this.announceToScreenReader(`${label}にフォーカスしました`, 'announcements'};
+        this.announceToScreenReader(`${label}にフォーカスしました`, 'announcements'}
     }
     
     /**
@@ -666,7 +662,7 @@ export class StatisticsAccessibilityManager {
     announceStatisticsUpdate(data) {
         if (!this.config.screenReader.autoAnnouncements) return,
 
-        const summary = this.generateUpdateSummary(data) }
+        const summary = this.generateUpdateSummary(data);
 
         this.announceToScreenReader(summary, 'status'; }'
     }
@@ -677,13 +673,13 @@ export class StatisticsAccessibilityManager {
     generateUpdateSummary(data) {
         const updates = [] }
         if (data.gamePlayStats) { }
-            updates.push(`総ゲーム数: ${data.gamePlayStats.totalGames}ゲーム`};
+            updates.push(`総ゲーム数: ${data.gamePlayStats.totalGames}ゲーム`}
         }
         
         if (data.scoreStats) {
     
 }
-            updates.push(`最高スコア: ${data.scoreStats.highestScore}点`};
+            updates.push(`最高スコア: ${data.scoreStats.highestScore}点`}
         }
         ';'
 
@@ -716,7 +712,7 @@ export class StatisticsAccessibilityManager {
 
         const generator = this.textGenerators.get('detailed),'
         if (generator) {
-            const text = generator(sectionId, data) }
+            const text = generator(sectionId, data);
             description.textContent = text; }
 }
     
@@ -728,7 +724,7 @@ export class StatisticsAccessibilityManager {
         const altTextContainer = this.ariaElements.get('canvas-alt),'
         if (!altTextContainer) return,
 
-        const chartText = this.generateChartText(data) }
+        const chartText = this.generateChartText(data);
         altTextContainer.textContent = chartText; }
     }
     
@@ -756,12 +752,12 @@ export class StatisticsAccessibilityManager {
                 liveRegion.textContent = message,
                 this.state.lastAnnouncement = {
                     message }
-                    timestamp: Date.now() }
+                    timestamp: Date.now(),
                     region: regionId;, 100);
         }
         
         // 音声合成を使用したアナウンス
-        if (this.config.audio.speechSynthesis && window.speechSynthesis) { this.speakText(message) }
+        if (this.config.audio.speechSynthesis && window.speechSynthesis) { this.speakText(message);
     }
     
     /**
@@ -773,7 +769,7 @@ export class StatisticsAccessibilityManager {
         // 既存の読み上げを停止
         speechSynthesis.cancel();
         const utterance = new SpeechSynthesisUtterance(text);
-        utterance.lang = 'ja-JP',
+        utterance.lang = 'ja-JP,
         utterance.rate = 0.9,
         utterance.pitch = 1.0,
         utterance.volume = this.config.audio.volume }
@@ -794,7 +790,7 @@ export class StatisticsAccessibilityManager {
             gainNode.gain.value = this.config.audio.volume,
             
             source.connect(gainNode);
-            gainNode.connect(this.audioContext.destination) }
+            gainNode.connect(this.audioContext.destination);
             source.start(); }
 }
     
@@ -813,7 +809,7 @@ export class StatisticsAccessibilityManager {
         if (data.scoreStats) {
     
 }
-            parts.push(`最高スコア${data.scoreStats.highestScore}点`};
+            parts.push(`最高スコア${data.scoreStats.highestScore}点`}
         }
         ';'
 
@@ -838,7 +834,7 @@ export class StatisticsAccessibilityManager {
             case 'bubble-stats':','
                 return this.generateBubbleStatsText(data);
             case 'combo-stats':','
-                return this.generateComboStatsText(data) }
+                return this.generateComboStatsText(data);
 
             default: return ';'
     
@@ -911,9 +907,9 @@ export class StatisticsAccessibilityManager {
     /**
      * ナビゲーション操作
      */
-    navigateUp() { this.moveFocus(-1) }
+    navigateUp() { this.moveFocus(-1);
     
-    navigateDown() { this.moveFocus(1) }
+    navigateDown() { this.moveFocus(1);
 
     navigateLeft()';'
         this.announceToScreenReader('左に移動しました', 'status);'
@@ -930,7 +926,7 @@ export class StatisticsAccessibilityManager {
         const currentElement = this.state.currentFocus,
 
         if (currentElement) {''
-            const details = this.getElementDetails(currentElement) }
+            const details = this.getElementDetails(currentElement);
 
             this.announceToScreenReader(details, 'announcements'; }'
 }
@@ -947,7 +943,7 @@ export class StatisticsAccessibilityManager {
         
         if (description) {
         
-            const descElement = document.getElementById(description) }
+            const descElement = document.getElementById(description);
             if (descElement) { }
                 details += `、${descElement.textContent}`;
             }
@@ -961,7 +957,7 @@ export class StatisticsAccessibilityManager {
      */
     showHelp() {
 
-        const helpText = this.generateHelpText() }
+        const helpText = this.generateHelpText();
 
         this.announceToScreenReader(helpText, 'announcements'; }'
     }
@@ -993,9 +989,9 @@ export class StatisticsAccessibilityManager {
             this.applyVisualSettings(); }
         }
         
-        if (newConfig.audio) { this.applyAudioSettings() }
+        if (newConfig.audio) { this.applyAudioSettings();
         
-        if (newConfig.keyboard) { this.updateFocusableElements() }
+        if (newConfig.keyboard) { this.updateFocusableElements();
     }
     
     /**
@@ -1012,9 +1008,9 @@ export class StatisticsAccessibilityManager {
      */
     applyAudioSettings() {
         if (!this.config.audio.enabled && this.audioContext) {
-            this.audioContext.close() }
+            this.audioContext.close();
             this.audioContext = null; }
-        } else if (this.config.audio.enabled && !this.audioContext) { this.setupAudioCues() }
+        } else if (this.config.audio.enabled && !this.audioContext) { this.setupAudioCues();
     }
     
     /**
@@ -1029,7 +1025,7 @@ export class StatisticsAccessibilityManager {
             audioEnabled: this.config.audio.enabled,
             announcementCount: this.state.announcementQueue.length,
     lastAnnouncement: this.state.lastAnnouncement }
-            focusableElementCount: this.focusableElements.length },
+            focusableElementCount: this.focusableElements.length ,
             currentFocusIndex: this.currentFocusIndex 
     }
     
@@ -1045,10 +1041,10 @@ export class StatisticsAccessibilityManager {
         document.removeEventListener('touchstart', this.handleTouchStart);
         
         // 音声コンテキストのクリーンアップ
-        if (this.audioContext) { this.audioContext.close() }
+        if (this.audioContext) { this.audioContext.close();
         
         // 音声合成の停止
-        if (window.speechSynthesis) { speechSynthesis.cancel() }
+        if (window.speechSynthesis) { speechSynthesis.cancel();
         
         // マップのクリア
         this.ariaElements.clear();

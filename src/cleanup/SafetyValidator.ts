@@ -2,46 +2,44 @@ import fs from 'fs';
 import path from 'path';
 import { ReferenceResult  } from './ReferenceChecker.js';
 
-interface CurrentFileCheck { exists: boolean;
-    currentFilePath: string;
+interface CurrentFileCheck { exists: boolean,
+    currentFilePath: string,
     error: string | null  }
 ';'
 
 interface Reference { ''
-    type: 'import' | 'string';
+    type: 'import' | 'string,
     context: string;
-
-interface ReferenceValidation { hasActiveReferences: boolean;
-    activeReferences: Reference[];
+    interface ReferenceValidation { hasActiveReferences: boolean,
+    activeReferences: Reference[],
     inactiveReferences: Reference[];
-
-interface FileSizeValidation { valid: boolean;
-    size: number;
-    warnings: string[];
+    interface FileSizeValidation { valid: boolean,
+    size: number,
+    warnings: string[],
     error: string | null }
 
-interface SafetyReportResult { filePath: string;
-    currentFileExists: boolean;
-    currentFilePath: string;
-    hasActiveReferences: boolean;
-    activeReferencesCount: number;
-    activeReferences: Reference[];
-    fileSize: number;
-    isSafeToDelete: boolean;
-    warnings: string[];
-    errors: string[];
+interface SafetyReportResult { filePath: string,
+    currentFileExists: boolean,
+    currentFilePath: string,
+    hasActiveReferences: boolean,
+    activeReferencesCount: number,
+    activeReferences: Reference[],
+    fileSize: number,
+    isSafeToDelete: boolean,
+    warnings: string[],
+    errors: string[],
     details: {
-        currentFileChec,k: CurrentFileCheck;
-        referenceCheck: ReferenceValidation;
-    sizeCheck: FileSizeValidation;
+        currentFileChec,k: CurrentFileCheck ,
+        referenceCheck: ReferenceValidation,
+    sizeCheck: FileSizeValidation,
     sizeCheck: FileSizeValidation;
         };
-export interface SafetyResults { results: SafetyReportResult[];
-    totalFiles: number;
-    safeToDelete: number;
-    unsafeToDelete: number;
-    totalWarnings: number;
-    totalErrors: number;
+export interface SafetyResults { results: SafetyReportResult[],
+    totalFiles: number,
+    safeToDelete: number,
+    unsafeToDelete: number,
+    totalWarnings: number,
+    totalErrors: number,
     totalErrors: number;
         };
 export class SafetyValidator {
@@ -51,7 +49,7 @@ export class SafetyValidator {
 
         this.maxSafeFileSize = 100 * 1024 * 1024; // 100MB
 
-    }
+    };
         this.minFileSize = 10; // 10 bytes }
     }
 
@@ -75,7 +73,7 @@ export class SafetyValidator {
             .replace(/_old/g, '')','
             .replace(/_original/g, '),'
             
-        return path.join(dir, currentBasename) }
+        return path.join(dir, currentBasename);
 ';'
 
     validateNoActiveReferences(references: Reference[]): ReferenceValidation { ''
@@ -117,9 +115,9 @@ export class SafetyValidator {
                 error: null;"
             };""
         } catch (error") {"
-            const errorMessage = error instanceof Error ? error.message: 'Unknown error',
+            const errorMessage = error instanceof Error ? error.message: 'Unknown error,
             return { valid: false,
-                size: 0 },
+                size: 0 };
                 warnings: [] }
                 error: `Cannot read file, size: ${errorMessage}`
             }
@@ -127,7 +125,7 @@ export class SafetyValidator {
 ';'
 
     private formatBytes(bytes: number): string { ''
-        if(bytes === 0) return '0 Bytes',
+        if(bytes === 0) return '0 Bytes,
 
         const k = 1024,
         const sizes = ['Bytes', 'KB', 'MB', 'GB'],
@@ -152,7 +150,7 @@ export class SafetyValidator {
         if (referenceCheck.hasActiveReferences) {
     
 }
-            errors.push(`File, has ${referenceCheck.activeReferences.length} active, references`};
+            errors.push(`File, has ${referenceCheck.activeReferences.length} active, references`}
         }
 
         if (!sizeCheck.valid) {
@@ -175,9 +173,8 @@ export class SafetyValidator {
             isSafeToDelete,
             warnings,
             errors,
-            details: {
-                currentFileCheck,
-                referenceCheck };
+            details: { currentFileCheck,
+                referenceCheck  },
                 sizeCheck }
 }
 
@@ -187,7 +184,7 @@ export class SafetyValidator {
         
             const file = files[i],
             const referenceResult = referenceResults[i],
-            const result = await this.generateSafetyReport(file, referenceResult) }
+            const result = await this.generateSafetyReport(file, referenceResult);
             results.push(result); }
         }
 

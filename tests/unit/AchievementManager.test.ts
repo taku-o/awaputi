@@ -5,12 +5,12 @@ import { describe, test, beforeEach, expect, jest  } from '@jest/globals';
 import { AchievementManager  } from '../../src/core/AchievementManager.js';
 // Type definitions for test objects
 interface StageProgress {
-    bestScore: number;
+    bestScore: number,
     completed: boolean;
 interface BubbleTypeStats {
     popped: number;
 interface SessionDataStats {
-    lastSessionDate: string;
+    lastSessionDate: string,
     consecutiveDays: number;
 interface ComboStats {
     maxCombo: number;
@@ -18,58 +18,58 @@ interface AccuracyStats {
     overall: number;
 interface DetailedStatistics {
     bubbleTypes: {
-        norma,l: BubbleTypeStats;
+        norma,l: BubbleTypeStats },
         stone: BubbleTypeStats;
         rainbow: BubbleTypeStats,,
-    sessionData: SessionDataStats;
+    sessionData: SessionDataStats,
     combos: ComboStats;
     accuracy: AccuracyStats;
 interface PlayerData {
-    totalBubblesPopped: number;
+    totalBubblesPopped: number,
     totalScore: number;
-    totalPlayTime: number;
+    totalPlayTime: number,
     consecutiveDays: number;
-    maxCombo: number;
+    maxCombo: number,
     stages: Record<string, StageProgress>;
-    accuracy: number;
+    accuracy: number,
     achievements: Set<string>;
 interface BatchUpdate {
-    achievementId: string;
+    achievementId: string,
     value: number;
 interface TotalRewards {
     ap: number;
 interface CategoryReward {
     ap: number;
 interface CategoryRewards {
-    score: CategoryReward;
+    score: CategoryReward,
     play: CategoryReward;
-    technique: CategoryReward;
+    technique: CategoryReward,
     collection: CategoryReward;
     special: CategoryReward;
 interface SaveData {
-    achievements: any[];
+    achievements: any[],
     unlockedAchievements: Set<string>;
     progressData: Record<string, any>;
     version: string;
 interface PerformanceStats {
     cacheHits: number;
 interface PerformanceDiagnostics {
-    cacheHitRate: number;
+    cacheHitRate: number,
     averageUpdateTime: number;
-    memoryUsage: number;
+    memoryUsage: number,
     recommendations: string[];
 // MockPlayerDataクラス
 class MockPlayerData {
     public data: PlayerData;
     constructor() {
         this.data = {
-            totalBubblesPopped: 0;
+            totalBubblesPopped: 0,
             totalScore: 0;
-            totalPlayTime: 0;
+            totalPlayTime: 0,
             consecutiveDays: 0;
-            maxCombo: 0;
+            maxCombo: 0,
             stages: {};
-            accuracy: 100;
+            accuracy: 100,
         achievements: new Set(
     );
     }
@@ -85,12 +85,12 @@ class MockPlayerData {
     getDetailedStatistics(): DetailedStatistics {
         return {
             bubbleTypes: {
-                normal: { popped: 50 };
-                stone: { popped: 20 };
+                normal: { popped: 50 },
+                stone: { popped: 20 },
                 rainbow: { popped: 5 }
             },
             sessionData: {
-                lastSessionDate: new Date().toISOString(','
+                lastSessionDate: new Date().toISOString(',' };
                 consecutiveDays: this.data.consecutiveDays
             },
             combos: {
@@ -99,7 +99,7 @@ class MockPlayerData {
             accuracy: {
                 overall: this.data.accuracy
             }
-        };
+        }
     }
 }
 describe('AchievementManager', () => {
@@ -192,7 +192,7 @@ describe('AchievementManager', () => {
         test('バッチサイズが制限される', () => {
             // 100個の更新を作成（制限は50）
             const updates: BatchUpdate[] = Array.from({length: 100}, (_, i') => ({'
-                achievementId: 'first_score';
+                achievementId: 'first_score',
                 value: i + 1
             };
             const processedCount = achievementManager.batchUpdateProgress(updates);
@@ -243,9 +243,9 @@ describe('AchievementManager', () => {
         test('データ検証が正しく動作する', () => {
             // 正常なデータ
             const validData: SaveData = {
-                achievements: [];
+                achievements: [],
                 unlockedAchievements: new Set(','
-                progressData: {};
+                progressData: {},
                 version: '1.0.0'
             };
             
@@ -286,7 +286,7 @@ describe('AchievementManager', () => {
             expect(categoryRewards').toHaveProperty('special'),'
             Object.values(categoryRewards).forEach(reward => {);
                 expect(typeof reward.ap').toBe('number'),'
-                expect(reward.ap).toBeGreaterThanOrEqual(0) };
+                expect(reward.ap).toBeGreaterThanOrEqual(0) }
         }
     }');'
     describe('エラーハンドリング', (') => {'

@@ -11,111 +11,111 @@ export class StatisticsVisualAccessibilityEnhancer {
         // 視覚アクセシビリティ設定
         this.config = {
             contrast: {
-                enabled: false;
+                enabled: false ,
     level: 'normal', // normal, high, maximum;
                 ratio: {
-                    normal: 4.5;
+                    normal: 4.5 ,
     high: 7.0 }
                     maximum: 21.0 
-    },''
-                backgroundColor: '#ffffff';
-                textColor: '#000000';
+    ,''
+                backgroundColor: '#ffffff,
+                textColor: '#000000,
                 accentColor: '#0066cc';
             },
-            fontSize: { enabled: false;
-    scale: 1.0, // 1.0 = 100%, 1.5 = 150%, 2.0 = 200%;
-                minSize: 12;
-                maxSize: 48;
-                lineHeight: 1.4;
+            fontSize: { enabled: false,
+    scale: 1.0, // 1.0 = 100%, 1.5 = 150%, 2.0 = 200%  },
+                minSize: 12,
+                maxSize: 48,
+                lineHeight: 1.4,
     letterSpacing: 0  };
             colorSupport: { enabled: true,''
-                colorBlindnessType: 'none', // none, protanopia, deuteranopia, tritanopia, monochrome;
-                patternSupport: true;
-                shapeSupport: true;
-                symbolSupport: true;
-    textureSupport: true;
-            magnification: { enabled: false;
-    level: 1.0, // 1.0-3.0;
-                followFocus: true;
-    smoothTransition: true;
-                zoomArea: { x: 0, y: 0, width: 200, height: 200  };
-            focus: { enabled: true;
-    thickness: 3;
-                color: '#4A90E2';
+                colorBlindnessType: 'none', // none, protanopia, deuteranopia, tritanopia, monochrome  },
+                patternSupport: true,
+                shapeSupport: true,
+                symbolSupport: true,
+    textureSupport: true,
+            magnification: { enabled: false,
+    level: 1.0, // 1.0-3.0  },
+                followFocus: true,
+    smoothTransition: true,
+                zoomArea: { x: 0, y: 0, width: 200, height: 200  ,
+            focus: { enabled: true,
+    thickness: 3  ,
+                color: '#4A90E2,
                 style: 'solid', // solid, dashed, dotted;
-                radius: 4;
-                offset: 2;
-    animation: true;
-            motion: { reducedMotion: false;
-                animationDuration: 300;
-                transitionDuration: 200;
-                parallaxDisabled: false;
+                radius: 4,
+                offset: 2,
+    animation: true,
+            motion: { reducedMotion: false,
+                animationDuration: 300  ,
+                transitionDuration: 200,
+                parallaxDisabled: false,
     autoplayDisabled: false;
         // カラーパレット管理
         this.colorPalettes = { normal: {''
                 primary: ['#3498db', '#e74c3c', '#2ecc71', '#f39c12', '#9b59b6];'
                 secondary: ['#34495e', '#95a5a6', '#1abc9c', '#e67e22', '#8e44ad];'
-                background: '#ffffff';
-                text: '#2c3e50';
+                background: '#ffffff,
+                text: '#2c3e50,
                 grid: '#ecf0f1'
-            };
+        }
             highContrast: { ''
-                primary: ['#000000', '#ffffff', '#ffff00', '#ff00ff', '#00ffff];'
+                primary: ['#000000', '#ffffff', '#ffff00', '#ff00ff', '#00ffff];'  },
                 secondary: ['#808080', '#c0c0c0', '#008000', '#800080', '#008080];'
-                background: '#ffffff';
-                text: '#000000';
+                background: '#ffffff,
+                text: '#000000,
                 grid: '#808080'
             };
             protanopia: { ''
-                primary: ['#1f4e79', '#8c2d04', '#2d5a27', '#b2670e', '#5d4e75];'
+                primary: ['#1f4e79', '#8c2d04', '#2d5a27', '#b2670e', '#5d4e75];'  },
                 secondary: ['#34495e', '#7f6a52', '#1a7e76', '#c7791f', '#7a4f74];'
-                background: '#ffffff';
-                text: '#2c3e50';
+                background: '#ffffff,
+                text: '#2c3e50,
                 grid: '#ecf0f1'
             };
             deuteranopia: { ''
-                primary: ['#1f4e79', '#8c2d04', '#2d5a27', '#b2670e', '#5d4e75];'
+                primary: ['#1f4e79', '#8c2d04', '#2d5a27', '#b2670e', '#5d4e75];'  },
                 secondary: ['#34495e', '#7f6a52', '#1a7e76', '#c7791f', '#7a4f74];'
-                background: '#ffffff';
-                text: '#2c3e50';
+                background: '#ffffff,
+                text: '#2c3e50,
                 grid: '#ecf0f1'
             };
             tritanopia: { ''
-                primary: ['#c41e3a', '#2ecc71', '#e67e22', '#8e44ad', '#1abc9c];'
+                primary: ['#c41e3a', '#2ecc71', '#e67e22', '#8e44ad', '#1abc9c];'  },
                 secondary: ['#7f8c8d', '#27ae60', '#d68910', '#7d3c98', '#148f77];'
-                background: '#ffffff';
-                text: '#2c3e50';
+                background: '#ffffff,
+                text: '#2c3e50,
                 grid: '#ecf0f1'
             };
             monochrome: { ''
-                primary: ['#000000', '#404040', '#808080', '#c0c0c0', '#ffffff];'
+                primary: ['#000000', '#404040', '#808080', '#c0c0c0', '#ffffff];'  },
                 secondary: ['#202020', '#606060', '#a0a0a0', '#e0e0e0', '#f8f8f8];'
-                background: '#ffffff';
-                text: '#000000';
+                background: '#ffffff,
+                text: '#000000,
                 grid: '#d0d0d0'
             }
         };
         // パターンとシンボル定義
         this.patterns = {;
-            solid: 'solid';
-            dots: 'dots';
-            diagonal: 'diagonal';
-            vertical: 'vertical';
-            horizontal: 'horizontal';
-            cross: 'cross';
-            diamond: 'diamond';
+            solid: 'solid,
+            dots: 'dots,
+            diagonal: 'diagonal,
+            vertical: 'vertical,
+            horizontal: 'horizontal,
+            cross: 'cross,
+            diamond: 'diamond,
             circle: 'circle'
             };
         ';'
 
         this.symbols = {;
-            circle: '●';
-            square: '■';
-            triangle: '▲';
-            diamond: '◆';
-            star: '★';
-            plus: '✚';
-            cross: '✖';
+            circle: '●,
+            square: '■,
+            triangle: '▲,
+            diamond: '◆,
+            star: '★,
+            plus: '✚,
+            cross: '✖,
             arrow: '➤'
             };
         // CSS変数とスタイル管理
@@ -143,7 +143,7 @@ export class StatisticsVisualAccessibilityEnhancer {
         this.setupCSSVariables();
         this.createMagnifier();
         this.createFocusIndicator();
-        this.applyInitialSettings() }
+        this.applyInitialSettings();
         this.bindEvents(); }
     }
     
@@ -165,7 +165,7 @@ export class StatisticsVisualAccessibilityEnhancer {
         ';'
         // 色彩の検出
         if(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)).matches) { ''
-            this.config.contrast.backgroundColor = '#000000',
+            this.config.contrast.backgroundColor = '#000000,
             this.config.contrast.textColor = '#ffffff' }
     }
     
@@ -192,7 +192,7 @@ export class StatisticsVisualAccessibilityEnhancer {
         
         // CSS変数をDOMに適用
         this.cssVariables.forEach((value, key} => { }
-            root.style.setProperty(key, value};
+            root.style.setProperty(key, value}
         };
     }
     
@@ -256,7 +256,7 @@ export class StatisticsVisualAccessibilityEnhancer {
         this.updateContrastSettings();
         this.updateFontSettings();
         this.updateColorSupport();
-        this.updateMotionSettings() }
+        this.updateMotionSettings();
         this.generateAccessibilityStyles(); }
     }
     
@@ -356,14 +356,14 @@ export class StatisticsVisualAccessibilityEnhancer {
      * アクセシビリティスタイルの生成
      */
     generateAccessibilityStyles() {
-        const styles = `,
+        const styles = ,
             /* ベーススタイル */
             .statistics-container {
                 font-size: calc(1rem * var(--accessibility-font-scale,
                 line-height: var(--accessibility-line-height,
                 letter-spacing: var(--accessibility-letter-spacing,
-                color: var(--accessibility-text-color) }
-                background-color: var(--accessibility-bg-color) }
+                color: var(--accessibility-text-color);
+                background-color: var(--accessibility-bg-color);
             }
             
             /* ハイコントラストモード */
@@ -380,7 +380,7 @@ export class StatisticsVisualAccessibilityEnhancer {
                 text-shadow: 1px 1px 0 #ffffff, -1px -1px 0 #ffffff, 1px -1px 0 #ffffff, -1px 1px 0 #ffffff }
             
             /* 大きなフォント */
-            .large-font .statistics-title { font-size: calc(1.5rem * var(--accessibility-font-scale) }
+            .large-font .statistics-title { font-size: calc(1.5rem * var(--accessibility-font-scale);
             
             .large-font .statistics-value { font-size: calc(2rem * var(--accessibility-font-scale,
                 font-weight: 600 }
@@ -404,28 +404,28 @@ export class StatisticsVisualAccessibilityEnhancer {
                     transparent,
                     transparent 4px);
                     rgba(0,0,0,0.1) 4px,
-                    rgba(0,0,0,0.1) 8px) }
+                    rgba(0,0,0,0.1) 8px);
             
             .pattern-support .chart-bar:nth-child(2) { background-image: repeating-linear-gradient(
                     90deg,
                     transparent,
                     transparent 4px);
                     rgba(0,0,0,0.1) 4px,
-                    rgba(0,0,0,0.1) 8px) }
+                    rgba(0,0,0,0.1) 8px);
             
             .pattern-support .chart-bar:nth-child(3) { background-image: repeating-linear-gradient(
                     -45deg,
                     transparent,
                     transparent 4px);
                     rgba(0,0,0,0.1) 4px,
-                    rgba(0,0,0,0.1) 8px) }
+                    rgba(0,0,0,0.1) 8px);
             
             .pattern-support .chart-bar:nth-child(4) { background-image: repeating-linear-gradient(
                     0deg,
                     transparent,
                     transparent 2px);
                     rgba(0,0,0,0.1) 2px,
-                    rgba(0,0,0,0.1) 4px) }
+                    rgba(0,0,0,0.1) 4px);
             
             .pattern-support .chart-bar:nth-child(5) { background-image: radial-gradient(
                     circle, at 50% 50%);
@@ -492,13 +492,13 @@ export class StatisticsVisualAccessibilityEnhancer {
             
             /* レスポンシブ対応 */
             @media (max-width: 768px) { .large-font .statistics-container {
-                    font-size: calc(0.9rem * var(--accessibility-font-scale) }
+                    font-size: calc(0.9rem * var(--accessibility-font-scale);
                 
                 .extra-large-font .statistics-container { padding: 16px 
     }
             
             @media (max-width: 480px) { .large-font .statistics-value {
-                    font-size: calc(1.5rem * var(--accessibility-font-scale) }
+                    font-size: calc(1.5rem * var(--accessibility-font-scale);
                 
                 .accessibility-magnifier { width: 150px !important,
                     height: 150px !important  }
@@ -518,7 +518,7 @@ export class StatisticsVisualAccessibilityEnhancer {
     }
                 if (e.matches) { }
                     this.enableHighContrast(); }
-                } else { this.disableHighContrast() }
+                } else { this.disableHighContrast();
 
                 }'}');
 
@@ -541,11 +541,11 @@ export class StatisticsVisualAccessibilityEnhancer {
                     this.config.contrast.textColor = '#000000'; }
                 }
                 this.updateContrastSettings();
-            };
+            }
         }
         
         // 拡大機能のイベント
-        if (this.config.magnification.enabled) { this.bindMagnificationEvents() }
+        if (this.config.magnification.enabled) { this.bindMagnificationEvents();
         ;
         // フォーカス表示のイベント
         this.bindFocusEvents()';'
@@ -560,7 +560,7 @@ export class StatisticsVisualAccessibilityEnhancer {
         if (this.canvas) {''
             this.canvas.addEventListener('mousemove', this.handleMagnifierMove.bind(this)),
             this.canvas.addEventListener('mouseenter', this.showMagnifier.bind(this)),
-            this.canvas.addEventListener('mouseleave', this.hideMagnifier.bind(this)) }
+            this.canvas.addEventListener('mouseleave', this.hideMagnifier.bind(this));
 
             this.canvas.addEventListener('click', this.toggleMagnification.bind(this); }
 }
@@ -596,7 +596,7 @@ export class StatisticsVisualAccessibilityEnhancer {
                         this.toggleHighContrast()','
                 case 'm':),
                     if (event.shiftKey) {
-                        event.preventDefault() }
+                        event.preventDefault();
                         this.toggleMagnification(); }
                     }
                     break;
@@ -647,7 +647,7 @@ export class StatisticsVisualAccessibilityEnhancer {
      */''
     updateMagnifierContent(x, y) {
 
-        const magnifierCanvas = this.magnifierElement.querySelector('canvas',
+        const magnifierCanvas = this.magnifierElement.querySelector('canvas,
         if(!magnifierCanvas) return,
 
         const ctx = magnifierCanvas.getContext('2d),'
@@ -677,29 +677,29 @@ export class StatisticsVisualAccessibilityEnhancer {
             ctx.drawImage(
                 tempCanvas,
                 0, 0, sourceWidth, sourceHeight)','
-                0, 0, magnifierCanvas.width, magnifierCanvas.height'',
+                0, 0, magnifierCanvas.width, magnifierCanvas.height',
             '),'
 
             ','
             // 十字線を描画
-            ctx.strokeStyle = '#4A90E2',
+            ctx.strokeStyle = '#4A90E2,
             ctx.lineWidth = 2,
             ctx.beginPath();
             ctx.moveTo(magnifierCanvas.width / 2, 0);
             ctx.lineTo(magnifierCanvas.width / 2, magnifierCanvas.height);
             ctx.moveTo(0, magnifierCanvas.height / 2);
             ctx.lineTo(magnifierCanvas.width, magnifierCanvas.height / 2);
-            ctx.stroke() }
+            ctx.stroke();
 
             ' }'
 
         } catch (error) { // Canvas読み取りエラーの場合（CORS等）
-            ctx.fillStyle = '#f0f0f0',
+            ctx.fillStyle = '#f0f0f0,
             ctx.fillRect(0, 0, magnifierCanvas.width, magnifierCanvas.height);
-            ctx.fillStyle = '#666',
-            ctx.font = '14px Arial',
-            ctx.textAlign = 'center',
-            ctx.fillText('拡大表示', magnifierCanvas.width / 2, magnifierCanvas.height / 2) }
+            ctx.fillStyle = '#666,
+            ctx.font = '14px Arial,
+            ctx.textAlign = 'center,
+            ctx.fillText('拡大表示', magnifierCanvas.width / 2, magnifierCanvas.height / 2);
     }
     
     /**
@@ -710,7 +710,7 @@ export class StatisticsVisualAccessibilityEnhancer {
         ','
 
         if (this.config.magnification.enabled) {''
-            this.bindMagnificationEvents() }
+            this.bindMagnificationEvents();
 
             document.body.classList.add('magnification-enabled'; }'
 
@@ -733,7 +733,7 @@ export class StatisticsVisualAccessibilityEnhancer {
     /**
      * フォーカスアウトハンドラー
      */
-    handleFocusOut() { this.hideFocusIndicator() }
+    handleFocusOut() { this.hideFocusIndicator();
     
     /**
      * フォーカス表示の表示
@@ -790,7 +790,7 @@ export class StatisticsVisualAccessibilityEnhancer {
         if (this.config.contrast.enabled) {
     }
             this.disableHighContrast(); }
-        } else { this.enableHighContrast() }
+        } else { this.enableHighContrast();
     }
     
     /**
@@ -820,7 +820,7 @@ export class StatisticsVisualAccessibilityEnhancer {
         this.config.fontSize.scale = 1.0,
 
         this.config.fontSize.enabled = false,
-        this.updateFontSettings() }
+        this.updateFontSettings();
 
         this.announceChange('フォントサイズをリセットしました'; }'
     }
@@ -831,16 +831,16 @@ export class StatisticsVisualAccessibilityEnhancer {
     setColorBlindnessSupport(type) {
         this.config.colorSupport.colorBlindnessType = type,
         this.updateColorSupport('''
-            'none': '通常',
-            'protanopia': '第一色覚異常（プロタノピア）',
-            'deuteranopia': '第二色覚異常（デューテラノピア）',
+            'none': '通常,
+            'protanopia': '第一色覚異常（プロタノピア）,
+            'deuteranopia': '第二色覚異常（デューテラノピア）,
             'tritanopia': '第三色覚異常（トリタノピア）'
             }
 
             'monochrome': 'モノクローム' 
     };)
         );
-        this.announceChange(`色覚サポートを${typeNames[type]}に設定しました`};
+        this.announceChange(`色覚サポートを${typeNames[type]}に設定しました`}
     }
     
     /**
@@ -862,8 +862,8 @@ export class StatisticsVisualAccessibilityEnhancer {
                 }
                 
                 // シンボルの適用
-                if (this.config.colorSupport.symbolSupport) { dataset.pointStyle = this.getSymbolForIndex(index) }
-            };
+                if (this.config.colorSupport.symbolSupport) { dataset.pointStyle = this.getSymbolForIndex(index);
+            }
         }
         
         return accessibleData;
@@ -873,14 +873,14 @@ export class StatisticsVisualAccessibilityEnhancer {
      * インデックスに対応したパターンの取得
      */
     getPatternForIndex(index) {
-        const patterns = Object.keys(this.patterns) }
+        const patterns = Object.keys(this.patterns);
         return patterns[index % patterns.length];
     
     /**
      * インデックスに対応したシンボルの取得
      */
     getSymbolForIndex(index) {
-        const symbols = Object.values(this.symbols) }
+        const symbols = Object.values(this.symbols);
         return symbols[index % symbols.length];
     
     /**
@@ -891,10 +891,10 @@ export class StatisticsVisualAccessibilityEnhancer {
         const announcement = document.createElement('div');
         announcement.setAttribute('aria-live', 'polite');
         announcement.setAttribute('aria-atomic', 'true');
-        announcement.className = 'sr-only',
+        announcement.className = 'sr-only,
         announcement.textContent = message,
         
-        document.body.appendChild(announcement) }
+        document.body.appendChild(announcement);
         setTimeout(() => {  }
             document.body.removeChild(announcement); }
         }, 1000);
@@ -903,7 +903,7 @@ export class StatisticsVisualAccessibilityEnhancer {
         if (window.speechSynthesis) {
 
             const utterance = new SpeechSynthesisUtterance(message);
-            utterance.lang = 'ja-JP',
+            utterance.lang = 'ja-JP,
             utterance.rate = 0.9,
             utterance.volume = 0.3 }
             speechSynthesis.speak(utterance); }
@@ -929,7 +929,7 @@ export class StatisticsVisualAccessibilityEnhancer {
         this.updateFontSettings();
         this.updateColorSupport();
         this.updateMotionSettings();
-        this.generateAccessibilityStyles() }
+        this.generateAccessibilityStyles();
 
         this.announceChange('アクセシビリティ設定を更新しました'; }'
     }
@@ -945,7 +945,7 @@ export class StatisticsVisualAccessibilityEnhancer {
             magnificationEnabled: this.config.magnification.enabled,
             reducedMotion: this.config.motion.reducedMotion,
     focusIndicatorEnabled: this.config.focus.enabled }
-            patternSupportEnabled: this.config.colorSupport.patternSupport },
+            patternSupportEnabled: this.config.colorSupport.patternSupport ,
             symbolSupportEnabled: this.config.colorSupport.symbolSupport 
     }
     
@@ -967,11 +967,11 @@ export class StatisticsVisualAccessibilityEnhancer {
         document.removeEventListener('keydown', this.handleKeyDown);
         
         // DOM要素の削除
-        if (this.dynamicStyleElement && this.dynamicStyleElement.parentNode) { this.dynamicStyleElement.parentNode.removeChild(this.dynamicStyleElement) }
+        if (this.dynamicStyleElement && this.dynamicStyleElement.parentNode) { this.dynamicStyleElement.parentNode.removeChild(this.dynamicStyleElement);
         
-        if (this.magnifierElement && this.magnifierElement.parentNode) { this.magnifierElement.parentNode.removeChild(this.magnifierElement) }
+        if (this.magnifierElement && this.magnifierElement.parentNode) { this.magnifierElement.parentNode.removeChild(this.magnifierElement);
         
-        if (this.focusIndicator && this.focusIndicator.parentNode) { this.focusIndicator.parentNode.removeChild(this.focusIndicator) }
+        if (this.focusIndicator && this.focusIndicator.parentNode) { this.focusIndicator.parentNode.removeChild(this.focusIndicator);
         
         // CSS変数のクリア
         this.cssVariables.clear();

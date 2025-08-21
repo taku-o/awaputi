@@ -1,115 +1,101 @@
 import { getErrorHandler  } from '../../../utils/ErrorHandler.js';
 
 // 型定義
-export interface ReportTemplate { name: string;
-    sections: string[];
+export interface ReportTemplate { name: string,
+    sections: string[],
     format: 'html' | 'csv' | 'json'
-            }
-
+            };
 export interface ReportOptions { template?: string,
     includeRawData?: boolean;
     customSections?: string[];
     filterSeverity?: string[];
     maxIssues?: number;
-
-export interface ValidationResults { language: string;
-    sourceLanguage: string;
-    timestamp: string;
-    totalItems: number;
-    checkedItems: number;
-    errors: ValidationIssue[];
-    warnings: ValidationIssue[];
-    passed: ValidationIssue[];
-    qualityScore: number;
+    export interface ValidationResults { language: string,
+    sourceLanguage: string,
+    timestamp: string,
+    totalItems: number,
+    checkedItems: number,
+    errors: ValidationIssue[],
+    warnings: ValidationIssue[],
+    passed: ValidationIssue[],
+    qualityScore: number,
     qualityGrade: string;
-
-export interface ValidationIssue { rule: string;
-    name: string;
+    export interface ValidationIssue { rule: string,
+    name: string,
     message: string;
     suggestion?: string;
     severity: 'error' | 'warning';
     key?: string;
-
-export interface ReportSummary { language: string;
-    sourceLanguage: string;
-    totalItems: number;
-    checkedItems: number;
-    qualityScore: number;
-    qualityGrade: string;
-    errorCount: number;
-    warningCount: number;
-    passedCount: number;
-    completionRate: number;
+    export interface ReportSummary { language: string,
+    sourceLanguage: string,
+    totalItems: number,
+    checkedItems: number,
+    qualityScore: number,
+    qualityGrade: string,
+    errorCount: number,
+    warningCount: number,
+    passedCount: number,
+    completionRate: number,
     successRate: number;
-
-export interface RuleStatistics { total: number;
-    errors: number;
-    warnings: number;
+    export interface RuleStatistics { total: number,
+    errors: number,
+    warnings: number,
     passed: number;
-
-export interface ReportStatistics { byRule: Record<string, RuleStatistics>,
+    export interface ReportStatistics { byRule: Record<string, RuleStatistics>,
     bySeverity: Record<string, number>;
-    byCategory: Record<string, RuleStatistics> }
-
-export interface CategorizedIssues { critical: ValidationIssue[];
-    major: ValidationIssue[];
-    minor: ValidationIssue[];
+    byCategory: Record<string, RuleStatistics> };
+export interface CategorizedIssues { critical: ValidationIssue[],
+    major: ValidationIssue[],
+    minor: ValidationIssue[],
     info: ValidationIssue[];
 ';'
 
 export interface Recommendation {,
-    priority: 'critical' | 'high' | 'medium' | 'low';
-    type: string;
-    title: string;
-    description: string;
+    priority: 'critical' | 'high' | 'medium' | 'low,
+    type: string,
+    title: string,
+    description: string,
     actions: string[];
 ';'
 
 export interface TrendChange { value: number,''
     direction: 'improvement' | 'decline' | 'stable';
     percentage?: number;
-
-export interface TrendAnalysis { scoreChange: TrendChange;
-    errorChange: TrendChange;
-    warningChange: TrendChange;
+    export interface TrendAnalysis { scoreChange: TrendChange,
+    errorChange: TrendChange,
+    warningChange: TrendChange,
     overallTrend: 'improving' | 'declining' | 'stable' | 'insufficient_data'
-            }
-
+            };
 export interface TrendData { message?: string,
-    data: TrendAnalysis | null  }
-
-export interface QualityTrend { timestamp: string;
-    qualityScore: number;
-    errorCount: number;
-    warningCount: number;
+    data: TrendAnalysis | null  };
+export interface QualityTrend { timestamp: string,
+    qualityScore: number,
+    errorCount: number,
+    warningCount: number,
     successRate: number;
-
-export interface ReportData { id: string;
-    timestamp: string;
-    template: string;
-    language: string;
-    sourceLanguage: string;
-    summary: ReportSummary;
-    statistics: ReportStatistics;
-    issues: CategorizedIssues;
-    recommendations: Recommendation[];
+    export interface ReportData { id: string,
+    timestamp: string,
+    template: string,
+    language: string,
+    sourceLanguage: string,
+    summary: ReportSummary,
+    statistics: ReportStatistics,
+    issues: CategorizedIssues,
+    recommendations: Recommendation[],
     trends: TrendData;
-
-export interface ReportHistoryEntry { id: string;
-    timestamp: string;
-    language: string;
-    qualityScore: number;
-    errorCount: number;
+    export interface ReportHistoryEntry { id: string,
+    timestamp: string,
+    language: string,
+    qualityScore: number,
+    errorCount: number,
     warningCount: number;
-
-export interface GeneratedReport { id: string;
-    data: ReportData;
-    report: string;
+    export interface GeneratedReport { id: string,
+    data: ReportData,
+    report: string,
     format: string;
-
-export interface ReporterStats { totalReports: number;
-    languagesTracked: number;
-    availableTemplates: string[];
+    export interface ReporterStats { totalReports: number,
+    languagesTracked: number,
+    availableTemplates: string[],
     averageQualityScore: number;
 
 /**
@@ -124,11 +110,10 @@ export class QualityReporter {
 
         this.reportTemplates = new Map<string, ReportTemplate>(),
         this.reportHistory = [];
-        this.qualityTrends = new Map<string, QualityTrend[]>(),
+    this.qualityTrends = new Map<string, QualityTrend[]>(),
         ','
         // デフォルトレポートテンプレートを初期化
-        this.initializeReportTemplates() }
-
+        this.initializeReportTemplates() };
         console.log('QualityReporter, initialized'); }'}'
     
     /**
@@ -137,25 +122,25 @@ export class QualityReporter {
     private initializeReportTemplates('';
         this.reportTemplates.set('detailed', { ')'
             name: '詳細品質レポート',','
-            sections: ['summary', 'statistics', 'issues', 'recommendations', 'trends'],')',
+            sections: ['summary, 'statistics', 'issues', 'recommendations', 'trends'],')',
             format: 'html')'),'
         ','
         // サマリーレポートテンプレート
         this.reportTemplates.set('summary', {')'
             name: 'サマリーレポート',','
-            sections: ['summary', 'statistics', 'key_issues'],')',
+            sections: ['summary, 'statistics', 'key_issues'],')',
             format: 'html')'),'
         ','
         // CSV エクスポート用テンプレート
         this.reportTemplates.set('csv', {')'
             name: 'CSV品質データ',','
-            sections: ['issues_csv'],')',
+            sections: ['issues_csv'],'),
             format: 'csv')'),'
         ','
         // JSON レポートテンプレート
         this.reportTemplates.set('json', {')'
             name: 'JSON品質データ',','
-            sections: ['raw_data'],')',
+            sections: ['raw_data'],'),
             format: 'json'
             }
     
@@ -168,14 +153,13 @@ export class QualityReporter {
             const templateType = options.template || 'detailed')
             const template = this.reportTemplates.get(templateType);
             if (!template) { }
-                throw new Error(`Unknown, report template: ${templateType}`},
-            }
+                throw new Error(`Unknown, report template: ${templateType}`} }
             
             const reportData: ReportData = { id: reportId,
                 timestamp: new Date().toISOString(),
                 template: templateType,
                 language: validationResults.language,
-    sourceLanguage: validationResults.sourceLanguage,
+    sourceLanguage: validationResults.sourceLanguage;
                 ...this.analyzeValidationResults(validationResults);
             // 品質トレンドを更新
             this.updateQualityTrends(reportData);
@@ -187,7 +171,7 @@ export class QualityReporter {
                 language: reportData.language),
                 qualityScore: reportData.summary.qualityScore,
     errorCount: reportData.summary.errorCount),
-                warningCount: reportData.summary.warningCount),
+                warningCount: reportData.summary.warningCount);
             return { id: reportId,
                 data: reportData,
     report: report,
@@ -208,8 +192,8 @@ export class QualityReporter {
     private analyzeValidationResults(results: ValidationResults): Omit<ReportData, 'id' | 'timestamp' | 'template' | 'language' | 'sourceLanguage'> { const analysis = { summary: this.generateSummary(results),
             statistics: this.generateStatistics(results),
             issues: this.categorizeIssues(results,
-    recommendations: this.generateRecommendations(results) }
-            trends: this.analyzeTrends(results },
+    recommendations: this.generateRecommendations(results),
+            trends: this.analyzeTrends(results };
         
         return, analysis;
     }
@@ -228,7 +212,7 @@ export class QualityReporter {
             passedCount: results.passed.length,
             completionRate: results.checkedItems > 0 ? undefined : undefined
                 Math.round((results.checkedItems / results.totalItems) * 100) : 0,
-            successRate: results.checkedItems > 0 ? undefined : undefined,
+            successRate: results.checkedItems > 0 ? undefined : undefined;
                 Math.round((results.passed.length / results.checkedItems) * 100) : 0 
     } }
     
@@ -244,11 +228,11 @@ export class QualityReporter {
         [...results.errors, ...results.warnings, ...results.passed].forEach(item => { )
             const rule = item.rule),
             if (!statistics.byRule.has(rule) {
-                statistics.byRule.set(rule, { total: 0) }
+                statistics.byRule.set(rule, { total: 0),
                     errors: 0  }
-                    warnings: 0) }
+                    warnings: 0),
                     passed: 0); 
-    };
+    }
             }
             
             const ruleStats = statistics.byRule.get(rule)!;
@@ -267,11 +251,11 @@ export class QualityReporter {
 
                 const category = item.key.split('.')[0], // 例: "menu.play" -> "menu"
                 if (!statistics.byCategory.has(category) {
-                    statistics.byCategory.set(category, { total: 0) }
+                    statistics.byCategory.set(category, { total: 0),
                         errors: 0  }
-                        warnings: 0) }
+                        warnings: 0),
                         passed: 0); 
-    };
+    }
                 }
                 
                 const categoryStats = statistics.byCategory.get(category)!;
@@ -281,7 +265,7 @@ export class QualityReporter {
 };
         
         return { byRule: Object.fromEntries(statistics.byRule,
-            bySeverity: Object.fromEntries(statistics.bySeverity) },
+            bySeverity: Object.fromEntries(statistics.bySeverity) };
             byCategory: Object.fromEntries(statistics.byCategory); 
     }
     
@@ -291,7 +275,7 @@ export class QualityReporter {
     private categorizeIssues(results: ValidationResults): CategorizedIssues { const categories: CategorizedIssues = { critical: [],
             major: [],
     minor: [] }
-            info: [] },
+            info: [] };
         ";"
         // エラーを重要度別に分類""
         results.errors.forEach(error => {  "),"""
@@ -323,7 +307,7 @@ export class QualityReporter {
         // 品質スコアベースの推奨事項
         if (summary.qualityScore < 60) {
             recommendations.push({''
-                priority: 'critical',
+                priority: 'critical,
                 type: 'quality_improvement' }
 '
                 title: '品質スコア改善が必要'
@@ -334,7 +318,7 @@ export class QualityReporter {
                     '警告の大部分を解決する',]';'
                     '翻訳の見直しを行う')]';'
                 ]';} else if (summary.qualityScore < 80) { recommendations.push({''
-                priority: 'high',
+                priority: 'high,
                 type: 'quality_enhancement','
                 title: '品質向上の推奨'
             };
@@ -348,7 +332,7 @@ export class QualityReporter {
         // エラー数ベースの推奨事項
         if (summary.errorCount > 0) {
             recommendations.push({''
-                priority: 'high',
+                priority: 'high,
                 type: 'error_resolution' }
 '
                 title: 'エラーの解決'
@@ -364,7 +348,7 @@ export class QualityReporter {
         // 警告数ベースの推奨事項
         if (summary.warningCount > 10) {
             recommendations.push({''
-                priority: 'medium',
+                priority: 'medium,
                 type: 'warning_review' }
 '
                 title: '警告の確認'
@@ -380,7 +364,7 @@ export class QualityReporter {
         // 成功率ベースの推奨事項
         if (summary.successRate < 70) {
             recommendations.push({''
-                priority: 'medium',
+                priority: 'medium,
                 type: 'success_rate_improvement' }
 '
                 title: '合格率の向上'
@@ -407,7 +391,7 @@ export class QualityReporter {
 
                 message: 'トレンド分析には最低2回の検証が必要です'
             };
-                data: null,
+                data: null;
         
         const latest = trends[trends.length - 1];
         const previous = trends[trends.length - 2];
@@ -419,7 +403,7 @@ export class QualityReporter {
         return { data: {
                 scoreChange: { }
                     value: scoreChange,
-                    direction: scoreChange > 0 ? 'improvement' : scoreChange < 0 ? 'decline' : 'stable',
+                    direction: scoreChange > 0 ? 'improvement' : scoreChange < 0 ? 'decline' : 'stable,
                     percentage: previous.qualityScore > 0 ? undefined : undefined'
             };
 
@@ -428,10 +412,10 @@ export class QualityReporter {
 
                 errorChange: { value: errorChange,''
                     direction: errorChange < 0 ? 'improvement' : errorChange > 0 ? 'decline' : 'stable'
-            };
+             ,
                 warningChange: { value: warningChange,''
                     direction: warningChange < 0 ? 'improvement' : warningChange > 0 ? 'decline' : 'stable'
-            };
+             ,
                 overallTrend: this.calculateOverallTrend(trends);
     }
     
@@ -439,7 +423,7 @@ export class QualityReporter {
      * 全体的なトレンドを計算'
      */''
     private calculateOverallTrend(trends: QualityTrend[]): 'improving' | 'declining' | 'stable' | 'insufficient_data' { ''
-        if(trends.length < 3) return 'insufficient_data',
+        if(trends.length < 3) return 'insufficient_data,
         
         const recent = trends.slice(-3);
         const scores = recent.map(t => t.qualityScore);
@@ -491,12 +475,10 @@ export class QualityReporter {
             case 'csv':','
                 return this.renderCsvReport(reportData);
             case 'json':,
-                return this.renderJsonReport(reportData) }
+                return this.renderJsonReport(reportData);
             default: }
-                throw new Error(`Unsupported, report format: ${template.format}`};
-        }
-    }
-    
+                throw new Error(`Unsupported, report format: ${template.format}`    }
+}
     /**
      * HTMLレポートをレンダリング'
      */''
@@ -504,9 +486,9 @@ export class QualityReporter {
         
         // ヘッダー
         sections.push(`','
-            <div, class="report-header">"",
-                <h1>翻訳品質レポート</h1>")",
-                <div class="report-meta">"",
+            <div, class="report-header">",
+                <h1>翻訳品質レポート</h1>"),
+                <div class="report-meta">",
                     <span>言語: ${reportData.language}</span>" }"
                     <span>生成日時: ${new, Date(reportData.timestamp"}.toLocaleString('ja-JP'}'</span>"'
                     <span>レポートID: ${reportData.id}</span>
@@ -571,8 +553,8 @@ export class QualityReporter {
 
         return `','
             <section class="summary-section">","
-                <h2>📊 品質サマリー</h2>"",
-                <div class="summary-grid">"",
+                <h2>📊 品質サマリー</h2>",
+                <div class="summary-grid">",
                     <div class="summary-card">" }"
                         <div class="summary-value" style="color: ${qualityColor}">
                             ${summary.qualityScore}""
@@ -617,7 +599,7 @@ export class QualityReporter {
                 <h2>📈 詳細統計</h2>","
 
                 <div class="statistics-group">","
-                    <h3>ルール別統計</h3>"",
+                    <h3>ルール別統計</h3>",
                     <table class="statistics-table">,
                         <thead>,
                             <tr>,
@@ -728,7 +710,7 @@ export class QualityReporter {
         if (recommendations.length === 0) {
             return `','
                 <section class="recommendations-section">","
-                    <h2>✅ 推奨事項</h2>"",
+                    <h2>✅ 推奨事項</h2>",
                     <div class="no-recommendations">,
                         現在、特別な推奨事項はありません。品質が良好です。,
                     </div>,
@@ -832,66 +814,66 @@ export class QualityReporter {
     /**
      * JSONレポートをレンダリング
      */
-    private renderJsonReport(reportData: ReportData): string { return JSON.stringify(reportData, null, 2) }
+    private renderJsonReport(reportData: ReportData): string { return JSON.stringify(reportData, null, 2);
     
     /**
      * レポート用CSSを取得'
      */''
     private getReportCSS('';
-            body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif, line-height: 1.6, margin: 0, padding: 20px,, background: #f5f5f5 };
-            .report-container { max-width: 1200px, margin: 0 auto, background: white,, padding: 30px, border-radius: 10px, box-shadow: 0 2px 10px rgba(0,0,0,0.1 }
+            body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif, line-height: 1.6, margin: 0, padding: 20px, background: #f5f5f5 };
+            .report-container { max-width: 1200px, margin: 0 auto, background: white, padding: 30px, border-radius: 10px, box-shadow: 0 2px 10px rgba(0,0,0,0.1 }
             .report-header { text-align: center, margin-bottom: 30px, padding-bottom: 20px, border-bottom: 2px solid #eee }
-            .report-header h1 { color: #333,, margin: 0 }
+            .report-header h1 { color: #333, margin: 0 }
             .report-meta { margin-top: 10px,  color: #666 }
             .report-meta span { margin: 0 15px }
             section { margin: 30px 0 }
             h2 { color: #2c3e50, border-bottom: 2px solid #3498db, padding-bottom: 10px }
             h3 { color: #34495e };
-            .summary-grid { display: grid, grid-template-columns: repeat(auto-fit, minmax(150px, 1fr), gap: 20px,, margin: 20px 0 }
-            .summary-card { text-align: center, padding: 20px, border-radius: 8px,, background: #f8f9fa }
+            .summary-grid { display: grid, grid-template-columns: repeat(auto-fit, minmax(150px, 1fr), gap: 20px, margin: 20px 0 }
+            .summary-card { text-align: center, padding: 20px, border-radius: 8px, background: #f8f9fa }
             .summary-card.error { background: #fee, border-left: 4px solid #e74c3c }
             .summary-card.warning { background: #fff8e1, border-left: 4px solid #f39c12 }
             .summary-card.success { background: #e8f5e8, border-left: 4px solid #27ae60 }
             .summary-value { font-size: 2em, font-weight: bold, margin-bottom: 5px }
             .summary-label { color: #666, font-size: 0.9em }
-            .summary-grade { margin-top: 5px, padding: 5px 10px, border-radius: 15px, font-size: 0.8em, background: #3498db,, color: white,
-            .completion-bar { position: relative, height: 20px, background: #eee, border-radius: 10px,, margin: 20px 0 }
-            .completion-progress { height: 100%, background: #3498db, border-radius: 10px,, transition: width 0.3s }
-            .completion-text { position: absolute, top: 50%, left: 50%,, transform: translate(-50%, -50%), font-size: 0.8em, font-weight: bold,
-            .statistics-table { width: 100%, border-collapse: collapse,, margin: 20px 0 }
+            .summary-grade { margin-top: 5px, padding: 5px 10px, border-radius: 15px, font-size: 0.8em, background: #3498db, color: white,
+            .completion-bar { position: relative, height: 20px, background: #eee, border-radius: 10px, margin: 20px 0 }
+            .completion-progress { height: 100%, background: #3498db, border-radius: 10px, transition: width 0.3s }
+            .completion-text { position: absolute, top: 50%, left: 50%, transform: translate(-50%, -50%), font-size: 0.8em, font-weight: bold,
+            .statistics-table { width: 100%, border-collapse: collapse, margin: 20px 0 }
             .statistics-table th, .statistics-table td { padding: 10px, text-align: left, border-bottom: 1px solid #ddd }
             .statistics-table th { background: #f8f9fa, font-weight: bold,
             .error-cell, .error-text { color: #e74c3c }
             .warning-cell, .warning-text { color: #f39c12 }
             .success-cell, .success-text { color: #27ae60 }
             .category-stats { display: grid, grid-template-columns: repeat(auto-fit, minmax(200px, 1fr), gap: 15px }
-            .category-card { padding: 15px, border: 1px solid #ddd, border-radius: 8px,, background: #f8f9fa }
-            .category-stats-grid { display: grid, grid-template-columns: 1fr 1fr,, gap: 5px, font-size: 0.9em, margin-top: 10px }
+            .category-card { padding: 15px, border: 1px solid #ddd, border-radius: 8px, background: #f8f9fa }
+            .category-stats-grid { display: grid, grid-template-columns: 1fr 1fr, gap: 5px, font-size: 0.9em, margin-top: 10px }
             .issue-category { margin: 20px 0 }
-            .issue-item { margin: 10px 0,, padding: 15px, border-radius: 8px, border-left: 4px solid #ddd }
+            .issue-item { margin: 10px 0, padding: 15px, border-radius: 8px, border-left: 4px solid #ddd }
             .issue-item.critical { background: #fee, border-left-color: #e74c3c }
             .issue-item.major { background: #fff8e1, border-left-color: #f39c12 }
             .issue-item.minor { background: #f0f8ff, border-left-color: #3498db }
             .issue-item.info { background: #f8f9fa, border-left-color: #95a5a6 }
             .issue-header { display: flex, justify-content: space-between, margin-bottom: 5px }
-            .issue-key { font-family: monospace,, color: #666, font-size: 0.9em }
+            .issue-key { font-family: monospace, color: #666, font-size: 0.9em }
             .issue-message { margin: 10px 0 }
-            .issue-suggestion { background: #e8f5e8,, padding: 10px, border-radius: 5px, margin-top: 10px, font-size: 0.9em }
-            .recommendation-item { margin: 15px 0, padding: 20px, border-radius: 8px,, background: #f8f9fa, border-left: 4px solid #3498db }
+            .issue-suggestion { background: #e8f5e8, padding: 10px, border-radius: 5px, margin-top: 10px, font-size: 0.9em }
+            .recommendation-item { margin: 15px 0, padding: 20px, border-radius: 8px, background: #f8f9fa, border-left: 4px solid #3498db }
             .recommendation-item.critical { border-left-color: #e74c3c }
             .recommendation-item.high { border-left-color: #f39c12 }
             .recommendation-header { display: flex, justify-content: space-between, align-items: center, margin-bottom: 10px }
-            .priority-badge { padding: 3px 8px, border-radius: 12px, font-size: 0.8em,, color: white,
+            .priority-badge { padding: 3px 8px, border-radius: 12px, font-size: 0.8em, color: white,
             .priority-badge.critical { background: #e74c3c }
             .priority-badge.high { background: #f39c12 }
             .priority-badge.medium { background: #3498db }
-            .trends-grid { display: grid, grid-template-columns: repeat(auto-fit, minmax(200px, 1fr), gap: 20px,, margin: 20px 0 }
-            .trend-item { text-align: center, padding: 20px, border-radius: 8px,, background: #f8f9fa }
-            .trend-value { font-size: 1.5em, font-weight: bold,, margin: 10px 0 }
+            .trends-grid { display: grid, grid-template-columns: repeat(auto-fit, minmax(200px, 1fr), gap: 20px, margin: 20px 0 }
+            .trend-item { text-align: center, padding: 20px, border-radius: 8px, background: #f8f9fa }
+            .trend-value { font-size: 1.5em, font-weight: bold, margin: 10px 0 }
             .trend-value.improvement { color: #27ae60 }
             .trend-value.decline { color: #e74c3c }
             .trend-value.stable { color: #95a5a6 }
-            .overall-trend { text-align: center, margin: 20px 0, padding: 15px,, background: #e8f5e8, border-radius: 8px }
+            .overall-trend { text-align: center, margin: 20px 0, padding: 15px, background: #e8f5e8, border-radius: 8px }
         `;
     }
     
@@ -905,53 +887,53 @@ export class QualityReporter {
     ';'
 
     private getQualityColor(score: number): string { ''
-        if(score >= 90) return '#27ae60',
-        if(score >= 75) return '#f39c12',
-        if(score >= 60) return '#e67e22',
+        if(score >= 90) return '#27ae60,
+        if(score >= 75) return '#f39c12,
+        if(score >= 60) return '#e67e22,
         return '#e74c3c' }
 
     private getQualityGradeText(grade: string): string { const grades: Record<string, string> = {''
-            excellent: '優秀',
-            good: '良好',
-            acceptable: '可',
-            poor: '不良',
+            excellent: '優秀,
+            good: '良好,
+            acceptable: '可,
+            poor: '不良,
             unacceptable: '不可'
             };
         return grades[grade] || grade;
     }
 
     private getRuleDisplayName(rule: string): string { const names: Record<string, string> = {''
-            parameterConsistency: 'パラメータ整合性',
-            lengthValidation: '長さ検証',
-            formatValidation: 'フォーマット検証',
-            culturalAppropriateness: '文化的適切性',
-            completenessCheck: '完成度チェック',
+            parameterConsistency: 'パラメータ整合性,
+            lengthValidation: '長さ検証,
+            formatValidation: 'フォーマット検証,
+            culturalAppropriateness: '文化的適切性,
+            completenessCheck: '完成度チェック,
             consistencyCheck: '一貫性チェック'
             };
         return names[rule] || rule;
     }
 
     private getPriorityText(priority: string): string { const priorities: Record<string, string> = {''
-            critical: '重要',
-            high: '高',
-            medium: '中',
+            critical: '重要,
+            high: '高,
+            medium: '中,
             low: '低'
             };
         return priorities[priority] || priority;
     }
 
     private getTrendDirectionText(direction: string): string { const directions: Record<string, string> = {''
-            improvement: '改善',
-            decline: '悪化',
+            improvement: '改善,
+            decline: '悪化,
             stable: '安定'
             };
         return directions[direction] || direction;
     }
 
     private getOverallTrendText(trend: string): string { const trends: Record<string, string> = {''
-            improving: '改善傾向',
-            declining: '悪化傾向',
-            stable: '安定',
+            improving: '改善傾向,
+            declining: '悪化傾向,
+            stable: '安定,
             insufficient_data: 'データ不足'
             };
         return trends[trend] || trend;
@@ -984,8 +966,8 @@ export class QualityReporter {
     getStats(): ReporterStats { return { totalReports: this.reportHistory.length,
             languagesTracked: this.qualityTrends.size,
             availableTemplates: Array.from(this.reportTemplates.keys(
-    averageQualityScore: this.reportHistory.length > 0 ?  },
-                Math.round(this.reportHistory.reduce((sum, r) => sum + r.qualityScore, 0) / this.reportHistory.length) : 0 
+    averageQualityScore: this.reportHistory.length > 0 ?  ,
+                Math.round(this.reportHistory.reduce(())sum, r) => sum + r.qualityScore, 0) / this.reportHistory.length) : 0 
     }
 
 // シングルトンインスタンス

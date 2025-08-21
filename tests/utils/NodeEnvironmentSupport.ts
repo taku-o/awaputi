@@ -13,7 +13,7 @@ export class NodeEnvironmentSupport {
     this.consoleOverrides = new Map();
     
     if (this.isNodeEnvironment) {
-      this.setupNodeEnvironment() }
+      this.setupNodeEnvironment() };
   }
 
   /**
@@ -28,7 +28,7 @@ export class NodeEnvironmentSupport {
     this.setupConsoleEnvironmentFeatures('),'
     
     console.log('Node.js environment setup complete:', {);
-      polyfills: Array.from(this.polyfillsApplied };
+      polyfills: Array.from(this.polyfillsApplied }
   }
 
   /**
@@ -39,38 +39,38 @@ export class NodeEnvironmentSupport {
     if (typeof (global as any').window = == 'undefined') {'
       (global as any').window = {'
         // Dimensions
-        innerWidth: 1024;
+        innerWidth: 1024,
         innerHeight: 768;
-        outerWidth: 1024;
+        outerWidth: 1024,
         outerHeight: 768;
         outerHeight: 768;
         };
         // Device properties
-        devicePixelRatio: 1;
+        devicePixelRatio: 1,
         screen: {
-          width: 1920;
+          width: 1920 },
           height: 1080;
-          availWidth: 1920;
+          availWidth: 1920,
           availHeight: 1040;
-          colorDepth: 24;
+          colorDepth: 24,
           pixelDepth: 24
         },
         
         // Navigation
         location: {
-          href: 'http://localhost:3000/';
-          origin: 'http://localhost:3000';
-          protocol: 'http:';
-          host: 'localhost:3000';
+          href: 'http://localhost:3000/' },
+          origin: 'http://localhost:3000',
+          protocol: 'http:',
+          host: 'localhost:3000',
           hostname: 'localhost';
-          port: '3000';
+          port: '3000',
           pathname: '/';
           search: ','
           hash: '};'
         
         // History
         history: {
-          length: 1;
+          length: 1 },
           state: null;
           pushState: jest.fn(
           replaceState: jest.fn(
@@ -80,13 +80,13 @@ export class NodeEnvironmentSupport {
         
         // Navigator
         navigator: {
-          userAgent: 'Mozilla/5.0 (Node.js Test Environment) AppleWebKit/537.36 (KHTML, like Gecko') Chrome/91.0.4472.124 Safari/537.36';'
-          platform: process.platform;
+          userAgent: 'Mozilla/5.0 (Node.js Test Environment) AppleWebKit/537.36 (KHTML, like Gecko') Chrome/91.0.4472.124 Safari/537.36';' };
+          platform: process.platform,
           language: 'en-US';
           languages: ['en-US', 'en'];
-          onLine: true;
+          onLine: true,
           cookieEnabled: true;
-          doNotTrack: null;
+          doNotTrack: null,
           hardwareConcurrency: require('os').cpus().length
         },
         
@@ -94,9 +94,9 @@ export class NodeEnvironmentSupport {
         console: global.console;
         
         // Timers
-        setTimeout: global.setTimeout;
+        setTimeout: global.setTimeout,
         clearTimeout: global.clearTimeout;
-        setInterval: global.setInterval;
+        setInterval: global.setInterval,
         clearInterval: global.clearInterval;
         
         // Animation frame
@@ -113,7 +113,7 @@ export class NodeEnvironmentSupport {
         
         // Misc
         alert: jest.fn(
-        confirm: jest.fn(() => true;
+        confirm: jest.fn(() => true,
         prompt: jest.fn((') => 'test';'
         open: jest.fn(
         close: jest.fn(
@@ -144,34 +144,34 @@ export class NodeEnvironmentSupport {
     return {
       // Basic properties
       nodeType: 9, // DOCUMENT_NODE
-      nodeName: '#document';
+      nodeName: '#document',
       documentElement: this.createMockElement('html';
-      body: this.createMockElement('body';
+      body: this.createMockElement('body',
       head: this.createMockElement('head';
       
       // State properties
-      readyState: 'complete';
+      readyState: 'complete',
       visibilityState: 'visible';
       hidden: false;
       
       // URL properties
-      URL: 'http://localhost:3000/';
-      documentURI: 'http://localhost:3000/';
-      baseURI: 'http://localhost:3000/';
+      URL: 'http://localhost:3000/',
+      documentURI: 'http://localhost:3000/',
+      baseURI: 'http://localhost:3000/',
       domain: 'localhost';
       
       // Element creation
-      createElement: jest.fn((tagName) => this.createMockElement(tagName.toLowerCase();
+      createElement: jest.fn((tagName) => this.createMockElement(tagName.toLowerCase(),
       createElementNS: jest.fn((ns, tagName) => this.createMockElement(tagName.toLowerCase());
       createTextNode: jest.fn((data') => ({'
         nodeType: 3, // TEXT_NODE
-        nodeName: '#text';
+        nodeName: '#text',
         nodeValue: data;
         textContent: data
       )),
       createDocumentFragment: jest.fn((') => ({'
         nodeType: 11, // DOCUMENT_FRAGMENT_NODE
-        nodeName: '#document-fragment';
+        nodeName: '#document-fragment',
         appendChild: jest.fn(
         children: []
       )),
@@ -181,9 +181,9 @@ export class NodeEnvironmentSupport {
         const element = this.createMockElement('div');
         element.id = id,
         return element),
-      getElementsByClassName: jest.fn(() => [];
+      getElementsByClassName: jest.fn(() => [],
       getElementsByTagName: jest.fn(() => [];
-      querySelector: jest.fn(() => mockElement;
+      querySelector: jest.fn(() => mockElement,
       querySelectorAll: jest.fn(() => [];
       
       // Events
@@ -218,10 +218,10 @@ export class NodeEnvironmentSupport {
       id: ','
       className: ','
       classList: {
-        add: jest.fn(
+        add: jest.fn( },
         remove: jest.fn(
         toggle: jest.fn(
-        contains: jest.fn(() => false);
+        contains: jest.fn(() => false),
         replace: jest.fn()
       '),'
       
@@ -233,29 +233,29 @@ export class NodeEnvironmentSupport {
       innerText: ','
         };
       // Dimensions and position
-      offsetWidth: 100;
+      offsetWidth: 100,
       offsetHeight: 100;
-      clientWidth: 100;
+      clientWidth: 100,
       clientHeight: 100;
-      scrollWidth: 100;
+      scrollWidth: 100,
       scrollHeight: 100;
-      offsetLeft: 0;
+      offsetLeft: 0,
       offsetTop: 0;
-      scrollLeft: 0;
+      scrollLeft: 0,
       scrollTop: 0;
       scrollTop: 0;
         };
       // Style
       style: new Proxy({), {
-        get: (') => ';
+        get: (') => ',
         set: () => true
       }),
       
       // Attributes methods
-      getAttribute: jest.fn(() => null;
+      getAttribute: jest.fn(() => null,
       setAttribute: jest.fn(
       removeAttribute: jest.fn(
-      hasAttribute: jest.fn(() => false;
+      hasAttribute: jest.fn(() => false,
       getAttributeNames: jest.fn(() => [];
       
       // DOM tree methods
@@ -270,7 +270,7 @@ export class NodeEnvironmentSupport {
       
       // Selection methods
       querySelector: jest.fn(
-      querySelectorAll: jest.fn(() => [];
+      querySelectorAll: jest.fn(() => [],
       getElementsByClassName: jest.fn(() => [];
       getElementsByTagName: jest.fn(() => [];
       
@@ -288,15 +288,15 @@ export class NodeEnvironmentSupport {
       // Form-specific properties (if applicable')'
       ...(tagName === 'input' || tagName === 'textarea' || tagName === 'select' ? { : undefined
         value: ';'
-        checked: false;
+        checked: false,
         disabled: false;
-        readOnly: false;
+        readOnly: false,
         required: false
       ) : {,
       
       // Canvas-specific methods (if applicable')'
       ...(tagName === 'canvas' ? { : undefined
-        width: 800;
+        width: 800,
         height: 600;
         getContext: jest.fn((type') => {'
           if (type === '2d') {
@@ -471,14 +471,14 @@ export class NodeEnvironmentSupport {
           if (success) {
             success({
               coords: {
-                latitude: 37.7749;
+                latitude: 37.7749 },
                 longitude: -122.4194;
                 accuracy: 10
               }
             );
           }
         },
-        watchPosition: jest.fn(() => 1;
+        watchPosition: jest.fn(() => 1,
         clearWatch: jest.fn()
       ');'
       
@@ -522,7 +522,7 @@ export class NodeEnvironmentSupport {
           // Simulate intersection
           setTimeout(() => {
             this.callback([{
-              target: element;
+              target: element,
               isIntersecting: true;
               intersectionRatio: 1 }]);
           }, 10);
@@ -550,11 +550,11 @@ export class NodeEnvironmentSupport {
           // Simulate resize
           setTimeout(() => {
             this.callback([{
-              target: element;
+              target: element,
               contentRect: {
-                width: element.offsetWidth || 100;
+                width: element.offsetWidth || 100 },
                 height: element.offsetHeight || 100
-              };
+              }
             }]);
           }, 10);
         }
@@ -579,7 +579,7 @@ export class NodeEnvironmentSupport {
       (global: any).requestIdleCallback = jest.fn((callback) => {
         return setTimeout(() => {
           callback({
-            didTimeout: false;
+            didTimeout: false,
             timeRemaining: () => 50
           )), 1) });
       
@@ -675,7 +675,7 @@ export class NodeEnvironmentSupport {
           return }
         
         originalConsole[level](color + prefix, ...args');'
-      };
+      }
     };
     
     console.log = createEnhancedLogger('log', '\x1b[37m'); // White
@@ -691,7 +691,7 @@ export class NodeEnvironmentSupport {
     // Monitor memory usage during tests
     const memoryMonitor = {
       start: process.memoryUsage(
-      current: () => process.memoryUsage();
+      current: () => process.memoryUsage(),
       current: () => process.memoryUsage();
         };
       getUsageReport: () => {
@@ -700,18 +700,18 @@ export class NodeEnvironmentSupport {
         
         return {
           current: {
-            rss: Math.round(current.rss / 1024 / 1024 * 100) / 100;
+            rss: Math.round(current.rss / 1024 / 1024 * 100) / 100 },
             heapTotal: Math.round(current.heapTotal / 1024 / 1024 * 100) / 100;
-            heapUsed: Math.round(current.heapUsed / 1024 / 1024 * 100) / 100;
+            heapUsed: Math.round(current.heapUsed / 1024 / 1024 * 100) / 100,
             external: Math.round(current.external / 1024 / 1024 * 100) / 100
           },
           growth: {
-            rss: Math.round((current.rss - start.rss) / 1024 / 1024 * 100) / 100;
+            rss: Math.round((current.rss - start.rss) / 1024 / 1024 * 100) / 100 },
             heapTotal: Math.round((current.heapTotal - start.heapTotal) / 1024 / 1024 * 100) / 100;
-            heapUsed: Math.round((current.heapUsed - start.heapUsed) / 1024 / 1024 * 100) / 100;
+            heapUsed: Math.round((current.heapUsed - start.heapUsed) / 1024 / 1024 * 100) / 100,
             external: Math.round((current.external - start.external) / 1024 / 1024 * 100) / 100
           }
-        };
+        }
       }
     };
     
@@ -753,18 +753,18 @@ export class NodeEnvironmentSupport {
    */
   getEnvironmentInfo() {
     return {
-      nodeVersion: process.version;
+      nodeVersion: process.version,
       platform: process.platform;
-      arch: process.arch;
+      arch: process.arch,
       memoryUsage: process.memoryUsage(
       uptime: process.uptime(
-      polyfillsApplied: Array.from(this.polyfillsApplied;
+      polyfillsApplied: Array.from(this.polyfillsApplied,
       environmentVariables: {
-        NODE_ENV: process.env.NODE_ENV;
+        NODE_ENV: process.env.NODE_ENV },
         VERBOSE_TESTS: process.env.VERBOSE_TESTS;
         CI: process.env.CI
       }
-    };
+    }
   }
 
   /**
@@ -773,14 +773,14 @@ export class NodeEnvironmentSupport {
   validateEnvironment(') {'
     const validation = {
       globalObjects: {
-        window: typeof global.window !== 'undefined';
+        window: typeof global.window !== 'undefined' },
         document: typeof global.document !== 'undefined';
         navigator: typeof global.navigator !== 'undefined'
       },
       webAPIs: {
-        fetch: typeof global.fetch !== 'undefined';
+        fetch: typeof global.fetch !== 'undefined' },
         Blob: typeof global.Blob !== 'undefined';
-        URL: typeof global.URL !== 'undefined';
+        URL: typeof global.URL !== 'undefined',
         FormData: typeof global.FormData !== 'undefined'
       },
       polyfills: Array.from(this.polyfillsApplied','
@@ -792,7 +792,7 @@ export class NodeEnvironmentSupport {
     
     validation.isReady = allGlobalsReady && allWebAPIsReady;
     validation.readiness = {
-      globalObjects: allGlobalsReady;
+      globalObjects: allGlobalsReady,
       webAPIs: allWebAPIsReady;
       polyfills: this.polyfillsApplied.size > 0
     };

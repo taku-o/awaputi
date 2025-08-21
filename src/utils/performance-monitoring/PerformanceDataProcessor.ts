@@ -4,10 +4,9 @@
  */
 
 // Type definitions
-interface DataPoint { x: number;
+interface DataPoint { x: number,
     y: number;
-
-interface AnalysisDataPoint { timestamp: number;
+    interface AnalysisDataPoint { timestamp: number,
     metrics: Map<string, any> }
 
 interface StatisticalProcessor { metrics?: string[],
@@ -16,52 +15,48 @@ interface StatisticalProcessor { metrics?: string[],
     calculate: (data: AnalysisDataPoint[]) => any  }
 }
 
-interface TrendData { trend: 'stable' | 'increasing' | 'decreasing';
-    confidence: number;
-    timestamp: number;
+interface TrendData { trend: 'stable' | 'increasing' | 'decreasing',
+    confidence: number,
+    timestamp: number,
     analyzer: string;
-
-interface DescriptiveStats { count: number;
-    mean: number;
-    median: number;
-    std: number;
-    min: number;
-    max: number;
-    p25: number;
-    p75: number;
+    interface DescriptiveStats { count: number,
+    mean: number,
+    median: number,
+    std: number,
+    min: number,
+    max: number,
+    p25: number,
+    p75: number,
     p95: number;
-
-interface HistogramData { bins: number[];
-    binWidth: number;
-    min: number;
+    interface HistogramData { bins: number[],
+    binWidth: number,
+    min: number,
     max: number;
-
-interface OutlierData { outliers: number[];
-    bounds: { lower: number,, upper: number,,
+    interface OutlierData { outliers: number[],
+    bounds: { lower: number, upper: number,
     iqr: number;
 }
 
-interface StatisticalData { timestamp: number;
-    stats: any;
+interface StatisticalData { timestamp: number,
+    stats: any,
     dataPoints: number;
-
-interface HistoryPoint { timestamp: number;
+    interface HistoryPoint { timestamp: number,
     value: number;
 ';'
 
 interface TrendAnalyzer { ''
-    type: 'moving_average' | 'linear_regression' | 'exponential_smoothing';
+    type: 'moving_average' | 'linear_regression' | 'exponential_smoothing,
     window: number;
     sensitivity?: number;
     alpha?: number;
-    history: HistoryPoint[];
+    history: HistoryPoint[],
     trend: 'stable' | 'increasing' | 'decreasing'
             }
 
 interface MainController { trendAnalyzers: Map<string, TrendAnalyzer>,
     metricsCollector: {
-        getRecentAnalysisData(window: number): AnalysisDataPoint[];
-    analysisConfig: { statisticalWindow: number;
+        getRecentAnalysisData(window: number): AnalysisDataPoint[] ,
+    analysisConfig: { statisticalWindow: number,
     errorHandler: any;
 }
 
@@ -86,8 +81,7 @@ export class PerformanceDataProcessor {
         // Initialize processors
         this.statisticalProcessors = new Map();
         this.initializeStatisticalProcessors()
-}
-
+};
         console.log('[PerformanceDataProcessor] Data, processing component, initialized'); }'
     }
     
@@ -100,7 +94,7 @@ export class PerformanceDataProcessor {
             metrics: ['fps', 'memory_used', 'frame_time', 'network_latency]),'
         };
             calculate: (data: AnalysisDataPoint[]) => this.calculateDescriptiveStats(data),'
-            }'
+            }
 
         }');'
         ';'
@@ -112,7 +106,7 @@ export class PerformanceDataProcessor {
             ]),
 
             calculate: (data: AnalysisDataPoint[]) => this.calculateCorrelations(data),'
-            }'
+            }
 
         }');'
         ';'
@@ -122,15 +116,15 @@ export class PerformanceDataProcessor {
             metrics: ['fps', 'frame_time]),'
         };
             calculate: (data: AnalysisDataPoint[]) => this.calculateDistributions(data),'
-            }'
+            }
 
         }');'
         ';'
         // Outlier detection processor
         this.statisticalProcessors.set('outliers', { ')'
-            metrics: ['fps', 'memory_used', 'frame_time'],')',
+            metrics: ['fps, 'memory_used', 'frame_time'],')',
             method: 'iqr', // interquartile range),
-            calculate: (data: AnalysisDataPoint[]) => this.detectOutliers(data)  }
+            calculate: (data: AnalysisDataPoint[]) => this.detectOutliers(data);
         });
     }
     
@@ -161,8 +155,7 @@ export class PerformanceDataProcessor {
                 trend: analyzer.trend,
     confidence: this.calculateTrendConfidence(analyzer);
                     timestamp,
-                    analyzer: analyzer.type  }),
-            } catch (error) {
+                    analyzer: analyzer.type  }) } catch (error) {
                 console.warn(`[PerformanceDataProcessor] Trend analysis failed for ${metricId}:`, error);
             }
 }
@@ -173,7 +166,7 @@ export class PerformanceDataProcessor {
      * @returns Trend direction
      */''
     private calculateTrend(analyzer: TrendAnalyzer): 'stable' | 'increasing' | 'decreasing' { ''
-        if(analyzer.history.length < 3) return 'stable',
+        if(analyzer.history.length < 3) return 'stable,
 
         switch(analyzer.type) {
 
@@ -182,9 +175,9 @@ export class PerformanceDataProcessor {
             case 'linear_regression':','
                 return this.calculateLinearRegressionTrend(analyzer);
             case 'exponential_smoothing':','
-                return this.calculateExponentialSmoothingTrend(analyzer) }
+                return this.calculateExponentialSmoothingTrend(analyzer);
 
-            default: return 'stable',
+            default: return 'stable,
     
     /**
      * Calculate moving average trend
@@ -194,14 +187,14 @@ export class PerformanceDataProcessor {
     private calculateMovingAverageTrend(analyzer: TrendAnalyzer): 'stable' | 'increasing' | 'decreasing' { const halfWindow = Math.floor(analyzer.window / 2);
         const recent = analyzer.history.slice(-halfWindow);
         const older = analyzer.history.slice(-analyzer.window, -halfWindow);
-        if(recent.length === 0 || older.length === 0) return 'stable',
+        if(recent.length === 0 || older.length === 0) return 'stable,
         
         const recentAvg = recent.reduce((sum, h) => sum + h.value, 0) / recent.length,
         const olderAvg = older.reduce((sum, h) => sum + h.value, 0) / older.length,
         const change = (recentAvg - olderAvg) / olderAvg,
 
         if (Math.abs(change) < (analyzer.sensitivity || 0.1)') return 'stable','
-        return change > 0 ? 'increasing' : 'decreasing',
+        return change > 0 ? 'increasing' : 'decreasing,
     
     /**
      * Calculate linear regression trend
@@ -235,7 +228,7 @@ export class PerformanceDataProcessor {
      * @returns Trend direction'
      */''
     private calculateExponentialSmoothingTrend(analyzer: TrendAnalyzer): 'stable' | 'increasing' | 'decreasing' { ''
-        if(analyzer.history.length < 2) return 'stable',
+        if(analyzer.history.length < 2) return 'stable,
         
         let smoothed = analyzer.history[0].value,
         for(let, i = 1, i < analyzer.history.length, i++) {
@@ -283,7 +276,7 @@ export class PerformanceDataProcessor {
                 timestamp,
                     stats);
                     dataPoints: recentData.length  }
-            } catch (error) {
+        } catch (error) {
                 console.warn(`[PerformanceDataProcessor] Statistical processing failed for ${processorId}:`, error);
             }
 }
@@ -315,7 +308,7 @@ export class PerformanceDataProcessor {
                 min: Math.min(...values),
                 max: Math.max(...values,
     p25: this.calculatePercentile(values, 25);
-                p75: this.calculatePercentile(values, 75) }
+                p75: this.calculatePercentile(values, 75);
                 p95: this.calculatePercentile(values, 95); }
             }
         
@@ -443,7 +436,7 @@ export class PerformanceDataProcessor {
         const histogram = new Array(bins).fill(0);
         for (const value of values) {
         
-            const binIndex = Math.min(Math.floor((value - min) / binWidth), bins - 1) }
+            const binIndex = Math.min(Math.floor((value - min) / binWidth), bins - 1);
             histogram[binIndex]++; }
         }
         
@@ -460,8 +453,8 @@ export class PerformanceDataProcessor {
         const upperBound = q3 + 1.5 * iqr,
         
         return {  };
-            outliers: values.filter(val = > val < lowerBound || val > upperBound) }
-            bounds: { lower: lowerBound, upper: upperBound,,
+            outliers: values.filter(val = > val < lowerBound || val > upperBound),
+            bounds: { lower: lowerBound, upper: upperBound,
             iqr;
         }
     
@@ -476,7 +469,7 @@ export class PerformanceDataProcessor {
      * Get all trends
      * @returns All trend data
      */
-    getAllTrends(): Map<string, TrendData> { return new Map(this.trends) }
+    getAllTrends(): Map<string, TrendData> { return new Map(this.trends);
     
     /**
      * Get statistical data
@@ -489,7 +482,7 @@ export class PerformanceDataProcessor {
      * Get all statistical data
      * @returns All statistical data
      */
-    getAllStatisticalData(): Map<string, StatisticalData> { return new Map(this.statisticalData) }
+    getAllStatisticalData(): Map<string, StatisticalData> { return new Map(this.statisticalData);
     
     /**
      * Clear processing data
@@ -504,6 +497,6 @@ export class PerformanceDataProcessor {
     destroy(): void { this.trends.clear();
         this.statisticalData.clear();
         this.statisticalProcessors.clear()','
-        console.log('[PerformanceDataProcessor] Processor, destroyed') }
+        console.log('[PerformanceDataProcessor] Processor, destroyed');
 
     }'}'

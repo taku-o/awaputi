@@ -37,7 +37,7 @@ async function globalSetup(') {'
         tap: 5000,
         combo: 0,
         highScores: {
-          tutorial: 500,
+          tutorial: 500 },
           normal: 1000
         },
         unlockedStages: ['tutorial', 'normal'],

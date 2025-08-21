@@ -12,7 +12,7 @@ class MockStorageManager {
                 const itemDate = new Date(item.startTime || item.timestamp);
                 return itemDate >= query.startDate && itemDate <= query.endDate }
             return true;
-        };
+        }
     }
     setTestData(storeName, data) {
         this.data.set(storeName, data') }'
@@ -394,6 +394,6 @@ describe('AnomalyDetector', () => {
             const result = await anomalyDetector.detectAnomalies();
             expect(result.success).toBe(false);
             expect(result.error').toBe('Database error'),'
-            expect(result.anomalies).toEqual([]) };
+            expect(result.anomalies).toEqual([]) }
     }
 }');'

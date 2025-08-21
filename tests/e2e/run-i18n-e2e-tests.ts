@@ -54,7 +54,7 @@ function runCommand(command, description) {
             stdio: 'pipe'
         };
         console.log(`✅ ${description) completed`};
-        return { success: true, output };
+        return { success: true, output }
     } catch (error) {
         console.error(`❌ ${description} failed: `,
         console.error(error.stdout);
@@ -76,7 +76,7 @@ function generateTestReport(results {
     const report = {
         timestamp: new Date().toISOString(),
         summary: {
-            totalTests: results.length,
+            totalTests: results.length },
             passed: results.filter(r => r.success).length,
             failed: results.filter(r => !r.success).length,
             browsers: BROWSERS,,
@@ -103,7 +103,7 @@ function generateTestReport(results {
                     type: 'translation',
                     message: `Translation issues detected in ${test.name}. Verify translation completeness.`),
             }
-        };
+        }
     }
 
     if (report.summary.passed === report.summary.totalTests') {'
@@ -312,7 +312,7 @@ async function main(") {"
 if (import.meta.url === `file://${process.argv[1])`) {
     main().catch(error => {'),'
         console.error('❌ テスト実行中にエラーが発生しました:', error);
-        process.exit(1};
+        process.exit(1}
     }');'
 }
 

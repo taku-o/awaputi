@@ -26,16 +26,16 @@ const mockSettingsScene = {
 // モックの作成
 const mockGameEngine = {
     settingsManager: {
-        get: jest.fn(
+        get: jest.fn( },
         set: jest.fn(
         save: jest.fn(
         load: jest.fn( },
     audioManager: {
-        playUISound: jest.fn(
+        playUISound: jest.fn( },
         isMuted: jest.fn(
         setMuted: jest.fn( },
     responsiveCanvasManager: {
-        isFullscreen: jest.fn(
+        isFullscreen: jest.fn( },
         toggleFullscreen: jest.fn( }
 };
 const mockAccessibilitySettingsManager = {
@@ -200,7 +200,7 @@ describe('Settings UI Integration (Issue #170')', () => {'
             // SettingsScene が適切に設定項目を含んでいることを確認
             const generalSettings = {
                 'display.fullscreen': {
-                    type: 'toggle',
+                    type: 'toggle' },
                     category: 'general',
                     handler: mockSettingsScene.handleFullscreenToggle
                 }
@@ -212,7 +212,7 @@ describe('Settings UI Integration (Issue #170')', () => {'
         test('should have audio mute toggle in general settings', (') => {'
             const generalSettings = {
                 'audio.muted': {
-                    type: 'toggle',
+                    type: 'toggle' },
                     category: 'general',
                     handler: mockSettingsScene.handleAudioMuteToggle
                 }
@@ -300,6 +300,6 @@ describe('Settings UI Integration (Issue #170')', () => {'
             profileComponent.switchProfile('highContrast');
             expect(mockErrorHandler.handleError).toHaveBeenCalled();
             profileComponent.dispose();
-        };
+        }
     }
 }');'

@@ -55,12 +55,12 @@ describe('MainMenuScene Shop Button Tests', () => {
             canvas: mockCanvas,
             sceneManager: {
                 hasScene: jest.fn().mockReturnValue(true),
-               , switchScene: jest.fn(').mockReturnValue(true,'
+               , switchScene: jest.fn(').mockReturnValue(true,' };
                 currentScene: {
                     constructor: { name: 'MainMenuScene' }
                 };
             localizationManager: {
-                getCurrentLanguage: jest.fn(').mockReturnValue('ja','
+                getCurrentLanguage: jest.fn(').mockReturnValue('ja',' };
                 t: jest.fn((key') => {'
                     const translations = {
                         'menu.start': 'ゲーム開始',
@@ -73,7 +73,7 @@ describe('MainMenuScene Shop Button Tests', () => {
                 ')}'
             },
             playerData: {
-                username: 'TestPlayer',
+                username: 'TestPlayer' },
         save: jest.fn( } },
             responsiveCanvas: {
                 onResizeCallbacks: []
@@ -177,6 +177,6 @@ describe('MainMenuScene Shop Button Tests', () => {
         test('enterメソッドでselectedMenuIndexが0にリセットされる', () => {
             mainMenuScene.selectedMenuIndex = 3,
             mainMenuScene.enter();
-            expect(mainMenuScene.selectedMenuIndex).toBe(0) };
+            expect(mainMenuScene.selectedMenuIndex).toBe(0) }
     }
 }');'

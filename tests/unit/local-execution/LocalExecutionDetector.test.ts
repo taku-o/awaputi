@@ -14,7 +14,7 @@ import { jest  } from '@jest/globals';
 import LocalExecutionDetector from '../../../src/utils/local-execution/LocalExecutionDetector.js';
 // Type definitions
 interface MockLocation {
-    protocol: string;
+    protocol: string,
     href: string;
 interface MockCanvas {
     getContext: jest.Mock<any, [string]>;
@@ -32,13 +32,13 @@ interface MockWindow {
     HTMLCanvasElement?: Function;
     CanvasRenderingContext2D?: Function;
 interface ExecutionContext {
-    isLocal: boolean;
+    isLocal: boolean,
     protocol: string;
-    canUseModules: boolean;
+    canUseModules: boolean,
     canUseCanvas: boolean;
-    canUseLocalStorage: boolean;
+    canUseLocalStorage: boolean,
     supportedFeatures: {
-        canva,s: boolean;
+        canva,s: boolean },
         localStorage: boolean;
         modules: boolean,,
     url: string;
@@ -52,16 +52,16 @@ describe('LocalExecutionDetector', () => {
         // Create mock window object
         mockWindow = {
             location: {
-                protocol: 'http:';
+                protocol: 'http:' },
                 href: 'http://localhost:3000'
             },
             localStorage: {
-                getItem: jest.fn(
+                getItem: jest.fn( },
                 setItem: jest.fn(
-        removeItem: jest.fn( };
+        removeItem: jest.fn( },
             document: {
                 createElement: jest.fn(() => ({
-                    getContext: jest.fn(() => ({));
+                    getContext: jest.fn(() => ({)),
         style: {
             );
                 ));
@@ -113,7 +113,7 @@ describe('LocalExecutionDetector', () => {
         }');'
         test('should return false when getContext fails', () => {
             mockWindow.document.createElement.mockReturnValue({);
-                getContext: jest.fn(() => null);
+                getContext: jest.fn(() => null),
         style: {
             );
             );
@@ -159,13 +159,13 @@ describe('LocalExecutionDetector', () => {
             mockWindow.location.href = 'https: //example.com/game';
             const context = LocalExecutionDetector.getExecutionContext();
             expect(context').toMatchObject({'
-                isLocal: false;
-                protocol: 'https:';
+                isLocal: false,
+                protocol: 'https:',
                 canUseModules: true;
-                canUseCanvas: true;
+                canUseCanvas: true,
                 canUseLocalStorage: true;
                 supportedFeatures: {
-                    canvas: true;
+                    canvas: true },
                     localStorage: true;
                     modules: true,,
                 url: 'https://example.com/game' }');'
@@ -175,13 +175,13 @@ describe('LocalExecutionDetector', () => {
             mockWindow.location.href = 'file: ///path/to/game/index.html';
             const context = LocalExecutionDetector.getExecutionContext();
             expect(context').toMatchObject({'
-                isLocal: true;
-                protocol: 'file:';
+                isLocal: true,
+                protocol: 'file:',
                 canUseModules: false;
-                canUseCanvas: true;
+                canUseCanvas: true,
                 canUseLocalStorage: true;
                 supportedFeatures: {
-                    canvas: true;
+                    canvas: true },
                     localStorage: true;
                     modules: false,,
                 url: 'file:///path/to/game/index.html')'),'
@@ -192,7 +192,7 @@ describe('LocalExecutionDetector', () => {
             delete mockWindow.localStorage,
             const context = LocalExecutionDetector.getExecutionContext();
             expect(context.supportedFeatures).toEqual({
-                canvas: false;
+                canvas: false,
                 localStorage: false;
                 modules: false);
             expect(context.canUseCanvas).toBe(false);
@@ -201,16 +201,16 @@ describe('LocalExecutionDetector', () => {
             (global: any).window = undefined;
             const context = LocalExecutionDetector.getExecutionContext();
             expect(context').toEqual({'
-                isLocal: false;
+                isLocal: false,
                 protocol: 'unknown';
-                canUseModules: false;
+                canUseModules: false,
                 canUseCanvas: false;
-                canUseLocalStorage: false;
+                canUseLocalStorage: false,
                 supportedFeatures: {
-                    canvas: false;
+                    canvas: false },
                     localStorage: false;
                     modules: false,,
-                url: 'unknown' };
+                url: 'unknown' }
         }
     }');'
     describe('Error handling and edge cases', (') => {'
@@ -298,6 +298,6 @@ describe('LocalExecutionDetector', () => {
             
             // Should not increase memory by more than 1MB
             expect(memoryIncrease).toBeLessThan(1024 * 1024);
-        };
+        }
     }
 }');'

@@ -15,7 +15,7 @@ interface MockStatisticsManager {
     recordEvent: jest.Mock<void, [string, any]>;
     updateScore: jest.Mock<void, [number]> }
 interface MockGameEngine {
-    statisticsManager: MockStatisticsManager;
+    statisticsManager: MockStatisticsManager,
     settings: {
         playerNam,e: string;
 }
@@ -32,44 +32,44 @@ interface GetLeaderboardOptions {
     period?: string;
     since?: number;
 interface PaginationOptions {
-    page: number;
+    page: number,
     pageSize: number;
 interface PaginatedResult {
-    data: LeaderboardEntry[];
+    data: LeaderboardEntry[],
     currentPage: number;
-    totalPages: number;
+    totalPages: number,
     totalItems: number;
     isLastPage: boolean;
 interface PlayerRankResult {
-    rank: number;
+    rank: number,
     totalPlayers: number;
     score?: number;
     found?: boolean;
 interface ValidationResult {
-    isValid: boolean;
+    isValid: boolean,
     errors: string[];
     warnings?: string[];
 interface MemoryUsage {
-    leaderboards: number;
+    leaderboards: number,
     cache: number;
 interface Config {
-    maxEntriesPerLeaderboard: number;
+    maxEntriesPerLeaderboard: number,
     storageKey: string;
-    cacheTTL: number;
+    cacheTTL: number,
     dataVersion: string;
 interface Backup {
     leaderboards: Record<string, LeaderboardEntry[]>;
-    timestamp: number;
+    timestamp: number,
     version: string;
 interface Stats {
-    saveCount: number;
+    saveCount: number,
     validationErrors: number;
-    cacheMisses: number;
+    cacheMisses: number,
     cacheHits: number;
 // LocalStorage Mock
 const mockLocalStorage: MockLocalStorage = {
-    data: {};
-    getItem: jest.fn((key: string) => mockLocalStorage.data[key] || null);
+    data: {},
+    getItem: jest.fn((key: string) => mockLocalStorage.data[key] || null),
     setItem: jest.fn((key: string, value: string) => {
         mockLocalStorage.data[key] = value)),
     removeItem: jest.fn((key: string) => {
@@ -77,12 +77,12 @@ const mockLocalStorage: MockLocalStorage = {
     clear: jest.fn(() => {
         mockLocalStorage.data = {))') };'
 Object.defineProperty(global, 'localStorage', {
-    value: mockLocalStorage;
+    value: mockLocalStorage,
     configurable: true,);
 // GameEngine Mock
 const mockGameEngine: MockGameEngine = {
     statisticsManager: {
-        recordEvent: jest.fn(
+        recordEvent: jest.fn( },
         updateScore: jest.fn()' },'
     settings: {
         playerName: 'TestPlayer'
@@ -90,8 +90,8 @@ const mockGameEngine: MockGameEngine = {
 };
 // Performance Mock
 Object.defineProperty(global, 'performance', {
-    value: {;
-        now: jest.fn(() => Date.now());
+    value: {,
+        now: jest.fn(() => Date.now()) };
     configurable: true,)');'
 describe('LeaderboardManager', () => {
     let leaderboardManager: LeaderboardManager;
@@ -149,7 +149,7 @@ describe('LeaderboardManager', () => {
             expect(leaderboardManager.leaderboards.size).toBe(0) }');'
         it('データバージョンを管理する', async (') => {'
             const oldVersionData = {
-                leaderboards: { overall: [] };
+                leaderboards: { overall: [] },
                 version: '0.9.0'
             };
             
@@ -164,9 +164,9 @@ describe('LeaderboardManager', () => {
             await leaderboardManager.initialize() }');'
         it('新しいスコアを記録する', async (') => {'
             const scoreData: ScoreData = {
-                playerId: 'player1';
+                playerId: 'player1',
                 playerName: 'TestPlayer';
-                score: 15000;
+                score: 15000,
                 stage: 'normal';
         timestamp: Date.now(' };'
             
@@ -191,13 +191,13 @@ describe('LeaderboardManager', () => {
         }');'
         it('ステージ別スコアを記録する', async (') => {'
             const normalScore: ScoreData = {
-                playerId: 'player1';
+                playerId: 'player1',
                 score: 10000;
                 stage: 'normal'
             };
             
             const hardScore: ScoreData = {
-                playerId: 'player1';
+                playerId: 'player1',
                 score: 8000;
                 stage: 'hard'
             };
@@ -214,7 +214,7 @@ describe('LeaderboardManager', () => {
             // 4つのスコアを追加
             for (let i = 0, i < 4, i++') {'
                 await leaderboardManager.addScore('test', {
-                    playerId: `player${i}`;
+                    playerId: `player${i}`,
                     score: 1000 + i * 100,);
                    , timestamp: Date.now() + i
                 }');'
@@ -227,11 +227,11 @@ describe('LeaderboardManager', () => {
         it('同じプレイヤーの更新を処理する', async (') => {'
             // 初回スコア
             await leaderboardManager.addScore('overall', {
-                playerId: 'player1';
+                playerId: 'player1',
                 score: 10000 }');'
             // より高いスコア
             const result = await leaderboardManager.addScore('overall', {
-                playerId: 'player1';
+                playerId: 'player1',
                 score: 15000 };
             expect(result.isNewRecord).toBe(true);
             expect(result.previousBest).toBe(10000');'
@@ -242,11 +242,11 @@ describe('LeaderboardManager', () => {
         it('低いスコアは記録しない', async (') => {'
             // 高いスコア
             await leaderboardManager.addScore('overall', {
-                playerId: 'player1';
+                playerId: 'player1',
                 score: 15000 }');'
             // より低いスコア
             const result = await leaderboardManager.addScore('overall', {
-                playerId: 'player1';
+                playerId: 'player1',
                 score: 10000 };
             expect(result.isNewRecord).toBe(false');'
             const leaderboard = leaderboardManager.getLeaderboard('overall');
@@ -286,7 +286,7 @@ describe('LeaderboardManager', () => {
             const dayAgo = now - 24 * 60 * 60 * 1000,
             
             const dailyRanking = leaderboardManager.getLeaderboard('overall', {
-                period: 'daily';
+                period: 'daily',
                 since: dayAgo,);
             expect(dailyRanking).toBeDefined();
         }');'
@@ -310,16 +310,16 @@ describe('LeaderboardManager', () => {
             // 大量のテストデータを追加
             for (let i = 0, i < 50, i++') {'
                 await leaderboardManager.addScore('pagination_test', {
-                    playerId: `player${i}`;
+                    playerId: `player${i}`,
                     playerName: `Player${i}`;
                     score: 10000 - i * 100, // 降順でスコア設定);
                     timestamp: Date.now() + i
-                };
+                }
             }
         }');'
         it('ページネーション付きでランキングを取得する', async (') => {'
             const page1 = await leaderboardManager.getLeaderboardPaginated('pagination_test', 'all', {
-                page: 1;
+                page: 1,
                 pageSize: 10 };
             expect(page1.data.length).toBe(10);
             expect(page1.currentPage).toBe(1);
@@ -329,7 +329,7 @@ describe('LeaderboardManager', () => {
         }');'
         it('複数ページにわたって取得する', async (') => {'
             const page2 = await leaderboardManager.getLeaderboardPaginated('pagination_test', 'all', {
-                page: 2;
+                page: 2,
                 pageSize: 10 };
             expect(page2.data.length).toBe(10);
             expect(page2.currentPage).toBe(2);
@@ -337,14 +337,14 @@ describe('LeaderboardManager', () => {
         }');'
         it('最後のページを正しく処理する', async (') => {'
             const page5 = await leaderboardManager.getLeaderboardPaginated('pagination_test', 'all', {
-                page: 5;
+                page: 5,
                 pageSize: 10 };
             expect(page5.data.length).toBe(10);
             expect(page5.isLastPage).toBe(true);
         }');'
         it('範囲外のページ要求を処理する', async (') => {'
             const pageOutOfRange = await leaderboardManager.getLeaderboardPaginated('pagination_test', 'all', {
-                page: 100;
+                page: 100,
                 pageSize: 10 };
             expect(pageOutOfRange.data.length).toBe(0);
             expect(pageOutOfRange.currentPage).toBe(100);
@@ -384,7 +384,7 @@ describe('LeaderboardManager', () => {
             leaderboardManager.getLeaderboard('overall'), // キャッシュ作成
             
             await leaderboardManager.addScore('overall', {
-                playerId: 'newPlayer';
+                playerId: 'newPlayer',
                 score: 20000 }');'
             // キャッシュがクリアされて再計算される
             const updatedLeaderboard = leaderboardManager.getLeaderboard('overall');
@@ -396,9 +396,9 @@ describe('LeaderboardManager', () => {
             await leaderboardManager.initialize() }');'
         it('有効なスコアデータを検証する', (') => {'
             const validScore: ScoreData = {
-                playerId: 'player1';
+                playerId: 'player1',
                 playerName: 'TestPlayer';
-                score: 15000;
+                score: 15000,
                 stage: 'normal';
         timestamp: Date.now( };
             
@@ -419,7 +419,7 @@ describe('LeaderboardManager', () => {
         }');'
         it('スコア範囲を検証する', (') => {'
             const tooHighScore: ScoreData = {
-                playerId: 'player1';
+                playerId: 'player1',
                 score: 999999999, // 異常に高いスコア
                 timestamp: Date.now( };
             
@@ -428,7 +428,7 @@ describe('LeaderboardManager', () => {
         }');'
         it('タイムスタンプを検証する', (') => {'
             const futureScore: ScoreData = {
-                playerId: 'player1';
+                playerId: 'player1',
                 score: 10000;
                 timestamp: Date.now() + 24 * 60 * 60 * 1000 // 24時間後
             };
@@ -444,7 +444,7 @@ describe('LeaderboardManager', () => {
             const initialStats = { ...leaderboardManager.stats };
             
             await leaderboardManager.addScore('overall', {
-                playerId: 'player1';
+                playerId: 'player1',
                 score: 10000 };
             expect(leaderboardManager.stats.saveCount).toBe(initialStats.saveCount + 1);
         }');'
@@ -459,9 +459,9 @@ describe('LeaderboardManager', () => {
             for (let i = 0, i < 100, i++') {'
                 await leaderboardManager.addScore('performance_test', {
                     playerId: `player${i}`;);
-                    score: Math.random() * 100000;
+                    score: Math.random() * 100000,
                     timestamp: Date.now() + i
-                };
+                }
             }
             
             const endTime = performance.now();
@@ -528,7 +528,7 @@ describe('LeaderboardManager', () => {
             mockLocalStorage.setItem.mockImplementation((') => {'
                 throw new Error('Storage quota exceeded') }');'
             await leaderboardManager.addScore('test', {
-                playerId: 'player1';
+                playerId: 'player1',
                 score: 10000 }');'
             // エラーが発生してもスコアは追加される（メモリ内）
             expect(leaderboardManager.getLeaderboard('test').length).toBe(1);
@@ -537,7 +537,7 @@ describe('LeaderboardManager', () => {
     describe('設定管理', (') => {'
         it('設定を更新する', () => {
             const newConfig: Partial<Config> = {
-                maxEntriesPerLeaderboard: 50;
+                maxEntriesPerLeaderboard: 50,
                 cacheTTL: 10 * 60 * 1000 // 10分
             };
             
@@ -559,7 +559,7 @@ describe('LeaderboardManager', () => {
             await leaderboardManager.initialize('),'
             // テストデータを追加
             await leaderboardManager.addScore('backup_test', {
-                playerId: 'player1';
+                playerId: 'player1',
                 score: 15000 }');'
         }
         it('データをバックアップする', () => {
@@ -578,7 +578,7 @@ describe('LeaderboardManager', () => {
             expect(leaderboardManager.getLeaderboard('backup_test')[0].score).toBe(15000) }');'
         it('無効なバックアップを拒否する', async (') => {'
             const invalidBackup = {
-                leaderboards: null;
+                leaderboards: null,
         version: '0.1.0'
             } as unknown as Backup;
             
@@ -603,25 +603,25 @@ describe('LeaderboardManager', () => {
             
             leaderboardManager.resetStats();
             expect(leaderboardManager.stats.saveCount).toBe(0);
-            expect(leaderboardManager.stats.cacheHits).toBe(0) };
+            expect(leaderboardManager.stats.cacheHits).toBe(0) }
     }
 };
 // テストユーティリティ関数
 function createMockScoreData(overrides: Partial<ScoreData> =) {}'): ScoreData {'
     return {
-        playerId: 'testPlayer';
+        playerId: 'testPlayer',
         playerName: 'Test Player';
-        score: 10000;
+        score: 10000,
         stage: 'normal';
         timestamp: Date.now(
         ...overrides
-    };
+    }
 }
 function createMockLeaderboardData(count: number = 5): LeaderboardEntry[] {
     const data: LeaderboardEntry[] = [];
     for (let i = 0, i < count, i++) {
         data.push({
-            playerId: `player${i}`;
+            playerId: `player${i}`,
             playerName: `Player ${i}`;
             score: 10000 - i * 1000,);
            , timestamp: Date.now() + i

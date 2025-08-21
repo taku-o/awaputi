@@ -3,24 +3,24 @@ import { VolumeControlComponent  } from '../../../src/components/VolumeControlCo
 // Type definitions
 interface MockGameEngine {
     settingsManager: {
-        get: jest.Mock<(ke,y: string) => any>;
+        get: jest.Mock<(ke,y: string) => any> },
         set: jest.Mock<(ke,y: string, value => void>) };
     audioManager: {
         playUISound: jest.Mock<(sound: string, options?: {volume?: number;) => void>;
-    };
+    }
 }
 interface MockErrorHandler {
     handleError: jest.Mock<(erro,r: Error, context?: string) => void> }
 interface MockLocalizationManager {
     getText: jest.Mock<(ke,y: string) => string> }
 interface ComponentStats {
-    isInitialized: boolean;
+    isInitialized: boolean,
     currentVolume: number;
-    currentVolumePercent: number;
+    currentVolumePercent: number,
     isAtMinVolume: boolean;
     isAtMaxVolume: boolean;
 interface MockDOMRect {
-    left: number;
+    left: number,
     width: number;
     right?: number;
     top?: number;
@@ -31,7 +31,7 @@ interface MockDOMRect {
 // Mock setup
 const mockGameEngine: MockGameEngine = {
     settingsManager: {
-        get: jest.fn(
+        get: jest.fn( },
         set: jest.fn( };
     audioManager: {
         playUISound: jest.fn( }
@@ -191,13 +191,13 @@ describe('VolumeControlComponent', () => {
                 bubbles: true,);
             // Mock getBoundingClientRect
             progressBar.getBoundingClientRect = jest.fn((): DOMRect => ({
-                left: 100;
+                left: 100,
                 width: 200;
-                right: 300;
+                right: 300,
                 top: 0;
-                bottom: 0;
+                bottom: 0,
                 height: 0;
-                x: 100;
+                x: 100,
                 y: 0;
                 toJSON: () => ({});
             } as DOMRect);
@@ -292,6 +292,6 @@ describe('VolumeControlComponent', () => {
                 (component.container!.parentNode as any).removeChild = mockRemoveChild)
             ,
             component.dispose();
-            expect(mockErrorHandler.handleError).toHaveBeenCalled() };
+            expect(mockErrorHandler.handleError).toHaveBeenCalled() }
     }
 }');'

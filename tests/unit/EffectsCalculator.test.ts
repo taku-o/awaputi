@@ -6,25 +6,25 @@ import { EffectsCalculator  } from '../../src/core/EffectsCalculator.js';
 // Effects configuration interfaces
 interface EffectsConfig {
     particles: {
-        maxCoun,t: number;
+        maxCoun,t: number },
         poolSize: number;
-        quality: number;
+        quality: number,
         baseIntensity: number;
         lifetimeMultiplier: number,,
     screen: {
-        shakeIntensity: number;
+        shakeIntensity: number },
         flashDuration: number;
-        zoomSensitivity: number;
+        zoomSensitivity: number,
         transitionDuration: number,,
     animations: {
-        duration: number;
+        duration: number },
         easing: string;
-        scaleFactor: number;
+        scaleFactor: number,
         fadeSpeed: number,,
     bubbleEffects: {
-        popIntensity: number;
+        popIntensity: number },
         chainRadius: number;
-        explosionScale: number;
+        explosionScale: number,
         trailLength: number;
 }
 interface ParticleModifiers {
@@ -39,7 +39,7 @@ interface IntensityModifier {
     min?: number;
     max?: number;
 interface Position {
-    x: number;
+    x: number,
     y: number;
 interface TrajectoryOptions {
     steps: number;
@@ -47,14 +47,14 @@ interface TrajectoryOptions {
     wind?: number;
     randomness?: number;
 interface Color {
-    r: number;
+    r: number,
     g: number;
-    b: number;
+    b: number,
     a: number;
 interface ScreenShake {
-    amplitude: number;
+    amplitude: number,
     frequency: number;
-    duration: number;
+    duration: number,
     easing: string;
 interface ShakeOptions {
     easing?: string;
@@ -64,18 +64,18 @@ interface EffectContext {
     isBossStage?: boolean;
     remainingTime?: number;
 interface PerformanceMetrics {
-    fps: number;
+    fps: number,
     particleCount: number;
-    memoryUsage: number;
+    memoryUsage: number,
     cpuUsage: number;
 interface PerformanceOptimization {
-    particleQuality: number;
+    particleQuality: number,
     animationQuality: number;
-    effectsEnabled: boolean;
+    effectsEnabled: boolean,
     maxParticles: number;
     skipFrames: number;
 interface DebugInfo {
-    hasEffectsConfig: boolean;
+    hasEffectsConfig: boolean,
     effectsConfig: EffectsConfig | null;
     version: string;
 // モックEffectsConfig
@@ -83,31 +83,31 @@ class MockEffectsConfig {
     getEffectsConfig('): EffectsConfig {'
         return {
             particles: {
-                maxCount: 500;
+                maxCount: 500 },
                 poolSize: 100;
-                quality: 1.0;
+                quality: 1.0,
                 baseIntensity: 1.0;
                 lifetimeMultiplier: 1.0
             },
             screen: {
-                shakeIntensity: 1.0;
+                shakeIntensity: 1.0 },
                 flashDuration: 200;
-                zoomSensitivity: 1.0;
+                zoomSensitivity: 1.0,
                 transitionDuration: 300
             },
             animations: {
-                duration: 300;
+                duration: 300 },
                 easing: 'easeOut';
-                scaleFactor: 1.0;
+                scaleFactor: 1.0,
                 fadeSpeed: 1.0
             },
             bubbleEffects: {
-                popIntensity: 1.0;
+                popIntensity: 1.0 },
                 chainRadius: 120;
-                explosionScale: 1.0;
+                explosionScale: 1.0,
                 trailLength: 1.0
             }
-        };
+        }
     }
 }
 describe('EffectsCalculator', () => {
@@ -145,7 +145,7 @@ describe('EffectsCalculator', () => {
                     screen: { shakeIntensity: 1.0, flashDuration: 200, zoomSensitivity: 1.0, transitionDuration: 300 },
                     animations: { duration: 300, easing: 'easeOut', scaleFactor: 1.0, fadeSpeed: 1.0 },
                     bubbleEffects: { popIntensity: 1.0, chainRadius: 120, explosionScale: 1.0, trailLength: 1.0 }
-    };
+    }
             };
             const lowQualityCalculator = new EffectsCalculator(lowQualityConfig');'
             expect(lowQualityCalculator.calculateParticleCount('bubble_pop').toBe(4); // 8 * 0.5

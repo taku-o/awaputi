@@ -305,6 +305,6 @@ describe('PerformanceOptimizer統合テスト', () => {
             expect(performanceOptimizer.getMaxBubbles().toBe(10);
             expect(performanceOptimizer.getMaxParticles().toBe(100);
             expect(performanceOptimizer.getRenderQuality().toBe(0.7);
-            expect(performanceOptimizer.areShadowsEnabled().toBe(false) };
+            expect(performanceOptimizer.areShadowsEnabled().toBe(false) }
     }
 }');'

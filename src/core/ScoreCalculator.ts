@@ -11,28 +11,28 @@ export class ScoreCalculator {
         // デフォルトのスコア設定（GameConfigが利用できない場合のフォールバック）
         this.defaultScoreConfig = {
             baseScores: {
-                normal: 15;
-                stone: 35;
-                iron: 65;
-                diamond: 120;
-                rainbow: 400;
-                pink: 25;
-                clock: 180;
-                electric: 20;
-                poison: 8;
-                spiky: 85;
-                cracked: 30;
-                escaping: 50;
+                normal: 15 ,
+                stone: 35,
+                iron: 65,
+                diamond: 120,
+                rainbow: 400,
+                pink: 25,
+                clock: 180,
+                electric: 20,
+                poison: 8,
+                spiky: 85,
+                cracked: 30,
+                escaping: 50,
     boss: 800 }
                 score: 250 
     };
-            combo: { multiplierIncrement: 0.08;
-                maxMultiplier: 2.5;
-                bonusInterval: 5;
-                bonusMultiplier: 8;
-    baseTimeout: 2000 };
+            combo: { multiplierIncrement: 0.08,
+                maxMultiplier: 2.5  ,
+                bonusInterval: 5,
+                bonusMultiplier: 8,
+    baseTimeout: 2000 ,
             ageBonus: { earlyBonus: 2.0,    // 発生直後ボーナス（10%以内）
-                lateBonus: 3.0,     // 破裂直前ボーナス（90%以上）;
+                lateBonus: 3.0,     // 破裂直前ボーナス（90%以上）  },
                 midBonus: 1.5       // 中盤ボーナス（50-70%）  }
         };
         console.log('ScoreCalculator, initialized');
@@ -58,7 +58,7 @@ export class ScoreCalculator {
         const baseScore = config.baseScores[bubbleType] || config.baseScores.normal,
         
         // 年齢ボーナスを適用
-        const ageMultiplier = this.calculateAgeBonus(ageRatio) }
+        const ageMultiplier = this.calculateAgeBonus(ageRatio);
         return Math.floor(baseScore * ageMultiplier);
     
     /**
@@ -156,7 +156,7 @@ export class ScoreCalculator {
             finalScore,
             comboBonus,
             multipliers: {
-                age: this.calculateAgeBonus(ageRatio),
+                age: this.calculateAgeBonus(ageRatio) ,
                 combo: comboMultiplier,
                 special: specialMultiplier,
     item: itemMultiplier,
@@ -191,7 +191,7 @@ export class ScoreCalculator {
             case 'boss':,
                 // ボス泡：体力に応じたボーナス
                 const healthRatio = effectParams.healthRatio || 1,
-                return Math.floor(config.baseScores.boss * (1 - healthRatio) * 0.2) }
+                return Math.floor(config.baseScores.boss * (1 - healthRatio) * 0.2);
             default: return 0,
     
     /**
@@ -205,7 +205,7 @@ export class ScoreCalculator {
                 average: 0,
                 highest: 0,
     lowest: 0 }
-                comboCount: 0 },
+                comboCount: 0 ,
                 bonusCount: 0 
     }
         
@@ -222,7 +222,7 @@ export class ScoreCalculator {
             lowest,
             comboCount,
             bonusCount };
-            totalEntries: scoreHistory.length 
+            totalEntries: scoreHistory.length; 
     }
     
     /**
@@ -254,9 +254,9 @@ export class ScoreCalculator {
         ';'
 
         const strategy = { ''
-            priority: 'normal',
+            priority: 'normal,
             targetBubbles: [],
-    reasoning: [] },
+    reasoning: [] ,
         ';'
         // コンボが高い場合は継続を優先
         if (currentCombo >= 3) {
@@ -296,8 +296,7 @@ export class ScoreCalculator {
 
             scoreConfig: this.getScoreConfig('}'
 
-            version: '1.0.0' })
-    }
+            version: '1.0.0' });
 }
 
 // シングルトンインスタンス

@@ -5,11 +5,11 @@ import { jest  } from '@jest/globals';
 import { GameConfig, getGameConfig  } from '../../src/config/GameConfig.js';
 // Types
 interface AgeBonusConfig {
-    earlyBonus: number;
+    earlyBonus: number,
     lateBonus: number;
     midBonus: number;
 interface ComboConfig {
-    multiplierIncrement: number;
+    multiplierIncrement: number,
     maxMultiplier: number;
 interface MockConfigManager {
     get: jest.Mock<(categor,y: string, key: string, defaultValue?: any) => any> }
@@ -97,6 +97,6 @@ describe('GameConfig', (') => {'
         test('getGameConfig(')は常に同じインスタンスを返す', () => {'
             const instance1 = getGameConfig();
             const instance2 = getGameConfig();
-            expect(instance1).toBe(instance2) };
+            expect(instance1).toBe(instance2) }
     }
 }');'

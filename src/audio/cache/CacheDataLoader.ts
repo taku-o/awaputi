@@ -10,18 +10,18 @@ import { getErrorHandler  } from '../../utils/ErrorHandler';
 /**
  * Audio metadata interface
  */
-export interface AudioMetadata { numberOfChannels: number;
-    length: number;
-    sampleRate: number;
+export interface AudioMetadata { numberOfChannels: number,
+    length: number,
+    sampleRate: number,
     duration: number;
 
 /**
  * Preload queue item interface
  */
-export interface PreloadQueueItem { key: string;
-    loadFunction: () => Promise<AudioBuffer | null>;
-    options: LoadOptions;
-    priority: number;
+export interface PreloadQueueItem { key: string,
+    loadFunction: () => Promise<AudioBuffer | null>,
+    options: LoadOptions,
+    priority: number,
     timestamp: number;
 
 /**
@@ -33,33 +33,32 @@ export interface LoadOptions { chunkSize?: number,
 /**
  * Chunk data interface
  */
-export interface ChunkData { index: number;
-    data: Float32Array[];
+export interface ChunkData { index: number,
+    data: Float32Array[],
     start: number;
 
 /**
  * Loader statistics interface
  */
-export interface LoaderStats { cacheHits: number;
-    cacheMisses: number;
-    averageLoadTime: number;
-    activeLoads: number;
-    preloadQueueSize: number;
+export interface LoaderStats { cacheHits: number,
+    cacheMisses: number,
+    averageLoadTime: number,
+    activeLoads: number,
+    preloadQueueSize: number,
     hitRate: number;
 
 /**
  * Cache settings interface
  */
-interface CacheSettings { lazyLoading: {
-        enable,d: boolean;
+interface CacheSettings { lazyLoading: { enable,d: boolean,
     chunkSize: number;
 
 /**
  * Main controller interface
  */
-interface MainController { audioContext: AudioContext;
-    cacheSettings: CacheSettings;
-    audioBufferCache: {  }
+interface MainController { audioContext: AudioContext,
+    cacheSettings: CacheSettings,
+    audioBufferCache: {   },
         get(key: string): { buffer: AudioBuffer, | null
     };
     chunkCache: { get(key: string): Float32Array[] | null;
@@ -72,16 +71,16 @@ export class CacheDataLoader {
     private readonly audioContext: AudioContext;
     private readonly cacheSettings: CacheSettings;
     // 段階的読み込み管理
-    private readonly lazyLoadManager: {
-        activeLoads: Map<string, Promise<AudioBuffer | null>>;
+    private readonly lazyLoadManager: { activeLoads: Map<string, Promise<AudioBuffer | null>>  },
         chunkIndex: Map<string, number>;
-        preloadQueue: PreloadQueueItem[];
+        preloadQueue: PreloadQueueItem[],
         preloadQueue: PreloadQueueItem[];
         };
     // パフォーマンス統計
-    private readonly performanceStats: { cacheHits: number;
+    private readonly performanceStats: { cacheHits: number,
         cacheMisses: number;
-    loadTimes: number[];
+    },
+    loadTimes: number[],
     loadTimes: number[];
         };
     constructor(mainController: MainController) {
@@ -93,12 +92,12 @@ export class CacheDataLoader {
         // 段階的読み込み管理
         this.lazyLoadManager = {
             activeLoads: new Map(
-    chunkIndex: new Map() }
+    chunkIndex: new Map(),
             preloadQueue: [] 
     };
         // パフォーマンス統計
-        this.performanceStats = { cacheHits: 0;
-            cacheMisses: 0;
+        this.performanceStats = { cacheHits: 0,
+            cacheMisses: 0,
     loadTimes: []  }
     
     /**
@@ -111,9 +110,9 @@ export class CacheDataLoader {
             const cacheEntry = this.mainController.audioBufferCache.get(key);
             if (cacheEntry) {
             
-                this.performanceStats.cacheHits++,
+                this.performanceStats.cacheHits++;
                 const loadTime = performance.now() - startTime,
-                this.performanceStats.loadTimes.push(loadTime) }
+                this.performanceStats.loadTimes.push(loadTime);
                 console.log(`Cache, hit: ${key} (${loadTime.toFixed(2}ms)`);
                 return cacheEntry.buffer;
             }
@@ -123,7 +122,7 @@ export class CacheDataLoader {
             return null;
         } catch (error) { getErrorHandler().handleError(error, 'AUDIO_CACHE_ERROR', {''
                 operation: 'getAudioBuffer')','
-    key: key,')',
+    key: key,'),
                 component: 'CacheDataLoader'
             };
             return null;
@@ -148,16 +147,16 @@ export class CacheDataLoader {
                 return cachedBuffer;
             
             // 段階的読み込みが有効な場合
-            if (this.cacheSettings.lazyLoading.enabled) { return await this.performLazyLoad(key, loadFunction, options) }
+            if (this.cacheSettings.lazyLoading.enabled) { return await this.performLazyLoad(key, loadFunction, options);
             
             // 通常の読み込み
             const buffer = await loadFunction();
-            if (buffer) { this.mainController.setAudioBuffer(key, buffer) }
+            if (buffer) { this.mainController.setAudioBuffer(key, buffer);
             
             return buffer;
         } catch (error) { getErrorHandler().handleError(error, 'AUDIO_CACHE_ERROR', {''
                 operation: 'getLazyAudioBuffer')','
-    key: key,')',
+    key: key,'),
                 component: 'CacheDataLoader'
             };
             return null;
@@ -172,7 +171,7 @@ export class CacheDataLoader {
     async performLazyLoad(;
         key: string,
     loadFunction: () => Promise<AudioBuffer | null>, ;
-        options: LoadOptions,
+        options: LoadOptions;
     ): Promise<AudioBuffer | null> { try {
             console.log(`Starting, lazy load, for: ${key)`},
             
@@ -188,7 +187,7 @@ export class CacheDataLoader {
             try { const result = await loadPromise,
                 return result } finally { this.lazyLoadManager.activeLoads.delete(key) } catch (error) { getErrorHandler().handleError(error, 'AUDIO_CACHE_ERROR', {''
                 operation: 'performLazyLoad')','
-    key: key,')',
+    key: key,'),
                 component: 'CacheDataLoader'
             };
             return null;
@@ -203,7 +202,7 @@ export class CacheDataLoader {
     async executeLazyLoad(;
         key: string,
     loadFunction: () => Promise<AudioBuffer | null>, ;
-        options: LoadOptions,
+        options: LoadOptions;
     ): Promise<AudioBuffer | null> { try {
             const chunkSize = options.chunkSize || this.cacheSettings.lazyLoading.chunkSize,
             
@@ -227,7 +226,7 @@ export class CacheDataLoader {
             for(let, chunkIndex = 0; chunkIndex < totalChunks; chunkIndex++) {
             
                 const startSample = chunkIndex * chunkSize,
-                const endSample = Math.min(startSample + chunkSize, metadata.length) }
+                const endSample = Math.min(startSample + chunkSize, metadata.length);
                 const chunkKey = `${key}_chunk_${chunkIndex}`;
                 
                 // チャンクがキャッシュにあるかチェック
@@ -248,8 +247,7 @@ export class CacheDataLoader {
                         this.mainController.chunkCache.set(chunkKey, chunkData, chunkSize); }
 }
                 
-                if (chunkData) { chunks.push({ index: chunkIndex, data: chunkData, start: startSample,
-            }
+                if (chunkData) { chunks.push({ index: chunkIndex, data: chunkData, start: startSample }
             
             // チャンクを組み合わせて完全なバッファを作成
             this.assembleChunksIntoBuffer(fullBuffer, chunks, metadata);
@@ -261,7 +259,7 @@ export class CacheDataLoader {
             return fullBuffer;
         } catch (error) { getErrorHandler().handleError(error, 'AUDIO_CACHE_ERROR', {''
                 operation: 'executeLazyLoad')','
-    key: key,')',
+    key: key,'),
                 component: 'CacheDataLoader'
             };
             return null;
@@ -272,7 +270,7 @@ export class CacheDataLoader {
      * @returns メタデータ
      */
     async loadAudioMetadata(;
-        loadFunction: () => Promise<AudioBuffer | null>,
+        loadFunction: () => Promise<AudioBuffer | null>;
     ): Promise<AudioMetadata | null> { try {
             // 実際の実装では、loadFunctionから部分的なデータを読み込んでメタデータを抽出
             // ここでは簡略化して全体を読み込んでメタデータを取得
@@ -283,10 +281,10 @@ export class CacheDataLoader {
             
             return { numberOfChannels: buffer.numberOfChannels,
                 length: buffer.length,
-    sampleRate: buffer.sampleRate },
+    sampleRate: buffer.sampleRate };
                 duration: buffer.duration 
     } catch (error) { getErrorHandler().handleError(error, 'AUDIO_CACHE_ERROR', {''
-                operation: 'loadAudioMetadata',')',
+                operation: 'loadAudioMetadata,')',
                 component: 'CacheDataLoader'
             };
             return null;
@@ -303,7 +301,7 @@ export class CacheDataLoader {
         loadFunction: () => Promise<AudioBuffer | null>, ;
         startSample: number, ;
         sampleCount: number, ;
-        metadata: AudioMetadata,
+        metadata: AudioMetadata;
     ): Promise<Float32Array[] | null>,
         try { // 実際の実装では、範囲指定でデータを読み込む
             // ここでは全体を読み込んで指定範囲を抽出
@@ -316,7 +314,7 @@ export class CacheDataLoader {
             const channels: Float32Array[] = [],
             for(let, channel = 0; channel < metadata.numberOfChannels; channel++) {
                 const fullChannelData = fullBuffer.getChannelData(channel);
-                const chunkData = fullChannelData.slice(startSample, startSample + sampleCount) }
+                const chunkData = fullChannelData.slice(startSample, startSample + sampleCount);
                 channels.push(chunkData); }
             }
             
@@ -324,7 +322,7 @@ export class CacheDataLoader {
         } catch (error) { getErrorHandler().handleError(error, 'AUDIO_CACHE_ERROR', {''
                 operation: 'loadAudioChunk),'
                 startSample: startSample','
-    sampleCount: sampleCount,')',
+    sampleCount: sampleCount,'),
                 component: 'CacheDataLoader'
             };
             return null;
@@ -337,9 +335,9 @@ export class CacheDataLoader {
      */
     assembleChunksIntoBuffer(;
         buffer: AudioBuffer
-    );
+    ),
         chunks: ChunkData[],
-    metadata: AudioMetadata,
+    metadata: AudioMetadata;
     ): void { try {
             chunks.forEach(chunk => { );
                 const { data, start ) = chunk,
@@ -349,17 +347,13 @@ export class CacheDataLoader {
                     const bufferChannelData = buffer.getChannelData(channel);
                     const chunkChannelData = data[channel] }
                     for (let, i = 0; i < chunkChannelData.length; i++) { }
-                        bufferChannelData[start + i] = chunkChannelData[i]; }
+                        bufferChannelData[start + i] = chunkChannelData[i];     }
 }
-            };
-
         } catch (error) { getErrorHandler().handleError(error, 'AUDIO_CACHE_ERROR', {''
-                operation: 'assembleChunksIntoBuffer',')',
+                operation: 'assembleChunksIntoBuffer,')',
                 component: 'CacheDataLoader'
-            };
-        }
-    }
-    
+                }
+}
     /**
      * プリロードキューの管理
      * @param key - キー
@@ -390,18 +384,18 @@ export class CacheDataLoader {
         
             const item = this.lazyLoadManager.preloadQueue.shift()!,
             
-            const promise = this.getLazyAudioBuffer(item.key, item.loadFunction, item.options) }
+            const promise = this.getLazyAudioBuffer(item.key, item.loadFunction, item.options);
                 .then(() => { }
                     console.log(`Preload, completed: ${item.key}`);
             };
-                .catch(error => { ) }
+                .catch(error => { );
                     console.warn(`Preload failed: ${item.key}`, error);
                 };
             
             activePromises.push(promise);
         }
         
-        if (activePromises.length > 0) { await Promise.allSettled(activePromises) }
+        if (activePromises.length > 0) { await Promise.allSettled(activePromises);
     }
     
     /**
@@ -424,10 +418,10 @@ export class CacheDataLoader {
      */
     getLoaderStats(): LoaderStats { return { cacheHits: this.performanceStats.cacheHits,
             cacheMisses: this.performanceStats.cacheMisses,
-            averageLoadTime: this.calculateAverageLoadTime();
+            averageLoadTime: this.calculateAverageLoadTime(),
             activeLoads: this.lazyLoadManager.activeLoads.size,
             preloadQueueSize: this.lazyLoadManager.preloadQueue.length,
-    hitRate: this.performanceStats.cacheHits + this.performanceStats.cacheMisses > 0 ,
+    hitRate: this.performanceStats.cacheHits + this.performanceStats.cacheMisses > 0 ;
                 ? this.performanceStats.cacheHits / (this.performanceStats.cacheHits + this.performanceStats.cacheMisses  }
                 : 0 
         } }
@@ -442,7 +436,7 @@ export class CacheDataLoader {
 
         } catch (error) {
             getErrorHandler().handleError(error, 'AUDIO_CACHE_ERROR', {''
-                operation: 'dispose',')',
+                operation: 'dispose,')',
                 component: 'CacheDataLoader'),' }'
 
             }');'

@@ -9,7 +9,7 @@ import { getErrorHandler  } from '../utils/ErrorHandler.js';
  * - 手動復旧オプション
  * - 復旧戦略の選択
  */
-export class RecoveryManager {'
+export class RecoveryManager {
 
     constructor(dataStorage, backupManager, validationManager = null) {
         this.storage = dataStorage;
@@ -23,26 +23,25 @@ export class RecoveryManager {'
         
         // 復旧設定
         this.config = {
-            autoRecoveryEnabled: true;
-            maxRecoveryAttempts: 3;
+            autoRecoveryEnabled: true,
+            maxRecoveryAttempts: 3,
     recoveryTimeout: 10000, // 10秒;
-            backupFallbackEnabled: true;
+            backupFallbackEnabled: true,
             validationBeforeRecovery: true;
         // 復旧統計
-        this.statistics = { totalRecoveries: 0;
-            successfulRecoveries: 0;
-            failedRecoveries: 0;
-            autoRecoveries: 0;
-            manualRecoveries: 0;
-            averageRecoveryTime: 0;
+        this.statistics = { totalRecoveries: 0,
+            successfulRecoveries: 0,
+            failedRecoveries: 0,
+            autoRecoveries: 0,
+            manualRecoveries: 0,
+            averageRecoveryTime: 0,
     lastRecovery: null;
         // 現在の復旧状態
         this.isRecoveryInProgress = false;
         this.currentRecoverySession = null;
         
         this.initialize();
-    }
-    
+    };
     /**
      * RecoveryManagerの初期化
      */
@@ -51,7 +50,6 @@ export class RecoveryManager {'
             // 復旧戦略の登録
             this.registerRecoveryStrategies()','
             console.log('RecoveryManager, initialized' }
-
         } catch (error') { getErrorHandler().handleError(error, 'RECOVERY_MANAGER_INITIALIZATION_ERROR', {''
                 operation: 'initialize'
             }';'
@@ -90,7 +88,7 @@ export class RecoveryManager {'
                     data = await this.storage.load(dataType);' }'
 
                 } catch (error) { issues.push({''
-                        type: 'STORAGE_ERROR';
+                        type: 'STORAGE_ERROR,
                         severity: 'HIGH'
             };
                         message: `Failed to load ${dataType}: ${error.message}`;)
@@ -118,7 +116,7 @@ export class RecoveryManager {'
                         severity: 'HIGH'
             };
                         message: `Validation failed for ${dataType}`)
-                        errors: validationResult.errors);
+                        errors: validationResult.errors),
                         warnings: validationResult.warnings);
     }
             
@@ -170,7 +168,7 @@ export class RecoveryManager {'
                 JSON.stringify(data),' }'
 
             } catch (error) { issues.push({''
-                    type: 'INVALID_JSON',
+                    type: 'INVALID_JSON,
                     severity: 'HIGH',','
                     message: 'Data contains circular references or invalid JSON structure');
                     error }';'
@@ -223,11 +221,11 @@ export class RecoveryManager {'
     }
 
                     break;'} catch (error) { issues.push({''
-                type: 'STRUCTURE_CHECK_ERROR',
+                type: 'STRUCTURE_CHECK_ERROR,
                 severity: 'MEDIUM'
             };
                 message: `Structure check, failed: ${error.message}`;)
-                error };
+                error }
         }
         
         return issues;
@@ -246,9 +244,9 @@ export class RecoveryManager {'
                     // HP整合性
                     if (data.currentHP > data.maxHP) {
                         issues.push({''
-                            type: 'LOGICAL_ERROR',
+                            type: 'LOGICAL_ERROR,
                             severity: 'MEDIUM',','
-                            message: 'Current HP exceeds max HP',
+                            message: 'Current HP exceeds max HP,
     currentHP: data.currentHP }
                             maxHP: data.maxHP'; '
     }
@@ -283,10 +281,10 @@ export class RecoveryManager {'
     }
 
                     break;'} catch (error) { issues.push({''
-                type: 'LOGICAL_CHECK_ERROR',
+                type: 'LOGICAL_CHECK_ERROR,
                 severity: 'MEDIUM'
             };
-                message: `Logical check, failed: ${error.message}`,
+                message: `Logical check, failed: ${error.message},
                 error';}');
         }
         
@@ -312,12 +310,12 @@ export class RecoveryManager {'
                 options,
                 startTime: Date.now(),
                 attempts: 0,
-    issues: []  },
+    issues: []  ,
             const recoveryStrategy = this.recoveryStrategies.get(strategy);
             if (!recoveryStrategy) {
     
 }
-                throw new Error(`Unknown, recovery strategy: ${strategy}`};
+                throw new Error(`Unknown, recovery strategy: ${strategy}`}
             }
             
             // 復旧の実行
@@ -355,7 +353,7 @@ export class RecoveryManager {'
                 options };
             
             return { success: false,
-                error: error.message },
+                error: error.message ,
                 strategy }
             } finally { this.isRecoveryInProgress = false }
     }
@@ -404,20 +402,19 @@ export class RecoveryManager {'
             const corruptionReport = await this.detectCorruption(dataType);
             // バックアップの確認
             const backupList = await this.backup.getBackupList();
-            const availableBackups = backupList.filter(backup => ')',
-                backup.exists && ')',
+            const availableBackups = backupList.filter(backup => '),
+                backup.exists && '),
                 (backup.dataType === dataType || backup.dataType === 'all'),
             ','
             ','
             // 自動復旧オプション
             if (this.config.autoRecoveryEnabled && !corruptionReport.corrupted) {
                 options.push({''
-                    strategy: 'auto',
-                    name: '自動復旧',
-                    description: '軽微な問題を自動的に修正します',
+                    strategy: 'auto,
+                    name: '自動復旧,
+                    description: '軽微な問題を自動的に修正します,
                     risk: 'LOW',','
-                    estimatedTime: '< 1秒')
-            }
+                    estimatedTime: '< 1秒'),
                     recommended: true); 
     }
             
@@ -429,8 +426,8 @@ export class RecoveryManager {'
 
                         name: `バックアップからの復旧 (${new, Date(backup.timestamp}.toLocaleString(})`;
                         description: `バックアップ ${backup.id} からデータを復元します`,''
-                        risk: 'MEDIUM',
-                        estimatedTime: '< 5秒',
+                        risk: 'MEDIUM,
+                        estimatedTime: '< 5秒,
                         backupId: backup.id,
                         backupMetadata: backup.metadata';'
                     }') }'
@@ -438,20 +435,20 @@ export class RecoveryManager {'
             ';'
             // 部分復旧オプション
             if(corruptionReport.issues.some(issue => issue.severity === 'MEDIUM)' { options.push({''
-                    strategy: 'partial',
-                    name: '部分復旧',
+                    strategy: 'partial,
+                    name: '部分復旧,
                     description: '破損していない部分のみを保持し、問題のある部分をリセットします',','
-                    risk: 'MEDIUM',')',
+                    risk: 'MEDIUM,')',
                     estimatedTime: '< 3秒')'
             }
             
             // ファクトリーリセットオプション
             options.push({ ''
-                strategy: 'factory',
-                name: 'ファクトリーリセット',
-                description: 'すべてのデータを初期状態にリセットします',
+                strategy: 'factory,
+                name: 'ファクトリーリセット,
+                description: 'すべてのデータを初期状態にリセットします,
                 risk: 'HIGH',','
-                estimatedTime: '< 1秒',')',
+                estimatedTime: '< 1秒,')',
                 warning: 'すべてのデータが失われます'),
             return { dataType,
                 corruptionReport,
@@ -469,7 +466,7 @@ export class RecoveryManager {'
             return { dataType,
                 corruptionReport: null,
                 availableBackups: 0,
-    options: [] },
+    options: [] ,
                 error: error.message 
     }
     }
@@ -481,8 +478,7 @@ export class RecoveryManager {'
         try {
             const recoveryStrategy = this.recoveryStrategies.get(strategy);
             if (!recoveryStrategy) { }
-                throw new Error(`Unknown, recovery strategy: ${strategy}`},
-            }
+                throw new Error(`Unknown, recovery strategy: ${strategy}`} }
             
             return await recoveryStrategy.preview(dataType, options);
             ';'
@@ -502,7 +498,7 @@ export class RecoveryManager {'
      * 復旧IDの生成
      */
     generateRecoveryId() {
-        const timestamp = Date.now() }
+        const timestamp = Date.now();
         const random = Math.random().toString(36).substring(2, 8); }
         return `recovery_${timestamp}_${random}`;
     }
@@ -512,10 +508,10 @@ export class RecoveryManager {'
      */
     updateStatistics(success, duration, strategy) {
         try {
-            this.statistics.totalRecoveries++,
+            this.statistics.totalRecoveries++;
             
             if (success) {
-                this.statistics.successfulRecoveries++,
+                this.statistics.successfulRecoveries++;
                 
                 // 平均時間の更新
                 const totalTime = this.statistics.averageRecoveryTime * (this.statistics.successfulRecoveries - 1) + duration,
@@ -534,11 +530,11 @@ export class RecoveryManager {'
     /**
      * 復旧マネージャーの状態取得
      */
-    getStatus() { return { isRecoveryInProgress: this.isRecoveryInProgress },
+    getStatus() { return { isRecoveryInProgress: this.isRecoveryInProgress ,
             currentSession: this.currentRecoverySession }
             config: { ...this.config,
             statistics: { ...this.statistics,
-            availableStrategies: Array.from(this.recoveryStrategies.keys() }
+            availableStrategies: Array.from(this.recoveryStrategies.keys()));
     
     /**
      * 設定の更新
@@ -558,13 +554,10 @@ export class RecoveryManager {'
             this.currentRecoverySession = null;
             this.recoveryStrategies.clear()','
             console.log('RecoveryManager, destroyed' }
-
         } catch (error') { getErrorHandler().handleError(error, 'RECOVERY_MANAGER_DESTROY_ERROR', {''
                 operation: 'destroy'
-            };
-        }
+                }
 }
-
 /**
  * 自動復旧戦略
  */
@@ -711,7 +704,7 @@ class BackupRecoveryStrategy { constructor(recoveryManager) {
         ','
 
         return { ''
-            strategy: 'backup',
+            strategy: 'backup,
             dataType,
             backupId,
             backupMetadata: backupData?.metadata, : undefined';'
@@ -771,10 +764,10 @@ class PartialRecoveryStrategy { constructor(recoveryManager) {
         if (dataType === 'playerData') {
             const defaults = {''
                 username: ','
-                currentHP: 100;
-                maxHP: 100;
-                currentScore: 0;
-                ap: 0;
+                currentHP: 100,
+                maxHP: 100,
+                currentScore: 0,
+                ap: 0,
     tap: 0 }
                 combo: 0 }
 
@@ -802,10 +795,8 @@ class PartialRecoveryStrategy { constructor(recoveryManager) {
             for (const key of Object.keys(data) {
                 if (this.isValidValue(key, data[key]) {
     }
-                    validFields.push(key); }
+                    validFields.push(key);     }
 }
-        }
-        
         return validFields;
     }
     
@@ -827,8 +818,7 @@ class PartialRecoveryStrategy { constructor(recoveryManager) {
                 return Array.isArray(value);
             case 'highScores':','
                 return typeof value === 'object' && value !== null }
-            default: return true,
-}
+            default: return true }
 
 /**
  * ファクトリーリセット戦略
@@ -864,7 +854,7 @@ class FactoryResetStrategy { constructor(recoveryManager) {
     }
 
     async preview(dataType, options = {} { return { ''
-            strategy: 'factory',
+            strategy: 'factory,
             dataType,
             warning: 'All data will be permanently lost',' };'
 
@@ -896,7 +886,7 @@ class ManualRecoveryStrategy { constructor(recoveryManager) {
                 message: 'Manual recovery completed'
             };
                 dataType }
-            } catch (error) {
+        } catch (error) {
             return { success: false, error: error.message  }
     }
 

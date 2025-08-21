@@ -4,24 +4,22 @@
  */
 
 // Type definitions
-interface ExecutionConfig { timeout: number;
-    retries: number;
-    concurrent: boolean;
+interface ExecutionConfig { timeout: number,
+    retries: number,
+    concurrent: boolean,
     parallelLimit: number;
-
-interface ExecutionState { isRunning: boolean;
-    currentSuite: string | null;
-    currentTest: string | null;
-    startTime: number | null;
+    interface ExecutionState { isRunning: boolean,
+    currentSuite: string | null,
+    currentTest: string | null,
+    startTime: number | null,
     abortController: AbortController | null }
 
-interface ExecutionStats { totalTestsRun: number;
-    averageTestTime: number;
-    suitesExecuted: number;
-    timeouts: number;
+interface ExecutionStats { totalTestsRun: number,
+    averageTestTime: number,
+    suitesExecuted: number,
+    timeouts: number,
     retries: number;
-
-interface TestFunction { name: string;
+    interface TestFunction { name: string,
     run: (context?: TestContext) => Promise<TestResult>;
     setup?: (context: TestContext) => Promise<void>;
     cleanup?: (context: TestContext) => Promise<void>;
@@ -31,28 +29,23 @@ interface TestFunction { name: string;
 interface TestResult { passed: boolean;
     performance?: Record<string, any>;
     error?: Error;
-
-interface TestContext { testSuite: any;
-    deviceSimulator: any;
-    utils: any;
+    interface TestContext { testSuite: any,
+    deviceSimulator: any,
+    utils: any,
     startTime: number;
-
-interface TestSuiteInterface { getTests(): TestFunction[];
-
-interface ExecutionStateWithStats { isRunning: boolean;
-    currentSuite: string | null;
-    currentTest: string | null;
-    startTime: number | null;
-    abortController: AbortController | null;
-    stats: ExecutionStats;
+    interface TestSuiteInterface { getTests(): TestFunction[];
+    interface ExecutionStateWithStats { isRunning: boolean,
+    currentSuite: string | null,
+    currentTest: string | null,
+    startTime: number | null,
+    abortController: AbortController | null,
+    stats: ExecutionStats,
     duration: number;
-
-interface DebugInfo { config: ExecutionConfig;
-    state: ExecutionState;
-    stats: ExecutionStats;
+    interface DebugInfo { config: ExecutionConfig,
+    state: ExecutionState,
+    stats: ExecutionStats,
     isRunning: boolean;
-
-export class MobileTestRunner {
+    export class MobileTestRunner {
     private mobileTestSuite: any, // MobileTestSuite type would create circular dependency
     private executionConfig: ExecutionConfig;
     private executionState: ExecutionState;
@@ -64,27 +57,27 @@ export class MobileTestRunner {
         // 実行設定
         this.executionConfig = {
             timeout: 30000, // 30秒;
-            retries: 3;
-    concurrent: false;
-            parallelLimit: 2 
+    retries: 3,
+    concurrent: false,
+    parallelLimit: 2 
     };
         // 実行状態
-        this.executionState = { isRunning: false;
-            currentSuite: null;
-            currentTest: null;
-            startTime: null;
+        this.executionState = { isRunning: false,
+            currentSuite: null,
+            currentTest: null,
+            startTime: null,
     abortController: null;
         // 実行統計
-        this.executionStats = { totalTestsRun: 0;
-            averageTestTime: 0;
-            suitesExecuted: 0;
-            timeouts: 0;
+        this.executionStats = { totalTestsRun: 0,
+            averageTestTime: 0,
+            suitesExecuted: 0,
+            timeouts: 0,
     retries: 0  }
     
     /**
      * 全テスト実行
      */
-    async runAllTests(): Promise<any> { console.log('[MobileTestRunner] 全テスト実行開始',
+    async runAllTests(): Promise<any> { console.log('[MobileTestRunner] 全テスト実行開始,
 
         if (this.executionState.isRunning') {', ' }'
 
@@ -96,7 +89,7 @@ export class MobileTestRunner {
         try { this.mobileTestSuite.resetTestResults();
             for(const [suiteName, suite] of this.mobileTestSuite.testSuites) {
             
-                await this.runTestSuite(suiteName, suite) }
+                await this.runTestSuite(suiteName, suite);
                 this.executionStats.suitesExecuted++; }
             }
             ';'
@@ -121,13 +114,12 @@ export class MobileTestRunner {
             const, tests = suite.getTests(};
             
             if (this.executionConfig.concurrent} { }
-                await this.runTestsConcurrently(suiteName, tests};
-            } else { await this.runTestsSequentially(suiteName, tests) }
+                await this.runTestsConcurrently(suiteName, tests}
+            } else { await this.runTestsSequentially(suiteName, tests);
             
-            console.log(`[MobileTestRunner] ${suiteName} テスト実行完了`};
-
+            console.log(`[MobileTestRunner] ${suiteName} テスト実行完了`}
         } catch (error) {
-            this.mobileTestSuite.recordTestError(suiteName, 'suite_execution', error) }
+            this.mobileTestSuite.recordTestError(suiteName, 'suite_execution', error);
             console.error(`[MobileTestRunner] ${suiteName} テストスイートエラー:`, error);
             throw error;
         } finally { this.executionState.currentSuite = null }
@@ -190,23 +182,23 @@ export class MobileTestRunner {
                 
                 // パフォーマンス結果記録
                 if (result.performance) { this.mobileTestSuite.recordPerformanceResult( }
-                        `${suiteName}.${ test.name}`,
+                        `${suiteName}.${ test.name},
                         testDuration,
-                        result.performance };
+                        result.performance }
                 }
                 
                 return result;
                 
-            } catch (error) { retries--,
-                this.executionStats.retries++,
+            } catch (error) { retries--;
+                this.executionStats.retries++;
 
                 if((error, as Error).message === 'Test timeout') {
                     this.executionStats.timeouts++ }
                 
                 if (retries === 0) {
                 
-                    this.mobileTestSuite.testResults.failed++,
-                    this.mobileTestSuite.recordTestError(suiteName, test.name, error) }
+                    this.mobileTestSuite.testResults.failed++;
+                    this.mobileTestSuite.recordTestError(suiteName, test.name, error);
                     throw error; }
                 }
                 ';'
@@ -229,7 +221,7 @@ export class MobileTestRunner {
             testSuite: this.mobileTestSuite,
             deviceSimulator: this.mobileTestSuite.deviceSimulator,
             utils: this.mobileTestSuite.utils,
-    startTime: Date.now( },
+    startTime: Date.now( ,
         
         // テスト前処理
         await this.preTestSetup(test, context);
@@ -252,7 +244,7 @@ export class MobileTestRunner {
         }
         
         // デバイス状態のリセット
-        if (this.mobileTestSuite.deviceSimulator) { await this.mobileTestSuite.deviceSimulator.resetDeviceState() }
+        if (this.mobileTestSuite.deviceSimulator) { await this.mobileTestSuite.deviceSimulator.resetDeviceState();
     }
     
     /**
@@ -276,7 +268,7 @@ export class MobileTestRunner {
             if (this.mobileTestSuite.deviceSimulator) { await this.mobileTestSuite.deviceSimulator.forceResetDevice(),' }'
 
             } catch (cleanupError) {
-            console.warn('[MobileTestRunner] クリーンアップエラー:', cleanupError) }
+            console.warn('[MobileTestRunner] クリーンアップエラー:', cleanupError);
     }
     
     /**
@@ -296,7 +288,7 @@ export class MobileTestRunner {
     async runSpecificSuite(suiteName: string): Promise<any> { const suite = this.mobileTestSuite.testSuites.get(suiteName);
         if (!suite) { }'
 
-            throw new Error(`Test, suite '${suiteName}' not, found`};
+            throw new Error(`Test, suite '${suiteName}' not, found`}
         }
         
         console.log(`[MobileTestRunner] ${ suiteName) 単体実行開始`),
@@ -320,7 +312,7 @@ export class MobileTestRunner {
     async runSpecificTest(suiteName: string, testName: string): Promise<any> { const suite = this.mobileTestSuite.testSuites.get(suiteName);
         if (!suite) { }'
 
-            throw new Error(`Test, suite '${suiteName}' not, found`};
+            throw new Error(`Test, suite '${suiteName}' not, found`}
         }
         
         const tests = suite.getTests();
@@ -328,7 +320,7 @@ export class MobileTestRunner {
         const test = tests.find(t => t.name === testName);
         if (!test) { }'
 
-            throw new Error(`Test '${testName}' not, found in, suite '${suiteName}'`};
+            throw new Error(`Test '${testName}' not, found in, suite '${suiteName}'`}
         }
         
         console.log(`[MobileTestRunner] ${suiteName}.${ testName) 単体実行開始`),
@@ -357,7 +349,7 @@ export class MobileTestRunner {
 
         console.log('[MobileTestRunner] テスト実行中断);'
         
-        if (this.executionState.abortController) { this.executionState.abortController.abort() }
+        if (this.executionState.abortController) { this.executionState.abortController.abort();
         
         this.abortExecution();
         return true;
@@ -386,7 +378,7 @@ export class MobileTestRunner {
         this.executionState.abortController = null,
         
         const duration = this.executionState.startTime ? Date.now() - this.executionState.startTime: 0 
-        console.log(`[MobileTestRunner] 実行完了 (${duration}ms}`};
+        console.log(`[MobileTestRunner] 実行完了 (${duration}ms}`}
     }
     
     /**
@@ -405,7 +397,7 @@ export class MobileTestRunner {
     /**
      * 実行統計更新
      */ : undefined
-    private updateExecutionStats(testDuration: number): void { this.executionStats.totalTestsRun++,
+    private updateExecutionStats(testDuration: number): void { this.executionStats.totalTestsRun++;
         
         // 平均テスト時間の更新
         const totalTime = this.executionStats.averageTestTime * (this.executionStats.totalTestsRun - 1),
@@ -423,7 +415,7 @@ export class MobileTestRunner {
     /**
      * 設定更新
      */
-    updateConfig(newConfig: Partial<ExecutionConfig>): void { Object.assign(this.executionConfig, newConfig) }
+    updateConfig(newConfig: Partial<ExecutionConfig>): void { Object.assign(this.executionConfig, newConfig);
     
     /**
      * 配列チャンク化

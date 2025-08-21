@@ -7,10 +7,10 @@ import { ScreenshotCapture  } from '../../../src/core/ScreenshotCapture.js';
 // Type definitions
 interface MockCanvasContext {
     drawImage: jest.Mock<void, [any, number, number]>;
-    imageSmoothingEnabled: boolean;
+    imageSmoothingEnabled: boolean,
     imageSmoothingQuality: string;
 interface MockCanvas {
-    width: number;
+    width: number,
     height: number;
     toBlob: jest.Mock<void, [(blob: Blob | null) => void, string? , number?]>, : undefined
     getContext: jest.Mock<MockCanvasContext | null, [string]>;
@@ -19,7 +19,7 @@ interface MockCanvas {
 interface MockGameEngine { : undefined
     canvas: MockCanvas | null }
 interface MockAnchorElement {
-    href: string;
+    href: string,
     download: string;
     click: jest.Mock<void, []>;
     remove: jest.Mock<void, []> }
@@ -34,9 +34,9 @@ interface CaptureOptions {
     maxHeight?: number;
     optimize?: boolean;
 interface CaptureResult {
-    blob: Blob;
+    blob: Blob,
     url: string;
-    format: string;
+    format: string,
     filename: string;
     width?: number;
     height?: number;
@@ -44,9 +44,9 @@ interface CaptureResult {
     hasOverlay?: boolean;
     optimized?: boolean;
 interface ImageData {
-    data: ArrayBuffer;
+    data: ArrayBuffer,
     blob: Blob;
-    url: string;
+    url: string,
     size: number;
 interface CaptureRequest {
     options: CaptureOptions;
@@ -55,8 +55,8 @@ interface BatchResult {
     value?: CaptureResult;
     reason?: Error;
 interface QueueItem {
-    options: CaptureOptions;
-    resolve: (valu,e: CaptureResult) => void;
+    options: CaptureOptions,
+    resolve: (valu,e: CaptureResult) => void,
     reject: (reaso,n: Error) => void }
 interface CaptureHistoryItem {
     timestamp: number;
@@ -64,28 +64,28 @@ interface CaptureHistoryItem {
     url?: string;
     filename?: string;
 interface MemoryUsage {
-    captureHistory: number;
+    captureHistory: number,
     queue: number;
     stats: number;
 interface Stats {
-    captures: number;
+    captures: number,
     successes: number;
     errors: number;
     successRate?: number;
     averageTimeMs?: number;
     averageSizeKB?: number;
 interface Config {
-    defaultFormat: string;
+    defaultFormat: string,
     maxWidth: number;
     maxHeight: number;
     quality?: {
-        hig,h: number;
+        hig,h: number },
         medium: number;
         low: number;
 }
 // Canvas Mock
 const mockCanvas: MockCanvas = {
-    width: 800;
+    width: 800,
     height: 600;
     toBlob: jest.fn((callback: (blob: Blob | null) => void, mimeType?: string, quality?: number) => {
         // ScreenshotCapture.js で使われる toBlob callback を適切に呼び出す
@@ -96,7 +96,7 @@ const mockCanvas: MockCanvas = {
     },
     getContext: jest.fn(() => ({
         drawImage: jest.fn(','
-        imageSmoothingEnabled: true;
+        imageSmoothingEnabled: true,
         imageSmoothingQuality: 'high'
     })
 );
@@ -105,7 +105,7 @@ const mockGameEngine: MockGameEngine = {
     canvas: mockCanvas,');'
 // DOM Mocks
 Object.defineProperty(global, 'document', {
-    value: {;
+    value: {,
         createElement: jest.fn((tagName: string') => {'
             if (tagName === 'canvas') {
                 return {
@@ -131,7 +131,7 @@ Object.defineProperty(global, 'document', {
         addEventListener: jest.fn(
         removeEventListener: jest.fn(
         body: {
-            appendChild: jest.fn(
+            appendChild: jest.fn( },
         removeChild: jest.fn( };
         head: {
             appendChild: jest.fn( }
@@ -139,25 +139,25 @@ Object.defineProperty(global, 'document', {
     configurable: true;');'
 // Window Mock for ErrorHandler
 Object.defineProperty(global, 'window', {
-    value: {;
-        addEventListener: jest.fn(
+    value: {,
+        addEventListener: jest.fn( };
         removeEventListener: jest.fn(
-        document: global.document;
+        document: global.document,
         performance: global.performance
     },
     configurable: true,');'
 Object.defineProperty(global, 'URL', {
-    value: {;
-        createObjectURL: jest.fn((') => 'blob:mock-url'),'
+    value: {,
+        createObjectURL: jest.fn((') => 'blob:mock-url'),' };
         revokeObjectURL: jest.fn(
     configurable: true
     )');'
 Object.defineProperty(global, 'Image', {
-    value: class MockImage {;
+    value: class MockImage {,
         onload: (() => void) | null = null;
         onerror: (() => void') | null = null,'
         private _src: string = ','
-        width: number = 800;
+        width: number = 800,
         height: number = 600;
         height: number = 600;
         };
@@ -172,13 +172,13 @@ Object.defineProperty(global, 'Image', {
     configurable: true;');'
 Object.defineProperty(global, 'Blob', {
     value: class MockBlob {
-        parts: any[];
+        parts: any[],
         type: string;
         size: number);
         constructor(parts: any[], options?: { type?: string;') {'
             this.parts = parts;
             this.type = options? .type || ', : undefined'
-            this.size = parts ? parts.join(').length: 0 }'
+            this.size = parts ? parts.join(').length: 0 }' };
         
         arrayBuffer(): Promise<ArrayBuffer>;
             return Promise.resolve(new ArrayBuffer(this.size);
@@ -187,10 +187,10 @@ Object.defineProperty(global, 'Blob', {
     configurable: true,');'
 // Performance Mock
 Object.defineProperty(global, 'performance', {
-    value: {;
-        now: jest.fn(() => Date.now();
+    value: {,
+        now: jest.fn(() => Date.now() };
         memory: {
-            usedJSHeapSize: 50 * 1024 * 1024;
+            usedJSHeapSize: 50 * 1024 * 1024 },
             totalJSHeapSize: 100 * 1024 * 1024;
         jsHeapSizeLimit: 2 * 1024 * 1024 * 1024
             };
@@ -200,7 +200,7 @@ Object.defineProperty(global, 'performance', {
 Object.defineProperty(global, 'Worker', {
     value: class MockWorker {
         url: string);
-       , onmessage: ((event => void) | null = null};
+       , onmessage: ((event => void) | null = null},
         onerror: ((event => void) | null = null);
         constructor(url: string) {
             this.url = url }
@@ -209,7 +209,7 @@ Object.defineProperty(global, 'Worker', {
             setTimeout(() => {
                 if (this.onmessage) {
                     this.onmessage({
-                        data: { success: true, data: { processed: true, };
+                        data: { success: true, data: { processed: true, }
                     };
                 }
             }, 0);
@@ -264,7 +264,7 @@ describe('ScreenshotCapture', () => {
             expect(result.filename).toBeDefined() }');'
         it('JPEGフォーマットでスクリーンショットを取得する', async (') => {'
             const result = await screenshotCapture.captureGameCanvas({
-                format: 'jpeg';
+                format: 'jpeg',
                 quality: 'high' };
             expect(result.format').toBe('jpeg');'
             expect(mockCanvas.toBlob).toHaveBeenCalledWith();
@@ -276,13 +276,13 @@ describe('ScreenshotCapture', () => {
             // WebPサポートをモック
             jest.spyOn(screenshotCapture, 'isWebPSupported').mockReturnValue(true'),'
             const result = await screenshotCapture.captureGameCanvas({
-                format: 'webp';
+                format: 'webp',
                 quality: 'medium' };
             expect(result.format').toBe('webp');'
         }');'
         it('カスタムサイズでスクリーンショットを取得する', async () => {
             const result = await screenshotCapture.captureGameCanvas({
-                maxWidth: 600;
+                maxWidth: 600,
                 maxHeight: 400 };
             expect(result.width).toBeLessThanOrEqual(600);
             expect(result.height).toBeLessThanOrEqual(400);
@@ -309,7 +309,7 @@ describe('ScreenshotCapture', () => {
         beforeEach(() => {
             // ScreenshotOverlayのモック
             screenshotCapture.screenshotOverlay = {
-                createScoreOverlay: jest.fn().mockResolvedValue(mockCanvas;
+                createScoreOverlay: jest.fn().mockResolvedValue(mockCanvas,
                 createAchievementOverlay: jest.fn().mockResolvedValue(mockCanvas;
                 createCustomOverlay: jest.fn().mockResolvedValue(mockCanvas}
             } as unknown as MockScreenshotOverlay;)');'
@@ -358,14 +358,14 @@ describe('ScreenshotCapture', () => {
             spy.mockResolvedValue({);
                 data: new ArrayBuffer(100 * 1024','
                 blob: new Blob(['optimized'], { type: 'image/jpeg' }','
-                url: 'blob:optimized-url';
+                url: 'blob:optimized-url',
                 size: 100 * 1024
             }');'
             const largeBlobMock = new Blob(['x'.repeat(600 * 1024')], { type: 'image/png' };'
             const result = await screenshotCapture.optimizeImage({);
                 data: new ArrayBuffer(600 * 1024','
-                blob: largeBlobMock;
-                url: 'blob:original-url';
+                blob: largeBlobMock,
+                url: 'blob:original-url',
                 size: 600 * 1024
             }, { format: 'jpeg', quality: 'high' };
             expect(result.optimized).toBe(true);
@@ -376,14 +376,14 @@ describe('ScreenshotCapture', () => {
             // reduceImageQualityが常に同じサイズを返すようにモック
             jest.spyOn(screenshotCapture, 'reduceImageQuality').mockResolvedValue({);
                 data: new ArrayBuffer(600 * 1024','
-                blob: largeBlobMock;
-                url: 'blob:test-url';
+                blob: largeBlobMock,
+                url: 'blob:test-url',
                 size: 600 * 1024
             };
             const result = await screenshotCapture.optimizeImage({);
                 data: new ArrayBuffer(600 * 1024','
-                blob: largeBlobMock;
-                url: 'blob:original-url';
+                blob: largeBlobMock,
+                url: 'blob:original-url',
                 size: 600 * 1024
             }, { format: 'png' };
             // 最大試行回数まで実行される
@@ -460,7 +460,7 @@ describe('ScreenshotCapture', () => {
             const promises = [],
             
             for (let i = 0, i < 3, i++') {'
-                promises.push(screenshotCapture.queueCapture({ format: 'png' };
+                promises.push(screenshotCapture.queueCapture({ format: 'png' }
             }
             
             const allResults = await Promise.all(promises);
@@ -481,7 +481,7 @@ describe('ScreenshotCapture', () => {
                     timestamp: Date.now(
                     size: 10 * 1024 * 1024, // 10MB each to trigger cleanup
                     url: `blob:test-${i}`
-                };
+                }
             }
             
             screenshotCapture.performMemoryCleanup();
@@ -558,10 +558,10 @@ describe('ScreenshotCapture', () => {
     describe('設定管理', (') => {'
         it('設定を更新する', (') => {'
             const newConfig: Partial<Config> = {
-                defaultFormat: 'jpeg';
+                defaultFormat: 'jpeg',
                 maxWidth: 1000;
                 quality: {
-                    high: 0.95;
+                    high: 0.95 },
                     medium: 0.85;
                     low: 0.65
                 }
@@ -618,7 +618,7 @@ describe('ScreenshotCapture', () => {
             screenshotCapture.cleanup();
             expect(mockReject).toHaveBeenCalledWith(');'
                 new Error('ScreenshotCapture がクリーンアップされました');
-        };
+        }
     }
 };
 // テストユーティリティ関数
@@ -628,7 +628,7 @@ function createMockCanvas(width: number = 800, height: number = 600): MockCanvas
         height,
         getContext: jest.fn(() => ({
             drawImage: jest.fn(','
-            imageSmoothingEnabled: true;
+            imageSmoothingEnabled: true,
             imageSmoothingQuality: 'high'
     }),
         toBlob: jest.fn(

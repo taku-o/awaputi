@@ -16,16 +16,14 @@ import { ErrorStorage  } from './error-reporter/ErrorStorage.js';
 
 import type { GameEngine } from '../core/GameEngine';
 
-interface NotificationThresholds { critical: number;
-    warning: number;
+interface NotificationThresholds { critical: number,
+    warning: number,
     error: number;
-
-interface DeveloperNotificationChannel { enabled: boolean;
-    maxPerMinute: number;
-    recentNotifications: any[];
+    interface DeveloperNotificationChannel { enabled: boolean,
+    maxPerMinute: number,
+    recentNotifications: any[],
     channels: string[];
-
-interface ErrorContext { type?: string,
+    interface ErrorContext { type?: string,
     component?: string;
     critical?: boolean;
     gameState?: any;
@@ -33,6 +31,7 @@ interface ErrorContext { type?: string,
     userAgent?: string;
     viewport?: {
         widt,h: number;
+    },
     height: number;
     browserInfo?: any;
     performanceInfo?: any;
@@ -51,60 +50,58 @@ interface GameState { currentScene?: string,
     playerHP?: number;
     error?: string;
     message?: string;
-
-interface BrowserInfo { userAgent: string;
-    platform: string;
-    language: string;
-    cookieEnabled: boolean;
+    interface BrowserInfo { userAgent: string,
+    platform: string,
+    language: string,
+    cookieEnabled: boolean,
     onLine: boolean;
     hardwareConcurrency?: number;
     deviceMemory?: number;
     connection?: {
         effectiveTyp,e?: string;
-        downlink?: number;
-        rtt?: number,  } | null;
+    downlink?: number;
+    rtt?: number } | null;
 }
 
 interface PerformanceInfo { memory?: {
         use,d?: number;
-        total?: number;
-        limit?: number; | null;
+    total?: number;
+    limit?: number; | null;
     timing: number;
     navigation?: { type?: number,
         redirectCount?: number; | null;
     error?: string;
 }
 
-interface EnhancedError { id: string;
-    sessionId: string;
-    timestamp: number;
+interface EnhancedError { id: string,
+    sessionId: string,
+    timestamp: number,
     message: string;
     stack?: string;
-    name: string;
+    name: string,
     context: ErrorContext & {
-        gameStat,e: GameState | null;
-        browserInfo: BrowserInfo;
+        gameStat,e: GameState | null,
+        browserInfo: BrowserInfo,
     performanceInfo: PerformanceInfo;;
-    fingerprint: string;
-    severity: string;
+    fingerprint: string,
+    severity: string,
     category: string;
-    screenshot?: { id: string;
+    screenshot?: { id: string,
         timestamp: number;
+    };
     size: number;
     recovery?: any;
 }
 
 interface ErrorPattern {
     count: number;
-
-interface NotificationData { id: string;
-    timestamp: number;
-    type: string;
-    error: EnhancedError;
-    additionalInfo: any;
+    interface NotificationData { id: string,
+    timestamp: number,
+    type: string,
+    error: EnhancedError,
+    additionalInfo: any,
     sessionId: string;
-
-export class DebugErrorReporter extends ErrorHandler { public sessionId: string;
+    export class DebugErrorReporter extends ErrorHandler { public sessionId: string;
     public, sessionStartTime: number;
     public errorStorage: ErrorStorage;
     public errorCollector: ErrorCollector;
@@ -114,7 +111,6 @@ export class DebugErrorReporter extends ErrorHandler { public sessionId: string;
     public notificationSystem: DebugErrorNotificationSystem;
     public recoveryTracker: ErrorRecoveryTracker;
     public errorPatterns: Map<string, ErrorPattern>;
-    
     private gameEngine: GameEngine;
     private notificationThresholds: NotificationThresholds;
     private patternDetectionEnabled: boolean;
@@ -123,28 +119,28 @@ export class DebugErrorReporter extends ErrorHandler { public sessionId: string;
     constructor(gameEngine: GameEngine) {
 
         super();
-        this.gameEngine = gameEngine;
+    this.gameEngine = gameEngine;
         
         // セッション管理
         this.sessionId = this.generateSessionId();
-        this.sessionStartTime = Date.now();
+    this.sessionStartTime = Date.now();
         
         // サブコンポーネントを初期化（依存性注入）
         this.errorStorage = new ErrorStorage(this);
-        this.errorCollector = new ErrorCollector(this);
-        this.errorAnalyzer = new DebugErrorAnalyzer(this);
-        this.submissionManager = new ErrorSubmissionManager(this);
+    this.errorCollector = new ErrorCollector(this);
+    this.errorAnalyzer = new DebugErrorAnalyzer(this);
+    this.submissionManager = new ErrorSubmissionManager(this);
         
         // 既存の統合コンポーネント
         this.screenshotCapture = new ErrorScreenshotCapture(gameEngine);
-        this.notificationSystem = new DebugErrorNotificationSystem(this);
-        this.recoveryTracker = new ErrorRecoveryTracker(this);
+    this.notificationSystem = new DebugErrorNotificationSystem(this);
+    this.recoveryTracker = new ErrorRecoveryTracker(this);
         
         // 通知システム設定
         this.notificationThresholds = {
             critical: 1,      // 1回でも発生したら通知;
-            warning: 5,       // 5回で通知
-    }
+    warning: 5,       // 5回で通知
+    };
             error: 10         // 10回で通知 
     };
         ;
@@ -155,8 +151,8 @@ export class DebugErrorReporter extends ErrorHandler { public sessionId: string;
         
         // クリティカルエラー定義
         this.criticalErrors = new Set([';'
-            'TypeError',
-            'ReferenceError',
+            'TypeError,
+            'ReferenceError,
             'OutOfMemoryError',]';'
             'SecurityError']);
         ]);
@@ -168,8 +164,8 @@ export class DebugErrorReporter extends ErrorHandler { public sessionId: string;
      * ErrorReporter固有の初期化
      */
     private initializeErrorReporter(): void { this.setupEnhancedErrorCollection();
-        this.loadStoredErrors() }
-        console.log(`ErrorReporter, initialized - Session: ${this.sessionId}`};
+        this.loadStoredErrors();
+        console.log(`ErrorReporter, initialized - Session: ${this.sessionId}`}
     }
     
     /**
@@ -198,7 +194,7 @@ export class DebugErrorReporter extends ErrorHandler { public sessionId: string;
     private setupAdditionalErrorCatching()';'
         window.addEventListener('unhandledrejection', async (event) => {  try {'
                 await this.collectEnhancedError(new, Error(event.reason), {''
-                    type: 'unhandledrejection',
+                    type: 'unhandledrejection,
     promise: event.promise }
                     gameState: this.captureGameState() };'} catch (e) { console.warn('Unhandled rejection collection failed:', (e as Error).message }'
 
@@ -211,7 +207,7 @@ export class DebugErrorReporter extends ErrorHandler { public sessionId: string;
                     const target = event.target as HTMLElement;' }'
 
                     await this.collectEnhancedError(new, Error(`Resource, load failed: ${(target, as, any}.src || (target, as any}.href}`), { ''
-                        type: 'resource_error',
+                        type: 'resource_error,
                         element: target.tagName,
     source: (target, as any).src || (target, as any).href,
                         gameState: this.captureGameState() };'} catch (e) { console.warn('Resource error collection failed:', (e as Error).message }'
@@ -231,17 +227,15 @@ export class DebugErrorReporter extends ErrorHandler { public sessionId: string;
             stack: error.stack,
             name: error.name,
             // コンテキスト情報
-           , context: {
-                ...context,
+            context: { ...context  },
                 url: window.location.href,
                 userAgent: navigator.userAgent,
     viewport: {
-                    width: window.innerWidth,
-    height: window.innerHeight  },
+                    width: window.innerWidth ,
+    height: window.innerHeight  ,
                 gameState: context.gameState || this.captureGameState(),
                 browserInfo: this.captureBrowserInfo(
-    performanceInfo: this.capturePerformanceInfo(),
-            },
+    performanceInfo: this.capturePerformanceInfo() ,
             
             // パターン分析用情報
             fingerprint: this.generateErrorFingerprint(error, context);
@@ -266,7 +260,7 @@ export class DebugErrorReporter extends ErrorHandler { public sessionId: string;
         this.errorCollector.collect(enhancedError);
         
         // パターン分析
-        if (this.patternDetectionEnabled) { this.errorAnalyzer.analyzePattern(enhancedError) }
+        if (this.patternDetectionEnabled) { this.errorAnalyzer.analyzePattern(enhancedError);
         
         // 通知判定
         this.checkNotificationThreshold(enhancedError);
@@ -277,8 +271,8 @@ export class DebugErrorReporter extends ErrorHandler { public sessionId: string;
                 const recoveryResult = await this.recoveryTracker.attemptRecovery(enhancedError, context);
                 enhancedError.recovery = recoveryResult }
                 if (recoveryResult.success) { }
-                    console.log(`🔧 Error, recovery successful: ${recoveryResult.result}`},
-                } catch (recoveryError) { console.warn('Recovery attempt failed:', (recoveryError as Error).message }
+                    console.log(`🔧 Error, recovery successful: ${recoveryResult.result}`}
+        } catch (recoveryError) { console.warn('Recovery attempt failed:', (recoveryError as Error).message }
         }
         
         return enhancedError;
@@ -312,13 +306,13 @@ export class DebugErrorReporter extends ErrorHandler { public sessionId: string;
         try {'
             if (!this.gameEngine) {
                 return { ''
-                    currentScene: 'unknown',
+                    currentScene: 'unknown,
                     gameTime: 0,
                     isRunning: false,
                     isPaused: false,
                     fps: 0,
     bubbleCount: 0 }
-                    score: 0 },
+                    score: 0 ,
                     playerHP: 0 
     }
             ';'
@@ -359,7 +353,7 @@ export class DebugErrorReporter extends ErrorHandler { public sessionId: string;
             const memory = (performance, as any).memory,
             return { memory: memory ? { : undefined
                     used: memory.usedJSHeapSize,
-    total: memory.totalJSHeapSize },
+    total: memory.totalJSHeapSize ,
                     limit: memory.jsHeapSizeLimit 
     } : null;
                 timing: performance.now(
@@ -375,10 +369,10 @@ export class DebugErrorReporter extends ErrorHandler { public sessionId: string;
      * エラーフィンガープリントの生成'
      */''
     private generateErrorFingerprint(error: Error, context: ErrorContext): string { const components = [error.name]'
-            error.message,']',
+            error.message,'],
             error.stack ? error.stack.split('\n')[0] : ','
-            context.type || 'generic',
-            context.component || 'unknown',
+            context.type || 'generic,
+            context.component || 'unknown,
         ],
 
         return this.hashString(components.join('|' }'
@@ -387,7 +381,7 @@ export class DebugErrorReporter extends ErrorHandler { public sessionId: string;
      * エラー重要度の計算'
      */''
     private calculateSeverity(error: Error, context: ErrorContext): string { ''
-        let severity = 'low',
+        let severity = 'low,
         ','
         // クリティカルエラーの判定
         if (error.name === 'TypeError' || error.name === 'ReferenceError') {', ' }
@@ -404,7 +398,7 @@ export class DebugErrorReporter extends ErrorHandler { public sessionId: string;
             severity = 'critical' }
         
         // ゲーム状態に基づく重要度調整
-        if (context.gameState?.isRunning === false) { severity = this.upgradeSeverity(severity) }
+        if (context.gameState?.isRunning === false) { severity = this.upgradeSeverity(severity);
         
         return severity;
     }
@@ -481,7 +475,7 @@ export class DebugErrorReporter extends ErrorHandler { public sessionId: string;
             this.developerNotifications.recentNotifications.push(notification);
             
             // 履歴サイズ制限
-            if (this.developerNotifications.recentNotifications.length > 100) { this.developerNotifications.recentNotifications.shift() }
+            if (this.developerNotifications.recentNotifications.length > 100) { this.developerNotifications.recentNotifications.shift();
 }
     
     /**
@@ -505,13 +499,13 @@ export class DebugErrorReporter extends ErrorHandler { public sessionId: string;
     /**
      * エラー統計の取得（ErrorAnalyzerに委譲）
      */
-    getErrorStatistics(): any { return this.errorAnalyzer.getStatistics() }
+    getErrorStatistics(): any { return this.errorAnalyzer.getStatistics();
     
     /**
      * エラー検索（ErrorCollectorに委譲）
      */'
     searchErrors(query: any): any { ''
-        return this.errorCollector.searchErrors(query) }
+        return this.errorCollector.searchErrors(query);
     
     /**
      * エラー送信（ErrorSubmissionManagerに委譲）'
@@ -521,7 +515,7 @@ export class DebugErrorReporter extends ErrorHandler { public sessionId: string;
     /**
      * ストレージ統計（ErrorStorageに委譲）
      */
-    getStorageStatistics(): any { return this.errorStorage.getStorageStatistics() }
+    getStorageStatistics(): any { return this.errorStorage.getStorageStatistics();
     
     // ========================================
     // ユーティリティメソッド

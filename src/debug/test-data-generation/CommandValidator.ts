@@ -6,7 +6,7 @@
 export class CommandValidator {
     constructor(parent?: any) {
         // TypeScript implementation
-    }
+    };
         console.log('[CommandValidator] Initialized'); }'
     }
 

@@ -7,25 +7,24 @@ import { promises, as fs  } from 'fs';
 import path from 'path';
 
 // Type definitions
-interface ImportPatterns { namedImport: RegExp;
-    defaultImport: RegExp;
-    namespaceImport: RegExp;
-    sideEffectImport: RegExp;
-    dynamicImport: RegExp;
+interface ImportPatterns { namedImport: RegExp,
+    defaultImport: RegExp,
+    namespaceImport: RegExp,
+    sideEffectImport: RegExp,
+    dynamicImport: RegExp,
     requireCall: RegExp;
 ';'
 
 interface ImportInfo { ''
-    type: 'named' | 'default' | 'namespace' | 'sideEffect' | 'dynamic';
-    importedName: string | null;
-    sourcePath: string;
-    fullMatch: string;
-    lineNumber: number;
-    startIndex: number;
+    type: 'named' | 'default' | 'namespace' | 'sideEffect' | 'dynamic,
+    importedName: string | null,
+    sourcePath: string,
+    fullMatch: string,
+    lineNumber: number,
+    startIndex: number,
     endIndex: number;
     containingFile?: string;
-
-interface ImportSearchResults { byClassName: Map<string, ImportInfo[]>,
+    interface ImportSearchResults { byClassName: Map<string, ImportInfo[]>,
     byFileName: Map<string, ImportInfo[]>;
     total: number;
 ';'
@@ -33,25 +32,22 @@ interface ImportSearchResults { byClassName: Map<string, ImportInfo[]>,
 interface UpdateResult { file: string,''
     status: 'updated' | 'failed';
     changes?: number;
-    error?: string,  }
+    error?: string }
 
-interface ValidationIssue { type: string;
-    line: number;
-    content: string;
+interface ValidationIssue { type: string,
+    line: number,
+    content: string,
     message: string;
-
-interface ImportPathInfo { path: string;
-    line: number;
+    interface ImportPathInfo { path: string,
+    line: number,
     type: string;
-
-export class ImportUpdater {
+    export class ImportUpdater {
     private cache: Map<string, any>;
     private importPatterns: ImportPatterns;
     constructor() {
 
         this.cache = new Map<string, any>(),
-        this.importPatterns = {}
-
+        this.importPatterns = {};
             // 各種インポートパターンの正規表現' }'
 
             namedImport: /import\s*\{\s*([^}]+')\s*\}\s*from\s*['"`]([^'"`]+")['"`]/g,""
@@ -68,7 +64,7 @@ export class ImportUpdater {
     async findAllImports(className: string | null = null, fileName: string | null = null): Promise<ImportSearchResults> { const results: ImportSearchResults = {
             byClassName: new Map<string, ImportInfo[]>(),
             byFileName: new Map<string, ImportInfo[]>(),
-            total: 0  },
+            total: 0  };
         // プロジェクトのすべてのJSファイルを検索
         const jsFiles = await this.getAllJavaScriptFiles();"
 
@@ -84,7 +80,7 @@ export class ImportUpdater {
                             results.byClassName.set(className, []); }
                         }
                         results.byClassName.get(className).push({ ...importInfo)
-                            containingFile: filePath),
+                            containingFile: filePath);
                         results.total++ }
                     
                     // ファイル名での検索
@@ -94,9 +90,9 @@ export class ImportUpdater {
                             results.byFileName.set(fileName, []); }
                         }
                         results.byFileName.get(fileName).push({ ...importInfo)
-                            containingFile: filePath),
+                            containingFile: filePath);
                         results.total++ }
-                } catch (error) {
+        } catch (error) {
                 console.warn(`Could, not analyze, imports in ${filePath}: ${error.message}`);
             }
         }
@@ -108,7 +104,7 @@ export class ImportUpdater {
      * ファイル内容からインポート文を抽出
      */''
     extractImportsFromContent(content: string, filePath: string): ImportInfo[] { const imports: ImportInfo[] = [],''
-        const lines = content.split('\n',
+        const lines = content.split('\n,
 ','
         // 名前付きインポート
         for (const match of content.matchAll(this.importPatterns.namedImport)) {''
@@ -117,20 +113,19 @@ export class ImportUpdater {
             const lineNumber = this.findLineNumber(content, match.index);
             for (const name of importedNames) {
                 imports.push({''
-                    type: 'named',
+                    type: 'named,
                     importedName: name,
                     sourcePath: sourcePath,
                     fullMatch: match[0]),
                     lineNumber: lineNumber,
-    startIndex: match.index)
-            }
+    startIndex: match.index),
                     endIndex: match.index + match[0].length); 
     }
 
         // デフォルトインポート
         for (const match of content.matchAll(this.importPatterns.defaultImport) { const lineNumber = this.findLineNumber(content, match.index);
             imports.push({''
-                type: 'default',
+                type: 'default,
                 importedName: match[1],
                 sourcePath: match[2],
                 fullMatch: match[0]),
@@ -142,7 +137,7 @@ export class ImportUpdater {
         // 名前空間インポート
         for (const match of content.matchAll(this.importPatterns.namespaceImport) { const lineNumber = this.findLineNumber(content, match.index);
             imports.push({''
-                type: 'namespace',
+                type: 'namespace,
                 importedName: match[1],
                 sourcePath: match[2],
                 fullMatch: match[0]),
@@ -154,7 +149,7 @@ export class ImportUpdater {
         // サイドエフェクトインポート
         for (const match of content.matchAll(this.importPatterns.sideEffectImport) { const lineNumber = this.findLineNumber(content, match.index);
             imports.push({''
-                type: 'sideEffect',
+                type: 'sideEffect,
                 importedName: null,
                 sourcePath: match[1],
                 fullMatch: match[0]),
@@ -166,7 +161,7 @@ export class ImportUpdater {
         // 動的インポート
         for (const match of content.matchAll(this.importPatterns.dynamicImport) { const lineNumber = this.findLineNumber(content, match.index);
             imports.push({''
-                type: 'dynamic',
+                type: 'dynamic,
                 importedName: null,
                 sourcePath: match[1],
                 fullMatch: match[0]),
@@ -195,8 +190,8 @@ export class ImportUpdater {
                 if (updatedContent !== content) {''
                     await fs.writeFile(filePath, updatedContent, 'utf8');
                     results.push({)'
-                        file: filePath,')',
-                        status: 'updated') }
+                        file: filePath,'),
+                        status: 'updated'),
                         changes: this.countChanges(content, updatedContent); }
 
                     };'} catch (error) { results.push({'
@@ -235,7 +230,7 @@ export class ImportUpdater {
                     return match.replace(sourcePath, newRelativePath);
                 
                 return match;
-            };
+            }
         }
         
         return updatedContent;
@@ -253,8 +248,8 @@ export class ImportUpdater {
                 if (updatedContent !== content) {''
                     await fs.writeFile(filePath, updatedContent, 'utf8');
                     results.push({)'
-                        file: filePath,')',
-                        status: 'updated') }
+                        file: filePath,'),
+                        status: 'updated'),
                         changes: this.countChanges(content, updatedContent); }
 
                     };'} catch (error) { results.push({'
@@ -281,13 +276,13 @@ export class ImportUpdater {
 
         return content.replace(namedImportPattern, (match, importList, fromClause) => { }'
 
-            const updatedImportList = importList.replace() }
+            const updatedImportList = importList.replace();
 
                 new RegExp(`\\b${oldName}\\b`, 'g),'
                 newName;
             );
             return `import { ${updatedImportList.trim( } } from ${fromClause}`;
-        };
+        }
     }
 
     /**
@@ -336,7 +331,7 @@ export class ImportUpdater {
 
         for (const circular of circularImports) {
             issues.push({''
-                type: 'circular_dependency',
+                type: 'circular_dependency,
     line: circular.line }
 
                 content: circular.path,') }'
@@ -476,7 +471,7 @@ export class ImportUpdater {
                 if (sourcePath) {
                     paths.push({)
                         path: sourcePath,
-    line: this.findLineNumber(content, match.index) }
+    line: this.findLineNumber(content, match.index);
                         type: patternName;);
                 }
 }

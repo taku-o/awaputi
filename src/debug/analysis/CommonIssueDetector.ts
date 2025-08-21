@@ -3,16 +3,15 @@
  * 一般的な問題の検出クラス
  */
 
-interface Issue { id: string;
-    type: 'performance' | 'memory' | 'error' | 'warning';
-    severity: 'low' | 'medium' | 'high' | 'critical';
-    title: string;
+interface Issue { id: string,
+    type: 'performance' | 'memory' | 'error' | 'warning,
+    severity: 'low' | 'medium' | 'high' | 'critical,
+    title: string,
     description: string;
     solution?: string;
-    context: any;
+    context: any,
     timestamp: number;
-
-interface DetectionRule { id: string;
+    interface DetectionRule { id: string,
     name: string,' }'
 
     pattern: RegExp | ((data: any') => boolean}''
@@ -27,46 +26,45 @@ export class CommonIssueDetector {
     private, detectedIssues: Issue[] = [];
     constructor() {
     
-}
+};
         this.initializeDefaultRules(); }
     }
 
     private initializeDefaultRules('''
-                id: 'high_memory_usage',
+                id: 'high_memory_usage,
                 name: 'High Memory Usage',';'
                 pattern: (data: any') => data.memoryUsage > 100 * 1024 * 1024, // 100MB;'
-                type: 'memory',
-                severity: 'high',
-                description: 'Memory usage is higher than expected',
-                solution: 'Review object lifecycle and remove memory leaks',
-            },
+                type: 'memory,
+                severity: 'high,
+                description: 'Memory usage is higher than expected,
+                solution: 'Review object lifecycle and remove memory leaks' ,
 
             { ''
-                id: 'low_fps',
-                name: 'Low FPS',
+                id: 'low_fps,
+                name: 'Low FPS,
                 pattern: (data: any') => data.fps < 30,'
-                type: 'performance',
-                severity: 'medium',
-                description: 'Frame rate is below optimal threshold',
+                type: 'performance,
+                severity: 'medium,
+                description: 'Frame rate is below optimal threshold,
                 solution: 'Optimize rendering pipeline and reduce computational complexity'
             }
             };
             { ''
-                id: 'uncaught_exception',
-                name: 'Uncaught Exception',
+                id: 'uncaught_exception,
+                name: 'Uncaught Exception,
                 pattern: /uncaught.*exception/i,
-                type: 'error',
-                severity: 'critical',
-                description: 'Uncaught exception detected',
+                type: 'error,
+                severity: 'critical,
+                description: 'Uncaught exception detected,
                 solution: 'Add proper error handling and try-catch blocks'
             };
             { ''
-                id: 'console_errors',
-                name: 'Console Errors',
+                id: 'console_errors,
+                name: 'Console Errors,
                 pattern: /error|failed|exception/i,
-                type: 'error',
-                severity: 'medium',
-                description: 'Errors detected in console output',
+                type: 'error,
+                severity: 'medium,
+                description: 'Errors detected in console output,
                 solution: 'Review and fix the underlying cause of errors'
             }
         ];
@@ -97,7 +95,7 @@ export class CommonIssueDetector {
             matches = rule.pattern.test(stringData),' }'
 
         } else if(typeof, rule.pattern === 'function' { // Function-based detection'
-            matches = rule.pattern(data) }
+            matches = rule.pattern(data);
 
         if (matches) {
 
@@ -120,7 +118,7 @@ export class CommonIssueDetector {
             if (filter.type) { }
                 filtered = filtered.filter(issue => issue.type === filter.type); }
             }
-            if (filter.severity) { filtered = filtered.filter(issue => issue.severity === filter.severity) }
+            if (filter.severity) { filtered = filtered.filter(issue => issue.severity === filter.severity);
             }
             if (filter.timeframe) {
                 const cutoff = Date.now() - filter.timeframe }
@@ -130,18 +128,17 @@ export class CommonIssueDetector {
         return filtered;
     }
 
-    public addCustomRule(rule: DetectionRule): void { this.rules.push(rule) }
+    public addCustomRule(rule: DetectionRule): void { this.rules.push(rule);
 
     public clearIssues(): void { this.detectedIssues = [] }
 
     public getStatistics(): { total: number,
         byType: { [type: string]: number,
         bySeverity: { [severity: string]: number,
-        recent: number,
-    } {
+        recent: number } {
         const byType: { [type: string]: number, = {}
         const bySeverity: { [severity: string]: number, = {}
-        const oneHourAgo = Date.now() - 3600000;
+        const oneHourAgo = Date.now() - 3600000 };
         
         let recent = 0;
 

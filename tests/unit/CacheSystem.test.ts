@@ -12,11 +12,11 @@ interface CacheOptions {
     ttl?: number;
     priority?: number;
 interface CacheStats {
-    hits: number;
+    hits: number,
     misses: number;
-    totalRequests: number;
+    totalRequests: number,
     hitRate: string;
-    expirations: number;
+    expirations: number,
     size: number;
     memoryUsage: string;
 describe('CacheSystem', () => {
@@ -24,10 +24,10 @@ describe('CacheSystem', () => {
     
     beforeEach(() => {
         cacheSystem = new CacheSystem({
-            maxSize: 10;
+            maxSize: 10,
             ttl: 100, // 短い有効期限（テスト用）
             cleanupInterval: 50 // 短いクリーンアップ間隔（テスト用）
-        };
+        }
     }
     afterEach(() => {
         cacheSystem.destroy() }');'

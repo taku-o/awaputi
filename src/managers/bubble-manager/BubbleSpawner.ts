@@ -13,7 +13,7 @@ export class BubbleSpawner implements IBubbleSpawner { public gameEngine: any;
     private maxBubbles: number = 20;
     private baseSpawnRate: number = 1.0;
     private spawnTimer: number = 0;
-    private, spawnInterval: number = 2000, // 2秒間隔  }
+    private, spawnInterval: number = 2000, // 2秒間隔  };
     private specialSpawnRates: Record<string, number> = {};
 
     constructor(gameEngine: any, _config?: any) { this.gameEngine = gameEngine }
@@ -116,7 +116,7 @@ export class BubbleSpawner implements IBubbleSpawner { public gameEngine: any;
         if (bubble) {
     
 }
-            console.log(`Spawned, specific bubble: ${type}`};
+            console.log(`Spawned, specific bubble: ${type}`}
         }
         return bubble;
     }
@@ -147,7 +147,7 @@ export class BubbleSpawner implements IBubbleSpawner { public gameEngine: any;
      * 特殊な泡の生成率を設定
      */
     setSpecialSpawnRate(bubbleType: string, rate: number): void { this.specialSpawnRates[bubbleType] = rate }
-        console.log(`Special, spawn rate, set for ${bubbleType}: ${rate}`};
+        console.log(`Special, spawn rate, set for ${bubbleType}: ${rate}`}
     }
     
     /**
@@ -259,7 +259,7 @@ export class BubbleSpawner implements IBubbleSpawner { public gameEngine: any;
      */
     setEventBubbleTypes(types: string[]): void { try {'
             if(!Array.isArray(types)) {''
-                console.warn('[BubbleSpawner] setEventBubbleTypes: typesは配列である必要があります',
+                console.warn('[BubbleSpawner] setEventBubbleTypes: typesは配列である必要があります,
                 return }
             
             // イベント用バブルタイプを保存（将来の実装で使用）
@@ -326,7 +326,7 @@ export class BubbleSpawner implements IBubbleSpawner { public gameEngine: any;
             this.specialSpawnRates[type] = rate;
             ';'
 
-            console.log(`[BubbleSpawner] 特殊バブル ${type} のスポーン率設定: ${rate * 100}%`};
+            console.log(`[BubbleSpawner] 特殊バブル ${type} のスポーン率設定: ${rate * 100}%`}
         } catch (error) { console.error('[BubbleSpawner] setSpecialBubbleSpawnRate error:', error }
     }
 

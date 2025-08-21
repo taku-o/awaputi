@@ -7,76 +7,62 @@ import { promises, as fs  } from 'fs';
 import path from 'path';
 
 // Type definitions
-interface ValidationRules { requireFromClause: boolean;
-    preventCircularDependencies: boolean;
-    enforceConsistentQuotes: boolean;
-    validateFileExtensions: boolean;
-    checkMissingFiles: boolean;
+interface ValidationRules { requireFromClause: boolean,
+    preventCircularDependencies: boolean,
+    enforceConsistentQuotes: boolean,
+    validateFileExtensions: boolean,
+    checkMissingFiles: boolean,
     maxLineLength: number;
-
-interface ValidationError { type: string;
-    line: number;
-    message: string;
+    interface ValidationError { type: string,
+    line: number,
+    message: string,
     code: string;
-
-interface ValidationWarning { type: string;
-    line: number;
-    message: string;
+    interface ValidationWarning { type: string,
+    line: number,
+    message: string,
     code: string;
-
-interface ValidationSuggestion { type: string;
-    line: number;
-    message: string;
+    interface ValidationSuggestion { type: string,
+    line: number,
+    message: string,
     code: string;
-
-interface ValidationResult { filePath: string | null;
-    isValid: boolean;
-    errors: ValidationError[];
-    warnings: ValidationWarning[];
+    interface ValidationResult { filePath: string | null,
+    isValid: boolean,
+    errors: ValidationError[],
+    warnings: ValidationWarning[],
     suggestions: ValidationSuggestion[];
-
-interface LineValidationResult { errors: ValidationError[];
-    warnings: ValidationWarning[];
+    interface LineValidationResult { errors: ValidationError[],
+    warnings: ValidationWarning[],
     suggestions: ValidationSuggestion[];
-
-interface PathValidationResult { errors: ValidationError[];
-    warnings: ValidationWarning[];
+    interface PathValidationResult { errors: ValidationError[],
+    warnings: ValidationWarning[],
     suggestions: ValidationSuggestion[];
-
-interface GlobalValidationResult { errors: ValidationError[];
-    warnings: ValidationWarning[];
+    interface GlobalValidationResult { errors: ValidationError[],
+    warnings: ValidationWarning[],
     suggestions: ValidationSuggestion[];
-
-interface BraceIssue { type: string;
-    message: string;
+    interface BraceIssue { type: string,
+    message: string,
     code: string;
-
-interface QuoteIssue { type: string;
-    message: string;
+    interface QuoteIssue { type: string,
+    message: string,
     code: string;
-
-interface ImportInfo { line: number;
-    path: string;
-    isNodeModule: boolean;
+    interface ImportInfo { line: number,
+    path: string,
+    isNodeModule: boolean,
     isRelative: boolean;
-
-interface ImportOrderAnalysis { imports: ImportInfo[];
+    interface ImportOrderAnalysis { imports: ImportInfo[],
     hasIssues: boolean;
-
-interface DuplicateImport { line: number;
-    path: string;
+    interface DuplicateImport { line: number,
+    path: string,
     previousLine: number;
-
-interface UnusedImport { line: number;
+    interface UnusedImport { line: number,
     name: string;
-
-interface ValidationSummary { totalFiles: number;
-    validFiles: number;
-    filesWithErrors: number;
-    filesWithWarnings: number;
-    totalErrors: number;
-    totalWarnings: number;
-    totalSuggestions: number;
+    interface ValidationSummary { totalFiles: number,
+    validFiles: number,
+    filesWithErrors: number,
+    filesWithWarnings: number,
+    totalErrors: number,
+    totalWarnings: number,
+    totalSuggestions: number,
     errorTypes: Record<string, number>;
     warningTypes: Record<string, number> }
 
@@ -87,14 +73,13 @@ export class ImportValidator {
 
         this.cache = new Map<string, any>(),
         this.validationRules = {
-            requireFromClause: true;
-            preventCircularDependencies: true;
-            enforceConsistentQuotes: true;
-            validateFileExtensions: true;
-    checkMissingFiles: true;
+            requireFromClause: true,
+            preventCircularDependencies: true,
+            enforceConsistentQuotes: true,
+            validateFileExtensions: true,
+    checkMissingFiles: true,
             maxLineLength: 120 
-    }
-
+    };
     /**
      * ファイルのインポート構文を包括的に検証
      */''
@@ -104,7 +89,7 @@ export class ImportValidator {
             return this.validateContent(content, filePath),' }'
 
         } catch (error) { return { filePath,
-                isValid: false;
+                isValid: false,
                 errors: [{ };
 
                     type: 'file_read_error',' }'
@@ -113,11 +98,10 @@ export class ImportValidator {
                     line: 0,]';'
                     code: 'FILE_READ_ERROR'];
                 }],
-                warnings: [];
+                warnings: [],
     suggestions: [];
-            } }
-    }
-
+                }
+}
     /**
      * ファイル内容のインポート構文を検証'
      */''
@@ -126,7 +110,7 @@ export class ImportValidator {
             isValid: true,
             errors: [],
             warnings: [],
-    suggestions: []  },
+    suggestions: []  };
         const lines = content.split('\n);'
         
         // 各行をチェック
@@ -138,7 +122,7 @@ export class ImportValidator {
                 const lineValidation = this.validateImportLine(line, lineNumber, filePath);
                 result.errors.push(...lineValidation.errors);
                 result.warnings.push(...lineValidation.warnings);
-                result.suggestions.push(...lineValidation.suggestions) }
+                result.suggestions.push(...lineValidation.suggestions);
         }
 
         // 全体的な構文チェック
@@ -157,7 +141,7 @@ export class ImportValidator {
     validateImportLine(line: string, lineNumber: number, filePath: string | null): LineValidationResult { const result: LineValidationResult = {
             errors: [],
             warnings: [],
-    suggestions: [] },
+    suggestions: [] };
         const trimmedLine = line.trim();
         // 1. 基本構文チェック
         if (this.validationRules.requireFromClause) {
@@ -177,7 +161,7 @@ export class ImportValidator {
         const braceIssues = this.checkBraces(trimmedLine);
         if (braceIssues.length > 0) {
             result.errors.push(...braceIssues.map(issue => ({)
-                ...issue) }
+                ...issue);
                 line: lineNumber)); 
     }
 
@@ -186,7 +170,7 @@ export class ImportValidator {
             const quoteIssues = this.checkQuoteConsistency(trimmedLine);
             if (quoteIssues.length > 0) {
                 result.warnings.push(...quoteIssues.map(issue => ({)
-                    ...issue) }
+                    ...issue);
                     line: lineNumber)); 
     }
 
@@ -204,8 +188,8 @@ export class ImportValidator {
                 line: lineNumber',' }'
 
                 message: `Line length (${line.length} exceeds, recommended maximum (${this.validationRules.maxLineLength}'}'`,''
-                code: 'LONG_LINE',
-            }'
+                code: 'LONG_LINE';
+            }
             }
 
         return result;
@@ -217,7 +201,7 @@ export class ImportValidator {
     validateImportPath(line: string, lineNumber: number, currentFilePath: string | null): PathValidationResult { const result: PathValidationResult = {
             errors: [],
             warnings: [],
-    suggestions: [] },
+    suggestions: [] };
         const pathMatch = line.match(/from\s*['"`]([^'"`]+"['"`]/") || "";'
                          line.match(/import\s*['"`]([^'"`]+"['"`]/";'
 
@@ -233,12 +217,12 @@ export class ImportValidator {
                     this.checkFileExists(resolvedPath).then(exists => { );
                         if (!exists) {
                             result.errors.push({ }''
-                                type: 'missing_file') }
+                                type: 'missing_file'),
                                 line: lineNumber,
 
                                 message: `Imported file does not, exist: ${resolvedPath}`,')'
-                                code: 'FILE_NOT_FOUND'),
-                            };
+                                code: 'FILE_NOT_FOUND');
+                            }
                         }
                     }.catch(() => { // ファイルチェックでエラーが発生しても続行 });
                 }
@@ -252,7 +236,7 @@ export class ImportValidator {
                     line: lineNumber,
 
                     message: `Consider normalizing, path: ${importPath} → ${normalizedPath}`,')'
-                    code: 'NORMALIZE_PATH'),
+                    code: 'NORMALIZE_PATH');
     }
 ';'
         // ファイル拡張子チェック
@@ -276,7 +260,7 @@ export class ImportValidator {
     validateGlobalImportStructure(content: string, filePath: string | null): GlobalValidationResult { const result: GlobalValidationResult = {
             errors: [],
             warnings: [],
-    suggestions: [] },
+    suggestions: [] };
         // インポート文の順序チェック
         const importOrder = this.analyzeImportOrder(content);
         if (importOrder.hasIssues) {;
@@ -296,7 +280,7 @@ export class ImportValidator {
                 line: duplicate.line }
 
                 message: `Duplicate import, detected: ${duplicate.path}`,')'
-                code: 'DUPLICATE_IMPORT'),
+                code: 'DUPLICATE_IMPORT');
         }
 
         // 未使用インポートの検出（簡易版）
@@ -307,7 +291,7 @@ export class ImportValidator {
                 line: unused.line }
 
                 message: `Possibly unused, import: ${unused.name}`,')'
-                code: 'UNUSED_IMPORT'),
+                code: 'UNUSED_IMPORT');
         }
 
         return result;
@@ -319,8 +303,8 @@ export class ImportValidator {
     isImportLine(line: string): boolean { ''
         const trimmedLine = line.trim()','
         return trimmedLine.startsWith('import ') || ','
-               trimmedLine.includes(' import() ||',
-               trimmedLine.includes('require()',
+               trimmedLine.includes(' import() ||,
+               trimmedLine.includes('require(),
     isSideEffectImport(line: string): boolean {''
         return /^import\s*['"`][^'"`]+['"`]\s*,? \s*$/.test(line.trim() }'
 
@@ -344,7 +328,7 @@ export class ImportValidator {
                 code: 'UNCLOSED_BRACE');' 
     } else if (braceCount < 0) { issues.push({''
                 type: 'extra_closing_brace',','
-                message: 'Extra closing brace in import statement',')',
+                message: 'Extra closing brace in import statement,')',
                 code: 'EXTRA_BRACE'
             }
 
@@ -386,15 +370,13 @@ export class ImportValidator {
                                  line.match(/import\s*['"`]([^'"`]+"['"`]/),'
                 if (pathMatch) {
                     imports.push({)"
-                        line: i + 1,")",
+                        line: i + 1,"),
                         path: pathMatch[1]","
-                        isNodeModule: !pathMatch[1].startsWith('./') && !pathMatch[1].startsWith('../') }
+                        isNodeModule: !pathMatch[1].startsWith('./') && !pathMatch[1].startsWith('../'),
 
                         isRelative: pathMatch[1].startsWith('./') || pathMatch[1].startsWith('../); '
-    };
-                }
+        }
 }
-
         // 順序の問題をチェック
         let hasNodeModuleAfterRelative = false;
         let foundRelative = false;
@@ -410,7 +392,7 @@ export class ImportValidator {
         }
 
         return { imports };
-            hasIssues: hasNodeModuleAfterRelative,
+            hasIssues: hasNodeModuleAfterRelative;
 
     /**
      * 重複インポートを検出
@@ -433,10 +415,10 @@ export class ImportValidator {
                     if (imports.has(path) {
                         duplicates.push({)
                             line: i + 1),
-                            path: path) }
+                            path: path),
                             previousLine: imports.get(path); 
-    };
-                    } else { imports.set(path, i + 1) }
+    }
+                    } else { imports.set(path, i + 1);
 }
         }
 
@@ -464,8 +446,7 @@ export class ImportValidator {
                         const cleanName = name.split(' as ')[0].trim();
                         if (!this.isNameUsedInContent(cleanName, content, i) {
                             unused.push({)
-                                line: i + 1)
-                }
+                                line: i + 1),
                                 name: cleanName); 
     }
                 }
@@ -477,10 +458,8 @@ export class ImportValidator {
                         unused.push({)
                             line: i + 1 }
                             name: name); 
-    }
-            }
         }
-
+}
         return unused;
     }
 
@@ -545,8 +524,8 @@ export class ImportValidator {
             totalErrors: 0,
             totalWarnings: 0,
     totalSuggestions: 0 }
-            errorTypes: {},
-            warningTypes: {},
+            errorTypes: {  },
+            warningTypes: {  },
         for (const result of results) {
 
             if (result.isValid) {
@@ -557,7 +536,7 @@ export class ImportValidator {
             
             if (result.errors.length > 0) {
             
-                summary.filesWithErrors++,
+                summary.filesWithErrors++;
                 summary.totalErrors += result.errors.length,
                 
                 for (const error of result.errors) {
@@ -568,7 +547,7 @@ export class ImportValidator {
             
             if (result.warnings.length > 0) {
             
-                summary.filesWithWarnings++,
+                summary.filesWithWarnings++;
                 summary.totalWarnings += result.warnings.length,
                 ','
 

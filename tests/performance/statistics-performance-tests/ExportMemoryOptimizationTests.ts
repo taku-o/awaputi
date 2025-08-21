@@ -13,8 +13,7 @@ export class ExportMemoryOptimizationTests {
         this.performanceConfig = mainTestSuite.performanceConfig;
         this.environmentThresholds = mainTestSuite.environmentThresholds;
         
-        console.log('[ExportMemoryOptimizationTests] Component initialized') }
-
+        console.log('[ExportMemoryOptimizationTests] Component initialized') };
     /**
      * Register export, memory, and optimization performance tests
      */
@@ -66,7 +65,7 @@ export class ExportMemoryOptimizationTests {
                 const importResult = statisticsExporter && typeof statisticsExporter.importData === 'function'
                     ? await statisticsExporter.importData(exportResult.data, 'json')
                     : { success: true;
-                const result = measurement.endMeasurement(');'
+                const result = measurement.endMeasurement(');' };
 
                 console.log('Import performance:', result);
 
@@ -79,7 +78,7 @@ export class ExportMemoryOptimizationTests {
                 const veryLargeData = {
                     ...DataGenerator.generateLargeStatisticsData();
                     extendedHistory: Array.from({ length: 50000 }, (_, i) => ({
-                        timestamp: Date.now() + i;
+                        timestamp: Date.now() + i,
                         score: Math.random() * 1000;
                         combo: Math.floor(Math.random() * 50 }');'
                 };
@@ -92,16 +91,16 @@ export class ExportMemoryOptimizationTests {
                 measurement.startMeasurement(');'
                 const exportResult = statisticsExporter && typeof statisticsExporter.exportData === 'function'
                     ? await statisticsExporter.exportData('json', { : undefined
-                        streaming: true;
+                        streaming: true,
                         chunkSize: 1000 };
                     : { success: true;
-                const result = measurement.endMeasurement(');'
+                const result = measurement.endMeasurement(');' };
 
                 console.log('Streaming export performance:', result);
 
                 expect(exportResult.success).toBe(true);
                 expect(result.duration).toBeLessThan(5000); // 5秒以下
-            };
+            }
         }');'
 
         describe('メモリ管理パフォーマンステスト', (') => {'
@@ -172,7 +171,7 @@ export class ExportMemoryOptimizationTests {
                         const, memoryLimit = this.environmentThresholds.memoryUsage.max,
                         expect(maxMemoryIncrease.toBeLessThan(memoryLimit)'};'
                         
-                        return { maxMemoryIncrease, cycles, memoryLimit };
+                        return { maxMemoryIncrease, cycles, memoryLimit }
                     },
                     { 
                         retries: 1, // 長時間テストは再試行を最小限に
@@ -201,7 +200,7 @@ export class ExportMemoryOptimizationTests {
                     // 統計処理
                     if (statisticsCollector && typeof statisticsCollector.collectEvent === 'function') {
                         await statisticsCollector.collectEvent({ : undefined
-                            type: 'test';
+                            type: 'test',
                             data: { value: largeArray[0],);
                         }');'
                     }
@@ -216,7 +215,7 @@ export class ExportMemoryOptimizationTests {
                 expect(gcCalls.length).toBeLessThan(20); // 過度なGCを避ける
 
                 (global: any).gc = originalGc;
-            };
+            }
         }');'
 
         describe('パフォーマンス最適化機能テスト', (') => {'
@@ -285,7 +284,7 @@ export class ExportMemoryOptimizationTests {
 
                 // キャッシュにより処理時間が改善されることを確認
                 expect(withCacheTime.toBeLessThan(noCacheTime * 0.7); // 30%以上の改善
-            };
+            }
         }');'
 
         describe('パフォーマンス要件検証', (') => {'
@@ -295,7 +294,7 @@ export class ExportMemoryOptimizationTests {
                     async (threshold, env, attempt') => {'
                         // 環境対応要件設定
                         const requirements = {
-                            statisticsCollection: env === 'ci' ? 2 : env === 'local' ? 1.5 : 1;
+                            statisticsCollection: env === 'ci' ? 2 : env === 'local' ? 1.5 : 1,
                             initialDisplay: env === 'ci' ? 800 : env === 'local' ? 650 : 500;
                             dataUpdate: env === 'ci' ? 150 : env === 'local' ? 120 : 100
                         };
@@ -346,7 +345,7 @@ export class ExportMemoryOptimizationTests {
 
                         // 環境対応要件確認
                         if (results.collection) {
-                            expect(results.collection.duration).toBeLessThan(requirements.statisticsCollection};
+                            expect(results.collection.duration).toBeLessThan(requirements.statisticsCollection}
                         }
                         if (results.display) {
                             expect(results.display.duration).toBeLessThan(requirements.initialDisplay) }
@@ -355,7 +354,7 @@ export class ExportMemoryOptimizationTests {
                         
                         return { results, requirements, environment: env };
                     { 
-                        retries: this.performanceConfig.retries;
+                        retries: this.performanceConfig.retries,
                         timeout: this.performanceConfig.timeout * 2
                     }
                 );
@@ -393,7 +392,7 @@ export class ExportMemoryOptimizationTests {
 
                 // パフォーマンス劣化が50%以内であることを確認
                 expect(testAvg.toBeLessThan(baselineAvg * 1.5);
-            };
+            }
         }');'
     }
 }

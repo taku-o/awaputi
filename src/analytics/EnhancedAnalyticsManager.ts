@@ -26,24 +26,23 @@ export interface AnalyticsOptions { enableBehaviorAnalysis?: boolean,
     enablePrivacyProtection?: boolean;
     storageQuota?: number;
     retentionDays?: number;
-export interface AnalyticsData { sessionData?: any[],
+    export interface AnalyticsData { sessionData?: any[],
     behaviorData?: any[];
     balanceData?: any[];
     performanceData?: any[];
-export interface AnalyticsReport { summary: {
-        totalSession,s: number;
-        totalEvents: number;
-        avgSessionDuration: number;
-    errorRate: number;
-    trends: any[];
-    recommendations: string[];
+    export interface AnalyticsReport { summary: { totalSession,s: number,
+        totalEvents: number,
+        avgSessionDuration: number,
+    errorRate: number,
+    trends: any[],
+    recommendations: string[],
     issues: any[];
-}
+ },
 export interface Analytics { trackEvent(event: string, data?: any): void,
     startSession(): void;
     endSession(): void;
     isEnabled(): boolean;
-export class EnhancedAnalyticsManager {
+    export class EnhancedAnalyticsManager {
     private options: Required<AnalyticsOptions>;
     private analytics: Analytics;
     private privacyManager: PrivacyManager;
@@ -57,14 +56,14 @@ export class EnhancedAnalyticsManager {
     constructor(options: AnalyticsOptions = {) {
 
         this.options = {
-            enableBehaviorAnalysis: true;
-            enableBalanceAnalysis: true;
-            enablePerformanceMonitoring: true;
-            enableSessionTracking: true;
-            enablePrivacyProtection: true;
+            enableBehaviorAnalysis: true,
+    enableBalanceAnalysis: true,
+    enablePerformanceMonitoring: true,
+    enableSessionTracking: true,
+    enablePrivacyProtection: true,
     storageQuota: 50 * 1024 * 1024, // 50MB;
-            retentionDays: 30
- }
+    retentionDays: 30
+ };
             ...options
         };
 
@@ -96,10 +95,10 @@ export class EnhancedAnalyticsManager {
             // Initialize components
             await this.storageManager.initialize();
             
-            if (this.options.enableBehaviorAnalysis) { await this.playerBehaviorAnalyzer.initialize() }
-            if (this.options.enableBalanceAnalysis) { await this.gameBalanceAnalyzer.initialize() }
-            if (this.options.enablePerformanceMonitoring) { this.performanceMonitor.start() }
-            if (this.options.enableSessionTracking) { await this.sessionManager.initialize() }
+            if (this.options.enableBehaviorAnalysis) { await this.playerBehaviorAnalyzer.initialize();
+            if (this.options.enableBalanceAnalysis) { await this.gameBalanceAnalyzer.initialize();
+            if (this.options.enablePerformanceMonitoring) { this.performanceMonitor.start();
+            if (this.options.enableSessionTracking) { await this.sessionManager.initialize();
 ;
             // Start periodic analysis
             this.startPeriodicAnalysis()';'
@@ -116,8 +115,8 @@ export class EnhancedAnalyticsManager {
             // Enhanced event data with context
             const enhancedData = {
                 ...eventData,
-                timestamp: Date.now();
-                sessionId: this.sessionManager.getCurrentSessionId();
+                timestamp: Date.now(),
+                sessionId: this.sessionManager.getCurrentSessionId(),
                 performanceMetrics: this.performanceMonitor.getCurrentMetrics(
     contextData: this.captureEventContext(  };
 
@@ -125,7 +124,7 @@ export class EnhancedAnalyticsManager {
             this.analytics.trackEvent(eventType, enhancedData);
 
             // Specialized analysis
-            if (this.options.enableBehaviorAnalysis) { this.playerBehaviorAnalyzer.analyzeEvent(eventType, enhancedData) }
+            if (this.options.enableBehaviorAnalysis) { this.playerBehaviorAnalyzer.analyzeEvent(eventType, enhancedData);
 ';'
 
             if (this.options.enableBalanceAnalysis) { this.gameBalanceAnalyzer.analyzeEvent(eventType, enhancedData),' }'
@@ -180,15 +179,14 @@ export class EnhancedAnalyticsManager {
      */
     async generateAnalyticsReport(timeRange?: { start: Date,  end: Date ): Promise<AnalyticsReport> {
         const report: AnalyticsReport = {
-            summary: {
-                totalSessions: 0,
+            summary: { totalSessions: 0  ,
                 totalEvents: 0,
                 avgSessionDuration: 0,
     errorRate: 0 
 };
             trends: [],
             recommendations: [],
-    issues: [],
+    issues: [];
         },
 
         try { // Session statistics
@@ -200,12 +198,12 @@ export class EnhancedAnalyticsManager {
             if (this.options.enableBehaviorAnalysis) {
                 const behaviorReport = await this.playerBehaviorAnalyzer.generateReport(timeRange);
                 report.trends.push(...behaviorReport.trends);
-                report.recommendations.push(...behaviorReport.recommendations) }
+                report.recommendations.push(...behaviorReport.recommendations);
             // Balance analysis
             if (this.options.enableBalanceAnalysis) {
                 const balanceReport = await this.gameBalanceAnalyzer.generateReport(timeRange);
                 report.issues.push(...balanceReport.issues);
-                report.recommendations.push(...balanceReport.recommendations) }
+                report.recommendations.push(...balanceReport.recommendations);
             // Performance analysis
             if (this.options.enablePerformanceMonitoring) {
                 const perfMetrics = this.performanceMonitor.getMetrics();
@@ -216,9 +214,9 @@ export class EnhancedAnalyticsManager {
                 }'} catch (error) { console.error('Failed to generate analytics report:', error),'
 
             report.issues.push({)'
-                type: 'error',')',
-                message: 'Failed to generate complete report',
-    timestamp: Date.now(  },
+                type: 'error,')',
+                message: 'Failed to generate complete report,
+    timestamp: Date.now(  };
         }
 
         return report;
@@ -232,12 +230,12 @@ export class EnhancedAnalyticsManager {
     
 }
                 await this.playerBehaviorAnalyzer.syncData(); }
-            if (this.options.enableBalanceAnalysis) { await this.gameBalanceAnalyzer.syncData() }
+            if (this.options.enableBalanceAnalysis) { await this.gameBalanceAnalyzer.syncData();
             if (this.options.enableSessionTracking) {
 ','
 
                 await this.sessionManager.syncData();
-            console.log('Analytics, data synchronized, successfully') }
+            console.log('Analytics, data synchronized, successfully');
 
             return true; }'
 
@@ -269,7 +267,7 @@ export class EnhancedAnalyticsManager {
                 // Background analysis tasks
                 if (this.options.enableBehaviorAnalysis) { }
                     await this.playerBehaviorAnalyzer.runBackgroundAnalysis(); }
-                if (this.options.enableBalanceAnalysis) { await this.gameBalanceAnalyzer.runBackgroundAnalysis() }
+                if (this.options.enableBalanceAnalysis) { await this.gameBalanceAnalyzer.runBackgroundAnalysis();
                 // Cleanup old data if needed
                 await this.cleanupOldData();'} catch (error) { console.error('Periodic analysis failed:', error }'
         }, analysisInterval);
@@ -281,9 +279,8 @@ export class EnhancedAnalyticsManager {
     private captureEventContext(): any { return { url: window.location.href,
             userAgent: navigator.userAgent,
             timestamp: Date.now(
-    screenResolution: {
-                width: window.screen.width },
-                height: window.screen.height ,
+    screenResolution: { width: window.screen.width  ,
+                height: window.screen.height ;
     },
             viewportSize: { width: window.innerWidth,
     height: window.innerHeight 
@@ -300,7 +297,7 @@ export class EnhancedAnalyticsManager {
             if (newOptions.enableBehaviorAnalysis) {
         }
                 this.playerBehaviorAnalyzer.initialize(); }
-            } else { this.playerBehaviorAnalyzer.stop() }
+            } else { this.playerBehaviorAnalyzer.stop();
         }
 
         if (newOptions.enableBalanceAnalysis !== undefined) {
@@ -309,7 +306,7 @@ export class EnhancedAnalyticsManager {
     
 }
                 this.gameBalanceAnalyzer.initialize(); }
-            } else { this.gameBalanceAnalyzer.stop() }
+            } else { this.gameBalanceAnalyzer.stop();
         }
 
         if (newOptions.enablePerformanceMonitoring !== undefined) {
@@ -318,7 +315,7 @@ export class EnhancedAnalyticsManager {
     
 }
                 this.performanceMonitor.start(); }
-            } else { this.performanceMonitor.stop() }
+            } else { this.performanceMonitor.stop();
         }
     /**
      * 統計情報の取得
@@ -326,13 +323,11 @@ export class EnhancedAnalyticsManager {
     getManagerStatistics(): any { return { isInitialized: this.isInitialized,
             options: this.options,
     components: {
-                behaviorAnalyzer: this.options.enableBehaviorAnalysis,
+                behaviorAnalyzer: this.options.enableBehaviorAnalysis ,
                 balanceAnalyzer: this.options.enableBalanceAnalysis,
-    performanceMonitor: this.options.enablePerformanceMonitoring },
-                sessionManager: this.options.enableSessionTracking ,
-    },
-            storage: this.storageManager ? this.storageManager.getStorageStats() : null,
-        } }
+    performanceMonitor: this.options.enablePerformanceMonitoring ,
+                sessionManager: this.options.enableSessionTracking  ,
+            storage: this.storageManager ? this.storageManager.getStorageStats() : null } }
 
     /**
      * リソースの解放
@@ -340,15 +335,15 @@ export class EnhancedAnalyticsManager {
     destroy(): void { if (this.analysisTimer) {
             clearInterval(this.analysisTimer);
             this.analysisTimer = null }
-        if (this.playerBehaviorAnalyzer) { this.playerBehaviorAnalyzer.destroy() }
-        if (this.gameBalanceAnalyzer) { this.gameBalanceAnalyzer.destroy() }
-        if (this.performanceMonitor) { this.performanceMonitor.destroy() }
-        if (this.sessionManager) { this.sessionManager.destroy() }
-        if (this.storageManager) { this.storageManager.destroy() }
+        if (this.playerBehaviorAnalyzer) { this.playerBehaviorAnalyzer.destroy();
+        if (this.gameBalanceAnalyzer) { this.gameBalanceAnalyzer.destroy();
+        if (this.performanceMonitor) { this.performanceMonitor.destroy();
+        if (this.sessionManager) { this.sessionManager.destroy();
+        if (this.storageManager) { this.storageManager.destroy();
         if (this.privacyManager) {
 ';'
 
-            this.privacyManager.destroy() }
+            this.privacyManager.destroy();
 
         console.log('EnhancedAnalyticsManager, destroyed'); }
 

@@ -9,13 +9,13 @@
 import { jest  } from '@jest/globals';
 // Types
 interface BaseScores {
-    normal: number;
+    normal: number,
     stone: number;
-    iron: number;
+    iron: number,
     diamond: number;
-    boss: number;
+    boss: number,
     pink: number;
-    poison: number;
+    poison: number,
     spiky: number;
     [key: string]: number;
 interface BubbleConfig {
@@ -26,7 +26,7 @@ interface BubbleConfig {
 interface GameBalanceConfig {
     scoring: {
         baseScore,s: BaseScores;
-        [key: string]: any,,
+        [key: string]: any, };
     bubbles: {
         [key: string]: BubbleConfig;
     [key: string]: any;
@@ -90,6 +90,6 @@ describe('GameBalance Configuration Tests', (') => {'
                     expect(config.maxAge).toBeLessThanOrEqual(600000), // 10 minutes max
                 }
             }
-        };
+        }
     }
 }');'

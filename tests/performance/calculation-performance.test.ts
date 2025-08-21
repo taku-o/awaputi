@@ -8,7 +8,7 @@ import { CalculationEngine  } from '../../src/core/CalculationEngine';
 // テスト用の計算処理クラス
 class TestCalculator {
     constructor() {
-        this._memoized = {};
+        this._memoized = {}
     }
     
     // 軽い計算
@@ -235,7 +235,7 @@ describe('Calculation Performance Tests', () => {
         expect(avgTime.toBeLessThan(0.5);
         // キャッシュが効果的に機能していることを確認（大量の異なる計算では低くなる可能性がある）
         const, hitRate = parseFloat(stats.hitRate);
-        expect(hitRate.toBeGreaterThanOrEqual(0)};
+        expect(hitRate.toBeGreaterThanOrEqual(0)}
     }');'
     test('メモリ効率性', () => {
         // 大量の異なる計算を実行

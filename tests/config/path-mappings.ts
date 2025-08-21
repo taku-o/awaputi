@@ -9,7 +9,7 @@ export const PATH_CORRECTIONS = {
     'AchievementNotificationSystem': {
         oldPaths: [
             '../../src/core/AchievementNotificationSystem.js'
-        ],
+        ] };
         newPath: '../../src/core/achievements/AchievementNotificationSystem.js',
         description: 'AchievementNotificationSystem moved to achievements subdirectory during Phase G',
         phase: 'G'
@@ -19,7 +19,7 @@ export const PATH_CORRECTIONS = {
     'TestResultVisualizer': {
         oldPaths: [
             '../../src/utils/TestResultVisualizer.js'
-        ],
+        ] };
         newPath: '../../src/debug/TestResultVisualizer.js',
         description: 'TestResultVisualizer moved from utils to debug during file reorganization',
         phase: 'G'
@@ -28,7 +28,7 @@ export const PATH_CORRECTIONS = {
     'ErrorReporter': {
         oldPaths: [
             '../../src/utils/ErrorReporter.js'
-        ],
+        ] };
         newPath: '../../src/debug/ErrorReporter.js',
         description: 'ErrorReporter moved from utils to debug during file reorganization',
         phase: 'G'
@@ -39,7 +39,7 @@ export const PATH_CORRECTIONS = {
         oldPaths: [
             './AudioDescriptionManager.js',
             '../AudioDescriptionManager.js'
-        ],
+        ] };
         newPath: '../../src/audio/accessibility/AudioDescriptionManager.js',
         description: 'AudioDescriptionManager organized into audio/accessibility structure',
         phase: 'G'
@@ -49,7 +49,7 @@ export const PATH_CORRECTIONS = {
         oldPaths: [
             './AudioCueManager.js',
             '../AudioCueManager.js'
-        ],
+        ] };
         newPath: '../../src/audio/accessibility/AudioCueManager.js',
         description: 'AudioCueManager organized into audio/accessibility structure',
         phase: 'G'
@@ -59,7 +59,7 @@ export const PATH_CORRECTIONS = {
         oldPaths: [
             './AudioFeedbackManager.js',
             '../AudioFeedbackManager.js'
-        ],
+        ] };
         newPath: '../../src/audio/accessibility/AudioFeedbackManager.js',
         description: 'AudioFeedbackManager organized into audio/accessibility structure',
         phase: 'G'
@@ -69,7 +69,7 @@ export const PATH_CORRECTIONS = {
         oldPaths: [
             './AudioSettingsManager.js',
             '../AudioSettingsManager.js'
-        ],
+        ] };
         newPath: '../../src/audio/accessibility/AudioSettingsManager.js',
         description: 'AudioSettingsManager organized into audio/accessibility structure',
         phase: 'G'
@@ -79,7 +79,7 @@ export const PATH_CORRECTIONS = {
     'VisualFocusManager': {
         oldPaths: [
             '../../src/core/visual/focus/VisualFocusManager.js'
-        ],
+        ] };
         newPath: '../../src/core/VisualFocusManager.js',
         description: 'VisualFocusManager consolidated back to core during Phase G cleanup',
         phase: 'G'
@@ -88,7 +88,7 @@ export const PATH_CORRECTIONS = {
     'VisualFeedbackManager': {
         oldPaths: [
             '../../src/core/visual/feedback/VisualFeedbackManager.js'
-        ],
+        ] };
         newPath: '../../src/core/VisualFeedbackManager.js',
         description: 'VisualFeedbackManager consolidated back to core during Phase G cleanup',
         phase: 'G'
@@ -98,7 +98,7 @@ export const PATH_CORRECTIONS = {
     'HelpScene': {
         oldPaths: [
             '../../../src/scenes/HelpScene.js'
-        ],
+        ] };
         newPath: '../../../src/scenes/HelpScene.js',
         description: 'HelpScene path normalization for accessibility tests',
         phase: 'G'
@@ -107,7 +107,7 @@ export const PATH_CORRECTIONS = {
     'TutorialOverlay': {
         oldPaths: [
             '../../../src/core/help/TutorialOverlay.js'
-        ],
+        ] };
         newPath: '../../../src/core/help/TutorialOverlay.js',
         description: 'TutorialOverlay path normalization for accessibility tests',
         phase: 'G'
@@ -116,7 +116,7 @@ export const PATH_CORRECTIONS = {
     'TooltipSystem': {
         oldPaths: [
             '../../../src/core/help/TooltipSystem.js'
-        ],
+        ] };
         newPath: '../../../src/core/help/TooltipSystem.js',
         description: 'TooltipSystem path normalization for accessibility tests',
         phase: 'G'
@@ -126,7 +126,7 @@ export const PATH_CORRECTIONS = {
     'BalanceCalculator': {
         oldPaths: [
             './BalanceCalculator.js'
-        ],
+        ] };
         newPath: '../../../tools/balance/BalanceCalculator.js',
         description: 'BalanceCalculator moved to tools/balance during reorganization',
         phase: 'G'
@@ -135,7 +135,7 @@ export const PATH_CORRECTIONS = {
     'BalanceDataLoader': {
         oldPaths: [
             './BalanceDataLoader.js'
-        ],
+        ] };
         newPath: '../../../tools/balance/BalanceDataLoader.js',
         description: 'BalanceDataLoader moved to tools/balance during reorganization',
         phase: 'G'
@@ -144,7 +144,7 @@ export const PATH_CORRECTIONS = {
     'BalanceValidator': {
         oldPaths: [
             './BalanceValidator.js'
-        ],
+        ] };
         newPath: '../../../tools/balance/BalanceValidator.js',
         description: 'BalanceValidator moved to tools/balance during reorganization',
         phase: 'G'
@@ -153,7 +153,7 @@ export const PATH_CORRECTIONS = {
     'BalanceExporter': {
         oldPaths: [
             './BalanceExporter.js'
-        ],
+        ] };
         newPath: '../../../tools/balance/BalanceExporter.js',
         description: 'BalanceExporter moved to tools/balance during reorganization',
         phase: 'G'
@@ -166,21 +166,21 @@ export const PATH_CORRECTIONS = {
 export const COMMON_PATTERNS = {
     // utils → debug 移動パターン
     'utils_to_debug': {
-        pattern: /^(.*)\/src\/utils\/(.*\.js')$/,'
+        pattern: /^(.*)\/src\/utils\/(.*\.js')$/,' };
         replacement: '$1/src/debug/$2',
         description: 'Utils to debug directory migration'
     },
 
     // core サブディレクトリの統合パターン
     'core_consolidation': {
-        pattern: /^(.*)\/src\/core\/[^/]+\/([^/]+\.js')$/,'
+        pattern: /^(.*)\/src\/core\/[^/]+\/([^/]+\.js')$/,' };
         replacement: '$1/src/core/$2',
         description: 'Core subdirectory consolidation'
     },
 
     // accessibility 構造化パターン
     'accessibility_organization': {
-        pattern: /^(.*)\/([A-Z][a-zA-Z]*Manager\.js')$/,'
+        pattern: /^(.*)\/([A-Z][a-zA-Z]*Manager\.js')$/,' };
         replacement: '$1/src/audio/accessibility/$2',
         description: 'Accessibility component organization'
     }
@@ -246,7 +246,7 @@ export function detectPhaseGPattern(importPath {
                 pattern: pattern.name,
                 suggestedPath: pattern.suggestedPath(importPath,
                 description: `Phase G ${pattern.name} detected`
-            };
+            }
         }
     }
 

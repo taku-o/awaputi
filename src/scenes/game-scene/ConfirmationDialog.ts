@@ -4,44 +4,39 @@
  */
 
 // Type definitions
-interface DialogConfig { title: string;
-    message: string;
-    confirmText: string;
+interface DialogConfig { title: string,
+    message: string,
+    confirmText: string,
     cancelText: string;
-
-interface DialogConfigs { giveUp: DialogConfig;
+    interface DialogConfigs { giveUp: DialogConfig,
     restart: DialogConfig;
-
-interface DialogState { visible: boolean;
-    type: keyof DialogConfigs | null;
-    onConfirm: (() => void) | null;
-    onCancel: (() => void) | null;
+    interface DialogState { visible: boolean,
+    type: keyof DialogConfigs | null,
+    onConfirm: (() => void) | null,
+    onCancel: (() => void) | null,
     hoveredButton: 'confirm' | 'cancel' | null }
 
-    lastMousePosition: { x: number,, y: number,,''
-    focusedButton: 'confirm' | 'cancel',
+    lastMousePosition: { x: number, y: number,''
+    focusedButton: 'confirm' | 'cancel';
 }
 
-interface ButtonLayout { x: number;
-    y: number;
-    width: number;
+interface ButtonLayout { x: number,
+    y: number,
+    width: number,
     height: number;
-
-interface DialogLayout { width: number;
-    height: number;
-    buttonWidth: number;
-    buttonHeight: number;
-    buttonSpacing: number;
+    interface DialogLayout { width: number,
+    height: number,
+    buttonWidth: number,
+    buttonHeight: number,
+    buttonSpacing: number,
     padding: number;
     x?: number;
     y?: number;
     confirmButton?: ButtonLayout;
     cancelButton?: ButtonLayout;
-
-interface GameEngine {
+    interface GameEngine {
     canvas: HTMLCanvasElement;
-
-export class ConfirmationDialog {
+    export class ConfirmationDialog {
     private gameEngine: GameEngine;
     private dialogConfig: DialogConfigs;
     private dialogState: DialogState;
@@ -52,36 +47,36 @@ export class ConfirmationDialog {
         
         // ダイアログ設定
         this.dialogConfig = {
-            giveUp: {''
-                title: '確認';
-                message: 'ゲームを終了しますか？';
-                confirmText: 'はい' }
+            giveUp: { ''
+                title: '確認'  ,
+                message: 'ゲームを終了しますか？,
+    confirmText: 'はい' }
 
                 cancelText: 'いいえ' 
     };
             restart: { ''
-                title: '確認';
-                message: 'ゲームを再開始しますか？';
-                confirmText: 'はい';
+                title: '確認'  ,
+                message: 'ゲームを再開始しますか？,
+                confirmText: 'はい,
                 cancelText: 'いいえ'
             }
         };
         // ダイアログ状態
-        this.dialogState = { visible: false;
-            type: null;
-            onConfirm: null;
-            onCancel: null;
-    hoveredButton: null;
-            lastMousePosition: { x: 0, y: 0  },''
+        this.dialogState = { visible: false,
+            type: null,
+            onConfirm: null,
+            onCancel: null,
+    hoveredButton: null,
+            lastMousePosition: { x: 0, y: 0  ,''
             focusedButton: 'cancel'  // デフォルトでキャンセルボタンにフォーカス;
         },
         
         // ダイアログのサイズと位置
-        this.dialogLayout = { width: 400;
-            height: 200;
-            buttonWidth: 100;
-            buttonHeight: 40;
-            buttonSpacing: 20;
+        this.dialogLayout = { width: 400,
+            height: 200,
+            buttonWidth: 100,
+            buttonHeight: 40,
+            buttonSpacing: 20,
     padding: 20  };
         this.updateDialogPosition();
     }
@@ -104,7 +99,7 @@ export class ConfirmationDialog {
             x: buttonStartX,
             y: buttonY,
             width: this.dialogLayout.buttonWidth,
-    height: this.dialogLayout.buttonHeight },
+    height: this.dialogLayout.buttonHeight };
         this.dialogLayout.cancelButton = { x: buttonStartX + this.dialogLayout.buttonWidth + this.dialogLayout.buttonSpacing,
             y: buttonY,
             width: this.dialogLayout.buttonWidth,
@@ -156,7 +151,7 @@ export class ConfirmationDialog {
                 // Enterキーで確認
         }
 
-                this.executeConfirm() }
+                this.executeConfirm();
 
             } else if(key === 'Escape' { // Escapeキーでキャンセル'
                 this.executeCancel();
@@ -170,14 +165,14 @@ export class ConfirmationDialog {
             case 'Tab':,
                 // タブキーでボタン間を移動
                 this.dialogState.focusedButton = ','
-                    this.dialogState.focusedButton === 'confirm' ? 'cancel' : 'confirm',
+                    this.dialogState.focusedButton === 'confirm' ? 'cancel' : 'confirm,
                 event.preventDefault('''
             case 'Enter': ','
             case ', ':  // スペースキー','
                 // フォーカスされているボタンを実行')'
                 if(this.dialogState.focusedButton === 'confirm' { }
                     this.executeConfirm(); }
-                } else { this.executeCancel() }
+                } else { this.executeCancel();
 
                 }''
                 event.preventDefault('';
@@ -201,7 +196,7 @@ export class ConfirmationDialog {
      * 確認ボタンの実行
      */
     private executeConfirm(): void { if (this.dialogState.onConfirm) {
-            this.dialogState.onConfirm() }
+            this.dialogState.onConfirm();
         this.hide();
     }
     
@@ -209,7 +204,7 @@ export class ConfirmationDialog {
      * キャンセルボタンの実行
      */
     private executeCancel(): void { if (this.dialogState.onCancel) {
-            this.dialogState.onCancel() }
+            this.dialogState.onCancel();
         this.hide();
     }
     
@@ -279,7 +274,7 @@ export class ConfirmationDialog {
         this.hide();
         if (callback) {
 
-            callback('',
+            callback(',
      * @param, buttonType - ボタンタイプ（'confirm' または 'cancel'）
      * @returns クリック判定結果'
      */''
@@ -341,8 +336,8 @@ export class ConfirmationDialog {
      * @param context - 描画コンテキスト
      */''
     private renderModalOverlay(context: CanvasRenderingContext2D): void { const canvas = this.gameEngine.canvas,
-        context.fillStyle = 'rgba(0, 0, 0, 0.7)',
-        context.fillRect(0, 0, canvas.width, canvas.height) }
+        context.fillStyle = 'rgba(0, 0, 0, 0.7),
+        context.fillRect(0, 0, canvas.width, canvas.height);
     
     /**
      * ダイアログボックスの描画
@@ -440,9 +435,9 @@ export class ConfirmationDialog {
      */
     private renderDialogButton('
         context: CanvasRenderingContext2D,
-        buttonType: 'confirm' | 'cancel',
+        buttonType: 'confirm' | 'cancel,
         text: string,
-        normalColor: string);
+        normalColor: string),
         borderColor: string','
     hoverColor: string';'
     '): void { ''
@@ -467,7 +462,7 @@ export class ConfirmationDialog {
         
         // キーボードフォーカス表示
         if (isFocused) { const focusOffset = 4,
-            context.save('',
+            context.save(',
             context.strokeStyle = '#007BFF', // アクセシブルな青色)
             context.lineWidth = 3)
             context.setLineDash([5, 3]), // 点線スタイル
@@ -478,11 +473,11 @@ export class ConfirmationDialog {
                 button.width + focusOffset * 2),
                 button.height + focusOffset * 2),
 
-            context.restore('',
-        context.fillStyle = '#FFFFFF',
-        context.font = 'bold, 16px Arial',
-        context.textAlign = 'center',
-        context.textBaseline = 'middle',
+            context.restore(',
+        context.fillStyle = '#FFFFFF,
+        context.font = 'bold, 16px Arial,
+        context.textAlign = 'center,
+        context.textBaseline = 'middle,
         
         const, textX = button.x + button.width / 2)
         const textY = button.y + button.height / 2 }

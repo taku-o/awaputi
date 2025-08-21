@@ -56,7 +56,7 @@ test.describe('ServiceWorker postMessage Fix', () => {
             window.swMessages = [],
             if ('serviceWorker' in navigator') {'
                 navigator.serviceWorker.addEventListener('message', event => {);
-                    window.swMessages.push(event.data) };
+                    window.swMessages.push(event.data) }
             }
         }');'
         
@@ -80,7 +80,7 @@ test.describe('ServiceWorker postMessage Fix', () => {
             window.swMessages = [],
             if ('serviceWorker' in navigator') {'
                 navigator.serviceWorker.addEventListener('message', event => {);
-                    window.swMessages.push(event.data) };
+                    window.swMessages.push(event.data) }
             }
         }');'
         
@@ -165,7 +165,7 @@ test.describe('ServiceWorker postMessage Fix', () => {
             error.includes('sw.js');
         
         expect(swRelatedErrors).toHaveLength(0);
-    };
+    }
 }');'
 
 test.describe('ServiceWorker HEAD Request Fix', () => {
@@ -235,7 +235,7 @@ test.describe('ServiceWorker HEAD Request Fix', () => {
             networkRequests.push({);
                 url: request.url(
                 method: request.method(},
-            };
+            }
         }');'
         
         page.on('console', msg => {);
@@ -315,5 +315,5 @@ test.describe('ServiceWorker HEAD Request Fix', () => {
         // GETリクエスト関連のエラーがないことを確認
         const getCacheErrors = consoleErrors.filter(error => '),'
             error.includes('キャッシュ保存エラー') && !error.includes('HEAD');
-        expect(getCacheErrors).toHaveLength(0) };
+        expect(getCacheErrors).toHaveLength(0) }
 }');'

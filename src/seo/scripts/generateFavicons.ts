@@ -6,28 +6,25 @@
 import { FaviconManager  } from '../FaviconManager.js';
 import { seoLogger  } from '../SEOLogger.js';
 
-interface FaviconResult { filename: string;
-    size: string;
-    type: string;
-    category: string;
+interface FaviconResult { filename: string,
+    size: string,
+    type: string,
+    category: string,
     dataUrl: string;
-
-interface FaviconError { filename: string;
+    interface FaviconError { filename: string,
     error: string;
-
-interface GenerationResults { generated: FaviconResult[];
+    interface GenerationResults { generated: FaviconResult[],
     errors: FaviconError[];
-
-interface ValidationResult { isValid: boolean;
-    generatedCount: number;
-    issues: string[];
+    interface ValidationResult { isValid: boolean,
+    generatedCount: number,
+    issues: string[],
     warnings: string[];
 
 // Window オブジェクト拡張の型定義
 declare global { interface Window {
         generateAllFavicons?: () => Promise<GenerationResults>,
         generateFaviconCategory?: (category: string) => Promise<FaviconResult[]>;
-        generateFaviconPreview?: () => Promise<string>,  }
+    generateFaviconPreview?: () => Promise<string> }
 }
 
 /**
@@ -55,9 +52,9 @@ async function generateAllFavicons()';'
 
         }
 
-            console.log('\nGenerated, favicons: ') }
+            console.log('\nGenerated, favicons: ');
             results.generated.forEach(favicon => {});
-                console.log(`  ✓ ${favicon.filename} (${favicon.size}, ${favicon.type}`};
+                console.log(`  ✓ ${favicon.filename} (${favicon.size}, ${favicon.type}`}
             };
 
         }
@@ -65,8 +62,8 @@ async function generateAllFavicons()';'
         if (results.errors.length > 0) {
 
             console.log('\nErrors: ' }
-            results.errors.forEach(error => {) }
-                console.log(`  ✗ ${error.filename}: ${error.error}`};
+            results.errors.forEach(error => {);
+                console.log(`  ✗ ${error.filename}: ${error.error}`}
             };
         }
 
@@ -79,7 +76,7 @@ async function generateAllFavicons()';'
         // 検証結果
         const validation = faviconManager.validateFaviconSetup()';'
         console.log('\n=== Validation, Results ===);'
-        console.log(`Valid: ${ validation.isValid)`,
+        console.log(`Valid: ${ validation.isValid),
         console.log(`Generated, count: ${validation.generatedCount')`'
             },
 
@@ -87,7 +84,7 @@ async function generateAllFavicons()';'
 
         }
 
-            console.log('Issues: ') }
+            console.log('Issues: ');
             validation.issues.forEach(issue => console.log(`  ✗ ${issue}`}});
 
         }
@@ -103,14 +100,14 @@ async function generateAllFavicons()';'
         if(typeof, window !== 'undefined' && results.generated.length > 0' {'
 
             console.log('\n=== File, Save Options ===');
-            console.log('To save favicon files, you can: ',
+            console.log('To save favicon files, you can: ,
             console.log('1. Use, faviconManager.writeFaviconFiles(results.generated')'),'
             console.log('2. Or, manually download, using the, browser File, System Access, API');
             ','
             // ユーザーに保存オプションを提供
             const shouldSave = confirm('Would, you like, to save, favicon files, to your, system? ');
             if (shouldSave) {''
-                await faviconManager.writeFaviconFiles(results.generated) }
+                await faviconManager.writeFaviconFiles(results.generated);
 
                 console.log('Favicon, files saved, successfully!'); }'
 }
@@ -139,9 +136,9 @@ async function generateFaviconCategory(category: string): Promise<FaviconResult[
         const categoryFavicons = results.generated.filter(favicon => );
             favicon.category === category);
         
-        console.log(`Generated ${categoryFavicons.length} ${ category) favicons: `},
+        console.log(`Generated ${categoryFavicons.length} ${ category) favicons: ,
         categoryFavicons.forEach(favicon => {} }
-            console.log(`  ✓ ${favicon.filename}`};
+            console.log(`  ✓ ${favicon.filename}`}
         };
         
         faviconManager.cleanup();
@@ -173,9 +170,9 @@ async function generateFaviconPreview()';'
     <style>;
         body { font-family: Arial, sans-serif, margin: 20px }
         .favicon-grid { display: grid, grid-template-columns: repeat(auto-fill, minmax(200px, 1fr), gap: 20px }
-        .favicon-item { border: 1px solid #ddd,, padding: 15px, border-radius: 8px }
+        .favicon-item { border: 1px solid #ddd, padding: 15px, border-radius: 8px }
         .favicon-item img { max-width: 64px, max-height: 64px }
-        .favicon-info { margin-top: 10px, font-size: 12px,, color: #666 }
+        .favicon-info { margin-top: 10px, font-size: 12px, color: #666 }
         .category-header { color: #4CAF50, margin-top: 30px, border-bottom: 2px solid #4CAF50 }
     </style>;
 </head>;
@@ -216,7 +213,7 @@ async function generateFaviconPreview()';'
 
             const link = document.createElement('a');
             link.href = url,
-            link.download = 'favicon-preview.html',
+            link.download = 'favicon-preview.html,
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);

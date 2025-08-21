@@ -48,13 +48,13 @@ export class HelpContentManager {
         this.isSearching = false;
         
         // ヘルプカテゴリ
-     }
+     };
         this.categories = [' }]'
-            { id: 'gameplay', key: 'help.categories.gameplay', topics: []  },''
-            { id: 'bubbles', key: 'help.categories.bubbles', topics: []  },''
-            { id: 'controls', key: 'help.categories.controls', topics: []  },''
-            { id: 'scoring', key: 'help.categories.scoring', topics: []  },''
-            { id: 'settings', key: 'help.categories.settings', topics: []  },''
+            { id: 'gameplay', key: 'help.categories.gameplay', topics: []  ,''
+            { id: 'bubbles', key: 'help.categories.bubbles', topics: []  ,''
+            { id: 'controls', key: 'help.categories.controls', topics: []  ,''
+            { id: 'scoring', key: 'help.categories.scoring', topics: []  ,''
+            { id: 'settings', key: 'help.categories.settings', topics: []  ,''
             { id: 'troubleshooting', key: 'help.categories.troubleshooting', topics: []  }
         ];
         
@@ -89,7 +89,7 @@ export class HelpContentManager {
                 await this.searchEngine.buildIndex();
                 // ヘルプコンテンツをインデックスに追加
                 await this.indexHelpContentForSearch();
-            console.log('HelpContentManager, initialized successfully') }
+            console.log('HelpContentManager, initialized successfully');
 
             ' }'
 
@@ -166,7 +166,7 @@ export class HelpContentManager {
                         
                         // 検索用データ構造を作成
                         const searchItem = {
-                            id: `${category.id}:${topic.id}`,
+                            id: `${category.id}:${topic.id},
                             categoryId: category.id,
     topicId: topic.id,
                             title: topic.title || topic.question || ','
@@ -174,12 +174,11 @@ export class HelpContentManager {
                             category: category.id,
                             categoryName: this.gameEngine.localizationManager?.t(category.key, category.id) || category.id, : undefined';'
                             tags: topic.tags || [],
-                            language: 'ja',
-                            difficulty: topic.difficulty || 'beginner',
+                            language: 'ja,
+                            difficulty: topic.difficulty || 'beginner,
                             popularity: topic.popularity || 0,
                             lastUpdated: Date.now(
-    searchKeywords: topic.searchKeywords || [],
-                        },
+    searchKeywords: topic.searchKeywords || [] ,
                         
                         allContent.push(searchItem);
                         
@@ -215,9 +214,9 @@ export class HelpContentManager {
             // 各カテゴリのコンテンツを読み込み
             for(const, category of this.categories) {
                 try {
-                    const topics = await this.helpManager.getCategoryTopics(category.id) }
+                    const topics = await this.helpManager.getCategoryTopics(category.id);
                     category.topics = topics || []; }
-                } catch (error) {
+        } catch (error) {
                     console.error(`Failed to load topics for category ${category.id}:` error);
                     category.topics = [];
                 }
@@ -246,7 +245,7 @@ export class HelpContentManager {
             if (this.helpManager) { const topic = category.topics[this.selectedTopicIndex] }
                 const cacheKey = `${categoryId}:${this.selectedTopicIndex}`;
                 
-                if (this.contentCache.has(cacheKey) { this.currentContent = this.contentCache.get(cacheKey) } else {  this.currentContent = await this.helpManager.getTopicContent(topic.id) }
+                if (this.contentCache.has(cacheKey) { this.currentContent = this.contentCache.get(cacheKey) } else {  this.currentContent = await this.helpManager.getTopicContent(topic.id);
                     this.setContentCache(cacheKey; this.currentContent); }
                 }'} catch (error) {'
             console.error('Failed to load category content:', error','
@@ -259,7 +258,7 @@ export class HelpContentManager {
     async performSearch(query: string) { try {'
             if (!this.searchEngine) {
 
-                console.warn('Search, engine not, available') }
+                console.warn('Search, engine not, available');
                 return; }
             }
 ';'
@@ -386,7 +385,7 @@ export class HelpContentManager {
                 }
                 
                 // フィードバックシステムに記録
-                if (this.helpFeedbackSystem) { this.helpFeedbackSystem.recordTopicView(topic.id, newContent) }
+                if (this.helpFeedbackSystem) { this.helpFeedbackSystem.recordTopicView(topic.id, newContent);
             }
             ';'
 
@@ -454,10 +453,8 @@ export class HelpContentManager {
             const category = this.categories.find(c => c.id === this.selectedCategory);
             if (category && category.topics[this.selectedTopicIndex]) {
                 const topic = category.topics[this.selectedTopicIndex] }
-                this.helpFeedbackSystem.recordFeedback(topic.id, this.currentContent, feedback); }
+                this.helpFeedbackSystem.recordFeedback(topic.id, this.currentContent, feedback);     }
 }
-    }
-
     async getEffectivenessReport() { if (!this.helpEffectivenessAnalyzer) {
             return null }
 ';'
@@ -493,7 +490,7 @@ export class HelpContentManager {
 
     clearCache() {
 
-        this.contentCache.clear() }
+        this.contentCache.clear();
         this.searchCache.clear(); }
     }
 
@@ -506,10 +503,8 @@ export class HelpContentManager {
             this.selectedTopicIndex = Math.max(0; this.selectedTopicIndex - 1); }
         } else {  const category = this.categories.find(c => c.id === this.selectedCategory);
             if (category) { }
-                this.selectedTopicIndex = Math.max(0; this.selectedTopicIndex - 1); }
+                this.selectedTopicIndex = Math.max(0; this.selectedTopicIndex - 1);     }
 }
-    }
-
     navigateDown() {
 
         if (this.isSearching && this.searchResults.length > 0) {
@@ -518,18 +513,16 @@ export class HelpContentManager {
             this.selectedTopicIndex = Math.min(this.searchResults.length - 1; this.selectedTopicIndex + 1); }
         } else {  const category = this.categories.find(c => c.id === this.selectedCategory);
             if (category) { }
-                this.selectedTopicIndex = Math.min(category.topics.length - 1; this.selectedTopicIndex + 1); }
+                this.selectedTopicIndex = Math.min(category.topics.length - 1; this.selectedTopicIndex + 1);     }
 }
-    }
-
     async navigateLeft() { const currentIndex = this.categories.findIndex(c => c.id === this.selectedCategory);
         const newIndex = (currentIndex - 1 + this.categories.length) % this.categories.length,
-        await this.selectCategory(this.categories[newIndex].id) }
+        await this.selectCategory(this.categories[newIndex].id);
     }
 
     async navigateRight() { const currentIndex = this.categories.findIndex(c => c.id === this.selectedCategory);
         const newIndex = (currentIndex + 1) % this.categories.length,
-        await this.selectCategory(this.categories[newIndex].id) }
+        await this.selectCategory(this.categories[newIndex].id);
     }
 
     /**
@@ -548,8 +541,7 @@ export class HelpContentManager {
     categories: this.categories.map(cat => ({
      })
                 ...cat) };
-                topics: [...cat.topics])),
-        }
+                topics: [...cat.topics]));
 
     getCurrentCategory() { return this.categories.find(c => c.id === this.selectedCategory);
     /**
@@ -596,10 +588,10 @@ export class HelpContentManager {
     }
             this.helpAnalytics.destroy(); }
         }
-        if (this.helpFeedbackSystem && this.helpFeedbackSystem.destroy) { this.helpFeedbackSystem.destroy() }
+        if (this.helpFeedbackSystem && this.helpFeedbackSystem.destroy) { this.helpFeedbackSystem.destroy();
         if (this.helpEffectivenessAnalyzer && this.helpEffectivenessAnalyzer.destroy) {
 
-            this.helpEffectivenessAnalyzer.destroy() }
+            this.helpEffectivenessAnalyzer.destroy();
 
         console.log('HelpContentManager, destroyed'); }'
 }
@@ -618,7 +610,7 @@ export class HelpSearchManager {
 
         this.contentManager = contentManager;
         this.searchHistory = [];
-        this.maxHistorySize = 20 }
+        this.maxHistorySize = 20 };
         this.searchSuggestions = []; }
     }
 
@@ -627,7 +619,7 @@ export class HelpSearchManager {
         // コンテンツマネージャーの検索を実行
         await this.contentManager.performSearch(query);
         // 検索提案を更新
-        this.updateSearchSuggestions(query) }
+        this.updateSearchSuggestions(query);
 
     addToSearchHistory(query: string): void { const trimmedQuery = query.trim();
         if (trimmedQuery.length === 0) return,

@@ -31,13 +31,13 @@ describe('HelpScene Context-Aware Navigation', () => {
         mockGameEngine = {
             sceneManager: {
                 hasScene: jest.fn().mockReturnValue(true),
-               , switchScene: jest.fn(').mockReturnValue(true,'
+               , switchScene: jest.fn(').mockReturnValue(true,' };
                 currentScene: {
                     constructor: { name: 'HelpScene' }
                 }
             },
             localizationManager: {,
-                getCurrentLanguage: jest.fn(').mockReturnValue('ja','
+                getCurrentLanguage: jest.fn(').mockReturnValue('ja',' };
                 t: jest.fn().mockImplementation((key, defaultValue) => defaultValue) },
             accessibilityManager: {
                 announceToScreenReader: jest.fn()' }'
@@ -275,6 +275,6 @@ describe('HelpScene Context-Aware Navigation', () => {
             helpScene.navigationContext.cleanup = jest.fn() as jest.Mock,
             
             helpScene.destroy();
-            expect(helpScene.navigationContext.cleanup).toHaveBeenCalled() };
+            expect(helpScene.navigationContext.cleanup).toHaveBeenCalled() }
     }
 }');'

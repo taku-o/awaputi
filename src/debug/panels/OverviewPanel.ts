@@ -6,27 +6,19 @@ interface PerformanceStats { fps?: number,
     memoryUsage?: number;
     renderTime?: number;
     updateTime?: number;
-
-interface ParticleManager { getActiveParticleCount(): number;
-
-interface EffectManager { getActiveEffectCount(): number;
-
-interface BubbleManager { getActiveBubbleCount(): number;
-
-interface Achievement {
+    interface ParticleManager { getActiveParticleCount(): number;
+    interface EffectManager { getActiveEffectCount(): number;
+    interface BubbleManager { getActiveBubbleCount(): number;
+    interface Achievement {
     unlocked: boolean;
-
-interface AchievementManager { getAchievements(): Achievement[];
-
-interface GameEngine { performanceStats?: PerformanceStats,
+    interface AchievementManager { getAchievements(): Achievement[];
+    interface GameEngine { performanceStats?: PerformanceStats,
     enhancedParticleManager?: ParticleManager;
     enhancedEffectManager?: EffectManager;
     bubbleManager?: BubbleManager;
     achievementManager?: AchievementManager;
-
-interface DebugInterface { switchPanel(panelName: string): void;
-
-export class OverviewPanel {
+    interface DebugInterface { switchPanel(panelName: string): void;
+    export class OverviewPanel {
     private gameEngine: GameEngine;
     private debugInterface: DebugInterface;
     private element: HTMLElement | null = null;
@@ -35,7 +27,7 @@ export class OverviewPanel {
 
         this.gameEngine = gameEngine
 
-     }
+     };
         this.debugInterface = debugInterface; }
     }
 
@@ -43,39 +35,39 @@ export class OverviewPanel {
      * パネルを作成
      */
     create(): HTMLElement { this.element = document.createElement('div');
-        this.element.className = 'debug-overview-panel',
+        this.element.className = 'debug-overview-panel,
 
         this.element.innerHTML = `','
             <div class="overview-section">","
-                <h4>システム概要</h4>"",
-                <div id="system-status">"",
-                    <div>FPS: <span id="overview-fps">--</span></div>"",
-                    <div>メモリ: <span id="overview-memory">-- MB</span></div>"",
-                    <div>描画時間: <span id="overview-render">-- ms</span></div>"",
+                <h4>システム概要</h4>",
+                <div id="system-status">",
+                    <div>FPS: <span id="overview-fps">--</span></div>",
+                    <div>メモリ: <span id="overview-memory">-- MB</span></div>",
+                    <div>描画時間: <span id="overview-render">-- ms</span></div>",
                     <div>更新時間: <span id="overview-update">-- ms</span></div>,
                 </div>,
             </div>","
 
             <div class="overview-section">","
-                <h4>アクティブシステム</h4>"",
-                <div id="active-systems">"",
-                    <div>パーティクル: <span id="active-particles">--</span></div>"",
-                    <div>エフェクト: <span id="active-effects">--</span></div>"",
-                    <div>バブル: <span id="active-bubbles">--</span></div>"",
+                <h4>アクティブシステム</h4>",
+                <div id="active-systems">",
+                    <div>パーティクル: <span id="active-particles">--</span></div>",
+                    <div>エフェクト: <span id="active-effects">--</span></div>",
+                    <div>バブル: <span id="active-bubbles">--</span></div>",
                     <div>実績: <span id="active-achievements">--</span></div>,
                 </div>,
             </div>","
 
             <div class="overview-section">","
-                <h4>デバッグパネル</h4>"",
-                <div id="debug-panels">"",
-                    <button id="switch-performance">パフォーマンス</button>"",
-                    <button id="switch-console">コンソール</button>"",
-                    <button id="switch-error">エラー</button>"",
+                <h4>デバッグパネル</h4>",
+                <div id="debug-panels">",
+                    <button id="switch-performance">パフォーマンス</button>",
+                    <button id="switch-console">コンソール</button>",
+                    <button id="switch-error">エラー</button>",
                     <button id="switch-test">テスト</button>,
                 </div>,
             </div>,
-        `,
+        ,
 
         this.bindEvents();
         return this.element }
@@ -87,9 +79,9 @@ export class OverviewPanel {
         if (!this.element) return,
 
         // パネル切り替えボタン"
-        const buttons: Record<string, string> = {"", 'switch-performance': 'performance',
-            'switch-console': 'console',
-            'switch-error': 'error',
+        const buttons: Record<string, string> = {", 'switch-performance': 'performance',
+            'switch-console': 'console,
+            'switch-error': 'error,
             'switch-test': 'test' };
 
         Object.entries(buttons).forEach(([buttonId, panelName]) => {  }
@@ -98,10 +90,9 @@ export class OverviewPanel {
             if (button) {', ' }
 
                 button.addEventListener('click', () => {  }
-                    this.debugInterface.switchPanel(panelName); }
-                };
-            }
-        };
+                    this.debugInterface.switchPanel(panelName);     }
+}
+        }
     }
 
     /**
@@ -183,7 +174,7 @@ export class OverviewPanel {
         const achievements = this.gameEngine.achievementManager?.getAchievements() || [],
         const unlockedCount = achievements.filter(a => a.unlocked).length,' }'
 
-        this.setElementText('active-achievements', `${unlockedCount}/${achievements.length}`};
+        this.setElementText('active-achievements', `${unlockedCount}/${achievements.length}`}
     }
 
     /**

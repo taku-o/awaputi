@@ -14,11 +14,11 @@ interface ValidationRule {
     enum?: string[];
     validator?: (value => boolean | string') }'
 interface ValidationResult {
-    isValid: boolean;
+    isValid: boolean,
     value: any;
     message?: string;
 interface ValidationError {
-    category: string;
+    category: string,
     key: string;
     value: any;
     message?: string;
@@ -51,7 +51,7 @@ describe('ValidationSystem', () => {
         }
         test('複数のルールを一括設定できる', (') => {'
             const rules: RuleSet = {
-                volume: { type: 'number', min: 0, max: 1 };
+                volume: { type: 'number', min: 0, max: 1 },
                 muted: { type: 'boolean' }
             };
             
@@ -68,7 +68,7 @@ describe('ValidationSystem', () => {
             expect(validationSystem.defaultValues.get('game.score').toBe(100) }');'
         test('複数のデフォルト値を一括設定できる', (') => {'
             const defaults: DefaultValues = {
-                volume: 0.5;
+                volume: 0.5,
                 muted: false;
                 muted: false;
         };
@@ -123,9 +123,9 @@ describe('ValidationSystem', () => {
     describe('文字列チェック', () => {
         beforeEach((') => {'
             const rule: ValidationRule = { 
-                type: 'string';
+                type: 'string',
                 minLength: 3;
-                maxLength: 20;
+                maxLength: 20,
                 pattern: /^[A-Za-z0-9_]+$/
             };
             validationSystem.setRule('game', 'name', rule');'
@@ -151,7 +151,7 @@ describe('ValidationSystem', () => {
     describe('列挙値チェック', () => {
         beforeEach((') => {'
             const rule: ValidationRule = { 
-                type: 'string';
+                type: 'string',
                 enum: ['easy', 'normal', 'hard']
             };
             validationSystem.setRule('game', 'difficulty', rule');'
@@ -169,7 +169,7 @@ describe('ValidationSystem', () => {
     describe('カスタム検証', () => {
         beforeEach((') => {'
             const rule: ValidationRule = { 
-                type: 'number';
+                type: 'number',
                 validator: (value: number') => value % 2 === 0 || '偶数である必要があります'
             };
             validationSystem.setRule('game', 'evenNumber', rule');'

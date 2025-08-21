@@ -16,7 +16,7 @@ describe('StageSelectDataManager Keyboard Input Tests', () => {
         // Mock GameEngine
         mockGameEngine = {
             canvas: {
-                width: 1920,
+                width: 1920 },
                 height: 1080
             },
             stageManager: {
@@ -24,14 +24,14 @@ describe('StageSelectDataManager Keyboard Input Tests', () => {
                     { id: 'stage1', name: 'ステージ1', description: 'テストステージ1' },
                     { id: 'stage2', name: 'ステージ2', description: 'テストステージ2'
             };
-                ]),
+                ]) };
                 getLockedStages: jest.fn().mockReturnValue([')'
                     { id: 'stage3', name: 'ステージ3', description: 'テストステージ3', unlockMessage: 'ロック中' )
                 ]),
                 startStage: jest.fn(').mockReturnValue(true'
             },
             playerData: {
-                username: 'TestPlayer',
+                username: 'TestPlayer' },
                 ap: 100,
                 tap: 50
             },
@@ -41,7 +41,7 @@ describe('StageSelectDataManager Keyboard Input Tests', () => {
             gameEngine: mockGameEngine,
             sceneManager: {
                 switchScene: jest.fn().mockReturnValue(true
-            );
+            ) };
         
         // StageSelectDataManagerの初期化
         dataManager = new StageSelectDataManager(mockStageSelectScene);
@@ -124,7 +124,7 @@ describe('StageSelectDataManager Keyboard Input Tests', () => {
                 const keyEvent = { code: keyCode,);
                 const result = dataManager.handleStageKeyInput(keyEvent);
                 expect(result).toBe(false);
-            };
+            }
         }
     }');'
     describe('moveSelectionメソッドの動作確認', (') => {'
@@ -166,6 +166,6 @@ describe('StageSelectDataManager Keyboard Input Tests', () => {
             const spy = jest.spyOn(mockGameEngine.stageManager, 'getUnlockedStages');
             dataManager.updateStageList();
             expect(spy).toHaveBeenCalled();
-            spy.mockRestore() };
+            spy.mockRestore() }
     }
 }');'

@@ -4,67 +4,58 @@
  */
 
 // 型定義
-interface ValidationConfig { stabilityPeriod: number;
-    maxPerformanceDrop: number;
-    minFrameRate: number;
-    maxMemoryIncrease: number;
-    validationSamples: number;
+interface ValidationConfig { stabilityPeriod: number,
+    maxPerformanceDrop: number,
+    minFrameRate: number,
+    maxMemoryIncrease: number,
+    validationSamples: number,
     rollbackThreshold: number;
-
-interface BaselineMetrics { fps: number;
-    frameTime: number;
-    memoryUsage: number;
-    renderTime: number;
-    updateTime: number;
+    interface BaselineMetrics { fps: number,
+    frameTime: number,
+    memoryUsage: number,
+    renderTime: number,
+    updateTime: number,
     droppedFrames: number;
-
-interface CurrentMetrics extends BaselineMetrics { timestamp: number;
-
-interface ValidationSample { timestamp: number;
-    metrics: CurrentMetrics;
+    interface CurrentMetrics extends BaselineMetrics { timestamp: number;
+    interface ValidationSample { timestamp: number,
+    metrics: CurrentMetrics,
     sampleIndex: number;
-
-interface CurrentValidation { startTime: number;
+    interface CurrentValidation { startTime: number;
     endTime?: number;
     duration?: number;
-    adjustmentData: any;
-    samples: ValidationSample[];
-    phase: string;
+    adjustmentData: any,
+    samples: ValidationSample[],
+    phase: string,
     passed: boolean;
     result?: EvaluationResult;
-
-interface MonitoringResult { success: boolean;
+    interface MonitoringResult { success: boolean;
     reason?: string;
     samples?: ValidationSample[];
-
-interface AverageMetrics { fps: number;
-    frameTime: number;
-    memoryUsage: number;
-    renderTime: number;
-    updateTime: number;
+    interface AverageMetrics { fps: number,
+    frameTime: number,
+    memoryUsage: number,
+    renderTime: number,
+    updateTime: number,
     droppedFrames: number;
-
-interface ComparisonResult { fpsChange: number;
-    frameTimeChange: number;
-    memoryChange: number;
-    renderTimeChange: number;
-    updateTimeChange: number;
+    interface ComparisonResult { fpsChange: number,
+    frameTimeChange: number,
+    memoryChange: number,
+    renderTimeChange: number,
+    updateTimeChange: number,
     droppedFramesIncrease: number;
-
-interface StabilityEvaluation { fpsVariance: number;
-    frameTimeVariance: number;
-    fpsStability: number;
-    frameTimeStability: number;
+    interface StabilityEvaluation { fpsVariance: number,
+    frameTimeVariance: number,
+    fpsStability: number,
+    frameTimeStability: number,
     overallStability: number;
-
-interface EvaluationResult { passed: boolean;
+    interface EvaluationResult { passed: boolean;
     reason?: string;
     metrics: {
-        averag,e: AverageMetrics;
-        baseline: BaselineMetrics;
-        comparison: ComparisonResult;
-    stability: StabilityEvaluation;
-    recommendations: string[];
+        averag,e: AverageMetrics ,
+        baseline: BaselineMetrics,
+    comparison: ComparisonResult,
+    stability: StabilityEvaluation,
+    recommendations: string[],
     timestamp: number;
 }
 
@@ -75,11 +66,10 @@ interface ValidationResult { success: boolean;
     recommendations?: string[];
     duration?: number;
     timestamp?: number;
-
-interface ValidationStats { totalValidations: number;
-    passedValidations: number;
-    successRate: number;
-    averageDuration: number;
+    interface ValidationStats { totalValidations: number,
+    passedValidations: number,
+    successRate: number,
+    averageDuration: number,
     lastValidation: CurrentValidation | null  }
 
 export class QualityValidationManager {
@@ -99,7 +89,7 @@ export class QualityValidationManager {
             minFrameRate: 20,           // 最小フレームレート;
             maxMemoryIncrease: 0.5,     // 最大メモリ増加率（50%）;
             validationSamples: 10,      // 検証サンプル数
-    }
+    };
             rollbackThreshold: 0.7      // ロールバック閾値（70%失敗で実行） 
     };
         // 検証状態
@@ -131,7 +121,7 @@ export class QualityValidationManager {
 
             this.currentValidation = {;
                 startTime: Date.now('''
-                phase: 'monitoring',
+                phase: 'monitoring,
     passed: false,)', ')';'
             console.log('[QualityValidationManager] 品質検証開始);'
             
@@ -148,21 +138,21 @@ export class QualityValidationManager {
             this.validationResults.push({ ...this.currentValidation );
             if (this.validationResults.length > 50) { }
 
-                this.validationResults.shift() }
+                this.validationResults.shift();
 
             console.log(`[QualityValidationManager] 品質検証完了: ${evaluationResult.passed ? '成功' : '失敗}`};'
             
             return { success: true,
                 passed: evaluationResult.passed,
                 metrics: evaluationResult.metrics,
-    recommendations: evaluationResult.recommendations },
+    recommendations: evaluationResult.recommendations };
                 duration: this.currentValidation.duration 
     } catch (error) {
             console.error('[QualityValidationManager] 検証エラー:', error);
             this.isValidating = false;
             this.clearValidationTimers();
             return { success: false,
-                reason: error instanceof Error ? error.message : String(error) },
+                reason: error instanceof Error ? error.message : String(error) };
                 timestamp: Date.now(); 
     }
     }
@@ -181,7 +171,7 @@ export class QualityValidationManager {
                 // サンプルを記録
                 if (this.currentValidation) {
                     this.currentValidation.samples.push({);
-                        timestamp: Date.now() }
+                        timestamp: Date.now(),
                         metrics: currentMetrics,
                         sampleIndex: sampleCount;);
                 }
@@ -190,7 +180,7 @@ export class QualityValidationManager {
                 
                 // 全サンプル収集完了
                 if (sampleCount >= this.validationConfig.validationSamples) {
-                    clearInterval(samplingTimer) }
+                    clearInterval(samplingTimer);
                     resolve({ success: true, samples: this.currentValidation?.samples || []  }
             }, sampleInterval);
             
@@ -199,9 +189,9 @@ export class QualityValidationManager {
 
                 clearInterval(samplingTimer); : undefined', '
                 resolve({ success: false, reason: 'timeout'
-            };
+            }
             }, this.validationConfig.stabilityPeriod + 1000);
-        };
+        }
     }
     
     /**
@@ -210,11 +200,11 @@ export class QualityValidationManager {
      */
     collectCurrentMetrics(): CurrentMetrics { // 実際の指標収集（モック）
         return { fps: this.mockGetCurrentFPS(
-            frameTime: this.mockGetCurrentFrameTime();
-            memoryUsage: this.mockGetCurrentMemoryUsage();
-            renderTime: this.mockGetCurrentRenderTime();
+            frameTime: this.mockGetCurrentFrameTime(),
+            memoryUsage: this.mockGetCurrentMemoryUsage(),
+            renderTime: this.mockGetCurrentRenderTime(),
             updateTime: this.mockGetCurrentUpdateTime(
-    droppedFrames: this.mockGetDroppedFrames() },
+    droppedFrames: this.mockGetDroppedFrames() };
             timestamp: Date.now(); 
     }
     
@@ -233,10 +223,10 @@ export class QualityValidationManager {
 
                 metrics: {},''
                 recommendations: ['検証サンプルが不足しています],'
-    average: { fps: 0, frameTime: 0, memoryUsage: 0, dropFrameCount: 0  },
-                baseline: { fps: 0, frameTime: 0, memoryUsage: 0, dropFrameCount: 0  },
+    average: { fps: 0, frameTime: 0, memoryUsage: 0, dropFrameCount: 0  ,
+                baseline: { fps: 0, frameTime: 0, memoryUsage: 0, dropFrameCount: 0  ,
 
-                comparison: { fpsImprovement: 0, memoryReduction: 0, stabilityScore: 0  },''
+                comparison: { fpsImprovement: 0, memoryReduction: 0, stabilityScore: 0  ,''
                 stability: { isStable: false, variance: 0, trend: 'unknown'
             }
         
@@ -258,9 +248,9 @@ export class QualityValidationManager {
         return { passed: overallPassed,
             metrics: {  },
                 average: avgMetrics,
-                baseline: this.baselineMetrics || { fps: 0, frameTime: 0, memoryUsage: 0, dropFrameCount: 0  },
+                baseline: this.baselineMetrics || { fps: 0, frameTime: 0, memoryUsage: 0, dropFrameCount: 0  ,
                 comparison: comparison,
-    stability: stability,
+    stability: stability;
             },
             recommendations: recommendations,
     timestamp: Date.now();
@@ -275,10 +265,10 @@ export class QualityValidationManager {
         const _count = metrics.length,
         
         return { fps: this.calculateAverage(metrics.map(m => m.fps,
-            frameTime: this.calculateAverage(metrics.map(m => m.frameTime);
-            memoryUsage: this.calculateAverage(metrics.map(m => m.memoryUsage);
-            renderTime: this.calculateAverage(metrics.map(m => m.renderTime);
-            updateTime: this.calculateAverage(metrics.map(m = > m.updateTime)  },
+            frameTime: this.calculateAverage(metrics.map(m => m.frameTime),
+            memoryUsage: this.calculateAverage(metrics.map(m => m.memoryUsage),
+            renderTime: this.calculateAverage(metrics.map(m => m.renderTime),
+            updateTime: this.calculateAverage(metrics.map(m = > m.updateTime)  };
             droppedFrames: this.calculateSum(metrics.map(m => m.droppedFrames); 
     }
     
@@ -288,13 +278,13 @@ export class QualityValidationManager {
      * @returns {Object} 比較結果
      */
     compareWithBaseline(avgMetrics: AverageMetrics): ComparisonResult { const baseline = this.baselineMetrics || {
-            fps: 60, frameTime: 16.67, memoryUsage: 100, renderTime: 5, updateTime: 5, droppedFrames: 0  },
+            fps: 60, frameTime: 16.67, memoryUsage: 100, renderTime: 5, updateTime: 5, droppedFrames: 0  ,
         
         return { fpsChange: baseline.fps !== 0 ? (avgMetrics.fps - baseline.fps) / baseline.fps : 0,
             frameTimeChange: baseline.frameTime !== 0 ? (avgMetrics.frameTime - baseline.frameTime) / baseline.frameTime : 0,
             memoryChange: baseline.memoryUsage !== 0 ? (avgMetrics.memoryUsage - baseline.memoryUsage) / baseline.memoryUsage : 0,
             renderTimeChange: baseline.renderTime !== 0 ? (avgMetrics.renderTime - baseline.renderTime) / baseline.renderTime : 0,
-    updateTimeChange: baseline.updateTime !== 0 ? (avgMetrics.updateTime - baseline.updateTime) / baseline.updateTime : 0 },
+    updateTimeChange: baseline.updateTime !== 0 ? (avgMetrics.updateTime - baseline.updateTime) / baseline.updateTime : 0 };
             droppedFramesIncrease: avgMetrics.droppedFrames - baseline.droppedFrames 
     }
     
@@ -306,9 +296,9 @@ export class QualityValidationManager {
     evaluateStability(samples: ValidationSample[]): StabilityEvaluation { const fpsValues = samples.map(s => s.metrics.fps);
         const frameTimeValues = samples.map(s => s.metrics.frameTime);
         return { fpsVariance: this.calculateVariance(fpsValues,
-            frameTimeVariance: this.calculateVariance(frameTimeValues);
+            frameTimeVariance: this.calculateVariance(frameTimeValues),
             fpsStability: this.calculateStabilityScore(fpsValues,
-    frameTimeStability: this.calculateStabilityScore(frameTimeValues) },
+    frameTimeStability: this.calculateStabilityScore(frameTimeValues) };
             overallStability: this.calculateOverallStability(samples); 
     }
     
@@ -430,7 +420,7 @@ export class QualityValidationManager {
         
         if (this.stabilityTimer) {
         
-            clearTimeout(this.stabilityTimer) }
+            clearTimeout(this.stabilityTimer);
             this.stabilityTimer = null; }
 }
     
@@ -460,7 +450,7 @@ export class QualityValidationManager {
             return { totalValidations: 0,
                 passedValidations: 0,
                 successRate: 0,
-    averageDuration: 0 },
+    averageDuration: 0 ,
                 lastValidation: null,
         
         const total = this.validationResults.length;
@@ -473,7 +463,7 @@ export class QualityValidationManager {
         return { totalValidations: total,
             passedValidations: passed,
             successRate: (passed / total) * 100,
-    averageDuration: Math.round(avgDuration) },
+    averageDuration: Math.round(avgDuration) ,
             lastValidation: this.validationResults[this.validationResults.length - 1] 
     }
     

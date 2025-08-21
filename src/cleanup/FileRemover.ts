@@ -1,61 +1,56 @@
 import fs from 'fs';
 import path from 'path';
 
-interface BackupRecord { originalPath: string;
-    backupPath: string | null;
-    fileName: string;
-    fileSize: number;
-    lastModified: Date | null;
-    backupTimestamp: string;
-    backupCreated: boolean;
+interface BackupRecord { originalPath: string,
+    backupPath: string | null,
+    fileName: string,
+    fileSize: number,
+    lastModified: Date | null,
+    backupTimestamp: string,
+    backupCreated: boolean,
     error: string | null  }
 
-interface RemovalResult { deleted: boolean;
-    error: string | null;
+interface RemovalResult { deleted: boolean,
+    error: string | null,
     timestamp: string;
-
-interface VerificationResult { verified: boolean;
+    interface VerificationResult { verified: boolean,
     error: string | null }
 
-interface RollbackResult { rolledBack: boolean;
+interface RollbackResult { rolledBack: boolean,
     error: string | null;
     restoredPath?: string;
-
-interface SafeRemovalResult { filePath: string;
-    deleted: boolean;
-    backupCreated: boolean;
-    verified: boolean;
-    error: string | null;
-    timestamp: string;
-    backupRecord: BackupRecord | null;
-    removalResult: RemovalResult | null;
+    interface SafeRemovalResult { filePath: string,
+    deleted: boolean,
+    backupCreated: boolean,
+    verified: boolean,
+    error: string | null,
+    timestamp: string,
+    backupRecord: BackupRecord | null,
+    removalResult: RemovalResult | null,
     verificationResult: VerificationResult | null;
     rollbackResult?: RollbackResult;
-
-export interface DeletionResults { results: SafeRemovalResult[];
-    totalFiles: number;
-    successCount: number;
-    failureCount: number;
+    export interface DeletionResults { results: SafeRemovalResult[],
+    totalFiles: number,
+    successCount: number,
+    failureCount: number,
     timestamp: string;
-
-interface BackupCleanupResult { cleanedCount: number;
+    interface BackupCleanupResult { cleanedCount: number,
     totalOld: number;
     cutoffDate?: string;
     error?: string;
-
-export class FileRemover {
+    export class FileRemover {
     private backupDirectory: string;
     constructor() {
 ','
 
-        this.backupDirectory = path.join(process.cwd(), '.cleanup-backups') }
+        this.backupDirectory = path.join(process.cwd(), '.cleanup-backups') };
         this.ensureBackupDirectory(); }
     }
 
     private async ensureBackupDirectory(): Promise<void> { try {
             await fs.promises.mkdir(this.backupDirectory, { recursive: true ),' }'
 
-        } catch (error) { const errorMessage = error instanceof Error ? error.message: 'Unknown error',
+        } catch (error) { const errorMessage = error instanceof Error ? error.message: 'Unknown error,
 
             console.error('Error creating backup directory:', errorMessage }
     }
@@ -63,7 +58,7 @@ export class FileRemover {
 
     async createBackupRecord(filePath: string): Promise<BackupRecord> { ''
         const timestamp = new Date().toISOString().replace(/[:.]/g, '-),'
-        const fileName = path.basename(filePath) }
+        const fileName = path.basename(filePath);
         const backupFileName = `${timestamp}_${fileName}.backup`;
         const backupPath = path.join(this.backupDirectory, backupFileName);
 
@@ -71,27 +66,27 @@ export class FileRemover {
             await fs.promises.copyFile(filePath, backupPath);
             const stats = await fs.promises.stat(filePath);
             const backupRecord: BackupRecord = {
-                originalPath: filePath,
+                originalPath: filePath;
                 backupPath,
                 fileName,
                 fileSize: stats.size,
                 lastModified: stats.mtime,
                 backupTimestamp: new Date().toISOString(),
                 backupCreated: true,
-    error: null,
+    error: null;
             // Save backup metadata
             const metadataPath = path.join(this.backupDirectory, `${timestamp}_${ fileName}.meta.json`}
             await fs.promises.writeFile(metadataPath, JSON.stringify(backupRecord, null, 2)};
 ';'
 
             return backupRecord;} catch (error) {
-            const errorMessage = error instanceof Error ? error.message: 'Unknown error',
+            const errorMessage = error instanceof Error ? error.message: 'Unknown error,
             return { originalPath: filePath,
                 backupPath: null,
-                fileName: path.basename(filePath);
+                fileName: path.basename(filePath),
                 fileSize: 0,
                 lastModified: null,
-    backupTimestamp: new Date().toISOString() },
+    backupTimestamp: new Date().toISOString() };
                 backupCreated: false,
                 error: `Failed to create, backup: ${errorMessage}`
             }
@@ -103,10 +98,10 @@ export class FileRemover {
                 error: null,
                 timestamp: new Date().toISOString();
     };'} catch (error) {'
-            const errorMessage = error instanceof Error ? error.message: 'Unknown error',
+            const errorMessage = error instanceof Error ? error.message: 'Unknown error,
             return {  };
                 deleted: false,
-                error: `Failed to delete, file: ${errorMessage}`,
+                error: `Failed to delete, file: ${errorMessage},
                 timestamp: new Date().toISOString();
     }
 ';'
@@ -122,7 +117,7 @@ export class FileRemover {
             
                     verified: true,
                     error: null,''
-            const errorMessage = error instanceof Error ? error.message: 'Unknown error',
+            const errorMessage = error instanceof Error ? error.message: 'Unknown error,
             return { verified: false, 
                 error: `Error verifying, removal: ${errorMessage }`
             };
@@ -143,7 +138,7 @@ export class FileRemover {
                 error: null,
                 restoredPath: backupRecord.originalPath 
     };'} catch (error) {'
-            const errorMessage = error instanceof Error ? error.message: 'Unknown error',
+            const errorMessage = error instanceof Error ? error.message: 'Unknown error,
             return {  };
                 rolledBack: false,
                 error: `Failed to, rollback: ${errorMessage}`
@@ -156,17 +151,17 @@ export class FileRemover {
             backupCreated: false,
             verified: false,
             error: null,
-            timestamp: new Date().toISOString();
+            timestamp: new Date().toISOString(),
             backupRecord: null,
             removalResult: null,
-    verificationResult: null,
+    verificationResult: null;
         try { // Step 1: Create backup
             const backupRecord = await this.createBackupRecord(filePath);
             result.backupRecord = backupRecord,
             result.backupCreated = backupRecord.backupCreated,
 
             if (!backupRecord.backupCreated) { }
-                result.error = `Backup failed: ${backupRecord.error}`,
+                result.error = `Backup failed: ${backupRecord.error},
                 return result;
             }
 
@@ -178,7 +173,7 @@ export class FileRemover {
             if (!removalResult.deleted) {
     
 }
-                result.error = `Deletion failed: ${removalResult.error}`,
+                result.error = `Deletion failed: ${removalResult.error},
                 return result;
             }
 
@@ -190,13 +185,12 @@ export class FileRemover {
             if (!verificationResult.verified) {
     
 }
-                result.error = `Verification failed: ${verificationResult.error}`,
+                result.error = `Verification failed: ${verificationResult.error},
                 // Attempt rollback
                 const rollbackResult = await this.rollbackIfNeeded(backupRecord);
                 result.rollbackResult = rollbackResult;'} catch (error) {'
             const errorMessage = error instanceof Error ? error.message: 'Unknown error' 
-            result.error = `Unexpected error during, removal: ${errorMessage}`,
-        }
+            result.error = `Unexpected error during, removal: ${errorMessage}` }
 
         return result;
     }
@@ -217,7 +211,7 @@ export class FileRemover {
         }
 
         return { results,
-            totalFiles: filePaths.length,
+            totalFiles: filePaths.length;
             successCount,
             failureCount };
             timestamp: new Date().toISOString(); 
@@ -235,7 +229,7 @@ export class FileRemover {
                     const content = await fs.promises.readFile(metaPath, 'utf8),'
                     const metadata = JSON.parse(content) as BackupRecord }
                     backups.push(metadata); }
-                } catch (error) {
+        } catch (error) {
                     console.error(`Error reading backup metadata ${metaFile}:`, error);
                 }
             }
@@ -264,7 +258,7 @@ export class FileRemover {
                     }
 
                     const metaFile = backup.backupPath + '.meta.json';
-                    if (await, this.fileExists(metaFile) { await fs.promises.unlink(metaFile) }
+                    if (await, this.fileExists(metaFile) { await fs.promises.unlink(metaFile);
                     
                     cleanedCount++;
                 } catch (error) {
@@ -273,12 +267,11 @@ export class FileRemover {
             }
 
             return { cleanedCount,
-                totalOld: oldBackups.length },
+                totalOld: oldBackups.length };
                 cutoffDate: cutoffDate.toISOString(); 
     };'} catch (error) { const errorMessage = error instanceof Error ? error.message: 'Unknown error','
             console.error('Error cleaning old backups:', error }
-            return { cleanedCount: 0, totalOld: 0, error: errorMessage,
-    }
+            return { cleanedCount: 0, totalOld: 0, error: errorMessage }
 ';'
 
     async fileExists(filePath: string): Promise<boolean> { try {'

@@ -179,7 +179,7 @@ const mockIDBRequest = {
     bubbles: true,
     cancelable: true,
     ...options
-  };
+  }
 };
 
 // Helper function to create mock touch event
@@ -191,7 +191,7 @@ const mockIDBRequest = {
     bubbles: true,
     cancelable: true,
     ...options
-  };
+  }
 };
 
 // Helper function to advance time in tests
@@ -213,7 +213,7 @@ if (typeof afterAll !== 'undefined') {
             
             console.debug('[Setup] Global cleanup completed') } catch (error') {'
             console.error('[Setup] Global cleanup failed:', error) }
-    };
+    }
 }
 
 // Per-test cleanup (Issue #106 Task 4');'

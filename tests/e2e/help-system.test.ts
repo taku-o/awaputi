@@ -242,6 +242,6 @@ test.describe('Help System E2E Tests', () => {
             
             // Should handle rapid navigation smoothly
             expect(navigationTime).toBeLessThan(3000);
-        };
+        }
     }
 }');'

@@ -12,7 +12,7 @@ test.describe('Game Control Buttons Final Integration Tests', () => {
     // Navigate to the game
     await page.goto('/');
     // Wait for the game to initialize
-    await page.waitForSelector('canvas', { timeout: 10000 };
+    await page.waitForSelector('canvas', { timeout: 10000 }
   }');'
 
   test.describe('Complete User Workflows', (') => {'
@@ -147,7 +147,7 @@ test.describe('Game Control Buttons Final Integration Tests', () => {
       
       // Verify buttons still work after resume
       await expect(canvas).toBeVisible();
-    };
+    }
   }');'
 
   test.describe('Regression Testing', (') => {'
@@ -227,7 +227,7 @@ test.describe('Game Control Buttons Final Integration Tests', () => {
         return {
           loadTime: navigation.loadEventEnd - navigation.loadEventStart,
           domContentLoaded: navigation.domContentLoadedEventEnd - navigation.domContentLoadedEventStart
-        };
+        }
       }');'
       
       // Start the game
@@ -253,7 +253,7 @@ test.describe('Game Control Buttons Final Integration Tests', () => {
           }
           
           requestAnimationFrame(countFrames);
-        };
+        }
       }');'
       
       console.log('Performance metrics:', { initialPerformance, gamePerformance );
@@ -299,7 +299,7 @@ test.describe('Game Control Buttons Final Integration Tests', () => {
       
       // Verify game is still stable
       await expect(canvas).toBeVisible();
-    };
+    }
   }');'
 
   test.describe('Visual and Functional Verification', (') => {'
@@ -436,7 +436,7 @@ test.describe('Game Control Buttons Final Integration Tests', () => {
       
       // Verify smooth experience throughout
       await expect(canvas).toBeVisible();
-    };
+    }
   }');'
 
   test.describe('Final Quality Assurance', (') => {'
@@ -514,7 +514,7 @@ test.describe('Game Control Buttons Final Integration Tests', () => {
               resolve(frames) }
           }
           requestAnimationFrame(count);
-        };
+        }
       }');'
       acceptanceCriteria.performanceAcceptable = fps > 30;
       
@@ -538,7 +538,7 @@ test.describe('Game Control Buttons Final Integration Tests', () => {
         }'),'
         testStatus: 'PASSED',
         features: {
-          gameControlButtons: 'IMPLEMENTED',
+          gameControlButtons: 'IMPLEMENTED' },
           confirmationDialogs: 'IMPLEMENTED',
           keyboardNavigation: 'IMPLEMENTED',
           touchSupport: 'IMPLEMENTED',
@@ -547,7 +547,7 @@ test.describe('Game Control Buttons Final Integration Tests', () => {
           performance: 'VERIFIED'
         },
         coverage: {
-          unitTests: '49 test cases',
+          unitTests: '49 test cases' },
           integrationTests: '29 test cases',
           e2eTests: '20+ test cases',
           crossBrowserTests: '6 browsers',
@@ -565,6 +565,6 @@ test.describe('Game Control Buttons Final Integration Tests', () => {
         document.body.appendChild(report) }, testResults);
       
       expect(testResults.testStatus').toBe('PASSED');'
-    };
+    }
   };
 }');'

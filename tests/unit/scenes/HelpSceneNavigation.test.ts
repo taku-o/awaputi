@@ -17,7 +17,7 @@ interface EffectivenessReport {
     effectiveness: number;
     [key: string]: any;
 interface KeyEvent {
-    key: string;
+    key: string,
     preventDefault: jest.Mock<void, []> }
 // Mock SceneManager
 const mockSceneManager: MockSceneManager = {
@@ -42,7 +42,7 @@ class MockHelpEventManager {
 }
 // Mock HelpScene (essential parts);
 class MockHelpScene {
-    gameEngine: MockGameEngine | undefined;
+    gameEngine: MockGameEngine | undefined,
     helpEventManager: MockHelpEventManager;
     constructor() {
         this.gameEngine = mockGameEngine;
@@ -68,7 +68,7 @@ class MockHelpScene {
             this.showEffectivenessReport(report) }');'
         this.helpEventManager.setCallback('onSearchFocus', (') => {'
             // 検索フォーカス時の処理
-            console.log('Search bar focused') };
+            console.log('Search bar focused') }
     }
     showFeedbackDialog(data: FeedbackData'): void {'
         // Mock implementation

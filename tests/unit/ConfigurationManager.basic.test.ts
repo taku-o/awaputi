@@ -38,6 +38,6 @@ describe('ConfigurationManager', (') => {'
             const instance1 = getConfigurationManager();
             const instance2 = getConfigurationManager();
             expect(instance1).toBe(instance2);
-            expect(instance1).toBeInstanceOf(ConfigurationManager) };
+            expect(instance1).toBeInstanceOf(ConfigurationManager) }
     }
 }');'

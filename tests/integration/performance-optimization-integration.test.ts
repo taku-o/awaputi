@@ -25,10 +25,10 @@ describe('Performance Optimization Integration Tests', () => {
                 appendChild: jest.fn(
         remove: jest.fn(),
             head: {
-                appendChild: jest.fn(
+                appendChild: jest.fn( },
         removeChild: jest.fn( },
             body: {
-                appendChild: jest.fn(
+                appendChild: jest.fn( },
         removeChild: jest.fn( },
             querySelectorAll: jest.fn().mockReturnValue([],
             createDocumentFragment: jest.fn().mockReturnValue({,
@@ -44,9 +44,9 @@ describe('Performance Optimization Integration Tests', () => {
             requestAnimationFrame: jest.fn((cb) => setTimeout(cb, 16);
             cancelAnimationFrame: jest.fn(
             performance: {
-                now: jest.fn(() => Date.now(),
+                now: jest.fn(() => Date.now() },
                 memory: {
-                    usedJSHeapSize: 1000000,
+                    usedJSHeapSize: 1000000 },
                     totalJSHeapSize: 10000000,
         jsHeapSizeLimit: 100000000
             };
@@ -63,7 +63,7 @@ describe('Performance Optimization Integration Tests', () => {
         gc: jest.fn()' };'
         global.navigator = {
             connection: {
-                effectiveType: '4g',
+                effectiveType: '4g' },
                 downlink: 10,
                 rtt: 50
             }
@@ -76,7 +76,7 @@ describe('Performance Optimization Integration Tests', () => {
         debug: jest.fn( },
         mockDOM = {
             elements: []
-        };
+        }
     };
     afterEach(() => {
         localizationManager? .cleanup();
@@ -172,7 +172,7 @@ describe('Performance Optimization Integration Tests', () => {
             localizationManager.performanceMonitor.measureLanguageSwitch = jest.fn() as jest.Mock
                 .mockImplementation(async (from, to, callback) => {
                     const result = await callback();
-                    return { ...mockSwitchResult, result };
+                    return { ...mockSwitchResult, result }
                 };
             localizationManager.renderOptimizer.optimizeLanguageSwitch = jest.fn() as jest.Mock
                 .mockResolvedValue(mockRenderResult);
@@ -198,7 +198,7 @@ describe('Performance Optimization Integration Tests', () => {
             localizationManager.renderOptimizer.optimizeLanguageSwitch = jest.fn() as jest.Mock
                 .mockImplementation(async (from, to, callback) => {
                     const result = await callback(mockElement);
-                    return { success: true, renderTime: 50, result };
+                    return { success: true, renderTime: 50, result }
                 };
             localizationManager.loadFontsForLanguage = jest.fn().mockResolvedValue(true as jest.Mock');'
             await localizationManager.setLanguage('en');
@@ -289,7 +289,7 @@ describe('Performance Optimization Integration Tests', () => {
                 .mockImplementation(async (from, to, callback) => {
                     try {
                         const result = await callback();
-                        return { duration: 300, result };
+                        return { duration: 300, result }
                     } catch (error) {
                         throw error }
                 };
@@ -298,6 +298,6 @@ describe('Performance Optimization Integration Tests', () => {
             localizationManager.loadFontsForLanguage = jest.fn().mockResolvedValue(true as jest.Mock');'
             const result = await localizationManager.setLanguage('en');
             expect(result.toBe(false); // エラーによりfalseが返される
-        };
+        }
     }
 }');'

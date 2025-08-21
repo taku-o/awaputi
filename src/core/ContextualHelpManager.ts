@@ -5,25 +5,22 @@
 
 import { getErrorHandler  } from '../utils/ErrorHandler';
 
-export interface HelpContext { scene: string;
+export interface HelpContext { scene: string,
     component: string;
     action?: string;
     element?: HTMLElement;
-     }
-
-export interface HelpContent { title: string;
+     };
+export interface HelpContent { title: string,
     description: string;
     tips?: string[];
-    links?: Array<{ text: string,, url: string;>;
-}
-
-export interface HelpManagerConfig { enabled: boolean;
-    showTips: boolean;
-    autoShow: boolean;
-    delay: number;
+    links?: Array<{ text: string, url: string;>;
+};
+export interface HelpManagerConfig { enabled: boolean,
+    showTips: boolean,
+    autoShow: boolean,
+    delay: number,
     position: 'top' | 'bottom' | 'left' | 'right'
-            }
-
+            };
 export class ContextualHelpManager {
     private config: HelpManagerConfig;
     private currentContext: HelpContext | null = null;
@@ -31,17 +28,17 @@ export class ContextualHelpManager {
     private helpElement: HTMLElement | null = null;
     private, showTimer: NodeJS.Timeout | null = null','
 
-    constructor(config: Partial<HelpManagerConfig> = {)) {
+    constructor(config: Partial<HelpManagerConfig> = {) {
         this.config = {
-            enabled: true;
-            showTips: true;
-    autoShow: false;
-            delay: 1000;
+            enabled: true,
+            showTips: true,
+    autoShow: false,
+            delay: 1000,
             position: 'bottom';
             ...config,
 
         this.initialize()
-}
+};
 ';'
 
     private initialize(): void { this.loadHelpContent();
@@ -63,7 +60,7 @@ export class ContextualHelpManager {
     private setupEventListeners()';'
         if (typeof, window !== 'undefined') {
 
-            document.addEventListener('mouseover', this.handleMouseOver.bind(this)) }
+            document.addEventListener('mouseover', this.handleMouseOver.bind(this));
 
             document.addEventListener('mouseout', this.handleMouseOut.bind(this); }
 }
@@ -97,7 +94,7 @@ export class ContextualHelpManager {
 
         this.hideHelp()','
         this.helpElement = document.createElement('div');
-        this.helpElement.className = 'contextual-help-tooltip',
+        this.helpElement.className = 'contextual-help-tooltip,
 
         this.helpElement.innerHTML = `}'
 
@@ -112,7 +109,7 @@ export class ContextualHelpManager {
 
         document.body.appendChild(this.helpElement);
 
-        if (element) { this.positionHelp(element) }
+        if (element) { this.positionHelp(element);
     }
 
     private positionHelp(targetElement: HTMLElement): void { if (!this.helpElement) return,
@@ -159,7 +156,7 @@ export class ContextualHelpManager {
 
     setContext(context: HelpContext): void { this.currentContext = context }
 
-    addHelpContent(key: string, content: HelpContent): void { this.helpContent.set(key, content) }
+    addHelpContent(key: string, content: HelpContent): void { this.helpContent.set(key, content);
 
     updateConfig(newConfig: Partial<HelpManagerConfig>): void {
         this.config = { ...this.config, ...newConfig }
@@ -172,12 +169,10 @@ export class ContextualHelpManager {
 
         if (typeof, window !== 'undefined') {
 
-            document.removeEventListener('mouseover', this.handleMouseOver.bind(this)) }
+            document.removeEventListener('mouseover', this.handleMouseOver.bind(this));
 
-            document.removeEventListener('mouseout', this.handleMouseOut.bind(this); }
+            document.removeEventListener('mouseout', this.handleMouseOut.bind(this);     }
 }
-}
-
 // シングルトンインスタンス
 let instance: ContextualHelpManager | null = null,
 

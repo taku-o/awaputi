@@ -6,52 +6,52 @@ import { jest, describe, test, expect, beforeEach, afterEach } from '@jest/globa
 import { ScaledCoordinateManager } from '../../src/utils/ScaledCoordinateManager.js';
 // Canvas情報の型定義
 interface CanvasInfo {
-    scaleFactor: number;
+    scaleFactor: number,
     scale: number;
-    displayWidth: number;
+    displayWidth: number,
     displayHeight: number;
-    actualWidth: number;
+    actualWidth: number,
     actualHeight: number;
-    pixelRatio: number;
+    pixelRatio: number,
     baseWidth: number;
     baseHeight: number;
 // 座標の型定義
 interface Coordinates {
-    x: number;
+    x: number,
     y: number;
 // サイズの型定義
 interface Size {
-    width: number;
+    width: number,
     height: number;
 // ResponsiveCanvasManager のモック
 class MockResponsiveCanvasManager {
     mockCanvasInfo: CanvasInfo;
     constructor() {
         this.mockCanvasInfo = {
-            scaleFactor: 0.8;
+            scaleFactor: 0.8,
             scale: 0.8;
-            displayWidth: 640;
+            displayWidth: 640,
             displayHeight: 480;
-            actualWidth: 640;
+            actualWidth: 640,
             actualHeight: 480;
-            pixelRatio: 1;
+            pixelRatio: 1,
             baseWidth: 800;
             baseHeight: 600
-        };
+        }
     }
     
     getScaledCoordinates(x: number, y: number): Coordinates {
         return {
-            x: x * this.mockCanvasInfo.scale;
+            x: x * this.mockCanvasInfo.scale,
             y: y * this.mockCanvasInfo.scale
-        };
+        }
     }
     
     getScaledSize(width: number, height: number): Size {
         return {
-            width: width * this.mockCanvasInfo.scale;
+            width: width * this.mockCanvasInfo.scale,
             height: height * this.mockCanvasInfo.scale
-        };
+        }
     }
     
     getCanvasInfo('): CanvasInfo {'
@@ -257,6 +257,6 @@ describe('ScaledCoordinateManager', () => {
             const scaledPos = scaledCoordinateManager.getScaledPosition(baseX, baseY);
             const backToBase = scaledCoordinateManager.getBasePosition(scaledPos.x, scaledPos.y);
             expect(Math.abs(backToBase.x - baseX).toBeLessThan(0.001);
-            expect(Math.abs(backToBase.y - baseY).toBeLessThan(0.001) };
+            expect(Math.abs(backToBase.y - baseY).toBeLessThan(0.001) }
     }
 }');'

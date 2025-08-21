@@ -1,45 +1,39 @@
 // インターフェース定義
-interface AccessibilitySettings { highContrast: boolean;
-    largeText: boolean;
+interface AccessibilitySettings { highContrast: boolean,
+    largeText: boolean,
     reducedMotion: boolean;
-
-interface StatisticsDisplaySettings { showDashboard: boolean;
-    showCharts: boolean;
-    showDetailedStats: boolean;
-    enableAnimations: boolean;
+    interface StatisticsDisplaySettings { showDashboard: boolean,
+    showCharts: boolean,
+    showDetailedStats: boolean,
+    enableAnimations: boolean,
     compactMode: boolean;
-
-interface LayoutSettings { tabHeight: number;
-    headerHeight: number;
-    contentPadding: number;
+    interface LayoutSettings { tabHeight: number,
+    headerHeight: number,
+    contentPadding: number,
     scrollbarWidth: number;
-
-interface UserPreferences { currentTab: string;
-    statisticsViewMode: string;
-    currentPeriodFilter: string;
-    statisticsDisplaySettings: StatisticsDisplaySettings;
+    interface UserPreferences { currentTab: string,
+    statisticsViewMode: string,
+    currentPeriodFilter: string,
+    statisticsDisplaySettings: StatisticsDisplaySettings,
     currentAchievementCategory: string;
-
-interface StateChange { key: string;
-    value: any;
+    interface StateChange { key: string,
+    value: any,
     oldValue: any;
-
-interface SerializedState { currentTab: string;
-    showingDialog: string | null;
-    currentAchievementCategory: string;
-    statisticsViewMode: string;
-    currentPeriodFilter: string;
-    statisticsDisplaySettings: StatisticsDisplaySettings;
-    accessibilitySettings: AccessibilitySettings;
-    scrollPosition: number;
-    selectedItem: number;
+    interface SerializedState { currentTab: string,
+    showingDialog: string | null,
+    currentAchievementCategory: string,
+    statisticsViewMode: string,
+    currentPeriodFilter: string,
+    statisticsDisplaySettings: StatisticsDisplaySettings,
+    accessibilitySettings: AccessibilitySettings,
+    scrollPosition: number,
+    selectedItem: number,
     focusedElement: number;
-
-type DialogType = 'username' | 'export' | 'import' | null;
-type ViewMode = 'dashboard' | 'charts' | 'details';
-type CacheType = 'statistics' | 'achievements' | 'user';
-type ChangeListener = (value: any, oldValue: any, key: string) => void;
-type UnsubscribeFunction = () => void;
+    type DialogType = 'username' | 'export' | 'import' | null;
+    type ViewMode = 'dashboard' | 'charts' | 'details';
+    type CacheType = 'statistics' | 'achievements' | 'user';
+    type ChangeListener = (value: any, oldValue: any, key: string) => void;
+    type UnsubscribeFunction = () => void;
 
 /**
  * UserInfoSceneの共有状態管理クラス
@@ -85,17 +79,16 @@ export class SceneState {
     public, layout: LayoutSettings;
     // 変更通知のためのイベントリスナー
     private changeListeners: Map<string, ChangeListener[]>;
-
     constructor(gameEngine: any) {
         this.gameEngine = gameEngine;
         ','
         // タブ状態管理
         this.currentTab = 'statistics';
-        this.tabs = ['statistics', 'achievements', 'leaderboard', 'challenges', 'management', 'help'],
+    this.tabs = ['statistics', 'achievements', 'leaderboard', 'challenges', 'management', 'help'],
         this.tabLabels = ['統計', '実績', 'ランキング', 'チャレンジ', '管理', 'ヘルプ],'
         
         // ダイアログ状態管理
-    }
+    };
         this.showingDialog = null; }
         this.dialogData = {};
         
@@ -115,7 +108,7 @@ export class SceneState {
             showCharts: true,
             showDetailedStats: true,
             enableAnimations: true,
-    compactMode: false,
+    compactMode: false;
         // データキャッシュ
         this.statisticsData = null;
         this.achievementsData = null;
@@ -124,7 +117,7 @@ export class SceneState {
         // アクセシビリティ設定
         this.accessibilitySettings = { highContrast: false,
             largeText: false,
-    reducedMotion: false,
+    reducedMotion: false;
         // エラー状態管理
         this.errorMessage = null;
         this.errorTimeout = null;
@@ -133,7 +126,7 @@ export class SceneState {
         this.layout = { tabHeight: 60,
             headerHeight: 120,
             contentPadding: 20,
-    scrollbarWidth: 16  },
+    scrollbarWidth: 16  };
         // 変更通知のためのイベントリスナー
         this.changeListeners = new Map();
         
@@ -145,14 +138,14 @@ export class SceneState {
      * 状態の初期化
      */
     initialize(): void { this.loadAccessibilitySettings();
-        this.loadUserPreferences() }
+        this.loadUserPreferences();
     
     /**
      * アクセシビリティ設定を読み込み
      */''
     loadAccessibilitySettings()';'
             const saved = localStorage.getItem('awaputi_accessibility_settings);'
-            if (saved) { const settings = JSON.parse(saved) }
+            if (saved) { const settings = JSON.parse(saved);
 
                 this.accessibilitySettings = { ...this.accessibilitySettings, ...settings,'} catch (error) { console.warn('Failed to load accessibility settings:', error }'
     }
@@ -177,7 +170,7 @@ export class SceneState {
                 if (preferences.statisticsDisplaySettings) {
                 
                     this.statisticsDisplaySettings = { 
-                        ...this.statisticsDisplaySettings,  }
+                        ...this.statisticsDisplaySettings }
                         ...preferences.statisticsDisplaySettings
                     }
                 
@@ -215,10 +208,10 @@ export class SceneState {
             this.setNestedValue(key, value); }
         } else { (this, as any)[key] = value }
         
-        if (notify && oldValue !== value) { this.notifyChange(key, value, oldValue) }
+        if (notify && oldValue !== value) { this.notifyChange(key, value, oldValue);
         
         // 特定の設定変更時に自動保存
-        if (this.shouldAutoSave(key) { this.saveUserPreferences() }
+        if (this.shouldAutoSave(key) { this.saveUserPreferences();
     }
     
     /**
@@ -235,13 +228,13 @@ export class SceneState {
             if (oldValue !== value) {
     
 }
-                changes.push({ key, value, oldValue ) }
+                changes.push({ key, value, oldValue );
         }
         
-        if (notify && changes.length > 0) { this.notifyBatchChange(changes) }
+        if (notify && changes.length > 0) { this.notifyBatchChange(changes);
         
         // バッチ更新後に自動保存チェック
-        if(changes.some(change => this.shouldAutoSave(change.key)) { this.saveUserPreferences() }
+        if(changes.some(change => this.shouldAutoSave(change.key)) { this.saveUserPreferences();
     }
     
     /**
@@ -251,19 +244,17 @@ export class SceneState {
      * @returns リスナー削除用の関数
      */
     onChange(key: string, listener: ChangeListener): UnsubscribeFunction { if (!this.changeListeners.has(key) {
-            this.changeListeners.set(key, []) }
+            this.changeListeners.set(key, []);
         
         this.changeListeners.get(key)!.push(listener);
         
         // リスナー削除用の関数を返す
         return () => {  const listeners = this.changeListeners.get(key);
             if (listeners) {
-                const index = listeners.indexOf(listener) }
+                const index = listeners.indexOf(listener);
                 if (index !== -1) { }
-                    listeners.splice(index, 1); }
+                    listeners.splice(index, 1);     }
 }
-        }
-    
     /**
      * エラー状態を設定
      * @param message - エラーメッセージ
@@ -343,16 +334,14 @@ export class SceneState {
 
                     listener(value, oldValue, key);' }'
 
-                } catch (error) { console.error('Error in state change listener:', error }
+                } catch (error) { console.error('Error in state change listener:', error     }
 }
-    }
-    
     /**
      * バッチ変更通知を送信
      * @param changes - 変更の配列
      */
     private notifyBatchChange(changes: StateChange[]): void { for (const change of changes) {
-            this.notifyChange(change.key, change.value, change.oldValue) }
+            this.notifyChange(change.key, change.value, change.oldValue);
     }
     
     /**
@@ -361,13 +350,13 @@ export class SceneState {
      * @returns 自動保存が必要な場合true'
      */''
     private shouldAutoSave(key: string): boolean { const autoSaveKeys = [', 'currentTab','
-            'statisticsViewMode',
-            'currentPeriodFilter',
+            'statisticsViewMode,
+            'currentPeriodFilter,
             'statisticsDisplaySettings',]','
             'currentAchievementCategory'],
         ],
 
-        return autoSaveKeys.some(autoKey => key === autoKey || key.startsWith(autoKey + '.',
+        return autoSaveKeys.some(autoKey => key === autoKey || key.startsWith(autoKey + '.,
     
     /**
      * データキャッシュをクリア
@@ -426,7 +415,7 @@ export class SceneState {
             statisticsDisplaySettings: this.statisticsDisplaySettings,
             accessibilitySettings: this.accessibilitySettings,
             scrollPosition: this.scrollPosition,
-    selectedItem: this.selectedItem },
+    selectedItem: this.selectedItem ,
             focusedElement: this.focusedElement 
     }
     

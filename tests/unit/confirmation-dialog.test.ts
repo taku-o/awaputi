@@ -7,63 +7,63 @@ import { describe, test, it, expect, beforeEach, jest  } from '@jest/globals';
 import { ConfirmationDialog  } from '../../src/scenes/game-scene/ConfirmationDialog.js';
 // モック用の型定義
 interface MockCanvas {
-    width: number;
+    width: number,
     height: number;
 interface MockGameEngine {
     canvas: MockCanvas;
 interface MockRenderingContext {
-    save: jest.Mock;
+    save: jest.Mock,
     restore: jest.Mock;
-    fillRect: jest.Mock;
+    fillRect: jest.Mock,
     strokeRect: jest.Mock;
-    fillText: jest.Mock;
+    fillText: jest.Mock,
     setLineDash: jest.Mock;
-    fillStyle: string;
+    fillStyle: string,
     strokeStyle: string;
-    lineWidth: number;
+    lineWidth: number,
     font: string;
-    textAlign: string;
+    textAlign: string,
     textBaseline: string;
-    shadowColor: string;
+    shadowColor: string,
     shadowOffsetX: number;
-    shadowOffsetY: number;
+    shadowOffsetY: number,
     shadowBlur: number;
 interface DialogLayout {
-    width: number;
+    width: number,
     height: number;
-    buttonWidth: number;
+    buttonWidth: number,
     buttonHeight: number;
     buttonSpacing: number;
     x?: number;
     y?: number;
     confirmButton: {
-        ,x: number;
+        ,x: number },
         y: number;
-        width: number;
+        width: number,
         height: number,,
     cancelButton: {
-        x: number;
+        x: number },
         y: number;
-        width: number;
+        width: number,
         height: number;
 }
 interface DialogState {
-    visible: boolean;
+    visible: boolean,
     type: string | null;
-    onConfirm: (() => void) | null;
+    onConfirm: (() => void) | null,
     onCancel: (() => void') | null;'
-    hoveredButton: string | null;
+    hoveredButton: string | null,
     focusedButton: string;
 interface DialogConfig {
     giveUp: {
-        titl,e: string;
+        titl,e: string },
         message: string;
-        confirmText: string;
+        confirmText: string,
         cancelText: string,,
     restart: {
-        title: string;
+        title: string },
         message: string;
-        confirmText: string;
+        confirmText: string,
         cancelText: string;
 }
 interface KeyboardEvent {
@@ -372,7 +372,7 @@ describe('ConfirmationDialog', () => {
                 shadowOffsetX: 0,
                 shadowOffsetY: 0,
                 shadowBlur: 0
-            };
+            }
         }');'
         it('should render when dialog is visible', (') => {'
             (confirmationDialog.show('giveUp', mockOnConfirm, mockOnCancel);
@@ -428,6 +428,6 @@ describe('ConfirmationDialog', () => {
             const state = (confirmationDialog.getDialogState() as DialogState),
             expect(state.type).toBeNull();
             expect(state.onConfirm).toBeNull();
-            expect(state.onCancel).toBeNull() };
+            expect(state.onCancel).toBeNull() }
     }
 }');'

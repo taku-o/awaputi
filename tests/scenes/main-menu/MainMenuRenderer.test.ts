@@ -190,6 +190,6 @@ describe('MainMenuRenderer', () => {
             expect(renderer.coordinateCalculator.canvasWidth).toBe(800);
             expect(renderer.coordinateCalculator.canvasHeight).toBe(600);
             expect(renderer.coordinateCalculator.uniformScale).toBeLessThan(1);
-        };
+        }
     }
 }');'

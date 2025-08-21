@@ -7,25 +7,25 @@ import { describe, test, expect, beforeEach, afterEach, jest } from '@jest/globa
 interface MockClient {
     postMessage: jest.Mock }
 interface MockClients {
-    matchAll: jest.Mock<() => Promise<MockClient[]>>;
+    matchAll: jest.Mock<() => Promise<MockClient[]>>,
     claim: jest.Mock }
 interface MockCaches {
-    open: jest.Mock;
+    open: jest.Mock,
     delete: jest.Mock;
-    keys: jest.Mock;
+    keys: jest.Mock,
     match: jest.Mock }
 interface MockRegistration {
     showNotification: jest.Mock }
 interface MockSelf {
-    addEventListener: jest.Mock;
+    addEventListener: jest.Mock,
     clients: MockClients;
-    skipWaiting: jest.Mock;
+    skipWaiting: jest.Mock,
     registration: MockRegistration;
 interface ServiceWorkerMessage {
-    type: string;
+    type: string,
     payload: Record<string, any> }
 interface MockConsole {
-    log: jest.SpiedFunction<typeof console.log>;
+    log: jest.SpiedFunction<typeof console.log>,
     error: jest.SpiedFunction<typeof console.error> }
 // グローバル型拡張
 declare global {
@@ -36,7 +36,7 @@ declare global {
 global.self = {
     addEventListener: jest.fn(
     clients: {
-        matchAll: jest.fn(
+        matchAll: jest.fn( },
         claim: jest.fn( },
     skipWaiting: jest.fn(
     registration: {
@@ -74,10 +74,10 @@ describe('Service Worker postMessage Fix', () => {
                 console.log(`[ServiceWorker] Sending message to ${clients.length) client(s):`, message.type),
                 clients.forEach(client => {
                     try {);
-                        client.postMessage(message};
+                        client.postMessage(message}
                     } catch (error') {'
                         console.error('[ServiceWorker] Failed to send message to client:', error) }
-                };
+                }
             } catch (error') {'
                 console.error('[ServiceWorker] Failed to get clients for messaging:', error) }
         };
@@ -152,7 +152,7 @@ describe('Service Worker postMessage Fix', () => {
             const cacheUpdateMessage: ServiceWorkerMessage = {
                 type: 'CACHE_UPDATED',
                 payload: {
-                    cached: 25,
+                    cached: 25 },
                     total: 30
                 }
             };
@@ -206,7 +206,7 @@ describe('Service Worker postMessage Fix', () => {
             expect(mockClients[2].postMessage).toHaveBeenCalled();
             // エラーが適切にログに記録されることを確認
             expect(consoleSpy.error).toHaveBeenCalledTimes(2);
-        };
+        }
     }
 }');'
 describe('Service Worker Integration', (') => {'
@@ -245,14 +245,14 @@ describe('HEAD Request Handling', () => {
                 status: options.status || 200,
                 statusText: options.statusText || 'OK',
                 headers: {
-                    get: (key: string) => headers.get(key),
+                    get: (key: string) => headers.get(key) },
                     has: (key: string) => headers.has(key),
                     set: (key: string, value: string) => headers.set(key, value);
                     entries: () => headers.entries(),
                     keys: () => headers.keys(
                     values: () => headers.values() },
                 ok: (options.status || 200) >= 200 && (options.status || 200) < 300
-            };
+            }
         }') as any;'
         
         // コンソールログをモック
@@ -281,9 +281,9 @@ describe('HEAD Request Handling', () => {
                         'Content-Type': 'text/plain',
                         'Cache-Control': 'no-cache'
                     }
-                };
+                }
             }
-        };
+        }
     };
     afterEach(() => {
         consoleSpy.log.mockRestore();
@@ -352,6 +352,6 @@ describe('HEAD Request Handling', () => {
             const result = await handleHeadRequest(headRequest);
             expect(result.status).toBe(503);
             expect(consoleSpy.log').toHaveBeenCalledWith('[ServiceWorker] HEADリクエストエラー: https://example.com/slow.json', timeoutError);'
-        };
+        }
     }
 }');'

@@ -5,47 +5,43 @@
  * 実績システムのパフォーマンスを向上させます。
  */
 
-interface PerformanceConfig { enableCache: boolean;
-    cacheSize: number;
+interface PerformanceConfig { enableCache: boolean,
+    cacheSize: number,
     cacheTTL: number, // キャッシュ有効期限（ミリ秒）
-    batchSize: number;
+    batchSize: number,
     throttleDelay: number, // スロットル遅延（ミリ秒）  }
 
-interface CacheEntry { value: any;
+interface CacheEntry { value: any,
     timestamp: number;
-
-interface PerformanceStats { cacheHits: number;
-    cacheMisses: number;
-    totalProcessed: number;
-    averageProcessTime: number;
+    interface PerformanceStats { cacheHits: number,
+    cacheMisses: number,
+    totalProcessed: number,
+    averageProcessTime: number,
     throttledEvents: number;
-
-export class PerformanceOptimizer {
+    export class PerformanceOptimizer {
     private cache: Map<string, CacheEntry>;
     private config: PerformanceConfig;
     private, stats: PerformanceStats;
-    private eventQueue: Array<{ eventType: string, data: any,, callback: Function;>;
+    private eventQueue: Array<{ eventType: string, data: any, callback: Function;>;
     private isProcessing: boolean;
     private, throttleTimers: Map<string, NodeJS.Timeout>;
-
     constructor() {
 
         this.cache = new Map();
-        this.eventQueue = [];
-        this.isProcessing = false;
-        this.throttleTimers = new Map();
-        
-        this.config = {
-            enableCache: true;
-            cacheSize: 1000;
+    this.eventQueue = [];
+    this.isProcessing = false;
+    this.throttleTimers = new Map();
+    this.config = {
+            enableCache: true,
+    cacheSize: 1000,
     cacheTTL: 60000, // 1分,
-            batchSize: 10 }
+            batchSize: 10 };
             throttleDelay: 100 // 100ms 
     };
-        this.stats = { cacheHits: 0;
-            cacheMisses: 0;
-            totalProcessed: 0;
-            averageProcessTime: 0;
+        this.stats = { cacheHits: 0,
+            cacheMisses: 0,
+            totalProcessed: 0,
+            averageProcessTime: 0,
     throttledEvents: 0  }
 
     /**
@@ -64,22 +60,22 @@ export class PerformanceOptimizer {
             const cacheKey = this.generateCacheKey(eventType, data);
             const cached = this.getFromCache(cacheKey);
             if (cached !== null) {
-                this.stats.cacheHits++,
-                this.updateProcessTime(performance.now() - startTime) }
+                this.stats.cacheHits++;
+                this.updateProcessTime(performance.now() - startTime);
                 return cached;
             this.stats.cacheMisses++;
         }
 
         // スロットリング
         if (this.shouldThrottle(eventType) {
-            this.stats.throttledEvents++,
-            this.scheduleThrottledUpdate(eventType, data, callback) }
+            this.stats.throttledEvents++;
+            this.scheduleThrottledUpdate(eventType, data, callback);
             return null;
 
         // バッチ処理
         if (this.shouldBatch(eventType) {
             this.addToBatch(eventType, data, callback);
-            this.processBatchIfNeeded() }
+            this.processBatchIfNeeded();
             return null;
 
         // 即座に処理
@@ -87,7 +83,7 @@ export class PerformanceOptimizer {
         
         // 結果をキャッシュ
         if (this.config.enableCache && result !== null) {
-            const cacheKey = this.generateCacheKey(eventType, data) }
+            const cacheKey = this.generateCacheKey(eventType, data);
             this.setCache(cacheKey, result); }
         }
 
@@ -144,7 +140,7 @@ export class PerformanceOptimizer {
         this.config = { ...this.config, ...config,
         
         // キャッシュが無効化された場合はクリア
-        if (!this.config.enableCache) { this.cache.clear() }
+        if (!this.config.enableCache) { this.cache.clear();
     }
 
     /**
@@ -179,7 +175,7 @@ export class PerformanceOptimizer {
      * キャッシュキーを生成
      */
     private generateCacheKey(eventType: string, data: any): string { // データの特徴的な値を使ってキーを生成
-        const dataStr = JSON.stringify(this.extractKeyData(data) }
+        const dataStr = JSON.stringify(this.extractKeyData(data);
         return `${eventType}:${dataStr}`;
     }
 
@@ -234,14 +230,14 @@ export class PerformanceOptimizer {
      */''
     private shouldThrottle(eventType: string): boolean { // 特定のイベントタイプでスロットリングを適用
         const throttledEvents = ['bubblePopped', 'scoreUpdated', 'progressUpdated'],
-        return throttledEvents.includes(eventType) }
+        return throttledEvents.includes(eventType);
 
     /**
      * バッチ処理が必要か判定'
      */''
     private shouldBatch(eventType: string): boolean { // 特定のイベントタイプでバッチ処理を適用
         const batchedEvents = ['achievementProgress', 'statsUpdate'],
-        return batchedEvents.includes(eventType) }
+        return batchedEvents.includes(eventType);
 
     /**
      * スロットリングされた更新をスケジュール
@@ -256,7 +252,7 @@ export class PerformanceOptimizer {
 
         // 新しいタイマーを設定
         const timer = setTimeout(() => {  callback(eventType, data);
-            this.throttleTimers.delete(eventType) }
+            this.throttleTimers.delete(eventType);
             this.stats.totalProcessed++; }
         }, this.config.throttleDelay);
 
@@ -266,7 +262,7 @@ export class PerformanceOptimizer {
     /**
      * バッチに追加
      */
-    private addToBatch(eventType: string, data: any, callback: Function): void { this.eventQueue.push({ eventType, data, callback ) }
+    private addToBatch(eventType: string, data: any, callback: Function): void { this.eventQueue.push({ eventType, data, callback );
 
     /**
      * 必要に応じてバッチを処理
@@ -295,7 +291,7 @@ export class PerformanceOptimizer {
                 const result = await item.callback(item.eventType, item.data);
                 // 結果をキャッシュ
                 if (this.config.enableCache && result !== null) {
-                    const cacheKey = this.generateCacheKey(item.eventType, item.data) }
+                    const cacheKey = this.generateCacheKey(item.eventType, item.data);
                     this.setCache(cacheKey, result); }
                 }
                 ';'
@@ -307,7 +303,7 @@ export class PerformanceOptimizer {
         this.isProcessing = false;
 
         // まだキューにアイテムがあれば次のバッチを処理
-        if (this.eventQueue.length > 0) { setTimeout(() => this.processBatch(), 0) }
+        if (this.eventQueue.length > 0) { setTimeout(() => this.processBatch(), 0);
 }
 
     /**

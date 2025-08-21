@@ -50,65 +50,60 @@ interface ErrorHandler { ''
     handleError?: (error: Error, context?: any') => void }'
 }
 
-interface AnalysisConfig { trendAnalysisWindow: number;
-    anomalyDetectionSensitivity: number;
-    statisticalWindow: number;
-    insightGenerationInterval: number;
+interface AnalysisConfig { trendAnalysisWindow: number,
+    anomalyDetectionSensitivity: number,
+    statisticalWindow: number,
+    insightGenerationInterval: number,
     performanceBaseline: Map<string, number>;
     adaptiveThresholds: boolean;
 ';'
 
 interface TrendAnalyzer { ''
-    type: 'moving_average' | 'linear_regression' | 'exponential_smoothing';
+    type: 'moving_average' | 'linear_regression' | 'exponential_smoothing,
     window: number;
     sensitivity?: number;
     alpha?: number;
-    history: number[];
+    history: number[],
     trend: 'stable' | 'improving' | 'degrading'
             }
 
-interface Anomaly { timestamp: number;
-    metricId: string;
+interface Anomaly { timestamp: number,
+    metricId: string,
     value: number;
     baseline?: number;
-    score: number;
-    severity: 'low' | 'medium' | 'high' | 'critical';
+    score: number,
+    severity: 'low' | 'medium' | 'high' | 'critical,
     type: 'baseline_deviation' | 'threshold_violation'
             }
 
-interface ThresholdViolation { timestamp: number;
-    metricId: string;
-    value: number;
-    severity: 'low' | 'medium' | 'high' | 'critical';
+interface ThresholdViolation { timestamp: number,
+    metricId: string,
+    value: number,
+    severity: 'low' | 'medium' | 'high' | 'critical,
     deviation: number;
-
-interface AnalysisResults { trends: Record<string, any>,
-    anomalies: Anomaly[];
-    insights: any[];
+    interface AnalysisResults { trends: Record<string, any>,
+    anomalies: Anomaly[],
+    insights: any[],
     statistics: Record<string, any>;
     baseline: Record<string, number>;
-    calibrated: boolean;
+    calibrated: boolean,
     thresholds: any;
-
-interface ExportedData { timestamp: number;
-    config: AnalysisConfig;
+    interface ExportedData { timestamp: number,
+    config: AnalysisConfig,
     baseline: Record<string, number>;
-    anomalies: Anomaly[];
-    metrics: any;
+    anomalies: Anomaly[],
+    metrics: any,
     statistics: Record<string, any>;
-    insights: any[];
+    insights: any[],
     thresholds: any;
-
-interface ImportData { config?: Partial<AnalysisConfig>,
+    interface ImportData { config?: Partial<AnalysisConfig>,
     baseline?: Record<string, number>;
     anomalies?: Anomaly[];
     metrics?: any;
     thresholds?: any;
-
-interface ConfigurationInput { thresholds?: any,
+    interface ConfigurationInput { thresholds?: any,
     [key: string]: any;
-
-export class PerformanceDataAnalyzer {
+    export class PerformanceDataAnalyzer {
     private performanceMonitoringSystem: PerformanceMonitoringSystem;
     private errorHandler: ErrorHandler | typeof console;
     private analysisConfig: AnalysisConfig;
@@ -124,15 +119,15 @@ export class PerformanceDataAnalyzer {
     constructor(performanceMonitoringSystem: PerformanceMonitoringSystem) {
 
         this.performanceMonitoringSystem = performanceMonitoringSystem;
-        this.errorHandler = performanceMonitoringSystem?.errorHandler || console;
+    this.errorHandler = performanceMonitoringSystem?.errorHandler || console;
         
         // Analysis configuration
         this.analysisConfig = { : undefined
             trendAnalysisWindow: 300000, // 5 minutes;
-            anomalyDetectionSensitivity: 0.8;
+    anomalyDetectionSensitivity: 0.8,
     statisticalWindow: 60000, // 1 minute;
-            insightGenerationInterval: 60000, // 1 minute;
-            performanceBaseline: new Map() }
+    insightGenerationInterval: 60000, // 1 minute;
+    performanceBaseline: new Map() };
             adaptiveThresholds: true;;
         // Performance baseline data (shared, with components);
         this.performanceBaseline = new Map();
@@ -160,34 +155,34 @@ export class PerformanceDataAnalyzer {
      */''
     initializeTrendAnalyzers('''
         this.trendAnalyzers.set('fps', { ''
-            type: 'moving_average';
-            window: 30);
+            type: 'moving_average,
+            window: 30),
             sensitivity: 0.1','
-    history: [],')',
+    history: [],'),
             trend: 'stable')'),'
         ','
         // Memory usage trend analyzer
         this.trendAnalyzers.set('memory_used', {''
-            type: 'linear_regression';
-            window: 50);
+            type: 'linear_regression,
+            window: 50),
             sensitivity: 0.05','
-    history: [],')',
+    history: [],'),
             trend: 'stable')'),'
         ','
         // Frame time variance analyzer
         this.trendAnalyzers.set('frame_variance', {''
-            type: 'exponential_smoothing';
-            alpha: 0.3);
+            type: 'exponential_smoothing,
+            alpha: 0.3),
             window: 20','
-    history: [],')',
+    history: [],'),
             trend: 'stable')'),'
         ','
         // Network latency analyzer
         this.trendAnalyzers.set('network_latency', {''
-            type: 'moving_average';
-            window: 15);
+            type: 'moving_average,
+            window: 15),
             sensitivity: 0.2','
-    history: [],')',
+    history: [],'),
             trend: 'stable'
             }
     
@@ -208,10 +203,10 @@ export class PerformanceDataAnalyzer {
                 if (violation) {
                     // Convert threshold violations to anomalies for compatibility
                     this.anomalies.push({
-                        timestamp: violation.timestamp;
-                        metricId: violation.metricId;
-                        value: violation.value);
-                        severity: violation.severity;
+                        timestamp: violation.timestamp,
+                        metricId: violation.metricId,
+                        value: violation.value),
+                        severity: violation.severity,
     score: violation.deviation,' }'
 
                         type: 'threshold_violation'); 
@@ -248,15 +243,15 @@ export class PerformanceDataAnalyzer {
                         metricId,
                         value,
                         baseline,
-                        score: anomalyScore;
-                        severity: this.calculateAnomalySeverity(anomalyScore) }
+                        score: anomalyScore,
+                        severity: this.calculateAnomalySeverity(anomalyScore),
 
                         type: 'baseline_deviation' 
     };
                     this.anomalies.push(anomaly);
                     
                     // Keep anomalies history manageable
-                    if (this.anomalies.length > 100) { this.anomalies.shift() }
+                    if (this.anomalies.length > 100) { this.anomalies.shift();
                 } catch (error) {
                 console.warn(`[PerformanceDataAnalyzer] Anomaly detection failed for ${metricId}:`, error);
             }
@@ -283,9 +278,9 @@ export class PerformanceDataAnalyzer {
      * Calculate anomaly severity'
      */''
     calculateAnomalySeverity(score: number): 'low' | 'medium' | 'high' | 'critical' { ''
-        if(score >= 0.9) return 'critical',
-        if(score >= 0.7) return 'high',
-        if(score >= 0.5) return 'medium',
+        if(score >= 0.9) return 'critical,
+        if(score >= 0.7) return 'high,
+        if(score >= 0.5) return 'medium,
         return 'low' }
     
     // PUBLIC API DELEGATION METHODS (maintain, backward compatibility)
@@ -293,26 +288,26 @@ export class PerformanceDataAnalyzer {
     /**
      * Add data to analysis history (delegated)
      */
-    addToAnalysisHistory(timestamp: number, metrics: Map<string, any>): void { return this.metricsCollector.addToAnalysisHistory(timestamp, metrics) }
+    addToAnalysisHistory(timestamp: number, metrics: Map<string, any>): void { return this.metricsCollector.addToAnalysisHistory(timestamp, metrics);
     
     /**
      * Perform trend analysis (delegated)
      */
-    performTrendAnalysis(timestamp: number, metrics: Map<string, any>): void { return this.dataProcessor.performTrendAnalysis(timestamp, metrics) }
+    performTrendAnalysis(timestamp: number, metrics: Map<string, any>): void { return this.dataProcessor.performTrendAnalysis(timestamp, metrics);
     
     /**
      * Generate insights (delegated)
      */
-    async generateInsights(timestamp?: number, metrics?: Map<string, any>): Promise<any> { return this.reportGenerator.generateInsights(timestamp, metrics) }
+    async generateInsights(timestamp?: number, metrics?: Map<string, any>): Promise<any> { return this.reportGenerator.generateInsights(timestamp, metrics);
     
     /**
      * Get analysis results
      */
     getAnalysisResults(): AnalysisResults { return { trends: Object.fromEntries(this.dataProcessor.getAllTrends(
-            anomalies: this.anomalies.slice(-20);
-            insights: this.reportGenerator.getRecentInsights();
-            statistics: Object.fromEntries(this.dataProcessor.getAllStatisticalData();
-            baseline: Object.fromEntries(this.performanceBaseline;
+            anomalies: this.anomalies.slice(-20),
+            insights: this.reportGenerator.getRecentInsights(),
+            statistics: Object.fromEntries(this.dataProcessor.getAllStatisticalData(),
+            baseline: Object.fromEntries(this.performanceBaseline,
     calibrated: this.baselineCalibrated };
             thresholds: this.thresholdManager.exportData(); 
     }
@@ -320,12 +315,12 @@ export class PerformanceDataAnalyzer {
     /**
      * Get trend analysis data
      */
-    getTrendData(metricId: string): any { return this.dataProcessor.getTrendData(metricId) }
+    getTrendData(metricId: string): any { return this.dataProcessor.getTrendData(metricId);
     
     /**
      * Get recent insights
      */
-    getRecentInsights(category?: string | null): any[] { return this.reportGenerator.getRecentInsights(category) }
+    getRecentInsights(category?: string | null): any[] { return this.reportGenerator.getRecentInsights(category);
     
     /**
      * Configure analyzer
@@ -344,10 +339,10 @@ export class PerformanceDataAnalyzer {
      * Export complete analysis data
      */
     exportData(): ExportedData { return { timestamp: Date.now(
-            config: this.analysisConfig;
-            baseline: Object.fromEntries(this.performanceBaseline);
-            anomalies: this.anomalies;
-            metrics: this.metricsCollector.exportData();
+            config: this.analysisConfig,
+            baseline: Object.fromEntries(this.performanceBaseline),
+            anomalies: this.anomalies,
+            metrics: this.metricsCollector.exportData(),
             statistics: Object.fromEntries(this.dataProcessor.getAllStatisticalData(
     insights: this.reportGenerator.exportInsights() };
             thresholds: this.thresholdManager.exportData(); 
@@ -365,7 +360,7 @@ export class PerformanceDataAnalyzer {
             
             if (data.baseline) {
             
-                this.performanceBaseline = new Map(Object.entries(data.baseline) }
+                this.performanceBaseline = new Map(Object.entries(data.baseline);
                 this.baselineCalibrated = true; }
             }
             

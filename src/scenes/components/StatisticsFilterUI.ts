@@ -5,28 +5,22 @@
 
 interface GameEngine { errorHandler?: {
         handleError(error: Error, context: any): void;
-
-interface EventBus { on(event: string, callback: Function): void;
+    interface EventBus { on(event: string, callback: Function): void;
     off(event: string): void;
     emit(event: string, data?: any): void;
-
-interface AccessibilitySettings { highContrast: boolean;
-    largeText: boolean;
+    interface AccessibilitySettings { highContrast: boolean,
+    largeText: boolean,
     reducedMotion: boolean;
-
-interface ComponentState {
+    interface ComponentState {
     accessibilitySettings: AccessibilitySettings;
-
-interface FilterOption { key: string;
+    interface FilterOption { key: string,
     label: string;
-
-interface ButtonInfo { key: string;
-    x: number;
-    y: number;
-    width: number;
+    interface ButtonInfo { key: string,
+    x: number,
+    y: number,
+    width: number,
     height: number;
-
-export class StatisticsFilterUI {
+    export class StatisticsFilterUI {
     private gameEngine: GameEngine;
     private eventBus: EventBus;
     private state: ComponentState;
@@ -50,11 +44,11 @@ export class StatisticsFilterUI {
     private, periods: FilterOption[] = [' }'
 
         { key: 'today', label: '今日'
-            },''
+            ,''
         { key: 'last7days', label: '7日間'
-            },''
+            ,''
         { key: 'last30days', label: '30日間'
-            },]'
+            ,]'
         { key: 'allTime', label: '全期間'
             }]
     ];
@@ -62,9 +56,9 @@ export class StatisticsFilterUI {
     // 表示モードオプション
     private modes: FilterOption[] = [';'
         { key: 'dashboard', label: 'ダッシュボード'
-            },''
+            ,''
         { key: 'charts', label: 'グラフ'
-            },]'
+            ,]'
         { key: 'details', label: '詳細'
             }]
     ];
@@ -93,8 +87,7 @@ export class StatisticsFilterUI {
         this.eventBus.on('set-period-filter', (period: string) => { this.setPeriodFilter(period),' 
     }');'
 
-        this.eventBus.on('set-view-mode', (mode: string) => { this.setViewMode(mode) }),
-    }
+        this.eventBus.on('set-view-mode', (mode: string) => { this.setViewMode(mode) }) }
     
     /**
      * フィルターUIの描画
@@ -115,7 +108,7 @@ export class StatisticsFilterUI {
             ' }'
 
         } catch (error) { this.errorHandler?.handleError(error as Error, { : undefined)'
-                context: 'StatisticsFilterUI.render',')',
+                context: 'StatisticsFilterUI.render,')',
                 details: 'フィルターUIの描画でエラーが発生しました'
             }';'
             return this.filterHeight + this.modeHeight + 10; // フォールバック高さ
@@ -137,20 +130,20 @@ export class StatisticsFilterUI {
         // クリック判定用配列をリセット
         this.periodButtons = [];
         // フィルター背景
-        context.fillStyle = this.accessibilitySettings.highContrast ? '#000000' : '#F8FAFC',
+        context.fillStyle = this.accessibilitySettings.highContrast ? '#000000' : '#F8FAFC,
         context.fillRect(x, y, width, filterHeight);
         ','
         // フィルター枠線
-        context.strokeStyle = this.accessibilitySettings.highContrast ? '#FFFFFF' : '#E5E7EB',
+        context.strokeStyle = this.accessibilitySettings.highContrast ? '#FFFFFF' : '#E5E7EB,
 
         context.lineWidth = 1,
         context.strokeRect(x, y, width, filterHeight);
         ','
         // フィルタータイトル
-        context.fillStyle = this.accessibilitySettings.highContrast ? '#FFFFFF' : '#374151',
-        context.font = this.accessibilitySettings.largeText ? '16px system-ui, -apple-system, sans-serif' : '14px system-ui, -apple-system, sans-serif',
-        context.textAlign = 'left',
-        context.textBaseline = 'middle',
+        context.fillStyle = this.accessibilitySettings.highContrast ? '#FFFFFF' : '#374151,
+        context.font = this.accessibilitySettings.largeText ? '16px system-ui, -apple-system, sans-serif' : '14px system-ui, -apple-system, sans-serif,
+        context.textAlign = 'left,
+        context.textBaseline = 'middle,
         context.fillText('期間フィルター:', x + 10, y + filterHeight / 2);
         // 期間フィルターボタン
         let buttonX = x + (this.accessibilitySettings.largeText ? 140 : 120),
@@ -201,7 +194,7 @@ export class StatisticsFilterUI {
             context.fillText(period.label, buttonX + buttonWidth / 2, y + filterHeight / 2);
             
             buttonX += buttonWidth + this.buttonSpacing;
-        };
+        } };
         
         return y + filterHeight;
     }
@@ -221,14 +214,14 @@ export class StatisticsFilterUI {
         // クリック判定用配列をリセット
         this.modeButtons = [];
         // モード切り替え背景
-        context.fillStyle = this.accessibilitySettings.highContrast ? '#000000' : '#F8FAFC',
+        context.fillStyle = this.accessibilitySettings.highContrast ? '#000000' : '#F8FAFC,
         context.fillRect(x, y, width, modeHeight);
         ','
         // モード切り替えタイトル
-        context.fillStyle = this.accessibilitySettings.highContrast ? '#FFFFFF' : '#374151',
-        context.font = this.accessibilitySettings.largeText ? '14px system-ui, -apple-system, sans-serif' : '12px system-ui, -apple-system, sans-serif',
-        context.textAlign = 'left',
-        context.textBaseline = 'middle',
+        context.fillStyle = this.accessibilitySettings.highContrast ? '#FFFFFF' : '#374151,
+        context.font = this.accessibilitySettings.largeText ? '14px system-ui, -apple-system, sans-serif' : '12px system-ui, -apple-system, sans-serif,
+        context.textAlign = 'left,
+        context.textBaseline = 'middle,
         context.fillText('表示モード:', x + 10, y + modeHeight / 2);
         // 表示モードボタン
         let buttonX = x + (this.accessibilitySettings.largeText ? 100 : 80),
@@ -295,14 +288,14 @@ export class StatisticsFilterUI {
             for (const button of this.periodButtons) {
                 if (x >= button.x && x <= button.x + button.width &&,
                     y >= button.y && y <= button.y + button.height) {
-                    this.setPeriodFilter(button.key) }
+                    this.setPeriodFilter(button.key);
                     return true;
             
             // 表示モードボタンのクリック判定
             for (const button of this.modeButtons) {
                 if (x >= button.x && x <= button.x + button.width &&,
                     y >= button.y && y <= button.y + button.height) {
-                    this.setViewMode(button.key) }
+                    this.setViewMode(button.key);
                     return true;
             
             return false;
@@ -332,7 +325,7 @@ export class StatisticsFilterUI {
     setViewMode(mode: string): void { ''
         if(this.modes.some(m => m.key === mode)) {
             this.currentViewMode = mode;
-            this.eventBus.emit('statistics-view-mode-changed', mode) }
+            this.eventBus.emit('statistics-view-mode-changed', mode);
 }
     
     /**

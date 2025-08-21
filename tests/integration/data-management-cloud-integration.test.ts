@@ -46,7 +46,7 @@ describe('データ管理 - クラウド対応統合テスト', () => {
         // GameEngineのモック
         mockGameEngine = {
             playerData: {
-                save: jest.fn(
+                save: jest.fn( },
                 load: jest.fn(
                 get: jest.fn((') => ({ name: 'TestPlayer', score: 1000 )) }),'
             settingsManager: {
@@ -59,10 +59,10 @@ describe('データ管理 - クラウド対応統合テスト', () => {
     };
                     );
                     return null;
-    };
-            },
+    }
+            } };
             statisticsManager: {
-                getStatistics: jest.fn(() => ({ totalGames: 10, totalScore: 5000 )) }),
+                getStatistics: jest.fn(() => ({ totalGames: 10, totalScore: 5000 )) }) };
         
         // setInterval/clearIntervalのモック
         jest.useFakeTimers();
@@ -398,6 +398,6 @@ describe('データ管理 - クラウド対応統合テスト', () => {
                 dataManager.backup.createBackup = jest.fn().mockResolvedValue(true as jest.Mock);
                 await dataManager.backup.createBackup();
                 expect(dataManager.backup.createBackup).toHaveBeenCalled() }
-        };
+        }
     }
 }');'

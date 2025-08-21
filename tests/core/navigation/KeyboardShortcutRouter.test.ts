@@ -27,7 +27,7 @@ describe('KeyboardShortcutRouter', () => {
         mockGameEngine = {
             sceneManager: {
                 hasScene: jest.fn().mockReturnValue(true),
-               , switchScene: jest.fn(').mockReturnValue(true,'
+               , switchScene: jest.fn(').mockReturnValue(true,' };
                 currentScene: {
                     constructor: { name: 'MenuScene' }
                 }
@@ -386,6 +386,6 @@ describe('KeyboardShortcutRouter', () => {
             const debugInfo = shortcutRouter.getDebugInfo();
             expect(debugInfo.state.isActive).toBe(false);
             expect(debugInfo.state.pressedKeys.size).toBe(0);
-            expect(debugInfo.state.activeModifiers.size).toBe(0) };
+            expect(debugInfo.state.activeModifiers.size).toBe(0) }
     }
 }');'

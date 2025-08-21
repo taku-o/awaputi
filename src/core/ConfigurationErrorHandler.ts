@@ -11,34 +11,31 @@ import { getValidationSystem  } from './ValidationSystem';
 ';'
 
 export enum ConfigErrorType {;
-    CONFIGURATION_ACCESS = 'CONFIGURATION_ACCESS',
-    CONFIGURATION_VALIDATION = 'CONFIGURATION_VALIDATION',
-    CONFIGURATION_STORAGE = 'CONFIGURATION_STORAGE',
-    CALCULATION_ERROR = 'CALCULATION_ERROR',
-    CALCULATION_OVERFLOW = 'CALCULATION_OVERFLOW',
-    CACHE_ERROR = 'CACHE_ERROR',
+    CONFIGURATION_ACCESS = 'CONFIGURATION_ACCESS,
+    CONFIGURATION_VALIDATION = 'CONFIGURATION_VALIDATION,
+    CONFIGURATION_STORAGE = 'CONFIGURATION_STORAGE,
+    CALCULATION_ERROR = 'CALCULATION_ERROR,
+    CALCULATION_OVERFLOW = 'CALCULATION_OVERFLOW,
+    CACHE_ERROR = 'CACHE_ERROR,
     DEPENDENCY_ERROR = 'DEPENDENCY_ERROR' }
 
-interface RecoveryStrategy { maxAttempts: number;
+interface RecoveryStrategy { maxAttempts: number,
     strategy: (error: Error, context: any) => RecoveryResult  }
 }
 
 interface RecoveryResult { success: boolean;
     value?: any;
     message: string;
-
-interface ErrorStats { total: number;
+    interface ErrorStats { total: number,
     byType: Map<string, number>;
-    recovered: number;
-    failed: number;
+    recovered: number,
+    failed: number,
     lastReset: number;
-
-interface FallbackState { useDefaultValues: boolean;
-    disableValidation: boolean;
-    disableCache: boolean;
+    interface FallbackState { useDefaultValues: boolean,
+    disableValidation: boolean,
+    disableCache: boolean,
     safeMode: boolean;
-
-export class ConfigurationErrorHandler {
+    export class ConfigurationErrorHandler {
     private errorTypes = ConfigErrorType,
     private recoveryStrategies: Map<ConfigErrorType, RecoveryStrategy>;
     private errorStats: ErrorStats;
@@ -49,17 +46,17 @@ export class ConfigurationErrorHandler {
     constructor() {
 
         this.recoveryStrategies = new Map();
-        this.errorStats = {
-            total: 0;
-            byType: new Map();
-            recovered: 0;
-    failed: 0 }
+    this.errorStats = {
+            total: 0,
+    byType: new Map(),
+    recovered: 0,
+    failed: 0 };
             lastReset: Date.now(); 
     };
         this.recoveryAttempts = new Map();
-        this.fallbackState = { useDefaultValues: false;
-            disableValidation: false;
-            disableCache: false;
+        this.fallbackState = { useDefaultValues: false,
+            disableValidation: false,
+            disableCache: false,
     safeMode: false;
         this.logger = getLoggingSystem();
         this._initialize();
@@ -72,7 +69,7 @@ export class ConfigurationErrorHandler {
 
     private _setupRecoveryStrategies(): void { // 設定アクセスエラーの復旧
         this.recoveryStrategies.set(ConfigErrorType.CONFIGURATION_ACCESS, {
-                maxAttempts: 3;
+                maxAttempts: 3,
     strategy: (error: Error, context: any) => {  })
                 const { category, key, defaultValue } = context;
                 
@@ -84,7 +81,7 @@ export class ConfigurationErrorHandler {
 
                     }, 'ConfigurationErrorHandler');
                     
-                    return { success: true;
+                    return { success: true,
 
                         value: defaultValue,' };'
 
@@ -94,18 +91,16 @@ export class ConfigurationErrorHandler {
                 const fallbackValue = this._generateFallbackValue(category, key);
                 
                 this.logger.warn(`設定アクセスエラー、フォールバック値を生成: ${category}.${key}`, { error: error.message)'
-                    fallbackValue'',
+                    fallbackValue',
                 '), 'ConfigurationErrorHandler'),'
                 
-                return { success: true;
+                return { success: true,
 
                     value: fallbackValue,' };'
 
                     message: 'フォールバック値を生成' 
-    }
-        };
-    }
-
+        }
+}
     private _setupErrorMonitoring(): void { // エラー監視の設定 }
 
     private _generateFallbackValue(category: string, key: string): any { // 基本的なフォールバック値の生成
@@ -117,7 +112,7 @@ export class ConfigurationErrorHandler {
     }
 
     handleError(errorType: ConfigErrorType, error: Error, context: any = { ): RecoveryResult {
-        this.errorStats.total++,
+        this.errorStats.total++;
         
         const typeCount = this.errorStats.byType.get(errorType) || 0,
         this.errorStats.byType.set(errorType, typeCount + 1);
@@ -130,7 +125,7 @@ export class ConfigurationErrorHandler {
                     this.errorStats.recovered++; }
                 } else { this.errorStats.failed++ }
 
-                return result;} catch (recoveryError) { this.errorStats.failed++,
+                return result;} catch (recoveryError) { this.errorStats.failed++;
 
                 return { success: false,' };'
 
@@ -150,7 +145,7 @@ export class ConfigurationErrorHandler {
 
     resetStats(): void { this.errorStats = {
             total: 0,
-            byType: new Map();
+            byType: new Map(),
             recovered: 0,
             failed: 0,
     lastReset: Date.now( 

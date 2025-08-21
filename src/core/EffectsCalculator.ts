@@ -6,75 +6,71 @@
  */
 
 // 型定義
-interface EffectsConfig { particles: {
-        maxCoun,t: number;
-        poolSize: number;
-        quality: number;
-        baseIntensity: number;
-    lifetimeMultiplier: number;
-    screen: { shakeIntensity: number;
+interface EffectsConfig { particles: { maxCoun,t: number,
+        poolSize: number,
+        quality: number,
+        baseIntensity: number,
+    lifetimeMultiplier: number,
+    screen: { shakeIntensity: number,
         flashDuration: number;
-        zoomSensitivity: number;
-    transitionDuration: number;
-    animations: { duration: number;
+    },
+        zoomSensitivity: number,
+    transitionDuration: number,
+    animations: { duration: number,
         easing: string;
-        scaleFactor: number;
-    fadeSpeed: number;
-    bubbleEffects: { popIntensity: number;
+    },
+        scaleFactor: number,
+    fadeSpeed: number,
+    bubbleEffects: { popIntensity: number,
         chainRadius: number;
-        explosionScale: number;
+    },
+        explosionScale: number,
+    trailLength: number,
     trailLength: number;
-    trailLength: number;
         };
-interface Position { x: number;
+interface Position { x: number,
+    y: number,
     y: number;
-    y: number;
         };
-interface Color { r: number;
-    g: number;
-    b: number;
-    a: number;
+interface Color { r: number,
+    g: number,
+    b: number,
+    a: number,
     a: number;
         };
-interface ShakeSettings { amplitude: number;
-    frequency: number;
+interface ShakeSettings { amplitude: number,
+    frequency: number,
     duration: number;
     easing?: string;
-
-interface EffectModifier { type: 'multiply' | 'add' | 'power' | 'clamp';
+    interface EffectModifier { type: 'multiply' | 'add' | 'power' | 'clamp';
     value?: number;
     min?: number;
     max?: number;
-
-interface TrajectoryOptions { steps?: number,
+    interface TrajectoryOptions { steps?: number,
     gravity?: number;
     wind?: number;
     randomness?: number;
-
-interface PerformanceState { fps?: number,
+    interface PerformanceState { fps?: number,
     particleCount?: number;
     memoryUsage?: number;
     cpuUsage?: number;
-
-interface PerformanceOptimization { particleQuality: number;
-    animationQuality: number;
-    effectsEnabled: boolean;
-    maxParticles: number;
-    skipFrames: number;
+    interface PerformanceOptimization { particleQuality: number,
+    animationQuality: number,
+    effectsEnabled: boolean,
+    maxParticles: number,
+    skipFrames: number,
     skipFrames: number;
         };
 interface EffectContext { isCombo?: boolean,
     comboCount?: number;
     isBossStage?: boolean;
     remainingTime?: number;
-
-interface EffectsConfigProvider { getEffectsConfig(): EffectsConfig;
-
-interface EffectModifiers { countMultiplier?: number,
+    interface EffectsConfigProvider { getEffectsConfig(): EffectsConfig;
+    interface EffectModifiers { countMultiplier?: number,
     countBonus?: number;
     durationMultiplier?: number;
     durationBonus?: number;
-export class EffectsCalculator {
+    export class EffectsCalculator {
     private effectsConfig: EffectsConfigProvider | null;
     private, defaultEffectsConfig: EffectsConfig','
 
@@ -83,24 +79,23 @@ export class EffectsCalculator {
         
         // デフォルトのエフェクト設定（EffectsConfigが利用できない場合のフォールバック）
         this.defaultEffectsConfig = {
-            particles: {
-                maxCount: 500;
-                poolSize: 100;
-                quality: 1.0;
+            particles: { maxCount: 500  ,
+                poolSize: 100,
+    quality: 1.0,
     baseIntensity: 1.0 }
                 lifetimeMultiplier: 1.0 
     };
-            screen: { shakeIntensity: 1.0;
-                flashDuration: 200;
-                zoomSensitivity: 1.0;
+            screen: { shakeIntensity: 1.0,
+                flashDuration: 200  ,
+                zoomSensitivity: 1.0,
     transitionDuration: 300 };
             animations: { duration: 300,''
-                easing: 'easeOut';
-                scaleFactor: 1.0;
+                easing: 'easeOut'  ,
+                scaleFactor: 1.0,
     fadeSpeed: 1.0  };
-            bubbleEffects: { popIntensity: 1.0;
-                chainRadius: 120;
-                explosionScale: 1.0;
+            bubbleEffects: { popIntensity: 1.0,
+                chainRadius: 120  ,
+                explosionScale: 1.0,
     trailLength: 1.0 
     };
         console.log('EffectsCalculator, initialized');
@@ -129,7 +124,7 @@ export class EffectsCalculator {
             special_bubble: 20,
             boss_damage: 30,
             power_up: 18,
-    background_ambient: 5 },
+    background_ambient: 5 };
         const baseCount = baseParticleCounts[effectType] || 10;
         
         // 強度による調整
@@ -139,7 +134,7 @@ export class EffectsCalculator {
         particleCount = Math.floor(particleCount * config.particles.quality);
         
         // 修正値を適用
-        if (modifiers.countMultiplier) { particleCount = Math.floor(particleCount * modifiers.countMultiplier) }
+        if (modifiers.countMultiplier) { particleCount = Math.floor(particleCount * modifiers.countMultiplier);
         
         if (modifiers.countBonus) { particleCount += modifiers.countBonus }
         
@@ -166,14 +161,14 @@ export class EffectsCalculator {
             power_up: 1500,
             ui_transition: 250,
             fade_in: 400,
-    fade_out: 300  },
+    fade_out: 300  };
         const baseDuration = baseDurations[effectType] || config.animations.duration;
         
         // 複雑度による調整（複雑なほど長時間）
         let duration = Math.floor(baseDuration * (0.5 + complexity * 0.5);
         
         // 修正値を適用
-        if (modifiers.durationMultiplier) { duration = Math.floor(duration * modifiers.durationMultiplier) }
+        if (modifiers.durationMultiplier) { duration = Math.floor(duration * modifiers.durationMultiplier);
         
         if (modifiers.durationBonus) { duration += modifiers.durationBonus }
         
@@ -205,10 +200,8 @@ export class EffectsCalculator {
                     intensity = Math.min(Math.max(intensity, modifier.min || 0), modifier.max || 1),
                     break }
                 default: }
-                    console.warn(`Unknown, modifier type: ${modifier.type}`},
-            }
-        }
-        
+                    console.warn(`Unknown, modifier type: ${modifier.type}`    }
+}
         // 最終的な範囲制限
         return Math.min(Math.max(0, intensity), 10);
     }
@@ -220,12 +213,12 @@ export class EffectsCalculator {
         const config = this.getEffectsConfig();
         // シェイクタイプ別の設定
         const shakeSettings = { }
-            bubble_pop: { amplitude: 2, frequency: 8, duration: 150  },
-            bubble_chain: { amplitude: 4, frequency: 12, duration: 300  },
-            boss_hit: { amplitude: 8, frequency: 6, duration: 500  },
-            explosion: { amplitude: 12, frequency: 10, duration: 400  },
-            power_up: { amplitude: 3, frequency: 15, duration: 600  },
-            damage: { amplitude: 6, frequency: 8, duration: 200  },
+            bubble_pop: { amplitude: 2, frequency: 8, duration: 150  ,
+            bubble_chain: { amplitude: 4, frequency: 12, duration: 300  ,
+            boss_hit: { amplitude: 8, frequency: 6, duration: 500  ,
+            explosion: { amplitude: 12, frequency: 10, duration: 400  ,
+            power_up: { amplitude: 3, frequency: 15, duration: 600  ,
+            damage: { amplitude: 6, frequency: 8, duration: 200  ,
         
         const baseSetting = shakeSettings[shakeType] || shakeSettings.bubble_pop;
         
@@ -308,8 +301,7 @@ export class EffectsCalculator {
                 y += (Math.random() - 0.5) * randomness * 20; }
             }
 
-            trajectory.push({ x: Math.floor(x), y: Math.floor(y  },
-        }
+            trajectory.push({ x: Math.floor(x), y: Math.floor(y  , }
         
         return trajectory;
     }
@@ -350,8 +342,7 @@ export class EffectsCalculator {
                 
             default: r = Math.floor(startColor.r + (endColor.r - startColor.r) * t),
                 g = Math.floor(startColor.g + (endColor.g - startColor.g) * t),
-                b = Math.floor(startColor.b + (endColor.b - startColor.b) * t)
-}
+                b = Math.floor(startColor.b + (endColor.b - startColor.b) * t);
                 a = startColor.a + (endColor.a - startColor.a) * t; }
         }
         
@@ -376,7 +367,7 @@ export class EffectsCalculator {
             bubble_pop: 40,
             score_popup: 30,
             screen_shake: 20,
-    background_ambient: 10  },
+    background_ambient: 10  ,
         let priority = basePriorities[effectType] || 50;
         
         // コンテキストによる調整
@@ -407,7 +398,7 @@ export class EffectsCalculator {
             animationQuality: 1.0,
             effectsEnabled: true,
             maxParticles: 500,
-    skipFrames: 0  },
+    skipFrames: 0  ,
         // FPSが低い場合の最適化
         if (fps < 30) {
             optimization.particleQuality = 0.5,
@@ -420,7 +411,7 @@ export class EffectsCalculator {
         
         // メモリ使用量が高い場合の最適化
         if (memoryUsage > 0.8) {
-            optimization.maxParticles = Math.floor(optimization.maxParticles * 0.6) }
+            optimization.maxParticles = Math.floor(optimization.maxParticles * 0.6);
             optimization.particleQuality *= 0.8; }
         }
         
@@ -439,7 +430,7 @@ export class EffectsCalculator {
     /**
      * デバッグ情報を取得
      */
-    getDebugInfo(): { hasEffectsConfig: boolean, effectsConfig: EffectsConfig,, version: string, { return { hasEffectsConfig: !!this.effectsConfig,''
+    getDebugInfo(): { hasEffectsConfig: boolean, effectsConfig: EffectsConfig, version: string, { return { hasEffectsConfig: !!this.effectsConfig,''
             effectsConfig: this.getEffectsConfig('}'
 
             version: '1.0.0' 

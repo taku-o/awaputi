@@ -31,7 +31,7 @@ test.describe('Achievement System E2E Tests', () => {
 
         // バブルをクリックして実績解除を試行
         await gameCanvas.click({ position: { x: 200, y: 200 } ),
-        await page.waitForTimeout(100');'
+        await page.waitForTimeout(100');' };
         
         // 初回ポップ実績の通知が表示されることを確認
         const notification = page.locator('.achievement-notification');
@@ -59,7 +59,7 @@ test.describe('Achievement System E2E Tests', () => {
         for (let i = 0; i < 10; i++) {
             await gameCanvas.click({ 
                 position: { 
-                    x: 100 + i * 50, 
+                    x: 100 + i * 50 },
                     y: 100 + i * 30 
                 } );
             await page.waitForTimeout(50');'
@@ -133,7 +133,7 @@ test.describe('Achievement System E2E Tests', () => {
         for (let i = 0; i < 20; i++) {
             await gameCanvas.click({ 
                 position: { ,
-                    x: 150 + (i % 5) * 100, 
+                    x: 150 + (i % 5) * 100 },
                     y: 150 + Math.floor(i / 5) * 80 
                 } 
             };
@@ -190,7 +190,7 @@ test.describe('Achievement System E2E Tests', () => {
         // 音響効果が再生されたことを確認（コンソールログで）
         await page.waitForTimeout(1000);
         // 注: 実際の音響再生の検証は制限されるため、関連要素の確認で代用
-    }');'
+    }');' };
 
     test('実績データの永続化確認', async ({ page )') => {'
         // 初回セッション
@@ -222,7 +222,7 @@ test.describe('Achievement System E2E Tests', () => {
         
         // 解除済み実績が保持されていることを確認
         const persistedAchievement = page.locator('.achievement-item.unlocked');
-        await expect(persistedAchievement.first().toBeVisible() }');'
+        await expect(persistedAchievement.first().toBeVisible() }');' };
 
     test('モバイル表示での実績システム', async ({ page ) => {
         // モバイルビューポートに設定
@@ -259,7 +259,7 @@ test.describe('Achievement System E2E Tests', () => {
 
         // カテゴリフィルターがモバイルで適切に表示されることを確認
         const categoryButtons = page.locator('.category-filter button');
-        await expect(categoryButtons.first().toBeVisible() }');'
+        await expect(categoryButtons.first().toBeVisible() }');' };
 
     test('実績システムのパフォーマンス確認', async ({ page ) => {
         // パフォーマンス監視を開始
@@ -269,7 +269,7 @@ test.describe('Achievement System E2E Tests', () => {
             performance.mark = function(name {
                 window.performanceMarks.push({ name, time: Date.now() },
                 return originalMarkMethod.call(this, name);
-            };
+            }
         }');'
 
         // ゲーム開始
@@ -288,7 +288,7 @@ test.describe('Achievement System E2E Tests', () => {
         for (let i = 0; i < 50; i++) {
             await gameCanvas.click({ 
                 position: { ,
-                    x: 100 + (i % 10) * 50, 
+                    x: 100 + (i % 10) * 50 },
                     y: 100 + Math.floor(i / 10) * 50 
                 } 
             };
@@ -328,7 +328,7 @@ test.describe('Achievement System E2E Tests', () => {
         // スクリーンリーダー対応のテキストが存在することを確認
         const srOnlyText = page.locator('.sr-only, [aria-hidden="false"]');
         const srTextCount = await srOnlyText.count();
-        expect(srTextCount).toBeGreaterThan(0) };
+        expect(srTextCount).toBeGreaterThan(0) }
 }');'
 
 test.describe('Achievement System Error Handling', (') => {'
@@ -353,7 +353,7 @@ test.describe('Achievement System Error Handling', (') => {'
                 if (value.length > 100') { // 小さな制限を設定'
                     throw new Error('QuotaExceededError') }
                 return originalSetItem.call(this, key, value);
-            };
+            }
         }');'
 
         // ゲーム開始
@@ -367,10 +367,10 @@ test.describe('Achievement System Error Handling', (') => {'
         const gameCanvas = page.locator('#gameCanvas');
         await gameCanvas.click({ position: { x: 200, y: 200 } ),
         // エラーが発生してもゲームが継続することを確認
-        await expect(gameCanvas).toBeVisible(');'
+        await expect(gameCanvas).toBeVisible(');' };
         
         // エラーメッセージが適切に表示されることを確認
         const errorMessage = page.locator('.error-message, .warning-message');
         // エラーハンドリングにより graceful degradation が動作することを確認
-    };
+    }
 }');'

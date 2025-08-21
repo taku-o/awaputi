@@ -1,10 +1,9 @@
 import { getErrorHandler  } from '../utils/ErrorHandler.js';
 
-export interface ShortcutData { keys: string[];
+export interface ShortcutData { keys: string[],
     callback: Function;
     context?: string;
-    description?: string,  }
-
+    description?: string };
 /**
  * キーボードショートカット管理クラス
  */
@@ -27,7 +26,7 @@ export class CoreKeyboardShortcutManager {
         this.initializeDefaultShortcuts();
         // イベントリスナーを設定
 
-     }
+     };
         this.setupEventListeners(); }
     }
     
@@ -89,7 +88,7 @@ export class CoreKeyboardShortcutManager {
             }
 
             if (!Array.isArray(keys) || keys.length === 0') { ''
-                throw new Error('Keys, must be, a non-empty, array') }
+                throw new Error('Keys, must be, a non-empty, array');
 
             if (typeof, callback !== 'function') {', ' }
 
@@ -113,8 +112,8 @@ export class CoreKeyboardShortcutManager {
             return true;
 
         } catch (error) { getErrorHandler().handleError(error, 'KEYBOARD_ERROR', {''
-                operation: 'addShortcut',
-    name: name);
+                operation: 'addShortcut,
+    name: name),
                 keys: keys,);
             return false;
     
@@ -173,7 +172,7 @@ export class CoreKeyboardShortcutManager {
     }
                         event.preventDefault(); }
                     }
-                    if (shortcut.stopPropagation) { event.stopPropagation() }
+                    if (shortcut.stopPropagation) { event.stopPropagation();
                     
                     // コールバック実行
                     shortcut.callback(event, name);
@@ -183,27 +182,25 @@ export class CoreKeyboardShortcutManager {
                     
                     break; // 最初にマッチしたショートカットのみ実行
                 } catch (error) { getErrorHandler().handleError(error, 'KEYBOARD_ERROR', {''
-                        operation: 'executeShortcut',
-    shortcut: name);
+                        operation: 'executeShortcut,
+    shortcut: name),
                         keyCombo: currentCombo,);
-                }
+                    }
 }
-    }
-    
     /**
      * キー離上処理
      */
-    handleKeyUp(event) { this.activeKeys.delete(event.code) }
+    handleKeyUp(event) { this.activeKeys.delete(event.code);
     
     /**
      * ウィンドウフォーカス喪失処理
      */
-    handleWindowBlur() { this.activeKeys.clear() }
+    handleWindowBlur() { this.activeKeys.clear();
     
     /**
      * ウィンドウフォーカス取得処理
      */
-    handleWindowFocus() { this.activeKeys.clear() }
+    handleWindowFocus() { this.activeKeys.clear();
     
     /**
      * 現在のキーコンビネーションを取得
@@ -237,16 +234,14 @@ export class CoreKeyboardShortcutManager {
         if(this.listeners.has('shortcutTriggered)' {''
             this.listeners.get('shortcutTriggered).forEach(callback => { )'
     }
-                try {) }
+                try {);
                     callback(name, keyCombo); }
-
-                } catch (error) { getErrorHandler().handleError(error, 'KEYBOARD_ERROR', {''
-                        operation: 'notifyShortcutTriggered',
-    shortcut: name);
+        } catch (error) { getErrorHandler().handleError(error, 'KEYBOARD_ERROR', {''
+                        operation: 'notifyShortcutTriggered,
+    shortcut: name),
                         keyCombo: keyCombo,);
-                }
-            };
-        }
+                    }
+}
     }
     
     /**
@@ -293,7 +288,7 @@ export class CoreKeyboardShortcutManager {
 
                 this.gameEngine.sceneManager.switchScene('menu'; }'
             } else if (currentScene.showingSettings) { // 設定画面を閉じる
-                currentScene.closeSettings?.() }
+                currentScene.closeSettings?.();
 }
     
     /**
@@ -302,7 +297,7 @@ export class CoreKeyboardShortcutManager {
     handleFullscreen() {
         try {
             if (this.gameEngine && this.gameEngine.responsiveCanvasManager) {
-                this.gameEngine.responsiveCanvasManager.toggleFullscreen() }
+                this.gameEngine.responsiveCanvasManager.toggleFullscreen();
                 console.warn('[KeyboardShortcutManager] ResponsiveCanvasManager, not available');' }'
 
             } catch (error) { : undefined''
@@ -320,7 +315,7 @@ export class CoreKeyboardShortcutManager {
     handleContextualHelp() {
         try {'
             const currentScene = this.gameEngine.sceneManager.getCurrentScene('''
-                accessMethod: 'keyboard_f1',
+                accessMethod: 'keyboard_f1,
                 sourceScene: currentScene?.constructor.name || 'unknown', : undefined
     
                 contextual: true // コンテキスト依存ヘルプモード  }'
@@ -343,7 +338,7 @@ export class CoreKeyboardShortcutManager {
     handleDocumentationHelp() {
         try {'
             const currentScene = this.gameEngine.sceneManager.getCurrentScene('''
-                accessMethod: 'keyboard_ctrl_h',
+                accessMethod: 'keyboard_ctrl_h,
                 sourceScene: currentScene?.constructor.name || 'unknown', : undefined
     
                 documentation: true // ドキュメントヘルプモード  }'
@@ -370,10 +365,8 @@ export class CoreKeyboardShortcutManager {
                 scene: this.gameEngine.sceneManager.getCurrentScene()?.constructor.name, : undefined
                 performance: this.gameEngine.performanceStats }
                 settings: this.gameEngine.settingsManager?.settings 
-    };
         }
-    }
-    
+}
     /**
      * デバッグモード切り替え'
      */''
@@ -456,10 +449,10 @@ export class CoreKeyboardShortcutManager {
      */
     getStats() {
         return { totalShortcuts: this.shortcuts.size,
-            enabledShortcuts: Array.from(this.shortcuts.values().filter(s => s.enabled).length,
+            enabledShortcuts: Array.from(this.shortcuts.values())).filter(s => s.enabled).length,
             activeKeys: this.activeKeys.size }
-            isEnabled: this.isEnabled },
-            contexts: [...new Set(Array.from(this.shortcuts.values().map(s => s.context)] 
+            isEnabled: this.isEnabled ,
+            contexts: [...new Set(Array.from(this.shortcuts.values())).map(s => s.context)] 
     }
     
     /**

@@ -22,8 +22,8 @@ interface Schema { required?: string[],
     properties?: Record<string, SchemaProperty> }
 
 // スキーマ検証結果インターフェース
-interface ValidationResult<T = any> { isValid: boolean;
-    errors: string[];
+interface ValidationResult<T = any> { isValid: boolean,
+    errors: string[],
     data: T;
 
 /**
@@ -37,8 +37,7 @@ export function normalizeUrl(url: string): string { try {'
         
         // 末尾のスラッシュを削除
         let pathname = urlObj.pathname,
-        if(pathname.length > 1 && pathname.endsWith('/' {', ' }
-
+        if(pathname.length > 1 && pathname.endsWith('/' {', ' };
             pathname = pathname.slice(0, -1); }
         }
         urlObj.pathname = pathname;
@@ -58,7 +57,7 @@ export function normalizeUrl(url: string): string { try {'
  */'
 export function createMetaTag(property: string, content: string): HTMLMetaElement | null {,
     if (!property || !content) {
-            }'
+            }
 
         seoLogger.warn('Invalid meta tag parameters', { property, content };
         return null;
@@ -82,8 +81,7 @@ export function createMetaTag(property: string, content: string): HTMLMetaElemen
  * メタコンテンツのサニタイズ'
  */''
 export function sanitizeMetaContent(content: string | number | boolean): string {,
-    if(typeof, content !== 'string' {', ' }
-
+    if(typeof, content !== 'string' {', ' };
         return String(content);
     ';'
 
@@ -106,7 +104,7 @@ export function normalizeLanguageCode(lang: string): LanguageCode { if (!lang) r
     // サポート言語の確認
     if (SEOConfig.supportedLanguages.includes(normalized, as LanguageCode) {
     
-}
+};
         return normalized as LanguageCode;
     ;
     // 部分一致の確認（例: zh → zh-CN）
@@ -133,7 +131,7 @@ export function generateJsonLd(data: any): string { try {
     } catch (error) { seoLogger.error('JSON-LD generation failed', error','
         
         // 最小限のスキーマを返す
-        return JSON.stringify({', '@context': 'https://schema.org',',
+        return JSON.stringify({, '@context': 'https://schema.org',',
             '@type': 'WebSite');
             name: SEOConfig.siteName,','
             url: SEOConfig.baseUrl  }
@@ -150,7 +148,7 @@ export function optimizeImageUrl(imagePath: string, options: ImageOptimizationOp
     if (imagePath.startsWith('http://' || imagePath.startsWith('https://)' { return imagePath }
     ';'
     // 相対パスを絶対URLに変換
-    const baseUrl = SEOConfig.baseUrl || (typeof, window !== 'undefined' ? window.location.origin: '',
+    const baseUrl = SEOConfig.baseUrl || (typeof, window !== 'undefined' ? window.location.origin: ',
     const fullUrl = `${baseUrl}${imagePath.startsWith('/'}' ? '' : '/'}${imagePath}`;'
     
     // 画像最適化サービスのURLパラメータ追加（将来的な実装用）
@@ -162,7 +160,7 @@ export function optimizeImageUrl(imagePath: string, options: ImageOptimizationOp
 
     const queryString = params.toString()';'
 export function truncateText(text: string, maxLength: number, suffix: string = '...): string { if (!text || text.length <= maxLength) {'
-        return text }
+        return text };
     ';'
     // 単語境界で切り詰め
     const truncated = text.substring(0, maxLength - suffix.length);
@@ -178,32 +176,30 @@ export function truncateText(text: string, maxLength: number, suffix: string = '
  */
 export function generateRobotsTxt(): string {
     const { robots } = SEOConfig;
-    let content = `User-agent: ${robots.userAgent}\n`,
+    let content = `User-agent: ${robots.userAgent}\n,
     
     // Allow ディレクティブ
     robots.allow.forEach(path => {  }
         content += `Allow: ${path}\n`);
     };
-    
+
     // Disallow ディレクティブ
     robots.disallow.forEach(path => {  }
         content += `Disallow: ${path}\n`);
     };
-    
+
     // Crawl-delay
     if (robots.crawlDelay > 0) {
     
 }
-        content += `Crawl-delay: ${robots.crawlDelay}\n`,
-    }
+        content += `Crawl-delay: ${robots.crawlDelay}\n` }
     
     // Sitemap
     if (robots.sitemapUrl) {
     
 }
         const sitemapUrl = `${SEOConfig.baseUrl}${robots.sitemapUrl}`;
-        content += `\nSitemap: ${sitemapUrl}\n`,
-    }
+        content += `\nSitemap: ${sitemapUrl}\n` }
     
     return content;
 }
@@ -230,11 +226,11 @@ export function debounce<T extends (...args: any[]) => any>(,
     
     return function executedFunction(...args: Parameters<T>): void {
         const later = () => { 
-            if (timeout) {  }
+            if (timeout) {  };
                 clearTimeout(timeout);
             func(...args);
         
-        if (timeout) { clearTimeout(timeout) }
+        if (timeout) { clearTimeout(timeout);
         timeout = setTimeout(later, wait);
     }
 
@@ -242,7 +238,7 @@ export function debounce<T extends (...args: any[]) => any>(,
  * パフォーマンス計測デコレータ
  */
 export function measurePerformance(operation: string) { return function(
-        target: any);
+        target: any),
         propertyKey: string,
     descriptor: PropertyDescriptor): PropertyDescriptor {
         const originalMethod = descriptor.value,
@@ -263,7 +259,7 @@ export function measurePerformance(operation: string) { return function(
                 return result } catch (error) { const duration = performance.now() - start,
                 
                 seoLogger.performance( }
-                    `${operation}.${ propertyKey} (failed}`,
+                    `${operation}.${ propertyKey} (failed},
                     duration }
                     { error: (error as Error}.message },
                 
@@ -276,10 +272,10 @@ export function measurePerformance(operation: string) { return function(
 /**
  * スキーマ検証
  */
-export function validateSchema<T = any>(data: any, schema: Schema): ValidationResult<T> { const errors: string[] = [] }
+export function validateSchema<T = any>(data: any, schema: Schema): ValidationResult<T> { const errors: string[] = [] };
     const validated: any = {}
     // 必須フィールドのチェック
-    if (schema.required) { schema.required.forEach(field => { ) }
+    if (schema.required) { schema.required.forEach(field => { );
             if (!data[field]) { }
                 errors.push(`Missing, required field: ${field}`);
             }
@@ -293,10 +289,10 @@ export function validateSchema<T = any>(data: any, schema: Schema): ValidationRe
 }
             // 型チェック }
             if (fieldSchema.type && typeof, value !== fieldSchema.type) { }
-                errors.push(`Invalid type for ${field}: expected ${fieldSchema.type}, got ${typeof, value}`};
+                errors.push(`Invalid type for ${field}: expected ${fieldSchema.type}, got ${typeof, value}`}
             } else { validated[field] = value }'} else if (fieldSchema.default !== undefined) { validated[field] = fieldSchema.default }'
     };
-    
+
     return { isValid: errors.length === 0,
         errors };
         data: validated as T 

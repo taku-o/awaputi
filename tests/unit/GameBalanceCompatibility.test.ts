@@ -6,37 +6,37 @@ import { jest  } from '@jest/globals';
 interface MockErrorHandler {
     handleError: jest.Mock<(erro,r: Error, context?: any) => void> }
 interface MockLoggingSystem {
-    warn: jest.Mock<(...arg,s: any[]) => void>;
-    info: jest.Mock<(...arg,s: any[]) => void>;
-    error: jest.Mock<(...arg,s: any[]) => void>;
+    warn: jest.Mock<(...arg,s: any[]) => void>,
+    info: jest.Mock<(...arg,s: any[]) => void>,
+    error: jest.Mock<(...arg,s: any[]) => void>,
     debug: jest.Mock<(...arg,s: any[]) => void> }
 interface ScoreConfig {
-    baseScores: { [ke,y: string]: number;
-    combo: { multiplierIncrement: number;
+    baseScores: { [ke,y: string]: number,
+    combo: { multiplierIncrement: number,
     ageBonus: { earlyBonus: number;
 }
 interface StageConfig {
-    unlockRequirements: { [ke,y: string]: number;
-    difficulty: { [key: string]: { spawnRate: number, };
+    unlockRequirements: { [ke,y: string]: number,
+    difficulty: { [key: string]: { spawnRate: number, }
 }
 interface ItemConfig {
-    baseCosts: { [ke,y: string]: number;
-    effects: { [key: string]: number;
+    baseCosts: { [ke,y: string]: number,
+    effects: { [key: string]: number,
     maxLevels: { [key: string]: number;
 }
 interface BubbleConfig {
-    maxAge: { [ke,y: string]: number;
-    health: { [key: string]: number;
-    specialEffects: { [key: string]: { [effect: string]: number, };
+    maxAge: { [ke,y: string]: number,
+    health: { [key: string]: number,
+    specialEffects: { [key: string]: { [effect: string]: number, }
 }
 interface GameConfigInterface {
-    getScoreConfig: jest.Mock<() => ScoreConfig>;
+    getScoreConfig: jest.Mock<() => ScoreConfig>,
     getStageConfig: jest.Mock<() => StageConfig>;
-    getItemConfig: jest.Mock<() => ItemConfig>;
+    getItemConfig: jest.Mock<() => ItemConfig>,
     getBubbleConfig: jest.Mock<() => BubbleConfig>;
-    calculateScore: jest.Mock<(bubbleTyp,e: string, ageRatio: number) => number>;
-    calculateComboMultiplier: jest.Mock<(comboCoun,t: number) => number>;
-    calculateItemCost: jest.Mock<(itemI,d: string, currentLevel: number) => number>;
+    calculateScore: jest.Mock<(bubbleTyp,e: string, ageRatio: number) => number>,
+    calculateComboMultiplier: jest.Mock<(comboCoun,t: number) => number>,
+    calculateItemCost: jest.Mock<(itemI,d: string, currentLevel: number) => number>,
     isStageUnlocked: jest.Mock<(stageI,d: string, playerTAP: number') => boolean> }'
 // ErrorHandlerとLoggingSystemをモック
 jest.mock('../../src/utils/ErrorHandler.js', () => ({
@@ -76,7 +76,7 @@ describe('GameBalanceCompatibility', () => {
                     baseScores: { normal: 15 ,
                     combo: { multiplierIncrement: 0.08 ,
         ageBonus: { earlyBonus: 2.0 
-    };
+    }
             };
             const scoring = BALANCE_CONFIG.scoring;
             
@@ -121,7 +121,7 @@ describe('GameBalanceCompatibility', () => {
                     baseCosts: { scoreMultiplier: 75 ,
                     effects: { scoreMultiplier: 1.3 ,
         maxLevels: { scoreMultiplier: 5 
-    };
+    }
             };
             const items = BALANCE_CONFIG.items;
             
@@ -145,7 +145,7 @@ describe('GameBalanceCompatibility', () => {
                     maxAge: { normal: 12000 ,
                     health: { normal: 1 ,
                     specialEffects: { pink: { healAmount: 25 ) }
-                };
+                }
             };
             const bubbles = BALANCE_CONFIG.bubbles;
             
@@ -259,6 +259,6 @@ describe('GameBalanceCompatibility', () => {
                 call.some(arg => typeof arg === 'string' && arg.includes('非推奨')}
             );
             expect(hasDeprecationWarning).toBe(true);
-        };
+        }
     }
 }');'

@@ -51,7 +51,7 @@ const mockDocument = {
             type: ','
             remove: jest.fn(
             style: {','
-            innerHTML: ','
+            innerHTML: ',' };
             onclick: null },
     head: {
         appendChild: jest.fn( },
@@ -65,7 +65,7 @@ const mockDocument = {
 const mockWindow = {
     location: { protocol: 'file:', href: 'file:///test/index.html', '),'
     navigator: { userAgent: 'Test Browser' ,
-    localStorage: mockLocalStorage,
+    localStorage: mockLocalStorage },
     sessionStorage: mockSessionStorage,
     performance: { now: () => Date.now() },
     addEventListener: jest.fn(
@@ -219,7 +219,7 @@ describe('Local Execution Final Integration Test', () => {
             const results = await Promise.all(operations);
             // すべての操作が成功するか、適切にエラーハンドリングされることを確認
             results.forEach(result => {);
-                expect(typeof result).toBeDefined() };
+                expect(typeof result).toBeDefined() }
         }
     }');'
     describe('Developer Experience Features', (') => {'
@@ -337,6 +337,6 @@ describe('Local Execution Final Integration Test', () => {
             expect((') => {'
                 localModeManager.handleError(testError, 'FINAL_VALIDATION') }.not.toThrow(');'
             console.log('✅ Complete local execution flow validation passed');
-        };
+        }
     }
 }');'

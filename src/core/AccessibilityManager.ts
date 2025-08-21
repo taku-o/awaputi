@@ -9,17 +9,17 @@ interface GameEngine { keyboardShortcutManager?: any,
     addEventListener?: (event: string, callback: (event: any) => void') => void  }'
 }
 
-interface SystemPreferences { reducedMotion: boolean;
-    highContrast: boolean;
-    largeText: boolean;
-    screenReader: boolean;
+interface SystemPreferences { reducedMotion: boolean,
+    highContrast: boolean,
+    largeText: boolean,
+    screenReader: boolean,
     colorScheme: 'light' | 'dark'
             }
 
 interface Manager { applyConfig?: (config: any) => void | Promise<void>;
     setEnabled?: (enabled: boolean) => void;
     generateReport?: () => any;
-    destroy?: () => void,  }
+    destroy?: () => void }
 }
 
 interface ManagerGroup extends Manager { focus?: FocusManager,
@@ -27,17 +27,15 @@ interface ManagerGroup extends Manager { focus?: FocusManager,
     visual?: VisualFocusManager;
 
 interface EventCallback { (data?: any): void;
-
-interface ComplianceResult { compliant: boolean;
+    interface ComplianceResult { compliant: boolean;
     overallCompliance?: boolean;
     reason?: string;
     error?: string;
     issues?: any[];
     score?: number;
-
-interface TestingFramework { runFullAudit: () => Promise<{
-        overallComplianc,e: boolean;
-        issues: any[];
+    interface TestingFramework { runFullAudit: () => Promise<{
+        overallComplianc,e: boolean,
+        issues: any[],
     score: number;>;
     destroy?: () => void;
 }
@@ -111,18 +109,17 @@ export class CoreAccessibilityManager {
             // Apply any pending configuration
             if (this.pendingConfiguration) {''
                 console.log('Applying, pending configuration, after initialization');
-                await this.applyConfiguration(this.pendingConfiguration) }
+                await this.applyConfiguration(this.pendingConfiguration);
                 this.pendingConfiguration = null; }
             }
             ';'
             // 初期化完了イベントを発行
             this.emit('initialized', { : undefined)
                 config: this.config),
-                detectedPreferences: this.state.systemPreferences),
+                detectedPreferences: this.state.systemPreferences);
             return true  }
-
         } catch (error) { getErrorHandler().handleError(error, 'ACCESSIBILITY_ERROR', {''
-                operation: 'initialize',')',
+                operation: 'initialize,')',
                 phase: 'core_setup'
             }';'
             return false;
@@ -143,7 +140,7 @@ export class CoreAccessibilityManager {
         try { // Reduced Motion の検出
             if (window.matchMedia) {
 
-                const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)',
+                const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce),
                 preferences.reducedMotion = reducedMotionQuery.matches,
                 ','
 
@@ -159,7 +156,7 @@ export class CoreAccessibilityManager {
             // High Contrast の検出
             if (window.matchMedia) {
 
-                const highContrastQuery = window.matchMedia('(prefers-contrast: high)',
+                const highContrastQuery = window.matchMedia('(prefers-contrast: high),
                 preferences.highContrast = highContrastQuery.matches,
 
                 ' }'
@@ -173,15 +170,15 @@ export class CoreAccessibilityManager {
             // Color Scheme の検出
             if (window.matchMedia) {
 
-                const darkSchemeQuery = window.matchMedia('(prefers-color-scheme: dark)',
-                preferences.colorScheme = darkSchemeQuery.matches ? 'dark' : 'light',
+                const darkSchemeQuery = window.matchMedia('(prefers-color-scheme: dark),
+                preferences.colorScheme = darkSchemeQuery.matches ? 'dark' : 'light,
 
                 ' }'
 
                 darkSchemeQuery.addEventListener('change', (e) => { }
 
                     this.handleSystemPreferenceChange('colorScheme', e.matches ? 'dark' : 'light); '
-    };
+    }
             }
             
             // Screen Reader の検出（推定）
@@ -225,7 +222,7 @@ export class CoreAccessibilityManager {
      */''
     private detectLargeTextPreference()';'
         const testElement = document.createElement('div');
-        testElement.style.cssText = 'font-size: 1rem; position: absolute;, visibility: hidden;';
+        testElement.style.cssText = 'font-size: 1rem, position: absolute;, visibility: hidden;';
         document.body.appendChild(testElement);
         
         const fontSize = window.getComputedStyle(testElement).fontSize;
@@ -281,7 +278,7 @@ export class CoreAccessibilityManager {
             // Screen Reader
             if (preferences.screenReader !== undefined) {
 
-                this.config.screenReader.enabled = preferences.screenReader ? true: 'auto',
+                this.config.screenReader.enabled = preferences.screenReader ? true: 'auto,
 
             
                 this.config.screenReader.verbosity = preferences.screenReader ? 'normal' : 'minimal' }
@@ -344,7 +341,7 @@ export class CoreAccessibilityManager {
     
 }
                 await this.initializeManager(managerType); }
-            } catch (error) {
+        } catch (error) {
                 console.warn(`Failed to initialize ${managerType} manager:`, error);
                 // エラーが発生しても他のマネージャーの初期化は続行
             }
@@ -366,13 +363,13 @@ export class CoreAccessibilityManager {
             resolving.add(managerType);
             
             const dependencies = this.managerDependencies.get(managerType) || [];
-            for (const dep of dependencies) { resolve(dep) }
+            for (const dep of dependencies) { resolve(dep);
             
             resolving.delete(managerType);
             resolved.push(managerType);
         };
         
-        for(const managerType of this.managerRegistry.keys() { resolve(managerType) }
+        for(const managerType of this.managerRegistry.keys() { resolve(managerType);
         
         return resolved;
     }
@@ -403,15 +400,15 @@ export class CoreAccessibilityManager {
                         accessibility: keyboardAccessibilityManager,
                         visual: visualFocusManager,
                         // 統一インターフェース
-                       , applyConfig: (config} => { 
+            applyConfig: (config} => { 
             }
-                            focusManager.applyConfig?.(config) }
+                            focusManager.applyConfig?.(config);
                             keyboardAccessibilityManager.applyConfig?.(config); }
-                            visualFocusManager.applyConfig?.(config};
+                            visualFocusManager.applyConfig?.(config}
                         },
                          : undefined
                         setEnabled: (enabled) => {  focusManager.setEnabled?.(enabled),
-                            keyboardAccessibilityManager.setEnabled?.(enabled) }
+                            keyboardAccessibilityManager.setEnabled?.(enabled);
                             visualFocusManager.setEnabled?.(enabled); }
                         },
                          : undefined
@@ -462,10 +459,10 @@ export class CoreAccessibilityManager {
             
             if (manager) {
             
-                this.managers.set(managerType, manager) }
+                this.managers.set(managerType, manager);
                 this.managerRegistry.set(managerType, manager); }
-                console.log(`${managerType} manager, initialized successfully`};
-            } catch (error) { : undefined 
+                console.log(`${managerType} manager, initialized successfully`}
+        } catch (error) { : undefined 
             throw new Error(`Failed, to initialize ${managerType} manager: ${error.message}`);
         }
     }
@@ -529,7 +526,7 @@ export class CoreAccessibilityManager {
     async applyConfiguration(config) { ''
         if (!this.isInitialized) {
 
-            console.warn('AccessibilityManager not initialized, configuration will be applied after initialization',
+            console.warn('AccessibilityManager not initialized, configuration will be applied after initialization,
             this.pendingConfiguration = config }
             if (config') { }'
                 this.config = { ...this.config, ...config }
@@ -588,22 +585,21 @@ export class CoreAccessibilityManager {
         const report = {
             timestamp: new Date().toISOString(),
     system: {
-                userAgent: navigator.userAgent,
+                userAgent: navigator.userAgent ,
                 systemPreferences: this.state.systemPreferences,
     screenSize: {
                     width: window.screen.width }
                     height: window.screen.height 
     };
             configuration: { keyboard: this.config.keyboard,
-                screenReader: this.config.screenReader,
+                screenReader: this.config.screenReader ,
                 visual: this.config.visual,
                 audio: this.config.audio,
                 motor: this.config.motor,
-    cognitive: this.config.cognitive },
+    cognitive: this.config.cognitive ,
             managers: {},
             compliance: this.state.complianceStatus,
-    statistics: this.getUsageStatistics(),
-        };
+    statistics: this.getUsageStatistics() };
         ';'
         // 各マネージャーからレポートデータを収集
         for(const [type, manager] of this.managers) {
@@ -622,7 +618,7 @@ export class CoreAccessibilityManager {
         return { initializationTime: this.state.initializationTime,
             managersCount: this.managers.size,
     eventsEmitted: this.state.eventsEmitted || 0 }
-            errorsHandled: this.state.errorsHandled || 0 },
+            errorsHandled: this.state.errorsHandled || 0 ,
             configChanges: this.state.configChanges || 0 
     }
     
@@ -653,16 +649,13 @@ export class CoreAccessibilityManager {
      */
     emit(event, data) {
         if (this.eventListeners.has(event) {
-            this.eventListeners.get(event).forEach(callback => { )
-    }
-                try {) }
+            this.eventListeners.get(event).forEach(callback => { );
+                try {);
                     callback(data); }
-                } catch (error) {
+        } catch (error) {
                     console.error(`Error in event listener for ${event}:`, error);
-                }
-            };
-        }
-        
+                    }
+}
         // 統計更新
         this.state.eventsEmitted = (this.state.eventsEmitted || 0) + 1;
     }
@@ -670,15 +663,15 @@ export class CoreAccessibilityManager {
     // イベントハンドラー
 
     handleWindowFocus()';'
-        this.emit('windowFocused', { timestamp: Date.now( };
+        this.emit('windowFocused', { timestamp: Date.now( }
     }
 
     handleWindowBlur()';'
-        this.emit('windowBlurred', { timestamp: Date.now( };
+        this.emit('windowBlurred', { timestamp: Date.now( }
     }
 
     handleVisibilityChange()';'
-        this.emit('visibilityChanged', { visible: isVisible, timestamp: Date.now(  };
+        this.emit('visibilityChanged', { visible: isVisible, timestamp: Date.now(  }
     }
     
     handleGlobalError(event) {
@@ -688,7 +681,7 @@ export class CoreAccessibilityManager {
 
         this.state.errorsHandled = (this.state.errorsHandled || 0') + 1;' }
 
-        this.emit('globalError', { error: event.error, timestamp: Date.now(  };
+        this.emit('globalError', { error: event.error, timestamp: Date.now(  }
     }
 
     handleSceneChange(event) {
@@ -712,7 +705,7 @@ export class CoreAccessibilityManager {
     /**
      * マネージャーの取得
      */
-    getManager(type) { return this.managers.get(type) }
+    getManager(type) { return this.managers.get(type);
     
     /**
      * 設定の取得
@@ -755,7 +748,7 @@ export class CoreAccessibilityManager {
     // HelpAccessibilityManagerから呼び出される具体的なメソッド
     enableHighContrast() {
         this.config.visual.highContrast.enabled = true,
-        this.applyConfiguration(this.config) }
+        this.applyConfiguration(this.config);
 
         console.log('High, contrast enabled'); }'
     }
@@ -764,7 +757,7 @@ export class CoreAccessibilityManager {
     ','
 
         this.config.visual.highContrast.enabled = false,
-        this.applyConfiguration(this.config) }
+        this.applyConfiguration(this.config);
 
         console.log('High, contrast disabled'); }'
     }
@@ -774,7 +767,7 @@ export class CoreAccessibilityManager {
         this.config.visual.textScaling.enabled = true,
 
         this.config.visual.textScaling.scale = Math.max(1.2, this.config.visual.textScaling.scale);
-        this.applyConfiguration(this.config) }
+        this.applyConfiguration(this.config);
 
         console.log('Large, text enabled'); }'
     }
@@ -784,7 +777,7 @@ export class CoreAccessibilityManager {
         this.config.visual.textScaling.enabled = false,
 
         this.config.visual.textScaling.scale = 1.0,
-        this.applyConfiguration(this.config) }
+        this.applyConfiguration(this.config);
 
         console.log('Large, text disabled'); }'
     }
@@ -793,7 +786,7 @@ export class CoreAccessibilityManager {
     ','
 
         this.config.audio.visualFeedback.enabled = true,
-        this.applyConfiguration(this.config) }
+        this.applyConfiguration(this.config);
 
         console.log('Audio, cues enabled'); }'
     }
@@ -802,7 +795,7 @@ export class CoreAccessibilityManager {
     ','
 
         this.config.audio.visualFeedback.enabled = false,
-        this.applyConfiguration(this.config) }
+        this.applyConfiguration(this.config);
 
         console.log('Audio, cues disabled'); }'
     }
@@ -812,7 +805,7 @@ export class CoreAccessibilityManager {
         this.config.keyboard.enabled = true,
 
         this.config.keyboard.focusVisible = true,
-        this.applyConfiguration(this.config) }
+        this.applyConfiguration(this.config);
 
         console.log('Keyboard, navigation enabled'); }'
     }
@@ -829,19 +822,17 @@ export class CoreAccessibilityManager {
             // ARIA live region を使用してアナウンス
     }
             this.createAriaLiveAnnouncement(message, priority); }
-            console.log(`[Accessibility] Announced: ${message} (${priority}`};
-        }
-    }
-
+            console.log(`[Accessibility] Announced: ${message} (${priority}`    }
+}
     createAriaLiveAnnouncement(message, priority) {
         // ARIA live region の作成とアナウンス
-        let liveRegion = document.getElementById('accessibility-live-region',
+        let liveRegion = document.getElementById('accessibility-live-region,
         if (!liveRegion) {''
             liveRegion = document.createElement('div');
-            liveRegion.id = 'accessibility-live-region',
+            liveRegion.id = 'accessibility-live-region,
             liveRegion.setAttribute('aria-live', priority','
             liveRegion.setAttribute('aria-atomic', 'true),'
-            liveRegion.style.cssText = `,
+            liveRegion.style.cssText = ,
                 position: absolute,
                 left: -10000px,
                 width: 1px,
@@ -886,17 +877,17 @@ export class CoreAccessibilityManager {
         this.emit('accessibilityHelpRequested', { help ' }'
 
     generateAccessibilityHelp('''
-                'Alt+Shift+S: スクリーンリーダー切り替え',
-                'Ctrl+Plus: テキストサイズ拡大',
-                'Ctrl+Minus: テキストサイズ縮小',
-                'Ctrl+Alt+H: ハイコントラスト切り替え',
+                'Alt+Shift+S: スクリーンリーダー切り替え,
+                'Ctrl+Plus: テキストサイズ拡大,
+                'Ctrl+Minus: テキストサイズ縮小,
+                'Ctrl+Alt+H: ハイコントラスト切り替え,
                 'Alt+Shift+H: このヘルプを表示);'
             ]';'
-           , features: [';'
-                'キーボードナビゲーション対応',
-                'スクリーンリーダー対応',
-                'ハイコントラストモード',
-                'テキストサイズ調整',
+            features: [';'
+                'キーボードナビゲーション対応,
+                'スクリーンリーダー対応,
+                'ハイコントラストモード,
+                'テキストサイズ調整,
                 'アニメーション軽減',]';'
                 'WCAG 2.1 AA準拠'];
             ];
@@ -915,7 +906,7 @@ export class CoreAccessibilityManager {
                 try {
         }
                     manager.destroy(); }
-                } catch (error) {
+        } catch (error) {
                     console.warn(`Error destroying ${type} manager:`, error);
                 }
 }
@@ -929,7 +920,7 @@ export class CoreAccessibilityManager {
         this.managerDependencies.clear()';'
         if(this.testingFramework && typeof, this.testingFramework.destroy === 'function' {'
 
-            this.testingFramework.destroy() }
+            this.testingFramework.destroy();
 
         console.log('AccessibilityManager, destroyed'); }'
 }
@@ -949,31 +940,30 @@ export class AccessibilityConfiguration {
 
     constructor('''
             navigationMode: '2d', // '1d', '2d', 'custom'';'
-            shortcuts: new Map('';
+            shortcuts: new Map(',
     tabOrder: 'logical' // 'logical', 'dom', 'custom' };
         ';'
 
         this.screenReader = {;
             enabled: 'auto', // true, false, 'auto'','
-            verbosity: 'normal', // 'minimal', 'normal', 'verbose',
+            verbosity: 'normal, // 'minimal', 'normal', 'verbose',
             announcements: {
-                gameState: true,
+                gameState: true ,
                 score: true,
                 actions: true,
     errors: true,
             speechRate: 1.0,
-            language: 'auto',
-        },
+            language: 'auto' ,
         
-        this.visual = { highContrast: {'
+        this.visual = { highContrast: { '
                 enabled: false,
-                level: 'aa', // 'aa', 'aaa',
+                level: 'aa, // 'aa', 'aaa',
                 customColors: null,
             textScaling: { enabled: false,
-    scale: 1.0, // 0.8 - 2.0,
-                lineHeight: 1.4  },
+    scale: 1.0, // 0.8 - 2.0  },
+                lineHeight: 1.4  ,
             colorBlindness: { enabled: false,''
-                type: 'none', // 'protanopia', 'deuteranopia', 'tritanopia',
+                type: 'none', // 'protanopia', 'deuteranopia', 'tritanopia'  },
                 patterns: true,
     shapes: true,
             motion: { reduced: false,''
@@ -986,35 +976,34 @@ export class AccessibilityConfiguration {
         this.audio = { visualFeedback: {'
                 enabled: false,
                 intensity: 'medium', // 'low', 'medium', 'high'','
-                type: 'flash' // 'flash', 'glow', 'pulse' },
+                type: 'flash' // 'flash', 'glow', 'pulse' } };
 
             captions: { enabled: false,''
-                position: 'bottom', // 'top', 'bottom', 'overlay'','
-                size: 'medium',
+                position: 'bottom', // 'top', 'bottom', 'overlay'','  },
+                size: 'medium,
     background: true,
             vibration: { enabled: false,
-    intensity: 0.5, // 0.0 - 1.0,
-                patterns: new Map('',
+    intensity: 0.5, // 0.0 - 1.0  },
+                patterns: new Map(',
     dominantHand: 'right' // 'left', 'right' },
             sensitivity: { mouse: 1.0,
-                touch: 1.0,
-    keyboard: 1.0 },
+                touch: 1.0 ,
+    keyboard: 1.0 ,
             timing: { clickDelay: 0,
-                holdDuration: 500,
-    doubleClickInterval: 300 },
+                holdDuration: 500 ,
+    doubleClickInterval: 300 ,
             alternativeInput: { switches: false,
-                eyeTracking: false,
+                eyeTracking: false ,
     voiceControl: false,
         this.cognitive = { simplification: {'
                 enabled: false,
-                level: 'basic' // 'basic', 'intermediate', 'advanced' },
+                level: 'basic' // 'basic', 'intermediate', 'advanced' } };
             help: { contextual: true,
-                tooltips: true,
+                tooltips: true ,
     tutorials: true,
             errorHandling: { recovery: true,
-                suggestions: true,
-    prevention: true,
-}
+                suggestions: true ,
+    prevention: true }
 
 /**
  * アクセシビリティ状態クラス
@@ -1038,7 +1027,7 @@ export class AccessibilityState {
         this.activeAnnouncements = [];
         this.errorState = null;
         this.helpContext = null
-}
+};
         this.userPreferences = new Map(); }
         this.systemPreferences = {};
         this.complianceStatus = { wcag21AA: false,

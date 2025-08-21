@@ -4,21 +4,17 @@
 import { ScenesBaseDialog, DialogButton, GameEngine, EventBus, GameState  } from './ScenesBaseDialog.js';
 
 // Type definitions for username dialog
-export interface UsernameValidation { allowedChars: RegExp;
-    prohibitedWords: string[];
+export interface UsernameValidation { allowedChars: RegExp,
+    prohibitedWords: string[],
     minLength: number;
-
-export interface TextSettings { contentFont: string;
+    export interface TextSettings { contentFont: string,
     contentColor: string;
-
-export interface UsernameDialogData { currentUsername: string;
-    newUsername: string;
-    error: string | null }
-
-export interface PlayerDataManager { getUsername: () => string;
+    export interface UsernameDialogData { currentUsername: string,
+    newUsername: string,
+    error: string | null };
+export interface PlayerDataManager { getUsername: () => string,
     setUsername: (username: string) => void 
-    }
-
+    };
 export interface GameEngineWithPlayerData extends GameEngine { playerData: PlayerDataManager;
 
 export class UsernameDialog extends ScenesBaseDialog { private title: string
@@ -45,8 +41,8 @@ export class UsernameDialog extends ScenesBaseDialog { private title: string
         
         // 入力検証設定
         this.validation = {
-            allowedChars: /^[a-zA-Z0-9ぁ-んァ-ヶー一-龯\s]*$/;
-            prohibitedWords: ['admin', 'test', 'guest', 'null', 'undefined'] }
+            allowedChars: /^[a-zA-Z0-9ぁ-んァ-ヶー一-龯\s]*$/,
+            prohibitedWords: ['admin', 'test', 'guest', 'null', 'undefined'] };
             minLength: 1 
     };
         // テキスト設定のデフォルト値
@@ -58,7 +54,7 @@ export class UsernameDialog extends ScenesBaseDialog { private title: string
         this.dialogData = {;
             currentUsername: ','
             newUsername: ','
-    error: null;
+    error: null,
     error: null;
         };
     /**
@@ -82,13 +78,13 @@ export class UsernameDialog extends ScenesBaseDialog { private title: string
      */''
     setupButtons('''
                 text: '変更',';'
-                color: '#28A745';
+                color: '#28A745,
     callback: () => this.handleUsernameChange(
                 get disabled() { ''
                     return !this.isValidUsername('''
                 text: 'キャンセル',';'
-                color: '#6C757D');
-                callback: () => this.handleCancel()  }
+                color: '#6C757D'),
+                callback: () => this.handleCancel();
             }
         ];
     }
@@ -106,8 +102,8 @@ export class UsernameDialog extends ScenesBaseDialog { private title: string
         // 現在のユーザー名を表示
         context.font = this.textSettings.contentFont,
         context.fillStyle = this.textSettings.contentColor,
-        context.textAlign = 'left',
-        context.textBaseline = 'top',
+        context.textAlign = 'left,
+        context.textBaseline = 'top,
 
          : undefined','
         context.fillText('現在のユーザー名:', contentX, contentY','
@@ -117,7 +113,7 @@ export class UsernameDialog extends ScenesBaseDialog { private title: string
         this.renderUsernameInput(context, { contentX, contentWidth ), contentY + 40),
         
         // バリデーション情報を表示
-        this.renderValidationInfo(context, { contentX ), contentY + 120) }
+        this.renderValidationInfo(context, { contentX ), contentY + 120);
     
     /**
      * ユーザー名入力欄を描画
@@ -127,7 +123,7 @@ export class UsernameDialog extends ScenesBaseDialog { private title: string
      */
     private renderUsernameInput(;
         context: CanvasRenderingContext2D,
-    layout: { contentX: number,, contentWidth: number ),
+    layout: { contentX: number, contentWidth: number ),
         y: number','
     '): void {'
         const inputWidth = layout.contentWidth - 120,
@@ -138,26 +134,26 @@ export class UsernameDialog extends ScenesBaseDialog { private title: string
         context.font = this.textSettings.contentFont,
 
         context.fillStyle = this.textSettings.contentColor,
-        context.textAlign = 'left',
-        context.textBaseline = 'middle',
+        context.textAlign = 'left,
+        context.textBaseline = 'middle,
         context.fillText('新しいユーザー名:', layout.contentX, y + inputHeight / 2','
         ','
         // 入力ボックスの背景
-        context.fillStyle = this.inputActive ? '#FFFFFF' : '#F8F9FA',
+        context.fillStyle = this.inputActive ? '#FFFFFF' : '#F8F9FA,
         context.fillRect(inputX, y, inputWidth, inputHeight);
         ','
         // 入力ボックスの枠線
-        context.strokeStyle = this.inputActive ? '#007BFF' : '#DEE2E6',
+        context.strokeStyle = this.inputActive ? '#007BFF' : '#DEE2E6,
 
         context.lineWidth = this.inputActive ? 2 : 1,
         context.strokeRect(inputX, y, inputWidth, inputHeight);
         ','
         // 入力テキストを描画
         const displayText = this.dialogData.newUsername || ','
-        context.fillStyle = displayText ? this.textSettings.contentColor: '#999999',
+        context.fillStyle = displayText ? this.textSettings.contentColor: '#999999,
         context.font = this.textSettings.contentFont,
-        context.textAlign = 'left',
-        context.textBaseline = 'middle',
+        context.textAlign = 'left,
+        context.textBaseline = 'middle,
         
         const textX = inputX + 10,
         const textY = y + inputHeight / 2,
@@ -167,7 +163,7 @@ export class UsernameDialog extends ScenesBaseDialog { private title: string
 
             ' }'
 
-            context.fillText(displayText, textX, textY); }
+            context.fillText(displayText, textX, textY); } }
 
         } else { }'
 
@@ -175,7 +171,7 @@ export class UsernameDialog extends ScenesBaseDialog { private title: string
         }
         
         // カーソルを描画
-        if (this.inputActive && this.showCursor && displayText) { this.renderCursor(context, textX, textY, displayText) }
+        if (this.inputActive && this.showCursor && displayText) { this.renderCursor(context, textX, textY, displayText);
         
         // 文字数カウンターを表示
         this.renderCharacterCounter(context, inputX + inputWidth, y + inputHeight + 5);
@@ -191,12 +187,12 @@ export class UsernameDialog extends ScenesBaseDialog { private title: string
     private renderCursor(context: CanvasRenderingContext2D, textX: number, textY: number, text: string): void { const beforeCursor = text.substring(0, this.cursorPosition);
         const cursorX = textX + context.measureText(beforeCursor).width,
 
-        context.strokeStyle = '#333333',
+        context.strokeStyle = '#333333,
         context.lineWidth = 1,
         context.beginPath();
         context.moveTo(cursorX, textY - 10);
         context.lineTo(cursorX, textY + 10);
-        context.stroke() }
+        context.stroke();
     
     /**
      * 文字数カウンターを描画
@@ -221,7 +217,7 @@ export class UsernameDialog extends ScenesBaseDialog { private title: string
      * @param y - Y座標'
      */''
     private renderValidationInfo(context: CanvasRenderingContext2D, layout: { contentX: number ), y: number'): void {'
-        const validationRules = [ }
+        const validationRules = [ } };
 
             `• ${this.validation.minLength}文字以上、${this.maxUsernameLength}文字以下`,', '• 日本語、英数字、スペースが使用可能',]';
             '• 管理者用語やシステム予約語は使用不可'];
@@ -232,7 +228,7 @@ export class UsernameDialog extends ScenesBaseDialog { private title: string
         context.textAlign = 'left';
         context.textBaseline = 'top';
         
-        for (let, i = 0; i < validationRules.length; i++) { context.fillText(validationRules[i], layout.contentX, y + i * 18) }
+        for (let, i = 0; i < validationRules.length; i++) { context.fillText(validationRules[i], layout.contentX, y + i * 18);
     }
     
     /**
@@ -254,7 +250,7 @@ export class UsernameDialog extends ScenesBaseDialog { private title: string
             this.inputActive = true;
             
             // カーソル位置を計算
-            this.calculateCursorPosition(x - inputX - 10) }
+            this.calculateCursorPosition(x - inputX - 10);
             return true;
         
         this.inputActive = false;
@@ -298,7 +294,7 @@ export class UsernameDialog extends ScenesBaseDialog { private title: string
             default:,
                 if (event.key.length === 1) {
                     event.preventDefault();
-                    this.handleCharacterInput(event.key) }
+                    this.handleCharacterInput(event.key);
                     return true;
                 break;
         }
@@ -343,8 +339,8 @@ export class UsernameDialog extends ScenesBaseDialog { private title: string
             const beforeCursor = this.dialogData.newUsername.substring(0, this.cursorPosition - 1);
             const afterCursor = this.dialogData.newUsername.substring(this.cursorPosition);
             this.dialogData.newUsername = beforeCursor + afterCursor,
-            this.cursorPosition--,
-            this.clearError() }
+            this.cursorPosition--;
+            this.clearError();
     }
     
     /**
@@ -354,7 +350,7 @@ export class UsernameDialog extends ScenesBaseDialog { private title: string
             const beforeCursor = this.dialogData.newUsername.substring(0, this.cursorPosition);
             const afterCursor = this.dialogData.newUsername.substring(this.cursorPosition + 1);
             this.dialogData.newUsername = beforeCursor + afterCursor,
-            this.clearError() }
+            this.clearError();
     }
     
     /**
@@ -402,7 +398,7 @@ export class UsernameDialog extends ScenesBaseDialog { private title: string
             // 成功結果を返す
             if (this.onResult) {
                 this.onResult({ : undefined''
-                    action: 'change',
+                    action: 'change,
     data: {)
                         oldUsername: this.dialogData.currentUsername  }
                         newUsername: newUsername) 
@@ -458,7 +454,7 @@ export class UsernameDialog extends ScenesBaseDialog { private title: string
      * @returns 有効な場合true
      */
     private isValidUsername(): boolean { const username = this.dialogData.newUsername?.trim();
-        return this.validateUsername(username) }
+        return this.validateUsername(username);
     
     /**
      * エラーを設定

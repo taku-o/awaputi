@@ -256,7 +256,7 @@ describe('EnhancedHistoryManager', () => {  let mockConsole: any,
                     }]
                 ],';'
                 statistics: { totalCommands: 1,')'
-                    commandFrequency: [['loaded.command', 1]]),
+                    commandFrequency: [['loaded.command', 1]]) };
                     errorCommands: [] }
                 }
             };)

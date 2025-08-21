@@ -69,9 +69,9 @@ describe('UsernameInputManager ResponsiveCanvasManager Integration', () => {
                 if (!canvasInfo) return null,
                 const { scale } = canvasInfo;
                 return {
-                    x: baseX * scale;
+                    x: baseX * scale,
                     y: baseY * scale
-                };
+                }
             }
             validateCoordinates(x, y, canvasInfo) {
                 if (!canvasInfo) return false,
@@ -80,11 +80,11 @@ describe('UsernameInputManager ResponsiveCanvasManager Integration', () => {
             }
             renderWithResponsiveCoordinates(context, canvasInfo) {
                 const LAYOUT = {
-                    title: { x: 400, y: 200 };
-                    description: { x: 400, y: 240 };
-                    inputBox: { x: 200, y: 280, width: 400, height: 50 };
+                    title: { x: 400, y: 200 },
+                    description: { x: 400, y: 240 },
+                    inputBox: { x: 200, y: 280, width: 400, height: 50 },
                     buttons: {
-                        ok: { x: 290, y: 360, width: 100, height: 40 };
+                        ok: { x: 290, y: 360, width: 100, height: 40 },
                         cancel: { x: 410, y: 360, width: 100, height: 40 }
                     },
                     helpText: { x: 400, y: 450 }
@@ -294,6 +294,6 @@ describe('UsernameInputManager ResponsiveCanvasManager Integration', () => {
             usernameInputManager.getCanvasInfo();
             usernameInputManager.getCanvasInfo();
             // Should call underlying method each time (no caching in this basic implementation),
-            expect(responsiveCanvasManager.getCanvasInfo).toHaveBeenCalledTimes(3) };
+            expect(responsiveCanvasManager.getCanvasInfo).toHaveBeenCalledTimes(3) }
     }
 }');'

@@ -18,24 +18,24 @@ interface GameBalanceConfig {
     [bubbleType: string]: BubbleConfig;
 interface ValidationResult {
     issues: Array<{
-        severit,y: string;
+        severit,y: string,
         message: string;>;
     warnings: Array<{
         message: string;>;
 }
 interface ConfigMetadata {
-    version: string;
+    version: string,
     lastUpdated: string;
-    bubbleTypesCount: number;
+    bubbleTypesCount: number,
     hasSpecialEffects: boolean;
     scoreRange: {
-        mi,n: number;
+        mi,n: number },
         max: number;
 }
 interface ConfigStructure {
-    bubbleTypes: string[];
-    propertiesPerType: { [ke,y: string]: string[];
-    specialEffectTypes: string[];
+    bubbleTypes: string[],
+    propertiesPerType: { [ke,y: string]: string[],
+    specialEffectTypes: string[] };
     scoreDistribution: { [key: string]: number;
 }
 // Mock dependencies for Node.js environment
@@ -52,39 +52,39 @@ jest.mock('../../src/utils/ErrorHandler.js', () => ({
 ));
 // Mock validation utilities with proper types
 const mockConfigurationExtractor = {
-    extractGameBalanceConfig: jest.fn().mockReturnValue({;
-        normal: { score: 15 ;
-        stone: { score: 25 };
-        iron: { score: 50 };
-        diamond: { score: 100 };
-        boss: { score: 100 };
-        pink: { score: 30 };
-        poison: { score: 20 };
-        spiky: { score: 40 };
+    extractGameBalanceConfig: jest.fn().mockReturnValue({,
+        normal: { score: 15 ,
+        stone: { score: 25 },
+        iron: { score: 50 },
+        diamond: { score: 100 },
+        boss: { score: 100 },
+        pink: { score: 30 },
+        poison: { score: 20 },
+        spiky: { score: 40 },
         electric: { 
-            score: 35;
+            score: 35 },
             effects: { intensity: 15, duration: 1500 }
         },
         rainbow: { 
-            score: 50;
+            score: 50 },
             effects: { duration: 8000 }
         },
-        clock: { score: 40 };
+        clock: { score: 40 },
         escaping: { score: 25 }
     } as GameBalanceConfig);
     extractBubbleHardcodedConfig: jest.fn().mockReturnValue({) as any };
 const mockValidationRules = {
     validateConsistency: jest.fn().mockReturnValue({
-        issues: [];
+        issues: [],
         warnings: []) as ValidationResult;
     validateLogicalConsistency: jest.fn().mockReturnValue({
-        issues: [];
+        issues: [],
         warnings: []) as ValidationResult;
     validatePerformanceImpact: jest.fn().mockReturnValue({
         warnings: [] } as { warnings: any[] ;
 // Import test utilities (mocked'),'
 jest.mock('../../scripts/validate-configuration.js', () => ({
-    ConfigurationExtractor: mockConfigurationExtractor;
+    ConfigurationExtractor: mockConfigurationExtractor,
     ValidationRules: mockValidationRules,)');'
 import { ConfigurationExtractor, ValidationRules  } from '../../scripts/validate-configuration.js';
 describe('Configuration Consistency Tests', () => {
@@ -217,7 +217,7 @@ describe('Configuration Consistency Tests', () => {
                     // Each major bubble type should have at least a score
                     expect(config').toHaveProperty('score'),'
                     expect(typeof config.score').toBe('number') } else {'
-                    console.warn(`Missing configuration for bubble type: ${bubbleType)`};
+                    console.warn(`Missing configuration for bubble type: ${bubbleType)`}
                 }
             }
         }');'
@@ -261,12 +261,12 @@ describe('Configuration Consistency Tests', () => {
         test('should validate configuration version compatibility', (') => {'
             // Ensure configurations are compatible with current game version : undefined
             const configMetadata: ConfigMetadata = {
-                version: '1.0.0';
+                version: '1.0.0',
                 lastUpdated: new Date().toISOString();
-                bubbleTypesCount: Object.keys(gameBalanceConfig).length;
+                bubbleTypesCount: Object.keys(gameBalanceConfig).length,
                 hasSpecialEffects: Object.values(gameBalanceConfig).some(config => config.effects);
                 scoreRange: {
-                    min: Math.min(...Object.values(gameBalanceConfig).map(c => c.score || 0);
+                    min: Math.min(...Object.values(gameBalanceConfig).map(c => c.score || 0) },
                     max: Math.max(...Object.values(gameBalanceConfig).map(c => c.score || 0)}
                 }
             };
@@ -299,9 +299,9 @@ describe('Configuration Consistency Tests', () => {
     describe('Configuration Documentation', (') => {'
         test('should have documented configuration structure', () => {
             const configStructure: ConfigStructure = {
-                bubbleTypes: Object.keys(gameBalanceConfig;
+                bubbleTypes: Object.keys(gameBalanceConfig,
                 propertiesPerType: {};
-                specialEffectTypes: [];
+                specialEffectTypes: [],
                 scoreDistribution: {}
             };
             
@@ -320,6 +320,6 @@ describe('Configuration Consistency Tests', () => {
             // Log the structure for documentation purposes
             if (process.env.NODE_ENV !== 'test') {
                 console.log('Configuration Structure:', JSON.stringify(configStructure, null, 2) }
-        };
+        }
     }
 }');'

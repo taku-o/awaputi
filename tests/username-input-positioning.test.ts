@@ -14,7 +14,7 @@ describe('Username Input Positioning Visual Regression Tests', (') => {'
             viewport: { width: 1920, height: 1080 },
             deviceScaleFactor: 1,
             expected: {
-                centerX: 960,
+                centerX: 960 },
                 centerY: 540,
                 tolerance: 5
             }
@@ -24,7 +24,7 @@ describe('Username Input Positioning Visual Regression Tests', (') => {'
             viewport: { width: 1366, height: 768 },
             deviceScaleFactor: 1,
             expected: {
-                centerX: 683,
+                centerX: 683 },
                 centerY: 384,
                 tolerance: 5
             }
@@ -34,7 +34,7 @@ describe('Username Input Positioning Visual Regression Tests', (') => {'
             viewport: { width: 768, height: 1024 },
             deviceScaleFactor: 2,
             expected: {
-                centerX: 384,
+                centerX: 384 },
                 centerY: 512,
                 tolerance: 5
             }
@@ -44,7 +44,7 @@ describe('Username Input Positioning Visual Regression Tests', (') => {'
             viewport: { width: 375, height: 667 },
             deviceScaleFactor: 2,
             expected: {
-                centerX: 187.5,
+                centerX: 187.5 },
                 centerY: 333.5,
                 tolerance: 3
             }
@@ -54,7 +54,7 @@ describe('Username Input Positioning Visual Regression Tests', (') => {'
             viewport: { width: 414, height: 896 },
             deviceScaleFactor: 3,
             expected: {
-                centerX: 207,
+                centerX: 207 },
                 centerY: 448,
                 tolerance: 3
             }
@@ -64,7 +64,7 @@ describe('Username Input Positioning Visual Regression Tests', (') => {'
             viewport: { width: 320, height: 568 },
             deviceScaleFactor: 2,
             expected: {
-                centerX: 160,
+                centerX: 160 },
                 centerY: 284,
                 tolerance: 3
             }
@@ -74,7 +74,7 @@ describe('Username Input Positioning Visual Regression Tests', (') => {'
             viewport: { width: 3840, height: 2160 },
             deviceScaleFactor: 1,
             expected: {
-                centerX: 1920,
+                centerX: 1920 },
                 centerY: 1080,
                 tolerance: 10
             }
@@ -115,11 +115,11 @@ describe('Username Input Positioning Visual Regression Tests', (') => {'
                 // Mock the evaluation to return positioned elements
                 const mockEvaluationResult = {
                     title: {
-                        x: config.expected.centerX,
+                        x: config.expected.centerX },
                         y: config.expected.centerY - 100,
                         visible: true,,
                     inputBox: {
-                        x: config.expected.centerX - 200,
+                        x: config.expected.centerX - 200 },
                         y: config.expected.centerY - 20,
                         width: 400,
                         height: 50,
@@ -127,24 +127,24 @@ describe('Username Input Positioning Visual Regression Tests', (') => {'
                         centered: true,,
                     buttons: {
                         ok: {
-                            x: config.expected.centerX - 110,
+                            x: config.expected.centerX - 110 },
                             y: config.expected.centerY + 60,
                             width: 100,
                             height: 40,
                             visible: true,,
                         cancel: {
-                            x: config.expected.centerX + 10,
+                            x: config.expected.centerX + 10 },
                             y: config.expected.centerY + 60,
                             width: 100,
                             height: 40,
                             visible: true,
                     },
                     helpText: {
-                        x: config.expected.centerX,
+                        x: config.expected.centerX },
                         y: config.expected.centerY + 150,
                         visible: true,,
                     canvasInfo: {
-                        width: config.viewport.width,
+                        width: config.viewport.width },
                         height: config.viewport.height,
                         scale: config.viewport.width / 800
                     }
@@ -177,10 +177,10 @@ describe('Username Input Positioning Visual Regression Tests', (') => {'
                     };
                     return {
                         title: {
-                            ...transformCoordinates(BASE_LAYOUT.title.x, BASE_LAYOUT.title.y);
+                            ...transformCoordinates(BASE_LAYOUT.title.x, BASE_LAYOUT.title.y) };
                             visible: true,,
                         inputBox: {
-                            ...transformCoordinates(BASE_LAYOUT.inputBox.x, BASE_LAYOUT.inputBox.y);
+                            ...transformCoordinates(BASE_LAYOUT.inputBox.x, BASE_LAYOUT.inputBox.y) };
                             width: BASE_LAYOUT.inputBox.width * canvasInfo.scale,
                             height: BASE_LAYOUT.inputBox.height * canvasInfo.scale,
                             visible: true,
@@ -188,25 +188,25 @@ describe('Username Input Positioning Visual Regression Tests', (') => {'
                         },
                         buttons: {
                             ok: {
-                                ...transformCoordinates(BASE_LAYOUT.buttons.ok.x, BASE_LAYOUT.buttons.ok.y);
+                                ...transformCoordinates(BASE_LAYOUT.buttons.ok.x, BASE_LAYOUT.buttons.ok.y) };
                                 width: BASE_LAYOUT.buttons.ok.width * canvasInfo.scale,
                                 height: BASE_LAYOUT.buttons.ok.height * canvasInfo.scale,
                                 visible: true,,
                             cancel: {
-                                ...transformCoordinates(BASE_LAYOUT.buttons.cancel.x, BASE_LAYOUT.buttons.cancel.y);
+                                ...transformCoordinates(BASE_LAYOUT.buttons.cancel.x, BASE_LAYOUT.buttons.cancel.y) };
                                 width: BASE_LAYOUT.buttons.cancel.width * canvasInfo.scale,
                                 height: BASE_LAYOUT.buttons.cancel.height * canvasInfo.scale,
                                 visible: true,
                         },
                         helpText: {
-                            ...transformCoordinates(BASE_LAYOUT.helpText.x, BASE_LAYOUT.helpText.y);
+                            ...transformCoordinates(BASE_LAYOUT.helpText.x, BASE_LAYOUT.helpText.y) };
                             visible: true,,
                         canvasInfo: {
-                            width: canvasInfo.actualWidth,
+                            width: canvasInfo.actualWidth },
                             height: canvasInfo.actualHeight,
                             scale: canvasInfo.scale
                         }
-                    };
+                    }
                 };
                 expect(result).not.toBeNull();
                 // Verify title is centered horizontally
@@ -223,7 +223,7 @@ describe('Username Input Positioning Visual Regression Tests', (') => {'
                 expect(result.buttons.ok.visible).toBe(true);
                 expect(result.buttons.cancel.visible).toBe(true);
                 expect(result.helpText.visible).toBe(true);
-            };
+            }
         }
     }');'
     describe('Zoom Level Tests', () => {
@@ -237,13 +237,13 @@ describe('Username Input Positioning Visual Regression Tests', (') => {'
                 // Mock centered positioning at different zoom levels
                 const mockResult = {
                     inputBox: {
-                        x: 400 * zoom,
+                        x: 400 * zoom },
                         y: 280 * zoom,
                         width: 400 * zoom,
                         height: 50 * zoom,
                         centered: true,,
                     canvasInfo: {
-                        width: 1200 * zoom,
+                        width: 1200 * zoom },
                         height: 800 * zoom,
                         scale: 1.5 * zoom
                     }
@@ -253,17 +253,17 @@ describe('Username Input Positioning Visual Regression Tests', (') => {'
                     // Mock evaluation for zoom test
                     return {
                         inputBox: {
-                            x: 400 * arguments[0],
+                            x: 400 * arguments[0] },
                             y: 280 * arguments[0],
                             width: 400 * arguments[0],
                             height: 50 * arguments[0],
                             centered: true,
-                    };
+                    }
                 }, zoom);
                 expect(result.inputBox.centered).toBe(true);
                 // Verify input box remains proportional
                 expect(result.inputBox.width / result.inputBox.height).toBeCloseTo(8, 1); // 400/50 = 8
-            };
+            }
         }
     }');'
     describe('Aspect Ratio Tests', (') => {'
@@ -285,7 +285,7 @@ describe('Username Input Positioning Visual Regression Tests', (') => {'
                 page.evaluate.mockResolvedValue({
                     title: { x: expectedCenterX, y: expectedCenterY - 100 },
                     inputBox: {
-                        x: expectedCenterX - 200,
+                        x: expectedCenterX - 200 },
                         y: expectedCenterY - 25,
                         width: 400,
                         height: 50,
@@ -293,7 +293,7 @@ describe('Username Input Positioning Visual Regression Tests', (') => {'
                 const result = await page.evaluate(() => ({
                     title: { x: arguments[0] / 2, y: arguments[1] / 2 - 100 },
                     inputBox: {
-                        x: arguments[0] / 2 - 200,
+                        x: arguments[0] / 2 - 200 },
                         y: arguments[1] / 2 - 25,
                         width: 400,
                         height: 50,
@@ -301,7 +301,7 @@ describe('Username Input Positioning Visual Regression Tests', (') => {'
                 }, aspect.width, aspect.height);
                 expect(result.inputBox.centered).toBe(true);
                 expect(result.title.x).toBeCloseTo(expectedCenterX, 1);
-            };
+            }
         }
     }');'
     describe('Visual Screenshot Tests', (') => {'
@@ -341,7 +341,7 @@ describe('Username Input Positioning Visual Regression Tests', (') => {'
                 deviceScaleFactor: 1 },
             page.evaluate.mockResolvedValue({
                 inputBox: {
-                    x: 20, // Adjusted for small screen
+                    x: 20, // Adjusted for small screen };
                     y: 135,
                     width: 200, // Scaled down
                     height: 25,
@@ -350,7 +350,7 @@ describe('Username Input Positioning Visual Regression Tests', (') => {'
             };
             const result = await page.evaluate(() => ({
                 inputBox: {
-                    x: 20,
+                    x: 20 },
                     y: 135,
                     width: 200,
                     height: 25,
@@ -370,14 +370,14 @@ describe('Username Input Positioning Visual Regression Tests', (') => {'
             const expectedCenterY = 1440;
             page.evaluate.mockResolvedValue({
                 inputBox: {
-                    x: expectedCenterX - 400,
+                    x: expectedCenterX - 400 },
                     y: expectedCenterY - 50,
                     width: 800,
                     height: 100,
                     centered: true,);
             const result = await page.evaluate(() => ({
                 inputBox: {
-                    x: 2560 - 400,
+                    x: 2560 - 400 },
                     y: 1440 - 50,
                     width: 800,
                     height: 100,
@@ -386,6 +386,6 @@ describe('Username Input Positioning Visual Regression Tests', (') => {'
             expect(result.inputBox.centered).toBe(true);
             const actualCenterX = result.inputBox.x + result.inputBox.width / 2;
             expect(Math.abs(actualCenterX - expectedCenterX).toBeLessThanOrEqual(10);
-        };
+        }
     }
 }');'

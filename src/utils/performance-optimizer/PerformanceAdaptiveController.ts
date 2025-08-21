@@ -14,38 +14,36 @@ import { getPerformanceConfig  } from '../../config/PerformanceConfig.js';
 // 型定義
 interface ControllerConfig { adaptiveMode?: boolean,
     thresholds?: Partial<ThresholdSettings>;
-
-interface ThresholdSettings { memoryPressure: {
-        critica,l: number;
-        high: number;
-        moderate: number;
-    low: number;
-    performance: { degradationRisk: number;
+    interface ThresholdSettings { memoryPressure: { critica,l: number,
+        high: number,
+        moderate: number,
+    low: number,
+    performance: { degradationRisk: number,
         moderateRisk: number;
-    improvementThreshold: number;
+    },
+    improvementThreshold: number,
     improvementThreshold: number;
         };
-interface OptimizationStats { optimizationCount: number;
-    lastOptimization: OptimizationRecord | null;
-    adjustmentHistory: OptimizationRecord[];
-    memoryPressureLevel: number;
+interface OptimizationStats { optimizationCount: number,
+    lastOptimization: OptimizationRecord | null,
+    adjustmentHistory: OptimizationRecord[],
+    memoryPressureLevel: number,
     memoryPressureLevel: number;
         };
-interface OptimizationRecord { level: PerformanceLevel;
-    time: number;
-    reason: string;
+interface OptimizationRecord { level: PerformanceLevel,
+    time: number,
+    reason: string,
     type: OptimizationType;
     timestamp?: number;
-
-interface QualitySettings { render: QualityLevel;
-    particle: QualityLevel;
-    effect: QualityLevel;
-    audio: QualityLevel;
+    interface QualitySettings { render: QualityLevel,
+    particle: QualityLevel,
+    effect: QualityLevel,
+    audio: QualityLevel,
     audio: QualityLevel;
         };
-interface AntiJitterSettings { cooldownPeriod: number;
-    lastAdjustment: number;
-    minimumStabilityPeriod: number;
+interface AntiJitterSettings { cooldownPeriod: number,
+    lastAdjustment: number,
+    minimumStabilityPeriod: number,
     minimumStabilityPeriod: number;
         };
 interface AdaptiveOptimizationResult { optimized: boolean;
@@ -54,34 +52,29 @@ interface AdaptiveOptimizationResult { optimized: boolean;
     memoryPressure?: number;
     stabilityScore?: number;
     error?: boolean;
-
-interface ProactiveOptimizationResult { optimized: boolean;
+    interface ProactiveOptimizationResult { optimized: boolean;
     actions?: string[];
     level?: PerformanceLevel;
     prediction?: number;
     error?: boolean;
-
-interface PerformanceMetrics { stabilityScore?: number,
+    interface PerformanceMetrics { stabilityScore?: number,
     memoryPressure?: number;
     frameTime?: number;
     variance?: number;
-
-interface PerformancePrediction { memoryRisk: number;
-    degradationRisk: number;
-    nextFrameStability: number;
+    interface PerformancePrediction { memoryRisk: number,
+    degradationRisk: number,
+    nextFrameStability: number,
     overallRisk: number;
     recommendations?: string[];
-
-interface ControllerSettings { performanceLevel: PerformanceLevel;
-    adaptiveMode: boolean;
-    qualitySettings: QualitySettings;
+    interface ControllerSettings { performanceLevel: PerformanceLevel,
+    adaptiveMode: boolean,
+    qualitySettings: QualitySettings,
     optimizationStats: OptimizationStats;
 ';'
 
 interface ErrorHandler { ''
     logError(message: string, error: any): void;
-
-interface PerformanceConfig { // 設定の型定義（必要に応じて追加） }
+    interface PerformanceConfig { // 設定の型定義（必要に応じて追加） }
 
 type PerformanceLevel = 'high' | 'medium' | 'low';
 type QualityLevel = 'high' | 'medium' | 'low' | 'minimal' | 'off';
@@ -108,33 +101,32 @@ export class PerformanceAdaptiveController {
         
         // 最適化統計
         this.optimizationStats = {
-            optimizationCount: 0;
-            lastOptimization: null;
-    adjustmentHistory: [] }
+            optimizationCount: 0,
+            lastOptimization: null,
+    adjustmentHistory: [] };
             memoryPressureLevel: 0 
     };
         // 品質設定
         this.qualitySettings = {;
-            render: 'high';
-            particle: 'high';
-            effect: 'high';
+            render: 'high,
+            particle: 'high,
+            effect: 'high,
             audio: 'high'
             };
         // しきい値設定
         this.thresholds = { memoryPressure: {
-                critical: 0.9;
-                high: 0.8;
-                moderate: 0.6;
-    low: 0.4 };
-            performance: { degradationRisk: 0.8;
-                moderateRisk: 0.6;
+                critical: 0.9,
+                high: 0.8,
+                moderate: 0.6,
+    low: 0.4 } };
+            performance: { degradationRisk: 0.8,
+                moderateRisk: 0.6  ,
     improvementThreshold: 0.3 
     };
         // アンチジッター設定
         this.antiJitter = { cooldownPeriod: 1000, // 1秒
-            lastAdjustment: 0;
-    minimumStabilityPeriod: 2000 // 2秒  })
-    }
+            lastAdjustment: 0,
+    minimumStabilityPeriod: 2000 // 2秒  });
 
     /**
      * 標準適応最適化を実行
@@ -169,11 +161,11 @@ export class PerformanceAdaptiveController {
             };
             // パフォーマンス低下チェック)
             else if (stabilityScore < 0.3) { ''
-                this.degradePerformance('',
+                this.degradePerformance(',
                 reason = 'Low, stability score' };
             // 中程度の問題チェック)
             else if (stabilityScore < 0.6 || memoryPressure > this.thresholds.memoryPressure.high) { ''
-                this.applyModerateOptimization('',
+                this.applyModerateOptimization(',
                 reason = 'Moderate, performance issues' };
             // パフォーマンス向上チェック)
             else if (stabilityScore > 0.8 && memoryPressure < this.thresholds.memoryPressure.low) { const improved = this.considerPerformanceImprovement();
@@ -185,19 +177,18 @@ export class PerformanceAdaptiveController {
 
             if (optimizationApplied) {
 
-                this.recordOptimization(reason, 'adaptive', currentTime) }
+                this.recordOptimization(reason, 'adaptive', currentTime);
                 this.antiJitter.lastAdjustment = currentTime; }
             }
             
             return { optimized: optimizationApplied,
                 reason,
-                level: this.performanceLevel,
+                level: this.performanceLevel;
                 memoryPressure };
                 stabilityScore }
-            } catch (error) {
+        } catch (error) {
             this.errorHandler.logError('Failed to perform adaptive optimization', error' }'
-            return { optimized: false, error: true,
-    }
+            return { optimized: false, error: true }
 
     /**
      * 予測ベース積極最適化を実行
@@ -244,12 +235,11 @@ export class PerformanceAdaptiveController {
             
             return { optimized: optimizationApplied,
                 actions,
-                level: this.performanceLevel },
-                prediction: prediction.overallRisk 
-    } catch (error) {
+                level: this.performanceLevel ,
+                prediction: prediction.overallRisk  }
+        } catch (error) {
             this.errorHandler.logError('Failed to perform proactive optimization', error' }'
-            return { optimized: false, error: true,
-    }
+            return { optimized: false, error: true }
 
     /**'
      * パフォーマンスレベルを設定''
@@ -259,7 +249,7 @@ export class PerformanceAdaptiveController {
     setPerformanceLevel(level: PerformanceLevel): boolean { try {'
             const validLevels: PerformanceLevel[] = ['high', 'medium', 'low'],
             if (!validLevels.includes(level) { }
-                throw new Error(`Invalid, performance level: ${level}`};
+                throw new Error(`Invalid, performance level: ${level}`}
             }
             
             const previousLevel = this.performanceLevel;
@@ -284,7 +274,7 @@ export class PerformanceAdaptiveController {
                 this.setPerformanceLevel('medium'); }
 
             } else if (currentLevel === 'medium') { ''
-                this.setPerformanceLevel('low') }
+                this.setPerformanceLevel('low');
 
             }''
             // 'low'の場合はこれ以上下げない'
@@ -304,7 +294,7 @@ export class PerformanceAdaptiveController {
                 this.setPerformanceLevel('medium');' }'
 
             } else if (currentLevel === 'medium') { ''
-                this.setPerformanceLevel('high') }
+                this.setPerformanceLevel('high');
 
             }''
             // 'high'の場合はこれ以上上げない'
@@ -312,7 +302,7 @@ export class PerformanceAdaptiveController {
             console.log('[AdaptiveController] Performance, improved due to good metrics');
 
         } catch (error') {'
-            this.errorHandler.logError('Failed to improve performance', error) }
+            this.errorHandler.logError('Failed to improve performance', error);
     }
 
     /**
@@ -341,8 +331,7 @@ export class PerformanceAdaptiveController {
             }
             
             this.antiJitter.lastAdjustment = currentTime;
-            console.log(`[AdaptiveController] Anti-jitter, measures applied, for level ${jitterLevel}`};
-
+            console.log(`[AdaptiveController] Anti-jitter, measures applied, for level ${jitterLevel}`}
         } catch (error) {
             this.errorHandler.logError('Failed to apply anti-jitter measures', error' }'
     }
@@ -361,7 +350,7 @@ export class PerformanceAdaptiveController {
             if(window.gc && typeof, window.gc === 'function' {'
 
                 window.gc()','
-            console.log('[AdaptiveController] Emergency, optimization applied') }
+            console.log('[AdaptiveController] Emergency, optimization applied');
 
             ' }'
 
@@ -427,7 +416,7 @@ export class PerformanceAdaptiveController {
             console.log('[AdaptiveController] Frame stabilization measures applied');
 
         } catch (error') {'
-            this.errorHandler.logError('Failed to apply frame stabilization measures', error) }
+            this.errorHandler.logError('Failed to apply frame stabilization measures', error);
     }
 
     /**
@@ -444,7 +433,7 @@ export class PerformanceAdaptiveController {
             ';'
             // 現在のレベルで向上可能かチェック
             if (this.performanceLevel === 'low' || this.performanceLevel === 'medium) {'
-                this.improvePerformance() }
+                this.improvePerformance();
                 return true;
             
             return false;
@@ -502,8 +491,8 @@ export class PerformanceAdaptiveController {
 
                 case 'high':','
                     this.qualitySettings = {''
-                        render: 'high',
-                        particle: 'high',
+                        render: 'high,
+                        particle: 'high,
                         effect: 'high' }
 
                         audio: 'high' 
@@ -511,21 +500,21 @@ export class PerformanceAdaptiveController {
                     break;
                 case 'medium':';'
                     this.qualitySettings = {;
-                        render: 'medium',
-                        particle: 'medium',
-                        effect: 'medium',
+                        render: 'medium,
+                        particle: 'medium,
+                        effect: 'medium,
                         audio: 'medium'
             };
                     break;
                 case 'low':';'
                     this.qualitySettings = {;
-                        render: 'low',
-                        particle: 'low',
-                        effect: 'low',
+                        render: 'low,
+                        particle: 'low,
+                        effect: 'low,
                         audio: 'low'
             };
                     break;'} catch (error) {'
-            this.errorHandler.logError('Failed to update quality settings', error) }
+            this.errorHandler.logError('Failed to update quality settings', error);
     }
 
     /**
@@ -542,7 +531,7 @@ export class PerformanceAdaptiveController {
      * @param timestamp - タイムスタンプ
      */
     recordOptimization(reason: string, type: OptimizationType, timestamp: number): void { try {
-            this.optimizationStats.optimizationCount++,
+            this.optimizationStats.optimizationCount++;
             this.optimizationStats.lastOptimization = {
                 level: this.performanceLevel,
     time: timestamp,
@@ -608,7 +597,7 @@ export class PerformanceAdaptiveController {
      * 現在の設定を取得
      * @returns 現在の設定
      */
-    getSettings(): ControllerSettings { return { performanceLevel: this.performanceLevel },
+    getSettings(): ControllerSettings { return { performanceLevel: this.performanceLevel ,
             adaptiveMode: this.adaptiveMode }
             qualitySettings: { ...this.qualitySettings
             optimizationStats: { ...this.optimizationStats }

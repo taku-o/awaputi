@@ -19,7 +19,7 @@ global.Chart.defaults = {
 // DOM のモック
 Object.defineProperty(global, 'document', {
     value: {,
-        getElementById: jest.fn(
+        getElementById: jest.fn( },
         createElement: jest.fn((') => ({'
             id: ','
             width: 400,
@@ -35,7 +35,7 @@ Object.defineProperty(global, 'document', {
             ))
         )),
         head: {
-            appendChild: jest.fn(),
+            appendChild: jest.fn() },
         body: {
             appendChild: jest.fn( }
     }
@@ -65,7 +65,7 @@ describe('ChartRenderer', () => {
         ');'
         mockChart = {
             data: { 
-                labels: [], 
+                labels: [] },
                 datasets: [{ data: [] }] 
             },
             config: { type: 'line' },
@@ -84,7 +84,7 @@ describe('ChartRenderer', () => {
             borderColor: 'rgba(75, 192, 192, 1')','
             textColor: '#333333',
             gridColor: 'rgba(0, 0, 0, 0.1')'
-        };
+        }
     };
     afterEach(() => {
         if (chartRenderer) {
@@ -156,7 +156,7 @@ describe('ChartRenderer', () => {
                         plugins: expect.objectContaining({
                             legend: expect.objectContaining({
                                 display: false) }
-    };
+    }
     }
             );
         }');'
@@ -177,7 +177,7 @@ describe('ChartRenderer', () => {
             const colors = chartRenderer.generateColorPalette(5, 0.8);
             expect(colors).toHaveLength(5);
             colors.forEach(color => {);
-                expect(color).toMatch(/^hsla\(\d+, \d+%, \d+%, 0\.8\)$/) };
+                expect(color).toMatch(/^hsla\(\d+, \d+%, \d+%, 0\.8\)$/) }
         }
     }');'
     describe('円グラフ作成', (') => {'
@@ -219,7 +219,7 @@ describe('ChartRenderer', () => {
             
             const mockChartWithData = {
                 data: {
-                    labels: ['A', 'B', 'C', 'D', 'E'],
+                    labels: ['A', 'B', 'C', 'D', 'E'] };
                     datasets: [{ data: [1, 2, 3, 4, 5] }]
                 },
         update: jest.fn( },
@@ -238,7 +238,7 @@ describe('ChartRenderer', () => {
                 return {
                     labels: [`Point ${callCount}`],
                     data: [callCount * 10]
-                };
+                }
             };
             chartRenderer.startRealtimeUpdate('test-canvas-realtime', dataCallback, 10);
             setTimeout(() => {
@@ -348,6 +348,6 @@ describe('ChartRenderer', () => {
             chartRenderer.dataSourceCallbacks.set('chart2', () => ({ data: [1, 2, 3] });
             expect(() => chartRenderer.updateAllCharts().not.toThrow();
             expect(mockChart.update).toHaveBeenCalledTimes(1); // chart2のみ更新
-        };
+        }
     }
 }');'

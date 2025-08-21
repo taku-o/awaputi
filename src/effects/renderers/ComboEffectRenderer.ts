@@ -3,13 +3,13 @@ import { getErrorHandler  } from '../../utils/ErrorHandler.js';
 /**
  * Combo tier configuration interface
  */
-interface ComboTier { minCombo: number;
-    maxCombo: number;
-    name: string;
-    particleCount: number;
-    colors: string[];
-    effects: string[];
-    screenEffects: string[];
+interface ComboTier { minCombo: number,
+    maxCombo: number,
+    name: string,
+    particleCount: number,
+    colors: string[],
+    effects: string[],
+    screenEffects: string[],
     priority: number;
 
 /**
@@ -25,23 +25,23 @@ interface ComboTierWithKey extends ComboTier { key: string;
 /**
  * Combo break effect configuration
  */
-interface ComboBreakEffect { fadeParticleCount: number;
-    fadeColor: string;
+interface ComboBreakEffect { fadeParticleCount: number,
+    fadeColor: string,
     fadeDuration: number;
 
 /**
  * Particle interface
  */
-interface Particle { x: number;
-    y: number;
-    vx: number;
-    vy: number;
-    size: number;
-    color: string;
-    life: number;
-    maxLife: number;
-    alpha: number;
-    gravity: number;
+interface Particle { x: number,
+    y: number,
+    vx: number,
+    vy: number,
+    size: number,
+    color: string,
+    life: number,
+    maxLife: number,
+    alpha: number,
+    gravity: number,
     friction: number;
     bounce?: number;
     type: string;
@@ -50,7 +50,7 @@ interface Particle { x: number;
     scale?: number;
     scaleSpeed?: number;
     maxTrailLength?: number;
-    trail?: Array<{ x: number,, y: number;>;
+    trail?: Array<{ x: number, y: number;>;
     pulseSpeed?: number;
 }
 
@@ -87,29 +87,29 @@ export class ComboEffectRenderer {
         // コンボ段階の定義
         this.comboTiers = {
             basic: { // 2-5コンボ
-                minCombo: 2;
-    maxCombo: 5;
-                name: '基本';
-                particleCount: 8;
-                colors: ['#FFD700', '#FFA500];'
+                minCombo: 2  ,
+    maxCombo: 5,
+    name: '基本,
+    particleCount: 8,
+    colors: ['#FFD700', '#FFA500];'
                 effects: ['golden_particles', 'sparkle'];
-                screenEffects: [] }
+    screenEffects: [] }
                 priority: 5 
     };
             enhanced: { // 6-10コンボ
-                minCombo: 6;
-    maxCombo: 10;
-                name: '強化';
-                particleCount: 15;
+                minCombo: 6  ,
+    maxCombo: 10,
+                name: '強化,
+                particleCount: 15,
                 colors: ['#FFD700', '#FFA500', '#FF8C00', '#FF4500];'
                 effects: ['golden_particles', 'enhanced_sparkle', 'screen_flash'];
-                screenEffects: ['flash'];
+                screenEffects: ['flash'],
     priority: 7  };
             spectacular: { // 11+コンボ
-                minCombo: 11;
-    maxCombo: Infinity;
-                name: '絶大';
-                particleCount: 25;
+                minCombo: 11  ,
+    maxCombo: Infinity,
+                name: '絶大,
+                particleCount: 25,
                 colors: ['#FF0000', '#FF7F00', '#FFFF00', '#00FF00', '#0000FF', '#4B0082', '#9400D3];'
                 effects: ['rainbow_burst', 'screen_shake', 'screen_zoom', 'magical_explosion'];
                 screenEffects: ['shake', 'zoom', 'rainbow_flash'];
@@ -121,7 +121,7 @@ export class ComboEffectRenderer {
         
         // コンボブレイク時の演出
         this.comboBreakEffect = { fadeParticleCount: 5,''
-            fadeColor: '#666666';
+            fadeColor: '#666666,
     fadeDuration: 800  };
         console.log('[ComboEffectRenderer] 初期化完了');
     }
@@ -139,7 +139,7 @@ export class ComboEffectRenderer {
             ','
             // 品質チェック
             if (!this.particleManager.shouldRenderEffect('combo', tier.priority) {
-                this.createSimplifiedComboEffect(x, y, comboCount) }
+                this.createSimplifiedComboEffect(x, y, comboCount);
                 return; }
             }
             
@@ -147,12 +147,12 @@ export class ComboEffectRenderer {
             this.createMainComboParticles(x, y, comboCount, tier);
             
             // 段階別追加効果
-            tier.effects.forEach(effectType => {  ) }
+            tier.effects.forEach(effectType => {  );
                 this.createComboSpecialEffect(x, y, effectType, comboCount, tier); }
             };
             
             // 画面効果（必要に応じて）
-            if (tier.screenEffects.length > 0) { this.triggerScreenEffects(tier.screenEffects, comboCount) }
+            if (tier.screenEffects.length > 0) { this.triggerScreenEffects(tier.screenEffects, comboCount);
             
             // コンボマルチプライヤー表示
             this.createComboMultiplierIndicator(x, y, comboCount, tier);
@@ -160,10 +160,8 @@ export class ComboEffectRenderer {
 
         } catch (error) { getErrorHandler().handleError(error, 'COMBO_EFFECT_ERROR', {''
                 context: 'ComboEffectRenderer.createEnhancedComboEffect'
-            };
-        }
-    }
-    
+                }
+}
     /**
      * コンボ段階を取得
      * @param {number} comboCount - コンボ数
@@ -261,7 +259,7 @@ export class ComboEffectRenderer {
             case 'enhanced':
                 if (qualitySettings.complexityLevel >= 3) {
 
-                    if(ratio < 0.4) return 'glow_circle',
+                    if(ratio < 0.4) return 'glow_circle,
                     if(ratio < 0.8) return 'star' }
 
                     return 'diamond';
@@ -270,14 +268,14 @@ export class ComboEffectRenderer {
             case 'spectacular':
                 if (qualitySettings.complexityLevel >= 3) {
 
-                    if(ratio < 0.3) return 'energy_orb',
-                    if(ratio < 0.6) return 'magic_sparkle',
+                    if(ratio < 0.3) return 'energy_orb,
+                    if(ratio < 0.6) return 'magic_sparkle,
                     if(ratio < 0.9) return 'glow_circle' }
 
                     return 'plasma_burst';
                 return ratio < 0.5 ? 'glow_circle' : 'star';
 
-            default: return 'star',
+            default: return 'star,
     
     /**
      * コンボ特殊効果を作成
@@ -303,7 +301,7 @@ export class ComboEffectRenderer {
                 this.createRainbowBurst(x, y, comboCount);
                 break,
             case 'magical_explosion':,
-                this.createMagicalExplosion(x, y, comboCount) }
+                this.createMagicalExplosion(x, y, comboCount);
                 break; }
 }
     
@@ -326,14 +324,14 @@ export class ComboEffectRenderer {
             particle.vy = (Math.random() - 0.5) * 60 - 40,
 
             particle.size = 2 + Math.random() * 3,
-            particle.color = Math.random() > 0.5 ? '#FFD700' : '#FFA500',
+            particle.color = Math.random() > 0.5 ? '#FFD700' : '#FFA500,
             particle.life = 1500 + Math.random() * 500,
 
             particle.maxLife = particle.life,
-            particle.alpha = 0.8 + Math.random('',
-            particle.type = 'advanced_circle',
+            particle.alpha = 0.8 + Math.random(',
+            particle.type = 'advanced_circle,
             particle.pulseSpeed = 6)
-            ) }
+            );
             this.particleManager.particles.push(particle); }
 }
     
@@ -370,12 +368,12 @@ export class ComboEffectRenderer {
             particle.vx = Math.cos(angle) * speed,
 
             particle.vy = Math.sin(angle) * speed,
-            particle.size = 3 + Math.random('',
-            particle.type = 'magic_sparkle',
+            particle.size = 3 + Math.random(',
+            particle.type = 'magic_sparkle,
             particle.pulseSpeed = 8,
             particle.maxTrailLength = 4,
             particle.trail = [])
-            ) }
+            );
             this.particleManager.particles.push(particle); }
 }
     
@@ -407,7 +405,7 @@ export class ComboEffectRenderer {
                     particle.gravity = 20,
 
                     particle.friction = 0.92,
-                    particle.type = 'energy_orb',
+                    particle.type = 'energy_orb,
                     particle.pulseSpeed = 10 - wave * 2 }
                      }
                     this.particleManager.particles.push(particle); }
@@ -431,11 +429,11 @@ export class ComboEffectRenderer {
             particle.x = x - (digitCount * 15) / 2 + i * 15,
             particle.y = y - 40,
             particle.vx = (Math.random() - 0.5) * 20,
-            particle.vy = -60 - Math.random('',
-            particle.type = 'star',
+            particle.vy = -60 - Math.random(',
+            particle.type = 'star,
             particle.scale = 1.5,
             particle.scaleSpeed = -0.5,
-            particle.pulseSpeed = 5,', ') }
+            particle.pulseSpeed = 5,', ');
 
             this.particleManager.particles.push(particle); }
         }
@@ -454,19 +452,17 @@ export class ComboEffectRenderer {
                 particle.vy = Math.sin(angle) * 30,
 
                 particle.size = 3,
-                particle.color = '#FFFFFF',
+                particle.color = '#FFFFFF,
                 particle.life = 1000,
                 particle.maxLife = particle.life,
                 particle.alpha = 0.8,
                 particle.gravity = 0,
 
                 particle.friction = 0.99,
-                particle.type = 'diamond',
+                particle.type = 'diamond,
                 particle.rotationSpeed = 20 }
-                this.particleManager.particles.push(particle); }
+                this.particleManager.particles.push(particle);     }
 }
-    }
-    
     /**
      * 画面効果をトリガー
      * @param {Array} effects - 効果リスト
@@ -474,8 +470,8 @@ export class ComboEffectRenderer {
      */
     triggerScreenEffects(effects: string[], comboCount: number): void { // このメソッドは実際の画面効果システムと連携する必要がある
         // ここでは効果の種類を記録するのみ
-        effects.forEach(effect => {) }
-            console.log(`[ComboEffectRenderer] 画面効果トリガー: ${effect}, コンボ数: ${comboCount}`};
+        effects.forEach(effect => {);
+            console.log(`[ComboEffectRenderer] 画面効果トリガー: ${effect}, コンボ数: ${comboCount}`}
         };
     }
     
@@ -499,10 +495,10 @@ export class ComboEffectRenderer {
                 particle.y = y + Math.sin(angle) * distance,
                 particle.vx = (Math.random() - 0.5) * 40,
                 particle.vy = (Math.random() - 0.5) * 40 + 20, // 下向きバイアス
-                particle.size = 2 + Math.random('',
-                particle.type = 'circle',
+                particle.size = 2 + Math.random(',
+                particle.type = 'circle,
                 particle.scaleSpeed = -1)
-                ) }
+                );
                 this.particleManager.particles.push(particle); }
             }
             
@@ -570,14 +566,14 @@ export class ComboEffectRenderer {
             particle.vy = 0,
 
             particle.size = 2,
-            particle.color = '#00FF00',
+            particle.color = '#00FF00,
             particle.life = 500,
             particle.maxLife = particle.life,
             particle.alpha = 0.7,
             particle.gravity = 0,
 
             particle.friction = 1,
-            particle.type = 'circle',
+            particle.type = 'circle,
             particle.pulseSpeed = 4 }
             this.particleManager.particles.push(particle); }
 }

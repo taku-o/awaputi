@@ -9,39 +9,38 @@ type SeverityLevel = 'high' | 'medium' | 'low';
 type ConflictStatus = 'pending' | 'in_progress' | 'completed' | 'failed';
 type OperationType = 'file' | 'class';
 
-interface ConflictSummary { name: string;
-    type: ConflictType;
-    severity: SeverityLevel;
-    status: ConflictStatus;
-    filesCount: number;
-    progress: string;
+interface ConflictSummary { name: string,
+    type: ConflictType,
+    severity: SeverityLevel,
+    status: ConflictStatus,
+    filesCount: number,
+    progress: string,
     canResolve: boolean;
-
-interface ConflictJSON { name: string;
-    type: ConflictType;
-    files: string[];
-    severity: SeverityLevel;
-    strategy: string | null;
-    newNames: string[];
-    status: ConflictStatus;
+    interface ConflictJSON { name: string,
+    type: ConflictType,
+    files: string[],
+    severity: SeverityLevel,
+    strategy: string | null,
+    newNames: string[],
+    status: ConflictStatus,
     dependencies: Array<{
-        nam,e: string;
-        type: ConflictType;
+        nam,e: string,
+        type: ConflictType,
     status: ConflictStatus;>;
-    progress: number;
-    createdAt: string;
+    progress: number,
+    createdAt: string,
     updatedAt: string;
 }
 
-interface RenameOperationJSON { type: OperationType;
-    oldName: string;
-    newName: string;
-    filePath: string;
-    status: ConflictStatus;
-    error: string | null;
-    canExecute: boolean;
-    dependenciesCount: number;
-    createdAt: string;
+interface RenameOperationJSON { type: OperationType,
+    oldName: string,
+    newName: string,
+    filePath: string,
+    status: ConflictStatus,
+    error: string | null,
+    canExecute: boolean,
+    dependenciesCount: number,
+    createdAt: string,
     executedAt: string | null  }
 
 export class ConflictInfo {
@@ -66,7 +65,7 @@ export class ConflictInfo {
         this.status = 'pending';    // 'pending' | 'in_progress' | 'completed' | 'failed'
         this.dependencies = [];     // 依存する他の競合
         this.createdAt = new Date()
-}
+};
         this.updatedAt = new Date(); }
     }
 
@@ -74,7 +73,7 @@ export class ConflictInfo {
      * 解決戦略を設定
      */
     setStrategy(strategy: string): void { this.strategy = strategy,
-        this.updatedAt = new Date() }
+        this.updatedAt = new Date();
 
     /**
      * 新しい名前を設定
@@ -85,14 +84,14 @@ export class ConflictInfo {
      * ステータスを更新
      */
     updateStatus(status: ConflictStatus): void { this.status = status,
-        this.updatedAt = new Date(),  }
+        this.updatedAt = new Date() }
 
     /**
      * 依存関係を追加
      */
     addDependency(conflictInfo: ConflictInfo): void { if (!this.dependencies.find(dep => dep.name === conflictInfo.name) {
             this.dependencies.push(conflictInfo);
-            this.updatedAt = new Date() }
+            this.updatedAt = new Date();
 }
 
     /**
@@ -112,7 +111,7 @@ export class ConflictInfo {
             case 'in_progress': return 50,
             case 'completed': return 100,
             case 'failed': return 0 }
-            default: return 0,
+            default: return 0;
 
     /**
      * 競合情報をJSON形式で出力
@@ -129,7 +128,7 @@ export class ConflictInfo {
     type: dep.type),
                 status: dep.status)),
             progress: this.getProgress(
-    createdAt: this.createdAt.toISOString() },
+    createdAt: this.createdAt.toISOString() };
             updatedAt: this.updatedAt.toISOString();
     }
 
@@ -139,9 +138,9 @@ export class ConflictInfo {
     getSummary(): ConflictSummary { return { name: this.name,
             type: this.type,
             severity: this.severity,
-    status: this.status },
+    status: this.status };
             filesCount: Array.isArray(this.files) ? this.files.length : 0, 
-            progress: `${this.getProgress(}%`,
+            progress: `${this.getProgress(}%`;
             canResolve: this.canResolve();
     }
 
@@ -170,7 +169,7 @@ export class RenameOperation {
         this.status = 'pending';    // 'pending' | 'in_progress' | 'completed' | 'failed'
         this.error = null;          // エラー情報
         this.executedAt = null;     // 実行日時
-     }
+     };
         this.createdAt = new Date(); }
     }
 
@@ -188,13 +187,13 @@ export class RenameOperation {
     markFailed(error: string): void { ''
         this.status = 'failed';
         this.error = error;
-        this.executedAt = new Date() }
+        this.executedAt = new Date();
 
     /**
      * 依存関係を追加
      */
     addDependency(operation: RenameOperation): void { if (!this.dependencies.find(dep => dep.oldName === operation.oldName) {
-            this.dependencies.push(operation) }
+            this.dependencies.push(operation);
 }
 
     /**

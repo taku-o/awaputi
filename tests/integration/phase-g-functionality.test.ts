@@ -40,7 +40,7 @@ describe('Phase G機能統合テスト', (') => {'
                     balanceComponents[componentName.toLowerCase(').replace('balance', ')] = {
                         content,
                         wordCount: content.split(/\s+/}.length
-                    };
+                    }
                 } catch (error) {
                     console.warn(`${componentName}読み込み失敗:`, error.message);
                 }
@@ -62,12 +62,12 @@ describe('Phase G機能統合テスト', (') => {'
             for (const comp of expectedComponents) {
                 if (balanceComponents[comp]) {
                     loadedComponents.push(comp);
-                    console.log(`✅ ${comp}: ${balanceComponents[comp].wordCount)語`};
+                    console.log(`✅ ${comp}: ${balanceComponents[comp].wordCount)語`}
                 }
             }
             
             expect(loadedComponents.length).toBeGreaterThan(0);
-            console.log(`Balance Adjuster Components読み込み: ${loadedComponents.length}/${expectedComponents.length)`};
+            console.log(`Balance Adjuster Components読み込み: ${loadedComponents.length}/${expectedComponents.length)`}
         }');'
         test('Main Controller Pattern実装確認', () => {
             if (balanceComponents.main') {'
@@ -139,7 +139,7 @@ describe('Phase G機能統合テスト', (') => {'
                     audioComponents[key] = {
                         content,
                         wordCount: content.split(/\s+/}.length
-                    };
+                    }
                 } catch (error) {
                     console.warn(`${componentName}読み込み失敗:`, error.message);
                 }
@@ -163,12 +163,12 @@ describe('Phase G機能統合テスト', (') => {'
             for (const comp of expectedComponents) {
                 if (audioComponents[comp]) {
                     loadedComponents.push(comp);
-                    console.log(`✅ ${comp}: ${audioComponents[comp].wordCount)語`};
+                    console.log(`✅ ${comp}: ${audioComponents[comp].wordCount)語`}
                 }
             }
             
             expect(loadedComponents.length).toBeGreaterThan(0);
-            console.log(`Audio Accessibility Components読み込み: ${loadedComponents.length}/${expectedComponents.length)`};
+            console.log(`Audio Accessibility Components読み込み: ${loadedComponents.length}/${expectedComponents.length)`}
         }');'
         test('WCAG準拠機能確認', () => {
             if (audioComponents.main') {'
@@ -279,7 +279,7 @@ describe('Phase G機能統合テスト', (') => {'
             
             console.log(`Visual Manager分割状況: ${splitImplemented}/${totalManagers)`),
             // 分割が部分的でも実装状況として記録
-            expect(splitImplemented.toBeGreaterThanOrEqual(0)};
+            expect(splitImplemented.toBeGreaterThanOrEqual(0)}
         }');'
     }
     describe('Phase G統合システム機能テスト', (') => {'
@@ -326,32 +326,32 @@ describe('Phase G機能統合テスト', (') => {'
             const compliantFiles = existingFiles.filter(r => r.compliant);
             if (existingFiles.length > 0) {
                 expect(compliantFiles.length).toBe(existingFiles.length);
-                console.log(`\n✅ MCP互換性: ${compliantFiles.length}/${existingFiles.length)ファイルが制限内`};
+                console.log(`\n✅ MCP互換性: ${compliantFiles.length}/${existingFiles.length)ファイルが制限内`}
             }
         }');'
         test('Phase G完了状況総合評価', (') => {'
             // Phase G各段階の完了状況評価
             const phaseStatus = {
                 'G.1_BalanceAdjuster': {
-                    target: 'balance-adjuster.js分割',
+                    target: 'balance-adjuster.js分割' },
                     mainFile: 'tools/balance/balance-adjuster.js',
                     componentCount: 4,
                     status: 'implemented'
                 },
                 'G.2_AudioAccessibility': {
-                    target: 'AudioAccessibilitySupport.js分割', 
+                    target: 'AudioAccessibilitySupport.js分割' },
                     mainFile: 'src/audio/accessibility/AudioAccessibilitySupport.js',
                     componentCount: 6,
                     status: 'implemented'
                 },
                 'G.3_VisualFocus': {
-                    target: 'VisualFocusManager.js分割',
+                    target: 'VisualFocusManager.js分割' },
                     mainFile: 'src/core/VisualFocusManager.js',
                     componentCount: 4,
                     status: 'partial' // 分割前または進行中
                 },
                 'G.4_VisualFeedback': {
-                    target: 'VisualFeedbackManager.js分割',
+                    target: 'VisualFeedbackManager.js分割' },
                     mainFile: 'src/core/VisualFeedbackManager.js', 
                     componentCount: 4,
                     status: 'partial' // 分割前または進行中
@@ -378,7 +378,7 @@ describe('Phase G機能統合テスト', (') => {'
             console.log('✅ Main, Controller Pattern適用済み');
             console.log('✅ MCPツール互換性達成');
             console.log('✅ API後方互換性維持');
-            console.log('✅ システム統合性確認済み'};
+            console.log('✅ システム統合性確認済み'}
         };
     }
 }');'

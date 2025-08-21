@@ -7,17 +7,17 @@ import { ShareContentGenerator  } from '../../../src/core/ShareContentGenerator.
 // Type definitions
 interface LocalizationManager {
     translate: jest.MockedFunction<(ke,y: string, params?: Record<string, any>) => string>;
-    getCurrentLanguage: jest.MockedFunction<() => string>;
+    getCurrentLanguage: jest.MockedFunction<() => string>,
     getSupportedLanguages: jest.MockedFunction<() => string[]> }
 interface ScoreData {
-    score: number;
+    score: number,
     stage: string;
-    combo: number;
+    combo: number,
     accuracy: number;
 interface AchievementData {
-    id: string;
+    id: string,
     name: string;
-    description: string;
+    description: string,
     points: number;
     rarity: string;
 interface CustomData {
@@ -26,7 +26,7 @@ interface CustomData {
     hashtags?: string[];
     url?: string;
 interface ShareMessage {
-    text: string;
+    text: string,
     platform: string;
     language: string;
     url?: string;
@@ -37,25 +37,25 @@ interface ShareMessage {
     estimatedUrlLength?: number;
     description?: string;
 interface ValidationResult {
-    isValid: boolean;
+    isValid: boolean,
     errors: string[];
     warnings?: string[];
 interface PlatformLimits {
     twitter: {
-        maxLengt,h: number;
+        maxLengt,h: number },
         hashtagLimit: number,,
     facebook: {
         maxLength: number;
 }
 interface GeneratorStats {
-    generated: number;
+    generated: number,
     errors: number;
     truncated: number;
 interface StatsReport {
-    generated: number;
+    generated: number,
     successRate: number;
 interface UTMParams {
-    utm_source: string;
+    utm_source: string,
     utm_medium: string;
     utm_campaign: string;
 // LocalizationManager のモック
@@ -106,16 +106,16 @@ describe('ShareContentGenerator', () => {
             expect(generator.platformLimits.facebook.maxLength).toBe(63206) }');'
         it('統計が初期化される', () => {
             expect(generator.stats).toEqual({
-                generated: 0;
+                generated: 0,
                 errors: 0;
-                truncated: 0 };
+                truncated: 0 }
         }
     }');'
     describe('スコア共有メッセージ生成', (') => {'
         const scoreData: ScoreData = {
-            score: 15000;
+            score: 15000,
             stage: 'normal';
-            combo: 5;
+            combo: 5,
             accuracy: 85.5
         };
         it('Twitter用スコアメッセージを生成する', (') => {'
@@ -149,9 +149,9 @@ describe('ShareContentGenerator', () => {
     }
     describe('実績共有メッセージ生成', (') => {'
         const achievementData: AchievementData = {
-            id: 'first_100_score';
+            id: 'first_100_score',
             name: '初心者卒業';
-            description: '100点以上を達成';
+            description: '100点以上を達成',
             points: 10;
             rarity: 'common'
         };
@@ -178,7 +178,7 @@ describe('ShareContentGenerator', () => {
     }
     describe('カスタムメッセージ生成', (') => {'
         const customData: CustomData = {
-            title: 'カスタムタイトル';
+            title: 'カスタムタイトル',
             message: 'カスタムメッセージです';
             hashtags: ['custom', 'test'],
             url: 'https://example.com'
@@ -203,13 +203,13 @@ describe('ShareContentGenerator', () => {
         it('文字数制限を適用する', (') => {'
             const longMessage = 'あ'.repeat(300'), // 300文字'
             const result: ShareMessage = generator.optimizeForTwitter({
-                text: longMessage;
+                text: longMessage,
                 url: 'https://example.com' };
             expect(result.text.length + 23).toBeLessThanOrEqual(280); // URL短縮分を考慮
         }');'
         it('ハッシュタグ制限を適用する', (') => {'
             const data = {
-                text: 'テストメッセージ';
+                text: 'テストメッセージ',
                 hashtags: ['tag1', 'tag2', 'tag3', 'tag4', 'tag5']
             };
             
@@ -220,7 +220,7 @@ describe('ShareContentGenerator', () => {
         }');'
         it('URL短縮を考慮する', (') => {'
             const data = {
-                text: 'テストメッセージ';
+                text: 'テストメッセージ',
                 url: 'https://very-long-url-example.com/path/to/resource? param=value'
             };
              : undefined
@@ -232,7 +232,7 @@ describe('ShareContentGenerator', () => {
         it('長いメッセージを処理する', (') => {'
             const longMessage = 'あ'.repeat(1000'),'
             const data = {
-                text: longMessage;
+                text: longMessage,
                 title: 'テストタイトル'
             };
             
@@ -243,7 +243,7 @@ describe('ShareContentGenerator', () => {
         it('タイトル制限を適用する', (') => {'
             const longTitle = 'あ'.repeat(150'),'
             const data = {
-                text: 'テストメッセージ';
+                text: 'テストメッセージ',
                 title: longTitle;
                 title: longTitle;
         };
@@ -253,7 +253,7 @@ describe('ShareContentGenerator', () => {
         it('説明文制限を適用する', (') => {'
             const longDescription = 'あ'.repeat(400'),'
             const data = {
-                text: 'テストメッセージ';
+                text: 'テストメッセージ',
                 description: longDescription;
                 description: longDescription;
         };
@@ -264,7 +264,7 @@ describe('ShareContentGenerator', () => {
     describe('メッセージバリデーション', (') => {'
         it('有効なメッセージを検証する', (') => {'
             const validMessage: ShareMessage = {
-                text: 'テストメッセージ';
+                text: 'テストメッセージ',
                 platform: 'twitter';
                 language: 'ja'
             };
@@ -276,7 +276,7 @@ describe('ShareContentGenerator', () => {
         it('無効なメッセージを検出する', (') => {'
             const invalidMessage: ShareMessage = {
                 text: ', // 空のテキスト'
-                platform: 'invalid_platform';
+                platform: 'invalid_platform',
                 language: 'invalid_lang'
             };
             
@@ -287,7 +287,7 @@ describe('ShareContentGenerator', () => {
         it('プラットフォーム制限をチェックする', (') => {'
             const tooLongMessage: ShareMessage = {
                 text: 'あ'.repeat(300','
-                platform: 'twitter';
+                platform: 'twitter',
                 language: 'ja'
             };
             
@@ -298,7 +298,7 @@ describe('ShareContentGenerator', () => {
     describe('ハッシュタグ管理', (') => {'
         it('ハッシュタグを生成する', (') => {'
             const data = {
-                type: 'score';
+                type: 'score',
                 score: 10000;
                 stage: 'normal'
             };
@@ -317,7 +317,7 @@ describe('ShareContentGenerator', () => {
         }');'
         it('重複ハッシュタグを除去する', (') => {'
             const data = {
-                type: 'custom';
+                type: 'custom',
                 hashtags: ['test', 'BubblePop', 'test', 'game']
             };
             
@@ -338,7 +338,7 @@ describe('ShareContentGenerator', () => {
             const template = 'プレイヤー: {player.name}、レベル: {player.level}';
             const params = {
                 player: {
-                    name: 'テストプレイヤー';
+                    name: 'テストプレイヤー' },
                     level: 5
                 }
             };
@@ -463,7 +463,7 @@ describe('ShareContentGenerator', () => {
             const newConfig = {
                 platformLimits: {
                     twitter: {
-                        maxLength: 300;
+                        maxLength: 300 },
                         hashtagLimit: 3
                     }
                 }
@@ -494,7 +494,7 @@ describe('ShareContentGenerator', () => {
             // navigatorオブジェクト全体をモック
             (global as any').navigator = {'
                 userAgent: 'default user agent'
-            };
+            }
         };
         afterEach(() => {
             (global: any).navigator = originalNavigator }');'
@@ -518,7 +518,7 @@ describe('ShareContentGenerator', () => {
         it('UTMパラメータを追加する', (') => {'
             const baseUrl = 'https: //example.com';
             const utmParams: UTMParams = {
-                utm_source: 'twitter';
+                utm_source: 'twitter',
                 utm_medium: 'social';
                 utm_campaign: 'share'
             };
@@ -527,26 +527,26 @@ describe('ShareContentGenerator', () => {
             expect(urlWithUTM').toContain('utm_source=twitter');'
             expect(urlWithUTM').toContain('utm_medium=social');'
             expect(urlWithUTM').toContain('utm_campaign=share');'
-        };
+        }
     }
 };
 // テストユーティリティ関数
 function createMockScoreData(overrides: Partial<ScoreData> =) {}'): ScoreData {'
     return {
-        score: 10000;
+        score: 10000,
         stage: 'normal';
-        combo: 3;
+        combo: 3,
         accuracy: 88.5;
         ...overrides
-    };
+    }
 }
 function createMockAchievementData(overrides: Partial<AchievementData> =) {}'): AchievementData {'
     return {
-        id: 'test_achievement';
+        id: 'test_achievement',
         name: 'テスト実績';
-        description: 'テスト用の実績です';
+        description: 'テスト用の実績です',
         points: 10;
         rarity: 'common';
         ...overrides
-    };
+    }
 }

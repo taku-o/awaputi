@@ -15,18 +15,18 @@ export class OfflineManager {
         this.syncManager = syncManager;
         
         this.config = {
-            enableOfflineMode: true;
-            maxOfflineOperations: 1000;
+            enableOfflineMode: true,
+            maxOfflineOperations: 1000,
     offlineDataExpiry: 7 * 24 * 60 * 60 * 1000, // 7日間;
-            autoSyncOnReconnect: true;
+            autoSyncOnReconnect: true,
     syncDelay: 2000, // オンライン復帰後の同期遅延（ms）;
             heartbeatInterval: 30000, // 30秒
-    }
+    };
             maxHeartbeatRetries: 3 
     };
-        this.state = { isOnline: navigator.onLine;
-            lastOnlineTime: navigator.onLine ? Date.now() : null;
-            lastOfflineTime: navigator.onLine ? null : Date.now('';
+        this.state = { isOnline: navigator.onLine,
+            lastOnlineTime: navigator.onLine ? Date.now() : null,
+            lastOfflineTime: navigator.onLine ? null : Date.now(',
     connectionQuality: 'unknown' // 'good', 'poor', 'unstable', 'offline' };
         
         this.heartbeatTimer = null;)
@@ -40,7 +40,7 @@ export class OfflineManager {
      * オフライン管理の初期化'
      */''
     async initialize()';'
-            console.log('OfflineManager: オフライン管理を初期化中...',
+            console.log('OfflineManager: オフライン管理を初期化中...,
             
             // 保存されたオフライン状態の復元
             await this.restoreOfflineState();
@@ -55,8 +55,7 @@ export class OfflineManager {
             console.log('OfflineManager: 初期化が完了しました'
             } catch (error') {'
             getErrorHandler().handleError(error, 'OFFLINE_MANAGER_INITIALIZATION_ERROR', {''
-                operation: 'initialize') },
-        }
+                operation: 'initialize') , }
     }
     
     /**
@@ -70,9 +69,9 @@ export class OfflineManager {
     
 }
             // オフライン → オンライン }
-            await, this.handleOnlineRecovery(};
+            await, this.handleOnlineRecovery(}
         } else if (!isOnline && previousState) { // オンライン → オフライン
-            await this.handleOfflineTransition('',
+            await this.handleOfflineTransition(',
         this.emitEvent('connectionStateChanged', {
                 isOnline);
             previousState,
@@ -93,7 +92,7 @@ export class OfflineManager {
             // 自動同期の実行（設定されている場合）
             if (this.config.autoSyncOnReconnect && this.syncManager) {
 
-                console.log('OfflineManager: Scheduling, auto-sync, after reconnection...',
+                console.log('OfflineManager: Scheduling, auto-sync, after reconnection...,
                 // 遅延後に同期実行
                 setTimeout(async () => { 
                     try {
@@ -124,7 +123,7 @@ export class OfflineManager {
      * オフライン移行時の処理
      */'
     async handleOfflineTransition() { try {'
-            this.state.lastOfflineTime = Date.now('',
+            this.state.lastOfflineTime = Date.now(',
             this.state.connectionQuality = 'offline',', ')','
             console.log('OfflineManager: Handling, offline transition...');
             // オフライン通知
@@ -151,7 +150,7 @@ export class OfflineManager {
         try { // 操作キューの容量チェック
             if (this.state.offlineOperations.length >= this.config.maxOfflineOperations) {
                 // 古い操作を削除
-                this.state.offlineOperations.shift() }
+                this.state.offlineOperations.shift();
 
                 console.warn('OfflineManager: Offline operations queue is full, removing oldest operation'); }'
             }
@@ -160,7 +159,7 @@ export class OfflineManager {
                 type: operation.type,
     key: operation.key,
                 data: operation.data,
-                timestamp: Date.now('',
+                timestamp: Date.now(',
     status: 'pending'
             })
             );
@@ -175,8 +174,8 @@ export class OfflineManager {
             ';'
 
         } catch (error) { getErrorHandler().handleError(error, 'OFFLINE_OPERATION_RECORD_ERROR', {''
-                operation: 'recordOfflineOperation');
-                operationType: operation.type  },
+                operation: 'recordOfflineOperation'),
+                operationType: operation.type  ,
             throw error;
         }
     }
@@ -199,21 +198,18 @@ export class OfflineManager {
                 await, this.executeOfflineOperation(operation}
 
                 operation.status = 'completed'; }
-                processedOperations.push(operation};
-                
-            } catch (error) { operation.retries++,
+                processedOperations.push(operation}
+        } catch (error) { operation.retries++;
                 operation.lastError = error.message,
 
                 if (operation.retries >= 3) {
 
                     operation.status = 'failed' }
                     failedOperations.push(operation); }
-                    console.error(`OfflineManager: Failed to process operation ${operation.id} after 3 retries:`, error};
+                    console.error(`OfflineManager: Failed to process operation ${operation.id} after 3 retries:`, error}
                 } else {  }
-                    console.warn(`OfflineManager: Retry ${operation.retries} for operation ${operation.id}:`, error.message};
-                }
+                    console.warn(`OfflineManager: Retry ${operation.retries} for operation ${operation.id}:`, error.message    }
 }
-        
         // 完了した操作を削除
         this.state.offlineOperations = this.state.offlineOperations.filter();
             op => !processedOperations.includes(op) && !failedOperations.includes(op);
@@ -223,10 +219,10 @@ export class OfflineManager {
         // 結果の通知
         this.emitEvent('offlineOperationsProcessed', {
                 processed: processedOperations.length,
-    failed: failedOperations.length };
-            remaining: this.state.offlineOperations.length},
+    failed: failedOperations.length ,
+            remaining: this.state.offlineOperations.length,
         // オフライン状態の保存 }
-        await this.saveOfflineState(};
+        await this.saveOfflineState(}
     }
     
     /**
@@ -244,13 +240,12 @@ export class OfflineManager {
                 break;
 
             case 'remove':
-                if (this.syncManager && this.syncManager.cloudStorage) { await this.syncManager.cloudStorage.remove(operation.key) }
+                if (this.syncManager && this.syncManager.cloudStorage) { await this.syncManager.cloudStorage.remove(operation.key);
                 break;
                 
             default:;
-                throw new Error(`Unknown, offline operation, type: ${operation.type}`} }
-    }
-    
+                throw new Error(`Unknown, offline operation, type: ${operation.type}`    }
+}
     /**
      * 接続品質の確認
      */'
@@ -263,11 +258,10 @@ export class OfflineManager {
         ';'
 
         try {'
-            const startTime = performance.now('',
+            const startTime = performance.now(',
             const response = await fetch('/favicon.ico', {''
-                method: 'HEAD',')',
+                method: 'HEAD,')',
                 cache: 'no-cache'),
-            ,
             const endTime = performance.now();
             const responseTime = endTime - startTime,
             
@@ -292,11 +286,11 @@ export class OfflineManager {
             
             return quality;
             
-        } catch (error) { this.state.heartbeatFailures++,
+        } catch (error) { this.state.heartbeatFailures++;
 
             if (this.state.heartbeatFailures >= this.config.maxHeartbeatRetries) {
 
-                this.state.connectionQuality = 'offline',
+                this.state.connectionQuality = 'offline,
 
                 // navigator.onLineが間違っている場合の対処
                 if (navigator.onLine) {''
@@ -321,8 +315,7 @@ export class OfflineManager {
         
         this.heartbeatTimer = setInterval(async () => { await this.checkConnectionQuality() }; this.config.heartbeatInterval);
         
-        console.log(`OfflineManager: Heartbeat, monitoring started (interval: ${this.config.heartbeatInterval}ms)`),
-    }
+        console.log(`OfflineManager: Heartbeat, monitoring started (interval: ${this.config.heartbeatInterval}ms)`) }
     
     /**
      * ハートビート監視の停止
@@ -352,15 +345,15 @@ export class OfflineManager {
                 this.state.lastOfflineTime = stateData.lastOfflineTime,
 
                 this.state.offlineOperations = stateData.offlineOperations || [],
-                this.state.connectionQuality = stateData.connectionQuality || 'unknown',
+                this.state.connectionQuality = stateData.connectionQuality || 'unknown,
                 
                 // 古いオフライン操作の削除
                 const now = Date.now();
                 this.state.offlineOperations = this.state.offlineOperations.filter();
-                    op => (now - op.timestamp) < this.config.offlineDataExpiry) }
+                    op => (now - op.timestamp) < this.config.offlineDataExpiry);
                  }
-                console.log(`OfflineManager: Restored ${this.state.offlineOperations.length} offline, operations`};
-            } catch (error) { console.warn('OfflineManager: Failed to restore offline, state:', error }
+                console.log(`OfflineManager: Restored ${this.state.offlineOperations.length} offline, operations`}
+        } catch (error) { console.warn('OfflineManager: Failed to restore offline, state:', error }
     }
     
     /**
@@ -409,7 +402,7 @@ export class OfflineManager {
         // ハートビート間隔が変更された場合は再起動
         if (newConfig.heartbeatInterval && newConfig.heartbeatInterval !== oldHeartbeatInterval) {
 
-            this.startHeartbeat() }
+            this.startHeartbeat();
 
         console.log('OfflineManager: Configuration updated', this.config); }
     }
@@ -419,7 +412,7 @@ export class OfflineManager {
      */
     clearOfflineOperations() {
         this.state.offlineOperations = [],
-        this.saveOfflineState() }
+        this.saveOfflineState();
 
         console.log('OfflineManager: Offline, operations cleared') }'
     }
@@ -429,16 +422,13 @@ export class OfflineManager {
      */
     emitEvent(eventName, data = null) {
         const listeners = this.eventListeners.get(eventName) || [],
-        listeners.forEach(listener => { )
-    }
+        listeners.forEach(listener => { );
             try {') }'
                 listener(data); }
-            } catch (error) {
+        } catch (error) {
                 console.error(`OfflineManager: Error in event listener for ${eventName}:`, error);
-            }
-        };
-    }
-    
+                }
+}
     /**
      * イベントリスナーの追加
      */
@@ -470,7 +460,7 @@ export class OfflineManager {
             this.stopHeartbeat();
             // 再接続タイマーの停止
             if (this.reconnectTimer) {
-                clearTimeout(this.reconnectTimer) }
+                clearTimeout(this.reconnectTimer);
                 this.reconnectTimer = null; }
             }
             

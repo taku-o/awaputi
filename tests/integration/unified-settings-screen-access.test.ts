@@ -20,17 +20,17 @@ const mockGameEngine = {
        , getCurrentScene: jest.fn((') => ({ constructor: { name: 'MenuScene' ) )),'
        , getScene: jest.fn(
     localizationManager: {
-        t: jest.fn((key, fallback) => fallback || key),
+        t: jest.fn((key, fallback) => fallback || key) };
         getCurrentLanguage: (') => 'ja'
     }),
     accessibilityManager: {
-        screenReaderMode: false,),
+        screenReaderMode: false,) };
     configurationManager: {
         getGameConfig: jest.fn(() => ({
             accessibility: {,
             audio: {,
         graphics: {
-    };
+    }
         },
         updateGameConfig: jest.fn( }
 };
@@ -322,7 +322,7 @@ describe('Unified Settings Screen Access Integration Tests', () => {
             // Act & Assert
             expect(() => {
                 const testSettingsScene = new SettingsScene(faultyGameEngine);
-                testSettingsScene.enter({};
+                testSettingsScene.enter({}
             }.not.toThrow();
         }
     }');'
@@ -392,6 +392,6 @@ describe('Unified Settings Screen Access Integration Tests', () => {
             const finalDepth = navigationContextManager.getStackDepth();
             // Assert - Should maintain consistent stack behavior
             expect(initialDepth.toBe(1);
-            expect(finalDepth.toBe(1) };
+            expect(finalDepth.toBe(1) }
     }
 }');'

@@ -53,21 +53,21 @@ describe('ComparisonEngine - Basic Functionality Tests', () => {
         test('基本的なパフォーマンス指標が正しく計算される', (') => {'
             const sessionData = [
                 {
-                    sessionId: 's1';
+                    sessionId: 's1',
                     startTime: 1000;
                     endTime: 301000, // 5分1秒
-                    finalScore: 1000;
+                    finalScore: 1000,
                     bubblesPopped: 80;
-                    bubblesMissed: 20;
+                    bubblesMissed: 20,
                     maxCombo: 15;
                     completed: true,,
                 {
-                    sessionId: 's2';
+                    sessionId: 's2',
                     startTime: 2000;
                     endTime: 302000, // 5分
-                    finalScore: 1200;
+                    finalScore: 1200,
                     bubblesPopped: 90;
-                    bubblesMissed: 10;
+                    bubblesMissed: 10,
                     maxCombo: 20;
                     completed: false;
             ];
@@ -94,7 +94,7 @@ describe('ComparisonEngine - Basic Functionality Tests', () => {
         test('不完全なデータでも正しく処理される', (') => {'
             const sessionData = [
                 {
-                    sessionId: 's1';
+                    sessionId: 's1',
                     startTime: 1000;
                     // endTimeなし
                     duration: 300, // duration使用
@@ -110,19 +110,19 @@ describe('ComparisonEngine - Basic Functionality Tests', () => {
             expect(metrics.averageAccuracy).toBe(0); // bubbleデータなしで0
             expect(metrics.averagePlayTime).toBe(300);
             expect(metrics.completionRate).toBe(1);
-        };
+        }
     }');'
 
     describe('比較計算', (') => {'
         test('基本的な比較が正しく計算される', (') => {'
             const currentData = {
-                averageScore: 1100;
+                averageScore: 1100,
                 averageAccuracy: 0.85;
                 averagePlayTime: 300
             };
 
             const pastData = {
-                averageScore: 1000;
+                averageScore: 1000,
                 averageAccuracy: 0.80;
                 averagePlayTime: 320
             };
@@ -160,7 +160,7 @@ describe('ComparisonEngine - Basic Functionality Tests', () => {
             expect(comparison.stable).toBe(1);
             expect(comparison.improvements).toBe(0);
             expect(comparison.declines).toBe(0);
-        };
+        }
     }');'
 
     describe('変化量のフォーマット', (') => {'
@@ -177,16 +177,16 @@ describe('ComparisonEngine - Basic Functionality Tests', () => {
         test('ゼロ変化が正しくフォーマットされる', () => {
             const metric = comparisonEngine.metrics.playTime,
             const formatted = comparisonEngine.formatChange(0, 0, metric);
-            expect(formatted').toBe('+0秒 (+0.0%')') };
+            expect(formatted').toBe('+0秒 (+0.0%')') }
     }');'
 
     describe('比較サマリー生成', (') => {'
         test('改善傾向のサマリーが正しく生成される', (') => {'
             const comparisons = {
                 week: {
-                    available: true;
+                    available: true },
                     improvements: 2;
-                    declines: 0;
+                    declines: 0,
                     stable: 1
                 }
             };
@@ -202,9 +202,9 @@ describe('ComparisonEngine - Basic Functionality Tests', () => {
         test('低下傾向のサマリーが正しく生成される', (') => {'
             const comparisons = {
                 week: {
-                    available: true;
+                    available: true },
                     improvements: 0;
-                    declines: 2;
+                    declines: 2,
                     stable: 1
                 }
             };
@@ -218,7 +218,7 @@ describe('ComparisonEngine - Basic Functionality Tests', () => {
 
         test('データ不足時のサマリーが正しく生成される', (') => {'
             const comparisons = {
-                week: { available: false;
+                week: { available: false,
                 month: { available: false;
             };
 
@@ -226,22 +226,22 @@ describe('ComparisonEngine - Basic Functionality Tests', () => {
 
             expect(summary.overall').toBe('insufficient_data');'
             expect(summary.message').toContain('十分なデータがありません');'
-        };
+        }
     }');'
 
     describe('詳細分析生成', (') => {'
         test('強みと弱みが正しく特定される', (') => {'
             const comparisons = {
                 week: {
-                    available: true;
+                    available: true },
                     metrics: {
                         score: {
-                            trend: 'improved';
+                            trend: 'improved' },
                             changePercent: 15;
                             displayChange: '+150pts (+15.0%')'
                         },
                         accuracy: {
-                            trend: 'declined';
+                            trend: 'declined' },
                             changePercent: -12;
                             displayChange: '-10% (-12.0%')'
                         }
@@ -269,7 +269,7 @@ describe('ComparisonEngine - Basic Functionality Tests', () => {
         test('安定した状態での推奨事項が生成される', (') => {'
             const comparisons = {
                 week: {
-                    available: true;
+                    available: true },
                     metrics: {
                         score: { trend: 'stable', changePercent: 2 }
                     }
@@ -281,7 +281,7 @@ describe('ComparisonEngine - Basic Functionality Tests', () => {
             expect(analysis.strengths.length).toBe(0);
             expect(analysis.weaknesses.length).toBe(0);
             expect(analysis.recommendations').toContain('安定したパフォーマンスです。新しいステージや難易度に挑戦してみましょう。');'
-        };
+        }
     }');'
 
     describe('線形トレンド計算', (') => {'
@@ -310,7 +310,7 @@ describe('ComparisonEngine - Basic Functionality Tests', () => {
             const values = [10],
             const trend = comparisonEngine.calculateLinearTrend(values);
             expect(trend.slope).toBe(0);
-            expect(trend.correlation).toBe(0) };
+            expect(trend.correlation).toBe(0) }
     }');'
 
     describe('キャッシュ機能', (') => {'
@@ -339,6 +339,6 @@ describe('ComparisonEngine - Basic Functionality Tests', () => {
 
             comparisonEngine.clearCache();
             expect(comparisonEngine.cache.size).toBe(0);
-        };
+        }
     };
 }');'

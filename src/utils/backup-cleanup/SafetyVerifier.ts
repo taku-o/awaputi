@@ -3,85 +3,75 @@ import { BackupFileInvestigator  } from './BackupFileInvestigator.js';
 import { ReferenceAnalyzer  } from './ReferenceAnalyzer.js';
 
 // Type definitions
-interface BasicValidation { fileExists: boolean;
-    currentFileExists: boolean;
-    isBackupFile: boolean;
+interface BasicValidation { fileExists: boolean,
+    currentFileExists: boolean,
+    isBackupFile: boolean,
     passed: boolean;
     currentFilePath?: string;
-    error?: string,  }
+    error?: string }
 
-interface CurrentFileIntegrity { currentFileValid: boolean;
-    syntaxValid: boolean;
-    functionallyEquivalent: boolean;
+interface CurrentFileIntegrity { currentFileValid: boolean,
+    syntaxValid: boolean,
+    functionallyEquivalent: boolean,
     passed: boolean;
     error?: string;
 }
 
-interface ReferenceValidation { importReferences: number;
-    activeStringReferences: number;
-    reportFileReferences: number;
-    totalReferences: number;
+interface ReferenceValidation { importReferences: number,
+    activeStringReferences: number,
+    reportFileReferences: number,
+    totalReferences: number,
     passed: boolean;
     referenceReport?: any;
     error?: string;
-
-interface BuildDependencies { inPackageJson: boolean;
-    inTsConfig: boolean;
-    inWebpackConfig: boolean;
-    inOtherConfigs: boolean;
+    interface BuildDependencies { inPackageJson: boolean,
+    inTsConfig: boolean,
+    inWebpackConfig: boolean,
+    inOtherConfigs: boolean,
     passed: boolean;
     configFiles?: string[];
-    error?: string,  }
+    error?: string }
 
-interface LastCommitInfo { hash: string;
+interface LastCommitInfo { hash: string,
     message: string;
-
-interface GitStatus { isTracked: boolean;
-    hasUncommittedChanges: boolean;
-    lastCommitInfo: LastCommitInfo | null;
+    interface GitStatus { isTracked: boolean,
+    hasUncommittedChanges: boolean,
+    lastCommitInfo: LastCommitInfo | null,
     passed: boolean;
     error?: string;
-
-interface SafetyChecks { basicValidation?: BasicValidation,
+    interface SafetyChecks { basicValidation?: BasicValidation,
     currentFileIntegrity?: CurrentFileIntegrity;
     referenceValidation?: ReferenceValidation;
     buildDependencies?: BuildDependencies;
     gitStatus?: GitStatus;
-
-interface SafetyWarning { level: string;
+    interface SafetyWarning { level: string,
     message: string;
-
-interface SafetyRecommendation { type: string;
+    interface SafetyRecommendation { type: string,
     message: string;
     priority?: string;
-
-interface SafetyVerification { filePath: string;
-    timestamp: string;
-    checks: SafetyChecks;
-    overallSafety: boolean;
-    warnings: SafetyWarning[];
+    interface SafetyVerification { filePath: string,
+    timestamp: string,
+    checks: SafetyChecks,
+    overallSafety: boolean,
+    warnings: SafetyWarning[],
     recommendations: SafetyRecommendation[];
     error?: string;
-
-interface SafetySummary { totalFiles: number;
-    safeFiles: number;
-    unsafeFiles: number;
+    interface SafetySummary { totalFiles: number,
+    safeFiles: number,
+    unsafeFiles: number,
     errorFiles: number;
-
-interface SafetyBreakdown { basicValidation: number;
-    currentFileIntegrity: number;
-    referenceValidation: number;
-    buildDependencies: number;
+    interface SafetyBreakdown { basicValidation: number,
+    currentFileIntegrity: number,
+    referenceValidation: number,
+    buildDependencies: number,
     gitStatus: number;
-
-interface OverallRecommendation { action: string;
-    message: string;
+    interface OverallRecommendation { action: string,
+    message: string,
     priority: string;
-
-interface SafetyReport { summary: SafetySummary;
-    safetyBreakdown: SafetyBreakdown;
-    files: SafetyVerification[];
-    overallRecommendation: OverallRecommendation;
+    interface SafetyReport { summary: SafetySummary,
+    safetyBreakdown: SafetyBreakdown,
+    files: SafetyVerification[],
+    overallRecommendation: OverallRecommendation,
     generatedAt: string;
 
 /**
@@ -93,7 +83,7 @@ export class SafetyVerifier {
     private, referenceAnalyzer: ReferenceAnalyzer;
     constructor() {
 
-        this.investigator = new BackupFileInvestigator() }
+        this.investigator = new BackupFileInvestigator() };
         this.referenceAnalyzer = new ReferenceAnalyzer(); }
     }
 
@@ -102,11 +92,11 @@ export class SafetyVerifier {
      */
     async verifyDeletionSafety(filePath: string): Promise<SafetyVerification> { const verification: SafetyVerification = {
             filePath,
-            timestamp: new Date().toISOString() }
-            checks: {},
+            timestamp: new Date().toISOString(),
+            checks: {  },
             overallSafety: false,
             warnings: [],
-    recommendations: [],
+    recommendations: [];
         },
 
         try { // 1. 基本ファイル検証
@@ -128,7 +118,7 @@ export class SafetyVerifier {
             verification.warnings.push({)'
                 level: 'critical' }
                 message: `検証中にエラーが発生しました: ${(error, as, Error}.message}`
-            };
+            }
         }
 
         return verification;
@@ -141,7 +131,7 @@ export class SafetyVerifier {
             fileExists: false,
             currentFileExists: false,
             isBackupFile: false,
-    passed: false,
+    passed: false;
         try { // ファイル存在確認
             validation.fileExists = await this.investigator.checkFileExists(filePath);
             // バックアップファイル判定
@@ -149,7 +139,7 @@ export class SafetyVerifier {
             // 対応する現在ファイルの存在確認
             const currentFilePath = this.getCurrentFilePath(filePath);
             if (currentFilePath) {
-                validation.currentFileExists = await this.investigator.checkCurrentFileExists(currentFilePath) }
+                validation.currentFileExists = await this.investigator.checkCurrentFileExists(currentFilePath);
                 validation.currentFilePath = currentFilePath; }
             }
             
@@ -171,7 +161,7 @@ export class SafetyVerifier {
             currentFileValid: false,
             syntaxValid: false,
             functionallyEquivalent: false,
-    passed: false,
+    passed: false;
 ';'
 
         try { const currentFilePath = this.getCurrentFilePath(filePath);
@@ -210,7 +200,7 @@ export class SafetyVerifier {
             activeStringReferences: 0,
             reportFileReferences: 0,
             totalReferences: 0,
-    passed: false,
+    passed: false;
         try { // import参照の検索
             const importAnalysis = await this.referenceAnalyzer.searchImportReferences(filePath);
             validation.importReferences = importAnalysis.importReferences.length,
@@ -242,19 +232,19 @@ export class SafetyVerifier {
             inTsConfig: false,
             inWebpackConfig: false,
             inOtherConfigs: false,
-    passed: true,
+    passed: true;
 ';'
         try { // package.jsonでの参照確認
-            const packageJsonPath = './package.json',
+            const packageJsonPath = './package.json,
 
             try {'
-                const packageContent = await fs.readFile(packageJsonPath, 'utf8',
+                const packageContent = await fs.readFile(packageJsonPath, 'utf8,
                 dependencies.inPackageJson = packageContent.includes(filePath) } catch { // package.json読み取りエラーは無視 }
 
             // その他の設定ファイルでの参照確認
             const configFiles = [';'
-                './tsconfig.json',
-                './webpack.config.js',
+                './tsconfig.json,
+                './webpack.config.js,
                 './jest.config.js',]';'
                 './rollup.config.js'];
             ];
@@ -266,7 +256,7 @@ export class SafetyVerifier {
                         dependencies.inOtherConfigs = true,
                         dependencies.configFiles = dependencies.configFiles || [] }
                         dependencies.configFiles.push(configFile); }
-                    } catch { // 設定ファイル読み取りエラーは無視 }
+        } catch { // 設定ファイル読み取りエラーは無視 }
             }
 
             // 依存関係が見つかった場合は警告
@@ -288,7 +278,7 @@ export class SafetyVerifier {
             isTracked: false,
             hasUncommittedChanges: false,
             lastCommitInfo: null,
-    passed: true,
+    passed: true;
 ';'
 
         try { }
@@ -306,7 +296,7 @@ export class SafetyVerifier {
 
             if (gitStatus.isTracked) {
                 // 未コミットの変更があるか確認
-            }"
+            }
                 try { }"
                     const { stdout } = await execAsync(`git, diff --name-only, HEAD -- "${filePath}"`";"
                     gitStatus.hasUncommittedChanges = stdout.trim().length > 0;
@@ -324,7 +314,7 @@ export class SafetyVerifier {
                             hash }
 
                             message: messageParts.join(', '); }
-                        } catch { // 最後のコミット情報取得エラーは無視 }
+        } catch { // 最後のコミット情報取得エラーは無視 }
             }
 
             // Git状態での安全性評価
@@ -345,7 +335,7 @@ export class SafetyVerifier {
         ] as const,
 
         return requiredChecks.every(checkName => );
-            checks[checkName] && checks[checkName]!.passed) }
+            checks[checkName] && checks[checkName]!.passed);
     }
 
     /**
@@ -387,7 +377,7 @@ export class SafetyVerifier {
         if(this.calculateOverallSafety(checks)) {
             recommendations.push({''
                 type: 'safe_deletion',','
-                message: '安全に削除できます',')',
+                message: '安全に削除できます,')',
                 priority: 'high')'
             }
 
@@ -423,9 +413,9 @@ export class SafetyVerifier {
      * 対応する現在ファイルのパスを取得
      */''
     private getCurrentFilePath(backupFilePath: string): string | null { const mapping: Record<string, string> = {', 'src/utils/TestConfigurationGenerator_old.js': 'src/utils/TestConfigurationGenerator.js','
-            'src/utils/performance-monitoring/PerformanceDataAnalyzer_Original.js': 'src/utils/performance-monitoring/PerformanceDataAnalyzer.js',
-            'src/debug/TestDataGenerationCommands_old.js': 'src/debug/TestDataGenerationCommands.js',
-            'src/debug/TestDataGenerationCommands_backup.js': 'src/debug/TestDataGenerationCommands.js',
+            'src/utils/performance-monitoring/PerformanceDataAnalyzer_Original.js': 'src/utils/performance-monitoring/PerformanceDataAnalyzer.js,
+            'src/debug/TestDataGenerationCommands_old.js': 'src/debug/TestDataGenerationCommands.js,
+            'src/debug/TestDataGenerationCommands_backup.js': 'src/debug/TestDataGenerationCommands.js,
             'src/seo/SEOTester_original.js': 'src/seo/SEOTester.js' };
 
         return mapping[backupFilePath] || null;
@@ -438,7 +428,7 @@ export class SafetyVerifier {
             new Function(content);
             return true } catch { // ES6モジュール構文などで失敗する場合があるが、
             // 基本的な構文エラーでなければOKとする
-            return !content.includes('SyntaxError',
+            return !content.includes('SyntaxError,
 
     /**
      * 機能的同等性の確認'
@@ -455,17 +445,16 @@ export class SafetyVerifier {
      * 安全性検証レポートの生成
      */
     async generateSafetyReport(verificationResults: SafetyVerification[]): Promise<SafetyReport> { const report: SafetyReport = {
-            summary: {
-                totalFiles: verificationResults.length,
+            summary: { totalFiles: verificationResults.length  ,
                 safeFiles: verificationResults.filter(r => r.overallSafety).length,
                 unsafeFiles: verificationResults.filter(r => !r.overallSafety).length,
-                errorFiles: verificationResults.filter(r => r.error).length 
+                errorFiles: verificationResults.filter(r => r.error).length; 
     };
             safetyBreakdown: { basicValidation: verificationResults.filter(r => r.checks.basicValidation && r.checks.basicValidation.passed).length,
-                currentFileIntegrity: verificationResults.filter(r => r.checks.currentFileIntegrity && r.checks.currentFileIntegrity.passed).length,
+                currentFileIntegrity: verificationResults.filter(r => r.checks.currentFileIntegrity && r.checks.currentFileIntegrity.passed).length  ,
                 referenceValidation: verificationResults.filter(r => r.checks.referenceValidation && r.checks.referenceValidation.passed).length,
                 buildDependencies: verificationResults.filter(r => r.checks.buildDependencies && r.checks.buildDependencies.passed).length,
-                gitStatus: verificationResults.filter(r => r.checks.gitStatus && r.checks.gitStatus.passed).length 
+                gitStatus: verificationResults.filter(r => r.checks.gitStatus && r.checks.gitStatus.passed).length; 
     };
             files: verificationResults,
             overallRecommendation: this.generateOverallRecommendation(verificationResults,
@@ -493,7 +482,7 @@ export class SafetyVerifier {
             }
 
                 message: `${safeFiles.length}個のファイルは安全に削除できます。${unsafeFiles.length}個のファイルは要確認です`,''
-                priority: 'medium',
+                priority: 'medium';
             } } else {  return { ''
                 action: 'manual_review_required',' }'
 

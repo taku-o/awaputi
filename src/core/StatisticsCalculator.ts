@@ -12,8 +12,8 @@ import { ErrorHandler  } from '../utils/ErrorHandler.js';
 export class StatisticsCalculator {
     constructor() {
         this.trendPeriods = {
-            daily: 1;
-    weekly: 7 }
+            daily: 1,
+    weekly: 7 };
             monthly: 30 
     }
 
@@ -49,24 +49,24 @@ export class StatisticsCalculator {
     calculateBasicStats(statistics) {
         return { games: {
                 total: statistics.totalGamesPlayed || 0,
-    completed: statistics.stagesCompleted || 0 }
-                failed: statistics.stagesFailed || 0 },
+    completed: statistics.stagesCompleted || 0 } },
+                failed: statistics.stagesFailed || 0 ,
                 completionRate: this.calculateCompletionRate(statistics); 
     },
             score: { total: statistics.totalScore || 0,
-                highest: statistics.highestScore || 0,
+                highest: statistics.highestScore || 0 ,
     average: statistics.averageScore || 0 }
                 distribution: statistics.scoreDistribution || {},
             bubbles: { popped: statistics.totalBubblesPopped || 0,
-                missed: statistics.totalBubblesMissed || 0,
+                missed: statistics.totalBubblesMissed || 0 ,
     accuracy: statistics.bubbleAccuracy || 0 }
                 typeStats: statistics.bubbleTypeStats || {},
             time: { total: statistics.totalPlayTime || 0,
-                average: statistics.averageSessionLength || 0,
+                average: statistics.averageSessionLength || 0 ,
                 longest: statistics.longestSession || 0,
-    shortest: statistics.shortestSession === Infinity ? 0 : statistics.shortestSession },
+    shortest: statistics.shortestSession === Infinity ? 0 : statistics.shortestSession ,
             combos: { total: statistics.totalCombos || 0,
-                highest: statistics.highestCombo || 0,
+                highest: statistics.highestCombo || 0 ,
                 average: statistics.averageCombo || 0,
     breaks: statistics.comboBreaks || 0 
     }
@@ -79,8 +79,8 @@ export class StatisticsCalculator {
     calculateAdvancedStats(statistics) {
         return { efficiency: this.calculateDetailedEfficiency(statistics,
             reactionTime: this.calculateReactionTimeAnalysis(statistics,
-    performance: this.calculatePerformanceMetrics(statistics) }
-            behavior: this.calculateBehaviorAnalysis(statistics) },
+    performance: this.calculatePerformanceMetrics(statistics),
+            behavior: this.calculateBehaviorAnalysis(statistics) ,
             consistency: this.calculateConsistencyMetrics(statistics); 
     }
 
@@ -109,9 +109,9 @@ export class StatisticsCalculator {
         return { bubblesPerMinute: effStats.bubblesPerMinute || 0,
             bubblesPerSecond: effStats.bubblesPerSecond || 0,
             peakEfficiency: effStats.peakEfficiency || 0,
-            currentTrend: this.calculateEfficiencyTrend(effStats.efficiencyTrend || []);
+            currentTrend: this.calculateEfficiencyTrend(effStats.efficiencyTrend || []),
             scorePerMinute: totalTime > 0 ? (statistics.totalScore || 0) / (totalTime / 60000) : 0,
-            timeUtilization: this.calculateTimeUtilization(statistics) },
+            timeUtilization: this.calculateTimeUtilization(statistics) ,
             improvementRate: this.calculateImprovementRate(effStats.efficiencyTrend || []); 
     }
 
@@ -126,7 +126,7 @@ export class StatisticsCalculator {
         const reactionStats = statistics.reactionTimeStats || {};
         
         return { average: reactionStats.average || 0,
-            fastest: reactionStats.fastest = == Infinity ? 0 : reactionStats.fastest  },
+            fastest: reactionStats.fastest = == Infinity ? 0 : reactionStats.fastest  ,
             slowest: reactionStats.slowest || 0 }
             distribution: reactionStats.distribution || {},
             consistency: this.calculateReactionConsistency(reactionStats.recentTimes || [],
@@ -141,8 +141,8 @@ export class StatisticsCalculator {
     calculatePerformanceMetrics(statistics) {
         return { overallRating: this.calculateOverallRating(statistics,
             skillLevel: this.determineSkillLevel(statistics,
-    strengths: this.identifyStrengths(statistics) }
-            improvements: this.identifyImprovements(statistics) },
+    strengths: this.identifyStrengths(statistics),
+            improvements: this.identifyImprovements(statistics) ,
             progression: this.calculateProgression(statistics); 
     }
 
@@ -157,10 +157,10 @@ export class StatisticsCalculator {
         const behavior = statistics.playerBehaviorStats || {};
         
         return { playStyle: this.determinePlayStyle(statistics,
-            aggression: this.calculateAggression(statistics);
-            patience: this.calculatePatience(statistics);
+            aggression: this.calculateAggression(statistics),
+            patience: this.calculatePatience(statistics),
             adaptability: this.calculateAdaptability(statistics,
-    riskTaking: this.calculateRiskTaking(statistics) },
+    riskTaking: this.calculateRiskTaking(statistics) ,
             learning: this.calculateLearningPattern(statistics); 
     }
 
@@ -172,8 +172,8 @@ export class StatisticsCalculator {
     calculateConsistencyMetrics(statistics) {
         return { scoreConsistency: this.calculateScoreConsistency(statistics,
             timeConsistency: this.calculateTimeConsistency(statistics,
-    accuracyConsistency: this.calculateAccuracyConsistency(statistics) }
-            performanceVariability: this.calculatePerformanceVariability(statistics) },
+    accuracyConsistency: this.calculateAccuracyConsistency(statistics),
+            performanceVariability: this.calculatePerformanceVariability(statistics) ,
             reliabilityIndex: this.calculateReliabilityIndex(statistics); 
     }
 
@@ -185,8 +185,8 @@ export class StatisticsCalculator {
     calculateTrends(statistics) {
         return { score: this.calculateScoreTrend(statistics,
             efficiency: this.calculateEfficiencyTrend(statistics.efficiencyStats?.efficiencyTrend || []), : undefined
-            accuracy: this.calculateAccuracyTrend(statistics) }
-            playTime: this.calculatePlayTimeTrend(statistics) },
+            accuracy: this.calculateAccuracyTrend(statistics),
+            playTime: this.calculatePlayTimeTrend(statistics) ,
             overall: this.calculateOverallTrend(statistics); 
     }
 
@@ -197,8 +197,8 @@ export class StatisticsCalculator {
      */
     calculateEfficiencyMetrics(statistics) {
         return { timeEfficiency: this.calculateTimeEfficiency(statistics,
-            actionEfficiency: this.calculateActionEfficiency(statistics) }
-            resourceEfficiency: this.calculateResourceEfficiency(statistics) },
+            actionEfficiency: this.calculateActionEfficiency(statistics),
+            resourceEfficiency: this.calculateResourceEfficiency(statistics) ,
             learningEfficiency: this.calculateLearningEfficiency(statistics); 
     }
 
@@ -210,7 +210,7 @@ export class StatisticsCalculator {
     calculateRankings(statistics) {
         return { scoreRank: this.calculateScoreRank(statistics,
             efficiencyRank: this.calculateEfficiencyRank(statistics,
-    accuracyRank: this.calculateAccuracyRank(statistics) }
+    accuracyRank: this.calculateAccuracyRank(statistics),
 
             consistencyRank: this.calculateConsistencyRank(statistics),' };'
 
@@ -323,9 +323,9 @@ export class StatisticsCalculator {
      */
     determineSkillLevel(statistics) {
         const rating = this.calculateOverallRating(statistics);
-        if(rating >= 90) return 'Expert',
-        if(rating >= 75) return 'Advanced',
-        if(rating >= 60) return 'Intermediate',
+        if(rating >= 90) return 'Expert,
+        if(rating >= 75) return 'Advanced,
+        if(rating >= 60) return 'Intermediate,
         if(rating >= 40) return 'Beginner' }
 
         return 'Novice';
@@ -442,12 +442,12 @@ export class StatisticsCalculator {
      */
     generateSummary(statistics, sessionStats) {
         return { level: this.determineSkillLevel(statistics,
-            rating: this.calculateOverallRating(statistics);
-            playTime: this.formatTime(statistics.totalPlayTime || 0);
+            rating: this.calculateOverallRating(statistics),
+            playTime: this.formatTime(statistics.totalPlayTime || 0),
             totalGames: statistics.totalGamesPlayed || 0,
             bestScore: statistics.highestScore || 0,
     accuracy: Math.round((statistics.bubbleAccuracy || 0) * 10) / 10 }
-            favoriteStage: this.getFavoriteStage(statistics) },
+            favoriteStage: this.getFavoriteStage(statistics) ,
             recentTrend: this.calculateEfficiencyTrend(statistics.efficiencyStats?.efficiencyTrend || []); 
     }
 
@@ -482,7 +482,7 @@ export class StatisticsCalculator {
     formatTime(milliseconds) {
         const seconds = Math.floor(milliseconds / 1000);
         const minutes = Math.floor(seconds / 60);
-        const hours = Math.floor(minutes / 60) }
+        const hours = Math.floor(minutes / 60);
         if (hours > 0) { }
             return `${hours}h ${minutes % 60}m`;
         } else if (minutes > 0) {
@@ -539,7 +539,7 @@ let statisticsCalculatorInstance = null;
  * @returns {StatisticsCalculator} シングルトンインスタンス
  */
 export function getStatisticsCalculator() { if (!statisticsCalculatorInstance) {
-        statisticsCalculatorInstance = new StatisticsCalculator() }
+        statisticsCalculatorInstance = new StatisticsCalculator() };
     return statisticsCalculatorInstance;
 }
 

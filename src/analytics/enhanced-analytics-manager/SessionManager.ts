@@ -7,17 +7,17 @@ export interface AnalysisOptions {
     timeRange?: { start: Date, end: Date;
     filters?: Record<string, any>;
     metrics?: string[];
-}
-
+};
 export interface AnalysisResult { success: boolean;
     data?: any;
     insights?: string[];
     recommendations?: string[];
     timestamp: number;
+};
 export class SessionManager {
     constructor() {
         this.currentSession = null;
-        this.sessionHistory = [] }
+        this.sessionHistory = [] };
         this.maxSessionHistory = 50; }
     /**
      * ゲームセッション開始
@@ -36,10 +36,9 @@ export class SessionManager {
             soundEnabled: sessionInfo.soundEnabled,
             effectsEnabled: sessionInfo.effectsEnabled,
             playerLevel: sessionInfo.playerLevel,
-            previousBestScore: sessionInfo.previousBestScore || 0,
+            previousBestScore: sessionInfo.previousBestScore || 0;
             // セッション統計
-           , stats: {
-                duration: 0,
+            stats: { duration: 0  ,
                 bubblesPopped: 0,
                 bubblesMissed: 0,
                 maxCombo: 0,
@@ -64,7 +63,7 @@ export class SessionManager {
     endSession(endInfo) {
 
         if (!this.currentSession) {''
-            console.warn('[SessionManager] No, active session, to end') }
+            console.warn('[SessionManager] No, active session, to end');
             return null;
         ';'
         // セッション統計の更新
@@ -119,8 +118,7 @@ export class SessionManager {
             source: scoreData.type,
     multiplier: scoreData.multiplier
 }
-            comboCount: scoreData.comboCount ,
-    },
+            comboCount: scoreData.comboCount  ,
         
         // 最大コンボの更新
         if (scoreData.comboCount > this.currentSession.stats.maxCombo) { this.currentSession.stats.maxCombo = scoreData.comboCount }
@@ -139,15 +137,14 @@ export class SessionManager {
             cost: itemData.cost,
     effectiveness: itemData.effectiveness
 }
-            duration: itemData.duration ,
-    } }
+            duration: itemData.duration  } }
     
     /**
      * セッションIDの生成
      * @returns {string}
      */
     generateSessionId() {
-        const timestamp = Date.now() }
+        const timestamp = Date.now();
         const random = Math.random().toString(36).substr(2, 9); }
         return `session_${timestamp}_${random}`;
     }
@@ -185,7 +182,7 @@ export class SessionManager {
      * @param {number} count - 取得数
      * @returns {Array}
      */
-    getRecentSessions(count = 10) { return this.sessionHistory.slice(0, count) }
+    getRecentSessions(count = 10) { return this.sessionHistory.slice(0, count);
     /**
      * セッション要約の生成
      * @returns {Object}
@@ -197,9 +194,8 @@ export class SessionManager {
                 averageDuration: 0,
     averageScore: 0
  }
-                completionRate: 0 },
-                averageAccuracy: 0 ,
-    } }
+                completionRate: 0 ,
+                averageAccuracy: 0  } }
         
         const totalDuration = recentSessions.reduce((sum, s) => sum + s.stats.duration, 0);
         const totalScore = recentSessions.reduce((sum, s) => sum + s.stats.finalScore, 0);
@@ -217,7 +213,7 @@ export class SessionManager {
         return { totalSessions: recentSessions.length,
             averageDuration: totalDuration / recentSessions.length,
             averageScore: totalScore / recentSessions.length,
-    completionRate: completedSessions / recentSessions.length
+    completionRate: completedSessions / recentSessions.length;
  }
             averageAccuracy: averageAccuracy;;
             exitReasons: this.summarizeExitReasons(recentSessions); 
@@ -234,7 +230,7 @@ export class SessionManager {
         const reasons = {};
         
         sessions.forEach(session => {  )
-            const reason = session.stats.exitReason) }
+            const reason = session.stats.exitReason);
             reasons[reason] = (reasons[reason] || 0) + 1; }
         };
         
@@ -294,7 +290,7 @@ export class SessionManager {
      */
     getHighScoreSessions(count = 5) {
         return [...this.sessionHistory],
-            .sort((a, b) => b.stats.finalScore - a.stats.finalScore) }
+            .sort((a, b) => b.stats.finalScore - a.stats.finalScore);
             .slice(0, count); }
     /**
      * セッションデータのクリア

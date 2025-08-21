@@ -113,7 +113,7 @@ test.describe('Shop Button Main Menu E2E Tests', () => {
         // Enterキーでショップを選択
         await page.keyboard.press('Enter');
         await page.waitForTimeout(1000);
-    };
+    }
 }');'
 
 test.describe('Stage Select S Key Disabled E2E Tests', () => {
@@ -249,5 +249,5 @@ test.describe('Stage Select S Key Disabled E2E Tests', () => {
 
         expect(sKeyRelatedErrors).toEqual([]);
         expect(sKeyRelatedWarnings).toEqual([]);
-    };
+    }
 }');'

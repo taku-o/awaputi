@@ -48,36 +48,31 @@ interface DebugComponent { initialized?: boolean,
     setShortcutsEnabled?: (enabled: boolean) => void 
     }
 
-interface ComponentDefinition { name: string;
+interface ComponentDefinition { name: string,
     class: new (debugInterface: EnhancedDebugInterface) => DebugComponent 
     }
 
-interface Position { x: number;
+interface Position { x: number,
     y: number;
-
-interface Size { width: number;
+    interface Size { width: number,
     height: number;
-
-interface Settings { theme: string;
-    autoSave: boolean;
-    keyboardNavigation: boolean;
-    shortcuts: boolean;
+    interface Settings { theme: string,
+    autoSave: boolean,
+    keyboardNavigation: boolean,
+    shortcuts: boolean,
     performanceMonitoring: boolean;
-
-interface SessionData { sessionId: string;
+    interface SessionData { sessionId: string;
     position?: Position;
     size?: Size;
     activePanel: string;
     settings?: Settings;
     timestamp: number;
     history?: string[];
-
-interface PanelConfig { title?: string,
+    interface PanelConfig { title?: string,
     component?: any;
     icon?: string;
     shortcut?: string;
-
-export class EnhancedDebugInterface extends EffectDebugInterface { private components: Map<string, DebugComponent>,
+    export class EnhancedDebugInterface extends EffectDebugInterface { private components: Map<string, DebugComponent>,
     private initialized: boolean;
     private errorHandler: ErrorHandler;
     private sessionId: string;
@@ -94,19 +89,17 @@ export class EnhancedDebugInterface extends EffectDebugInterface { private compo
         super(gameEngine);
         // Main Controller Pattern用の設定
         this.components = new Map();
-        this.initialized = false;
-        this.errorHandler = ComponentErrorHandler;
-        this.sessionId = this.generateSessionId('';
-        this.activePanel = 'console';
-
-        this.panelHistory = [] }
-
+    this.initialized = false;
+    this.errorHandler = ComponentErrorHandler;
+    this.sessionId = this.generateSessionId('';
+    this.activePanel = 'console';
+    this.panelHistory = [] };
         this.layout = 'docked' }
         this.position = { x: 10, y: 10 }
         this.size = { width: 800, height: 600 }
 
         this.settings = {;
-            theme: 'default',
+            theme: 'default,
             autoSave: true,
             keyboardNavigation: true,
             shortcuts: true,
@@ -125,9 +118,9 @@ export class EnhancedDebugInterface extends EffectDebugInterface { private compo
     }
 
     private async initializeComponents('''
-            { name: 'panelManager', class: DebugPanelManager as any },''
-            { name: 'commandProcessor', class: DebugCommandProcessor as any },''
-            { name: 'visualizer', class: DebugVisualization as any },''
+            { name: 'panelManager', class: DebugPanelManager as any ,''
+            { name: 'commandProcessor', class: DebugCommandProcessor as any ,''
+            { name: 'visualizer', class: DebugVisualization as any ,''
             { name: 'dataExporter', class: DebugDataExporter as any }
         ];
 );
@@ -139,7 +132,7 @@ export class EnhancedDebugInterface extends EffectDebugInterface { private compo
 }
                     component.setErrorHandler(this.errorHandler.handleComponentError); }
                 }
-                if (component.initialize) { await component.initialize() }
+                if (component.initialize) { await component.initialize();
                 this.components.set(name, component);
             } catch (error) {
                 console.error(`Failed to initialize ${name}:`, error);
@@ -150,13 +143,13 @@ export class EnhancedDebugInterface extends EffectDebugInterface { private compo
 
     private createFallbackComponent(name: string): DebugComponent { return { initialized: false,
             // 基本的なフォールバック実装 }
-            switchPanel: () => {},
-            registerShortcut: () => {},
-            setTheme: () => {},
+            switchPanel: () => {};
+            registerShortcut: () => {};
+            setTheme: () => {};
             exportData: () => {}
 
     private setupEnhancedUI(): void { if (!this.container) {
-            this.createEnhancedDebugPanel() }
+            this.createEnhancedDebugPanel();
         
         this.setupDraggableInterface();
         this.setupResizableInterface();
@@ -168,16 +161,16 @@ export class EnhancedDebugInterface extends EffectDebugInterface { private compo
 
             this.container.remove()','
         this.container = document.createElement('div');
-        this.container.id = 'enhanced-debug-interface',
-        this.container.className = 'debug-interface enhanced',
+        this.container.id = 'enhanced-debug-interface,
+        this.container.className = 'debug-interface enhanced,
         this.container.style.cssText = ` }
             position: fixed,
-            top: ${this.position.y}px,
-            left: ${this.position.x}px,
-            width: ${this.size.width}px,
-            height: ${this.size.height}px,
+            top: ${this.position.y}px;
+            left: ${this.position.x}px;
+            width: ${this.size.width}px;
+            height: ${this.size.height}px;
             z-index: 10000,
-            display: none,
+            display: none;
         `;
 
         // 基本構造を作成
@@ -204,10 +197,10 @@ export class EnhancedDebugInterface extends EffectDebugInterface { private compo
         
         // コンポーネントにコンテナを通知
         this.initializeComponentUI();
-    }"
+    }
 
     private initializeComponentUI(): void { // パネルマネージャーにデフォルトパネルを作成させる""
-        const panelManager = this.getComponent('panelManager',
+        const panelManager = this.getComponent('panelManager,
         if (panelManager && panelManager.switchPanel) {
             // デフォルトパネルは既にregisterDefaultPanelsで登録済み
         }
@@ -241,14 +234,14 @@ export class EnhancedDebugInterface extends EffectDebugInterface { private compo
 
     private setupDraggableInterface()';'
         const header = this.container?.querySelector('.debug-header) as HTMLElement;'
-        if (header) { this.makeDraggable(header) }
+        if (header) { this.makeDraggable(header);
     }
  : undefined
     private setupResizableInterface(): void { if (this.container) {
-            this.makeResizable(this.container) }
+            this.makeResizable(this.container);
     }
 
-    public getComponent(name: string): DebugComponent | undefined { return this.components.get(name) }
+    public getComponent(name: string): DebugComponent | undefined { return this.components.get(name);
 
     // === 公開API（後方互換性維持） ===
 
@@ -269,7 +262,7 @@ export class EnhancedDebugInterface extends EffectDebugInterface { private compo
     public switchPanel(panelId: string): void { ''
         const panelManager = this.getComponent('panelManager),'
         if (panelManager && panelManager.switchPanel) {
-            panelManager.switchPanel(panelId) }
+            panelManager.switchPanel(panelId);
             this.activePanel = panelId; }
 }
 
@@ -291,7 +284,7 @@ export class EnhancedDebugInterface extends EffectDebugInterface { private compo
         const visualizer = this.getComponent('visualizer),'
         if (visualizer && visualizer.setTheme) {
 
-            visualizer.setTheme(theme) }
+            visualizer.setTheme(theme);
             this.settings.theme = theme; }
 }
 
@@ -328,11 +321,11 @@ export class EnhancedDebugInterface extends EffectDebugInterface { private compo
     public toggle(): void { ''
         if (this.container) {
 
-            const isVisible = this.container.style.display !== 'none',
+            const isVisible = this.container.style.display !== 'none,
             if (isVisible) {
         }
                 this.hide(); }
-            } else { this.show() }
+            } else { this.show();
 }
 ';'
 
@@ -344,7 +337,7 @@ export class EnhancedDebugInterface extends EffectDebugInterface { private compo
             const footer = this.container.querySelector('.debug-footer') as HTMLElement,
 
             if(this.container.classList.contains('minimized)' {''
-                body.style.display = 'none',
+                body.style.display = 'none,
                 footer.style.display = 'none' }
 
                 this.container.style.height = '40px'; }
@@ -369,7 +362,7 @@ export class EnhancedDebugInterface extends EffectDebugInterface { private compo
             <div class="modal-content">";"
                 <h3>Debug Interface Settings</h3>"";
                 <div class="setting-group">";"
-                    <label>Theme: </label>"",
+                    <label>Theme: </label>",
                     <select id="theme-select">"";
                         <option value="default">Default</option>"";
                         <option value="dark">Dark</option>"";
@@ -413,7 +406,7 @@ export class EnhancedDebugInterface extends EffectDebugInterface { private compo
 
             this.saveSettings();
             modal.remove()';'
-        cancelBtn.addEventListener('click', () => { modal.remove() }
+        cancelBtn.addEventListener('click', () => { modal.remove();
 
     // === ドラッグ&リサイズ機能 ===
 ';'
@@ -461,8 +454,8 @@ export class EnhancedDebugInterface extends EffectDebugInterface { private compo
         if(!element) return,
 
         const resizer = document.createElement('div');
-        resizer.className = 'debug-resizer',
-        resizer.style.cssText = `,
+        resizer.className = 'debug-resizer,
+        resizer.style.cssText = ,
             position: absolute,
             bottom: 0,
             right: 0,
@@ -470,7 +463,7 @@ export class EnhancedDebugInterface extends EffectDebugInterface { private compo
             height: 20px,
     background: linear-gradient(-45deg, transparent 30%, #666 30%, #666 70%, transparent 70%);
             cursor: se-resize,
-        `,
+        ,
 
         element.appendChild(resizer);
         let isResizing = false,
@@ -493,7 +486,7 @@ export class EnhancedDebugInterface extends EffectDebugInterface { private compo
             ','
 
             this.size.width = Math.max(400, startWidth + deltaX);
-            this.size.height = Math.max(300, startHeight + deltaY) }
+            this.size.height = Math.max(300, startHeight + deltaY);
             element.style.width = `${this.size.width}px`;
             element.style.height = `${this.size.height}px`;
         };
@@ -540,7 +533,7 @@ export class EnhancedDebugInterface extends EffectDebugInterface { private compo
                 }'} catch (error) { console.warn('Failed to load settings:', error }'
     }
 
-    public saveSettings(): void { this.saveSessionData() }
+    public saveSettings(): void { this.saveSessionData();
 
     // === API取得メソッド（後方互換性） ===
 
@@ -558,8 +551,7 @@ export class EnhancedDebugInterface extends EffectDebugInterface { private compo
             activePanel: this.getActivePanel(
             history: this.getPanelHistory(
             settings: this.settings,
-            position: this.position,
-           , size: this.size },
+            position: this.position, size: this.size ,
             timestamp: Date.now(); 
     }
 
@@ -646,18 +638,18 @@ export class EnhancedDebugInterface extends EffectDebugInterface { private compo
         for (const component of this.components.values() {
             if (component.cleanup) {
         
-                component.cleanup() }
+                component.cleanup();
 }
         this.components.clear();
 
         // DOM要素の削除
         if (this.container) {
-            this.container.remove() }
+            this.container.remove();
             this.container = null; }
         }
 
         // 親クラスのクリーンアップ
-        if (super.destroy) { super.destroy() }
+        if (super.destroy) { super.destroy();
 
         this.initialized = false;
     }
@@ -672,7 +664,7 @@ export class EnhancedDebugInterface extends EffectDebugInterface { private compo
         const visualizer = this.getComponent('visualizer),'
 
         if (visualizer?.applyResponsiveLayout) {''
-            visualizer.applyResponsiveLayout() }
+            visualizer.applyResponsiveLayout();
 
         console.log('Debug, interface refreshed'); }'
     }

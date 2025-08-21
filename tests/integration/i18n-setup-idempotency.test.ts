@@ -41,11 +41,11 @@ describe('i18n:setup Script Idempotency Tests', (') => {'
     return new Promise((resolve, reject') => {'
       exec('npm run i18n:setup', { cwd: projectRoot;, (error, stdout, stderr) => {
         if (error) {
-          reject({ error, stdout, stderr };
+          reject({ error, stdout, stderr }
         } else {
-          resolve({ stdout, stderr };
+          resolve({ stdout, stderr }
         }
-      };
+      }
     }
   };
   

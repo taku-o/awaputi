@@ -5,60 +5,52 @@
  */
 
 interface SEOConfig { [key: string]: any;
-
-interface CoreWebVitals { timestamp: number;
-    lcp: number | null;
-    fid: number | null;
-    cls: number | null;
-    fcp: number | null;
+    interface CoreWebVitals { timestamp: number,
+    lcp: number | null,
+    fid: number | null,
+    cls: number | null,
+    fcp: number | null,
     ttfb: number | null;
     LCP?: number;
     FID?: number;
-    CLS?: number,  }
+    CLS?: number }
 
-interface LighthouseScore { timestamp: number;
-    score: number;
+interface LighthouseScore { timestamp: number,
+    score: number,
     details: SEOScoreDetails;
-
-interface MonitoringData { coreWebVitals: CoreWebVitals[];
-    lighthouseScores: LighthouseScore[];
+    interface MonitoringData { coreWebVitals: CoreWebVitals[],
+    lighthouseScores: LighthouseScore[],
     searchConsoleMetrics: any[];
-
-interface SEOScoreDetails { metaTags: Record<string, string>,
-    structuredData: StructuredDataResult[];
-    images: ImageAnalysis;
-    performance: PerformanceMetrics;
+    interface SEOScoreDetails { metaTags: Record<string, string>,
+    structuredData: StructuredDataResult[],
+    images: ImageAnalysis,
+    performance: PerformanceMetrics,
     timestamp: number;
-
-interface StructuredDataResult { valid: boolean;
+    interface StructuredDataResult { valid: boolean;
     type?: string;
     data?: any;
     error?: string;
-
-interface ImageAnalysis { total: number;
-    withAlt: number;
+    interface ImageAnalysis { total: number,
+    withAlt: number,
     withoutAlt: number;
-
-interface PerformanceMetrics { domContentLoaded?: number,
+    interface PerformanceMetrics { domContentLoaded?: number,
     loadComplete?: number;
     ttfb?: number;
-
-interface NavigationEntry extends PerformanceEntry { domContentLoadedEventStart: number;
-    domContentLoadedEventEnd: number;
-    loadEventStart: number;
-    loadEventEnd: number;
-    requestStart: number;
+    interface NavigationEntry extends PerformanceEntry { domContentLoadedEventStart: number,
+    domContentLoadedEventEnd: number,
+    loadEventStart: number,
+    loadEventEnd: number,
+    requestStart: number,
     responseStart: number;
-
-export class SEOMonitoringEngine {
+    export class SEOMonitoringEngine {
     private config: SEOConfig;
     private monitoringData: MonitoringData;
     private, observerInstances: PerformanceObserver[];
     constructor(config: SEOConfig, monitoringData: MonitoringData) {
 
         this.config = config;
-        this.monitoringData = monitoringData
-}
+    this.monitoringData = monitoringData
+};
         this.observerInstances = []; }
     }
     
@@ -81,7 +73,7 @@ export class SEOMonitoringEngine {
             
             // First Input Delay
             const fidObserver = new PerformanceObserver((list) => {  const entries = list.getEntries();
-                entries.forEach(entry => {) }
+                entries.forEach(entry => {);
                     this.recordFID((entry, as any).processingStart - entry.startTime); }
                 };'}');
             fidObserver.observe({ entryTypes: ['first-input]};'
@@ -99,7 +91,7 @@ export class SEOMonitoringEngine {
             ' }'
 
         } catch (error) {
-            console.warn('Failed to setup Performance Observer', error) }
+            console.warn('Failed to setup Performance Observer', error);
     }
     
     /**
@@ -139,18 +131,18 @@ export class SEOMonitoringEngine {
      * CLSの記録'
      */''
     private recordCLS(value: number): void { ''
-        console.log('CLS recorded', value) }
+        console.log('CLS recorded', value);
     
     /**
      * Lighthouseスコアのチェック
      */
-    async checkLighthouseScore(): Promise<{ performance: number, accessibility: number, bestPractices: number, seo: number,, timestamp: string; | null> { try {
+    async checkLighthouseScore(): Promise<{ performance: number, accessibility: number, bestPractices: number, seo: number, timestamp: string; | null> { try {
             const score = {
                 performance: this.generateRealisticScore(85, 100);
                 accessibility: this.generateRealisticScore(88, 100);
                 bestPractices: this.generateRealisticScore(80, 95);
                 seo: this.generateRealisticScore(90, 100);
-                timestamp: new Date().toISOString(  },
+                timestamp: new Date().toISOString(  };
             
             return score;
 
@@ -161,7 +153,7 @@ export class SEOMonitoringEngine {
     /**
      * Core Web Vitalsのチェック
      */
-    async checkCoreWebVitals(): Promise<{ LCP: number, FID: number, CLS: number,, timestamp: string; | null> { try {
+    async checkCoreWebVitals(): Promise<{ LCP: number, FID: number, CLS: number, timestamp: string; | null> { try {
             const vitals = {
                 LCP: this.generateRealisticMetric(1000, 3000);
                 FID: this.generateRealisticMetric(10, 150);
@@ -169,8 +161,8 @@ export class SEOMonitoringEngine {
                 timestamp: new Date().toISOString()','
             if (typeof, window !== 'undefined' && 'PerformanceObserver' in, window) {
                 try {
-                    vitals.LCP = await this.measureLCP(),,
-                    vitals.FID = await this.measureFID() }
+                    vitals.LCP = await this.measureLCP(),
+                    vitals.FID = await this.measureFID();
 
                     vitals.CLS = await this.measureCLS(); }'
 
@@ -191,7 +183,7 @@ export class SEOMonitoringEngine {
             if (typeof, window !== 'undefined' && 'PerformanceObserver' in, window) {
                 const observer = new PerformanceObserver((list) => { '
                     const entries = list.getEntries();
-                    entries.forEach(entry => {) }
+                    entries.forEach(entry => {);
 
                         if(entry.entryType === 'navigation' { }'
                             this.recordNavigationMetrics(entry, as NavigationEntry); }
@@ -205,9 +197,9 @@ export class SEOMonitoringEngine {
             this.monitoringData.lighthouseScores.push({ );
                 timestamp: Date.now(),
                 score: seoScore,
-    details: await this.getSEOScoreDetails() },
+    details: await this.getSEOScoreDetails() };
 
-            if (this.monitoringData.lighthouseScores.length > 100) { this.monitoringData.lighthouseScores = this.monitoringData.lighthouseScores.slice(-100) }
+            if (this.monitoringData.lighthouseScores.length > 100) { this.monitoringData.lighthouseScores = this.monitoringData.lighthouseScores.slice(-100);
 ';'
 
             return { seo: seoScore;'} catch (error) {'
@@ -252,7 +244,7 @@ export class SEOMonitoringEngine {
             // 画像alt属性チェック
             const images = document.querySelectorAll('img);'
             let imagesWithoutAlt = 0;
-            images.forEach(img => {  ) }
+            images.forEach(img => {  );
                 if (!img.alt) imagesWithoutAlt++; }
             };
 
@@ -288,8 +280,8 @@ export class SEOMonitoringEngine {
                 timestamp: Date.now()','
             if (typeof, window !== 'undefined' && 'PerformanceObserver' in, window) {
                 try {
-                    vitals.LCP = await this.measureLCP(),,
-                    vitals.FID = await this.measureFID() }
+                    vitals.LCP = await this.measureLCP(),
+                    vitals.FID = await this.measureFID();
 
                     vitals.CLS = await this.measureCLS(); }'
 
@@ -299,7 +291,7 @@ export class SEOMonitoringEngine {
 
             this.monitoringData.coreWebVitals.push(vitals);
 
-            if (this.monitoringData.coreWebVitals.length > 100) { this.monitoringData.coreWebVitals = this.monitoringData.coreWebVitals.slice(-100) }
+            if (this.monitoringData.coreWebVitals.length > 100) { this.monitoringData.coreWebVitals = this.monitoringData.coreWebVitals.slice(-100);
 
             return vitals;
 
@@ -312,16 +304,16 @@ export class SEOMonitoringEngine {
      */''
     private recordNavigationMetrics(entry: NavigationEntry): void { ''
         console.log('Navigation metrics recorded', {
-            domContentLoaded: entry.domContentLoadedEventEnd - entry.domContentLoadedEventStart);
+            domContentLoaded: entry.domContentLoadedEventEnd - entry.domContentLoadedEventStart),
             loadComplete: entry.loadEventEnd - entry.loadEventStart  }
     
     /**
      * SEOスコア詳細の取得
      */
-    private async getSEOScoreDetails(): Promise<SEOScoreDetails> { return { metaTags: this.analyzeMetaTags();
-            structuredData: this.validateStructuredData();
+    private async getSEOScoreDetails(): Promise<SEOScoreDetails> { return { metaTags: this.analyzeMetaTags(),
+            structuredData: this.validateStructuredData(),
             images: this.analyzeImages(
-    performance: await this.getPerformanceMetrics() },
+    performance: await this.getPerformanceMetrics() ,
             timestamp: Date.now(); 
     }
     
@@ -338,7 +330,7 @@ export class SEOMonitoringEngine {
         const tags: Record<string, string> = {};
         const metaTags = document.querySelectorAll('meta';
         metaTags.forEach(tag => {  '),'
-            const name = tag.getAttribute('name') || tag.getAttribute('property',
+            const name = tag.getAttribute('name') || tag.getAttribute('property,
             if (name) { }'
 
                 tags[name] = tag.getAttribute('content') || '; }'
@@ -361,9 +353,9 @@ export class SEOMonitoringEngine {
                 const data = JSON.parse(script.textContent || '');' }'
 
                 results.push({ valid: true, type: data['@type], data }';} catch (error) { results.push({ )'
-                    valid: false, ')',
+                    valid: false, '),
                     error: error instanceof Error ? error.message : 'Unknown error'
-            };
+            }
             }
         }';'
         
@@ -381,8 +373,8 @@ export class SEOMonitoringEngine {
 
         const images = document.querySelectorAll('img);'
         return { total: images.length,
-            withAlt: Array.from(images).filter(img = > img.alt).length  },
-            withoutAlt: Array.from(images).filter(img => !img.alt).length 
+            withAlt: Array.from(images).filter(img = > img.alt).length  ,
+            withoutAlt: Array.from(images).filter(img => !img.alt).length; 
     }
     
     /**
@@ -401,7 +393,7 @@ export class SEOMonitoringEngine {
             return {}
         
         return { domContentLoaded: navigation.domContentLoadedEventEnd - navigation.domContentLoadedEventStart,
-            loadComplete: navigation.loadEventEnd - navigation.loadEventStart },
+            loadComplete: navigation.loadEventEnd - navigation.loadEventStart ,
             ttfb: navigation.responseStart - navigation.requestStart 
     }
     
@@ -410,18 +402,18 @@ export class SEOMonitoringEngine {
      */
     private generateRealisticScore(min: number, max: number): number { const base = min + Math.random() * (max - min),
         const variation = (Math.random() - 0.5) * 10,
-        return Math.max(min, Math.min(max, Math.round(base + variation)) }
+        return Math.max(min, Math.min(max, Math.round(base + variation));
     
     /**
      * 現実的なメトリクスの生成
      */
-    private generateRealisticMetric(min: number, max: number): number { return min + Math.random() * (max - min) }
+    private generateRealisticMetric(min: number, max: number): number { return min + Math.random() * (max - min);
     
     /**
      * リソースの解放
      */
     destroy(): void { this.observerInstances.forEach(observer => { )
-            try {) }
+            try {);
 
                 observer.disconnect(); }'
 

@@ -8,37 +8,36 @@ export interface SessionInfo { stageId?: string,
     difficulty?: 'easy' | 'normal' | 'hard';
     soundEnabled?: boolean;
     effectsEnabled?: boolean;
-
-export interface SessionEndInfo { finalScore?: number,
+    export interface SessionEndInfo { finalScore?: number,
     bubblesPopped?: number;
     bubblesMissed?: number;
     maxCombo?: number;
     completed?: boolean;
     exitReason?: string;
-
-export interface SessionData { sessionId: string;
-    startTime: number | null;
-    endTime: number | null;
-    duration: number | null;
-    stageId: string;
-    finalScore: number | null;
-    bubblesPopped: number;
-    bubblesMissed: number;
-    maxCombo: number;
-    completed: boolean;
-    exitReason: string | null;
+    export interface SessionData { sessionId: string,
+    startTime: number | null,
+    endTime: number | null,
+    duration: number | null,
+    stageId: string,
+    finalScore: number | null,
+    bubblesPopped: number,
+    bubblesMissed: number,
+    maxCombo: number,
+    completed: boolean,
+    exitReason: string | null,
     playerSettings: {
         difficult,y: string;
-        soundEnabled: boolean;
-    effectsEnabled: boolean;
+    },
+        soundEnabled: boolean,
+    effectsEnabled: boolean,
     effectsEnabled: boolean;
         };
-export interface BubblePosition { x: number;
-    y: number;
+export interface BubblePosition { x: number,
+    y: number,
     y: number;
         };
-export interface BubbleContextInfo { remainingBubbles: number;
-    currentHP: number;
+export interface BubbleContextInfo { remainingBubbles: number,
+    currentHP: number,
     timeRemaining: number;
 ';'
 
@@ -50,67 +49,58 @@ export interface BubbleData { bubbleType: string,''
     comboCount?: number;
     remainingBubbles?: number;
     currentHP?: number;
-    timeRemaining?: number,  }
-
-export interface BubbleInteractionData { sessionId: string;
-    timestamp: number;
-    bubbleType: string;
-    action: 'popped' | 'missed' | 'expired';
-    reactionTime: number | null;
-    position: BubblePosition | null;
-    scoreGained: number;
-    comboCount: number;
+    timeRemaining?: number };
+export interface BubbleInteractionData { sessionId: string,
+    timestamp: number,
+    bubbleType: string,
+    action: 'popped' | 'missed' | 'expired,
+    reactionTime: number | null,
+    position: BubblePosition | null,
+    scoreGained: number,
+    comboCount: number,
     contextInfo: BubbleContextInfo;
-
-export interface MemoryUsage { used: number;
-    total: number;
+    export interface MemoryUsage { used: number,
+    total: number,
     limit: number;
-
-export interface LoadTimes { assets: number;
-    scripts: number;
+    export interface LoadTimes { assets: number,
+    scripts: number,
     total: number;
-
-export interface PerformanceMetrics { fps?: number | null,
+    export interface PerformanceMetrics { fps?: number | null,
     memoryUsage?: MemoryUsage | null;
     loadTimes?: LoadTimes | null;
     errors?: string[];
-
-export interface PerformanceData { sessionId: string | null;
-    timestamp: number;
-    fps: number | null;
-    memoryUsage: MemoryUsage | null;
-    loadTimes: LoadTimes | null;
+    export interface PerformanceData { sessionId: string | null,
+    timestamp: number,
+    fps: number | null,
+    memoryUsage: MemoryUsage | null,
+    loadTimes: LoadTimes | null,
     errors: string[];
-
-export interface GameBalanceData { [key: string]: any;
-
-export interface ScoreContextInfo { comboCount: number;
-    timeRemaining: number;
+    export interface GameBalanceData { [key: string]: any;
+    export interface ScoreContextInfo { comboCount: number,
+    timeRemaining: number,
     activeItems: string[];
 ';'
 
 export interface ScoreData {,
-    type: 'bubble' | 'combo' | 'bonus' | 'penalty';
-    amount: number;
+    type: 'bubble' | 'combo' | 'bonus' | 'penalty,
+    amount: number,
     totalScore: number;
     multiplier?: number;
     source: string;
     comboCount?: number;
     timeRemaining?: number;
     activeItems?: string[];
+    export interface ScoreEventData { sessionId: string,
 
-export interface ScoreEventData { sessionId: string;
-
-    timestamp: number;
-    scoreType: 'bubble' | 'combo' | 'bonus' | 'penalty';
-    amount: number;
-    totalScore: number;
-    multiplier: number;
-    source: string;
+    timestamp: number,
+    scoreType: 'bubble' | 'combo' | 'bonus' | 'penalty,
+    amount: number,
+    totalScore: number,
+    multiplier: number,
+    source: string,
     contextInfo: ScoreContextInfo;
-
-export interface ItemContextInfo { playerAP: number;
-    stageProgress: number;
+    export interface ItemContextInfo { playerAP: number,
+    stageProgress: number,
     currentScore: number;
 ';'
 
@@ -121,46 +111,40 @@ export interface ItemData { itemType: string,''
     effectiveness?: number | null;
     playerAP?: number;
     stageProgress?: number;
-    currentScore?: number,  }
-
-export interface ItemUsageEventData { sessionId: string;
-    timestamp: number;
-    itemType: string;
-    action: 'purchased' | 'used' | 'expired';
-    cost: number;
-    duration: number | null;
-    effectiveness: number | null;
+    currentScore?: number };
+export interface ItemUsageEventData { sessionId: string,
+    timestamp: number,
+    itemType: string,
+    action: 'purchased' | 'used' | 'expired,
+    cost: number,
+    duration: number | null,
+    effectiveness: number | null,
     contextInfo: ItemContextInfo;
 ';'
 
 export interface AnalyticsEvent {,
-    type: 'session' | 'bubbleInteraction' | 'performance' | 'gameBalance' | 'score' | 'itemUsage';
+    type: 'session' | 'bubbleInteraction' | 'performance' | 'gameBalance' | 'score' | 'itemUsage,
     timestamp: number;
     sessionId?: string;
-    data: SessionData | BubbleInteractionData | PerformanceData | GameBalanceData | ScoreEventData | ItemUsageEventData }
-
-export interface EventStats { collected: number;
-    processed: number;
-    errors: number;
+    data: SessionData | BubbleInteractionData | PerformanceData | GameBalanceData | ScoreEventData | ItemUsageEventData };
+export interface EventStats { collected: number,
+    processed: number,
+    errors: number,
     dropped: number;
-
-export interface EventStatsExtended extends EventStats { queueSize: number;
-    currentSessionId: string | null;
-    isEnabled: boolean;
+    export interface EventStatsExtended extends EventStats { queueSize: number,
+    currentSessionId: string | null,
+    isEnabled: boolean,
     isPaused: boolean;
-
-export interface PrivacyManager { checkConsent(): boolean,
+    export interface PrivacyManager { checkConsent(): boolean,
     isOptedOut(feature: string): boolean;
     anonymizeData(event: AnalyticsEvent): AnalyticsEvent;
 ';'
 
 export interface StorageManager {;
     saveData(storeName: string, data: any[]): Promise<void>;
-
-export type FeatureType = 'sessionTracking' | 'behaviorAnalysis' | 'performanceTracking';
-export type EventType = 'session' | 'bubbleInteraction' | 'performance' | 'gameBalance' | 'score' | 'itemUsage';
-
-export class DataCollector {
+    export type FeatureType = 'sessionTracking' | 'behaviorAnalysis' | 'performanceTracking';
+    export type EventType = 'session' | 'bubbleInteraction' | 'performance' | 'gameBalance' | 'score' | 'itemUsage';
+    export class DataCollector {
     private privacyManager: PrivacyManager;
     private storageManager: StorageManager;
     private eventQueue: AnalyticsEvent[];
@@ -177,27 +161,27 @@ export class DataCollector {
     constructor(privacyManager: PrivacyManager, storageManager: StorageManager) {
 
         this.privacyManager = privacyManager;
-        this.storageManager = storageManager;
+    this.storageManager = storageManager;
         
         // イベントキューとバッチ処理設定
         this.eventQueue = [];
-        this.batchSize = 50;
-        this.batchTimeout = 5000; // 5秒
+    this.batchSize = 50;
+    this.batchTimeout = 5000; // 5秒
         this.batchTimer = null;
         
         // データ収集の有効/無効状態
         this.isEnabled = true;
-        this.isPaused = false;
+    this.isPaused = false;
         
         // セッション管理
         this.currentSessionId = null;
-        this.sessionStartTime = null;
+    this.sessionStartTime = null;
         
         // イベント統計
         this.eventStats = {
-            collected: 0;
-            processed: 0;
-    errors: 0 }
+            collected: 0,
+    processed: 0,
+    errors: 0 };
             dropped: 0 
     };
         // エラーハンドリング
@@ -230,15 +214,15 @@ export class DataCollector {
      */
     startSession(sessionInfo: SessionInfo): void { this.currentSessionId = this.generateSessionId();
         this.sessionStartTime = Date.now('''
-            stageId: sessionInfo.stageId || 'unknown',
+            stageId: sessionInfo.stageId || 'unknown,
             finalScore: null,
             bubblesPopped: 0,
             bubblesMissed: 0,
             maxCombo: 0,
             completed: false,
     exitReason: null,
-            playerSettings: {''
-                difficulty: sessionInfo.difficulty || 'normal',
+            playerSettings: { ''
+                difficulty: sessionInfo.difficulty || 'normal'  ,
                 soundEnabled: sessionInfo.soundEnabled !== false,
     effectsEnabled: sessionInfo.effectsEnabled !== false  })
         );
@@ -257,9 +241,9 @@ export class DataCollector {
             bubblesMissed: endInfo.bubblesMissed || 0,
             maxCombo: endInfo.maxCombo || 0,
     completed: endInfo.completed || false,
-            exitReason: endInfo.exitReason || 'unknown',
-            playerSettings: {''
-                difficulty: 'normal',
+            exitReason: endInfo.exitReason || 'unknown,
+            playerSettings: { ''
+                difficulty: 'normal'  ,
                 soundEnabled: true,
     effectsEnabled: true,))
         );
@@ -278,9 +262,9 @@ export class DataCollector {
         ','
 
         const event: AnalyticsEvent = {''
-            type: 'session',
+            type: 'session,
             timestamp: Date.now(
-    data: sessionInfo,
+    data: sessionInfo;
         this.addToQueue(event);
     }
     
@@ -296,7 +280,7 @@ export class DataCollector {
             timestamp: Date.now()','
     type: 'bubbleInteraction'),
             timestamp: Date.now(
-    data: interactionData,
+    data: interactionData;
         this.addToQueue(event);
         this.eventStats.collected++;
     }
@@ -312,7 +296,7 @@ export class DataCollector {
             timestamp: Date.now()','
     type: 'performance'),
             timestamp: Date.now(
-    data: performanceData,
+    data: performanceData;
         this.addToQueue(event);
     }
     
@@ -325,10 +309,10 @@ export class DataCollector {
         ','
 
         const event: AnalyticsEvent = {''
-            type: 'gameBalance',
+            type: 'gameBalance,
             timestamp: Date.now(),
             sessionId: this.currentSessionId,
-    data: balanceData,
+    data: balanceData;
         this.addToQueue(event);
     }
     
@@ -344,7 +328,7 @@ export class DataCollector {
             timestamp: Date.now()','
     type: 'score'),
             timestamp: Date.now(
-    data: scoreEvent,
+    data: scoreEvent;
         this.addToQueue(event);
     }
     
@@ -360,7 +344,7 @@ export class DataCollector {
             timestamp: Date.now()','
     type: 'itemUsage'),
             timestamp: Date.now(
-    data: itemEvent,
+    data: itemEvent;
         this.addToQueue(event);
     }
     
@@ -405,7 +389,7 @@ export class DataCollector {
             this.eventStats.errors += batch.length,
             
             // 失敗したバッチを再キューイング（最大リトライ回数まで）
-            await this.retryBatch(batch) }
+            await this.retryBatch(batch);
     }
     
     /**
@@ -417,11 +401,9 @@ export class DataCollector {
         
             const storeName = this.getStoreNameForEventType(type, as EventType);
             if (storeName) {
-                const data = events.map(event => event.data) }
-                await this.storageManager.saveData(storeName, data); }
+                const data = events.map(event => event.data);
+                await this.storageManager.saveData(storeName, data);     }
 }
-    }
-    
     /**
      * イベントタイプ別グループ化
      */
@@ -442,8 +424,8 @@ export class DataCollector {
      * イベントタイプに対応するストア名を取得
      */''
     private getStoreNameForEventType(eventType: EventType): string | null { const storeMap: Record<EventType, string> = {', 'session': 'sessions','
-            'bubbleInteraction': 'bubbleInteractions',
-            'performance': 'performance',
+            'bubbleInteraction': 'bubbleInteractions,
+            'performance': 'performance,
             'gameBalance': 'bubbleInteractions', // バブルインタラクションと統合,
             'score': 'bubbleInteractions', // スコアイベントも統合,
             'itemUsage': 'bubbleInteractions' // アイテム使用も統合 };
@@ -466,9 +448,9 @@ export class DataCollector {
         const delay = this.retryDelay * Math.pow(2, retryCount);
         
         setTimeout(async () => {  try {
-                await this.saveBatchToStorage(batch) }
+                await this.saveBatchToStorage(batch);
                 this.eventStats.processed += batch.length; }
-            } catch (error) {
+        } catch (error) {
                 console.error(`Retry ${retryCount + 1} failed:`, error);
                 await this.retryBatch(batch, retryCount + 1);
             }
@@ -479,7 +461,7 @@ export class DataCollector {
      * セッションID生成
      */
     private generateSessionId(): string { const timestamp = Date.now().toString(36);
-        const random = Math.random().toString(36).substr(2, 5) }
+        const random = Math.random().toString(36).substr(2, 5);
         return `session_${timestamp}_${random}`;
     }
     
@@ -495,10 +477,8 @@ export class DataCollector {
         } else {  this.stopBatchProcessing();
             // 残りのキューを処理
             if (this.eventQueue.length > 0) { }
-                this.processBatch(); }
+                this.processBatch();     }
 }
-    }
-    
     /**
      * データ収集の一時停止/再開
      */
@@ -517,7 +497,7 @@ export class DataCollector {
      */
     getEventStats(): EventStatsExtended { return { ...this.eventStats,
             queueSize: this.eventQueue.length,
-            currentSessionId: this.currentSessionId isEnabled: this.isEnabled },
+            currentSessionId: this.currentSessionId isEnabled: this.isEnabled };
             isPaused: this.isPaused 
     }
     
@@ -532,7 +512,7 @@ export class DataCollector {
      * 強制バッチ処理（即座に全キューを処理）
      */
     async flushQueue(): Promise<void> { while (this.eventQueue.length > 0) {
-            await this.processBatch() }
+            await this.processBatch();
     }
     
     /**

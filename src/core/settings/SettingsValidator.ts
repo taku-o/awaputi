@@ -6,32 +6,27 @@
 // 型定義
 export interface SettingsManager { getDefaultSettings(): any,
     getDefaultValue(key: string): any;
-
-export interface ValidationRule { type?: string,
+    export interface ValidationRule { type?: string,
     min?: number;
     max?: number;
     maxLength?: number;
     enum?: any[];
     validator?: (value: any) => boolean;
-    properties?: Record<string, ValidationRule> }
+    properties?: Record<string, ValidationRule> };
 }
 
 export interface ValidationRules { [key: string]: ValidationRule;
-
-export interface ValidationResult { isValid: boolean;
+    export interface ValidationResult { isValid: boolean;
     errors?: string[];
     sanitizedValue: any;
-    warning?: string | null  }
-
-export interface MultipleValidationResult { isValid: boolean;
-    errors: string[];
+    warning?: string | null  };
+export interface MultipleValidationResult { isValid: boolean,
+    errors: string[],
     results: Record<string, ValidationResult>;
-    sanitizedSettings: Record<string, any> }
-
-export interface SettingsObjectValidationResult { isValid: boolean;
-    errors: string[];
-    sanitizedSettings: Record<string, any> }
-
+    sanitizedSettings: Record<string, any> };
+export interface SettingsObjectValidationResult { isValid: boolean,
+    errors: string[],
+    sanitizedSettings: Record<string, any> };
 export interface KeyParseResult { isValid: boolean;
     error?: string;
     key?: string;
@@ -39,34 +34,30 @@ export interface KeyParseResult { isValid: boolean;
     topLevel?: string;
     hasValidationRule?: boolean;
     isNested?: boolean;
-
-export interface AccessibilityValidationResult { isValid: boolean;
+    export interface AccessibilityValidationResult { isValid: boolean,
     sanitizedValue: AccessibilitySettings;
     error?: string;
-    errors?: string[],  }
-
-export interface AccessibilitySettings { highContrast: boolean;
-    reducedMotion: boolean;
-    largeText: boolean;
-    screenReader: boolean;
+    errors?: string[] };
+export interface AccessibilitySettings { highContrast: boolean,
+    reducedMotion: boolean,
+    largeText: boolean,
+    screenReader: boolean,
     colorBlindSupport: boolean;
-
-export interface ValidationStats { totalRules: number;
-    nestedRules: number;
-    supportedTypes: string[];
-    supportedLanguages: string[];
-    supportedQualities: string[];
+    export interface ValidationStats { totalRules: number,
+    nestedRules: number,
+    supportedTypes: string[],
+    supportedLanguages: string[],
+    supportedQualities: string[],
     validationFeatures: string[];
 
 // 列挙型
 export type ExpectedType = 'string' | 'number' | 'boolean' | 'object' | 'array';
-export type QualityLevel = 'low' | 'medium' | 'high' | 'auto';
-export type SupportedLanguage = 'ja' | 'en';
-export type SocialPlatform = 'auto' | 'twitter' | 'facebook' | 'native';
-export type ScreenshotQuality = 'low' | 'medium' | 'high';
-export type PrivacyLevel = 'public' | 'friends' | 'private';
-
-export class SettingsValidator {
+    export type QualityLevel = 'low' | 'medium' | 'high' | 'auto';
+    export type SupportedLanguage = 'ja' | 'en';
+    export type SocialPlatform = 'auto' | 'twitter' | 'facebook' | 'native';
+    export type ScreenshotQuality = 'low' | 'medium' | 'high';
+    export type PrivacyLevel = 'public' | 'friends' | 'private';
+    export class SettingsValidator {
     private settingsManager: SettingsManager;
     private, validationRules: ValidationRules','
 
@@ -74,55 +65,55 @@ export class SettingsValidator {
         this.settingsManager = settingsManager;
         
         // 検証ルール
-    }
+    };
         this.validationRules = { }'
 
-            masterVolume: { type: 'number', min: 0, max: 1  },''
-            sfxVolume: { type: 'number', min: 0, max: 1  },''
-            bgmVolume: { type: 'number', min: 0, max: 1  },''
+            masterVolume: { type: 'number', min: 0, max: 1  ,''
+            sfxVolume: { type: 'number', min: 0, max: 1  ,''
+            bgmVolume: { type: 'number', min: 0, max: 1  ,''
             language: { type: 'string', enum: ['ja', 'en] },''
-            quality: { type: 'string', enum: ['low', 'medium', 'high', 'auto] };'
+            quality: { type: 'string', enum: ['low', 'medium', 'high', 'auto]  },'
 
-            accessibility: {;
-                type: 'object';
+            accessibility: { ,
+                type: 'object'  ,
                 properties: { }'
 
-                    highContrast: { type: 'boolean' },''
-                    reducedMotion: { type: 'boolean' },''
-                    largeText: { type: 'boolean' },''
-                    screenReader: { type: 'boolean' },''
+                    highContrast: { type: 'boolean' ,''
+                    reducedMotion: { type: 'boolean' ,''
+                    largeText: { type: 'boolean' ,''
+                    screenReader: { type: 'boolean' ,''
                     colorBlindSupport: { type: 'boolean' 
-    };
+     ,
             controls: { ''
-                type: 'object';
+                type: 'object'  ,
                 properties: { }'
 
-                    keyboardEnabled: { type: 'boolean' },''
-                    mouseEnabled: { type: 'boolean' },''
+                    keyboardEnabled: { type: 'boolean' ,''
+                    mouseEnabled: { type: 'boolean' ,''
                     touchEnabled: { type: 'boolean' 
-    };
+     ,
             ui: { ''
-                type: 'object';
+                type: 'object'  ,
                 properties: { }'
 
-                    showFPS: { type: 'boolean' },''
-                    showDebugInfo: { type: 'boolean' },''
-                    animationSpeed: { type: 'number', min: 0.1, max: 3.0  },''
+                    showFPS: { type: 'boolean' ,''
+                    showDebugInfo: { type: 'boolean' ,''
+                    animationSpeed: { type: 'number', min: 0.1, max: 3.0  ,''
                     uiScale: { type: 'number', min: 0.5, max: 2.0  }
             },
 
             social: { ''
-                type: 'object';
+                type: 'object'  ,
                 properties: { }'
 
-                    enableSharing: { type: 'boolean' },''
-                    autoPromptHighScore: { type: 'boolean' },''
-                    autoPromptAchievements: { type: 'boolean' },''
+                    enableSharing: { type: 'boolean' ,''
+                    autoPromptHighScore: { type: 'boolean' ,''
+                    autoPromptAchievements: { type: 'boolean' ,''
                     defaultPlatform: { type: 'string', enum: ['auto', 'twitter', 'facebook', 'native] },''
-                    includeScreenshot: { type: 'boolean' },''
+                    includeScreenshot: { type: 'boolean' ,''
                     screenshotQuality: { type: 'string', enum: ['low', 'medium', 'high] },''
                     privacyLevel: { type: 'string', enum: ['public', 'friends', 'private] },''
-                    customMessage: { type: 'string', maxLength: 280  },''
+                    customMessage: { type: 'string', maxLength: 280  ,''
                     showWatermark: { type: 'boolean' 
     }
 
@@ -140,12 +131,11 @@ export class SettingsValidator {
                 return { isValid: true, sanitizedValue: value;
 
             return this._validateByRule(value, rule, key) } catch (error) { return {  };
-                isValid: false;
+                isValid: false,
                 errors: [`Validation, error: ${(error, as, Error}.message}`];
                 sanitizedValue: null;
-            } }
-    }
-
+                }
+}
     /**
      * ルールに基づく検証
      * @private
@@ -180,10 +170,8 @@ export class SettingsValidator {
         // 文字列の長さチェック
         if (rule.type === 'string' && typeof, value === 'string) { if (rule.maxLength !== undefined && value.length > rule.maxLength) { }'
                 errors.push(`String length ${value.length} exceeds maximum ${ rule.maxLength}`}
-                sanitizedValue = value.substring(0, rule.maxLength};
-            }
-        }
-
+                sanitizedValue = value.substring(0, rule.maxLength    }
+}
         // 列挙値チェック
         if (rule.enum && !rule.enum.includes(value) { }'
 
@@ -236,15 +224,15 @@ export class SettingsValidator {
         switch(expectedType) {
 
             case 'string':','
-                return typeof value === 'string',
+                return typeof value === 'string,
             case 'number':','
                 return typeof value === 'number' && !isNaN(value);
             case 'boolean':','
-                return typeof value === 'boolean',
+                return typeof value === 'boolean,
             case 'object':','
                 return typeof value === 'object' && value !== null && !Array.isArray(value);
             case 'array':,
-                return Array.isArray(value) }
+                return Array.isArray(value);
             default: return true,
 
     /**
@@ -310,20 +298,18 @@ export class SettingsValidator {
         }
             if (!(field, in settingsObject) { }
                 errors.push(`Required field missing: ${field}`} }
-                sanitized[field] = this.settingsManager.getDefaultValue(field};
-            }
-        }
-
+                sanitized[field] = this.settingsManager.getDefaultValue(field    }
+}
         // 各設定項目の検証
         for(const [key, value] of Object.entries(settingsObject) {
-            const result = this.validateSetting(key, value) }
+            const result = this.validateSetting(key, value);
             if (!result.isValid) { }
                 errors.push(...(result.errors || []).map(e => `${key}: ${e}`}});
             }
             sanitized[key] = result.sanitizedValue;
         }
 
-        return { isValid: errors.length = == 0 },
+        return { isValid: errors.length = == 0 ,
             errors }
             sanitizedSettings: { ...this.settingsManager.getDefaultSettings(), ...sanitized }
 
@@ -334,25 +320,25 @@ export class SettingsValidator {
      */''
     getValidationRulesForCategory(category: string): Record<string, ValidationRule> { const categoryMappings: Record<string, Record<string, ValidationRule>> = {
             audio: {
-                masterVolume: this.validationRules.masterVolume,
+                masterVolume: this.validationRules.masterVolume ,
     sfxVolume: this.validationRules.sfxVolume,
                 bgmVolume: this.validationRules.bgmVolume,' }'
 
-                isMuted: { type: 'boolean' },
+                isMuted: { type: 'boolean' ,
             ui: { language: { ''
-                    type: 'string',
-                    validator: (value: any') => ['ja', 'en].includes(value) }
+                    type: 'string,
+                    validator: (value: any') => ['ja', 'en].includes(value);
                 },
 
                 quality: { ''
-                    type: 'string',
-                    validator: (value: any') => ['low', 'medium', 'high', 'auto].includes(value) }
+                    type: 'string' ,
+                    validator: (value: any') => ['low', 'medium', 'high', 'auto].includes(value);
 
                 },''
-                showFPS: { type: 'boolean' },''
-                showDebugInfo: { type: 'boolean' },''
-                animationSpeed: { type: 'number', min: 0.1, max: 3.0  },''
-                uiScale: { type: 'number', min: 0.5, max: 2.0  },
+                showFPS: { type: 'boolean' ,''
+                showDebugInfo: { type: 'boolean' ,''
+                animationSpeed: { type: 'number', min: 0.1, max: 3.0  ,''
+                uiScale: { type: 'number', min: 0.5, max: 2.0  ,
             accessibility: this.validationRules.accessibility.properties || {},
             controls: this.validationRules.controls.properties || {},
             social: this.validationRules.social.properties || {},
@@ -396,7 +382,7 @@ export class SettingsValidator {
      */''
     validateSystemLanguage(language: string): ValidationResult { ''
         const supportedLanguages: SupportedLanguage[] = ['ja', 'en'],
-        const defaultLanguage: SupportedLanguage = 'en',
+        const defaultLanguage: SupportedLanguage = 'en,
 
         if (!language || typeof, language !== 'string') {
             return { isValid: false,
@@ -425,7 +411,7 @@ export class SettingsValidator {
      */''
     validateQuality(quality: string): ValidationResult { ''
         const supportedQualities: QualityLevel[] = ['low', 'medium', 'high', 'auto'],
-        const defaultQuality: QualityLevel = 'auto',
+        const defaultQuality: QualityLevel = 'auto,
 
         if (!quality || typeof, quality !== 'string') {
             return { isValid: false,
@@ -456,13 +442,12 @@ export class SettingsValidator {
         if (!accessibility || typeof, accessibility !== 'object') {
             return { isValid: false,
                 sanitizedValue: {
-                    highContrast: false,
+                    highContrast: false ,
                     reducedMotion: false,
     largeText: false,
                     screenReader: false,
-                    colorBlindSupport: false,,''
-                error: 'Accessibility settings must be an object',
-            } }
+                    colorBlindSupport: false,''
+                error: 'Accessibility settings must be an object' } }
 
         const sanitized: AccessibilitySettings = { highContrast: false,
             reducedMotion: false,
@@ -508,7 +493,7 @@ export class SettingsValidator {
 
         const clampedVolume = Math.max(0, Math.min(1, volume);
         
-        return { isValid: volume = == clampedVolume },
+        return { isValid: volume = == clampedVolume ,
             sanitizedValue: clampedVolume,
             warning: volume !== clampedVolume ? `${type} clamped to valid range [0, 1]` : null;
 
@@ -518,17 +503,17 @@ export class SettingsValidator {
      */'
     getValidationStats(): ValidationStats { return { totalRules: Object.keys(this.validationRules).length,''
             nestedRules: Object.values(this.validationRules)','
-                .filter(rule => rule.type === 'object' && rule.properties'',
+                .filter(rule => rule.type === 'object' && rule.properties',
                 .reduce((sum, rule) => sum + Object.keys(rule.properties || {).length, 0'),''
             supportedTypes: ['string', 'number', 'boolean', 'object', 'array'],
             supportedLanguages: ['ja', 'en'],
             supportedQualities: ['low', 'medium', 'high', 'auto'],
             validationFeatures: [','
-                'Type checking',
-                'Range validation',
-                'Enum validation',
-                'Custom validators',
-                'Object property validation',
+                'Type checking,
+                'Range validation,
+                'Enum validation,
+                'Custom validators,
+                'Object property validation,
                 'String length limits',]','
                 'Required field checking'] };
             ] }

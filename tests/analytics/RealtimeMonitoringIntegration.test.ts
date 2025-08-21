@@ -20,7 +20,7 @@ const mockURL = {
 // performance.memory のモック
 Object.defineProperty(performance, 'memory', {
     value: {
-        usedJSHeapSize: 50 * 1024 * 1024,
+        usedJSHeapSize: 50 * 1024 * 1024 },
         totalJSHeapSize: 100 * 1024 * 1024,
         jsHeapSizeLimit: 2048 * 1024 * 1024,
     configurable: true,)');'
@@ -45,7 +45,7 @@ describe('リアルタイム監視システム統合テスト (Task 9.5')', () =
             getCurrentStats: jest.fn(() => ({
                 currentFPS: 60,
                 currentMemoryUsage: { usagePercent: 50 ,
-                errorCount: 2,
+                errorCount: 2 },
                 averageFrameTime: 15
     });
         };
@@ -58,7 +58,7 @@ describe('リアルタイム監視システム統合テスト (Task 9.5')', () =
                 playerBehavior: { sessionData: [] ','
                 gameBalance: { some: 'data' ,
                 performance: { frameRate: { average: 60 ) }
-            };
+            }
         };
         trendAnalyzer = {
             analyzeTrend: jest.fn((') => ({ trend: 'stable', confidence: 0.8 )) });'
@@ -90,7 +90,7 @@ describe('リアルタイム監視システム統合テスト (Task 9.5')', () =
                 errorsBySeverity: errorSystem.errorHistory.reduce((acc, error') => {'
                     const severity = error.severity || 'error',
                     acc[severity] = (acc[severity] || 0) + 1,
-                    return acc), {};
+                    return acc), {}
             },
             canAttemptRecovery: jest.fn((error) => {
                 return error.recoverable === true)),
@@ -333,7 +333,7 @@ describe('リアルタイム監視システム統合テスト (Task 9.5')', () =
                 dashboard.updateData();
                 warningSystem.showWarning({};
                 errorSystem.handleError({};
-                developerAlertSystem.analyzeData({};
+                developerAlertSystem.analyzeData({}
             }.not.toThrow(');'
         }
         test('設定更新が正常に動作する', () => {
@@ -435,7 +435,7 @@ describe('リアルタイム監視システム統合テスト (Task 9.5')', () =
                         errorType: 'javascript'),
                        , message: `Error ${i)`,
         timestamp: Date.now(},
-                    };
+                    }
                 }
             }
             expect(() => {
@@ -468,6 +468,6 @@ describe('リアルタイム監視システム統合テスト (Task 9.5')', () =
             
             // 処理時間が合理的な範囲内であることを確認（5秒未満）
             expect(executionTime).toBeLessThan(5000);
-        };
+        }
     }
 }');'

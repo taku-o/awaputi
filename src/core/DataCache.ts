@@ -16,37 +16,32 @@ export interface CacheOptions { maxSize?: number,
     maxMemory?: number;
     ttl?: number;
     cleanupInterval?: number;
-
-export interface CacheSetOptions { ttl?: number,
+    export interface CacheSetOptions { ttl?: number,
     priority?: CachePriority;
     tags?: string[];
     dependencies?: string[];
-
-export interface CacheEntry<T = any> { value: T;
-    createdAt: number;
-    lastAccessed: number;
-    expiresAt: number;
-    accessCount: number;
-    priority: CachePriority;
+    export interface CacheEntry<T = any> { value: T,
+    createdAt: number,
+    lastAccessed: number,
+    expiresAt: number,
+    accessCount: number,
+    priority: CachePriority,
     dataSize: number;
-
-export interface CacheMetadata { priority: CachePriority;
-    tags: string[];
+    export interface CacheMetadata { priority: CachePriority,
+    tags: string[],
     dependencies: string[];
-
-export interface CacheStatistics { hits: number;
-    misses: number;
-    evictions: number;
-    sets: number;
-    deletes: number;
-    memoryPeakUsage: number;
+    export interface CacheStatistics { hits: number,
+    misses: number,
+    evictions: number,
+    sets: number,
+    deletes: number,
+    memoryPeakUsage: number,
     lastCleanup: number;
-
-export interface CacheStatsReport extends CacheStatistics { hitRate: string;
-    size: number;
-    maxSize: number;
-    memoryUsage: number;
-    maxMemory: number;
+    export interface CacheStatsReport extends CacheStatistics { hitRate: string,
+    size: number,
+    maxSize: number,
+    memoryUsage: number,
+    maxMemory: number,
     memoryUsagePercent: string;
 ';'
 
@@ -62,8 +57,7 @@ export type CacheEventType = ';'
     | 'cacheInvalidatedByDependency', ';'
     | 'cacheCleared', ';'
     | 'cacheCleanup';
-
-export interface CacheEventData { key?: string,
+    export interface CacheEventData { key?: string,
     dataSize?: number;
     priority?: CachePriority;
     accessCount?: number;
@@ -75,10 +69,8 @@ export interface CacheEventData { key?: string,
     entryCount?: number;
     memoryUsage?: number;
     expiredKeys?: string[];
-
-export type CacheEventCallback = (data: CacheEventData) => void;
-
-export class DataCache {
+    export type CacheEventCallback = (data: CacheEventData) => void;
+    export class DataCache {
     private maxSize: number;
     private maxMemory: number;
     private ttl: number;
@@ -109,12 +101,12 @@ export class DataCache {
         
         // 統計情報
         this.stats = {
-            hits: 0;
-            misses: 0;
-            evictions: 0;
-            sets: 0;
-            deletes: 0;
-    memoryPeakUsage: 0 }
+            hits: 0,
+    misses: 0,
+    evictions: 0,
+    sets: 0,
+    deletes: 0,
+    memoryPeakUsage: 0 };
             lastCleanup: Date.now(); 
     };
         
@@ -132,7 +124,7 @@ export class DataCache {
      * データをキャッシュに設定
      */'
     set<T>(key: string, value: T, options: CacheSetOptions = {}: void { try {'
-            const now = Date.now('',
+            const now = Date.now(',
             const, priority = options.priority || 'normal');
             // データサイズの推定)
             const dataSize = this.estimateSize(value);
@@ -144,16 +136,16 @@ export class DataCache {
             }
             
             // キャッシュサイズ上限チェック
-            if (this.cache.size >= this.maxSize && !this.cache.has(key) { this.evictLeastRecentlyUsed() }
+            if (this.cache.size >= this.maxSize && !this.cache.has(key) { this.evictLeastRecentlyUsed();
             
             // 既存エントリの削除（更新の場合）
             if (this.cache.has(key) { this.currentMemoryUsage -= this.sizeEstimator.get(key) || 0 }
             
             // キャッシュエントリを追加
-            const cacheEntry: CacheEntry<T> = { value;
-                createdAt: now;
-                lastAccessed: now;
-                expiresAt: now + ttl;
+            const cacheEntry: CacheEntry<T> = { value,
+                createdAt: now,
+                lastAccessed: now,
+                expiresAt: now + ttl,
     accessCount: 0;
                 priority,
                 dataSize };
@@ -164,10 +156,10 @@ export class DataCache {
             this.sizeEstimator.set(key, dataSize);
             this.keyMetadata.set(key, {
                 priority
-                tags: options.tags || []);
+                tags: options.tags || []),
                 dependencies: options.dependencies || []);
             this.currentMemoryUsage += dataSize,
-            this.stats.sets++,
+            this.stats.sets++;
 
             if (this.currentMemoryUsage > this.stats.memoryPeakUsage) {
     
@@ -175,16 +167,14 @@ export class DataCache {
                 this.stats.memoryPeakUsage = this.currentMemoryUsage; }
             }
 
-            this.emit('cacheSet', { key, dataSize, priority ) }
+            this.emit('cacheSet', { key, dataSize, priority );
 
         } catch (error) {
             getErrorHandler().handleError(error, 'CACHE_SET_ERROR', {)
                 key,
                 dataSize: this.estimateSize(value);
-                options  };
-        }
-    }
-    
+                options      }
+}
     /**
      * キャッシュからデータを取得
      */
@@ -192,16 +182,16 @@ export class DataCache {
             const entry = this.cache.get(key) as CacheEntry<T> | undefined,
             const now = Date.now();
             if (!entry) {
-                this.stats.misses++,
-                this.emit('cacheMiss', { key ) }
+                this.stats.misses++;
+                this.emit('cacheMiss', { key );
                 return undefined;
             
             // TTLチェック
             if (entry.expiresAt <= now) {
 
                 this.delete(key);
-                this.stats.misses++,
-                this.emit('cacheExpired', { key ) }
+                this.stats.misses++;
+                this.emit('cacheExpired', { key );
                 return undefined;
             
             // アクセス情報更新
@@ -216,7 +206,6 @@ export class DataCache {
             
             return entry.value
              }
-
         } catch (error) { }
 
             getErrorHandler().handleError(error, 'CACHE_GET_ERROR', { key };
@@ -304,7 +293,7 @@ export class DataCache {
             if(metadata.tags.some(tag => tagsArray.includes(tag)) {
         
         
-                keysToDelete.push(key) }
+                keysToDelete.push(key);
 }
 
         const deletedCount = this.deleteMany(keysToDelete);
@@ -339,7 +328,7 @@ export class DataCache {
         this.lastAccess.clear();
         this.sizeEstimator.clear();
         this.keyMetadata.clear()','
-        this.emit('cacheCleared', { entryCount, memoryUsage ) }
+        this.emit('cacheCleared', { entryCount, memoryUsage );
     
     /**
      * 最近最少使用エントリの削除
@@ -347,7 +336,7 @@ export class DataCache {
     evictLeastRecentlyUsed(): void { if (this.cache.size === 0) return,
         
         // アクセス時刻の古い順にソート
-        const sortedEntries = Array.from(this.accessOrder.entries();
+        const sortedEntries = Array.from(this.accessOrder.entries()));
             .sort((a, b) => a[1] - b[1]),
         
         // 優先度を考慮した削除対象選択
@@ -404,7 +393,7 @@ export class DataCache {
 
         if (deletedCount > 0) {', ' }
 
-            this.emit('cacheCleanup', { deletedCount, expiredKeys ) }
+            this.emit('cacheCleanup', { deletedCount, expiredKeys );
         
         return deletedCount;
     }
@@ -443,7 +432,7 @@ export class DataCache {
      * クリーンアップタイマーの開始
      */
     startCleanupTimer(): void { if (this.cleanupTimer) {
-            clearInterval(this.cleanupTimer) }
+            clearInterval(this.cleanupTimer);
         
         this.cleanupTimer = setInterval(() => { this.cleanup() }; this.cleanupInterval);
     }
@@ -464,11 +453,11 @@ export class DataCache {
             : 0,
             
         return { ...this.stats,
-            hitRate: hitRate.toFixed(2);
+            hitRate: hitRate.toFixed(2),
             size: this.cache.size,
             maxSize: this.maxSize,
             memoryUsage: this.currentMemoryUsage,
-    maxMemory: this.maxMemory },
+    maxMemory: this.maxMemory };
             memoryUsagePercent: ((this.currentMemoryUsage / this.maxMemory) * 100).toFixed(2); 
     }
     
@@ -480,7 +469,7 @@ export class DataCache {
         
         // TTLチェック
         if (entry.expiresAt <= Date.now() {
-            this.delete(key) }
+            this.delete(key);
             return false;
         
         return true;
@@ -489,7 +478,7 @@ export class DataCache {
     /**
      * すべてのキーを取得
      */
-    keys(): string[] { return Array.from(this.cache.keys() }
+    keys(): string[] { return Array.from(this.cache.keys()));
     
     /**
      * キャッシュサイズを取得
@@ -500,7 +489,7 @@ export class DataCache {
      * イベントリスナーの追加
      */
     on(event: CacheEventType, callback: CacheEventCallback): void { if (!this.listeners.has(event) {
-            this.listeners.set(event, []) }
+            this.listeners.set(event, []);
         this.listeners.get(event)!.push(callback);
     }
     
@@ -513,22 +502,19 @@ export class DataCache {
             if (index > -1) {
     
 }
-                callbacks.splice(index, 1); }
+                callbacks.splice(index, 1);     }
 }
-    }
-    
     /**
      * イベントの発火
      */
     private emit(event: CacheEventType, data: CacheEventData): void { if (this.listeners.has(event) {
             this.listeners.get(event)!.forEach(callback => { )
-                try {) }
+                try {);
                     callback(data); }
-                } catch (error) {
+        } catch (error) {
                     console.error(`Error in cache event listener for ${event}:`, error);
-                }
-            };
-        }
+                    }
+}
     }
     
     /**

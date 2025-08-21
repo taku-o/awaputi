@@ -17,7 +17,7 @@ class MockGameEngine {
             enableAutoQuality: jest.fn(
         setReducedMotion: jest.fn( };
         this.localizationManager = {
-            setLanguage: jest.fn( };
+            setLanguage: jest.fn( }
     }
 }
 // DOM環境のセットアップ
@@ -245,6 +245,6 @@ describe('SettingsManager統合テスト', () => {
             expect(document.body.classList.contains('high-contrast').toBe(true'),'
             // 無効化
             settingsManager.set('accessibility.highContrast', false'),'
-            expect(document.body.classList.contains('high-contrast').toBe(false) };
+            expect(document.body.classList.contains('high-contrast').toBe(false) }
     }
 }');'

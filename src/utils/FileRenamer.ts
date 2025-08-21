@@ -12,57 +12,52 @@ const execAsync = promisify(exec);
 
 // 型定義インターフェース
 interface RenameOperation { id: string,''
-    type: 'file_rename';
-    oldPath: string;
-    newPath: string;
-    timestamp: Date;
-    status: 'pending' | 'backup_created' | 'completed' | 'failed' | 'rolled_back' | 'rollback_failed';
-    backupPath: string | null;
+    type: 'file_rename,
+    oldPath: string,
+    newPath: string,
+    timestamp: Date,
+    status: 'pending' | 'backup_created' | 'completed' | 'failed' | 'rolled_back' | 'rollback_failed,
+    backupPath: string | null,
     error: string | null;
     backupId?: string;
-
-interface RenameInfo { oldPath: string;
+    interface RenameInfo { oldPath: string,
     newPath: string;
     critical?: boolean;
-
-interface RenameResult { oldPath: string;
+    interface RenameResult { oldPath: string,
     newPath: string;
     result?: RenameOperation;
     status: 'success' | 'failed';
     error?: string;
-    critical?: boolean,  }
+    critical?: boolean }
 ';'
 
 interface RollbackResult { operation: string,''
     status: 'success' | 'failed';
     error?: string;
-
-interface OperationHistoryItem { id: string;
-    type: string;
-    oldPath: string;
-    newPath: string;
-    status: string;
-    timestamp: Date;
+    interface OperationHistoryItem { id: string,
+    type: string,
+    oldPath: string,
+    newPath: string,
+    status: string,
+    timestamp: Date,
     error: string | null }
 
-interface Stats { total: number;
-    completed: number;
-    failed: number;
-    rolledBack: number;
+interface Stats { total: number,
+    completed: number,
+    failed: number,
+    rolledBack: number,
     successRate: string;
-
-interface ExecResult { stdout: string;
+    interface ExecResult { stdout: string,
     stderr: string;
-
-export class FileRenamer {
+    export class FileRenamer {
     private operations: RenameOperation[];
     private, backupMap: Map<string, string>,
     private gitAvailable: boolean;
     constructor() {
 
         this.operations = [];
-        this.backupMap = new Map()
-}
+    this.backupMap = new Map()
+};
         this.gitAvailable = this.checkGitAvailability(); }
     }
 
@@ -70,7 +65,7 @@ export class FileRenamer {
      * Gitが利用可能かチェック'
      */''
     checkGitAvailability()';'
-            execSync('git --version', { stdio: 'ignore ',
+            execSync('git --version, { stdio: 'ignore ',
 
             return true,' }'
 
@@ -83,18 +78,18 @@ export class FileRenamer {
      */'
     async renameFile(oldPath: string, newPath: string): Promise<RenameOperation> { const operation: RenameOperation = {''
             id: this.generateOperationId('''
-            type: 'file_rename',
+            type: 'file_rename,
     oldPath: oldPath,
             newPath: newPath,
-            timestamp: new Date('',
-            status: 'pending',
+            timestamp: new Date(',
+            status: 'pending,
             backupPath: null,
     error: null,))
         try { // 1. 事前チェック)
             await this.validateRenameOperation(oldPath, newPath);
             // 2. バックアップ作成
             operation.backupPath = await this.createBackup(oldPath);
-            operation.status = 'backup_created',
+            operation.status = 'backup_created,
 
             // 3. ディレクトリ作成（必要な場合）
             const newDir = path.dirname(newPath);
@@ -116,7 +111,7 @@ export class FileRenamer {
             return operation;
 
         } catch (error) {
-            operation.status = 'failed',
+            operation.status = 'failed,
             operation.error = (error, as Error).message,
             this.operations.push(operation);
             // 失敗時のロールバック
@@ -140,7 +135,7 @@ export class FileRenamer {
         }
 
         // 新しいパスが既に存在しないかチェック
-        try { await fs.access(newPath) }
+        try { await fs.access(newPath);
             throw new Error(`Destination, file already, exists: ${newPath}`);
         } catch (error) { // ファイルが存在しない = OK
             if((error, as NodeJS.ErrnoException).code !== 'ENOENT') {
@@ -157,10 +152,8 @@ export class FileRenamer {
         if (oldExt !== newExt) {
     
 }
-            console.warn(`File, extension changed, from ${oldExt} to ${newExt}`};
-        }
-    }
-
+            console.warn(`File, extension changed, from ${oldExt} to ${newExt}`    }
+}
     /**
      * Git mvコマンドを使用したリネーム
      */''
@@ -177,13 +170,13 @@ export class FileRenamer {
     /**
      * 通常のファイル移動
      */
-    async regularMove(oldPath: string, newPath: string): Promise<void> { await fs.rename(oldPath, newPath) }
+    async regularMove(oldPath: string, newPath: string): Promise<void> { await fs.rename(oldPath, newPath);
 
     /**
      * バックアップ作成
      */"
     async createBackup(filePath: string): Promise<string> { ""
-        const timestamp = new Date().toISOString().replace(/[:.]/g, '-',
+        const timestamp = new Date().toISOString().replace(/[:.]/g, '-,
         const backupDir = path.join(process.cwd(), '.backup', 'file-rename'),
         await fs.mkdir(backupDir, { recursive: true,
         const backupPath = path.join(backupDir, `${path.basename(filePath}.${timestamp}.backup`);
@@ -214,8 +207,7 @@ export class FileRenamer {
             const { stdout }: ExecResult = await execAsync('git, status --porcelain';
             if(stdout.trim()) { ''
                 console.log('Staged changes for file renames:', stdout',' }
-
-            } catch (error) { console.error('Failed to update git history:', (error as Error).message }
+        } catch (error) { console.error('Failed to update git history:', (error as Error).message }
     }
 
     /**
@@ -227,7 +219,7 @@ export class FileRenamer {
                 try {
             }
                     await fs.unlink(operation.newPath); }
-                } catch (error) {
+        } catch (error) {
                     console.warn(`Could, not remove, new file, during rollback: ${(error, as, Error}.message}`);
                 }
 ;
@@ -255,17 +247,15 @@ export class FileRenamer {
 ','
 
             try {'
-                await this.rollbackSingle(operation) }
+                await this.rollbackSingle(operation);
 
                 results.push({ operation: operation.id, status: 'success ',' }'
 
             } catch (error) { results.push({ )'
-                    operation: operation.id, ')',
+                    operation: operation.id, '),
                     status: 'failed' ,
-    error: (error, as Error).message   };
-            }
-        }
-
+    error: (error, as Error).message       }
+}
         return results;
     }
 
@@ -283,9 +273,9 @@ export class FileRenamer {
                 const result = await this.renameFile(renameInfo.oldPath, renameInfo.newPath);
                 results.push({ ...renameInfo, result, status: 'success  }'
                 // 進捗ログ }
-                console.log(`✓ Renamed: ${renameInfo.oldPath} → ${renameInfo.newPath}`};
-            } catch (error) { results.push({ )'
-                    ...renameInfo, ')',
+                console.log(`✓ Renamed: ${renameInfo.oldPath} → ${renameInfo.newPath}`}
+        } catch (error) { results.push({ )'
+                    ...renameInfo, '),
                     status: 'failed' ,
     error: (error, as Error).message   };
                 console.error(`✗ Failed, to rename: ${renameInfo.oldPath} → ${ renameInfo.newPath}`}
@@ -295,10 +285,8 @@ export class FileRenamer {
                 if (renameInfo.critical) {
 
                     console.error('Critical file rename failed, stopping batch operation) }'
-                    break; }
+                    break;     }
 }
-        }
-
         return results;
     }
 
@@ -321,10 +309,10 @@ export class FileRenamer {
             id: op.id,
             type: op.type,
             oldPath: op.oldPath,
-            newPath: op.newPath);
+            newPath: op.newPath),
             status: op.status,
     timestamp: op.timestamp),
-            error: op.error))  }
+            error: op.error));
     }
 
     /**
@@ -345,9 +333,9 @@ export class FileRenamer {
     
 }
                     await fs.unlink(filePath); }
-                    console.log(`Cleaned, up old, backup: ${file}`};
+                    console.log(`Cleaned, up old, backup: ${file}`}
                 }
-            } catch (error) {
+        } catch (error) {
             console.warn(`Cleanup, failed: ${(error, as, Error}.message}`);
         }
     }

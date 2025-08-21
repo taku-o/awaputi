@@ -188,7 +188,7 @@ describe('ParticleManager統合テスト', () => {
                 particleManager.updateConfiguration({
                     maxParticles: -1,
                     poolSize: -1,
-                    quality: -1 };
+                    quality: -1 }
             }.not.toThrow(');'
         }
         test('nullやundefinedの設定でもエラーが発生しない', () => {
@@ -233,6 +233,6 @@ describe('ParticleManager統合テスト', () => {
             console.group = originalGroup;
             console.log = originalLog;
             console.groupEnd = originalGroupEnd;
-        };
+        }
     }
 }');'

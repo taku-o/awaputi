@@ -15,246 +15,224 @@
  */
 
 // 型定義
-export interface EventHandlers { keydown: (event: KeyboardEvent) => void;
-    challengeClick: (event: MouseEvent | KeyboardEvent) => void;
-    filterChange: (event: Event) => Promise<void>;
-    sortChange: (event: Event) => Promise<void>;
-    refresh: () => Promise<void>;
-    resize: () => void  }
+export interface EventHandlers { keydown: (event: KeyboardEvent) => void,
+    challengeClick: (event: MouseEvent | KeyboardEvent) => void,
+    filterChange: (event: Event) => Promise<void>,
+    sortChange: (event: Event) => Promise<void>,
+    refresh: () => Promise<void>,
+    resize: () => void  };
 }
 
 export interface FocusableElement extends HTMLElement { tabIndex: number;
 
 export interface NavigationState { focusedIndex: number;
     lastFocusedElement?: HTMLElement;
-    navigationMode: NavigationMode;
+    navigationMode: NavigationMode,
     focusHistoryEnabled: boolean;
-
-export interface TouchGestureConfig { minSwipeDistance: number;
-    maxSwipeTime: number;
-    touchSensitivity: number;
+    export interface TouchGestureConfig { minSwipeDistance: number,
+    maxSwipeTime: number,
+    touchSensitivity: number,
     gesturesEnabled: boolean;
-
-export interface TouchEvent { startX: number;
-    startY: number;
-    endX: number;
-    endY: number;
-    startTime: number;
+    export interface TouchEvent { startX: number,
+    startY: number,
+    endX: number,
+    endY: number,
+    startTime: number,
     endTime: number;
-
-export interface KeyboardNavigationConfig { enabled: boolean;
-    arrowKeys: boolean;
-    homeEndKeys: boolean;
-    enterSpaceActivation: boolean;
-    shortcuts: Record<string, KeyboardShortcut> }
-
+    export interface KeyboardNavigationConfig { enabled: boolean,
+    arrowKeys: boolean,
+    homeEndKeys: boolean,
+    enterSpaceActivation: boolean,
+    shortcuts: Record<string, KeyboardShortcut> };
 export interface KeyboardShortcut { key: string;
     ctrlKey?: boolean;
     shiftKey?: boolean;
     altKey?: boolean;
     metaKey?: boolean;
-    action: ShortcutAction;
+    action: ShortcutAction,
     description: string;
-
-export interface AccessibilityConfig { keyboardNavigation: boolean;
-    progressAnnouncements: boolean;
-    rewardAnnouncements: boolean;
-    focusManagement: boolean;
-    ariaUpdates: boolean;
+    export interface AccessibilityConfig { keyboardNavigation: boolean,
+    progressAnnouncements: boolean,
+    rewardAnnouncements: boolean,
+    focusManagement: boolean,
+    ariaUpdates: boolean,
     screenReaderSupport: boolean;
-
-export interface InteractionStats { keyboardInteractions: number;
-    challengeViews: number;
-    filterChanges: number;
-    sortChanges: number;
-    touchGestures: number;
-    focusChanges: number;
+    export interface InteractionStats { keyboardInteractions: number,
+    challengeViews: number,
+    filterChanges: number,
+    sortChanges: number,
+    touchGestures: number,
+    focusChanges: number,
     clickInteractions: number;
     lastInteractionTime?: Date;
-
-export interface ChallengeUIElements { container: HTMLElement;
-    header: HTMLElement;
-    filterControls: HTMLElement;
-    sortControls: HTMLElement;
-    challengeItems: HTMLElement[];
-    refreshButton: HTMLElement;
-    progressSection: HTMLElement;
+    export interface ChallengeUIElements { container: HTMLElement,
+    header: HTMLElement,
+    filterControls: HTMLElement,
+    sortControls: HTMLElement,
+    challengeItems: HTMLElement[],
+    refreshButton: HTMLElement,
+    progressSection: HTMLElement,
     footer: HTMLElement;
-
-export interface ChallengeUIState { challenges: Challenge[];
+    export interface ChallengeUIState { challenges: Challenge[];
     selectedChallenge?: Challenge;
-    focusedIndex: number;
-    loading: boolean;
-    filterBy: string;
-    sortBy: string;
+    focusedIndex: number,
+    loading: boolean,
+    filterBy: string,
+    sortBy: string,
     visible: boolean;
-
-export interface ChallengeUIReference { config: ChallengeInteractionConfig;
-    state: ChallengeUIState;
-    elements: ChallengeUIElements;
-    stats: InteractionStats;
+    export interface ChallengeUIReference { config: ChallengeInteractionConfig,
+    state: ChallengeUIState,
+    elements: ChallengeUIElements,
+    stats: InteractionStats,
     renderer: ChallengeRenderer;
     challengeSystem?: ChallengeSystem;
     announce: (message: string, priority?: AnnouncementPriority) => void;
     log: (action: string, data?: Record<string, any>) => void;
-    loadChallenges: () => Promise<void>  }
+    loadChallenges: () => Promise<void>  };
 }
 
-export interface ChallengeInteractionConfig { accessibility: AccessibilityConfig;
-    keyboard: KeyboardNavigationConfig;
-    touch: TouchGestureConfig;
-    doubleClickDelay: number;
+export interface ChallengeInteractionConfig { accessibility: AccessibilityConfig,
+    keyboard: KeyboardNavigationConfig,
+    touch: TouchGestureConfig,
+    doubleClickDelay: number,
     focusHistoryLimit: number;
-
-export interface Challenge { id: string;
-    title: string;
-    description: string;
-    type: ChallengeType;
-    difficulty: ChallengeDifficulty;
-    progress: number;
-    target: number;
-    deadline: Date;
+    export interface Challenge { id: string,
+    title: string,
+    description: string,
+    type: ChallengeType,
+    difficulty: ChallengeDifficulty,
+    progress: number,
+    target: number,
+    deadline: Date,
     priority: number;
-
-export interface ChallengeRenderer { applyResponsiveStyles: () => void 
-    }
-
-export interface ChallengeSystem { onProgressUpdate?: (callback: (challengeId: string, progress: number) => void) => void  }
+    export interface ChallengeRenderer { applyResponsiveStyles: () => void 
+    };
+export interface ChallengeSystem { onProgressUpdate?: (callback: (challengeId: string, progress: number) => void) => void  };
 }
 
 export interface ClickPreventionHandler { (event: Event): void;
-
-export interface GestureRecognitionResult { type: GestureType;
+    export interface GestureRecognitionResult { type: GestureType;
     direction?: GestureDirection;
-    distance: number;
-    duration: number;
+    distance: number,
+    duration: number,
     confidence: number;
-
-export interface AriaAttributes { busy?: boolean,
+    export interface AriaAttributes { busy?: boolean,
     setSize?: number;
     positionInSet?: number;
     selected?: boolean;
     expanded?: boolean;
     level?: number;
-
-export interface FocusHistoryEntry { element: HTMLElement;
-    timestamp: Date;
+    export interface FocusHistoryEntry { element: HTMLElement,
+    timestamp: Date,
     context: string;
-
-export interface NavigationCommand { type: NavigationType;
+    export interface NavigationCommand { type: NavigationType;
     target?: NavigationTarget;
     options?: NavigationOptions;
-
-export interface NavigationOptions { wrap?: boolean,
+    export interface NavigationOptions { wrap?: boolean,
     announce?: boolean;
     scrollIntoView?: boolean;
 
 // 列挙型
 export type NavigationMode = 'standard' | 'grid' | 'tree' | 'linear';
-export type NavigationType = 'up' | 'down' | 'left' | 'right' | 'first' | 'last' | 'next' | 'previous';
-export type NavigationTarget = 'item' | 'group' | 'control' | 'section';
-export type GestureType = 'swipe' | 'tap' | 'longPress' | 'pinch' | 'rotate';
-export type GestureDirection = 'up' | 'down' | 'left' | 'right';
-export type ShortcutAction = 'refresh' | 'filter' | 'sort' | 'select' | 'activate' | 'close';
-export type ChallengeType = 'daily' | 'weekly' | 'special' | 'event';
-export type ChallengeDifficulty = 'easy' | 'medium' | 'hard';
-export type AnnouncementPriority = 'polite' | 'assertive' | 'off';
+    export type NavigationType = 'up' | 'down' | 'left' | 'right' | 'first' | 'last' | 'next' | 'previous';
+    export type NavigationTarget = 'item' | 'group' | 'control' | 'section';
+    export type GestureType = 'swipe' | 'tap' | 'longPress' | 'pinch' | 'rotate';
+    export type GestureDirection = 'up' | 'down' | 'left' | 'right';
+    export type ShortcutAction = 'refresh' | 'filter' | 'sort' | 'select' | 'activate' | 'close';
+    export type ChallengeType = 'daily' | 'weekly' | 'special' | 'event';
+    export type ChallengeDifficulty = 'easy' | 'medium' | 'hard';
+    export type AnnouncementPriority = 'polite' | 'assertive' | 'off';
 
 // 定数
-export const DEFAULT_TOUCH_CONFIG: TouchGestureConfig = { minSwipeDistance: 50;
-    maxSwipeTime: 500;
-    touchSensitivity: 0.8;
+export const DEFAULT_TOUCH_CONFIG: TouchGestureConfig = { minSwipeDistance: 50,
+    maxSwipeTime: 500,
+    touchSensitivity: 0.8,
     gesturesEnabled: true, as const;
-export const DEFAULT_KEYBOARD_CONFIG: KeyboardNavigationConfig = { enabled: true;
-    arrowKeys: true;
-    homeEndKeys: true;
-    enterSpaceActivation: true;
-    shortcuts: {
-        refresh: {''
-            key: 'r';
-            ctrlKey: true;
-            action: 'refresh';
-            description: 'チャレンジを更新'
+    export const DEFAULT_KEYBOARD_CONFIG: KeyboardNavigationConfig = { enabled: true,
+    arrowKeys: true,
+    homeEndKeys: true,
+    enterSpaceActivation: true,
+    shortcuts: { refresh: {''
+            key: 'r'  ,
+            ctrlKey: true,
+    action: 'refresh,
+    description: 'チャレンジを更新'
             };
         filter: { ''
-            key: 'f';
-            ctrlKey: true;
-            action: 'filter';
+            key: 'f'  ,
+            ctrlKey: true,
+            action: 'filter,
             description: 'フィルターにフォーカス'
             }
 } as const;
-export const DEFAULT_ACCESSIBILITY_CONFIG: AccessibilityConfig = { keyboardNavigation: true;
-    progressAnnouncements: true;
-    rewardAnnouncements: true;
-    focusManagement: true;
-    ariaUpdates: true;
+export const DEFAULT_ACCESSIBILITY_CONFIG: AccessibilityConfig = { keyboardNavigation: true,
+    progressAnnouncements: true,
+    rewardAnnouncements: true,
+    focusManagement: true,
+    ariaUpdates: true,
     screenReaderSupport: true, as const;
 export const FOCUSABLE_SELECTOR = `;
-    button: not([disabled];
-    select: not([disabled];
+    button: not([disabled],
+    select: not([disabled],
     input: not([disabled];
     .challenge-item[tabindex="0"],
     [tabindex]:not([tabindex="-1"]):not([disabled]);
 ` as const;
 ";"
 export const DIFFICULTY_LABELS: Record<ChallengeDifficulty, string> = {;
-    easy: '簡単';
-    medium: '普通';
+    easy: '簡単,
+    medium: '普通,
     hard: '難しい'
             } as const;
 ';'
 
 export const KEYBOARD_NAVIGATION_KEYS = {;
-    ARROW_UP: 'ArrowUp';
-    ARROW_DOWN: 'ArrowDown';
-    ARROW_LEFT: 'ArrowLeft';
-    ARROW_RIGHT: 'ArrowRight';
-    HOME: 'Home';
-    END: 'End';
-    ENTER: 'Enter';
-    SPACE: ', ',
-    ESCAPE: 'Escape';
+    ARROW_UP: 'ArrowUp,
+    ARROW_DOWN: 'ArrowDown,
+    ARROW_LEFT: 'ArrowLeft,
+    ARROW_RIGHT: 'ArrowRight,
+    HOME: 'Home,
+    END: 'End,
+    ENTER: 'Enter,
+    SPACE: , ',
+    ESCAPE: 'Escape,
     TAB: 'Tab'
             } as const;
-export const GESTURE_THRESHOLDS = { minSwipeDistance: 30;
-    minTapDuration: 50;
-    maxTapDuration: 200;
-    minLongPressDuration: 500;
+export const GESTURE_THRESHOLDS = { minSwipeDistance: 30,
+    minTapDuration: 50,
+    maxTapDuration: 200,
+    minLongPressDuration: 500,
     maxClickDelay: 300  } as const;
 ';'
 // ユーティリティ関数
 export function isFocusableElement(element: HTMLElement): element is FocusableElement { return element.tabIndex >= 0 &&;
            !element.hasAttribute('disabled) &&,'
-           element.offsetParent !== null }
-
-export function calculateGestureDistance(startX: number, startY: number, endX: number, endY: number): number { return Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2) }
-
+           element.offsetParent !== null };
+export function calculateGestureDistance(startX: number, startY: number, endX: number, endY: number): number { return Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2) };
 export function determineGestureDirection(startX: number, startY: number, endX: number, endY: number): GestureDirection { const deltaX = endX - startX;
     const deltaY = endY - startY,
 
     if (Math.abs(deltaX) > Math.abs(deltaY)) {''
-        return deltaX > 0 ? 'right' : 'left', else { }
-
+        return deltaX > 0 ? 'right' : 'left', else { };
         return deltaY > 0 ? 'down' : 'up';
 
 export function formatRelativeTime(deadline: Date): string { const now = new Date();
     const diff = deadline.getTime() - now.getTime();
-    if (diff < 0) {', ' }
-
-        return '期限切れ'; else if (diff < 60 * 60 * 1000) { const minutes = Math.floor(diff / (60 * 1000) }
+    if (diff < 0) {', ' };
+        return '期限切れ'; else if (diff < 60 * 60 * 1000) { const minutes = Math.floor(diff / (60 * 1000);
         return `あと${minutes}分`;
-    } else if (diff < 24 * 60 * 60 * 1000) { const hours = Math.floor(diff / (60 * 60 * 1000) }
+    } else if (diff < 24 * 60 * 60 * 1000) { const hours = Math.floor(diff / (60 * 60 * 1000);
         return `あと${hours}時間`;
-    } else { const days = Math.floor(diff / (24 * 60 * 60 * 1000) }
+    } else { const days = Math.floor(diff / (24 * 60 * 60 * 1000);
         return `あと${days}日`;
 
 export function createDebounceHandler<T extends any[]>(;
-    handler: (...args: T) => void;
+    handler: (...args: T) => void,
     delay: number;
 ): (...args: T) => void { let timeoutId: number | null = null;
     
     return (...args: T): void => { 
-        if (timeoutId !== null) {  }
+        if (timeoutId !== null) {  };
             window.clearTimeout(timeoutId);
         
         timeoutId = window.setTimeout(() => {  handler(...args);
@@ -285,11 +263,11 @@ export class ChallengeInteractionHandler {
         
         // イベントハンドラーの初期化
         this.handlers = {
-            keydown: this.handleKeydown.bind(this);
-            challengeClick: this.handleChallengeClick.bind(this);
-            filterChange: this.handleFilterChange.bind(this);
-            sortChange: this.handleSortChange.bind(this;
-    refresh: this.handleRefresh.bind(this) }
+            keydown: this.handleKeydown.bind(this),
+            challengeClick: this.handleChallengeClick.bind(this),
+            filterChange: this.handleFilterChange.bind(this),
+            sortChange: this.handleSortChange.bind(this,
+    refresh: this.handleRefresh.bind(this) };
             resize: this.handleResize.bind(this); 
     };
         
@@ -298,7 +276,7 @@ export class ChallengeInteractionHandler {
         this.focusHistory = [];
         this.touchState = null;
         this.preventDoubleClickHandlers = new Map('''
-            navigationMode: 'linear';
+            navigationMode: 'linear,
     focusHistoryEnabled: true);
         }''
 
@@ -374,7 +352,7 @@ export class ChallengeInteractionHandler {
      */
     private handleKeydown(event: KeyboardEvent): void { if (!this.config.accessibility.keyboardNavigation) return,
         
-        this.stats.keyboardInteractions++,
+        this.stats.keyboardInteractions++;
         this.stats.lastInteractionTime = new Date();
         switch(event.key) {
         
@@ -394,7 +372,7 @@ export class ChallengeInteractionHandler {
             case KEYBOARD_NAVIGATION_KEYS.SPACE: event.preventDefault(
                 this.activateCurrentItem();
                 break,
-            default: this.handleKeyboardShortcuts(event) }
+            default: this.handleKeyboardShortcuts(event);
                 break; }
 }
     
@@ -407,11 +385,9 @@ export class ChallengeInteractionHandler {
         
             if (this.matchesShortcut(event, shortcut) {
                 event.preventDefault();
-                this.executeShortcutAction(shortcut.action) }
-                break; }
+                this.executeShortcutAction(shortcut.action);
+                break;     }
 }
-    }
-    
     /**
      * ショートカットマッチング
      */
@@ -430,11 +406,11 @@ export class ChallengeInteractionHandler {
             case 'refresh':','
                 this.handleRefresh('''
             case 'filter': ','
-                this.focusFilterControl('',
+                this.focusFilterControl(',
             case 'sort':','
                 this.focusSortControl()','
             case 'select':),
-                this.activateCurrentItem() }
+                this.activateCurrentItem();
                 break; }
 }
     
@@ -442,16 +418,16 @@ export class ChallengeInteractionHandler {
      * 上方向ナビゲーション
      */
     navigateUp(): void { if (this.navigationState.focusedIndex > 0) {
-            this.navigationState.focusedIndex--,
-            this.focusElementAtIndex(this.navigationState.focusedIndex) }
+            this.navigationState.focusedIndex--;
+            this.focusElementAtIndex(this.navigationState.focusedIndex);
     }
     
     /**
      * 下方向ナビゲーション
      */
     navigateDown(): void { if (this.navigationState.focusedIndex < this.focusableElements.length - 1) {
-            this.navigationState.focusedIndex++,
-            this.focusElementAtIndex(this.navigationState.focusedIndex) }
+            this.navigationState.focusedIndex++;
+            this.focusElementAtIndex(this.navigationState.focusedIndex);
     }
     
     /**
@@ -459,7 +435,7 @@ export class ChallengeInteractionHandler {
      */
     navigateToFirst(): void { if (this.focusableElements.length > 0) {
             this.navigationState.focusedIndex = 0,
-            this.focusElementAtIndex(0) }
+            this.focusElementAtIndex(0);
     }
     
     /**
@@ -467,7 +443,7 @@ export class ChallengeInteractionHandler {
      */
     navigateToLast(): void { if (this.focusableElements.length > 0) {
             this.navigationState.focusedIndex = this.focusableElements.length - 1,
-            this.focusElementAtIndex(this.navigationState.focusedIndex) }
+            this.focusElementAtIndex(this.navigationState.focusedIndex);
     }
     
     /**
@@ -488,7 +464,7 @@ export class ChallengeInteractionHandler {
         if (focusedElement) {
 
             if(focusedElement.classList.contains('challenge-item' { }
-                this.handleChallengeClick({ currentTarget: focusedElement ) as MouseEvent } else { focusedElement.click() }
+                this.handleChallengeClick({ currentTarget: focusedElement ) as MouseEvent } else { focusedElement.click();
 }
     
     /**
@@ -500,8 +476,8 @@ export class ChallengeInteractionHandler {
         if (challenge) {
         
             this.state.selectedChallenge = challenge,
-            this.stats.challengeViews++,
-            this.stats.clickInteractions++,
+            this.stats.challengeViews++;
+            this.stats.clickInteractions++;
             this.stats.lastInteractionTime = new Date();
             ','
             // 詳細情報のアナウンス
@@ -512,7 +488,7 @@ export class ChallengeInteractionHandler {
         
         }
 
-            this.challengeUI.log('チャレンジ選択', { challengeId ) }
+            this.challengeUI.log('チャレンジ選択', { challengeId );
     }
     
     /**
@@ -524,15 +500,13 @@ export class ChallengeInteractionHandler {
         if (newFilter !== this.state.filterBy) {
         
             this.state.filterBy = newFilter,
-            this.stats.filterChanges++,
+            this.stats.filterChanges++;
             
             await this.challengeUI.loadChallenges();
             const selectedOption = target.selectedOptions[0] }
             const filterText = selectedOption ? selectedOption.text: newFilter 
-            this.challengeUI.announce(`フィルターを「${filterText}」に変更しました`};
-        }
-    }
-    
+            this.challengeUI.announce(`フィルターを「${filterText}」に変更しました`    }
+}
     /**
      * ソート変更ハンドラー
      */
@@ -542,15 +516,13 @@ export class ChallengeInteractionHandler {
         if (newSort !== this.state.sortBy) {
         
             this.state.sortBy = newSort,
-            this.stats.sortChanges++,
+            this.stats.sortChanges++;
             
             await this.challengeUI.loadChallenges();
             const selectedOption = target.selectedOptions[0] }
             const sortText = selectedOption ? selectedOption.text: newSort 
-            this.challengeUI.announce(`並び順を「${sortText}」に変更しました`};
-        }
-    }
-    
+            this.challengeUI.announce(`並び順を「${sortText}」に変更しました`    }
+}
     /**
      * 更新ハンドラー
      */'
@@ -562,14 +534,14 @@ export class ChallengeInteractionHandler {
      * リサイズハンドラー
      */
     private handleResize(): void { this.challengeUI.renderer.applyResponsiveStyles();
-        this.updateFocusableElements() }
+        this.updateFocusableElements();
     
     /**
      * チャレンジの詳細アナウンス
      */
     announceChallenge(challenge: Challenge): void { const progressPercent = Math.round((challenge.progress / challenge.target) * 100),
         const difficultyLabel = DIFFICULTY_LABELS[challenge.difficulty] || challenge.difficulty,
-        const deadlineText = formatRelativeTime(challenge.deadline) }
+        const deadlineText = formatRelativeTime(challenge.deadline);
         const message = `選択中: ${challenge.title}. 進捗 ${progressPercent}パーセント. ` +
                        `難易度 ${difficultyLabel}. 期限 ${deadlineText}`;
         
@@ -611,7 +583,7 @@ export class ChallengeInteractionHandler {
         
         // 履歴の制限
         const limit = this.config.focusHistoryLimit || 10,
-        if (this.focusHistory.length > limit) { this.focusHistory = this.focusHistory.slice(-Math.floor(limit / 2) }
+        if (this.focusHistory.length > limit) { this.focusHistory = this.focusHistory.slice(-Math.floor(limit / 2);
     }
     
     /**
@@ -620,7 +592,7 @@ export class ChallengeInteractionHandler {
     restoreFocus(): boolean { if (this.focusHistory.length > 0) {
             const lastEntry = this.focusHistory.pop();
             if (lastEntry?.element && document.contains(lastEntry.element) {
-                lastEntry.element.focus() }
+                lastEntry.element.focus();
                 return true;
         return false;
     }
@@ -642,7 +614,7 @@ export class ChallengeInteractionHandler {
 }
                     event.preventDefault(); }
                     preventedHandler(event); }
-};
+}
         };
     }
     
@@ -651,14 +623,13 @@ export class ChallengeInteractionHandler {
      */'
     setupTouchEvents(): void { ''
         if(!this.config.touch.gesturesEnabled) return }
-        let touchStartData: { x: number, y: number,, time: number, | null = null;
+        let touchStartData: { x: number, y: number, time: number, | null = null;
 
         this.elements.container.addEventListener('touchstart', (event: TouchEvent) => {  const touch = event.changedTouches[0],
             touchStartData = {
                 x: touch.screenX,
     y: touch.screenY }
-                time: Date.now(),
-    };'}');
+                time: Date.now() };'}');
 
         this.elements.container.addEventListener('touchend', (event: TouchEvent) => {  if (!touchStartData) return,
             
@@ -671,12 +642,12 @@ export class ChallengeInteractionHandler {
             
             const gestureResult = this.recognizeGesture(touchStartData, touchEndData);
             if (gestureResult) {
-                this.handleGesture(gestureResult) }
+                this.handleGesture(gestureResult);
                 this.stats.touchGestures++; }
             }
             
             touchStartData = null;
-        };
+        }
     }
     
     /**
@@ -684,7 +655,7 @@ export class ChallengeInteractionHandler {
      */
     private recognizeGesture(;
         start: { x: number, y: number,  time: number,);
-        end: { x: number, y: number,, time: number ): GestureRecognitionResult | null {
+        end: { x: number, y: number, time: number ): GestureRecognitionResult | null {
         const distance = calculateGestureDistance(start.x, start.y, end.x, end.y);
         const duration = end.time - start.time,
         
@@ -693,13 +664,13 @@ export class ChallengeInteractionHandler {
 
             if (duration < GESTURE_THRESHOLDS.maxTapDuration) {
                 return { ''
-                    type: 'tap',
+                    type: 'tap,
                     distance }
                     duration };
                     confidence: 0.9 
     }
             return null;
-        }
+        } };
         
         if (duration > this.config.touch.maxSwipeTime) { return null }
 
@@ -707,7 +678,7 @@ export class ChallengeInteractionHandler {
         ';'
 
         return { ''
-            type: 'swipe',
+            type: 'swipe,
             direction,
             distance,
             duration };
@@ -738,7 +709,7 @@ export class ChallengeInteractionHandler {
             case 'up':','
                 this.navigateUp()','
             case 'down':),
-                this.navigateDown() }
+                this.navigateDown();
                 break; }
 }
     
@@ -777,20 +748,20 @@ export class ChallengeInteractionHandler {
         }
         
         // 進捗アナウンスの設定
-        if (this.config.accessibility.progressAnnouncements) { this.setupProgressAnnouncements() }
+        if (this.config.accessibility.progressAnnouncements) { this.setupProgressAnnouncements();
         
         // タッチイベントの設定（モバイルアクセシビリティ向上）
         this.setupTouchEvents();
         
         // ARIA属性の初期設定
-        if (this.config.accessibility.ariaUpdates) { this.updateAriaAttributes() }
+        if (this.config.accessibility.ariaUpdates) { this.updateAriaAttributes();
     }
     
     /**
      * キーボードナビゲーションの設定
      */
     private setupKeyboardNavigation(): void { // ARIA属性の動的更新
-        this.updateAriaAttributes() }
+        this.updateAriaAttributes();
     
     /**
      * 進捗アナウンスの設定
@@ -800,9 +771,8 @@ export class ChallengeInteractionHandler {
             : undefined
         
             this.challengeUI.challengeSystem.onProgressUpdate((challengeId: string, progress: number) => {   }
-                this.announceProgressUpdate(challengeId, progress); }
-            };
-        }
+                this.announceProgressUpdate(challengeId, progress);     }
+}
     }
     
     /**
@@ -812,7 +782,7 @@ export class ChallengeInteractionHandler {
         if(!this.config.accessibility.ariaUpdates) return,
         ','
         // コンテナのARIA属性
-        this.elements.container.setAttribute('aria-busy', this.state.loading ? 'true' : 'false',
+        this.elements.container.setAttribute('aria-busy, this.state.loading ? 'true' : 'false',
         ','
         // チャレンジアイテムのARIA属性更新
         this.elements.challengeItems.forEach((item, index) => { ''
@@ -820,7 +790,7 @@ export class ChallengeInteractionHandler {
             item.setAttribute('aria-posinset', (index + 1).toString();
             if (this.state.selectedChallenge) {
 
-                const challengeId = item.getAttribute('data-challenge-id') }
+                const challengeId = item.getAttribute('data-challenge-id');
 
                 item.setAttribute('aria-selected');' }'
 
@@ -833,7 +803,7 @@ export class ChallengeInteractionHandler {
      */''
     private focusFilterControl()';'
         const filterSelect = this.elements.filterControls.querySelector('select) as HTMLSelectElement;'
-        if (filterSelect) { filterSelect.focus() }
+        if (filterSelect) { filterSelect.focus();
     }
     
     /**
@@ -841,7 +811,7 @@ export class ChallengeInteractionHandler {
      */''
     private focusSortControl()';'
         const sortSelect = this.elements.sortControls.querySelector('select) as HTMLSelectElement;'
-        if (sortSelect) { sortSelect.focus() }
+        if (sortSelect) { sortSelect.focus();
     }
     
     /**
@@ -865,7 +835,7 @@ export class ChallengeInteractionHandler {
      */
     resetNavigationState(): void { this.navigationState.focusedIndex = 0,
         this.focusHistory = [];
-        this.updateFocusableElements() }
+        this.updateFocusableElements();
     
     /**
      * イベントリスナーの削除'
@@ -896,6 +866,6 @@ export class ChallengeInteractionHandler {
 
         this.touchState = null;
         this.preventDoubleClickHandlers.clear()','
-        console.log('[ChallengeInteractionHandler] Component, destroyed') }
+        console.log('[ChallengeInteractionHandler] Component, destroyed');
 
     }'}'

@@ -4,127 +4,114 @@
  */
 
 // Interfaces for accessibility tutorial
-interface TutorialConfig { enableInteractiveTutorials: boolean;
-    enableFeatureDemos: boolean;
-    enablePracticeMode: boolean;
-    adaptiveTutorialContent: boolean;
-    tutorialSpeed: 'slow' | 'normal' | 'fast';
-    enableVoiceGuidance: boolean;
-    showVisualIndicators: boolean;
+interface TutorialConfig { enableInteractiveTutorials: boolean,
+    enableFeatureDemos: boolean,
+    enablePracticeMode: boolean,
+    adaptiveTutorialContent: boolean,
+    tutorialSpeed: 'slow' | 'normal' | 'fast,
+    enableVoiceGuidance: boolean,
+    showVisualIndicators: boolean,
     allowTutorialSkipping: boolean;
-
-interface TutorialStep { id: string;
-    title: string;
-    type: 'explanation' | 'practice' | 'configuration';
+    interface TutorialStep { id: string,
+    title: string,
+    type: 'explanation' | 'practice' | 'configuration,
     duration: number;
-
-interface TutorialDefinition { title: string;
-    description: string;
-    steps: TutorialStep[];
-    estimatedTime: number;
-    difficulty: 'beginner' | 'intermediate' | 'advanced';
+    interface TutorialDefinition { title: string,
+    description: string,
+    steps: TutorialStep[],
+    estimatedTime: number,
+    difficulty: 'beginner' | 'intermediate' | 'advanced,
     prerequisites: string[];
-
-interface TutorialContent { keyboardNavigation: TutorialDefinition;
-    screenReader: TutorialDefinition;
-    visualAdjustments: TutorialDefinition;
+    interface TutorialContent { keyboardNavigation: TutorialDefinition,
+    screenReader: TutorialDefinition,
+    visualAdjustments: TutorialDefinition,
     audioSettings: TutorialDefinition;
-
-interface TutorialState { currentTutorial: string | null;
-    currentStep: number;
-    completedTutorials: Set<string>;
+    interface TutorialState { currentTutorial: string | null,
+    currentStep: number,
+    completedTutorials: Set<string>,
     completedSteps: Map<string, Set<number>>;
     practiceResults: Map<string, PracticeSessionResult>;
     userProgress: Map<string, any>;
-    sessionStartTime: number | null;
+    sessionStartTime: number | null,
     interactionHistory: InteractionRecord[];
-
-interface InteractionRecord { type: string;
+    interface InteractionRecord { type: string;
     key?: string;
-    timestamp: number;
-    tutorial: string;
+    timestamp: number,
+    tutorial: string,
     step: number;
-
-interface PracticeSession { active: boolean;
-    currentExercise: Exercise | null;
-    attempts: number;
-    successRate: number;
-    feedback: PracticeFeedback[];
+    interface PracticeSession { active: boolean,
+    currentExercise: Exercise | null,
+    attempts: number,
+    successRate: number,
+    feedback: PracticeFeedback[],
     timeSpent: number;
-
-interface Exercise { name: string;
+    interface Exercise { name: string;
     type?: string;
     difficulty?: string;
-
-interface ExerciseResult { name: string;
-    success: boolean;
-    attempts: number;
-    time: number;
+    interface ExerciseResult { name: string,
+    success: boolean,
+    attempts: number,
+    time: number,
     score: number;
     error?: string;
 ';'
 
 interface PracticeFeedback { ''
-    type: 'success' | 'improvement';
-    message: string;
-    score: number;
+    type: 'success' | 'improvement,
+    message: string,
+    score: number,
     suggestions: string[];
-
-interface PracticeSessionResult { sessionTime: number;
-    exercises: ExerciseResult[];
-    successRate: number;
-    feedback: PracticeFeedback[];
+    interface PracticeSessionResult { sessionTime: number,
+    exercises: ExerciseResult[],
+    successRate: number,
+    feedback: PracticeFeedback[],
     timestamp: number;
-
-interface DeliverySettings { highlightElements: boolean;
-    showTooltips: boolean;
-    enableAnimations: boolean;
-    pauseOnInteraction: boolean;
+    interface DeliverySettings { highlightElements: boolean,
+    showTooltips: boolean,
+    enableAnimations: boolean,
+    pauseOnInteraction: boolean,
     repeatInstructions: boolean;
-
-interface PerformanceMetrics { tutorialStartTimes: Map<string, number>,
+    interface PerformanceMetrics { tutorialStartTimes: Map<string, number>,
     tutorialCompletionTimes: Map<string, number>;
-    stepTransitionTimes: number[];
-    practiceSessionTimes: number[];
+    stepTransitionTimes: number[],
+    practiceSessionTimes: number[],
     userEngagementMetrics: Map<string, any> }
 
-interface TutorialProgress { tutorialId: string;
-    title: string;
-    currentStep: number;
-    totalSteps: number;
-    stepsCompleted: number;
-    progress: number;
-    isCompleted: boolean;
-    estimatedTimeRemaining: number;
+interface TutorialProgress { tutorialId: string,
+    title: string,
+    currentStep: number,
+    totalSteps: number,
+    stepsCompleted: number,
+    progress: number,
+    isCompleted: boolean,
+    estimatedTimeRemaining: number,
     lastAccessed: number | null  }
 
-interface AllTutorialProgress { tutorials: TutorialProgress[];
-    overallProgress: number;
-    completedTutorials: number;
+interface AllTutorialProgress { tutorials: TutorialProgress[],
+    overallProgress: number,
+    completedTutorials: number,
     totalTutorials: number;
-
-interface TutorialDeliveryResult { success: boolean;
+    interface TutorialDeliveryResult { success: boolean;
     tutorialId?: string;
     completionTime?: number;
     stepsCompleted?: number;
     deliveryResult?: any;
     error?: string;
     missingPrerequisites?: string[];
-
-interface FeatureDemonstrationResult { success: boolean;
+    interface FeatureDemonstrationResult { success: boolean;
     demonstrationTime?: number;
     featuresShown: string[];
     results?: any[];
-    error?: string,  }
+    error?: string }
 
-interface PracticeSessionResultResponse { success: boolean;
+interface PracticeSessionResultResponse { success: boolean,
     practiceType: string;
     sessionTime?: number;
     exercisesCompleted?: number;
     successRate?: number;
     feedback?: PracticeFeedback[];
     detailedResults?: ExerciseResult[];
-    error?: string,  }
+    error?: string }
 ';'
 
 interface UserProfile { ''
@@ -132,18 +119,16 @@ interface UserProfile { ''
     disabilities?: string[];
     preferences?: Record<string, any> }
 
-interface TutorialAnalytics { tutorialsCompleted: number;
-    totalTutorials: number;
-    averageCompletionTime: number;
-    practiceSessionsCompleted: number;
-    userEngagement: UserEngagement;
+interface TutorialAnalytics { tutorialsCompleted: number,
+    totalTutorials: number,
+    averageCompletionTime: number,
+    practiceSessionsCompleted: number,
+    userEngagement: UserEngagement,
     performance: PerformanceMetrics;
-
-interface UserEngagement { totalInteractions: number;
-    sessionTime: number;
+    interface UserEngagement { totalInteractions: number,
+    sessionTime: number,
     interactionsPerMinute: number;
-
-export class AccessibilityTutorial {
+    export class AccessibilityTutorial {
     private config: TutorialConfig;
     private tutorialContent: TutorialContent;
     private tutorialState: TutorialState;
@@ -152,75 +137,75 @@ export class AccessibilityTutorial {
     private performance: PerformanceMetrics;
     private, initialized: boolean','
 
-    constructor(config: Partial<TutorialConfig> = {)) {
+    constructor(config: Partial<TutorialConfig> = {) {
         this.config = {
-            enableInteractiveTutorials: true;
-            enableFeatureDemos: true;
-    enablePracticeMode: true;
-            adaptiveTutorialContent: true;
-            tutorialSpeed: 'normal';
-            enableVoiceGuidance: true;
-            showVisualIndicators: true;
+            enableInteractiveTutorials: true,
+    enableFeatureDemos: true,
+    enablePracticeMode: true,
+    adaptiveTutorialContent: true,
+    tutorialSpeed: 'normal,
+    enableVoiceGuidance: true,
+    showVisualIndicators: true,
     allowTutorialSkipping: true;
             ...config,
 
         // Tutorial content and state
         this.tutorialContent = { keyboardNavigation: {''
-                title: 'キーボードナビゲーション';
-                description: 'キーボードを使用してゲームを操作する方法を学習します';
-    steps: [];
-                estimatedTime: 180;
-                difficulty: 'beginner';
-    prerequisites: []  };
+                title: 'キーボードナビゲーション,
+    description: 'キーボードを使用してゲームを操作する方法を学習します,
+    steps: [],
+    estimatedTime: 180,
+    difficulty: 'beginner,
+    prerequisites: []  } };
             screenReader: { ''
-                title: 'スクリーンリーダー機能';
-                description: 'スクリーンリーダーでゲームを楽しむための設定と使用方法';
-    steps: [];
-                estimatedTime: 240;
-                difficulty: 'intermediate';
+                title: 'スクリーンリーダー機能'  ,
+                description: 'スクリーンリーダーでゲームを楽しむための設定と使用方法,
+    steps: [],
+                estimatedTime: 240,
+                difficulty: 'intermediate,
                 prerequisites: ['keyboardNavigation]  };'
             visualAdjustments: { ''
-                title: '視覚調整機能';
-                description: 'コントラスト、文字サイズ、色調整などの視覚機能';
-    steps: [];
-                estimatedTime: 150;
-                difficulty: 'beginner';
+                title: '視覚調整機能'  ,
+                description: 'コントラスト、文字サイズ、色調整などの視覚機能,
+    steps: [],
+                estimatedTime: 150,
+                difficulty: 'beginner,
     prerequisites: []  };
             audioSettings: { ''
-                title: '音声・音響設定';
-                description: '音声ガイド、効果音、音楽の調整方法';
-    steps: [];
-                estimatedTime: 120;
-                difficulty: 'beginner';
+                title: '音声・音響設定'  ,
+                description: '音声ガイド、効果音、音楽の調整方法,
+    steps: [],
+                estimatedTime: 120,
+                difficulty: 'beginner,
     prerequisites: []  }
         };
         // Tutorial state management
-        this.tutorialState = { currentTutorial: null;
-            currentStep: 0;
-            completedTutorials: new Set();
-            completedSteps: new Map();
-            practiceResults: new Map();
-            userProgress: new Map();
-            sessionStartTime: null;
+        this.tutorialState = { currentTutorial: null,
+            currentStep: 0,
+            completedTutorials: new Set(),
+            completedSteps: new Map(),
+            practiceResults: new Map(),
+            userProgress: new Map(),
+            sessionStartTime: null,
     interactionHistory: []  };
         // Practice session management
-        this.practiceSession = { active: false;
-            currentExercise: null;
-            attempts: 0;
-            successRate: 0;
-            feedback: [];
+        this.practiceSession = { active: false,
+            currentExercise: null,
+            attempts: 0,
+            successRate: 0,
+            feedback: [],
     timeSpent: 0  };
         // Tutorial delivery settings
-        this.deliverySettings = { highlightElements: true;
-            showTooltips: true;
-            enableAnimations: true;
-            pauseOnInteraction: true;
+        this.deliverySettings = { highlightElements: true,
+            showTooltips: true,
+            enableAnimations: true,
+            pauseOnInteraction: true,
     repeatInstructions: false;
         // Performance metrics
         this.performance = { tutorialStartTimes: new Map(
-            tutorialCompletionTimes: new Map();
-            stepTransitionTimes: [];
-            practiceSessionTimes: [];
+            tutorialCompletionTimes: new Map(),
+            stepTransitionTimes: [],
+            practiceSessionTimes: [],
     userEngagementMetrics: new Map(  };
 
         this.initialized = false;
@@ -260,13 +245,13 @@ export class AccessibilityTutorial {
             // Validate tutorial exists
             const tutorial = this.tutorialContent[tutorialId as keyof TutorialContent],
             if (!tutorial} { }
-                throw, new Error(`Tutorial, not found: ${tutorialId}`};
+                throw, new Error(`Tutorial, not found: ${tutorialId}`}
             }
 
             // Check prerequisites
             const prerequisitesMet = await this.checkPrerequisites(tutorial.prerequisites);
             if (!prerequisitesMet) {
-                return { success: false;
+                return { success: false,
 
                     error: 'Prerequisites not met'
             };
@@ -280,7 +265,7 @@ export class AccessibilityTutorial {
             this.performance.tutorialStartTimes.set(tutorialId, startTime);
 
             // Adapt content based on user profile
-            if (this.config.adaptiveTutorialContent && userProfile) { await this.adaptTutorialContent(tutorialId, userProfile) }
+            if (this.config.adaptiveTutorialContent && userProfile) { await this.adaptTutorialContent(tutorialId, userProfile);
 
             // Begin tutorial delivery
             const deliveryResult = await this.executeTutorialDelivery(tutorialId);
@@ -294,18 +279,16 @@ export class AccessibilityTutorial {
 
             return { success: true;
                 tutorialId,
-                completionTime: tutorialTime;
+                completionTime: tutorialTime,
     stepsCompleted: this.getTutorialProgress(tutorialId).stepsCompleted };
                 deliveryResult }
-            } catch (error) {
+        } catch (error) {
             console.error('AccessibilityTutorial: Tutorial delivery, error:', error','
 
             return { success: false,''
                 error: (error, as Error').message };'
-                tutorialId }
-            }
-    }
-
+                tutorialId     }
+}
     /**
      * Demonstrate specific accessibility features'
      */''
@@ -342,7 +325,7 @@ export class AccessibilityTutorial {
             console.error('AccessibilityTutorial: Feature demonstration, error:', error);
             return { success: false,
                 error: (error, as Error).message };
-                featuresShown: featureList,
+                featuresShown: featureList;
     }
 
     /**
@@ -362,7 +345,7 @@ export class AccessibilityTutorial {
                 attempts: 0,
                 successRate: 0,
                 feedback: [],
-    timeSpent: 0 },
+    timeSpent: 0 };
             const practiceResults: ExerciseResult[] = [],
 
             // Execute practice exercises
@@ -380,7 +363,7 @@ export class AccessibilityTutorial {
                 const feedback = this.generatePracticeFeedback(exerciseResult);
                 this.practiceSession.feedback.push(feedback);
 
-                console.log(`Practice, exercise completed: ${exercise.name}`};
+                console.log(`Practice, exercise completed: ${exercise.name}`}
             }
 
             // Calculate final metrics
@@ -393,7 +376,7 @@ export class AccessibilityTutorial {
             this.tutorialState.practiceResults.set(practiceType, {
                 sessionTime
                 exercises: practiceResults,
-    successRate: this.practiceSession.successRate);
+    successRate: this.practiceSession.successRate),
                 feedback: this.practiceSession.feedback,
     timestamp: Date.now(  };
             // Record performance metrics
@@ -409,17 +392,15 @@ export class AccessibilityTutorial {
                 sessionTime,
                 exercisesCompleted: exercises.length,
                 successRate: this.practiceSession.successRate,
-    feedback: this.practiceSession.feedback },
+    feedback: this.practiceSession.feedback };
                 detailedResults: practiceResults; catch (error) {
             console.error('AccessibilityTutorial: Practice session, error:', error);
             this.practiceSession.active = false,
             
             return { success: false,
                 error: (error, as Error).message };
-                practiceType }
-            }
-    }
-
+                practiceType     }
+}
     /**
      * Get tutorial progress for specific tutorial
      */'
@@ -432,8 +413,8 @@ export class AccessibilityTutorial {
                 stepsCompleted: 0,
                 progress: 0,
     isCompleted: false,
-                estimatedTimeRemaining: 0 },
-                lastAccessed: null,
+                estimatedTimeRemaining: 0 };
+                lastAccessed: null;
 
         const completedSteps = this.tutorialState.completedSteps.get(tutorialId) || new Set();
         const totalSteps = tutorial.steps.length;
@@ -441,12 +422,12 @@ export class AccessibilityTutorial {
 
         return { tutorialId,
             title: tutorial.title,
-    currentStep: this.tutorialState.currentTutorial === tutorialId ? this.tutorialState.currentStep : 0,
+    currentStep: this.tutorialState.currentTutorial === tutorialId ? this.tutorialState.currentStep : 0;
             totalSteps,
-            stepsCompleted: completedSteps.size,
+            stepsCompleted: completedSteps.size;
             progress,
             isCompleted: this.tutorialState.completedTutorials.has(tutorialId,
-    estimatedTimeRemaining: this.calculateEstimatedTimeRemaining(tutorialId) },
+    estimatedTimeRemaining: this.calculateEstimatedTimeRemaining(tutorialId) };
             lastAccessed: this.performance.tutorialStartTimes.get(tutorialId) || null 
     }
 
@@ -466,8 +447,8 @@ export class AccessibilityTutorial {
 
         return { tutorials: progressList,
             overallProgress: this.calculateOverallProgress(
-    completedTutorials: this.tutorialState.completedTutorials.size },
-            totalTutorials: Object.keys(this.tutorialContent).length 
+    completedTutorials: this.tutorialState.completedTutorials.size };
+            totalTutorials: Object.keys(this.tutorialContent).length; 
     }
 
     /**
@@ -496,17 +477,15 @@ export class AccessibilityTutorial {
                 
                 return { success: true,
                     skippedStep: currentStepIndex,
-    currentStep: this.tutorialState.currentStep },
+    currentStep: this.tutorialState.currentStep };
                     tutorialId: currentTutorial; else {  // Tutorial completed }
                 return await this.completeTutorial(currentTutorial); }'
 
             } catch (error) {
             console.error('AccessibilityTutorial: Skip step, error:', error);
             return { success: false,
-                error: (error, as Error).message }
-            }
-    }
-
+                error: (error, as Error).message     }
+}
     /**
      * Complete current tutorial
      */'
@@ -531,16 +510,14 @@ export class AccessibilityTutorial {
             return { success: true,
                 tutorialId,
                 completionTime,
-                title: tutorial.title },
-                stepsCompleted: tutorial.steps.length 
+                title: tutorial.title };
+                stepsCompleted: tutorial.steps.length; 
     } catch (error) {
             console.error('AccessibilityTutorial: Complete tutorial, error:', error);
             return { success: false,
                 error: (error, as Error).message };
-                tutorialId }
-            }
-    }
-
+                tutorialId     }
+}
     /**
      * Reset tutorial progress
      */
@@ -557,7 +534,7 @@ export class AccessibilityTutorial {
                 this.tutorialState.currentStep = 0; }
             }
 
-            console.log(`Tutorial, progress reset: ${tutorialId}`};
+            console.log(`Tutorial, progress reset: ${tutorialId}`}
         } else { // Reset all tutorials
             this.tutorialState.completedTutorials.clear();
             this.tutorialState.completedSteps.clear();
@@ -585,29 +562,29 @@ export class AccessibilityTutorial {
         // Tutorial step definitions(simplified, for MCP, compatibility);
         this.tutorialContent.keyboardNavigation.steps = [' }'
 
-            { id: 'intro', title: 'キーボードナビゲーション入門', type: 'explanation', duration: 30  },''
-            { id: 'basic-navigation', title: '基本的なナビゲーション', type: 'practice', duration: 60  },]'
+            { id: 'intro', title: 'キーボードナビゲーション入門', type: 'explanation', duration: 30  ,''
+            { id: 'basic-navigation', title: '基本的なナビゲーション', type: 'practice', duration: 60  ,]'
             { id: 'game-controls', title: 'ゲーム操作', type: 'practice', duration: 90  }]
         ];
 ';'
 
         this.tutorialContent.screenReader.steps = [';'
-            { id: 'setup', title: 'スクリーンリーダー設定', type: 'configuration', duration: 60  },''
-            { id: 'navigation-modes', title: 'ナビゲーションモード', type: 'explanation', duration: 90  },]'
+            { id: 'setup', title: 'スクリーンリーダー設定', type: 'configuration', duration: 60  ,''
+            { id: 'navigation-modes', title: 'ナビゲーションモード', type: 'explanation', duration: 90  ,]'
             { id: 'game-interaction', title: 'ゲームとの連携', type: 'practice', duration: 90  }]
         ];
 ';'
 
         this.tutorialContent.visualAdjustments.steps = [';'
-            { id: 'contrast-settings', title: 'コントラスト調整', type: 'configuration', duration: 45  },''
-            { id: 'text-scaling', title: '文字サイズ調整', type: 'configuration', duration: 30  },]'
+            { id: 'contrast-settings', title: 'コントラスト調整', type: 'configuration', duration: 45  ,''
+            { id: 'text-scaling', title: '文字サイズ調整', type: 'configuration', duration: 30  ,]'
             { id: 'color-customization', title: '色彩調整', type: 'configuration', duration: 75  }]
         ];
 ';'
 
         this.tutorialContent.audioSettings.steps = [';'
-            { id: 'volume-control', title: '音量調整', type: 'configuration', duration: 30  },''
-            { id: 'audio-cues', title: '音声ガイド', type: 'configuration', duration: 60  },]'
+            { id: 'volume-control', title: '音量調整', type: 'configuration', duration: 30  ,''
+            { id: 'audio-cues', title: '音声ガイド', type: 'configuration', duration: 60  ,]'
             { id: 'accessibility-sounds', title: 'アクセシビリティ音響', type: 'configuration', duration: 30  }]
         ];
     }
@@ -632,9 +609,8 @@ export class AccessibilityTutorial {
         if (typeof, document !== 'undefined') {', ' }
 
             document.addEventListener('keydown', (event) => {  }
-                this.handleTutorialKeyboardEvent(event); }
-            };
-        }
+                this.handleTutorialKeyboardEvent(event);     }
+}
     }
 
     /**
@@ -649,7 +625,7 @@ export class AccessibilityTutorial {
             key: event.key),
             timestamp: Date.now(),
             tutorial: this.tutorialState.currentTutorial,
-    step: this.tutorialState.currentStep  },
+    step: this.tutorialState.currentStep  ,
 ';'
         // Handle tutorial-specific keyboard shortcuts
         switch(event.key) {
@@ -659,7 +635,7 @@ export class AccessibilityTutorial {
                 this.showTutorialHelp()','
             case 'Escape':),
                 if (event.ctrlKey) {
-                    event.preventDefault() }
+                    event.preventDefault();
                     this.exitCurrentTutorial(); }
                 }
                 break;
@@ -682,13 +658,13 @@ export class AccessibilityTutorial {
             // Mark step as completed if successful
             if (stepResult.success) {
                 let completedSteps = this.tutorialState.completedSteps.get(tutorialId) || new Set<number>(),
-                completedSteps.add(i) }
+                completedSteps.add(i);
                 this.tutorialState.completedSteps.set(tutorialId, completedSteps); }
 }
 
         // Mark tutorial as completed if all steps successful
         const allStepsSuccessful = deliveryResults.every(result => result.success);
-        if (allStepsSuccessful) { await this.completeTutorial(tutorialId) }
+        if (allStepsSuccessful) { await this.completeTutorial(tutorialId);
 
         return { stepsDelivered: deliveryResults.length,
             allStepsSuccessful };
@@ -717,7 +693,7 @@ export class AccessibilityTutorial {
                     break;
             }
                 default: }
-                    deliveryResult = await, this.deliverGenericStep(step};
+                    deliveryResult = await, this.deliverGenericStep(step}
             }
 ;
             const stepEndTime = performance.now();
@@ -728,21 +704,19 @@ export class AccessibilityTutorial {
                 stepId: step.id,
                 stepTime };
                 deliveryResult }
-            } catch (error) {
+        } catch (error) {
             console.error(`Tutorial step delivery error: ${step.id}`, error);
             return { success: false,
-                stepId: step.id },
-                error: (error, as Error).message }
-            }
-    }
-
+                stepId: step.id ,
+                error: (error, as Error).message     }
+}
     /**
      * Check tutorial prerequisites
      */
     private async checkPrerequisites(prerequisites: string[]): Promise<boolean> { if (!prerequisites || prerequisites.length === 0) {
             return true }
 
-        return prerequisites.every(prereq => {  ) }
+        return prerequisites.every(prereq => {  );
             return this.tutorialState.completedTutorials.has(prereq););
     }
 
@@ -753,18 +727,17 @@ export class AccessibilityTutorial {
         if(!tutorial || !userProfile) return,
 ','
         // Adjust tutorial complexity based on user experience
-        const experience = userProfile.experience || 'beginner',
+        const experience = userProfile.experience || 'beginner,
         if(experience === 'expert' {'
             // Reduce step durations and simplify explanations
         }
-            tutorial.steps.forEach(step => { ) }
+            tutorial.steps.forEach(step => { );
                 step.duration = Math.floor(step.duration * 0.7);' }'
 
             }');'} else if(experience === 'beginner' { // Increase step durations and add more detail'
-            tutorial.steps.forEach(step => { ) }
-                step.duration = Math.floor(step.duration * 1.3); }
-            };
-        }
+            tutorial.steps.forEach(step => { );
+                step.duration = Math.floor(step.duration * 1.3);     }
+}
 ;
         // Adapt based on accessibility needs
         if (userProfile.disabilities) {
@@ -805,18 +778,16 @@ export class AccessibilityTutorial {
                 success,
                 attempts,
                 time: exerciseTime,
-                score: success ? Math.floor(Math.random() * 30) + 70 : Math.floor(Math.random() * 50) + 20 
-            } catch (error) {
+                score: success ? Math.floor(Math.random() * 30) + 70 : Math.floor(Math.random() * 50) + 20  }
+        } catch (error) {
             console.error('Practice exercise error:', error);
             return { name: exercise.name,
                 success: false,
                 attempts: 1,
                 time: 0,
-    score: 0 },
-                error: (error, as Error).message }
-            }
-    }
-
+    score: 0 ,
+                error: (error, as Error).message     }
+}
     /**
      * Generate practice feedback
      */'
@@ -829,17 +800,16 @@ export class AccessibilityTutorial {
 
                 type: 'success'
             }
-                message: `素晴らしい！「${exerciseResult.name}」を${exerciseResult.attempts}回の試行で完了しました。`,
+                message: `素晴らしい！「${exerciseResult.name}」を${exerciseResult.attempts}回の試行で完了しました。,
                 score: exerciseResult.score,
-    suggestions: [],
-            } } else { return { }'
+    suggestions: [] } } else { return { }'
 
                 type: 'improvement'
             }
-                message: `「${exerciseResult.name}」をもう一度試してみましょう。`,
+                message: `「${exerciseResult.name}」をもう一度試してみましょう。,
                 score: exerciseResult.score,
                 suggestions: [';'
-                    'ゆっくりと操作してみてください',
+                    'ゆっくりと操作してみてください,
                     'キーボードショートカットを活用してください',]';'
                     'ヘルプ機能を参照してください'];
                 ];
@@ -882,9 +852,8 @@ export class AccessibilityTutorial {
             document.addEventListener('keydown', handleInteraction','
             document.addEventListener('click', handleInteraction);
             // Auto-resolve after 5 seconds if no interaction }
-            setTimeout(resolve, 5000); }
-        };
-    }
+            setTimeout(resolve, 5000);     }
+}
 ;
     // Step delivery methods
     private async deliverExplanationStep(step: TutorialStep): Promise<any> { // Deliver explanation content' }'
@@ -922,20 +891,20 @@ export class AccessibilityTutorial {
             ...newConfig,
 
         // Re-initialize delivery settings if needed
-        this.initializeDeliverySettings() }
+        this.initializeDeliverySettings();
 
     /**
      * Get tutorial analytics
      */
     getTutorialAnalytics(): TutorialAnalytics { return { tutorialsCompleted: this.tutorialState.completedTutorials.size,
             totalTutorials: Object.keys(this.tutorialContent).length,
-            averageCompletionTime: this.calculateAverageCompletionTime();
+            averageCompletionTime: this.calculateAverageCompletionTime(),
             practiceSessionsCompleted: this.tutorialState.practiceResults.size,
-    userEngagement: this.calculateUserEngagement() },
+    userEngagement: this.calculateUserEngagement() ,
             performance: this.performance 
     }
 
-    private calculateAverageCompletionTime(): number { const completionTimes = Array.from(this.performance.tutorialCompletionTimes.values();
+    private calculateAverageCompletionTime(): number { const completionTimes = Array.from(this.performance.tutorialCompletionTimes.values()));
         return completionTimes.length > 0 ,
             ? completionTimes.reduce((a, b) => a + b, 0) / completionTimes.length: 0 }
 

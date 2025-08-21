@@ -4,19 +4,20 @@
 import { ScenesBaseDialog, DialogButton, GameEngine, EventBus, GameState  } from './ScenesBaseDialog.js';
 
 // Type definitions for export dialog
-export interface ExportOptions { playerData: {
-        usernam,e: boolean;
-        scores: boolean;
-        achievements: boolean;
-        settings: boolean;
-    statistics: boolean;
-    gameSettings: { graphics: boolean;
+export interface ExportOptions { playerData: { usernam,e: boolean,
+        scores: boolean,
+        achievements: boolean,
+        settings: boolean,
+    statistics: boolean,
+    gameSettings: { graphics: boolean,
         audio: boolean;
-        gameplay: boolean;
-    accessibility: boolean;
-    achievements: { unlocked: boolean;
+    },
+        gameplay: boolean,
+    accessibility: boolean,
+    achievements: { unlocked: boolean,
         progress: boolean;
-    timestamps: boolean;
+    },
+    timestamps: boolean,
     timestamps: boolean;
         };
 export interface PlayerData { username?: string,
@@ -28,31 +29,30 @@ export interface PlayerData { username?: string,
     gamesPlayed?: number;
     totalPlayTime?: number;
     bubblesPopped?: number;
-export interface GameSettings { graphics?: Record<string, unknown>,
+    export interface GameSettings { graphics?: Record<string, unknown>,
     audio?: Record<string, unknown>;
     gameplay?: Record<string, unknown>;
-    accessibility?: Record<string, unknown> }
-export interface Achievement { id: string;
-    name: string;
+    accessibility?: Record<string, unknown> };
+export interface Achievement { id: string,
+    name: string,
     description: string;
     progress?: number;
     requirement?: number;
-    unlockedAt?: string,  }
+    unlockedAt?: string };
 ';'
 
 export interface AchievementManager {;
-    getUnlockedAchievements: () => Achievement[] }
+    getUnlockedAchievements: () => Achievement[] };
 export interface ExportData { metadata?: {
-        exportedA,t: string;
-        exportType: string;
-        format: string;
+        exportedA,t: string,
+        exportType: string,
+    format: string,
     version: string;
     playerData?: PlayerData;
     gameSettings?: GameSettings;
     achievements?: { achievements: Achievement[];
-
-export type ExportType = 'playerData' | 'gameSettings' | 'achievements' | 'all';
-export type ExportFormat = 'json' | 'csv' | 'txt';
+    export type ExportType = 'playerData' | 'gameSettings' | 'achievements' | 'all';
+    export type ExportFormat = 'json' | 'csv' | 'txt' };
 
 /**
  * シーン用エクスポートダイアログ
@@ -79,22 +79,20 @@ export class ScenesExportDialog extends ScenesBaseDialog { private exportType: E
         
         // エクスポート対象の設定
         this.exportOptions = {
-            playerData: {
-                username: true;
-                scores: true;
-                achievements: true;
-    settings: true;
+            playerData: { username: true  ,
+                scores: true,
+                achievements: true,
+    settings: true,
                 statistics: true ;
     },
-            gameSettings: { graphics: true;
-                audio: true;
-                gameplay: true;
-    accessibility: true;
-            achievements: { unlocked: true;
-                progress: true;
-    timestamps: true,,
-    timestamps: true,,
-        };
+            gameSettings: { graphics: true,
+                audio: true  ,
+                gameplay: true,
+    accessibility: true,
+            achievements: { unlocked: true,
+                progress: true  ,
+    timestamps: true,
+    timestamps: true, };
         // プレビューデータ
         this.previewData = null;
         this.showPreview = false;
@@ -155,13 +153,13 @@ export class ScenesExportDialog extends ScenesBaseDialog { private exportType: E
         context.textBaseline = 'top';
         context.fillText('エクスポート対象:', x, y' }'
 
-        const types: Array<{ key: ExportType,, label: string;> = [''
+        const types: Array<{ key: ExportType, label: string;> = [''
             { key: 'playerData', label: 'プレイヤーデータ'
-            },''
+            ,''
             { key: 'gameSettings', label: 'ゲーム設定'
-            },''
+            ,''
             { key: 'achievements', label: '実績データ'
-            },]'
+            ,]'
             { key: 'all', label: '全データ'
             }]
         ];
@@ -189,17 +187,17 @@ export class ScenesExportDialog extends ScenesBaseDialog { private exportType: E
      * @param width - 幅'
      */''
     private renderFormatSelection(context: CanvasRenderingContext2D, x: number, y: number, width: number): void { ''
-        context.fillStyle = '#333333',
-        context.font = 'bold 14px Arial, sans-serif',
-        context.textAlign = 'left',
-        context.textBaseline = 'top',
+        context.fillStyle = '#333333,
+        context.font = 'bold 14px Arial, sans-serif,
+        context.textAlign = 'left,
+        context.textBaseline = 'top,
         context.fillText('出力形式:', x, y' }'
 
-        const formats: Array<{ key: ExportFormat,, label: string;> = [''
+        const formats: Array<{ key: ExportFormat, label: string;> = [''
             { key: 'json', label: 'JSON形式'
-            },''
+            ,''
             { key: 'csv', label: 'CSV形式'
-            },]'
+            ,]'
             { key: 'txt', label: 'テキスト形式'
             }]
         ];
@@ -210,11 +208,11 @@ export class ScenesExportDialog extends ScenesBaseDialog { private exportType: E
             const isSelected = this.exportFormat === format.key;
             ','
             // ラジオボタン
-            context.fillStyle = isSelected ? '#4CAF50' : '#CCCCCC',
+            context.fillStyle = isSelected ? '#4CAF50' : '#CCCCCC,
             context.fillRect(formatX, y + 25, 12, 12);
             ','
             // ラベル
-            context.fillStyle = '#333333',
+            context.fillStyle = '#333333,
             context.font = '14px Arial, sans-serif' }
             context.fillText(format.label, formatX + 20, y + 25); }
         }
@@ -227,18 +225,18 @@ export class ScenesExportDialog extends ScenesBaseDialog { private exportType: E
      * @param width - 幅'
      */''
     private renderExportOptions(context: CanvasRenderingContext2D, x: number, y: number, width: number): void { ''
-        context.fillStyle = '#333333',
-        context.font = 'bold 14px Arial, sans-serif',
-        context.textAlign = 'left',
-        context.textBaseline = 'top',
+        context.fillStyle = '#333333,
+        context.font = 'bold 14px Arial, sans-serif,
+        context.textAlign = 'left,
+        context.textBaseline = 'top,
         context.fillText('エクスポートオプション:', x, y','
         
         // メタデータ含有チェックボックス
         const metadataY = y + 25,
-        context.fillStyle = this.includeMetadata ? '#4CAF50' : '#CCCCCC',
+        context.fillStyle = this.includeMetadata ? '#4CAF50' : '#CCCCCC,
         context.fillRect(x + 10, metadataY, 12, 12);
-        context.fillStyle = '#333333',
-        context.font = '14px Arial, sans-serif',
+        context.fillStyle = '#333333,
+        context.font = '14px Arial, sans-serif,
         context.fillText('メタデータを含む', x + 30, metadataY','
         ','
         // タイプ別詳細オプション
@@ -262,13 +260,13 @@ export class ScenesExportDialog extends ScenesBaseDialog { private exportType: E
             const optionY = y + Math.floor(optionIndex / 2) * 20,
             ','
             // チェックボックス
-            context.fillStyle = enabled ? '#4CAF50' : '#CCCCCC',
+            context.fillStyle = enabled ? '#4CAF50' : '#CCCCCC,
             context.fillRect(optionX, optionY, 10, 10);
             ','
             // ラベル
-            context.fillStyle = '#666666',
-            context.font = '12px Arial, sans-serif',
-            context.fillText(this.getOptionLabel(key), optionX + 18, optionY) }
+            context.fillStyle = '#666666,
+            context.font = '12px Arial, sans-serif,
+            context.fillText(this.getOptionLabel(key), optionX + 18, optionY);
             optionIndex++; }
         }
     
@@ -280,21 +278,21 @@ export class ScenesExportDialog extends ScenesBaseDialog { private exportType: E
      * @param width - 幅'
      */''
     private renderDataPreview(context: CanvasRenderingContext2D, x: number, y: number, width: number): void { ''
-        context.fillStyle = '#333333',
-        context.font = 'bold 14px Arial, sans-serif',
-        context.textAlign = 'left',
-        context.textBaseline = 'top',
+        context.fillStyle = '#333333,
+        context.font = 'bold 14px Arial, sans-serif,
+        context.textAlign = 'left,
+        context.textBaseline = 'top,
         context.fillText('プレビュー:', x, y','
         ','
         // プレビュー背景
-        context.fillStyle = '#F5F5F5',
+        context.fillStyle = '#F5F5F5,
         context.fillRect(x, y + 20, width, 80);
-        context.strokeStyle = '#CCCCCC',
+        context.strokeStyle = '#CCCCCC,
         context.strokeRect(x, y + 20, width, 80);
         if (this.previewData) {
 
-            context.fillStyle = '#666666',
-            context.font = '11px monospace',
+            context.fillStyle = '#666666,
+            context.font = '11px monospace,
 
             const preview = this.formatPreviewData(this.previewData);
             const lines = preview.split('\n).slice(0, 5), // 最初の5行のみ表示'
@@ -306,7 +304,7 @@ export class ScenesExportDialog extends ScenesBaseDialog { private exportType: E
             }');'
 
             if (preview.split('\n'.length > 5') { ''
-                context.fillText('...', x + 5, y + 35 + (5 * 12) }
+                context.fillText('...', x + 5, y + 35 + (5 * 12);
         }
     /**
      * オプションラベルを取得
@@ -314,17 +312,17 @@ export class ScenesExportDialog extends ScenesBaseDialog { private exportType: E
      * @returns ラベル'
      */''
     private getOptionLabel(key: string): string { const labels: Record<string, string> = {''
-            username: 'ユーザー名',
-            scores: 'スコア',
-            achievements: '実績',
-            settings: '設定',
-            statistics: '統計',
-            graphics: 'グラフィック',
-            audio: 'オーディオ',
-            gameplay: 'ゲームプレイ',
-            accessibility: 'アクセシビリティ',
-            unlocked: '解除済み',
-            progress: '進行状況',
+            username: 'ユーザー名,
+            scores: 'スコア,
+            achievements: '実績,
+            settings: '設定,
+            statistics: '統計,
+            graphics: 'グラフィック,
+            audio: 'オーディオ,
+            gameplay: 'ゲームプレイ,
+            accessibility: 'アクセシビリティ,
+            unlocked: '解除済み,
+            progress: '進行状況,
             timestamps: 'タイムスタンプ'
             };
         return labels[key] || key;
@@ -360,7 +358,7 @@ export class ScenesExportDialog extends ScenesBaseDialog { private exportType: E
             lines.push('Type,Key,Value');
             lines.push(`Player,Username,${data.playerData.username || '}`}'
             lines.push(`Player,AP,${data.playerData.ap || 0}`}
-            lines.push(`Player,TAP,${data.playerData.tap || 0}`};
+            lines.push(`Player,TAP,${data.playerData.tap || 0}`}
         }
         ';'
 
@@ -428,13 +426,13 @@ export class ScenesExportDialog extends ScenesBaseDialog { private exportType: E
             case 'playerData':','
                 exportData.playerData = this.collectPlayerData('''
             case 'gameSettings': ','
-                exportData.gameSettings = this.collectGameSettings('',
+                exportData.gameSettings = this.collectGameSettings(',
             case 'achievements':','
                 exportData.achievements = this.collectAchievements()','
             case 'all':),
                 exportData.playerData = this.collectPlayerData();
                 exportData.gameSettings = this.collectGameSettings();
-                exportData.achievements = this.collectAchievements() }
+                exportData.achievements = this.collectAchievements();
                 break; }
         return exportData;
     }
@@ -517,7 +515,7 @@ export class ScenesExportDialog extends ScenesBaseDialog { private exportType: E
                     achievementData.requirement = achievement.requirement || 0; }
                 if (options.timestamps) { achievementData.unlockedAt = achievement.unlockedAt }
                 achievements.push(achievementData);
-            }
+            } };
         
         return { achievements }
     
@@ -531,18 +529,17 @@ export class ScenesExportDialog extends ScenesBaseDialog { private exportType: E
             await this.downloadFile(content, filename);
             if (this.onResult) {
                 this.onResult({''
-                    action: 'export',
+                    action: 'export,
     data: {
-                        type: this.exportType,
+                        type: this.exportType ,
     format: this.exportFormat),
                         filename
 }
-                        size: content.length) ,
-    }
+                        size: content.length)  }
 
                 ';} catch (error) {'
             console.error('Export error:', error','
-            alert('エクスポートに失敗しました: ' + (error, as Error).message) }
+            alert('エクスポートに失敗しました: ' + (error, as Error).message);
     }
     
     /**
@@ -564,18 +561,17 @@ export class ScenesExportDialog extends ScenesBaseDialog { private exportType: E
     private async downloadFile(content: string, filename: string): Promise<void> { ''
         if (typeof, document !== 'undefined') {
             const blob = new Blob([content], { ''
-                type: this.exportFormat === 'json' ? 'application/json' : 'text/plain ',
+                type: this.exportFormat === 'json' ? 'application/json' : 'text/plain ,
             ','
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url,
 
             a.download = filename,
-            a.style.display = 'none',
+            a.style.display = 'none,
             document.body.appendChild(a);
             a.click();
-            document.body.removeChild(a)
-}
+            document.body.removeChild(a);
             URL.revokeObjectURL(url); }
     }
     

@@ -119,7 +119,7 @@ const AccessibilityHelper = {
             return {
                 color: computed.color,
                 backgroundColor: computed.backgroundColor
-            };
+            }
         };
         expect(styles.color).toBeDefined();
         expect(styles.backgroundColor).toBeDefined();
@@ -376,7 +376,7 @@ test.describe('統計機能E2Eテスト', () => {
                 const chartLabels = page.locator('[data-testid="chart-labels"]');
                 const fontSize = await chartLabels.evaluate(el => 
                     window.getComputedStyle(el.fontSize);
-                expect(fontSize).toBeTruthy() };
+                expect(fontSize).toBeTruthy() }
         }
     }');'
     test.describe('アクセシビリティ機能テスト', (') => {'
@@ -439,16 +439,16 @@ test.describe('統計機能E2Eテスト', () => {
             await page.evaluate(() => {
                 const largeStats = {
                     gamePlayStats: { 
-                        totalGames: 1000, 
+                        totalGames: 1000 },
                         totalPlayTime: 3600000 * 100,
                         averageSessionTime: 3600000 
                     },
                     scoreStats: { 
-                        totalScore: 5000000, 
+                        totalScore: 5000000 },
                         highestScore: 50000,
                         scoreHistory: Array.from({length: 1000), () => Math.random() * 10000) },
                     bubbleStats: { 
-                        totalPopped: 100000, 
+                        totalPopped: 100000 },
                         accuracy: 0.85 
                     },
                     timeSeries: {
@@ -574,7 +574,7 @@ test.describe('統計機能E2Eテスト', () => {
                     if (key.includes('statistics')') {'
                         throw new Error('QuotaExceededError') }
                     return originalSetItem.call(this, key, value);
-                };
+                }
             };
             await GameplaySimulator.simulateBasicGameplay(page');'
             await page.click('[data-testid="user-info-button"]');
@@ -627,9 +627,9 @@ test.describe('統計機能E2Eテスト', () => {
                 const stats = page.locator('[data-testid="responsive-statistics"]');
                 await expect(stats).toBeVisible(');'
                 await page.click('[data-testid="back-to-menu-button"]');
-            };
+            }
         }
-    };
+    }
 }
 // テスト用ヘルパー関数とユーティリティ
 const E2ETestHelper = {
@@ -652,7 +652,7 @@ const E2ETestHelper = {
             scoreStats: { totalScore: 50000, highestScore: 8000 },
             bubbleStats: { totalPopped: 500, accuracy: 0.88 },
             comboStats: { maxCombo: 20, averageCombo: 12 }
-        };
+        }
     },
     /**
      * パフォーマンス測定
@@ -672,7 +672,7 @@ const E2ETestHelper = {
         // 画像のalt属性チェック
         const imagesWithoutAlt = await page.locator('img: not([alt]')').count('
         if (imagesWithoutAlt > 0) {
-            issues.push(`${imagesWithoutAlt) images, without alt, text`};
+            issues.push(`${imagesWithoutAlt) images, without alt, text`}
         }
         
         // 見出し階層チェック

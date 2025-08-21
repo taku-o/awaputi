@@ -12,46 +12,38 @@ export interface ChartRendererOptions { enableResponsive?: boolean,
     maxDataPoints?: number;
     theme?: 'default' | 'dark' | 'light';
     locale?: string;
-
-export interface ThemeConfig { backgroundColor: string;
-    borderColor: string;
-    textColor: string;
+    export interface ThemeConfig { backgroundColor: string,
+    borderColor: string,
+    textColor: string,
     gridColor: string;
-
-export interface ChartConfig { label?: string,
+    export interface ChartConfig { label?: string,
     xAxisLabel?: string;
     yAxisLabel?: string;
     showLegend?: boolean;
-
     showTooltip?: boolean;
     legendPosition?: 'top' | 'bottom' | 'left' | 'right';
     dataCount?: number;
     chartOptions?: any;
     type?: string;
-
-export interface ChartDataUpdate { labels?: string[],
+    export interface ChartDataUpdate { labels?: string[],
     data?: number[];
     datasets?: any[];
-
-export interface ChartStatistics { totalCharts: number;
-    activeRealtimeCharts: number;
+    export interface ChartStatistics { totalCharts: number,
+    activeRealtimeCharts: number,
     chartTypes: Record<string, number>;
     memoryUsage: MemoryUsage;
-
-export interface MemoryUsage { estimatedDataPoints: number;
+    export interface MemoryUsage { estimatedDataPoints: number,
     estimatedMemoryKB: number;
-
-export type DataSourceCallback = () => ChartDataUpdate | null;
+    export type DataSourceCallback = () => ChartDataUpdate | null;
 
 // Declare Chart.js global interface
 declare global { interface Window {
     Chart: any;
     var Chart: any;
-}
-
+};
 export class AnalyticsChartRenderer {
     private options: Required<ChartRendererOptions>;
-    private charts: Map<string, any> }
+    private charts: Map<string, any> };
     private chartConfigs: Map<string, ChartConfig & { type: string;>;
     private updateTimers: Map<string, number>;
     private dataSourceCallbacks: Map<string, DataSourceCallback>;
@@ -59,7 +51,7 @@ export class AnalyticsChartRenderer {
     private currentTheme: ThemeConfig,
     private, useCanvasFallback: boolean,
 
-    constructor(options: ChartRendererOptions = { )) {
+    constructor(options: ChartRendererOptions = { ) {
         this.options = {
             enableResponsive: true,
             defaultWidth: 400,
@@ -68,7 +60,7 @@ export class AnalyticsChartRenderer {
     updateInterval: 1000, // リアルタイム更新間隔（1秒）,
             maxDataPoints: 50, // 表示する最大データポイント数,
             theme: 'default', // default, dark, light,
-            locale: 'ja-JP',
+            locale: 'ja-JP';
             ...options,
 
         this.charts = new Map();
@@ -76,9 +68,9 @@ export class AnalyticsChartRenderer {
 
         this.updateTimers = new Map();
         this.dataSourceCallbacks = new Map()';'
-           , backgroundColor: 'rgba(75, 192, 192, 0.2)',
-            borderColor: 'rgba(75, 192, 192, 1)',
-            textColor: '#333333',
+           , backgroundColor: 'rgba(75, 192, 192, 0.2),
+            borderColor: 'rgba(75, 192, 192, 1),
+            textColor: '#333333,
             gridColor: 'rgba(0, 0, 0, 0.1)' };
 
         this.initialize();
@@ -95,10 +87,8 @@ export class AnalyticsChartRenderer {
             };
             .catch(error => { '),'
                 console.error('Failed to load Chart.js:', error }
-                this.fallbackToCanvasRenderer(); }
-            };
-    }
-
+                this.fallbackToCanvasRenderer();     }
+}
     /**
      * Chart.jsの動的読み込み
      */'
@@ -116,7 +106,7 @@ export class AnalyticsChartRenderer {
             };
             script.onerror = reject;
             document.head.appendChild(script);
-        };
+        }
     }
 
     /**
@@ -126,7 +116,7 @@ export class AnalyticsChartRenderer {
         if(!this.Chart) return,
 ','
         // デフォルトフォント設定
-        this.Chart.defaults.font.family = '"Helvetica Neue", "Arial", sans-serif',
+        this.Chart.defaults.font.family = '"Helvetica Neue, "Arial", sans-serif',
         this.Chart.defaults.font.size = 12,
         
         // レスポンシブ設定
@@ -136,7 +126,7 @@ export class AnalyticsChartRenderer {
         // アニメーション設定
         this.Chart.defaults.animation.duration = this.options.animationDuration,
         // テーマに基づく色設定
-        this.applyTheme(this.options.theme) }
+        this.applyTheme(this.options.theme);
 
     /**
      * テーマの適用'
@@ -145,22 +135,22 @@ export class AnalyticsChartRenderer {
         if(!this.Chart) return,
 
         const themes: Record<string, ThemeConfig> = {'
-            default: {''
-                backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                borderColor: 'rgba(75, 192, 192, 1)',
-                textColor: '#333333',
+            default: { ''
+                backgroundColor: 'rgba(75, 192, 192, 0.2)'  },
+                borderColor: 'rgba(75, 192, 192, 1),
+                textColor: '#333333,
                 gridColor: 'rgba(0, 0, 0, 0.1)' },
 
             dark: { ''
-                backgroundColor: 'rgba(154, 205, 50, 0.2)',
-                borderColor: 'rgba(154, 205, 50, 1)',
-                textColor: '#ffffff',
+                backgroundColor: 'rgba(154, 205, 50, 0.2)'  },
+                borderColor: 'rgba(154, 205, 50, 1),
+                textColor: '#ffffff,
                 gridColor: 'rgba(255, 255, 255, 0.2)' },
 
             light: { ''
-                backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                borderColor: 'rgba(54, 162, 235, 1)',
-                textColor: '#000000',
+                backgroundColor: 'rgba(54, 162, 235, 0.2)'  },
+                borderColor: 'rgba(54, 162, 235, 1),
+                textColor: '#000000,
                 gridColor: 'rgba(0, 0, 0, 0.05)' }
         };
 
@@ -179,9 +169,9 @@ export class AnalyticsChartRenderer {
 ','
 
         const defaultConfig = {''
-            type: 'line',
+            type: 'line,
     data: {
-                labels: [],
+                labels: [] ,
                 datasets: [{]'
                     label: config.label || 'データ',],
                     data: [],
@@ -194,24 +184,24 @@ export class AnalyticsChartRenderer {
             options: { responsive: this.options.enableResponsive,
     scales: {
                     x: {
-                        display: true,
+                        display: true ,
     title: {'
-                            display: true,
+                            display: true ,
                             text: config.xAxisLabel || 'X軸'
             };
                         grid: { color: this.currentTheme.gridColor 
-    };
+     ,
                     y: { display: true,
     title: {'
-                            display: true,
+                            display: true ,
                             text: config.yAxisLabel || 'Y軸'
             };
                         grid: { color: this.currentTheme.gridColor 
-    };
+     ,
                 plugins: { legend: {
-                        display: config.showLegend !== false },
+                        display: config.showLegend !== false } },
                     tooltip: { enabled: config.showTooltip !== false 
-    };
+     ,
                 ...config.chartOptions;
         };
 
@@ -230,9 +220,9 @@ export class AnalyticsChartRenderer {
 ','
 
         const defaultConfig = {''
-            type: 'bar',
+            type: 'bar,
     data: {
-                labels: [],
+                labels: [] ,
                 datasets: [{]'
                     label: config.label || 'データ',],
                     data: [],
@@ -243,25 +233,25 @@ export class AnalyticsChartRenderer {
             options: { responsive: this.options.enableResponsive,
     scales: {
                     x: {
-                        display: true,
+                        display: true ,
     title: {'
-                            display: true,
+                            display: true ,
                             text: config.xAxisLabel || 'カテゴリ'
             };
                         grid: { color: this.currentTheme.gridColor 
-    };
+     ,
                     y: { display: true,
-                        beginAtZero: true,
+                        beginAtZero: true ,
     title: {'
-                            display: true,
+                            display: true ,
                             text: config.yAxisLabel || '値'
             };
                         grid: { color: this.currentTheme.gridColor 
-    };
+     ,
                 plugins: { legend: {
-                        display: config.showLegend !== false },
+                        display: config.showLegend !== false } },
                     tooltip: { enabled: config.showTooltip !== false 
-    };
+     ,
                 ...config.chartOptions;
         };
 
@@ -280,9 +270,9 @@ export class AnalyticsChartRenderer {
 ','
 
         const defaultConfig = {''
-            type: 'pie',
+            type: 'pie,
     data: {
-                labels: [],
+                labels: [] ,
                 datasets: [{]'
                     label: config.label || 'データ',],
                     data: [],
@@ -293,7 +283,7 @@ export class AnalyticsChartRenderer {
             options: { responsive: this.options.enableResponsive,
     plugins: {
                     legend: {'
-                        display: config.showLegend !== false,
+                        display: config.showLegend !== false ,
                         position: config.legendPosition || 'right'
             };
                     tooltip: { enabled: config.showTooltip !== false,
@@ -303,7 +293,7 @@ export class AnalyticsChartRenderer {
                                 const value = context.parsed,
                                 const total = context.dataset.data.reduce((a: number, b: number) => a + b, 0),
 
-                                const percentage = ((value / total) * 100).toFixed(1),' }'
+                                const percentage = ((value / total) * 100).toFixed(1),' }' };
 
                                 return `${label}: ${value} (${percentage}%')`;'
                 },
@@ -312,7 +302,7 @@ export class AnalyticsChartRenderer {
 
         const chart = new this.Chart(canvas.getContext('2d), defaultConfig';
         this.charts.set(canvasId, chart);
-        this.chartConfigs.set(canvasId, { ...config, type: 'pie ',
+        this.chartConfigs.set(canvasId, { ...config, type: 'pie ,
 
         return chart }
 
@@ -354,8 +344,8 @@ export class AnalyticsChartRenderer {
 }
                     if (chart.data.datasets[index]) { }
                         Object.assign(chart.data.datasets[index], newDataset); }
-                    } else { chart.data.datasets.push(newDataset) }
-                };
+                    } else { chart.data.datasets.push(newDataset);
+                }
             } else if (Array.isArray(newData.data) { // 単一データセットの場合
                 if (chart.data.datasets[0]) {
     
@@ -386,7 +376,7 @@ export class AnalyticsChartRenderer {
 
                 } catch (error) {
                 console.error('Realtime update failed:', error);
-                this.stopRealtimeUpdate(canvasId) }
+                this.stopRealtimeUpdate(canvasId);
         }, updateInterval);
 
         this.updateTimers.set(canvasId, timer);
@@ -397,7 +387,7 @@ export class AnalyticsChartRenderer {
      */
     stopRealtimeUpdate(canvasId: string): void { const timer = this.updateTimers.get(canvasId),
         if (timer) {
-            clearInterval(timer) }
+            clearInterval(timer);
             this.updateTimers.delete(canvasId); }
         }
         this.dataSourceCallbacks.delete(canvasId);
@@ -415,10 +405,8 @@ export class AnalyticsChartRenderer {
         }
 
         chart.data.datasets.forEach((dataset: any) => {  if (dataset.data.length > maxPoints) { }
-                dataset.data = dataset.data.slice(-maxPoints); }
-};
-    }
-
+                dataset.data = dataset.data.slice(-maxPoints);     }
+}
     /**
      * カラーパレットの生成
      */
@@ -432,7 +420,7 @@ export class AnalyticsChartRenderer {
             const lightness = 45 + (i % 2) * 10, // 45-55%
 
         }
-            colors.push(`hsla(${hue}, ${saturation}%, ${lightness}%, ${alpha}`};
+            colors.push(`hsla(${hue}, ${saturation}%, ${lightness}%, ${alpha}`}
         }
 
         return colors;
@@ -453,7 +441,7 @@ export class AnalyticsChartRenderer {
             // 適切な親要素に追加（存在する場合）
         }
             const container = document.getElementById(`${canvasId}-container`} || document.body; }
-            container.appendChild(canvas};
+            container.appendChild(canvas}
         }
 
         return canvas;
@@ -465,7 +453,7 @@ export class AnalyticsChartRenderer {
     destroyChart(canvasId: string): void { this.stopRealtimeUpdate(canvasId),
         const chart = this.charts.get(canvasId);
         if (chart) {
-            chart.destroy() }
+            chart.destroy();
             this.charts.delete(canvasId); }
         }
         
@@ -523,7 +511,7 @@ export class AnalyticsChartRenderer {
             
             if (index === 0) { }
                 ctx.moveTo(x, y); }
-            } else { ctx.lineTo(x, y) }
+            } else { ctx.lineTo(x, y);
         };
 
         ctx.stroke();
@@ -534,7 +522,7 @@ export class AnalyticsChartRenderer {
             const y = padding + height - ((value - minValue) / valueRange) * height,
             
             ctx.beginPath();
-            ctx.arc(x, y, 3, 0, 2 * Math.PI) }
+            ctx.arc(x, y, 3, 0, 2 * Math.PI);
             ctx.fill(); }
         };
 
@@ -551,7 +539,7 @@ export class AnalyticsChartRenderer {
     
 }
                     this.updateChartData(canvasId, newData); }
-                } catch (error) {
+        } catch (error) {
                 console.error(`Failed to update chart ${canvasId}:`, error);
             }
 }
@@ -577,9 +565,8 @@ export class AnalyticsChartRenderer {
     
 }
                 chart.data.datasets.forEach((dataset: any) => { }
-                    totalDataPoints += (dataset.data || []).length; }
-                };
-            }
+                    totalDataPoints += (dataset.data || []).length;     }
+}
         };
 
         return { estimatedDataPoints: totalDataPoints,
@@ -597,7 +584,7 @@ export class AnalyticsChartRenderer {
         }
 
         // 全てのチャートを削除
-        for (const canvasId of this.charts.keys() { this.destroyChart(canvasId) }
+        for (const canvasId of this.charts.keys() { this.destroyChart(canvasId);
 
         this.charts.clear();
         this.chartConfigs.clear();

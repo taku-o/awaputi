@@ -11,7 +11,7 @@ export class MockFactory {
    */
   static createCanvasMock() {
     const mockCanvas = {
-      width: 800;
+      width: 800,
       height: 600;
       getContext: jest.fn(() => ({
         // Basic drawing methods
@@ -189,7 +189,7 @@ export class MockFactory {
         ['errors', '/api/errors']
       ]);
       rateLimiting: {
-        enabled: true,
+        enabled: true },
         maxRequests: 100,
         timeWindow: 60000,
         currentRequests: 0
@@ -240,14 +240,14 @@ export class MockFactory {
         };
       // Memory information (if available);
       memory: {
-        usedJSHeapSize: Math.floor(10 * 1024 * 1024 * performanceFactor), // 10MB baseline
+        usedJSHeapSize: Math.floor(10 * 1024 * 1024 * performanceFactor), // 10MB baseline };
         totalJSHeapSize: Math.floor(50 * 1024 * 1024 * performanceFactor), // 50MB baseline
         jsHeapSizeLimit: Math.floor(2 * 1024 * 1024 * 1024 * performanceFactor) // 2GB baseline
       ),
       
       // Navigation timing
       timing: {
-        navigationStart: Date.now() - 5000,
+        navigationStart: Date.now() - 5000 },
         loadEventEnd: Date.now() - 1000,
         domContentLoadedEventEnd: Date.now() - 2000
       ),
@@ -290,7 +290,7 @@ export class MockFactory {
         tagName: tagName.toUpperCase(
         style: {,
         classList: {
-          add: jest.fn(
+          add: jest.fn( },
           remove: jest.fn(
           contains: jest.fn(() => false),
           toggle: jest.fn(
@@ -312,10 +312,10 @@ export class MockFactory {
       querySelectorAll: jest.fn(() => [],
         };
       body: {
-        appendChild: jest.fn(
+        appendChild: jest.fn( },
         removeChild: jest.fn(
         style: {)
-      ) };
+      ) }
   }
 
   /**

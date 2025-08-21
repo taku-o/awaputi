@@ -13,7 +13,7 @@ import { RealtimeMonitor  } from '../../src/analytics/RealtimeMonitor';
     createGain: jest.fn().mockReturnValue({,
         connect: jest.fn(
         gain: {
-            setValueAtTime: jest.fn(
+            setValueAtTime: jest.fn( },
             linearRampToValueAtTime: jest.fn(
         exponentialRampToValueAtTime: jest.fn( }
     );
@@ -40,7 +40,7 @@ describe('PerformanceWarningSystem', () => {
         realtimeMonitor = {
             isMonitoring: false,
             options: {
-                fpsThreshold: 30,
+                fpsThreshold: 30 },
                 memoryThreshold: 80
             }
         };
@@ -259,7 +259,7 @@ describe('PerformanceWarningSystem', () => {
                     id: `stats-test-${i}`;);
                     timestamp: Date.now(
                     ...warning
-                };
+                }
             }
             const stats = warningSystem.getWarningStatistics();
             expect(stats.totalWarnings).toBe(3);
@@ -276,7 +276,7 @@ describe('PerformanceWarningSystem', () => {
                     id: `clear-test-${i}`,
                     type: 'performance',
                     message: `テスト${i}`),
-                };
+                }
             }
             expect(warningSystem.activeWarnings.size).toBe(3);
             warningSystem.clearAllWarnings();
@@ -327,6 +327,6 @@ describe('PerformanceWarningSystem', () => {
             warningSystem.showWarning(warningData);
             expect(eventFired).toBe(true');'
             window.removeEventListener('performance-warning-displayed', eventListener);
-        };
+        }
     }
 }');'

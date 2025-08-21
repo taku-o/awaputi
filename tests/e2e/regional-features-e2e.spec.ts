@@ -12,25 +12,25 @@ import { test, expect } from '@playwright/test';
 const TEST_URL = 'http: //localhost:8000',
 const REGIONAL_CONFIGS = {
     'ja': {
-        numberFormat: '1,234.5',
+        numberFormat: '1,234.5' };
         dateFormat: /\d{4}年\d{1,2}月\d{1,2}日/,
         currency: '¥',
         firstDayOfWeek: 0 // Sunday
     },
     'en': {
-        numberFormat: '1,234.5',
+        numberFormat: '1,234.5' };
         dateFormat: /\d{1,2}\/\d{1,2}\/\d{4}/,
         currency: '$',
         firstDayOfWeek: 0 // Sunday
     },
     'de': {
-        numberFormat: '1.234,5',
+        numberFormat: '1.234,5' };
         dateFormat: /\d{1,2}\.\d{1,2}\.\d{4}/,
         currency: '€',
         firstDayOfWeek: 1 // Monday
     },
     'fr': {
-        numberFormat: '1 234,5',
+        numberFormat: '1 234,5' };
         dateFormat: /\d{1,2}\/\d{1,2}\/\d{4}/,
         currency: '€',
         firstDayOfWeek: 1 // Monday
@@ -192,7 +192,7 @@ test.describe('地域化機能E2Eテスト', () => {
                     yesterday: rtf.format(-1, 'day');
                     tomorrow: rtf.format(1, 'day');
                     lastWeek: rtf.format(-1, 'week');
-                    inHours: rtf.format(3, 'hour') };
+                    inHours: rtf.format(3, 'hour') }
             }
             
             return results;
@@ -385,7 +385,7 @@ test.describe('地域化機能E2Eテスト', () => {
                 expect(scoreText).toMatch(/\d{1,3}( \d{3)*/) } else {
                 expect(scoreText).toMatch(/\d{1,3}(\d{3)*/) }
         }
-    };
+    }
 }');'
 
 // 文化的適応テスト
@@ -492,5 +492,5 @@ test.describe('文化的適応機能E2Eテスト', () => {
         // アラビア語のジェスチャー規約
         expect(gestureConventions.ar.leftHand').toBe('avoid');'
         expect(gestureConventions.ar.thumbUp').toBe('acceptable');'
-    };
+    }
 }');'

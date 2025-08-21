@@ -4,26 +4,26 @@
  */
 
 // Configuration change interfaces
-interface GlobalConfigChange { key: string;
-    newValue: any;
+interface GlobalConfigChange { key: string,
+    newValue: any,
     oldValue: any;
     metadata?: {
         timestam,p: number;
-        source?: string;
-        reason?: string,  }
+    source?: string;
+    reason?: string }
 
-interface ConfigFileChange { type: 'modified' | 'added' | 'deleted';
+interface ConfigFileChange { type: 'modified' | 'added' | 'deleted,
     file: string;
     key?: string;
     timestamp: number;
 
 // Configuration recommendation interfaces
-interface ConfigRecommendation { key: string;
-    value: any;
-    reason: string;
-    confidence: number;
-    autoApply: boolean;
-    impact: string;
+interface ConfigRecommendation { key: string,
+    value: any,
+    reason: string,
+    confidence: number,
+    autoApply: boolean,
+    impact: string,
     priority: 'low' | 'medium' | 'high' | 'critical'
             }
 ';'
@@ -38,24 +38,23 @@ interface ConfigNotification { ''
     timestamp: number;
 
 // System integration interfaces
-interface OptimizationSystems { frameStabilizer: any | null;
-    memoryManager: any | null;
-    qualityController: any | null;
-    renderOptimizer: any | null;
+interface OptimizationSystems { frameStabilizer: any | null,
+    memoryManager: any | null,
+    qualityController: any | null,
+    renderOptimizer: any | null,
     mobileOptimizer: any | null }
 
-interface ActiveIntegrations { configurationManager: boolean;
-    frameStabilizer: boolean;
-    memoryManager: boolean;
-    qualityController: boolean;
-    renderOptimizer: boolean;
-    mobileOptimizer: boolean;
+interface ActiveIntegrations { configurationManager: boolean,
+    frameStabilizer: boolean,
+    memoryManager: boolean,
+    qualityController: boolean,
+    renderOptimizer: boolean,
+    mobileOptimizer: boolean,
     monitoringSystem: boolean;
-
-interface MonitorStatus { integrations: ActiveIntegrations;
-    lastSyncTime: number | null;
-    pendingChanges: SyncChange[];
-    watchingFiles: boolean;
+    interface MonitorStatus { integrations: ActiveIntegrations,
+    lastSyncTime: number | null,
+    pendingChanges: SyncChange[],
+    watchingFiles: boolean,
     notificationSubscribers: number;
 
 // Sync change interfaces
@@ -88,12 +87,11 @@ declare global { interface Window {''
 ';'
 // Type definitions
 type ConfigCategory = 'frameStabilization' | 'memoryManagement' | 'qualityControl' | 'rendering' | 'mobile' | 'general';
-type ConfigChangeCallback = (config: any) => void;
-type NotificationCallback = (notification: ConfigNotification) => void;
-type ConfigFileChangeCallback = (changes: ConfigFileChange[]) => void;
-type UnsubscribeFunction = () => void;
-
-export class ConfigurationMonitor {
+    type ConfigChangeCallback = (config: any) => void;
+    type NotificationCallback = (notification: ConfigNotification) => void;
+    type ConfigFileChangeCallback = (changes: ConfigFileChange[]) => void;
+    type UnsubscribeFunction = () => void;
+    export class ConfigurationMonitor {
     private mainController: MainController;
     private optimizationSystems: OptimizationSystems;
     private globalConfigManager: any;
@@ -105,21 +103,19 @@ export class ConfigurationMonitor {
     constructor(mainController: MainController) {
 
         this.mainController = mainController;
-        this.optimizationSystems = {
-            frameStabilizer: null;
-            memoryManager: null;
-            qualityController: null;
-    renderOptimizer: null;
-            mobileOptimizer: null;
-        this.globalConfigManager = null;
-        this.monitoringSystem = null;
-        this.configWatcher = null;
-
-        this.syncManager = new ConfigSyncManager();
-        this.notificationSystem = new ConfigNotificationSystem()';'
+    this.optimizationSystems = {
+            frameStabilizer: null,
+    memoryManager: null,
+    qualityController: null,
+    renderOptimizer: null,
+    mobileOptimizer: null;
+    this.globalConfigManager = null;
+    this.monitoringSystem = null;
+    this.configWatcher = null;
+    this.syncManager = new ConfigSyncManager();
+    this.notificationSystem = new ConfigNotificationSystem()';'
         console.log('[ConfigurationMonitor] Monitor, component initialized);'
-    }
-    
+    };
     /**
      * Initialize monitor components
      */
@@ -137,34 +133,33 @@ export class ConfigurationMonitor {
         // パフォーマンス最適化システムとの統合
         await this.integrateWithOptimizationSystems();
         // 監視システムとの統合
-        await this.integrateWithMonitoringSystems() }
+        await this.integrateWithMonitoringSystems();
     
     /**
      * Integrate with global configuration manager
      */
     private async integrateWithConfigurationManager(): Promise<void> { if (window.getConfigurationManager) {''
             this.globalConfigManager = window.getConfigurationManager('';
-                'performance.targetFPS',
-                'performance.adaptiveQuality',
-                'performance.memoryManagement',
-                'performance.renderingOptimization',
-                'performance.mobileOptimization',
+                'performance.targetFPS,
+                'performance.adaptiveQuality,
+                'performance.memoryManagement,
+                'performance.renderingOptimization,
+                'performance.mobileOptimization,
             ])
 ),
             for (const key of performanceKeys) {
     
 }
                 this.globalConfigManager.watch(key, (newValue: any, oldValue: any) => {  }
-                    this.handleGlobalConfigChange(key, newValue, oldValue); }
-                };
-            }
+                    this.handleGlobalConfigChange(key, newValue, oldValue);     }
+}
 }
     
     /**
      * Integrate with optimization systems
      */
     private async integrateWithOptimizationSystems(): Promise<void> { // 各最適化システムとの統合ポイントを設定
-        await this.detectAndIntegrateOptimizationSystems() }
+        await this.detectAndIntegrateOptimizationSystems();
     
     /**
      * Detect and integrate optimization systems
@@ -208,9 +203,8 @@ export class ConfigurationMonitor {
             this.mainController.configManager.onConfigChange('frameStabilization', (config: any) => { 
          }
                 if (this.optimizationSystems.frameStabilizer) { }
-                    this.optimizationSystems.frameStabilizer.updateConfiguration(config); }
-};
-        }
+                    this.optimizationSystems.frameStabilizer.updateConfiguration(config);     }
+}
     }
     
     /**
@@ -222,9 +216,8 @@ export class ConfigurationMonitor {
             this.mainController.configManager.onConfigChange('memoryManagement', (config: any) => { 
          }
                 if (this.optimizationSystems.memoryManager) { }
-                    this.optimizationSystems.memoryManager.updateConfiguration(config); }
-};
-        }
+                    this.optimizationSystems.memoryManager.updateConfiguration(config);     }
+}
     }
     
     /**
@@ -236,9 +229,8 @@ export class ConfigurationMonitor {
             this.mainController.configManager.onConfigChange('qualityControl', (config: any) => { 
          }
                 if (this.optimizationSystems.qualityController) { }
-                    this.optimizationSystems.qualityController.updateConfiguration(config); }
-};
-        }
+                    this.optimizationSystems.qualityController.updateConfiguration(config);     }
+}
     }
     
     /**
@@ -250,9 +242,8 @@ export class ConfigurationMonitor {
             this.mainController.configManager.onConfigChange('rendering', (config: any) => { 
          }
                 if (this.optimizationSystems.renderOptimizer) { }
-                    this.optimizationSystems.renderOptimizer.updateConfiguration(config); }
-};
-        }
+                    this.optimizationSystems.renderOptimizer.updateConfiguration(config);     }
+}
     }
     
     /**
@@ -264,9 +255,8 @@ export class ConfigurationMonitor {
             this.mainController.configManager.onConfigChange('mobile', (config: any) => { 
          }
                 if (this.optimizationSystems.mobileOptimizer) { }
-                    this.optimizationSystems.mobileOptimizer.updateConfiguration(config); }
-};
-        }
+                    this.optimizationSystems.mobileOptimizer.updateConfiguration(config);     }
+}
     }
     
     /**
@@ -274,7 +264,7 @@ export class ConfigurationMonitor {
      */
     private async integrateWithMonitoringSystems(): Promise<void> { if (window.PerformanceMonitoringSystem) {
             this.monitoringSystem = window.PerformanceMonitoringSystem;
-            this.setupMonitoringIntegration() }
+            this.setupMonitoringIntegration();
     }
     
     /**
@@ -318,7 +308,7 @@ export class ConfigurationMonitor {
             
         } catch (error) {
             console.error(`[ConfigurationMonitor] Failed to handle global config change for ${key}:`, error);
-            if (this.errorHandler) { await this.errorHandler.handleConfigError(key, error) }
+            if (this.errorHandler) { await this.errorHandler.handleConfigError(key, error);
 }
     
     /**
@@ -333,14 +323,12 @@ export class ConfigurationMonitor {
             if (recommendation.autoApply && recommendation.confidence > 0.8) {''
                 if (this.mainController.applyConfigChange) {
                     await this.mainController.applyConfigChange(recommendation.key, recommendation.value, {)'
-                        reason: 'performance_feedback',
+                        reason: 'performance_feedback,
     confidence: recommendation.confidence }
                         automatic: true); 
     } else {  // 手動承認が必要な推奨事項 }
-                await this.notificationSystem.notifyRecommendation(recommendation); }
+                await this.notificationSystem.notifyRecommendation(recommendation);     }
 }
-    }
-    
     /**
      * Generate configuration recommendations based on metrics
      * @param metrics - Performance metrics
@@ -349,21 +337,21 @@ export class ConfigurationMonitor {
     async generateConfigRecommendations(metrics: Map<string, any>): Promise<ConfigRecommendation[]> { const recommendations: ConfigRecommendation[] = [],
         // フレームレートベースの推奨事項
         if(metrics.has('fps)' {''
-            const fps = metrics.get('fps',
+            const fps = metrics.get('fps,
             if (fps < 50) {
                 recommendations.push({''
-                    key: 'performance.adaptiveQuality.enabled',
+                    key: 'performance.adaptiveQuality.enabled,
                     value: true,
                     reason: 'Low frame rate detected),'
                     confidence: 0.9','
     autoApply: true,
-                    impact: 'Should improve frame rate',')',
+                    impact: 'Should improve frame rate,')',
                     priority: 'high')'),'
 ','
 
                 recommendations.push({''
-                    key: 'performance.qualityLevel',
-                    value: 'medium',
+                    key: 'performance.qualityLevel,
+                    value: 'medium,
                     reason: 'Reduce quality to improve performance),'
                     confidence: 0.8','
     autoApply: false,
@@ -374,21 +362,21 @@ export class ConfigurationMonitor {
 ';'
         // メモリ使用量ベースの推奨事項
         if(metrics.has('memory_used)' { ''
-            const memoryUsed = metrics.get('memory_used',
+            const memoryUsed = metrics.get('memory_used,
             if (memoryUsed > 100 * 1024 * 1024) {
                 // 100MB以上
                 recommendations.push({''
-                    key: 'performance.memoryManagement.aggressiveCleanup',
+                    key: 'performance.memoryManagement.aggressiveCleanup,
                     value: true,
                     reason: 'High memory usage detected),'
                     confidence: 0.85','
     autoApply: true,
-                    impact: 'Will reduce memory usage',')',
+                    impact: 'Will reduce memory usage,')',
                     priority: 'high')'),'
 ','
 
                 recommendations.push({''
-                    key: 'performance.memoryManagement.gcInterval',
+                    key: 'performance.memoryManagement.gcInterval,
                     value: 30000, // 30秒間隔,
                     reason: 'Increase GC frequency for better memory management),'
                     confidence: 0.7','
@@ -400,10 +388,10 @@ export class ConfigurationMonitor {
 ';'
         // CPU使用率ベースの推奨事項
         if(metrics.has('cpu_usage)' { ''
-            const cpuUsage = metrics.get('cpu_usage',
+            const cpuUsage = metrics.get('cpu_usage,
             if (cpuUsage > 80) {
                 recommendations.push({''
-                    key: 'rendering.batchRendering',
+                    key: 'rendering.batchRendering,
                     value: true,
                     reason: 'High CPU usage detected),'
                     confidence: 0.8','
@@ -428,13 +416,12 @@ export class ConfigurationMonitor {
     
 }
                 await this.processConfigFileChange(change); }
-            } catch (error) { console.error(`[ConfigurationMonitor] Failed to process config file change:`, error);
+        } catch (error) { console.error(`[ConfigurationMonitor] Failed to process config file change:`, error);
                 if (this.errorHandler) {
     
 }
-                    await this.errorHandler.handleConfigError(change.key || change.file, error); }
+                    await this.errorHandler.handleConfigError(change.key || change.file, error);     }
 }
-        }
     }
     
     /**
@@ -451,7 +438,7 @@ export class ConfigurationMonitor {
                 await this.handleConfigAddition(change);
                 break,
             case 'deleted':,
-                await this.handleConfigDeletion(change) }
+                await this.handleConfigDeletion(change);
                 break; }
 }
     
@@ -465,7 +452,7 @@ export class ConfigurationMonitor {
 }
             await this.mainController.validationEngine.validateConfigFile(change.file); }
         }
-        if (this.mainController.configManager) { await this.mainController.configManager.reloadConfig(change.file) }
+        if (this.mainController.configManager) { await this.mainController.configManager.reloadConfig(change.file);
         await this.syncManager.syncFileChange(change);
     }
     
@@ -530,7 +517,7 @@ export class ConfigurationMonitor {
                 break;
 
             case 'mobile':
-                if (this.optimizationSystems.mobileOptimizer) { await this.optimizationSystems.mobileOptimizer.handleConfigChange(key, value) }
+                if (this.optimizationSystems.mobileOptimizer) { await this.optimizationSystems.mobileOptimizer.handleConfigChange(key, value);
                 break;
         }
     }
@@ -541,11 +528,11 @@ export class ConfigurationMonitor {
      * @returns Category name'
      */''
     private categorizeConfigKey(key: string): ConfigCategory { ''
-        if (key.includes('frame') || key.includes('fps)' return 'frameStabilization',
-        if (key.includes('memory') || key.includes('gc)' return 'memoryManagement',
-        if (key.includes('quality') || key.includes('level)' return 'qualityControl',
-        if(key.includes('render)' return 'rendering',
-        if(key.includes('mobile)' return 'mobile',
+        if (key.includes('frame') || key.includes('fps)' return 'frameStabilization,
+        if (key.includes('memory') || key.includes('gc)' return 'memoryManagement,
+        if (key.includes('quality') || key.includes('level)' return 'qualityControl,
+        if(key.includes('render)' return 'rendering,
+        if(key.includes('mobile)' return 'mobile,
         return 'general' }
     
     /**
@@ -557,7 +544,7 @@ export class ConfigurationMonitor {
             memoryManager: !!this.optimizationSystems.memoryManager,
             qualityController: !!this.optimizationSystems.qualityController,
             renderOptimizer: !!this.optimizationSystems.renderOptimizer,
-    mobileOptimizer: !!this.optimizationSystems.mobileOptimizer },
+    mobileOptimizer: !!this.optimizationSystems.mobileOptimizer ,
             monitoringSystem: !!this.monitoringSystem 
     }
     
@@ -566,9 +553,9 @@ export class ConfigurationMonitor {
      * @returns Monitor status
      */
     getMonitorStatus(): MonitorStatus { return { integrations: this.getActiveIntegrations(
-            lastSyncTime: this.syncManager.getLastSyncTime();
+            lastSyncTime: this.syncManager.getLastSyncTime(),
             pendingChanges: this.syncManager.getPendingChanges(
-    watchingFiles: !!this.configWatcher },
+    watchingFiles: !!this.configWatcher ,
             notificationSubscribers: this.notificationSystem.getSubscriberCount(); 
     }
     
@@ -608,12 +595,12 @@ export class ConfigurationMonitor {
             this.configWatcher.stopWatching();
             this.configWatcher = null }
         
-        if (this.syncManager) { this.syncManager.destroy() }
+        if (this.syncManager) { this.syncManager.destroy();
         
         if (this.notificationSystem) {
         ';'
 
-            this.notificationSystem.destroy() }
+            this.notificationSystem.destroy();
 
         console.log('[ConfigurationMonitor] Monitor, destroyed'); }'
 }
@@ -631,7 +618,7 @@ class ConfigSyncManager { private lastSyncTime: number | null
         this.syncInterval = null; }
     }
 
-    async initialize(): Promise<void> { this.startPeriodicSync() }
+    async initialize(): Promise<void> { this.startPeriodicSync();
 
     private startPeriodicSync(): void { this.syncInterval = setInterval(() => {  }
             this.performSync(); }
@@ -657,17 +644,17 @@ class ConfigSyncManager { private lastSyncTime: number | null
 
     async syncGlobalChange(key: string, value: any): Promise<void> { }'
 
-        this.pendingChanges.add({ type: 'global', key, value, timestamp: Date.now(  };
+        this.pendingChanges.add({ type: 'global', key, value, timestamp: Date.now(  }
     }
 
     async syncConfigChange(key: string, value: any): Promise<void> { }'
 
-        this.pendingChanges.add({ type: 'local', key, value, timestamp: Date.now(  };
+        this.pendingChanges.add({ type: 'local', key, value, timestamp: Date.now(  }
     }
 
     async syncFileChange(change: ConfigFileChange): Promise<void> { }'
 
-        this.pendingChanges.add({ type: 'file', ...change, timestamp: Date.now(  };
+        this.pendingChanges.add({ type: 'file', ...change, timestamp: Date.now(  }
     }
 
     private async syncChange(change: SyncChange): Promise<void> { ''
@@ -676,10 +663,10 @@ class ConfigSyncManager { private lastSyncTime: number | null
 
     getLastSyncTime(): number | null { return this.lastSyncTime }
 
-    getPendingChanges(): SyncChange[] { return Array.from(this.pendingChanges) }
+    getPendingChanges(): SyncChange[] { return Array.from(this.pendingChanges);
 
     setSyncInterval(interval: number): void { if (this.syncInterval) {
-            clearInterval(this.syncInterval) }
+            clearInterval(this.syncInterval);
         this.syncInterval = setInterval(() => { this.performSync() }, interval);
     }
 
@@ -704,20 +691,20 @@ class ConfigNotificationSystem { private subscribers: Set<NotificationCallback>
     subscribe(callback: NotificationCallback): UnsubscribeFunction { this.subscribers.add(callback);
         return () => this.subscribers.delete(callback);
     async notifyConfigChange(key: string, newValue: any, oldValue: any, metadata?: any): Promise<void> { const notification: ConfigNotification = {''
-            type: 'config_change',
+            type: 'config_change,
             key,
             newValue,
             oldValue,
             metadata,
-            timestamp: Date.now(  },
+            timestamp: Date.now(  ,
 
         this.broadcast(notification);
     }
 
     async notifyRecommendation(recommendation: ConfigRecommendation): Promise<void> { const notification: ConfigNotification = {''
-            type: 'recommendation',
+            type: 'recommendation,
             recommendation,
-            timestamp: Date.now(  },
+            timestamp: Date.now(  ,
 
         this.broadcast(notification);
     }
@@ -731,7 +718,7 @@ class ConfigNotificationSystem { private subscribers: Set<NotificationCallback>
 
     getSubscriberCount(): number { return this.subscribers.size }
 
-    destroy(): void { this.subscribers.clear() }
+    destroy(): void { this.subscribers.clear();
 
 // 設定ファイル監視器
 class ConfigFileWatcher { private watchers: Map<string, any>,
@@ -740,7 +727,7 @@ class ConfigFileWatcher { private watchers: Map<string, any>,
     constructor() {
 
         this.watchers = new Map<string, any>(),
-        this.changeCallbacks = new Set<ConfigFileChangeCallback>() }
+        this.changeCallbacks = new Set<ConfigFileChangeCallback>();
         this.watching = false; }
     }
 

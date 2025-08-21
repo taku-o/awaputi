@@ -5,58 +5,47 @@ import { getErrorHandler  } from '../../utils/ErrorHandler.js';
  */
 
 // 型定義
-export interface OptimizationSettings { debounceDelay: number;
-    autoComplete: boolean;
-    smartSpacing: boolean;
+export interface OptimizationSettings { debounceDelay: number,
+    autoComplete: boolean,
+    smartSpacing: boolean,
     predictiveText: boolean;
-
-export interface HangulComponent { char: string;
-    chosung: string;
-    jungsung: string;
+    export interface HangulComponent { char: string,
+    chosung: string,
+    jungsung: string,
     jongsung: string;
-
-export interface JamoComponent { char: string;
+    export interface JamoComponent { char: string,
     type: JamoType;
-
-export interface HangulAnalysis { char: string;
+    export interface HangulAnalysis { char: string;
     chosung?: string;
     jungsung?: string;
     jongsung?: string;
     type?: JamoType;
-
-export interface KoreanTextAnalysis { length: number;
-    syllables: number;
-    jamo: number;
-    words: string[];
+    export interface KoreanTextAnalysis { length: number,
+    syllables: number,
+    jamo: number,
+    words: string[],
     particles: string[];
-
-export interface InputEventHandlers { compositionstart: (event: CompositionEvent) => void;
-    compositionupdate: (event: CompositionEvent) => void;
-    compositionend: (event: CompositionEvent) => void;
-    input: (event: InputEvent) => void;
+    export interface InputEventHandlers { compositionstart: (event: CompositionEvent) => void,
+    compositionupdate: (event: CompositionEvent) => void,
+    compositionend: (event: CompositionEvent) => void,
+    input: (event: InputEvent) => void,
     keydown: (event: KeyboardEvent') => void  }'
 }
 
-export interface SpacingPattern { pattern: RegExp;
+export interface SpacingPattern { pattern: RegExp,
     replace: string;
-
-export interface HangulDecomposition { chosung: string;
-    jungsung: string;
+    export interface HangulDecomposition { chosung: string,
+    jungsung: string,
     jongsung: string;
-
-export interface KoreanInputStats { isComposing: boolean;
-    compositionText: string;
-    attachedInputs: number;
-    settings: OptimizationSettings;
+    export interface KoreanInputStats { isComposing: boolean,
+    compositionText: string,
+    attachedInputs: number,
+    settings: OptimizationSettings,
     hasKoreanIME: boolean;
-
-export interface AutoCompleteDatabase { [firstChar: string]: string[];
-
-export type JamoType = 'chosung' | 'jungsung' | 'jongsung' | 'unknown';
-
-export type InputElementType = HTMLInputElement | HTMLTextAreaElement;
-
-export class KoreanInputHandler {
+    export interface AutoCompleteDatabase { [firstChar: string]: string[];
+    export type JamoType = 'chosung' | 'jungsung' | 'jongsung' | 'unknown';
+    export type InputElementType = HTMLInputElement | HTMLTextAreaElement;
+    export class KoreanInputHandler {
     // ハングル文字の構成要素
     private readonly chosung: string[];
     private readonly jungsung: string[];
@@ -74,7 +63,7 @@ export class KoreanInputHandler {
     // 이벤트 리스너
     private, inputListeners: Map<HTMLElement, InputEventHandlers>,
 
-    constructor('',
+    constructor(',
         this.chosung = ['ㄱ', 'ㄲ', 'ㄴ', 'ㄷ', 'ㄸ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅃ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅉ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ],'
         this.jungsung = ['ㅏ', 'ㅐ', 'ㅑ', 'ㅒ', 'ㅓ', 'ㅔ', 'ㅕ', 'ㅖ', 'ㅗ', 'ㅘ', 'ㅙ', 'ㅚ', 'ㅛ', 'ㅜ', 'ㅝ', 'ㅞ', 'ㅟ', 'ㅠ', 'ㅡ', 'ㅢ', 'ㅣ],'
         this.jongsung = [', 'ㄱ', 'ㄲ', 'ㄳ', 'ㄴ', 'ㄵ', 'ㄶ', 'ㄷ', 'ㄹ', 'ㄺ', 'ㄻ', 'ㄼ', 'ㄽ', 'ㄾ', 'ㄿ', 'ㅀ', 'ㅁ', 'ㅂ', 'ㅄ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ],
@@ -85,20 +74,18 @@ export class KoreanInputHandler {
         
         // IME状態管理
         this.isComposing = false;
-        this.compositionText = ''
+    this.compositionText = ''
         
         // 입력 최적화 설정
         this.optimizationSettings = {
-            debounceDelay: 100;
-            autoComplete: true;
-            smartSpacing: true;
+            debounceDelay: 100,
+    autoComplete: true,
+    smartSpacing: true,
     predictiveText: false,))
         // 이벤트 리스너
         this.inputListeners = new Map<HTMLElement, InputEventHandlers>();
-        
-        this.initialize();
-    }
-    
+    this.initialize();
+    };
     /**
      * 초기화
      */''
@@ -133,7 +120,7 @@ export class KoreanInputHandler {
                 compositionupdate: this.handleCompositionUpdate.bind(this),
                 compositionend: this.handleCompositionEnd.bind(this),
                 input: this.handleInput.bind(this,
-    keydown: this.handleKeyDown.bind(this  },
+    keydown: this.handleKeyDown.bind(this  };
             
             // 이벤트 리스너 등록
             Object.entries(handlers).forEach(([event, handler]) => { inputElement.addEventListener(event handler as EventListener) };
@@ -182,7 +169,7 @@ export class KoreanInputHandler {
         ','
         // 한국어 입력 관련 속성
         inputElement.setAttribute('lang', 'ko');
-        inputElement.setAttribute('inputmode', 'text',
+        inputElement.setAttribute('inputmode, 'text',
         ','
         // 자동 완성 설정
         if (this.optimizationSettings.autoComplete) {', ' }
@@ -210,7 +197,7 @@ export class KoreanInputHandler {
         // 실시간 한글 조합 분석
         if (this.isHangul(this.compositionText) {
 
-            const analyzed = this.analyzeHangul(this.compositionText) }
+            const analyzed = this.analyzeHangul(this.compositionText);
 
             console.log('Composing Hangul:', analyzed); }
 }
@@ -250,10 +237,8 @@ export class KoreanInputHandler {
             if (event.key === ', ' && this.optimizationSettings.smartSpacing) {
                 // 스마트 띄어쓰기 처리
         }
-                this.handleSmartSpacing(event); }
+                this.handleSmartSpacing(event);     }
 }
-    }
-    
     /**
      * 한국어 입력 처리
      */
@@ -294,17 +279,15 @@ export class KoreanInputHandler {
             const spaced = this.optimizeSpacing(inputElement.value);
             if (spaced !== inputElement.value) {
         }
-                inputElement.value = spaced; }
+                inputElement.value = spaced;     }
 }
-    }
-    
     /**
      * 한글 여부 확인
      */
     private isHangul(text: string): boolean { if (!text) return false,
         
         const hangulRegex = /[가-힣ㄱ-ㅎㅏ-ㅣ]/,
-        return hangulRegex.test(text) }
+        return hangulRegex.test(text);
     
     /**
      * 한글 음절 분석
@@ -340,9 +323,9 @@ export class KoreanInputHandler {
      * 자모 타입 확인
      */
     private, getJamoType(char: string): JamoType { ''
-        if(this.chosung.includes(char)) return 'chosung',
-        if(this.jungsung.includes(char)) return 'jungsung',
-        if(this.jongsung.includes(char)) return 'jongsung',
+        if(this.chosung.includes(char)) return 'chosung,
+        if(this.jungsung.includes(char)) return 'jungsung,
+        if(this.jongsung.includes(char)) return 'jongsung,
         return 'unknown' }
     
     /**
@@ -354,12 +337,12 @@ export class KoreanInputHandler {
         // 간단한 패턴 매칭으로 자모 조합
         // 예: ㄱ + ㅏ = 가
         const simplePatterns: SpacingPattern[] = ['
-            }'
+            }
 
             { pattern: /ㄱㅏ/g, replace: '가'
-            },''
+            ,''
             { pattern: /ㄴㅏ/g, replace: '나'
-            },''
+            ,''
             { pattern: /ㄷㅏ/g, replace: '다'
             }]
             // ... 더 많은 패턴 추가 가능]
@@ -386,10 +369,8 @@ export class KoreanInputHandler {
         particles.forEach(particle => { );
             const pattern = new RegExp(` ${particle}`, 'g'}
             if (pattern.test(text) { }
-                input.value = text.replace(pattern, particle};
-            }
-        }
-    
+                input.value = text.replace(pattern, particle    }
+}
     /**
      * 띄어쓰기 최적화'
      */''
@@ -419,7 +400,7 @@ export class KoreanInputHandler {
             syllables: 0,
             jamo: 0,
             words: [],
-    particles: [] },
+    particles: [] ,
         // 음절 수 계산
         for (const char of text) {
             const code = char.charCodeAt(0);
@@ -440,7 +421,7 @@ export class KoreanInputHandler {
      */
     private isJamo(char: string): boolean { return this.chosung.includes(char) || 
                this.jungsung.includes(char) || ,
-               this.jongsung.includes(char) }
+               this.jongsung.includes(char);
     
     /**
      * 자동 완성 제안 생성'
@@ -516,7 +497,7 @@ export class KoreanInputHandler {
     getStats(): KoreanInputStats { return { isComposing: this.isComposing,
             compositionText: this.compositionText,
             attachedInputs: this.inputListeners.size,
-    settings: this.optimizationSettings },
+    settings: this.optimizationSettings ,
             hasKoreanIME: this.detectKoreanIME(); 
     }
     

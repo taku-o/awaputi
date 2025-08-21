@@ -11,50 +11,48 @@ import type { ConfigurationManager } from '../core/ConfigurationManager.js';
 import type { ErrorHandler } from './ErrorHandler.js';
 
 // 型定義インターフェース
-interface BubbleConfig { health: number;
-    size: number;
-    maxAge: number;
-    color: string;
+interface BubbleConfig { health: number,
+    size: number,
+    maxAge: number,
+    color: string,
     score: number;
     [key: string]: any, // 特殊効果プロパティ  }
 
-interface MigrationResults { migrationId: string;
+interface MigrationResults { migrationId: string,
     startTime: number;
     endTime?: number;
     duration?: number;
-    migratedTypes: string[];
-    errors: MigrationError[];
+    migratedTypes: string[],
+    errors: MigrationError[],
     totalMigrated: number;
     success?: boolean;
-    error?: string,  }
+    error?: string }
 
-interface MigrationError { bubbleType: string;
+interface MigrationError { bubbleType: string,
     error: string;
-
-interface ValidationResults { timestamp: number;
-    validated: string[];
-    missing: MissingProperty[];
+    interface ValidationResults { timestamp: number,
+    validated: string[],
+    missing: MissingProperty[],
     inconsistent: any[];
     error?: string;
-
-interface MissingProperty { bubbleType: string;
+    interface MissingProperty { bubbleType: string,
     missingProperties: {
         healt,h: boolean;
-        size: boolean;
-    score: boolean;
+    },
+        size: boolean,
+    score: boolean,
     score: boolean;
         };
-interface RollbackResults { success: boolean;
+interface RollbackResults { success: boolean,
     migrationId: string;
     rolledBackCount?: number;
     timestamp: number;
     error?: string;
-
-interface MigrationStats { totalMigrations: number;
-    successfulMigrations: number;
-    failedMigrations: number;
-    successRate: string;
-    totalMigratedTypes: number;
+    interface MigrationStats { totalMigrations: number,
+    successfulMigrations: number,
+    failedMigrations: number,
+    successRate: string,
+    totalMigratedTypes: number,
     lastMigration: MigrationResults | null }
 
 export class ConfigurationMigrationUtility {
@@ -74,14 +72,14 @@ export class ConfigurationMigrationUtility {
      * @returns {Promise<MigrationResults>} 移行結果
      */
     async migrateBubbleConfigurations(): Promise<MigrationResults> {'
-        const migrationId = `bubble_migration_${Date.now())`,
+        const migrationId = `bubble_migration_${Date.now()),
         const startTime = Date.now()','
             console.log('[ConfigurationMigrationUtility] 泡設定の移行開始');
             const migrationResults: MigrationResults = { migrationId,
                 startTime,
                 migratedTypes: [],
                 errors: [],
-    totalMigrated: 0  },
+    totalMigrated: 0  };
             // 基本泡タイプの設定
             const basicBubbleTypes = [';'
                 'normal', 'stone', 'iron', 'diamond', 'boss', 'pink', 'poison', ]';'
@@ -93,9 +91,9 @@ export class ConfigurationMigrationUtility {
                 try {
                     const migrated = await this._migrateBubbleType(bubbleType);
                     if (migrated) {
-                        migrationResults.migratedTypes.push(bubbleType) }
+                        migrationResults.migratedTypes.push(bubbleType);
                         migrationResults.totalMigrated++; }
-                    } catch (error) { migrationResults.errors.push({)
+        } catch (error) { migrationResults.errors.push({)
                         bubbleType,
 
                         error: (error, as Error).message' }'
@@ -119,20 +117,18 @@ export class ConfigurationMigrationUtility {
                 try {
                     const migrated = await this._migrateBubbleType(bubbleType);
                     if (migrated) {
-                        migrationResults.migratedTypes.push(bubbleType) }
+                        migrationResults.migratedTypes.push(bubbleType);
                         migrationResults.totalMigrated++; }
-                    } catch (error) { migrationResults.errors.push({)
+        } catch (error) { migrationResults.errors.push({)
                         bubbleType,
 
                         error: (error, as Error).message' }'
 
                     }');'
                     this.errorHandler.handleError(error as Error, 'MIGRATION_ERROR', { ')'
-                        context: 'ConfigurationMigrationUtility.migrateBubbleConfigurations'),
-                        bubbleType };
-                }
-            }
-            
+                        context: 'ConfigurationMigrationUtility.migrateBubbleConfigurations');
+                        bubbleType     }
+}
             migrationResults.endTime = Date.now();
             migrationResults.duration = migrationResults.endTime - migrationResults.startTime;
             migrationResults.success = migrationResults.errors.length === 0;
@@ -150,11 +146,11 @@ export class ConfigurationMigrationUtility {
             
             return { migrationId,
                 startTime,
-                endTime: Date.now();
+                endTime: Date.now(),
                 success: false,
     error: (error, as Error).message,
                 migratedTypes: [],
-    errors: [] },
+    errors: [] ,
                 totalMigrated: 0 
     }
     }
@@ -215,7 +211,7 @@ export class ConfigurationMigrationUtility {
         if (migrated) {
     
 }
-            console.log(`[ConfigurationMigrationUtility] 移行完了: ${bubbleType}`};
+            console.log(`[ConfigurationMigrationUtility] 移行完了: ${bubbleType}`}
         }
         
         return migrated;
@@ -229,121 +225,121 @@ export class ConfigurationMigrationUtility {
      */''
     private _getHardcodedBubbleConfig(bubbleType: string): BubbleConfig | null { const configs: Record<string, BubbleConfig> = {
             normal: {
-                health: 1,
+                health: 1 ,
     size: 50,
                 maxAge: 12000,
-                color: '#87CEEB',
-    score: 15  },
+                color: '#87CEEB,
+    score: 15  ,
             stone: { health: 2,
-    size: 55,
+    size: 55 ,
                 maxAge: 16000,
-                color: '#696969',
-    score: 35  },
+                color: '#696969,
+    score: 35  ,
             iron: { health: 3,
-    size: 60,
+    size: 60 ,
                 maxAge: 20000,
-                color: '#708090',
-    score: 65  },
+                color: '#708090,
+    score: 65  ,
             diamond: { health: 4,
-    size: 65,
+    size: 65 ,
                 maxAge: 22000,
-                color: '#B0E0E6',
-    score: 120  },
+                color: '#B0E0E6,
+    score: 120  ,
             pink: { health: 1,
-    size: 45,
+    size: 45 ,
                 maxAge: 10000,
-                color: '#FFB6C1',
+                color: '#FFB6C1,
                 score: 25,
-    healAmount: 25  },
+    healAmount: 25  ,
             poison: { health: 1,
-    size: 48,
+    size: 48 ,
                 maxAge: 14000,
-                color: '#9370DB',
+                color: '#9370DB,
                 score: 8,
-    damageAmount: 8  },
+    damageAmount: 8  ,
             spiky: { health: 1,
-    size: 52,
+    size: 52 ,
                 maxAge: 13000,
-                color: '#FF6347',
+                color: '#FF6347,
                 score: 85,
-    chainRadius: 120  },
+    chainRadius: 120  ,
             rainbow: { health: 1,
-    size: 55,
+    size: 55 ,
                 maxAge: 16000,
-                color: '#FF69B4',
+                color: '#FF69B4,
                 score: 400,
-    bonusTimeMs: 8000  },
+    bonusTimeMs: 8000  ,
             clock: { health: 1,
-    size: 50,
+    size: 50 ,
                 maxAge: 20000,
-                color: '#FFD700',
+                color: '#FFD700,
                 score: 180,
-    timeStopMs: 2500  },
+    timeStopMs: 2500  ,
             score: { health: 1,
-    size: 48,
+    size: 48 ,
                 maxAge: 9000,
-                color: '#32CD32',
+                color: '#32CD32,
                 score: 250,
-    bonusScore: 80  },
+    bonusScore: 80  ,
             electric: { health: 1,
-    size: 50,
+    size: 50 ,
                 maxAge: 13000,
-                color: '#FFFF00',
+                color: '#FFFF00,
                 score: 20,
                 shakeIntensity: 15,
-    disableDuration: 1500  },
+    disableDuration: 1500  ,
             escaping: { health: 1,
-    size: 45,
+    size: 45 ,
                 maxAge: 16000,
-                color: '#FF8C00',
+                color: '#FF8C00,
                 score: 50,
                 escapeSpeed: 180,
-    escapeRadius: 90  },
+    escapeRadius: 90  ,
             cracked: { health: 1,
-    size: 52,
+    size: 52 ,
                 maxAge: 6000,
-                color: '#8B4513',
-    score: 30  },
+                color: '#8B4513,
+    score: 30  ,
             boss: { health: 8,
-    size: 90,
+    size: 90 ,
                 maxAge: 35000,
-                color: '#8B0000',
-    score: 800  },
+                color: '#8B0000,
+    score: 800  ,
             // 新しい泡タイプ
             golden: { health: 1,
-                size: 55,
+                size: 55 ,
     maxAge: 8000,
-                color: '#FFD700',
+                color: '#FFD700,
                 score: 500,
-    multiplier: 2.0  },
+    multiplier: 2.0  ,
             frozen: { health: 2,
-    size: 50,
+    size: 50 ,
                 maxAge: 25000,
-                color: '#87CEEB',
+                color: '#87CEEB,
                 score: 100,
-    slowEffect: 0.5  },
+    slowEffect: 0.5  ,
             magnetic: { health: 1,
-    size: 48,
+    size: 48 ,
                 maxAge: 15000,
-                color: '#FF1493',
+                color: '#FF1493,
                 score: 150,
-    magnetRadius: 100  },
+    magnetRadius: 100  ,
             explosive: { health: 1,
-    size: 52,
+    size: 52 ,
                 maxAge: 10000,
-                color: '#FF4500',
+                color: '#FF4500,
                 score: 200,
-    explosionRadius: 150  },
+    explosionRadius: 150  ,
             phantom: { health: 1,
-    size: 45,
+    size: 45 ,
                 maxAge: 12000,
-                color: '#9370DB',
+                color: '#9370DB,
                 score: 300,
-    phaseChance: 0.3  },
+    phaseChance: 0.3  ,
             multiplier: { health: 1,
-    size: 50,
+    size: 50 ,
                 maxAge: 18000,
-                color: '#32CD32',
+                color: '#32CD32,
                 score: 100,
     scoreMultiplier: 3.0  }
         };
@@ -380,10 +376,10 @@ export class ConfigurationMigrationUtility {
      */
     async validateMigration(): Promise<ValidationResults> { try {
             const validationResults: ValidationResults = {''
-                timestamp: Date.now('',
-                'normal', 'stone', 'iron', 'diamond', 'boss', 'pink', 'poison',
-                'spiky', 'rainbow', 'clock', 'score', 'electric', 'escaping', 'cracked',
-                'golden', 'frozen', 'magnetic', 'explosive', 'phantom', 'multiplier',
+                timestamp: Date.now(',
+                'normal, 'stone', 'iron', 'diamond', 'boss', 'pink', 'poison',
+                'spiky, 'rainbow', 'clock', 'score', 'electric', 'escaping', 'cracked',
+                'golden, 'frozen', 'magnetic', 'explosive', 'phantom', 'multiplier',
             ],', ')','
             for (const bubbleType of bubbleTypes) {
 
@@ -391,14 +387,13 @@ export class ConfigurationMigrationUtility {
                 const, sizeConfig = this.configManager.get('game', `bubbles.${bubbleType'.size`),'
                 const, scoreConfig = this.configManager.get('game', `bubbles.${bubbleType}.score`}
                 if (healthConfig !== null && sizeConfig !== null && scoreConfig !== null) { }
-                    validationResults.validated.push(bubbleType};
+                    validationResults.validated.push(bubbleType}
                 } else { validationResults.missing.push({
                         bubbleType,
                         missingProperties: {
-                            health: healthConfig === null,
+                            health: healthConfig === null ,
     size: sizeConfig === null  }
-                            score: scoreConfig === null) 
-    };
+                            score: scoreConfig === null);
                 }
             }
             
@@ -413,7 +408,7 @@ export class ConfigurationMigrationUtility {
             return { timestamp: Date.now(
                 error: (error, as Error).message,
                 validated: [],
-    missing: [] },
+    missing: [] ,
                 inconsistent: [] 
     }
     }
@@ -428,7 +423,7 @@ export class ConfigurationMigrationUtility {
             
             const, migration = this.migrationHistory.find(m => m.migrationId === migrationId}
             if (!migration} { }
-                throw, new Error(`Migration, not found: ${migrationId}`};
+                throw, new Error(`Migration, not found: ${migrationId}`}
             }
             
             let rolledBack = 0;
@@ -443,8 +438,7 @@ export class ConfigurationMigrationUtility {
             return { success: true,
                 migrationId };
                 rolledBackCount: rolledBack,
-                timestamp: Date.now()),
-            } catch (error) {
+                timestamp: Date.now()) } catch (error) {
             this.errorHandler.handleError(error as Error, 'MIGRATION_ERROR', {''
                 context: 'ConfigurationMigrationUtility.rollbackMigration');
                 migrationId };
@@ -475,12 +469,10 @@ export class ConfigurationMigrationUtility {
 
             failedMigrations: totalMigrations - successfulMigrations,' }'
 
-            successRate: totalMigrations > 0 ? `${(successfulMigrations / totalMigrations * 100}.toFixed(2'}'%` : '0%',
+            successRate: totalMigrations > 0 ? `${(successfulMigrations / totalMigrations * 100}.toFixed(2'}'%` : '0%,
             totalMigratedTypes,
-            lastMigration: this.migrationHistory[this.migrationHistory.length - 1] || null,
-        } }
+            lastMigration: this.migrationHistory[this.migrationHistory.length - 1] || null     }
 }
-
 // シングルトンインスタンス
 let instance: ConfigurationMigrationUtility | null = null,
 
@@ -489,7 +481,7 @@ let instance: ConfigurationMigrationUtility | null = null,
  * @returns {ConfigurationMigrationUtility} インスタンス
  */
 export function getConfigurationMigrationUtility(): ConfigurationMigrationUtility { if (!instance) {
-        instance = new ConfigurationMigrationUtility() }
+        instance = new ConfigurationMigrationUtility() };
     return instance;
 }
 

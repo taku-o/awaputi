@@ -8,20 +8,20 @@ export class SocialAnalyticsTracker {
     constructor() {
         // パフォーマンス統計
         this.performanceStats = {
-            shareRequests: 0;
-            successfulShares: 0;
-            failedShares: 0;
-    averageResponseTime: 0 }
+            shareRequests: 0,
+            successfulShares: 0,
+            failedShares: 0,
+    averageResponseTime: 0 };
             platformBreakdown: { }
-                twitter: { requests: 0, successes: 0, failures: 0  };
-                facebook: { requests: 0, successes: 0, failures: 0  };
+                twitter: { requests: 0, successes: 0, failures: 0  ,
+                facebook: { requests: 0, successes: 0, failures: 0  ,
                 webShare: { requests: 0, successes: 0, failures: 0  }
         };
 
         // エラー統計
         this.errorStats = { total: 0 }
-            byType: {};
-            byPlatform: {};
+            byType: {},
+            byPlatform: {  },
             recent: [];
         },
 
@@ -30,13 +30,13 @@ export class SocialAnalyticsTracker {
             sharePromptAccepts: 0,
             sharePromptDismissals: 0,
             screenshotCaptures: 0,
-    averageTimeToShare: 0  },
+    averageTimeToShare: 0  ,
         // 国際化統計
         this.i18nStats = { languageUsage: new Map(
             regionUsage: new Map(),
             translationRequests: 0,
             translationErrors: 0,
-    cachedTranslations: 0  },
+    cachedTranslations: 0  ,
         // タイムスタンプ記録
         this.timestamps = { sessionStart: Date.now(
             lastShareAttempt: null,
@@ -57,13 +57,13 @@ export class SocialAnalyticsTracker {
             action }
             timestamp }
             data: { ...data,
-            sessionTime: timestamp - this.timestamps.sessionStart },
+            sessionTime: timestamp - this.timestamps.sessionStart ,
 
         this.addToHistory(event);
         this.updatePerformanceStats(action, data);
         
         // プラットフォーム別統計
-        if (data.platform) { this.updatePlatformStats(data.platform, action, data) }
+        if (data.platform) { this.updatePlatformStats(data.platform, action, data);
     }
 
     /**
@@ -72,7 +72,7 @@ export class SocialAnalyticsTracker {
      * @param {Object} errorData - エラーデータ
      */
     trackError(errorType, errorData = { ) {
-        this.errorStats.total++,
+        this.errorStats.total++;
         
         // エラー種別別カウント
         if (!this.errorStats.byType[errorType]) {
@@ -95,7 +95,7 @@ export class SocialAnalyticsTracker {
             timestamp: Date.now(
     data: errorData,
         this.errorStats.recent.push(errorRecord);
-        if (this.errorStats.recent.length > 50) { this.errorStats.recent.shift() }
+        if (this.errorStats.recent.length > 50) { this.errorStats.recent.shift();
 
         this.addToHistory({ action: 'error', timestamp: errorRecord.timestamp),
             data: errorRecord,
@@ -109,15 +109,15 @@ export class SocialAnalyticsTracker {
 
         switch(behavior) {''
             case 'sharePromptView':,
-                this.userBehaviorStats.sharePromptViews++,
+                this.userBehaviorStats.sharePromptViews++;
 
                 break,
             case 'sharePromptAccept':,
-                this.userBehaviorStats.sharePromptAccepts++,
+                this.userBehaviorStats.sharePromptAccepts++;
 
                 break,
             case 'sharePromptDismiss':,
-                this.userBehaviorStats.sharePromptDismissals++,
+                this.userBehaviorStats.sharePromptDismissals++;
 
                 break,
             case 'screenshotCapture':,
@@ -139,7 +139,7 @@ export class SocialAnalyticsTracker {
 
         switch(action) {''
             case 'language_request':','
-                const language = data.language || 'unknown',
+                const language = data.language || 'unknown,
                 this.i18nStats.languageUsage.set();
                     language)','
                     (this.i18nStats.languageUsage.get(language) || 0) + 1','
@@ -148,7 +148,7 @@ export class SocialAnalyticsTracker {
                 break,
 
             case 'region_request':','
-                const region = data.region || 'unknown',
+                const region = data.region || 'unknown,
                 this.i18nStats.regionUsage.set();
                     region)','
                     (this.i18nStats.regionUsage.get(region) || 0) + 1','
@@ -157,11 +157,11 @@ export class SocialAnalyticsTracker {
                 break,
 
             case 'translation_request':,
-                this.i18nStats.translationRequests++,
+                this.i18nStats.translationRequests++;
                 break,
 
             case 'translation_error':,
-                this.i18nStats.translationErrors++,
+                this.i18nStats.translationErrors++;
                 break,
 
             case 'cache_hit':,
@@ -174,7 +174,7 @@ export class SocialAnalyticsTracker {
             }
             timestamp: Date.now()),
             data;
-        };
+        }
     }
 
     /**
@@ -187,12 +187,12 @@ export class SocialAnalyticsTracker {
         const endTime = data.endTime || Date.now();
         switch(action) {''
             case 'share_request':,
-                this.performanceStats.shareRequests++,
+                this.performanceStats.shareRequests++;
                 this.timestamps.lastShareAttempt = endTime,
                 break,
 
             case 'share_success':,
-                this.performanceStats.successfulShares++,
+                this.performanceStats.successfulShares++;
                 this.timestamps.lastSuccessfulShare = endTime,
                 
                 // レスポンス時間の計算
@@ -228,11 +228,11 @@ export class SocialAnalyticsTracker {
         switch(action) {
 
             case 'share_request':,
-                stats.requests++,
+                stats.requests++;
 
                 break,
             case 'share_success':,
-                stats.successes++,
+                stats.successes++;
 
                 break,
             case 'share_failure':,
@@ -276,7 +276,7 @@ export class SocialAnalyticsTracker {
             (this.performanceStats.successfulShares / totalRequests) * 100 : 0,
 
         return { ...this.performanceStats
-            successRate: Math.round(successRate * 100) / 100 },
+            successRate: Math.round(successRate * 100) / 100 ,
             sessionDuration: Date.now() - this.timestamps.sessionStart }
             timestamps: { ...this.timestamps }
 
@@ -286,7 +286,7 @@ export class SocialAnalyticsTracker {
      */
     getErrorStats() {
         return { ...this.errorStats }
-            errorRate: this.performanceStats.shareRequests > 0 ? },
+            errorRate: this.performanceStats.shareRequests > 0 ? ,
                 (this.errorStats.total / this.performanceStats.shareRequests) * 100 : 0 
         } }
 
@@ -308,11 +308,11 @@ export class SocialAnalyticsTracker {
      */
     getI18nStats() {
         return { languageUsage: Object.fromEntries(this.i18nStats.languageUsage,
-            regionUsage: Object.fromEntries(this.i18nStats.regionUsage);
+            regionUsage: Object.fromEntries(this.i18nStats.regionUsage),
             translationRequests: this.i18nStats.translationRequests,
             translationErrors: this.i18nStats.translationErrors,
     cachedTranslations: this.i18nStats.cachedTranslations }
-            cacheHitRate: this.i18nStats.translationRequests > 0 ? },
+            cacheHitRate: this.i18nStats.translationRequests > 0 ? ,
                 (this.i18nStats.cachedTranslations / this.i18nStats.translationRequests) * 100 : 0 
         } }
 
@@ -322,13 +322,13 @@ export class SocialAnalyticsTracker {
      */
     generateReport() {
         return { summary: {
-                sessionStart: new Date(this.timestamps.sessionStart) }
-                sessionDuration: Date.now() - this.timestamps.sessionStart },
-                totalEvents: this.eventHistory.length 
+                sessionStart: new Date(this.timestamps.sessionStart) } },
+                sessionDuration: Date.now() - this.timestamps.sessionStart ,
+                totalEvents: this.eventHistory.length; 
     };
-            performance: this.getPerformanceStats();
-            errors: this.getErrorStats();
-            userBehavior: this.getUserBehaviorStats();
+            performance: this.getPerformanceStats(),
+            errors: this.getErrorStats(),
+            userBehavior: this.getUserBehaviorStats(),
             i18n: this.getI18nStats(
     recentEvents: this.eventHistory.slice(-10);
         }
@@ -339,15 +339,14 @@ export class SocialAnalyticsTracker {
      */
     exportAnalyticsData() {
         return { metadata: {
-                exportDate: new Date().toISOString();
-                sessionStart: new Date(this.timestamps.sessionStart).toISOString() }
+                exportDate: new Date().toISOString(),
+                sessionStart: new Date(this.timestamps.sessionStart).toISOString() } };
 
                 sessionDuration: Date.now('}'
 
                 version: '1.0' })
             data: this.generateReport(
-    rawEvents: this.eventHistory,
-        } }
+    rawEvents: this.eventHistory } }
 
     /**
      * 統計のリセット
@@ -362,19 +361,18 @@ export class SocialAnalyticsTracker {
         this.errorStats = { total: 0 }
             byType: {},
             byPlatform: {},
-            recent: [],
-        },
+            recent: [] ,
         
         this.userBehaviorStats = { sharePromptViews: 0,
             sharePromptAccepts: 0,
             sharePromptDismissals: 0,
             screenshotCaptures: 0,
-    averageTimeToShare: 0  },
+    averageTimeToShare: 0  ,
         this.i18nStats = { languageUsage: new Map(
             regionUsage: new Map(),
             translationRequests: 0,
             translationErrors: 0,
-    cachedTranslations: 0  },
+    cachedTranslations: 0  ,
         this.eventHistory = [];
         this.timestamps.sessionStart = Date.now();
     }
@@ -385,7 +383,7 @@ export class SocialAnalyticsTracker {
      */
     getDebugInfo() {
         return { performance: this.getPerformanceStats(
-            errors: this.getErrorStats() }
+            errors: this.getErrorStats(),
 
             userBehavior: this.getUserBehaviorStats(),' };'
 

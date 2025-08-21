@@ -18,92 +18,86 @@ interface Canvas extends HTMLCanvasElement {}
 interface AccessibilityOptions { reducedMotion?: boolean,
     highContrast?: boolean;
     reducedTransparency?: boolean;
-
-interface TransitionOptions { easing?: string,
+    interface TransitionOptions { easing?: string,
     direction?: string;
     color?: string;
-    center?: { x: number,, y: number, | null;
+    center?: { x: number, y: number, | null;
     noiseScale?: number;
     threshold?: number;
     pattern?: string;
 }
 
-interface ShadowObject { x: number;
-    y: number;
-    width: number;
+interface ShadowObject { x: number,
+    y: number,
+    width: number,
     height: number;
-
-interface LightSource { x: number;
-    y: number;
-    intensity: number;
-    color: string;
-    radius: number;
+    interface LightSource { x: number,
+    y: number,
+    intensity: number,
+    color: string,
+    radius: number,
     type: string;
-
-interface ReflectionObject { x: number;
-    y: number;
-    width: number;
+    interface ReflectionObject { x: number,
+    y: number,
+    width: number,
     height: number;
-
-interface BackgroundEffectOptions { intensity?: number,
+    interface BackgroundEffectOptions { intensity?: number,
     color?: string;
     speed?: number;
     density?: number;
-
-interface RenderSettings { enableLighting: boolean;
-    enableShadows: boolean;
-    enableReflections: boolean;
-    enablePostProcessing: boolean;
-    quality: string;
+    interface RenderSettings { enableLighting: boolean,
+    enableShadows: boolean,
+    enableReflections: boolean,
+    enablePostProcessing: boolean,
+    quality: string,
     optimization: boolean;
-
-interface EnhancedTransform { scale: number;
-    rotation: number;
-    translate: { x: number,, y: number;
-    translate: { x: number,, y: number;
-        };
-interface TransitionEffect { id: string;
-    type: string;
-    duration: number;
-    startTime: number;
+    interface EnhancedTransform { scale: number,
+    rotation: number,
+    translate: { x: number, y: number,
+    translate: { x: number, y: number;
+         },
+interface TransitionEffect { id: string,
+    type: string,
+    duration: number,
+    startTime: number,
+    options: TransitionOptions,
     options: TransitionOptions;
-    options: TransitionOptions;
         };
-interface Shadow { id: string;
-    object: ShadowObject;
+interface Shadow { id: string,
+    object: ShadowObject,
+    lightSource: LightSource,
     lightSource: LightSource;
-    lightSource: LightSource;
         };
-interface Reflection { id: string;
-    object: ReflectionObject;
-    surfaceY: number;
-    intensity: number;
+interface Reflection { id: string,
+    object: ReflectionObject,
+    surfaceY: number,
+    intensity: number,
+    distortion: number,
     distortion: number;
-    distortion: number;
         };
-interface WaterRipple { id: string;
-    x: number;
-    y: number;
-    maxRadius: number;
-    speed: number;
-    intensity: number;
-    currentRadius: number;
+interface WaterRipple { id: string,
+    x: number,
+    y: number,
+    maxRadius: number,
+    speed: number,
+    intensity: number,
+    currentRadius: number,
+    startTime: number,
     startTime: number;
-    startTime: number;
         };
-interface BackgroundEffect { id: string;
-    type: string;
+interface BackgroundEffect { id: string,
+    type: string,
+    options: BackgroundEffectOptions,
     options: BackgroundEffectOptions;
-    options: BackgroundEffectOptions;
         };
-interface PerformanceMetrics { renderTime: number;
-    effectCount: number;
-    fps: number;
+interface PerformanceMetrics { renderTime: number,
+    effectCount: number,
+    fps: number,
     fps: number;
         };
-interface CurrentSettings { renderSettings: RenderSettings;
-    effectCount: number;
-    quality: string;
+interface CurrentSettings { renderSettings: RenderSettings,
+    effectCount: number,
+    quality: string,
     quality: string;
         };
 /**
@@ -139,8 +133,7 @@ export class EnhancedEffectManager extends EffectManager { private effectControl
         ','
 
         this._initializeRenderers();
-        this._initializeAccessibility() }
-
+        this._initializeAccessibility() };
         console.log('[EnhancedEffectManager] Main, Controller Pattern初期化完了'); }'
     }
     
@@ -179,37 +172,37 @@ export class EnhancedEffectManager extends EffectManager { private effectControl
     ';'
 
     public addTransitionEffect(type: string, duration: number, options: TransitionOptions = { ): string {''
-        return this.apiManager.addTransitionEffect(type, duration, options) }
+        return this.apiManager.addTransitionEffect(type, duration, options);
 
     public addFadeTransition(duration: number, color: string = '#000000', direction: string = 'out': string { ''
-        return this.apiManager.addFadeTransition(duration, color, direction) }
+        return this.apiManager.addFadeTransition(duration, color, direction);
 
     public addSlideTransition(duration: number, direction: string = 'left', easing: string = 'easeInOut': string { ''
-        return this.apiManager.addSlideTransition(duration, direction, easing) }
+        return this.apiManager.addSlideTransition(duration, direction, easing);
 
     public addZoomTransition(duration: number, zoomType: string = 'in', center: { x: number,  y: number ) | null = null': string {''
-        return this.apiManager.addZoomTransition(duration, zoomType, center }
+        return this.apiManager.addZoomTransition(duration, zoomType, center } };
 
     public addWipeTransition(duration: number, pattern: string = 'horizontal', direction: string = 'left): string { return this.apiManager.addWipeTransition(duration, pattern, direction) }'
     
-    public addDissolveTransition(duration: number, noiseScale: number = 1.0, threshold: number = 0.5): string { return this.apiManager.addDissolveTransition(duration, noiseScale, threshold) }
+    public addDissolveTransition(duration: number, noiseScale: number = 1.0, threshold: number = 0.5): string { return this.apiManager.addDissolveTransition(duration, noiseScale, threshold);
     
     // ========================================
     // 効果管理API - Effect Controllerにデリゲート
     // ========================================
     
-    public addShadowEffect(shadowObject: ShadowObject, lightSource: LightSource): string { return this.effectController.addShadowEffect(shadowObject, lightSource) }
+    public addShadowEffect(shadowObject: ShadowObject, lightSource: LightSource): string { return this.effectController.addShadowEffect(shadowObject, lightSource);
     
-    public addReflectionEffect(reflectionObject: ReflectionObject, surfaceY: number, intensity: number = 0.8, distortion: number = 0.1): string { return this.effectController.addReflectionEffect(reflectionObject, surfaceY, intensity, distortion) }
+    public addReflectionEffect(reflectionObject: ReflectionObject, surfaceY: number, intensity: number = 0.8, distortion: number = 0.1): string { return this.effectController.addReflectionEffect(reflectionObject, surfaceY, intensity, distortion);
     ';'
 
     public addWaterRipple(x: number, y: number, maxRadius: number = 50, speed: number = 2, intensity: number = 1.0): string { ''
-        return this.effectController.addWaterRipple(x, y, maxRadius, speed, intensity) }
+        return this.effectController.addWaterRipple(x, y, maxRadius, speed, intensity);
 
     public addLightSource(x: number, y: number, intensity: number, color: string, radius: number, type: string = 'point): string { return this.effectController.addLightSource(x, y, intensity, color, radius, type) }'
     
     public addBackgroundEffect(type: string, options: BackgroundEffectOptions = { ): string {
-        return this.effectController.addBackgroundEffect(type, options) }
+        return this.effectController.addBackgroundEffect(type, options);
     
     public removeEffect(effectId: string): void { this.effectController.removeEffect(effectId),
         super.removeEffect(effectId), // 基底クラスのeffects配列からも削除 }
@@ -221,23 +214,23 @@ export class EnhancedEffectManager extends EffectManager { private effectControl
     // 設定管理API
     // ========================================
     
-    public updateRenderSettings(newSettings: Partial<RenderSettings>): void { this.apiManager.updateRenderSettings(newSettings) }
+    public updateRenderSettings(newSettings: Partial<RenderSettings>): void { this.apiManager.updateRenderSettings(newSettings);
     
-    public setQualityLevel(level: string): void { this.apiManager.setQualityLevel(level) }
+    public setQualityLevel(level: string): void { this.apiManager.setQualityLevel(level);
     
-    public enableOptimization(enabled: boolean): void { this.apiManager.enableOptimization(enabled) }
+    public enableOptimization(enabled: boolean): void { this.apiManager.enableOptimization(enabled);
     
-    public setTransitionSmoothing(enabled: boolean, duration: number = 300): void { this.apiManager.setTransitionSmoothing(enabled, duration) }
+    public setTransitionSmoothing(enabled: boolean, duration: number = 300): void { this.apiManager.setTransitionSmoothing(enabled, duration);
     
-    public setDepthOfField(intensity: number): void { this.apiManager.setDepthOfField(intensity) }
+    public setDepthOfField(intensity: number): void { this.apiManager.setDepthOfField(intensity);
     
-    public setMotionBlur(x: number, y: number, intensity: number): void { this.apiManager.setMotionBlur(x, y, intensity) }
+    public setMotionBlur(x: number, y: number, intensity: number): void { this.apiManager.setMotionBlur(x, y, intensity);
     
-    public setChromaticAberration(intensity: number): void { this.apiManager.setChromaticAberration(intensity) }
+    public setChromaticAberration(intensity: number): void { this.apiManager.setChromaticAberration(intensity);
     
-    public setVignette(intensity: number): void { this.apiManager.setVignette(intensity) }
+    public setVignette(intensity: number): void { this.apiManager.setVignette(intensity);
     
-    public setGlitchEffect(intensity: number, frequency: number): void { this.apiManager.setGlitchEffect(intensity, frequency) }
+    public setGlitchEffect(intensity: number, frequency: number): void { this.apiManager.setGlitchEffect(intensity, frequency);
     
     // ========================================
     // レンダリング - 各レンダラーにデリゲート
@@ -255,7 +248,7 @@ export class EnhancedEffectManager extends EffectManager { private effectControl
             // パフォーマンスメトリクス更新
             const renderTime = Date.now() - startTime,
             this.effectController.updatePerformanceMetrics(renderTime) } catch (error) { getErrorHandler()','
-                context: 'EnhancedEffectManager.render' },
+                context: 'EnhancedEffectManager.render' };
         }
     }
     
@@ -270,29 +263,22 @@ export class EnhancedEffectManager extends EffectManager { private effectControl
             
             // 光源効果
             if (this.apiManager.renderSettings.enableLighting) { this.effectController.lightSources.forEach((light: LightSource) => {  }
-                    this.lightingRenderer.renderLightSource(context, light); }
-                };
-            }
-            
+                    this.lightingRenderer.renderLightSource(context, light);     }
+}
             // 影効果
             if (this.apiManager.renderSettings.enableShadows) { this.effectController.shadowCasters.forEach((shadow: Shadow) => {  }
-                    this.lightingRenderer.renderShadow(context, shadow); }
-                };
-            }
-            
+                    this.lightingRenderer.renderShadow(context, shadow);     }
+}
             // 反射効果
             if (this.apiManager.renderSettings.enableReflections) { this.effectController.reflectionSurfaces.forEach((reflection: Reflection) => {  }
-                    this.reflectionRenderer.renderReflection(context, reflection); }
-                };
-            }
-            
+                    this.reflectionRenderer.renderReflection(context, reflection);     }
+}
             // 背景効果
             this.effectController.backgroundEffects.forEach((bg: BackgroundEffect) => { this.backgroundRenderer.renderBackgroundEffect(context, bg, deltaTime) };
             
             // ポストプロセッシング
             if (this.apiManager.renderSettings.enablePostProcessing) { this.postProcessingRenderer.renderPostProcessingEffects(context, this.apiManager.enhancedTransform, this.apiManager.renderSettings) } catch (error) { getErrorHandler()','
-                context: 'EnhancedEffectManager._renderEnhancedEffects' },
-        }
+                context: 'EnhancedEffectManager._renderEnhancedEffects' , }
     }
     
     // ========================================
@@ -311,17 +297,16 @@ export class EnhancedEffectManager extends EffectManager { private effectControl
             console.log(`[EnhancedEffectManager] アクセシビリティサポート: ${enabled ? '有効' : '無効}`};'
 
         } catch (error) { getErrorHandler()','
-                context: 'EnhancedEffectManager.enableAccessibilitySupport' },
-        }
+                context: 'EnhancedEffectManager.enableAccessibilitySupport' , }
     }
     
     // ========================================
     // ユーティリティ
     // ========================================
     
-    public getCurrentSettings(): CurrentSettings { return this.apiManager.getCurrentSettings() }
+    public getCurrentSettings(): CurrentSettings { return this.apiManager.getCurrentSettings();
     
-    public getPerformanceMetrics(): PerformanceMetrics { return this.apiManager.getPerformanceMetrics() }
+    public getPerformanceMetrics(): PerformanceMetrics { return this.apiManager.getPerformanceMetrics();
     ;
     // Issue #106対応: テスト互換性メソッド
     public setGradientProfiles(profiles: any): void { ''

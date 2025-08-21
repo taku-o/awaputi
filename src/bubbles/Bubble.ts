@@ -23,7 +23,7 @@ export class Bubble implements BubbleInterface { public id: string;
     public clickCount: number;
 
     constructor(type: BubbleType, position: Position) {
-        this.type = type  }
+        this.type = type  };
         this.position = { ...position;
         this.velocity = { x: 0, y: 0  }
         this.size = 50;
@@ -104,12 +104,12 @@ export class Bubble implements BubbleInterface { public id: string;
         switch(this.type) {
 
             case 'pink':','
-                const healAmount = configManager.get('game', 'bubbles.pink.healAmount',
+                const healAmount = configManager.get('game, 'bubbles.pink.healAmount',
                 if(healAmount !== null) effects.healAmount = healAmount,
                 break,
 
             case 'poison':','
-                const damageAmount = configManager.get('game', 'bubbles.poison.damageAmount',
+                const damageAmount = configManager.get('game, 'bubbles.poison.damageAmount',
                 if(damageAmount !== null) effects.damageAmount = damageAmount,
                 break,
 
@@ -122,22 +122,22 @@ export class Bubble implements BubbleInterface { public id: string;
                 break,
 
             case 'rainbow':','
-                const bonusTimeMs = configManager.get('game', 'bubbles.rainbow.bonusTimeMs',
+                const bonusTimeMs = configManager.get('game, 'bubbles.rainbow.bonusTimeMs',
                 if(bonusTimeMs !== null) effects.bonusTimeMs = bonusTimeMs,
                 break,
 
             case 'clock':','
-                const timeStopMs = configManager.get('game', 'bubbles.clock.timeStopMs',
+                const timeStopMs = configManager.get('game, 'bubbles.clock.timeStopMs',
                 if(timeStopMs !== null) effects.timeStopMs = timeStopMs,
                 break,
 
             case 'score':','
-                const bonusScore = configManager.get('game', 'bubbles.score.bonusScore',
+                const bonusScore = configManager.get('game, 'bubbles.score.bonusScore',
                 if(bonusScore !== null) effects.bonusScore = bonusScore,
                 break,
 
             case 'spiky':','
-                const chainRadius = configManager.get('game', 'bubbles.spiky.chainRadius',
+                const chainRadius = configManager.get('game, 'bubbles.spiky.chainRadius',
                 if(chainRadius !== null) effects.chainRadius = chainRadius,
                 break,
 
@@ -160,118 +160,118 @@ export class Bubble implements BubbleInterface { public id: string;
                 health: 1,
                 size: 50,
                 maxAge: 12000, // 10000 -> 12000(少し長く);
-                color: '#87CEEB',
-    score: 15  },
+                color: '#87CEEB,
+    score: 15  ,
             stone: { health: 2,
-    size: 55,
+    size: 55 ,
                 maxAge: 16000, // 15000 -> 16000(少し長く);
-                color: '#696969',
-    score: 25  },
+                color: '#696969,
+    score: 25  ,
             iron: { health: 3,
-    size: 60,
+    size: 60 ,
                 maxAge: 20000, // 変更なし,
-                color: '#708090',
-    score: 40  },
+                color: '#708090,
+    score: 40  ,
             diamond: { health: 4, // 5 -> 4 (少し弱く),
-                size: 65,
+                size: 65 ,
                 maxAge: 22000, // 25000 -> 22000(少し短く);
-                color: '#B0E0E6',
-    score: 60  },
+                color: '#B0E0E6,
+    score: 60  ,
             pink: { health: 1,
-    size: 45,
+    size: 45 ,
                 maxAge: 10000, // 8000 -> 10000(少し長く);
-                color: '#FFB6C1',
+                color: '#FFB6C1,
                 score: 20,
     healAmount: 25 // 20 -> 25 (回復量増加  }
             poison: { health: 1,
-    size: 48,
+    size: 48 ,
                 maxAge: 14000, // 12000 -> 14000(少し長く);
-                color: '#9370DB',
+                color: '#9370DB,
                 score: 30,
     damageAmount: 8 // 10 -> 8 (ダメージ軽減  }
             spiky: { health: 1,
-    size: 52,
+    size: 52 ,
                 maxAge: 13000, // 12000 -> 13000(少し長く);
-                color: '#FF6347',
+                color: '#FF6347,
                 score: 35,
     chainRadius: 120 // 150 -> 120 (連鎖範囲を少し狭く  }
             rainbow: { health: 1,
-    size: 55,
+    size: 55 ,
                 maxAge: 16000, // 15000 -> 16000(少し長く);
-                color: '#FF69B4',
+                color: '#FF69B4,
                 score: 400,
     bonusTimeMs: 8000 // 10000 -> 8000 (ボーナス時間短縮  }
             clock: { health: 1,
-    size: 50,
+    size: 50 ,
                 maxAge: 20000, // 18000 -> 20000(少し長く);
-                color: '#FFD700',
+                color: '#FFD700,
                 score: 180,
     timeStopMs: 2500 // 3000 -> 2500 (時間停止短縮  }
             score: { health: 1,
-    size: 48,
+    size: 48 ,
                 maxAge: 9000, // 8000 -> 9000(少し長く);
-                color: '#32CD32',
+                color: '#32CD32,
                 score: 250,
     bonusScore: 80 // 100 -> 80 (ボーナス軽減  }
             electric: { health: 1,
-    size: 50,
+    size: 50 ,
                 maxAge: 13000, // 12000 -> 13000(少し長く);
-                color: '#FFFF00',
+                color: '#FFFF00,
                 score: 20,
     shakeIntensity: 15, // 20 -> 15 (揺れ軽減),
                 disableDuration: 1500 // 2000 -> 1500 (操作不能時間短縮  }
             escaping: { health: 1,
-    size: 45,
+    size: 45 ,
                 maxAge: 16000, // 15000 -> 16000(少し長く);
-                color: '#FF8C00',
+                color: '#FF8C00,
                 score: 50,
     escapeSpeed: 180, // 200 -> 180 (逃げる速度軽減),
                 escapeRadius: 90 // 100 -> 90 (逃げる範囲縮小  }
             cracked: { health: 1,
-    size: 52,
+    size: 52 ,
                 maxAge: 6000, // 5000 -> 6000(少し長く);
-                color: '#8B4513',
-    score: 30  },
+                color: '#8B4513,
+    score: 30  ,
             boss: { health: 8, // 10 -> 8 (少し弱く),
-                size: 90, // 100 -> 90 (少し小さく),
+                size: 90, // 100 -> 90 (少し小さく)  },
                 maxAge: 35000, // 30000 -> 35000(少し長く);
-                color: '#8B0000',
-    score: 100  },
+                color: '#8B0000,
+    score: 100  ,
             // 新しい泡タイプ
             golden: { health: 1,
-                size: 55,
+                size: 55 ,
     maxAge: 8000,
-                color: '#FFD700',
+                color: '#FFD700,
                 score: 500,
-    multiplier: 2.0 // スコア倍率  },
+    multiplier: 2.0 // スコア倍率  ,
             frozen: { health: 2,
-                size: 50,
+                size: 50 ,
     maxAge: 25000, // 長時間持続,
-                color: '#87CEEB',
+                color: '#87CEEB,
                 score: 100,
-    slowEffect: 0.5 // 周囲の泡の動きを遅くする  },
+    slowEffect: 0.5 // 周囲の泡の動きを遅くする  ,
             magnetic: { health: 1,
-                size: 48,
+                size: 48 ,
     maxAge: 15000,
-                color: '#FF1493',
+                color: '#FF1493,
                 score: 150,
-    magnetRadius: 100 // 他の泡を引き寄せる  },
+    magnetRadius: 100 // 他の泡を引き寄せる  ,
             explosive: { health: 1,
-                size: 52,
+                size: 52 ,
     maxAge: 10000,
-                color: '#FF4500',
+                color: '#FF4500,
                 score: 200,
-    explosionRadius: 150 // 爆発範囲  },
+    explosionRadius: 150 // 爆発範囲  ,
             phantom: { health: 1,
-                size: 45,
+                size: 45 ,
     maxAge: 12000,
-                color: '#9370DB',
+                color: '#9370DB,
                 score: 300,
-    phaseChance: 0.3 // クリックをすり抜ける確率  },
+    phaseChance: 0.3 // クリックをすり抜ける確率  ,
             multiplier: { health: 1,
-                size: 50,
+                size: 50 ,
     maxAge: 18000,
-                color: '#32CD32',
+                color: '#32CD32,
                 score: 100,
     scoreMultiplier: 3.0 // 次の泡のスコアを3倍  }
         };
@@ -301,7 +301,7 @@ export class Bubble implements BubbleInterface { public id: string;
         this.handleBoundaryCollision();
         
         // 年齢による危険度チェック
-        if (this.age >= this.maxAge) { this.burst() }
+        if (this.age >= this.maxAge) { this.burst();
     }
     
     /**
@@ -320,7 +320,7 @@ export class Bubble implements BubbleInterface { public id: string;
             const normalizedY = dy / distance,
             
             // 逃げる方向に速度を設定
-            this.velocity.x = normalizedX * (config.escapeSpeed || 180) }
+            this.velocity.x = normalizedX * (config.escapeSpeed || 180);
             this.velocity.y = normalizedY * (config.escapeSpeed || 180); }
         } else {  // 遠くにいる時は徐々に速度を減らす
             this.velocity.x *= 0.95 }
@@ -428,8 +428,8 @@ export class Bubble implements BubbleInterface { public id: string;
         if (this.type === 'stone' || this.type === 'iron' || this.type === 'diamond') {
 
             context.fillStyle = '#FFFFFF';
-            context.font = 'bold 16px Arial',
-            context.textAlign = 'center',
+            context.font = 'bold 16px Arial,
+            context.textAlign = 'center,
             context.textBaseline = 'middle' }
             context.fillText(this.health.toString(), centerX, centerY); }
         }
@@ -444,10 +444,10 @@ export class Bubble implements BubbleInterface { public id: string;
      * 特殊泡のアイコンを描画
      */''
     public renderSpecialIcon(context: CanvasRenderingContext2D, centerX: number, centerY: number): void { ''
-        context.fillStyle = '#FFFFFF',
-        context.font = 'bold 20px Arial',
-        context.textAlign = 'center',
-        context.textBaseline = 'middle',
+        context.fillStyle = '#FFFFFF,
+        context.font = 'bold 20px Arial,
+        context.textAlign = 'center,
+        context.textBaseline = 'middle,
 
         switch(this.type) {
 
@@ -486,7 +486,7 @@ export class Bubble implements BubbleInterface { public id: string;
                 context.fillStyle = gradient,
                 context.fillText('◉', centerX, centerY - 5','
                 context.restore()','
-            case 'clock':')',
+            case 'clock':'),
                 context.fillText('⏰', centerX, centerY - 5','
 
                 break,
@@ -507,12 +507,12 @@ export class Bubble implements BubbleInterface { public id: string;
 
                 break,
             case 'boss':','
-                context.fillStyle = '#FFFFFF',
-                context.font = 'bold 24px Arial',
+                context.fillStyle = '#FFFFFF,
+                context.font = 'bold 24px Arial,
                 context.fillText('👑', centerX, centerY - 5','
 
                 // ボス泡の場合、耐久値も表示
-                context.font = 'bold 16px Arial',
+                context.font = 'bold 16px Arial,
                 context.fillText(this.health.toString(), centerX, centerY + 15'),'
                 break,
 
@@ -554,12 +554,11 @@ export class Bubble implements BubbleInterface { public id: string;
      * ダメージを受ける
      */
     public takeDamage(amount: number = 1): boolean { this.health -= amount,
-        this.clickCount++,
+        this.clickCount++;
         
         if (this.health <= 0) {
         
-            this.destroy()
-}
+            this.destroy();
             return true; // 破壊された }
         }
         return false; // まだ生きている
@@ -569,7 +568,7 @@ export class Bubble implements BubbleInterface { public id: string;
      * 泡を破壊
      */
     public destroy(): void { this.isAlive = false;
-        this.triggerSpecialEffect() }
+        this.triggerSpecialEffect();
     
     /**
      * 泡が自然破裂
@@ -586,14 +585,14 @@ export class Bubble implements BubbleInterface { public id: string;
             case 'pink':,
                 // HP回復効果
                 this.effects.push({)'
-                    type: 'heal',')',
+                    type: 'heal,')',
                     amount: config.healAmount || 25'),'
                 break,
 
             case 'poison':,
                 // ダメージ効果
                 this.effects.push({)'
-                    type: 'damage',')',
+                    type: 'damage,')',
                     amount: config.damageAmount || 8'),'
                 break,
 
@@ -605,26 +604,26 @@ export class Bubble implements BubbleInterface { public id: string;
             }''
                     position: { ...this.position,')'
                     radius: config.chainRadius || 120'),'
-                break,
+                break  },
 
             case 'rainbow':,
                 // 虹色の泡：ボーナスタイム効果
                 this.effects.push({ ')'
-                    type: 'bonus_time',')',
+                    type: 'bonus_time,')',
                     duration: config.bonusTimeMs || 8000'),'
                 break,
 
             case 'clock':,
                 // 時計の泡：時間停止効果
                 this.effects.push({)'
-                    type: 'time_stop',')',
+                    type: 'time_stop,')',
                     duration: config.timeStopMs || 2500'),'
                 break,
 
             case 'score':,
                 // S字の泡：追加スコア効果
                 this.effects.push({)'
-                    type: 'bonus_score',')',
+                    type: 'bonus_score,')',
                     amount: config.bonusScore || 80'),'
                 break,
 
@@ -632,7 +631,7 @@ export class Bubble implements BubbleInterface { public id: string;
                 // ビリビリの泡：画面揺れ・操作不能効果
                 this.effects.push({)'
                     type: 'screen_shake')','
-    intensity: config.shakeIntensity || 15,')',
+    intensity: config.shakeIntensity || 15,'),
                     duration: config.disableDuration || 1500'),'
                 break,
 
@@ -652,7 +651,7 @@ export class Bubble implements BubbleInterface { public id: string;
                 // 黄金の泡：スコア倍率効果
                 this.effects.push({)'
                     type: 'score_multiplier')','
-    multiplier: config.multiplier || 2.0,')',
+    multiplier: config.multiplier || 2.0,'),
                     duration: 5000 // 5秒間)','
                 break,
 
@@ -662,8 +661,8 @@ export class Bubble implements BubbleInterface { public id: string;
                     type: 'slow_area'
             }
                     position: { ...this.position)
-                    radius: 120','
-    slowFactor: config.slowEffect || 0.5,')',
+                    radius: 120','  },
+    slowFactor: config.slowEffect || 0.5,'),
                     duration: 8000 // 8秒間)','
                 break,
 
@@ -673,7 +672,7 @@ export class Bubble implements BubbleInterface { public id: string;
                     type: 'magnetic_pull'
             };
                     position: { ...this.position''
-                    radius: config.magnetRadius || 100,')',
+                    radius: config.magnetRadius || 100,')'  },
                     strength: 150'),'
                 break,
 
@@ -683,7 +682,7 @@ export class Bubble implements BubbleInterface { public id: string;
                     type: 'big_explosion'
             };
                     position: { ...this.position''
-                    radius: config.explosionRadius || 150,')',
+                    radius: config.explosionRadius || 150,')'  },
                     damage: 15'),'
                 break,
 
@@ -694,7 +693,7 @@ export class Bubble implements BubbleInterface { public id: string;
             case 'multiplier':,
                 // 倍率の泡：次の泡のスコアを倍増
                 this.effects.push({ ')'
-                    type: 'next_score_multiplier',
+                    type: 'next_score_multiplier,
     multiplier: config.scoreMultiplier || 3.0),
                     duration: 10000 // 10秒間),
                 break  }

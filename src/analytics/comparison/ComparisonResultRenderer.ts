@@ -9,26 +9,26 @@ export class ComparisonResultRenderer {
         // レンダリング設定
         this.renderConfig = {
             colors: {
-                improved: '#4CAF50';
-                declined: '#F44336';
-                stable: '#9E9E9E';
-                excellent: '#FFD700';
+                improved: '#4CAF50' ,
+                declined: '#F44336,
+                stable: '#9E9E9E,
+                excellent: '#FFD700,
                 average: '#2196F3' }
 
                 needsImprovement: '#FF9800' 
     };
             icons: { ''
-                improved: '↑';
-                declined: '↓';
-                stable: '→';
-                excellent: '★';
-                average: '●';
+                improved: '↑' ,
+                declined: '↓,
+                stable: '→,
+                excellent: '★,
+                average: '●,
                 needsImprovement: '△'
             };
             formats: {
-                percentage: (value) => `${value.toFixed(1})%`;
-                number: (value) => value.toLocaleString();
-                time: (value) => this.formatTime(value);
+                percentage: (value) => `${value.toFixed(1})%` },
+                number: (value) => value.toLocaleString(),
+                time: (value) => this.formatTime(value),
                 score: (value) => Math.round(value).toLocaleString();
     }
     
@@ -55,7 +55,7 @@ export class ComparisonResultRenderer {
         availableComparisons.forEach(comparison => {  totalImprovements += comparison.improvements || 0)'
             totalDeclines += comparison.declines || 0'),'
 
-        let overallAssessment = 'stable',
+        let overallAssessment = 'stable,
         if (totalImprovements > totalDeclines) { }'
 
             overallAssessment = 'improving'; }
@@ -67,7 +67,7 @@ export class ComparisonResultRenderer {
             overallAssessment,
             totalImprovements,
             totalDeclines,
-            comparisonCount: availableComparisons.length };
+            comparisonCount: availableComparisons.length ,
             details: this.generateDetailedAnalysis(comparisons); 
     }
     
@@ -93,11 +93,11 @@ export class ComparisonResultRenderer {
 
         const performanceRatio = { above_average: total > 0 ? (above_average / total) * 100 : 0,
             average: total > 0 ? (average / total) * 100 : 0,
-            below_average: total > 0 ? (below_average / total) * 100 : 0  },
+            below_average: total > 0 ? (below_average / total) * 100 : 0  ,
         return { overallPerformance,
             performanceRatio,
             strongMetrics: this.identifyStrongMetrics(comparison,
-    weakMetrics: this.identifyWeakMetrics(comparison) },
+    weakMetrics: this.identifyWeakMetrics(comparison) ,
             analysis: this.generateBenchmarkAnalysis(comparison); 
     }
     
@@ -122,10 +122,10 @@ export class ComparisonResultRenderer {
         let totalDeclines = 0;
         const stagesByCategory = { tutorial: [],
             normal: [],
-    special: []  },
+    special: []  ,
         availableComparisons.forEach(stage => {  totalImprovements += stage.comparison.improvements || 0)
             totalDeclines += stage.comparison.declines || 0),
-            const category = this.categorizeStage(stage.stageId) }
+            const category = this.categorizeStage(stage.stageId);
 
             stagesByCategory[category].push(stage);' }'
 
@@ -145,7 +145,7 @@ export class ComparisonResultRenderer {
             totalDeclines,
             stageCount: availableComparisons.length,
             stagesByCategory,
-            details: this.generateStageAnalysisDetails(stageComparisons) },
+            details: this.generateStageAnalysisDetails(stageComparisons) ,
             recommendations: this.generateStageRecommendations(stageComparisons); 
     }
     
@@ -174,14 +174,14 @@ export class ComparisonResultRenderer {
                         value: metric.current),' }'
 
                     }');} else if (metric.trend === 'declined' && Math.abs(metric.changePercent) > 10) { analysis.weaknesses.push({'
-                        metric: metricName);
+                        metric: metricName),
                         period: period,
     decline: metric.changePercent),
                         value: metric.current  }
-            };
+            }
         };
 
-        if (analysis.weaknesses.length > 0) { analysis.opportunities = this.identifyOpportunities(analysis.weaknesses) }
+        if (analysis.weaknesses.length > 0) { analysis.opportunities = this.identifyOpportunities(analysis.weaknesses);
 
         return analysis;
     }
@@ -202,13 +202,13 @@ export class ComparisonResultRenderer {
                 analysis.strengths.push({
                     metric: metricName,
     percentileRank: metric.percentileRank }
-                    value: metric.current) }
+                    value: metric.current),
 
                     difference: metric.differencePercent),' }'
 
                 }');'} else if(metric.performance === 'below_average' { analysis.improvements.push({'
                     metric: metricName,
-                    percentileRank: metric.percentileRank);
+                    percentileRank: metric.percentileRank),
                     value: metric.current,
     difference: metric.differencePercent),
                     targetValue: metric.benchmark.median  }
@@ -225,8 +225,7 @@ export class ComparisonResultRenderer {
                 type: 'improvement_priority'
             };
                 message: `${worstMetric.metric}の改善を優先的に行うことで、全体的なパフォーマンスが向上する可能性があります`)
-                metric: worstMetric),
-        }
+                metric: worstMetric);
 
         if (analysis.strengths.length > 0) {
             analysis.insights.push({''
@@ -248,8 +247,7 @@ export class ComparisonResultRenderer {
             byCategory: {},
             excellentStages: [],
             improvingStages: [],
-    strugglingStages: [],
-        },
+    strugglingStages: [] ,
 
         Object.entries(stageComparisons).forEach(([stageId, stageData]) => {  if (!stageData.comparison || !stageData.comparison.available) return,
 
@@ -266,7 +264,7 @@ export class ComparisonResultRenderer {
 
             const categoryData = details.byCategory[category];
             categoryData.stages.push({ stageId)'
-                performance,')',
+                performance,'),
                 comparison: stageData.comparison'),'
             categoryData.totalImprovements += stageData.comparison.improvements || 0,
             categoryData.totalDeclines += stageData.comparison.declines || 0,
@@ -342,7 +340,7 @@ export class ComparisonResultRenderer {
     formatTime(milliseconds) {
         const seconds = Math.floor(milliseconds / 1000);
         const minutes = Math.floor(seconds / 60);
-        const hours = Math.floor(minutes / 60) }
+        const hours = Math.floor(minutes / 60);
         if (hours > 0) { }
             return `${hours}時間${minutes % 60}分`;
         } else if (minutes > 0) {
@@ -357,8 +355,8 @@ export class ComparisonResultRenderer {
      */''
     categorizeStage(stageId) {
 
-        if (stageId === 'tutorial') return 'tutorial',
-        if(stageId.startsWith('stage)' return 'normal',
+        if (stageId === 'tutorial') return 'tutorial,
+        if(stageId.startsWith('stage)' return 'normal,
         if(['endless', 'timeattack', 'awawa].includes(stageId)) return 'special' }'
 
         return 'other';
@@ -368,10 +366,10 @@ export class ComparisonResultRenderer {
      * @param {string} stageId - ステージID
      * @returns {Object} ステージ情報'
      */''
-    getStageInfo(stageId) { const stageMap = { }', 'tutorial': { name: 'チュートリアル', difficulty: 1  },', 'stage1': { name: 'ステージ1', difficulty: 2  },', 'stage2': { name: 'ステージ2', difficulty: 3  },', 'stage3': { name: 'ステージ3', difficulty: 4  },', 'stage4': { name: 'ステージ4', difficulty: 5  },', 'stage5': { name: 'ステージ5', difficulty: 6  },', 'endless': { name: 'エンドレスモード', difficulty: 7  },', 'timeattack': { name: 'タイムアタック', difficulty: 8  },', 'awawa': { name: 'あわわモード', difficulty: 9  };'
+    getStageInfo(stageId) { const stageMap = { }', 'tutorial': { name: 'チュートリアル', difficulty: 1  ,', 'stage1': { name: 'ステージ1', difficulty: 2  ,', 'stage2': { name: 'ステージ2', difficulty: 3  ,', 'stage3': { name: 'ステージ3', difficulty: 4  ,', 'stage4': { name: 'ステージ4', difficulty: 5  ,', 'stage5': { name: 'ステージ5', difficulty: 6  ,', 'endless': { name: 'エンドレスモード', difficulty: 7  ,', 'timeattack': { name: 'タイムアタック', difficulty: 8  ,', 'awawa': { name: 'あわわモード', difficulty: 9  };'
         
-        return stageMap[stageId] || { name: stageId, difficulty: 5  }
-    
+        return stageMap[stageId] || { name: stageId, difficulty: 5  } };
+
     /**
      * ステージパフォーマンスを評価
      * @param {Object} stageData - ステージデータ
@@ -413,7 +411,7 @@ export class ComparisonResultRenderer {
 
         return { score: averageScore,
             grade,
-            strengths: this.identifyStageStrengths(stageData) },
+            strengths: this.identifyStageStrengths(stageData) ,
             weaknesses: this.identifyStageWeaknesses(stageData); 
     }
     
@@ -525,7 +523,7 @@ export class ComparisonResultRenderer {
         return weaknesses.map(weakness => ({)
             metric: weakness.metric)','
             currentValue: weakness.value,
-            improvementPotential: Math.abs(weakness.decline) }
+            improvementPotential: Math.abs(weakness.decline),
 
             priority: weakness.decline < -20 ? 'high' : 'medium'}');'
     }'}'

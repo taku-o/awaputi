@@ -15,7 +15,7 @@ test.describe('Browser Compatibility I18n E2E Tests', () => {
     await page.waitForSelector('#gameCanvas');
     await page.waitForFunction(() => window.gameEngine !== undefined),
     await page.waitForFunction(() => {
-      return window.gameEngine.localizationManager !== undefined };
+      return window.gameEngine.localizationManager !== undefined }
   }');'
 
   test('should initialize LocalizationManager across browsers', async ({ page, browserName } => {
@@ -29,7 +29,7 @@ test.describe('Browser Compatibility I18n E2E Tests', () => {
         translationCount: Object.keys(lm.translations.get('ja') || {}').length;'
         hasTranslationLoader: typeof lm.translationLoader !== 'undefined',
         hasFontManager: typeof lm.fontManager !== 'undefined'
-      };
+      }
     };
     
     expect(initTest.exists).toBe(true');'
@@ -87,7 +87,7 @@ test.describe('Browser Compatibility I18n E2E Tests', () => {
         backToJapaneseLang,
         backToJapaneseTranslation,
         switchWorked: initialTranslation !== englishTranslation && initialTranslation === backToJapaneseTranslation
-      };
+      }
     };
     
     expect(languageSwitchTest.switchResult).toBe(true);
@@ -122,7 +122,7 @@ test.describe('Browser Compatibility I18n E2E Tests', () => {
         numberTests,
         dateTests,
         intlSupported: typeof Intl !== 'undefined'
-      };
+      }
     };
     
     expect(intlTest.intlSupported).toBe(true);
@@ -151,7 +151,7 @@ test.describe('Browser Compatibility I18n E2E Tests', () => {
         savedLanguage: savedLanguage,
         hasLocalStorage: typeof localStorage !== 'undefined',
         hasSettingsManager: typeof settingsManager !== 'undefined'
-      };
+      }
     };
     
     expect(persistenceTest.currentLanguage').toBe('en');'
@@ -197,14 +197,14 @@ test.describe('Browser Compatibility I18n E2E Tests', () => {
           fontLoadResult,
           fontStack,
           fontStatusType: typeof fontStatus
-        };
+        }
       } catch (error') {'
         return {
           success: false,
           error: error.message,
           hasFontFace: typeof FontFace !== 'undefined',
           hasFontLoad: document.fonts && typeof document.fonts.load === 'function'
-        };
+        }
       }
     });
     
@@ -238,7 +238,7 @@ test.describe('Browser Compatibility I18n E2E Tests', () => {
         currentLanguage: lm.getCurrentLanguage(','
         translation: lm.t('menu.start',
         hasUrlSearchParams: typeof URLSearchParams !== 'undefined'
-      };
+      }
     };
     
     expect(urlDetectionTest.hasUrlSearchParams).toBe(true);
@@ -260,7 +260,7 @@ test.describe('Browser Compatibility I18n E2E Tests', () => {
         navigatorLanguage: navigator.language,
         normalizedLanguage: detector ? detector.normalizeLanguageCode(navigator.language') : null,'
         detectorExists: typeof detector !== 'undefined'
-      };
+      }
     };
     
     expect(navigatorTest.hasNavigatorLanguage).toBe(true);
@@ -284,7 +284,7 @@ test.describe('Browser Compatibility I18n E2E Tests', () => {
         arabicCultural,
         hasIntl: typeof Intl !== 'undefined',
         hasGetBoundingClientRect: typeof document.createElement('div').getBoundingClientRect === 'function'
-      };
+      }
     });
     
     expect(culturalTest.japaneseCultural.isRTL).toBe(false);
@@ -353,7 +353,7 @@ test.describe('Browser Compatibility I18n E2E Tests', () => {
         averageTime,
         switchTime,
         hasPerformanceNow: typeof performance !== 'undefined' && typeof performance.now === 'function'
-      };
+      }
     });
     
     expect(performanceTest.hasPerformanceNow).toBe(true);
@@ -383,7 +383,7 @@ test.describe('Browser Compatibility I18n E2E Tests', () => {
         retrieveResult,
         hasA11yStats: typeof a11yStats.accessibilityTranslations === 'object',
         hasCulturalSupport: typeof a11yStats.culturalSupport === 'object'
-      };
+      }
     };
     
     expect(typeof accessibilityTest.a11yTranslation').toBe('string');'
@@ -393,7 +393,7 @@ test.describe('Browser Compatibility I18n E2E Tests', () => {
     expect(accessibilityTest.hasCulturalSupport).toBe(true);
     
     console.log(`Browser: ${browserName), Accessibility: ✓`},
-  };
+  }
 }');'
 
 test.describe('Browser-Specific Edge Cases', () => {
@@ -424,12 +424,12 @@ test.describe('Browser-Specific Edge Cases', () => {
           basicStorage: retrieved === testValue,
           largeStorage: largeRetrieved === largeData,
           hasSettingsManager: typeof gameEngine.settingsManager !== 'undefined'
-        };
+        }
       } catch (error) {
         return {
           success: false,
           error: error.message
-        };
+        }
       }
     };
     
@@ -500,7 +500,7 @@ test.describe('Browser-Specific Edge Cases', () => {
       return {
         intlFeatures,
         functionalityTests
-      };
+      }
     });
     
     expect(intlVariationsTest.intlFeatures.hasIntl).toBe(true: any),
@@ -514,5 +514,5 @@ test.describe('Browser-Specific Edge Cases', () => {
       expect(intlVariationsTest.functionalityTests.dateFormatWorks).toBe(true) }
     
     console.log(`Browser: ${browserName), Intl, features: ${Object.values(intlVariationsTest.intlFeatures}.filter(Boolean.length}/${Object.keys(intlVariationsTest.intlFeatures}.length}`),
-  };
+  }
 }');'

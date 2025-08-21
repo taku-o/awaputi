@@ -3,15 +3,15 @@
  * エラー収集専用クラス
  */
 
-interface ErrorInfo { id: string;
-    timestamp: number;
-    severity: string;
-    category: string;
-    message: string;
+interface ErrorInfo { id: string,
+    timestamp: number,
+    severity: string,
+    category: string,
+    message: string,
     fingerprint: string;
     sessionId?: string;
     context?: {
-        componen,t?: string,  };
+        componen,t?: string };
     stack?: string;
 }
 
@@ -21,35 +21,30 @@ interface ErrorFilter { severity?: string,
     timeframe?: number;
     sessionId?: string;
     pattern?: string;
-
-interface CollectionFilters { enabled: boolean;
-    excludeCategories: Set<string>;
-    excludeSeverities: Set<string>;
+    interface CollectionFilters { enabled: boolean,
+    excludeCategories: Set<string>,
+    excludeSeverities: Set<string>,
     excludePatterns: RegExp[];
-
-interface CollectionMetrics { totalCollected: number;
-    filtered: number;
-    stored: number;
+    interface CollectionMetrics { totalCollected: number,
+    filtered: number,
+    stored: number,
     dropped: number;
-
-interface ErrorStatistics { total: number;
-    byCategory: { [category: string]: number;
-    bySeverity: { [severity: string]: number;
+    interface ErrorStatistics { total: number,
+    byCategory: { [category: string]: number,
+    bySeverity: { [severity: string]: number,
     metrics: CollectionMetrics;
     oldestError?: number;
     newestError?: number;
 }
 
-interface MemoryUsage { estimated: number;
-    errorCount: number;
+interface MemoryUsage { estimated: number,
+    errorCount: number,
     maxCapacity: number;
-
-interface ExportData { errors: ErrorInfo[];
-    statistics: ErrorStatistics;
-    filters: CollectionFilters;
+    interface ExportData { errors: ErrorInfo[],
+    statistics: ErrorStatistics,
+    filters: CollectionFilters,
     exportedAt: number;
-
-interface ErrorReporter { errorStorage?: {
+    interface ErrorReporter { errorStorage?: {
         store: (error: ErrorInfo) => void  }
     }
 
@@ -67,15 +62,15 @@ export class ErrorCollector {
         
         // 収集フィルター
         this.filters = {
-            enabled: true;
+            enabled: true,
             excludeCategories: new Set(
-    excludeSeverities: new Set() }
+    excludeSeverities: new Set() };
             excludePatterns: [] 
     };
         // エラー収集メトリクス
-        this.collectionMetrics = { totalCollected: 0;
-            filtered: 0;
-            stored: 0;
+        this.collectionMetrics = { totalCollected: 0,
+            filtered: 0,
+            stored: 0,
     dropped: 0  }
     
     /**
@@ -104,7 +99,7 @@ export class ErrorCollector {
 }
         
         // ストレージに保存
-        if (this.errorReporter.errorStorage) { this.errorReporter.errorStorage.store(error) }
+        if (this.errorReporter.errorStorage) { this.errorReporter.errorStorage.store(error);
         
         return error.id;
     }
@@ -141,7 +136,7 @@ export class ErrorCollector {
         
         // 重要度統計
         this.severityStats.set(error.severity);
-            (this.severityStats.get(error.severity) || 0) + 1) }
+            (this.severityStats.get(error.severity) || 0) + 1);
     
     /**
      * 削除時の統計更新
@@ -152,18 +147,18 @@ export class ErrorCollector {
     
 }
             this.categoryStats.set(error.category, categoryCount - 1); }
-        } else { this.categoryStats.delete(error.category) }
+        } else { this.categoryStats.delete(error.category);
         
         // 重要度統計
         const severityCount = this.severityStats.get(error.severity) || 0;
-        if (severityCount > 1) { this.severityStats.set(error.severity, severityCount - 1) } else { this.severityStats.delete(error.severity) }
+        if (severityCount > 1) { this.severityStats.set(error.severity, severityCount - 1) } else { this.severityStats.delete(error.severity);
     }
     
     /**
      * エラーの取得
      */
     public getErrors(filter: ErrorFilter = { ): ErrorInfo[] {
-        return this.collectedErrors.filter(error => { ) }
+        return this.collectedErrors.filter(error => { );
             return this.matchesFilter(error, filter););
     }
     
@@ -193,22 +188,22 @@ export class ErrorCollector {
      * エラーの検索'
      */''
     public searchErrors(query: string): ErrorInfo[] { ''
-        const regex = new RegExp(query, 'i',
+        const regex = new RegExp(query, 'i,
         ','
 
         return this.collectedErrors.filter(error => { );
             return regex.test(error.message) ||','
-                   regex.test(error.context?.component || ') ||',
+                   regex.test(error.context?.component || ') ||,
                    regex.test(error.category) ||' }'
 
                    regex.test(error.stack || '); }'
-        };
+        }
     }
     
     /**
      * 最新のエラーを取得
      */ : undefined
-    public getRecentErrors(count = 10): ErrorInfo[] { return this.collectedErrors.slice(-count) }
+    public getRecentErrors(count = 10): ErrorInfo[] { return this.collectedErrors.slice(-count);
     
     /**
      * エラーIDで取得
@@ -222,16 +217,16 @@ export class ErrorCollector {
      * 統計情報の取得
      */
     public getStatistics(): ErrorStatistics { return { total: this.collectedErrors.length,
-            byCategory: Object.fromEntries(this.categoryStats) },
-            bySeverity: Object.fromEntries(this.severityStats) }
+            byCategory: Object.fromEntries(this.categoryStats) };
+            bySeverity: Object.fromEntries(this.severityStats),
             metrics: { ...this.collectionMetrics,
-            oldestError: this.collectedErrors[0]?.timestamp, : undefined
+            oldestError: this.collectedErrors[0]?.timestamp, : undefined  },
             newestError: this.collectedErrors[this.collectedErrors.length - 1]?.timestamp } }
     
     /**
      * フィルター設定の更新
      */ : undefined
-    public updateFilters(newFilters: Partial<CollectionFilters>): void { Object.assign(this.filters, newFilters) }
+    public updateFilters(newFilters: Partial<CollectionFilters>): void { Object.assign(this.filters, newFilters);
     
     /**
      * 特定のエラーをクリア
@@ -243,7 +238,7 @@ export class ErrorCollector {
         this.collectedErrors.forEach(error => { );
             if (this.matchesFilter(error, filter) { }
                 toRemove.push(error); }
-            } else { toKeep.push(error) }
+            } else { toKeep.push(error);
         };
         
         // 統計を更新
@@ -265,7 +260,7 @@ export class ErrorCollector {
             errors: this.collectedErrors,
             statistics: this.getStatistics(),
             filters: this.filters,
-    exportedAt: Date.now( },
+    exportedAt: Date.now( };
 
         switch(format) {
 
@@ -274,7 +269,7 @@ export class ErrorCollector {
             case 'csv':','
                 return this.convertToCSV(data.errors);
             case 'object': }
-            default: return data,
+            default: return data;
     
     /**
      * CSV変換'
@@ -285,7 +280,7 @@ export class ErrorCollector {
             error.id','
             new Date(error.timestamp).toISOString()','
             error.message.replace(/"/g, '"")]',"
-            error.fingerprint']',
+            error.fingerprint'],
         ]'),'
         ','
 
@@ -306,6 +301,6 @@ export class ErrorCollector {
     public estimateMemoryUsage(): MemoryUsage { // 簡易的なメモリ使用量推定
         const avgErrorSize = 1024, // 1KB per error (estimated),
         return { estimated: this.collectedErrors.length * avgErrorSize,
-            errorCount: this.collectedErrors.length },
+            errorCount: this.collectedErrors.length };
             maxCapacity: this.maxStorageSize 
     }'}'

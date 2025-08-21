@@ -9,28 +9,25 @@ import type { SceneManager } from '../../core/SceneManager';
 import type { AchievementNotificationSystem } from '../../core/achievements/AchievementNotificationSystem';
 
 // Interfaces for Stage Data
-export interface StageInfo { id: string;
-    name: string;
+export interface StageInfo { id: string,
+    name: string,
     description: string;
     duration?: number;
-    unlockMessage?: string,  }
-
-export interface StageSelectionState { selectedStageIndex: number;
+    unlockMessage?: string };
+export interface StageSelectionState { selectedStageIndex: number,
     scrollOffset: number;
-
-export interface StageUpdateResult { unlockedChanged: boolean;
-    lockedChanged: boolean;
-    unlockedCount: number;
+    export interface StageUpdateResult { unlockedChanged: boolean,
+    lockedChanged: boolean,
+    unlockedCount: number,
     lockedCount: number;
-
-export interface DebugInfo { selectedStageIndex: number;
-    totalUnlockedStages: number;
-    totalLockedStages: number;
-    scrollOffset: number;
-    maxVisibleStages: number;
-    visibleRange: {
-        start: number;
-    end: number;
+    export interface DebugInfo { selectedStageIndex: number,
+    totalUnlockedStages: number,
+    totalLockedStages: number,
+    scrollOffset: number,
+    maxVisibleStages: number,
+    visibleRange: { start: number;
+    },
+    end: number,
     end: number;
         };
 // Extended interfaces for game engine components
@@ -39,32 +36,31 @@ interface ExtendedGameEngine { stageManager: StageManager;
     canvas: HTMLCanvasElement;
     playerData?: {
         usernam,e?: string;
-        ap?: number;
-        tap?: number,  };
-    achievementNotificationSystem?: AchievementNotificationSystem & { queueNotification(notification: {
-            type: string;
-            title: string;
-            message: string;
-            icon: string;
-    duration: number)): void;
+    ap?: number;
+    tap?: number };
+    achievementNotificationSystem?: AchievementNotificationSystem & { queueNotification(notification: { type: string,
+            title: string,
+            message: string,
+            icon: string,
+    duration: number)): void,
 
-interface ExtendedStageSelectScene extends StageSelectScene { sceneManager: SceneManager;
+interface ExtendedStageSelectScene extends StageSelectScene { sceneManager: SceneManager,
 
 export class StageSelectDataManager {
-    private readonly stageSelectScene: ExtendedStageSelectScene;
+    private readonly stageSelectScene: ExtendedStageSelectScene,
     private readonly gameEngine: ExtendedGameEngine;
     // ステージ関連の状態
-    private selectedStageIndex: number = 0;
-    private unlockedStages: UnlockedStageInfo[] = [];
-    private lockedStages: LockedStageInfo[] = [];
-    private scrollOffset: number = 0;
-    private readonly, maxVisibleStages: number = 8;
+    private selectedStageIndex: number = 0,
+    private unlockedStages: UnlockedStageInfo[] = [],
+    private lockedStages: LockedStageInfo[] = [],
+    private scrollOffset: number = 0,
+    private readonly, maxVisibleStages: number = 8,
 
     constructor(stageSelectScene: StageSelectScene) {
 
         this.stageSelectScene = stageSelectScene as ExtendedStageSelectScene
 
-     }
+      },
         this.gameEngine = stageSelectScene.gameEngine as ExtendedGameEngine; }
     }
 
@@ -80,7 +76,7 @@ export class StageSelectDataManager {
      */
     public updateStageList(): void { const stageManager = this.gameEngine.stageManager;
         this.unlockedStages = stageManager.getUnlockedStages();
-        this.lockedStages = stageManager.getLockedStages() }
+        this.lockedStages = stageManager.getLockedStages();
 
     /**
      * 選択を移動
@@ -93,7 +89,7 @@ export class StageSelectDataManager {
     
 }
             this.selectedStageIndex = 0; }
-        } else if (this.selectedStageIndex >= totalStages) { this.selectedStageIndex = totalStages - 1 }
+        } else if (this.selectedStageIndex >= totalStages) { this.selectedStageIndex = totalStages - 1 } };
         
         // スクロール調整
         if (this.selectedStageIndex < this.scrollOffset) { this.scrollOffset = this.selectedStageIndex } else if (this.selectedStageIndex >= this.scrollOffset + this.maxVisibleStages) { this.scrollOffset = this.selectedStageIndex - this.maxVisibleStages + 1 }
@@ -148,11 +144,9 @@ export class StageSelectDataManager {
             if (y >= itemY && y <= itemY + itemHeight) {
             
                 this.selectedStageIndex = i;
-                this.selectStage() }
-                break; }
+                this.selectStage();
+                break;     }
 }
-    }
-
     /**
      * プレイヤー情報を描画
      */
@@ -160,18 +154,18 @@ export class StageSelectDataManager {
         
         if (!playerData) return,
 
-        context.save('',
-        context.fillStyle = '#CCCCCC',
-        context.font = '16px, Arial',
-        context.textAlign = 'left',
-        context.textBaseline = 'top',
+        context.save(',
+        context.fillStyle = '#CCCCCC,
+        context.font = '16px, Arial,
+        context.textAlign = 'left,
+        context.textBaseline = 'top,
         ','
         const infoY = 70,')'
         context.fillText(`プレイヤー: ${playerData.username || '名無し)`, 20, infoY),'
         context.fillText(`AP: ${playerData.ap || 0)`, 20, infoY + 25),
         context.fillText(`TAP: ${playerData.tap || 0 }`, 20, infoY + 50}
          }
-        context.restore(};
+        context.restore(}
     }
 
     /**
@@ -183,10 +177,10 @@ export class StageSelectDataManager {
         const itemWidth = canvas.width - 40,
         const itemX = 20,
         // セクションタイトル
-        context.save('',
-        context.fillStyle = '#FFFFFF',
-        context.font = 'bold, 20px Arial',
-        context.textAlign = 'left',
+        context.save(',
+        context.fillStyle = '#FFFFFF,
+        context.font = 'bold, 20px Arial,
+        context.textAlign = 'left,
         context.textBaseline = 'top',')'
         context.fillText('通常ステージ', itemX, startY - 30);
         context.restore();
@@ -197,7 +191,7 @@ export class StageSelectDataManager {
             if (index >= this.scrollOffset + this.maxVisibleStages) return,
             
             const isSelected = index === this.selectedStageIndex,
-            this.renderStageItem(context, stage, itemX, currentY, itemWidth, itemHeight, isSelected, false) }
+            this.renderStageItem(context, stage, itemX, currentY, itemWidth, itemHeight, isSelected, false);
             currentY += itemHeight + 10; }
         };
         
@@ -207,11 +201,9 @@ export class StageSelectDataManager {
             if (adjustedIndex >= this.scrollOffset + this.maxVisibleStages) return,
             
             const isSelected = adjustedIndex === this.selectedStageIndex,
-            this.renderStageItem(context, stage, itemX, currentY, itemWidth, itemHeight, isSelected, true) }
-            currentY += itemHeight + 10; }
-        };
-    }
-    
+            this.renderStageItem(context, stage, itemX, currentY, itemWidth, itemHeight, isSelected, true);
+            currentY += itemHeight + 10;     }
+}
     /**
      * ステージアイテムを描画
      */
@@ -221,7 +213,7 @@ export class StageSelectDataManager {
         x: number, ;
         y: number, ;
         width: number, ;
-        height: number );
+        height: number ),
         isSelected: boolean,
     isLocked: boolean,
     ): void { context.save(
@@ -261,9 +253,9 @@ export class StageSelectDataManager {
         ';'
         // 時間表示（開放済みのみ）
         if (!isLocked && (stage, as UnlockedStageInfo).duration) { ''
-            context.font = '12px Arial',
-            context.textAlign = 'right',
-            context.fillStyle = '#AAAAAA',
+            context.font = '12px Arial,
+            context.textAlign = 'right,
+            context.fillStyle = '#AAAAAA,
             const duration = (stage, as UnlockedStageInfo).duration,
             const minutes = Math.floor(duration / 60000);
             const seconds = Math.floor((duration % 60000) / 1000),' }'
@@ -280,16 +272,16 @@ export class StageSelectDataManager {
      */
     public renderControls(context: CanvasRenderingContext2D): void { const canvas = this.gameEngine.canvas,
 
-        context.save('',
-        context.fillStyle = '#AAAAAA',
-        context.font = '14px, Arial',
-        context.textAlign = 'center',
-        context.textBaseline = 'bottom',
+        context.save(',
+        context.fillStyle = '#AAAAAA,
+        context.font = '14px, Arial,
+        context.textAlign = 'center,
+        context.textBaseline = 'bottom,
         ','
         const controlsY = canvas.height - 40,')'
         context.fillText('↑↓: 選択  Enter: 決定  H: ヘルプ , ESC: 戻る', canvas.width / 2, controlsY','
         context.fillText('クリックでも操作できます', canvas.width / 2, controlsY + 20);
-        context.restore() }
+        context.restore();
 
     /**
      * ステージデータの取得
@@ -297,7 +289,7 @@ export class StageSelectDataManager {
     public getStageData() { return { selectedStageIndex: this.selectedStageIndex,
             unlockedStages: this.unlockedStages,
             lockedStages: this.lockedStages,
-    scrollOffset: this.scrollOffset },
+    scrollOffset: this.scrollOffset ,
             maxVisibleStages: this.maxVisibleStages 
     }
 
@@ -335,7 +327,7 @@ export class StageSelectDataManager {
             scrollOffset: this.scrollOffset,
             maxVisibleStages: this.maxVisibleStages,
     visibleRange: {
-                start: this.scrollOffset },
+                start: this.scrollOffset ,
                 end: Math.min(this.scrollOffset + this.maxVisibleStages, this.unlockedStages.length + this.lockedStages.length); }
 }
 
@@ -357,20 +349,17 @@ export class StageSelectDataManager {
         
         // 新しいステージが解放された場合の処理
         if (newUnlockedCount > currentUnlockedCount) {
-            console.log(`New, stages unlocked: ${newUnlockedCount - currentUnlockedCount)`,
-            ,
+            console.log(`New, stages unlocked: ${newUnlockedCount - currentUnlockedCount),
             // 新解放ステージの通知
             if (this.gameEngine.achievementNotificationSystem) {
                 this.gameEngine.achievementNotificationSystem.queueNotification({''
                     type: 'success'
             }';'
                     title: 'ステージ解放！'}';'
-                    message: `新しいステージが解放されました`,
-        }
+                    message: `新しいステージが解放されました` }
 
-                    icon: '🔓') }
-                    duration: 4000)},
-            }
+                    icon: '🔓'),
+                    duration: 4000), }
         }
         
         return { unlockedChanged: newUnlockedCount !== currentUnlockedCount,
@@ -388,10 +377,10 @@ export class StageSelectDataManager {
     
 }
             this.selectedStageIndex = 0; }
-        } else if (this.selectedStageIndex >= totalStages) { this.selectedStageIndex = Math.max(0, totalStages - 1) }
+        } else if (this.selectedStageIndex >= totalStages) { this.selectedStageIndex = Math.max(0, totalStages - 1);
         
         // スクロールオフセットの制約
-        if (this.scrollOffset < 0) { this.scrollOffset = 0 } else if (this.scrollOffset > totalStages - this.maxVisibleStages) { this.scrollOffset = Math.max(0, totalStages - this.maxVisibleStages) }
+        if (this.scrollOffset < 0) { this.scrollOffset = 0 } else if (this.scrollOffset > totalStages - this.maxVisibleStages) { this.scrollOffset = Math.max(0, totalStages - this.maxVisibleStages);
         
         // 選択がスクロール範囲外の場合の調整
         if (this.selectedStageIndex < this.scrollOffset) { this.scrollOffset = this.selectedStageIndex,' }'

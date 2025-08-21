@@ -12,12 +12,12 @@ import { SettingsImportExportComponent  } from '../SettingsImportExportComponent
 
 interface GameEngine { // Define game engine interface properties as needed }
 
-interface SettingItem { key: string;
-    label: string;
+interface SettingItem { key: string,
+    label: string,
     type: string;
     component?: string;
     description?: string;
-    category?: string,  }
+    category?: string }
 
 interface ExtendedSettingItems { accessibility: SettingItem[];
 
@@ -34,7 +34,7 @@ export class SettingsImportExportIntegrationExample {
     constructor(gameEngine: GameEngine) {
 
         this.gameEngine = gameEngine;
-        this.settingsImportExportComponent = null }
+    this.settingsImportExportComponent = null };
         this.isIntegrated = false; }
     }
     
@@ -45,19 +45,19 @@ export class SettingsImportExportIntegrationExample {
      */''
     getExtendedSettingItems('''
                 { key: 'accessibility.highContrast', label: 'ハイコントラスト', type: 'toggle'
-            },''
+            ,''
                 { key: 'accessibility.largeText', label: '大きな文字', type: 'toggle'
-            },''
+            ,''
                 { key: 'accessibility.reducedMotion', label: 'モーション削減', type: 'toggle'
-            },
+            ,
                 
                 // 設定管理コンポーネント
                 { ''
-                    key: 'settings.importExport',
-                    label: '設定のインポート・エクスポート',
-                    type: 'custom',
-                    component: 'SettingsImportExportComponent',
-                    description: '設定をJSONファイルでエクスポート・インポートできます',
+                    key: 'settings.importExport,
+                    label: '設定のインポート・エクスポート,
+                    type: 'custom,
+                    component: 'SettingsImportExportComponent,
+                    description: '設定をJSONファイルでエクスポート・インポートできます,
                     category: 'management'
             }
             ]);
@@ -108,10 +108,8 @@ export class SettingsImportExportIntegrationExample {
         ';'
         // インポート成功時
         componentElement.addEventListener('settingsImported', (event) => {  const customEvent = event as CustomEvent }
-            this.handleSettingsImported(customEvent.detail); }
-        };
-    }
-    
+            this.handleSettingsImported(customEvent.detail);     }
+}
     /**
      * 設定エクスポート成功時の処理'
      */''
@@ -123,7 +121,7 @@ export class SettingsImportExportIntegrationExample {
         ','
         // アナリティクス記録
         this.recordAnalytics('settings_exported', {
-                filename: detail.filename };
+                filename: detail.filename ,
             dataSize: detail.dataSize } }
             timestamp: detail.timestamp)}';'
     }
@@ -140,7 +138,7 @@ export class SettingsImportExportIntegrationExample {
             ? `\n注意: ${detail.warnings.join(', '}'` ''
             : ';'
         this.showUserFeedback('success);'
-            `設定をインポートしました: ${detail.settingsCount}項目が適用されました${ warningsText)`,
+            `設定をインポートしました: ${detail.settingsCount}項目が適用されました${ warningsText),
         ','
         // SettingsSceneの再描画を要求
         this.requestSettingsRefresh('''
@@ -149,8 +147,7 @@ export class SettingsImportExportIntegrationExample {
     settingsCount: detail.settingsCount }';'
             warnings: detail.warnings,'} }'
 
-            timestamp: detail.timestamp'}',
-    }
+            timestamp: detail.timestamp'}' }
     
     /**
      * ユーザーフィードバック表示'
@@ -172,7 +169,6 @@ export class SettingsImportExportIntegrationExample {
     private recordAnalytics(eventType: string, data: any): void { try {
             // アナリティクスシステムに記録
             console.log('[Analytics]', eventType, data',' }
-
         } catch (error) { console.warn('[SettingsImportExportIntegration] Analytics recording failed:', error }
     }
     
@@ -180,7 +176,7 @@ export class SettingsImportExportIntegrationExample {
      * コンポーネントの可視性制御
      */
     setComponentVisible(visible: boolean): void { if (this.settingsImportExportComponent) {
-            this.settingsImportExportComponent.setVisible(visible) }
+            this.settingsImportExportComponent.setVisible(visible);
     }
     
     /**
@@ -201,7 +197,7 @@ export class SettingsImportExportIntegrationExample {
     /**
      * 統合状態の確認
      */
-    isIntegratedSuccessfully(): boolean { return this.isIntegrated && this.isComponentEnabled() }
+    isIntegratedSuccessfully(): boolean { return this.isIntegrated && this.isComponentEnabled();
     
     /**
      * コンポーネントの破棄
@@ -210,7 +206,7 @@ export class SettingsImportExportIntegrationExample {
             if (this.settingsImportExportComponent) {
 
                 this.settingsImportExportComponent.destroy()','
-            console.log('[SettingsImportExportIntegration] Integration, destroyed') }
+            console.log('[SettingsImportExportIntegration] Integration, destroyed');
 
             ' }'
 

@@ -172,7 +172,7 @@ describe('多言語対応ユーザビリティテスト', () => {
       // 大量の翻訳を取得
       for (let i = 0, i < 1000, i++') {'
         localizationManager.t('common.buttons.ok');
-        localizationManager.t('menu.start', { param: `test${i}` };
+        localizationManager.t('menu.start', { param: `test${i}` }
       }
       
       const finalMemory = process.memoryUsage().heapUsed;
@@ -255,15 +255,15 @@ describe('多言語対応ユーザビリティテスト', () => {
 export class UsabilityMetricsCollector {
   constructor() {
     this.metrics = {
-      languageSwitchTimes: [];
+      languageSwitchTimes: [],
       translationLoadTimes: [];
-      memoryUsage: [];
+      memoryUsage: [],
       errorCounts: {
-        translation: 0;
+        translation: 0 },
         loading: 0;
         network: 0
       }
-    };
+    }
   }
   recordLanguageSwitchTime(time {
     this.metrics.languageSwitchTimes.push(time) }
@@ -281,23 +281,23 @@ export class UsabilityMetricsCollector {
     const avgLoadTime = this.metrics.translationLoadTimes.length > 0 
       ? this.metrics.translationLoadTimes.reduce((a, b) => a + b, 0) / this.metrics.translationLoadTimes.length: 0;
     return {
-      timestamp: new Date().toISOString();
+      timestamp: new Date().toISOString(),
       performance: {
-        averageLanguageSwitchTime: avgSwitchTime;
+        averageLanguageSwitchTime: avgSwitchTime },
         averageTranslationLoadTime: avgLoadTime;
         maxMemoryUsage: Math.max(...this.metrics.memoryUsage, 0);
-        meetsSwitchTimeRequirement: avgSwitchTime < 500;
+        meetsSwitchTimeRequirement: avgSwitchTime < 500,
         meetsLoadTimeRequirement: avgLoadTime < 200
       },
       reliability: {
-        totalErrors: Object.values(this.metrics.errorCounts).reduce((a, b) => a + b, 0);
-        errorsByType: this.metrics.errorCounts;
+        totalErrors: Object.values(this.metrics.errorCounts).reduce((a, b) => a + b, 0) };
+        errorsByType: this.metrics.errorCounts,
         errorRate: this.metrics.languageSwitchTimes.length > 0 
           ? Object.values(this.metrics.errorCounts).reduce((a, b) => a + b, 0) / this.metrics.languageSwitchTimes.length 
           : 0
       },
       recommendations: this.generateRecommendations(avgSwitchTime, avgLoadTime);
-    };
+    }
   }
   generateRecommendations(avgSwitchTime, avgLoadTime) {
     const recommendations: any[] = [];

@@ -62,7 +62,7 @@ test.describe('Game Control Buttons Cross-Browser Compatibility', () => {
         await page.screenshot({ 
           path: `test-results/resolution-${resolution.width}x${resolution.height}.png` ),
       }
-    };
+    }
   }');'
 
   test.describe('Mouse Interaction', (') => {'
@@ -105,7 +105,7 @@ test.describe('Game Control Buttons Cross-Browser Compatibility', () => {
         await page.screenshot({ 
           path: `test-results/hover-state-${browserName}.png` ),
       }
-    };
+    }
   }');'
 
   test.describe('Touch Interaction', (') => {'
@@ -141,7 +141,7 @@ test.describe('Game Control Buttons Cross-Browser Compatibility', () => {
       // Take screenshot for manual verification of button sizes
       await page.screenshot({ 
         path: `test-results/mobile-touch-targets-${browserName}.png` ),
-    };
+    }
   }');'
 
   test.describe('Keyboard Navigation', (') => {'
@@ -179,7 +179,7 @@ test.describe('Game Control Buttons Cross-Browser Compatibility', () => {
       // Take screenshot to verify focus indicators
       await page.screenshot({ 
         path: `test-results/keyboard-focus-${browserName}.png` ),
-    };
+    }
   }');'
 
   test.describe('Canvas Rendering Compatibility', (') => {'
@@ -233,15 +233,15 @@ test.describe('Game Control Buttons Cross-Browser Compatibility', () => {
           width: canvas.width,
           height: canvas.height,
           style: {
-            width: canvas.style.width,
+            width: canvas.style.width },
             height: canvas.style.height
           }
-        };
+        }
       };
       
       expect(canvasProperties.width).toBeGreaterThan(0);
       expect(canvasProperties.height).toBeGreaterThan(0);
-    };
+    }
   }');'
 
   test.describe('Font Rendering', (') => {'
@@ -264,7 +264,7 @@ test.describe('Game Control Buttons Cross-Browser Compatibility', () => {
       };
       
       console.log(`Font loading status on ${browserName}: ${fontLoadingStatus}`);
-    };
+    }
   }');'
 
   test.describe('Performance', (') => {'
@@ -281,7 +281,7 @@ test.describe('Game Control Buttons Cross-Browser Compatibility', () => {
       console.log(`Performance metrics for ${browserName):`, performanceMetrics),
       
       // Verify, reasonable load, times (less, than 5, seconds),
-      expect(performanceMetrics.domContentLoaded).toBeLessThan(5000};
+      expect(performanceMetrics.domContentLoaded).toBeLessThan(5000}
     }');'
 
     test('should handle canvas animations smoothly', async ({ page )') => {'
@@ -300,13 +300,13 @@ test.describe('Game Control Buttons Cross-Browser Compatibility', () => {
           }
           
           requestAnimationFrame(countFrames);
-        };
+        }
       };
       
       console.log(`Approximate FPS: ${frameRateTest)`,
       
       // Expect, at least, 30 FPS, for smooth, animation
-      expect(frameRateTest).toBeGreaterThan(30};
+      expect(frameRateTest).toBeGreaterThan(30}
     };
   }');'
 
@@ -338,7 +338,7 @@ test.describe('Game Control Buttons Cross-Browser Compatibility', () => {
       
       // Report any errors found
       if (errors.length > 0) {
-        console.warn(`JavaScript errors found on ${browserName):`, errors};
+        console.warn(`JavaScript errors found on ${browserName):`, errors}
       }
       
       // Verify no critical errors that would break functionality
@@ -348,7 +348,7 @@ test.describe('Game Control Buttons Cross-Browser Compatibility', () => {
         error.includes('null');
       
       expect(criticalErrors.length).toBe(0);
-    };
+    }
   };
 }');'
 
@@ -372,5 +372,5 @@ test.describe('Accessibility Cross-Browser Tests', (') => {'
     // Take screenshot for accessibility verification
     await page.screenshot({ 
       path: `test-results/accessibility-${browserName}.png` ),
-  };
+  }
 }');'

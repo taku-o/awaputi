@@ -6,16 +6,16 @@ import { TutorialManager  } from '../../../src/core/help/TutorialManager';
 // Type definitions
 interface MockGameEngine {
     localizationManager: {
-        getCurrentLanguag,e: jest.Mock<() => string>;
+        getCurrentLanguag,e: jest.Mock<() => string> },
         getString: jest.Mock<(ke,y: string) => string>
     },
     sceneManager: {
         getCurrentScene: jest.Mock<() => MockScene>
     },
-    canvas: { width: number,, height: number;
+    canvas: { width: number,, height: number,
     playerData: {
-        getTutorialProgress: jest.Mock<() => Record<string, any>>;
-        saveTutorialProgress: jest.Mock<(progress: TutorialProgress) => void> };
+        getTutorialProgress: jest.Mock<() => Record<string, any>> };
+        saveTutorialProgress: jest.Mock<(progress: TutorialProgress) => void> }
 }
 interface MockScene {
     constructor: { nam,e: string;
@@ -24,7 +24,7 @@ interface MockContentLoader {
     loadTutorialData: jest.Mock<(i,d?: string) => Promise<Tutorial[]>>;
     getCachedContent: jest.Mock }
 interface TutorialStep {
-    id: string;
+    id: string,
     title: string;
     instructions?: string;
     targetElement?: string;
@@ -36,31 +36,31 @@ interface Tutorial {
     title?: string;
     steps: TutorialStep[];
 interface TutorialProgress {
-    tutorialId: string;
+    tutorialId: string,
     currentStep: number;
-    completedSteps: string[];
+    completedSteps: string[],
     isCompleted: boolean;
 interface ProgressInfo {
-    currentStep: number;
+    currentStep: number,
     totalSteps: number;
     percentage: number;
 interface MockDOMRect {
-    left: number;
+    left: number,
     top: number;
-    width: number;
+    width: number,
     height: number;
     right?: number;
     bottom?: number;
 interface MockElement {
     getBoundingClientRect: () => MockDOMRect }
 interface MockDocument {
-    querySelector: jest.Mock<(selecto,r: string) => MockElement | null>;
+    querySelector: jest.Mock<(selecto,r: string) => MockElement | null>,
     createElement: jest.Mock<(tagNam,e: string) => {}>;
 }
 // Mock creation
 const mockGameEngine: MockGameEngine = {
     localizationManager: {
-        getCurrentLanguage: jest.fn((') => 'ja'),'
+        getCurrentLanguage: jest.fn((') => 'ja'),' };
         getString: jest.fn((key: string) => `translated_${key)`),
     }),
     sceneManager: {
@@ -313,6 +313,6 @@ describe('TutorialManager', () => {
             expect(tutorialManager.highlightedElement).toBeNull();
             expect(tutorialManager.currentInstructions).toBeNull();
             expect(tutorialManager.isActive).toBe(false);
-        };
+        }
     }
 }');'

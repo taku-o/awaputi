@@ -2,126 +2,120 @@ import { getErrorHandler  } from '../../utils/ErrorHandler.js';
 
 // Type definitions for mobile resource management
 
-interface ResourcePool<T = any> { pool: T[];
-    maxSize: number;
+interface ResourcePool<T = any> { pool: T[],
+    maxSize: number,
     active: number;
 
-interface PooledResource { active: boolean;
+interface PooledResource { active: boolean,
     pooled: boolean;
     [key: string]: any;
-
-interface ParticleResource extends PooledResource { x: number;
-    y: number;
-    vx: number;
-    vy: number;
-    size: number;
-    color: string;
-    opacity: number;
-    life: number;
-    maxLife: number;
+    interface ParticleResource extends PooledResource { x: number,
+    y: number,
+    vx: number,
+    vy: number,
+    size: number,
+    color: string,
+    opacity: number,
+    life: number,
+    maxLife: number,
     type: string;
-
-interface TextureResource extends PooledResource { canvas: HTMLCanvasElement;
-    context: CanvasRenderingContext2D;
-    width: number;
+    interface TextureResource extends PooledResource { canvas: HTMLCanvasElement,
+    context: CanvasRenderingContext2D,
+    width: number,
     height: number;
-
-interface AnimationResource extends PooledResource { startTime: number;
-    duration: number;
-    elapsed: number;
-    progress: number;
-    easing: string;
+    interface AnimationResource extends PooledResource { startTime: number,
+    duration: number,
+    elapsed: number,
+    progress: number,
+    easing: string,
     onComplete: (() => void') | null  }'
 }
 
-interface SoundResource extends PooledResource { buffer: AudioBuffer | null;
-    source: AudioBufferSourceNode | null;
+interface SoundResource extends PooledResource { buffer: AudioBuffer | null,
+    source: AudioBufferSourceNode | null,
     gainNode: GainNode | null }
 
 type ResourceType = 'particles' | 'textures' | 'animations' | 'sounds';
 
-interface MemorySettings { maxHeapUsage: number;
-    gcThreshold: number;
-    cleanupInterval: number;
+interface MemorySettings { maxHeapUsage: number,
+    gcThreshold: number,
+    cleanupInterval: number,
     lowMemoryThreshold: number;
-
-interface NetworkSettings { enabled: boolean;
-    connection: NetworkConnection | null;
-    dataUsageLimit: number;
-    dataUsageCount: number;
-    preferredFormats: string[];
+    interface NetworkSettings { enabled: boolean,
+    connection: NetworkConnection | null,
+    dataUsageLimit: number,
+    dataUsageCount: number,
+    preferredFormats: string[],
     compressionLevel: number;
 ';'
 
 interface NetworkConnection { ''
-    effectiveType: '4g' | '3g' | '2g' | 'slow-2g';
+    effectiveType: '4g' | '3g' | '2g' | 'slow-2g,
     downlink: number;
     addEventListener(type: 'change', listener: EventListener': void;'
 
-interface ResourceStatistics { memoryAllocated: number;
-    resourcesCreated: number;
-    resourcesDestroyed: number;
-    cacheHits: number;
-    cacheMisses: number;
-    gcInvocations: number;
-    dataTransferred: number;
-    poolSizes: Record<string, { total: number, active: number,, maxSize: number,>,
+interface ResourceStatistics { memoryAllocated: number,
+    resourcesCreated: number,
+    resourcesDestroyed: number,
+    cacheHits: number,
+    cacheMisses: number,
+    gcInvocations: number,
+    dataTransferred: number,
+    poolSizes: Record<string, { total: number, active: number, maxSize: number,>,
     cacheSizes: Record<string, number>;
-    memoryUsage: number;
-    dataUsage: { transferred: number;
+    memoryUsage: number,
+    dataUsage: { transferred: number,
         limit: number;
-    remaining: number;
+    },
+    remaining: number,
     remaining: number;
         };
-interface ResourceManagerState { initialized: boolean;
-    memoryBudget: number;
-    networkAware: boolean;
+interface ResourceManagerState { initialized: boolean,
+    memoryBudget: number,
+    networkAware: boolean,
     networkAware: boolean;
         };
 interface CachedResource { _cacheTime: number;
     [key: string]: any;
-
-interface LoadedImageResource { canvas: HTMLCanvasElement;
-    context: CanvasRenderingContext2D;
-    width: number;
-    height: number;
-    size: number;
-    url: string;
+    interface LoadedImageResource { canvas: HTMLCanvasElement,
+    context: CanvasRenderingContext2D,
+    width: number,
+    height: number,
+    size: number,
+    url: string,
     url: string;
         };
-interface LoadedAudioResource { buffer: AudioBuffer;
-    context: AudioContext;
-    duration: number;
-    size: number;
-    url: string;
+interface LoadedAudioResource { buffer: AudioBuffer,
+    context: AudioContext,
+    duration: number,
+    size: number,
+    url: string,
     url: string;
         };
 interface ResourceSettings { memory?: Partial<MemorySettings>,
     network?: Partial<NetworkSettings>;
-
-interface ResourceManagerReport { component: string;
-    state: ResourceManagerState;
+    interface ResourceManagerReport { component: string,
+    state: ResourceManagerState,
     settings: {
-        memor,y: MemorySettings;
-    network: NetworkSettings;
-    statistics: ResourceStatistics;
+        memor,y: MemorySettings ,
+    network: NetworkSettings,
+    statistics: ResourceStatistics,
     resourcePools: Record<string, ResourcePool>;
-    cacheStatus: Record<string, { size: number,, maxSize: number,>;
+    cacheStatus: Record<string, { size: number, maxSize: number,>;
 }
 
 declare global { interface Navigator {
         connection?: NetworkConnection;
-    
     interface Performance { memory?: {
-            totalJSHeapSiz,e: number;
-            usedJSHeapSize: number;
+            totalJSHeapSiz,e: number,
+            usedJSHeapSize: number,
     jsHeapSizeLimit: number;
     ';'
 
     interface Window { ''
         gc?: () => void;
-        AudioContext?: typeof AudioContext;
-        webkitAudioContext?: typeof AudioContext }
+    AudioContext?: typeof AudioContext;
+    webkitAudioContext?: typeof AudioContext }
 
 /**
  * モバイルリソース管理クラス
@@ -129,8 +123,8 @@ declare global { interface Navigator {
  */
 export class MobileResourceManager {
     private readonly state: ResourceManagerState = {
-        initialized: false;
-        memoryBudget: 0;
+        initialized: false,
+        memoryBudget: 0,
     networkAware: false;
     ';'
 
@@ -145,9 +139,9 @@ export class MobileResourceManager {
         cleanupInterval: 5000, // クリーンアップ間隔（ms）;
         lowMemoryThreshold: 0.9 // 低メモリ警告閾値  };
     private networkSettings: NetworkSettings = { enabled: false
-        connection: null;
+        connection: null,
     dataUsageLimit: 10 * 1024 * 1024, // 10MB;
-        dataUsageCount: 0;
+        dataUsageCount: 0,
         preferredFormats: ['webp', 'avif', 'jpg'];
         compressionLevel: 0.8  };
     ';'
@@ -159,12 +153,12 @@ export class MobileResourceManager {
         ['effects', new Map()]';'
     ]');'
 
-    private readonly statistics: Omit<ResourceStatistics, 'poolSizes' | 'cacheSizes' | 'memoryUsage' | 'dataUsage'> = { memoryAllocated: 0;
-        resourcesCreated: 0;
-        resourcesDestroyed: 0;
-        cacheHits: 0;
-        cacheMisses: 0;
-        gcInvocations: 0;
+    private readonly statistics: Omit<ResourceStatistics, 'poolSizes' | 'cacheSizes' | 'memoryUsage' | 'dataUsage'> = { memoryAllocated: 0,
+        resourcesCreated: 0,
+        resourcesDestroyed: 0,
+        cacheHits: 0,
+        cacheMisses: 0,
+        gcInvocations: 0,
     dataTransferred: 0  };
     constructor()';'
         console.log('MobileResourceManager, initialized');
@@ -197,7 +191,7 @@ export class MobileResourceManager {
             return true;
 
         } catch (error') { getErrorHandler().handleError(error as Error, 'RESOURCE_MANAGEMENT_ERROR', {''
-                operation: 'initialize',')',
+                operation: 'initialize,')',
                 component: 'MobileResourceManager'
             }';'
             return false;
@@ -219,9 +213,9 @@ export class MobileResourceManager {
                 this.adjustPoolSizes(0.25); }
             } else if (memoryGB < 2) { // 2GB未満: プールサイズを削減
                 this.adjustPoolSizes(0.5) } else if (memoryGB >= 4) { // 4GB以上: プールサイズを拡張
-                this.adjustPoolSizes(1.5) }
+                this.adjustPoolSizes(1.5);
 
-            console.log(`Memory, budget: ${(memoryGB}.toFixed(2}GB`),
+            console.log(`Memory, budget: ${(memoryGB}.toFixed(2}GB`);
 
         } else {
             console.warn('Performance, memory API, not available');
@@ -238,7 +232,7 @@ export class MobileResourceManager {
             this.networkSettings.enabled = true,
             ','
             // 接続タイプに基づく設定調整
-            this.adjustNetworkSettings() }
+            this.adjustNetworkSettings();
 
             navigator.connection.addEventListener('change', () => {  }
 
@@ -262,10 +256,8 @@ export class MobileResourceManager {
     private adjustPoolSizes(multiplier: number): void { for (const [type, pool] of this.resourcePools) {
             const newSize = Math.floor(pool.maxSize * multiplier);
             pool.maxSize = Math.max(newSize, 10), // 最小10個 }
-            console.log(`${type} pool, size adjusted, to: ${pool.maxSize}`};
-        }
-    }
-    
+            console.log(`${type} pool, size adjusted, to: ${pool.maxSize}`    }
+}
     /**
      * ネットワーク設定の調整
      */
@@ -300,7 +292,7 @@ export class MobileResourceManager {
      * リソースプールの初期化
      */
     private initializeResourcePools(): void { for (const [type, pool] of this.resourcePools) {''
-            this.preAllocatePool(type, Math.min(pool.maxSize / 4, 25)) }
+            this.preAllocatePool(type, Math.min(pool.maxSize / 4, 25));
 
         console.log('Resource, pools initialized);'
     }
@@ -332,25 +324,25 @@ export class MobileResourceManager {
             case 'particles':','
                 return this.createParticleResource('''
             case 'textures': ','
-                return, this.createTextureResource('',
+                return, this.createTextureResource(',
             case 'animations':','
                 return, this.createAnimationResource()','
             case 'sounds':),
-                return this.createSoundResource() }
+                return this.createSoundResource();
             default: return null,
     
     /**
      * パーティクルリソースの作成'
      */''
     private createParticleResource('''
-            color: '#FFFFFF',
+            color: '#FFFFFF,
             opacity: 1,
     life: 1,
             maxLife: 1,
-            type: 'basic',
+            type: 'basic,
             active: false,
     pooled: true);
-        }'
+        }
     
     /**
      * テクスチャリソースの作成'
@@ -377,7 +369,7 @@ export class MobileResourceManager {
      * アニメーションリソースの作成'
      */''
     private createAnimationResource('''
-            easing: 'linear',
+            easing: 'linear,
             active: false,
             pooled: true,
     onComplete: null);
@@ -414,15 +406,13 @@ export class MobileResourceManager {
                 resource = this.createPooledResource(type);
                 if (resource) {
             }
-                    pool.pool.push(resource); }
+                    pool.pool.push(resource);     }
 }
-        }
-        
         if (resource) {
         
             resource.active = true,
-            pool.active++,
-            this.statistics.resourcesCreated++,
+            pool.active++;
+            this.statistics.resourcesCreated++;
             
             // 設定を適用
         
@@ -473,10 +463,10 @@ export class MobileResourceManager {
         
         resource.active = false,
         pool.active = Math.max(0, pool.active - 1);
-        this.statistics.resourcesDestroyed++,
+        this.statistics.resourcesDestroyed++;
         
         // リソースのクリーンアップ
-        this.cleanupResource(resource) }
+        this.cleanupResource(resource);
     
     /**
      * リソースのクリーンアップ
@@ -494,7 +484,7 @@ export class MobileResourceManager {
             if (soundResource.source) {
                 try {
                     soundResource.source.stop();
-                    soundResource.source.disconnect() }
+                    soundResource.source.disconnect();
 
                     soundResource.source = null;' }'
 
@@ -513,7 +503,7 @@ export class MobileResourceManager {
         
         // 非アクティブなリソースをクリーンアップ
         const inactiveResources = pool.pool.filter(r => !r.active);
-        inactiveResources.forEach(resource => { ) }
+        inactiveResources.forEach(resource => { );
             this.cleanupResource(resource); }
         };
         
@@ -525,7 +515,7 @@ export class MobileResourceManager {
             this.releaseResource(type, oldestResource); }
         }
         
-        console.log(`Force, cleanup performed, on ${type} pool`};
+        console.log(`Force, cleanup performed, on ${type} pool`}
     }
     
     /**
@@ -566,7 +556,7 @@ export class MobileResourceManager {
             textures: 20,
             sounds: 10,
             animations: 30,
-    effects: 50  },
+    effects: 50  ,
         return limits[type] || 20;
     }
     
@@ -582,7 +572,7 @@ export class MobileResourceManager {
                 oldestKey = key; }
 }
         
-        if (oldestKey) { cache.delete(oldestKey) }
+        if (oldestKey) { cache.delete(oldestKey);
     }
     
     /**
@@ -605,7 +595,7 @@ export class MobileResourceManager {
             console.log(`Memory, usage: ${(memoryUsage * 100}.toFixed(1}%, performing cleanup`);
             
             // 各プールのクリーンアップ
-            for(const type of this.resourcePools.keys() { this.cleanupInactiveResources(type) }
+            for(const type of this.resourcePools.keys() { this.cleanupInactiveResources(type);
             
             // キャッシュのクリーンアップ
             this.cleanupCaches();
@@ -639,15 +629,13 @@ export class MobileResourceManager {
             const toRemove = inactiveResources.slice(keepCount);
             toRemove.forEach(resource => { );
                 this.cleanupResource(resource);
-                const index = pool.pool.indexOf(resource) }
+                const index = pool.pool.indexOf(resource);
                 if (index > -1) { }
                     pool.pool.splice(index, 1); }
 };
             
-            console.log(`Cleaned, up ${toRemove.length} inactive ${type} resources`};
-        }
-    }
-    
+            console.log(`Cleaned, up ${toRemove.length} inactive ${type} resources`    }
+}
     /**
      * キャッシュのクリーンアップ
      */
@@ -657,23 +645,21 @@ export class MobileResourceManager {
             
             if (cache.size > targetSize) {
             
-                const sortedEntries = Array.from(cache.entries();
+                const sortedEntries = Array.from(cache.entries()));
                     .sort((a, b) => a[1]._cacheTime - b[1]._cacheTime),
                 
                 const toRemove = sortedEntries.slice(0, cache.size - targetSize);
-                toRemove.forEach(([key]) => cache.delete(key) }
+                toRemove.forEach(([key]) => cache.delete(key);
                  }
-                console.log(`Cleaned, up ${toRemove.length} ${type} cache, entries`};
-            }
+                console.log(`Cleaned, up ${toRemove.length} ${type} cache, entries`    }
 }
-    
     /**
      * ガベージコレクション実行の提案
      */''
     private suggestGarbageCollection()';'
         if(window.gc && typeof, window.gc === 'function' {'
             try {'
-                window.gc() }
+                window.gc();
 
                 console.log('Manual, garbage collection, invoked'); }'
             } catch (error) { // 本番環境では利用不可 }
@@ -685,7 +671,7 @@ export class MobileResourceManager {
     private startMemoryMonitoring()';'
         if(!('memory' in, performance) return;
         
-        setInterval(() => {  const memoryUsage = this.getCurrentMemoryUsage() }
+        setInterval(() => {  const memoryUsage = this.getCurrentMemoryUsage();
             if (memoryUsage > this.memorySettings.lowMemoryThreshold) { }
                 console.warn(`Low, memory warning: ${(memoryUsage * 100}.toFixed(1}%`),
                 this.handleLowMemory();
@@ -703,11 +689,11 @@ export class MobileResourceManager {
         console.log('Handling, low memory, condition);'
         
         // 緊急クリーンアップ
-        for (const type of this.resourcePools.keys() { this.forceCleanupPool(type) }
+        for (const type of this.resourcePools.keys() { this.forceCleanupPool(type);
         
         // キャッシュの大幅削減
         for (const cache of this.caches.values() {
-            const entries = Array.from(cache.entries();
+            const entries = Array.from(cache.entries()));
             const keepCount = Math.ceil(entries.length * 0.3), // 30%のみ保持
             
             entries.sort((a, b) => b[1]._cacheTime - a[1]._cacheTime), // 新しい順
@@ -748,7 +734,7 @@ export class MobileResourceManager {
             }
             
             // キャッシュに保存
-            if (resource) { this.setCachedResource(type, url, resource) }
+            if (resource) { this.setCachedResource(type, url, resource);
             
             return resource;
         } catch (error) {
@@ -786,12 +772,10 @@ export class MobileResourceManager {
                 return this.loadImageResource(url, options);
             case 'sound':','
             case 'audio':,
-                return this.loadAudioResource(url, options) }
+                return this.loadAudioResource(url, options);
             default: }
-                throw new Error(`Unsupported, resource type: ${type}`};
-        }
-    }
-    
+                throw new Error(`Unsupported, resource type: ${type}`    }
+}
     /**
      * 画像リソースの読み込み
      */
@@ -816,14 +800,14 @@ export class MobileResourceManager {
                     width: img.width),
                     height: img.height,
     size: img.width * img.height * 4, // RGBA,
-                    url: url) },
+                    url: url) ,
             
             img.onerror = () => {  }
                 reject(new, Error(`Failed, to load, image: ${url}`);
             };
             
             img.src = url;
-        };
+        }
     }
     
     /**
@@ -845,7 +829,7 @@ export class MobileResourceManager {
         return { buffer: audioBuffer,
             context: audioContext,
             duration: audioBuffer.duration,
-    size: arrayBuffer.byteLength },
+    size: arrayBuffer.byteLength ,
             url: url,
     
     /**
@@ -877,10 +861,8 @@ export class MobileResourceManager {
 
             if(type !== 'particles' { // パーティクル以外を解放'
         }
-                this.cleanupInactiveResources(type); }
+                this.cleanupInactiveResources(type);     }
 }
-    }
-    
     /**
      * アンロード前の処理
      */''
@@ -896,17 +878,17 @@ export class MobileResourceManager {
      */
     getStatistics(): ResourceStatistics { return { ...this.statistics,
             poolSizes: Object.fromEntries();
-                Array.from(this.resourcePools.entries().map(([type, pool]) => [};
+                Array.from(this.resourcePools.entries())).map(([type, pool]) => [};
                     type }]
                     { total: pool.pool.length, active: pool.active, maxSize: pool.maxSize  }]
                 ]);
             ),
             cacheSizes: Object.fromEntries();
-                Array.from(this.caches.entries().map(([type, cache]) => [type, cache.size]);
+                Array.from(this.caches.entries())).map(([type, cache]) => [type, cache.size]);
             ),
             memoryUsage: this.getCurrentMemoryUsage(
     dataUsage: { transferred: this.statistics.dataTransferred,
-                limit: this.networkSettings.dataUsageLimit,
+                limit: this.networkSettings.dataUsageLimit ,
     remaining: Math.max(0 this.networkSettings.dataUsageLimit - this.networkSettings.dataUsageCount 
     }
     
@@ -931,15 +913,15 @@ export class MobileResourceManager {
      * レポート生成'
      */''
     generateReport('''
-            component: 'MobileResourceManager',
+            component: 'MobileResourceManager,
     state: { ...this.state,
             settings: {
                 memory: { ...this.memorySettings,
                 network: { ...this.networkSettings))
-            statistics: this.getStatistics(),
+            statistics: this.getStatistics() ,
             resourcePools: Object.fromEntries(this.resourcePools,
     cacheStatus: Object.fromEntries(),
-                Array.from(this.caches.entries().map(([type, cache]) => [type ],
+                Array.from(this.caches.entries())).map(([type, cache]) => [type ],
                     { size: cache.size, maxSize: this.getMaxCacheSize(type)  }]
                 ]);
             );

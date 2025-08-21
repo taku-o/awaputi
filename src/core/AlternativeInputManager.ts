@@ -9,12 +9,12 @@ import { HeadTrackingController  } from './alternative-input-manager/HeadTrackin
 
 interface MotorAccessibilityManager { accessibilityManager?: {
         gameEngin,e?: unknown;
-
-interface InputConfig { enabled: boolean;
+    interface InputConfig { enabled: boolean,
     inputMethods: {
         switchInpu,t: boolean;
-        eyeTracking: boolean;
-        voiceControl: boolean;
+    },
+        eyeTracking: boolean,
+        voiceControl: boolean,
     headTracking: boolean;
     [key: string]: unknown;
 
@@ -38,9 +38,8 @@ export class AlternativeInputManager {
         this.eyeTrackingController = new EyeTrackingController();
         this.voiceController = new VoiceInputController();
         this.headTrackingController = new HeadTrackingController('''
-            activationMethod: 'dwell';
-    supportedMethods: {
-                switch: true,      // スイッチ入力;
+            activationMethod: 'dwell,
+    supportedMethods: { switch: true,      // スイッチ入力  },
                 eyeTracking: true, // 視線追跡;
                 voiceControl: true,// 音声制御;
                 headTracking: true,// 頭部追跡;
@@ -48,27 +47,27 @@ export class AlternativeInputManager {
     }
                 scanning: true     // スキャニング入力 
     };
-            switchInput: { enabled: false;
-    scanSpeed: 2000;
-                scanMode: 'auto';
-                activationTime: 100;
-                dwellTime: 1000);
+            switchInput: { enabled: false,
+    scanSpeed: 2000  ,
+                scanMode: 'auto,
+                activationTime: 100,
+                dwellTime: 1000),
                 numberOfSwitches: 1','
     switchMapping: new Map([']';
                     ['space', 'primary'],
                     ['enter', 'secondary'],
-                    ['escape', 'cancel]',
+                    ['escape, 'cancel]',
                 ]') },'
-            eyeTracking: { enabled: false;
-                calibrationPoints: 9;
-                dwellTime: 800;
-                gazeTolerance: 50;
-                smoothingFactor: 0.3;
-                blinkDetection: true;
-    blinkThreshold: 200 };
+            eyeTracking: { enabled: false,
+                calibrationPoints: 9  ,
+                dwellTime: 800,
+                gazeTolerance: 50,
+                smoothingFactor: 0.3,
+                blinkDetection: true,
+    blinkThreshold: 200 ,
             voiceControl: { enabled: false,''
-                language: 'ja-JP';
-    confidence: 0.7;
+                language: 'ja-JP' ,
+    confidence: 0.7,
                 commands: new Map([']';
                     ['クリック', 'click'],
                     ['ポップ', 'pop'],
@@ -81,45 +80,45 @@ export class AlternativeInputManager {
                     ['上', 'up'],
                     ['下', 'down'],
                     ['左', 'left'],
-                    ['右', 'right]',
+                    ['右, 'right]',
                 ]'),'
-                continuousListening: false;
-    pushToTalk: true;
-            headTracking: { enabled: false;
-                sensitivity: 1.0;
-                deadZone: 0.1;
-                smoothing: 0.5;
-                calibrationTime: 3000;
-    gestureRecognition: true;
+                continuousListening: false,
+    pushToTalk: true,
+            headTracking: { enabled: false,
+                sensitivity: 1.0  ,
+                deadZone: 0.1,
+                smoothing: 0.5,
+                calibrationTime: 3000,
+    gestureRecognition: true,
             singleKey: { enabled: false,''
-                key: 'space';
+                key: 'space' ,
                 actionCycle: ['move', 'select', 'cancel'];
-                cycleTime: 3000;
-    visualIndicator: true;
+                cycleTime: 3000,
+    visualIndicator: true,
             scanning: { enabled: false,''
-                scanPattern: 'linear';
-                highlightStyle: 'border';
-                highlightColor: '#00ff00';
-                audioFeedback: true;
-                autoStart: true;
+                scanPattern: 'linear' ,
+                highlightStyle: 'border,
+                highlightColor: '#00ff00,
+                audioFeedback: true,
+                autoStart: true,
     groupScanLevels: 2  }
         };
         // 統合状態
         this.state = { initialized: false,''
             activeInputMethods: new Set('''
-            currentContext: 'default';
-            accessibilityMode: false;
+            currentContext: 'default,
+            accessibilityMode: false,
     assistiveDevice: null;
         // 入力状態管理（従来互換性のため保持）
         this.activeMethod = null;
         this.inputState = {
-            switch: { isPressed: false, lastPressTime: 0, scanningActive: false, currentIndex: 0, scanDirection: 1  };
-            eyeTracking: { isCalibrated: false, currentGaze: { x: 0, y: 0  }, dwellTimer: null, gazeHistory: [], lastBlink: 0 };
-            voiceControl: { isListening: false, recognition: null, lastCommand: null, commandQueue: []  };
-            headTracking: { isCalibrated: false, neutralPosition: null, currentPosition: { x: 0, y: 0, z: 0  }, gestureBuffer: []
+            switch: { isPressed: false, lastPressTime: 0, scanningActive: false, currentIndex: 0, scanDirection: 1  ,
+            eyeTracking: { isCalibrated: false, currentGaze: { x: 0, y: 0  , dwellTimer: null, gazeHistory: [], lastBlink: 0 ,
+            voiceControl: { isListening: false, recognition: null, lastCommand: null, commandQueue: []  ,
+            headTracking: { isCalibrated: false, neutralPosition: null, currentPosition: { x: 0, y: 0, z: 0  , gestureBuffer: []
             };
             singleKey: { currentAction: 0, cycleTimer: null, lastKeyTime: 0  }
-            scanning: { isScanning: false, currentElement: null, scanTimer: null, elementGroups: [], currentGroup: 0  };
+            scanning: { isScanning: false, currentElement: null, scanTimer: null, elementGroups: [], currentGroup: 0   ,
         
         // 要素管理（サブコントローラーに委譲予定）
         this.interactiveElements = new Map();
@@ -143,22 +142,22 @@ export class AlternativeInputManager {
     averageResponseTime: 0;
         },
         
-        this.stats = { inputsProcessed: 0;
-            inputsByMethod: new Map();
-            successfulActivations: 0;
-            missedActivations: 0;
-    averageActivationTime: 0;
-            calibrationAttempts: 0;
-            sessionStart: Date.now('';
+        this.stats = { inputsProcessed: 0,
+            inputsByMethod: new Map(),
+            successfulActivations: 0,
+            missedActivations: 0,
+    averageActivationTime: 0,
+            calibrationAttempts: 0,
+            sessionStart: Date.now(',
     preferredMethod: 'switch'
             };
             switchSettings: { scanSpeed: 2000, activationSound: true, visualFeedback: true,''
-            eyeTrackingSettings: { dwellTime: 800, showGazeCursor: true, calibrationReminder: true,,')'
-            voiceSettings: { customCommands: new Map(), voiceEngine: 'default', feedbackVoice: true,,
-            headTrackingSettings: { invertX: false, invertY: false, gestureEnabled: true,,
+            eyeTrackingSettings: { dwellTime: 800, showGazeCursor: true, calibrationReminder: true,')'
+            voiceSettings: { customCommands: new Map(), voiceEngine: 'default', feedbackVoice: true,
+            headTrackingSettings: { invertX: false, invertY: false, gestureEnabled: true,
+            generalSettings: { audioFeedback: true, hapticFeedback: true, confirmActions: true,
             generalSettings: { audioFeedback: true, hapticFeedback: true, confirmActions: true;
-            generalSettings: { audioFeedback: true, hapticFeedback: true, confirmActions: true;
-        };
+         },
         console.log('[AlternativeInputManager] Initialized with sub-controllers);'
         this.initialize();
     }
@@ -308,7 +307,7 @@ export class AlternativeInputManager {
     setupAccessibilityFeatures() {
         this.setupHighContrastMode();
         this.setupScreenReaderSupport();
-        this.setupKeyboardNavigation() }
+        this.setupKeyboardNavigation();
 
         console.log('[AlternativeInputManager] Accessibility, features configured'); }'
     }
@@ -343,7 +342,7 @@ export class AlternativeInputManager {
     updateControllerContrastSettings(highContrast) {
         const contrastConfig = {''
             highlightColor: highContrast ? '#ffffff' : '#00ff00' 
-           , indicatorOpacity: highContrast ? 1.0 : 0.8 
+            indicatorOpacity: highContrast ? 1.0 : 0.8 
         };
         this.switchController.updateConfig({ scanning: contrastConfig ,
         this.eyeTrackingController.updateConfig(contrastConfig }
@@ -371,8 +370,8 @@ export class AlternativeInputManager {
     setupKeyboardNavigation()';'
         document.addEventListener('keydown', (event) => {  if (this.config.singleKeyMode) { }
                 this.handleSingleKeyNavigation(event); }
-            } else { this.handleStandardKeyNavigation(event) }
-        };
+            } else { this.handleStandardKeyNavigation(event);
+        }
     }
     
     /**
@@ -380,17 +379,17 @@ export class AlternativeInputManager {
      * @param {KeyboardEvent} event - キーボードイベント'
      */''
     handleSingleKeyNavigation(event) {
-        const singleKeyMap = {', '1': () => this.focusNextElement()',
+        const singleKeyMap = {, '1': () => this.focusNextElement()',
             '2': () => this.focusPreviousElement()','
             '3': () => this.activateCurrentElement()','
-            '4': () => this.cancelCurrentAction() }
+            '4': () => this.cancelCurrentAction();
 
             '5': () => this.toggleScanning(); 
     };
         
         const action = singleKeyMap[event.key];
         if (action) {
-            action() }
+            action();
             event.preventDefault(); }
 }
     
@@ -405,7 +404,7 @@ export class AlternativeInputManager {
                 if (event.shiftKey) {
     }
                     this.focusPreviousElement(); }
-                } else { this.focusNextElement() }
+                } else { this.focusNextElement();
 
                 }''
                 event.preventDefault('';
@@ -455,7 +454,7 @@ export class AlternativeInputManager {
 
             }'''
             .catch(() => {  ''
-                console.log('[AlternativeInputManager] Camera, not available',
+                console.log('[AlternativeInputManager] Camera, not available,
                 this.config.inputMethods.eyeTracking = false }
                 this.config.inputMethods.headTracking = false; }
             }');'
@@ -495,9 +494,9 @@ export class AlternativeInputManager {
     }
     
     // スキャニング機能（サブコントローラーに委譲）
-    startScanning() { this.switchController.startScanning?.() }
-    stopScanning() { this.switchController.stopScanning?.() }
-    selectCurrentElement() { this.switchController.selectCurrentElement?.() }
+    startScanning() { this.switchController.startScanning?.();
+    stopScanning() { this.switchController.stopScanning?.();
+    selectCurrentElement() { this.switchController.selectCurrentElement?.();
     
     /**
      * アクセシビリティモードを切り替え
@@ -564,21 +563,21 @@ export class AlternativeInputManager {
             this.voiceController.setContext(context); }
         }
         
-        console.log(`[AlternativeInputManager] Context, changed to: ${context}`};
+        console.log(`[AlternativeInputManager] Context, changed to: ${context}`}
     }
     
     // ナビゲーションメソッド（delegation to switch controller）
-    focusNextElement() { this.switchController.focusNextElement?.() }
-    focusPreviousElement() { this.switchController.focusPreviousElement?.() }
-    activateCurrentElement() { this.switchController.activateCurrentElement?.() }
-    cancelCurrentAction() { this.switchController.cancelCurrentAction?.() }
-    toggleScanning() { this.switchController.toggleScanning?.() }
+    focusNextElement() { this.switchController.focusNextElement?.();
+    focusPreviousElement() { this.switchController.focusPreviousElement?.();
+    activateCurrentElement() { this.switchController.activateCurrentElement?.();
+    cancelCurrentAction() { this.switchController.cancelCurrentAction?.();
+    toggleScanning() { this.switchController.toggleScanning?.();
     
     /**
      * フォーカス管理を設定
      */''
     setupFocusManagement()';'
-        document.addEventListener('focusin', (event) => { this.announceElementToScreenReader(event.target) };
+        document.addEventListener('focusin', (event) => { this.announceElementToScreenReader(event.target);
     }
     
     /**
@@ -620,17 +619,16 @@ export class AlternativeInputManager {
         const announcement = document.createElement('div');
         announcement.setAttribute('aria-live', 'polite');
         announcement.setAttribute('aria-atomic', 'true),'
-        announcement.style.cssText = `,
+        announcement.style.cssText = ,
             position: absolute,
             left: -10000px,
             width: 1px,
             height: 1px,
     overflow: hidden,
-        `,
+        ,
         announcement.textContent = text,
         
-        document.body.appendChild(announcement)
-}
+        document.body.appendChild(announcement);
         setTimeout(() => {  }
             document.body.removeChild(announcement); }
         }, 1000);
@@ -642,14 +640,14 @@ export class AlternativeInputManager {
      */
     getStats() {
         return { ...this.statistics,
-            activeInputMethods: Array.from(this.state.activeInputMethods);
+            activeInputMethods: Array.from(this.state.activeInputMethods),
             initialized: this.state.initialized,
             accessibilityMode: this.state.accessibilityMode,
             currentContext: this.state.currentContext,
     controllerStats: {
-                switch: this.switchController.getStats(
-    eyeTracking: this.eyeTrackingController.getStats() }
-                voice: this.voiceController.getStats() },
+                switch: this.switchController.getStats( ,
+    eyeTracking: this.eyeTrackingController.getStats(),
+                voice: this.voiceController.getStats() ,
                 headTracking: this.headTrackingController.getStats(); 
     }
     
@@ -663,7 +661,7 @@ export class AlternativeInputManager {
         if (newConfig.switchInput) {
     }
             this.switchController.updateConfig({ switchInput: newConfig.switchInput }
-        if (newConfig.eyeTracking) { this.eyeTrackingController.updateConfig(newConfig.eyeTracking) }
+        if (newConfig.eyeTracking) { this.eyeTrackingController.updateConfig(newConfig.eyeTracking);
         if (newConfig.voiceControl) { this.voiceController.updateConfig({ voiceControl: newConfig.voiceControl }
         if (newConfig.headTracking) { }
 
@@ -674,16 +672,16 @@ export class AlternativeInputManager {
     }
     
     // 従来APIとの互換性を保つためのメソッド（簡略化版）
-    enable() { this.config.enabled = true, this.collectInteractiveElements() }
-    disable() { this.config.enabled = false, this.stopAllInputMethods() }
-    stopAllInputMethods() { this.switchController.cleanup() }
+    enable() { this.config.enabled = true, this.collectInteractiveElements();
+    disable() { this.config.enabled = false, this.stopAllInputMethods();
+    stopAllInputMethods() { this.switchController.cleanup();
     enableInputMethod(method) { this.config.inputMethods[method] = true }
     disableInputMethod(method) { this.config.inputMethods[method] = false }
-    setSwitchMapping(key, action) { this.config.switchInput.switchMapping.set(key, action) }
-    setScanSpeed(speed) { this.config.switchInput.scanSpeed = Math.max(500, Math.min(5000, speed) }
-    setDwellTime(time) { this.config.eyeTracking.dwellTime = Math.max(200, Math.min(3000, time) }
-    addVoiceCommand(phrase, action) { this.config.voiceControl.commands.set(phrase, action) }
-    setEnabled(enabled) { enabled ? this.enable() : this.disable() }
+    setSwitchMapping(key, action) { this.config.switchInput.switchMapping.set(key, action);
+    setScanSpeed(speed) { this.config.switchInput.scanSpeed = Math.max(500, Math.min(5000, speed);
+    setDwellTime(time) { this.config.eyeTracking.dwellTime = Math.max(200, Math.min(3000, time);
+    addVoiceCommand(phrase, action) { this.config.voiceControl.commands.set(phrase, action);
+    setEnabled(enabled) { enabled ? this.enable() : this.disable();
     applyConfig(config) { if (config.motor?.alternativeInput) Object.assign(this.config, config.motor.alternativeInput) } : undefined
     generateReport() { return { timestamp: new Date().toISOString(), configuration: this.config, statistics: this.statistics  }
     getMostUsedMethod() {
@@ -707,7 +705,7 @@ export class AlternativeInputManager {
         ','
 
         this.state.initialized = false,
-        this.state.activeInputMethods.clear() }
+        this.state.activeInputMethods.clear();
 
         console.log('[AlternativeInputManager] Cleaned, up'); }'
     }
@@ -722,8 +720,8 @@ export class AlternativeInputManager {
         this.cleanup();
         
         // 従来の実装のクリーンアップ
-        if (this.scanHighlight && this.scanHighlight.parentNode) { this.scanHighlight.parentNode.removeChild(this.scanHighlight) }
-        if (this.gazePointer && this.gazePointer.parentNode) { this.gazePointer.parentNode.removeChild(this.gazePointer) }
+        if (this.scanHighlight && this.scanHighlight.parentNode) { this.scanHighlight.parentNode.removeChild(this.scanHighlight);
+        if (this.gazePointer && this.gazePointer.parentNode) { this.gazePointer.parentNode.removeChild(this.gazePointer);
         for(const element of this.feedbackElements.values() {
             if (element && element.parentNode) {
         }
@@ -731,9 +729,9 @@ export class AlternativeInputManager {
 }
         
         // タイマーのクリア
-        if (this.inputState.scanning.scanTimer) { clearTimeout(this.inputState.scanning.scanTimer) }
-        if (this.inputState.singleKey.cycleTimer) { clearTimeout(this.inputState.singleKey.cycleTimer) }
-        if (this.gamepadCheckInterval) { clearInterval(this.gamepadCheckInterval) }
+        if (this.inputState.scanning.scanTimer) { clearTimeout(this.inputState.scanning.scanTimer);
+        if (this.inputState.singleKey.cycleTimer) { clearTimeout(this.inputState.singleKey.cycleTimer);
+        if (this.gamepadCheckInterval) { clearInterval(this.gamepadCheckInterval);
         
         this.saveUserPreferences();
         

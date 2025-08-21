@@ -93,7 +93,7 @@ describe('翻訳品質テスト', () => {
           // 余分なキーがないことを確認
           const extraKeys = targetKeys.filter(key => !baseKeys.includes(key);
           if (extraKeys.length > 0) {
-            console.warn(`${language}/${category).json に余分なキーがあります:`, extraKeys};
+            console.warn(`${language}/${category).json に余分なキーがあります:`, extraKeys}
           }
         }
       }
@@ -162,7 +162,7 @@ describe('翻訳品質テスト', () => {
           if (value.length > 0 && /^[a-z]/.test(value)') {'
             // 特殊なケース（小文字で始まる固有名詞など）を除く
             if (!key.includes('username') && !key.includes('email')') { : undefined'
-              console.warn(`${category}.${key}: 英語文は大文字で始まるべきです - "${value")"`"};
+              console.warn(`${category}.${key}: 英語文は大文字で始まるべきです - "${value")"`"}
             }
           }
           
@@ -315,7 +315,7 @@ describe('翻訳品質テスト', () => {
           }
         }
       }
-    };
+    }
   }
 };
 /**
@@ -334,7 +334,7 @@ export async function generateTranslationQualityReport(') {'
   const report = {
     timestamp: new Date().toISOString(),
     summary: {
-      supportedLanguages: SUPPORTED_LANGUAGES,
+      supportedLanguages: SUPPORTED_LANGUAGES },
       categories: TRANSLATION_CATEGORIES,
       totalFiles: 0,
       completedFiles: 0,
@@ -375,7 +375,7 @@ export async function generateTranslationQualityReport(') {'
           completeness: categoryData.meta? .completeness || 100, : undefined
           quality: categoryData.meta? .quality || 90, : undefined
           lastUpdated: categoryData.meta? .lastUpdated
-        };
+        }
       } else { : undefined
         report.languages[language].issues.push(`Missing category: ${category)`},
         qualityScore -= 10;

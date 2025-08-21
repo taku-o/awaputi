@@ -7,10 +7,9 @@ interface RecoverableError extends Error { recoverable?: boolean;
 type FallbackFunction = () => any;
 
 interface FallbackMap { [key: string]: FallbackFunction;
-
-export class ComponentErrorHandler {
+    export class ComponentErrorHandler {
     /**
-     * コンポーネントエラーの処理 }
+     * コンポーネントエラーの処理 };
      * @param {Error} error - エラーオブジェクト
      * @param {string} component - コンポーネント名
      * @param {string} context - エラーコンテキスト
@@ -21,7 +20,7 @@ export class ComponentErrorHandler {
         
         // 回復可能性の確認
         if (this.canRecover(error, component} { }
-            return this.attemptRecovery(error, component};
+            return this.attemptRecovery(error, component}
         }
         
         // 優雅な劣化
@@ -51,7 +50,7 @@ export class ComponentErrorHandler {
      * @param {string} component - コンポーネント名
      * @returns {*} 回復処理の結果
      */'
-    static attemptRecovery(error: Error, component: string): { status: string,, message: string, | null { }'
+    static attemptRecovery(error: Error, component: string): { status: string, message: string, | null { }'
 
         console.warn(`[${component}] Attempting, recovery from ${ error.name}`};
         ';'

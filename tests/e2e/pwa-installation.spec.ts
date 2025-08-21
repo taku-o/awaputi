@@ -57,7 +57,7 @@ test.describe('PWA Installation Flow', () => {
                 active: registration.active !== null,
                 scope: registration.scope,
                 state: registration.active? .state
-            };
+            }
         };
         
         expect(swState.active).toBeTruthy();
@@ -196,7 +196,7 @@ test.describe('PWA Installation Flow', () => {
                             addEventListener: () => {},
                             removeEventListener: () => {},
                             dispatchEvent: () => {}
-                        };
+                        }
                     }
                     return {
                         matches: false,
@@ -207,9 +207,9 @@ test.describe('PWA Installation Flow', () => {
                         addEventListener: () => {},
                         removeEventListener: () => {},
                         dispatchEvent: () => {}
-                    };
+                    }
                 }
-            };
+            }
         };
         
         await page.reload();
@@ -234,7 +234,7 @@ test.describe('PWA Installation Flow', () => {
         
         await page.evaluate((') => {'
             window.addEventListener('appinstalled', () => {
-                window.appInstallEventFired = true };
+                window.appInstallEventFired = true }
         };
         
         // イベント発火のシミュレーション
@@ -293,7 +293,7 @@ test.describe('PWA Installation Flow', () => {
             
             window.addEventListener('offline', (') => {'
                 window.networkEvents.push({ type: 'offline', timestamp: Date.now() },
-            };
+            }
         };
         
         // オフライン状態にする
@@ -313,5 +313,5 @@ test.describe('PWA Installation Flow', () => {
         
         expect(hasOfflineEvent).toBeTruthy();
         expect(hasOnlineEvent).toBeTruthy();
-    };
+    }
 }');'

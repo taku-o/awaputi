@@ -111,7 +111,7 @@ describe('DeveloperAlertSystem', () => {
             const testData = {
                 performance: {
                     frameRate: {
-                        average: 15,
+                        average: 15 },
                         min: 10
                     }
                 }
@@ -125,7 +125,7 @@ describe('DeveloperAlertSystem', () => {
             const testData = {
                 performance: {
                     memoryUsage: {
-                        current: 600 * 1024 * 1024, // 600MB
+                        current: 600 * 1024 * 1024, // 600MB };
                         trend: 'increasing'
                     }
                 }
@@ -139,7 +139,7 @@ describe('DeveloperAlertSystem', () => {
             const testData = {
                 performance: {
                     loadTimes: {
-                        average: 6000, // 6秒
+                        average: 6000, // 6秒 };
                         max: 10000
                     }
                 }
@@ -152,7 +152,7 @@ describe('DeveloperAlertSystem', () => {
         test('頻繁なエラーが検出される', (') => {'
             const testData = {
                 errors: {
-                    errorRate: 2.5, // 2.5エラー/分
+                    errorRate: 2.5, // 2.5エラー/分 };
                     mostCommon: ['TypeError', 'NetworkError']
                 }
             };
@@ -198,7 +198,7 @@ describe('DeveloperAlertSystem', () => {
                     inconsistencies: Array(8).fill().map((_, i') => ({'
                         field: `field_${i}`,
                         issue: 'validation_failed'
-                    };
+                    }
                 }
             };
             const result = alertSystem.checkDataInconsistency(testData);
@@ -220,7 +220,7 @@ describe('DeveloperAlertSystem', () => {
             const testData = {
                 business: {
                     engagement: {
-                        current: 40,
+                        current: 40 },
                         previous: 60 // 33%の低下
                     }
                 }
@@ -234,7 +234,7 @@ describe('DeveloperAlertSystem', () => {
             const testData = {
                 business: {
                     retention: {
-                        current: 0.5,
+                        current: 0.5 },
                         previous: 0.7 // 約29%の低下
                     }
                 }
@@ -539,6 +539,6 @@ describe('DeveloperAlertSystem', () => {
             expect(typeof id1').toBe('string'),'
             expect(typeof id2').toBe('string'),'
             expect(id1).not.toBe(id2);
-            expect(id1).toMatch(/^alert_\d+_[a-z0-9]+$/) };
+            expect(id1).toMatch(/^alert_\d+_[a-z0-9]+$/) }
     }
 }');'

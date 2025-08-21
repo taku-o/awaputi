@@ -17,14 +17,14 @@
 import { getErrorHandler, ErrorHandler  } from '../../utils/ErrorHandler.js';
 
 // 型定義
-export interface PerformanceStatistics { saveOperations: number;
-    loadOperations: number;
-    cacheHits: number;
-    cacheMisses: number;
-    totalSaveTime: number;
+export interface PerformanceStatistics { saveOperations: number,
+    loadOperations: number,
+    cacheHits: number,
+    cacheMisses: number,
+    totalSaveTime: number,
     totalLoadTime: number;
     averageSaveTime?: string;
-    averageLoadTime?: string,  }
+    averageLoadTime?: string };
 export interface SaveOptions { priority?: OperationPriority,
     timeout?: number;
     chunkSize?: number;
@@ -34,14 +34,14 @@ export interface SaveOptions { priority?: OperationPriority,
     tags?: string[];
     expiry?: number;
     version?: string;
-export interface LoadOptions { priority?: OperationPriority,
+    export interface LoadOptions { priority?: OperationPriority,
     timeout?: number;
     useCache?: boolean;
     fallbackToDefault?: boolean;
     validateSchema?: boolean;
     decrypt?: boolean;
     maxAge?: number;
-export interface SaveResult { success: boolean;
+    export interface SaveResult { success: boolean;
     key?: string;
     timestamp: number;
     size?: number;
@@ -49,107 +49,107 @@ export interface SaveResult { success: boolean;
     encrypted?: boolean;
     chunks?: number;
     metadata?: LargeDataMetadata;
-     }
-export interface ChunkMetadata { totalChunks: number;
-    chunkSize: number;
-    totalSize: number;
+     };
+export interface ChunkMetadata { totalChunks: number,
+    chunkSize: number,
+    totalSize: number,
     timestamp: number;
     checksum?: string;
     compression?: CompressionType;
     encryption?: EncryptionType;
-     }
-export interface LargeDataMetadata extends ChunkMetadata { dataType: string;
-    version: string;
+     };
+export interface LargeDataMetadata extends ChunkMetadata { dataType: string,
+    version: string,
     originalSize: number;
     compressionRatio?: number;
-export interface StorageQuota { used: number;
-    available: number;
-    total: number;
+export interface StorageQuota { used: number,
+    available: number,
+    total: number,
     percentage: number;
-export interface DataValidationResult { valid: boolean;
-    errors: ValidationError[];
+    export interface DataValidationResult { valid: boolean,
+    errors: ValidationError[],
     warnings: ValidationWarning[];
     schema?: string;
-export interface ValidationError { field: string;
-    expected: string;
-    actual: string;
+    export interface ValidationError { field: string,
+    expected: string,
+    actual: string,
     severity: ErrorSeverity;
-export interface ValidationWarning { field: string;
-    message: string;
+    export interface ValidationWarning { field: string,
+    message: string,
     code: string;
-export interface CacheEntry<T = any> { data: T;
+    export interface CacheEntry<T = any> { data: T,
     timestamp: number;
     expiry?: number;
-    tags: string[];
-    size: number;
+    tags: string[],
+    size: number,
     hits: number;
-export interface StorageProvider { setItem(key: string, value: string): Promise<void> | void;
+    export interface StorageProvider { setItem(key: string, value: string): Promise<void> | void;
     getItem(key: string): Promise<string | null> | string | null;
     removeItem(key: string): Promise<void> | void;
     clear(): Promise<void> | void;
     length: number;
-    key(index: number): string | null }
-export interface DataManagerReference { isInitialized: boolean;
-    version: string;
-    asyncQueue: AsyncQueue;
+    key(index: number): string | null };
+export interface DataManagerReference { isInitialized: boolean,
+    version: string,
+    asyncQueue: AsyncQueue,
     cache: CacheManager;
     playerData?: PlayerDataManager;
     settingsManager?: SettingsManager;
     statisticsManager?: StatisticsManager;
     emit(event: string, data: any): void;
     initialize(): Promise<void>;
-export interface AsyncQueue { enqueue<T>(operation: () => Promise<T>, options: QueueOptions): Promise<T>;
-export interface QueueOptions { priority: OperationPriority;
-    timeout: number;
-    metadata: Record<string, any> }
+    export interface AsyncQueue { enqueue<T>(operation: () => Promise<T>, options: QueueOptions): Promise<T>;
+    export interface QueueOptions { priority: OperationPriority,
+    timeout: number,
+    metadata: Record<string, any> };
 export interface CacheManager { invalidateByTags(tags: string[]): void;
     get<T>(key: string): CacheEntry<T> | null;
     set<T>(key: string, data: T, options?: CacheSetOptions): void;
     delete(key: string): boolean;
     clear(): void;
-export interface CacheSetOptions { ttl?: number,
+    export interface CacheSetOptions { ttl?: number,
     tags?: string[];
     priority?: CachePriority;
-export interface PlayerDataManager { saveData(data: any): Promise<SaveResult>;
+    export interface PlayerDataManager { saveData(data: any): Promise<SaveResult>;
     getAllData(): any;
-export interface SettingsManager { saveSettings(data: any): Promise<boolean>;
+    export interface SettingsManager { saveSettings(data: any): Promise<boolean>;
     getCurrentSettings(): any;
 ';'
 
 export interface StatisticsManager {,
     getDetailedStatistics('';
-export type DataType = 'playerData' | 'settings' | 'statistics' | 'cache' | 'logs' | 'preferences';
-export type OperationPriority = 'low' | 'normal' | 'high' | 'critical';
-export type ErrorSeverity = 'warning' | 'error' | 'critical';
-export type CachePriority = 'low' | 'normal' | 'high';
-export type StorageEventType = 'saved' | 'loaded' | 'deleted' | 'error' | 'quota_exceeded';
-export type CompressionType = 'none' | 'gzip' | 'lz4' | 'brotli';
-export type EncryptionType = 'none' | 'aes-256-gcm' | 'chacha20-poly1305'
+    export type DataType = 'playerData' | 'settings' | 'statistics' | 'cache' | 'logs' | 'preferences';
+    export type OperationPriority = 'low' | 'normal' | 'high' | 'critical';
+    export type ErrorSeverity = 'warning' | 'error' | 'critical';
+    export type CachePriority = 'low' | 'normal' | 'high';
+    export type StorageEventType = 'saved' | 'loaded' | 'deleted' | 'error' | 'quota_exceeded';
+    export type CompressionType = 'none' | 'gzip' | 'lz4' | 'brotli';
+    export type EncryptionType = 'none' | 'aes-256-gcm' | 'chacha20-poly1305'
 
 // 定数
 export const DEFAULT_SAVE_OPTIONS: SaveOptions = {''
-    priorit,y: 'normal';
-    timeout: 10000;
+    priorit,y: 'normal,
+    timeout: 10000,
     chunkSize: 1024 * 1024, // 1MB;
-    compress: false;
-    encrypt: false;
-    tags: [];
+    compress: false,
+    encrypt: false,
+    tags: [],
     version: '1.0.0'
             } as const;
 ';'
 
-export const DEFAULT_LOAD_OPTIONS: LoadOptions = {;
-    priority: 'normal';
-    timeout: 5000;
-    useCache: true;
-    fallbackToDefault: true;
-    validateSchema: false;
-    decrypt: false;
+export const DEFAULT_LOAD_OPTIONS: LoadOptions = {,
+    priority: 'normal,
+    timeout: 5000,
+    useCache: true,
+    fallbackToDefault: true,
+    validateSchema: false,
+    decrypt: false,
     maxAge: 3600000 // 1 hour 
 } as const;
 export const PERFORMANCE_THRESHOLDS = { SAVE_WARNING: 100, // ms
     LOAD_WARNING: 50,  // ms;
-    CACHE_HIT_RATIO_MIN: 0.8;
+    CACHE_HIT_RATIO_MIN: 0.8,
     OPERATION_TIMEOUT: 30000 // ms 
  } as const;
 export const STORAGE_LIMITS = { MAX_ITEM_SIZE: 10 * 1024 * 1024, // 10MB
@@ -160,18 +160,18 @@ export const STORAGE_LIMITS = { MAX_ITEM_SIZE: 10 * 1024 * 1024, // 10MB
 ';'
 
 export const STORAGE_KEYS = {;
-    PREFIX: 'bubblePop_';
-    DIRECT_PREFIX: 'bubblePop_direct_';
-    METADATA_SUFFIX: '_metadata';
-    CHUNK_SEPARATOR: '_chunk_';
+    PREFIX: 'bubblePop_,
+    DIRECT_PREFIX: 'bubblePop_direct_,
+    METADATA_SUFFIX: '_metadata,
+    CHUNK_SEPARATOR: '_chunk_,
     CACHE_PREFIX: 'cache_'
             } as const)
 // ユーティリティ関数
-export function generateStorageKey(dataType: string, prefix?: string): string { const actualPrefix = prefix || STORAGE_KEYS.PREFIX }
+export function generateStorageKey(dataType: string, prefix?: string): string { const actualPrefix = prefix || STORAGE_KEYS.PREFIX };
     return `${actualPrefix}${dataType}`;
 }
 
-export function parseStorageKey(key: string): { prefix: string, dataType: string,, isChunk: boolean, chunkIndex?: number; { const prefixes = [STORAGE_KEYS.PREFIX, STORAGE_KEYS.DIRECT_PREFIX, STORAGE_KEYS.CACHE_PREFIX],
+export function parseStorageKey(key: string): { prefix: string, dataType: string, isChunk: boolean, chunkIndex?: number; { const prefixes = [STORAGE_KEYS.PREFIX, STORAGE_KEYS.DIRECT_PREFIX, STORAGE_KEYS.CACHE_PREFIX],
     
     for (const prefix of prefixes) {
     
@@ -189,19 +189,19 @@ export function parseStorageKey(key: string): { prefix: string, dataType: string
 
             return { prefix,''
                 dataType: remainder.replace(STORAGE_KEYS.METADATA_SUFFIX, '') };
-                isChunk: false ,
+                isChunk: false ;
     } }
-    ';'
+    ';' };
 
     return { ''
         prefix: ','
     dataType: key,
-        isChunk: false ,
+        isChunk: false ;
     } }
 
-export function calculateStorageSize(data: any): number { return new Blob([JSON.stringify(data)]).size }
-export function shouldUseChunking(dataSize: number, threshold: number = STORAGE_LIMITS.CHUNK_SIZE): boolean { return dataSize > threshold }
-export function validateDataType(dataType: string): boolean { return /^[a-zA-Z0-9_-]+$/.test(dataType) && dataType.length <= 50 }
+export function calculateStorageSize(data: any): number { return new Blob([JSON.stringify(data)]).size };
+export function shouldUseChunking(dataSize: number, threshold: number = STORAGE_LIMITS.CHUNK_SIZE): boolean { return dataSize > threshold };
+export function validateDataType(dataType: string): boolean { return /^[a-zA-Z0-9_-]+$/.test(dataType) && dataType.length <= 50 };
 export function createStorageEvent(;
     type: StorageEventType,
     dataType: string,
@@ -210,7 +210,7 @@ export function createStorageEvent(;
     ): StorageEvent { return { type,
         dataType,
         duration,
-        timestamp: Date.now() },
+        timestamp: Date.now() };
         ...additionalData
     }
 
@@ -237,8 +237,7 @@ export class DataStorageManager {
                 if (!validateDataType(dataType) {
     
 }
-                    throw new Error(`Invalid, dataType: ${dataType}`},
-                }
+                    throw new Error(`Invalid, dataType: ${dataType}`} }
                 
                 const startTime = performance.now();
                 
@@ -267,7 +266,7 @@ export class DataStorageManager {
                         if (shouldUseChunking(dataSize, mergedOptions.chunkSize) {
                 }
                             result = await this.saveLargeData(dataType, data, mergedOptions); }
-                        } else { result = await this.saveGenericData(dataType, data, mergedOptions) }
+                        } else { result = await this.saveGenericData(dataType, data, mergedOptions);
                 }
                 
                 const endTime = performance.now();
@@ -287,7 +286,7 @@ export class DataStorageManager {
                 const event = createStorageEvent('saved', dataType, duration, { size: dataSize )',''
                 this.dataManager.emit('dataSaved', event);
                 // キャッシュ無効化
-                this.invalidateCacheByDataType(dataType) }
+                this.invalidateCacheByDataType(dataType);
                 return { ...result, size: dataSize;'} catch (error) {'
                 this.errorHandler.handleError(error as Error, 'DATA_SAVE_ERROR', {''
                     operation: 'save');
@@ -302,7 +301,7 @@ export class DataStorageManager {
             timeout: mergedOptions.timeout!,' }'
 
             metadata: { dataType, operation: 'save'
-            };
+            }
     }
 
     /**
@@ -317,8 +316,7 @@ export class DataStorageManager {
                 if (!validateDataType(dataType) {
     
 }
-                    throw new Error(`Invalid, dataType: ${dataType}`},
-                }
+                    throw new Error(`Invalid, dataType: ${dataType}`} }
                 
                 const startTime = performance.now();
                 
@@ -349,7 +347,7 @@ export class DataStorageManager {
                         const metadata = await this.loadLargeDataMetadata(dataType);
                         if (metadata) { }
                             result = await this.loadLargeData(dataType, mergedOptions); }
-                        } else { result = await this.loadGenericData(dataType, mergedOptions) }
+                        } else { result = await this.loadGenericData(dataType, mergedOptions);
                 }
                 
                 // データ検証
@@ -358,10 +356,8 @@ export class DataStorageManager {
                     if (!validation.valid) {
                         console.warn(`[DataStorageManager] Data validation failed for ${dataType}:`, validation.errors}
                         if (mergedOptions.fallbackToDefault) { }
-                            result = await this.getDefaultData(dataType};
-                        }
-                }
-                
+                            result = await this.getDefaultData(dataType    }
+}
                 const endTime = performance.now();
                 const duration = endTime - startTime;
                 
@@ -377,7 +373,7 @@ export class DataStorageManager {
                 }
                 
                 // キャッシュに保存
-                if (mergedOptions.useCache && result !== null) { const cacheKey = this.generateCacheKey(dataType, mergedOptions) }
+                if (mergedOptions.useCache && result !== null) { const cacheKey = this.generateCacheKey(dataType, mergedOptions);
                     const tags = [`dataType:${dataType}`, ...(mergedOptions.tags || [])];
                     this.dataManager.cache.set(cacheKey, result, { ttl: mergedOptions.maxAge)'
                         tags'}'
@@ -513,22 +509,20 @@ export class DataStorageManager {
             data }
             timestamp: Date.now()),
             version: options.version || this.dataManager.version,
-    metadata: options.metadata,
-        },
+    metadata: options.metadata ,
         
         const serializedData = JSON.stringify(payload);
         await this.storageProvider.setItem(key, serializedData);
         
         return { success: true, 
-            key, ,
-            timestamp: payload.timestamp },
-            size: serializedData.length ,
-    } }
+            key,
+            timestamp: payload.timestamp ,
+            size: serializedData.length  } }
 
     /**
      * 汎用データの読み込み
      */
-    private async loadGenericData(dataType: string, options: LoadOptions): Promise<any> { console.log(`[DataStorageManager] Loading, generic data: ${dataType)`,
+    private async loadGenericData(dataType: string, options: LoadOptions): Promise<any> { console.log(`[DataStorageManager] Loading, generic data: ${dataType),
         
         const, key = generateStorageKey(dataType};
         const, serializedData = await, this.storageProvider.getItem(key}
@@ -536,7 +530,7 @@ export class DataStorageManager {
         try { const payload = JSON.parse(serializedData);
             // バージョンチェック
             if (options.validateSchema && payload.version !== this.dataManager.version) { }
-                console.warn(`[DataStorageManager] Version mismatch for ${dataType}: stored=${payload.version}, current=${this.dataManager.version}`};
+                console.warn(`[DataStorageManager] Version mismatch for ${dataType}: stored=${payload.version}, current=${this.dataManager.version}`}
             }
             
             return payload.data;
@@ -550,8 +544,7 @@ export class DataStorageManager {
         try {
             const startTime = performance.now();
             if (!validateDataType(dataType) { }
-                throw new Error(`Invalid, dataType: ${dataType}`},
-            }
+                throw new Error(`Invalid, dataType: ${dataType}`} }
             
             const key = generateStorageKey(dataType, STORAGE_KEYS.DIRECT_PREFIX);
             const payload = { data,
@@ -568,10 +561,10 @@ export class DataStorageManager {
             console.log(`[DataStorageManager] Direct save completed for ${dataType} in ${duration.toFixed(2}ms`);
             
             return { success: true, 
-                key, ,
-                timestamp: payload.timestamp },
-                size: serializedData.length ,
-    } } catch (error') {'
+                key,
+                timestamp: payload.timestamp ,
+                size: serializedData.length  }
+        } catch (error') {'
             this.errorHandler.handleError(error as Error, 'DIRECT_SAVE_ERROR', {''
                 operation: 'saveDataDirect');
                 dataType),
@@ -585,8 +578,7 @@ export class DataStorageManager {
         try {
             const startTime = performance.now();
             if (!validateDataType(dataType) { }
-                throw new Error(`Invalid, dataType: ${dataType}`},
-            }
+                throw new Error(`Invalid, dataType: ${dataType}`} }
             
             const key = generateStorageKey(dataType, STORAGE_KEYS.DIRECT_PREFIX);
             const serializedData = await this.storageProvider.getItem(key);
@@ -619,7 +611,7 @@ export class DataStorageManager {
             if (dataSize > STORAGE_LIMITS.MAX_ITEM_SIZE} {
     
 }
-                throw new Error(`Data, size ${dataSize} exceeds, maximum limit ${STORAGE_LIMITS.MAX_ITEM_SIZE}`};
+                throw new Error(`Data, size ${dataSize} exceeds, maximum limit ${STORAGE_LIMITS.MAX_ITEM_SIZE}`}
             }
             
             const chunkSize = options.chunkSize || STORAGE_LIMITS.CHUNK_SIZE;
@@ -647,7 +639,7 @@ export class DataStorageManager {
         if (chunks.length > STORAGE_LIMITS.MAX_CHUNKS) {
     
 }
-            throw new Error(`Chunk, count ${chunks.length} exceeds, maximum limit ${STORAGE_LIMITS.MAX_CHUNKS}`};
+            throw new Error(`Chunk, count ${chunks.length} exceeds, maximum limit ${STORAGE_LIMITS.MAX_CHUNKS}`}
         }
         
         console.log(`[DataStorageManager] Splitting data into ${ chunks.length} chunks`};
@@ -674,18 +666,17 @@ export class DataStorageManager {
         console.log(`[DataStorageManager] Large, data saved, successfully in ${chunks.length} chunks`};
         
         return { success: true, 
-            chunks: chunks.length, ,
+            chunks: chunks.length,
             metadata,
-            timestamp: metadata.timestamp },
-            size: metadata.totalSize ,
-    } }
+            timestamp: metadata.timestamp ,
+            size: metadata.totalSize  } }
 
     /**
      * 大容量データの読み込み
      */
     async loadLargeData(dataType: string, options: LoadOptions = { ): Promise<any> {
         try {
-            console.log(`[DataStorageManager] Loading, large data: ${dataType)`,
+            console.log(`[DataStorageManager] Loading, large data: ${dataType),
             
             // メタデータの読み込み
             const, metadata = await, this.loadLargeDataMetadata(dataType};
@@ -694,7 +685,7 @@ export class DataStorageManager {
     
 }
                 // チャンク化されていない通常データとして試行 }
-                return await this.loadGenericData(dataType, options};
+                return await this.loadGenericData(dataType, options}
             }
             
             // チャンクを順次読み込み
@@ -708,7 +699,7 @@ export class DataStorageManager {
                 if (chunk === null) {
     
 }
-                    throw new Error(`Missing, chunk ${i} for, large data ${dataType}`};
+                    throw new Error(`Missing, chunk ${i} for, large data ${dataType}`}
                 }
 
                 chunks.push(chunk);
@@ -720,7 +711,7 @@ export class DataStorageManager {
             if (reconstructedData.length !== metadata.totalSize) {
     
 }
-                throw new Error(`Size mismatch: expected ${metadata.totalSize}, got ${reconstructedData.length}`};
+                throw new Error(`Size mismatch: expected ${metadata.totalSize}, got ${reconstructedData.length}`}
             }
             
             const result = JSON.parse(reconstructedData);
@@ -741,13 +732,13 @@ export class DataStorageManager {
      */
     private async saveLargeDataMetadata(dataType: string, metadata: LargeDataMetadata): Promise<SaveResult> {
         const metadataKey = `${dataType}${STORAGE_KEYS.METADATA_SUFFIX}`;
-        return await this.saveGenericData(metadataKey, metadata, { ) }
+        return await this.saveGenericData(metadataKey, metadata, { );
     /**
      * 大容量データメタデータの読み込み
      */
     private async loadLargeDataMetadata(dataType: string): Promise<LargeDataMetadata | null> {
         const metadataKey = `${dataType}${STORAGE_KEYS.METADATA_SUFFIX}`;
-        return await this.loadGenericData(metadataKey, { ) }
+        return await this.loadGenericData(metadataKey, { );
     /**
      * キャッシュキーの生成
      */
@@ -769,7 +760,7 @@ export class DataStorageManager {
         
         // 簡単なハッシュ関数（djb2アルゴリズム）
         let hash = 5381;
-        for (let, i = 0; i < optionsStr.length; i++) { hash = ((hash << 5) + hash) + optionsStr.charCodeAt(i) }
+        for (let, i = 0; i < optionsStr.length; i++) { hash = ((hash << 5) + hash) + optionsStr.charCodeAt(i);
         return Math.abs(hash >>> 0).toString(16);
     }
 
@@ -787,16 +778,14 @@ export class DataStorageManager {
      */
     private validateData(data: any, dataType: string): DataValidationResult { const errors: ValidationError[] = [],
         const warnings: ValidationWarning[] = [],
-        ,
         // 基本的な検証
         if (data === null || data === undefined) {
             errors.push({)'
-                field: 'root',')',
-                expected: 'non-null value',
-                actual: String(data) }
+                field: 'root,')',
+                expected: 'non-null value,
+                actual: String(data),
 
-                severity: 'error' ,
-    }'
+                severity: 'error'  }'
             }
         ';'
         // データタイプ別検証
@@ -816,7 +805,7 @@ export class DataStorageManager {
                 if(typeof, data !== 'object' || Array.isArray(data)) { errors.push({''
                         field: 'settings',','
                         expected: 'object')','
-    actual: typeof data,')',
+    actual: typeof data,'),
                         severity: 'error'
             }
                 break;
@@ -847,7 +836,7 @@ export class DataStorageManager {
     private invalidateCacheByDataType(dataType: string): void {
         const tags = [`dataType: ${dataType}`],
         this.dataManager.cache.invalidateByTags(tags);
-        console.log(`[DataStorageManager] Cache, invalidated for, dataType: ${dataType}`};
+        console.log(`[DataStorageManager] Cache, invalidated for, dataType: ${dataType}`}
     }
 
     /**
@@ -877,9 +866,8 @@ export class DataStorageManager {
 }'} catch (error) { console.warn('[DataStorageManager] Failed to estimate storage usage:', error }'
         return { used: totalSize,
             available: STORAGE_LIMITS.MAX_TOTAL_SIZE - totalSize,
-    total: STORAGE_LIMITS.MAX_TOTAL_SIZE },
-            percentage: (totalSize / STORAGE_LIMITS.MAX_TOTAL_SIZE) * 100 ,
-    } }
+    total: STORAGE_LIMITS.MAX_TOTAL_SIZE ,
+            percentage: (totalSize / STORAGE_LIMITS.MAX_TOTAL_SIZE) * 100  } }
 
     /**
      * パフォーマンス統計を取得
@@ -889,10 +877,10 @@ export class DataStorageManager {
         
         // 平均時間の計算
         stats.averageSaveTime = stats.saveOperations > 0 ? undefined : undefined','
-            (stats.totalSaveTime / stats.saveOperations).toFixed(2) : '0',
+            (stats.totalSaveTime / stats.saveOperations).toFixed(2) : '0,
 
         stats.averageLoadTime = stats.loadOperations > 0 ? undefined : undefined','
-            (stats.totalLoadTime / stats.loadOperations).toFixed(2) : '0',
+            (stats.totalLoadTime / stats.loadOperations).toFixed(2) : '0,
         
         return stats }
 
@@ -908,7 +896,7 @@ export class DataStorageManager {
      */
     async deleteData(dataType: string): Promise<boolean> { try {
             if (!validateDataType(dataType) { }
-                throw new Error(`Invalid, dataType: ${dataType}`};
+                throw new Error(`Invalid, dataType: ${dataType}`}
             }
             
             // メタデータチェック（大容量データの場合）
@@ -921,14 +909,14 @@ export class DataStorageManager {
             }
                 for (let, i = 0; i < metadata.totalChunks; i++) { }
                     const chunkKey = generateStorageKey(`${dataType}${STORAGE_KEYS.CHUNK_SEPARATOR}${ i}`}
-                    await, this.storageProvider.removeItem(chunkKey};
+                    await, this.storageProvider.removeItem(chunkKey}
                 }
                 
                 // メタデータを削除
                 const metadataKey = generateStorageKey(`${dataType}${ STORAGE_KEYS.METADATA_SUFFIX}`}
-                await this.storageProvider.removeItem(metadataKey};
+                await this.storageProvider.removeItem(metadataKey}
             } else {  // 通常データを削除
-                const key = generateStorageKey(dataType) }
+                const key = generateStorageKey(dataType);
                 await this.storageProvider.removeItem(key); }
             // 直接保存データも削除
             const directKey = generateStorageKey(dataType STORAGE_KEYS.DIRECT_PREFIX);

@@ -16,7 +16,7 @@ export class BaseComponent {
         this.mainController = mainController;
         this.name = name;
         this.initialized = false
-}
+};
         this.errorHandler = null; }
     }
 

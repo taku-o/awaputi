@@ -9,16 +9,16 @@ interface BubbleObject {
     x?: number;
     y?: number;
 interface PopResult {
-    score: number;
+    score: number,
     combo: number;
 interface GameOverResult {
-    reason: string;
+    reason: string,
     score: number;
 interface Achievement {
-    id: string;
+    id: string,
     unlocked: boolean;
     progress: {
-        curren,t: number;
+        curren,t: number },
         target: number;
 }
 interface SessionData {
@@ -30,7 +30,7 @@ interface PlayerDataStats {
     };
     sessionData: SessionData;
 interface UpdateProgressCall {
-    achievementId: string;
+    achievementId: string,
     value: number;
 interface SessionUpdate {
     bubblesPopped?: number;
@@ -46,7 +46,7 @@ class MockAchievementManager {
         this.checkAndUnlockCalls.push(achievementId);
         return true }
     getAchievement(id: string): Achievement {
-        return { id, unlocked: false, progress: { current: 0, target: 100 } };
+        return { id, unlocked: false, progress: { current: 0, target: 100 } }
     }
 }
 class MockBubbleManager {
@@ -54,7 +54,7 @@ class MockBubbleManager {
     constructor() {
         this.popBubbleOriginal = this.popBubble.bind(this) }
     popBubble(bubble: BubbleObject): PopResult {
-        return { score: 10, combo: 1 };
+        return { score: 10, combo: 1 }
     }
 }
 class MockScoreManager {
@@ -73,28 +73,28 @@ class MockGameScene {
     constructor() {
         this.gameOverOriginal = this.gameOver.bind(this) }
     gameOver(reason: string): GameOverResult {
-        return { reason, score: 1000 };
+        return { reason, score: 1000 }
     }
 }
 class MockPlayerData {
     public data: {
-        totalBubblesPopped: number;
+        totalBubblesPopped: number },
         totalScore: number;
         sessionData: SessionData;
     constructor() {
         this.data = {
-            totalBubblesPopped: 0;
+            totalBubblesPopped: 0,
             totalScore: 0;
             sessionData: { startTime: Date.now() }
-        };
+        }
     }
     get(key: string): any {
         return (this.data: any)[key] }
     getDetailedStatistics('): PlayerDataStats {'
         return {
-            bubbleTypes: { normal: { popped: 10 } };
+            bubbleTypes: { normal: { popped: 10 } },
             sessionData: this.data.sessionData
-        };
+        }
     }
 }
 describe('AchievementEventIntegrator', () => {
@@ -158,7 +158,7 @@ describe('AchievementEventIntegrator', () => {
             integrator.sessionTracking.startTime = startTime,
             
             for (let i = 0, i < 10, i++') {'
-                mockBubbleManager.popBubble({ type: 'normal' };
+                mockBubbleManager.popBubble({ type: 'normal' }
             }
             
             // 速度実績の更新があることを確認
@@ -265,7 +265,7 @@ describe('AchievementEventIntegrator', () => {
     describe('セッション追跡', (') => {'
         test('セッション統計が正しく更新される', () => {
             integrator.updateSessionTracking({
-                bubblesPopped: 5;
+                bubblesPopped: 5,
                 score: 500;
                 combo: 3 };
             expect(integrator.sessionTracking.bubblesPopped).toBe(5);

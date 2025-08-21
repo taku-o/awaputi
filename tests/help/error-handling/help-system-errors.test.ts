@@ -48,7 +48,7 @@ class ErrorHandlingHelpManager {
   async tryLoadContent(language, category) {
     const filePath = path.join(HELP_CONTENT_DIR, language, `${category).json`),
     if (!fs.existsSync(filePath} {
-      throw new Error(`File not found: ${language}/${category).json`};
+      throw new Error(`File not found: ${language}/${category).json`}
     }
     
     try {
@@ -68,7 +68,7 @@ class ErrorHandlingHelpManager {
     
     for (const field of requiredFields) {
       if (!(field in data)') {'
-        throw new Error(`Missing required field '${field}' in ${language}/${category).json`};
+        throw new Error(`Missing required field '${field}' in ${language}/${category).json`}
       }
     }
     
@@ -81,7 +81,7 @@ class ErrorHandlingHelpManager {
     }
     
     if (!Array.isArray(data.topics) || data.topics.length === 0) {
-      throw new Error(`Invalid or empty topics array in ${language}/${category).json`};
+      throw new Error(`Invalid or empty topics array in ${language}/${category).json`}
     }
   }
   async handleFallback(originalLanguage, category, originalError) {
@@ -122,27 +122,27 @@ class ErrorHandlingHelpManager {
       title: `${category} (${language}')`;'
       description: `Help content for ${category} is temporarily unavailable.`;
       language,
-      version: '0.0.0';
+      version: '0.0.0',
       lastUpdated: new Date().toISOString(').split('T')[0],'
       topics: [
         {
-          id: 'placeholder';
+          id: 'placeholder',
           title: 'Content Unavailable';
-          description: 'This help content is temporarily unavailable. Please try again later.';
+          description: 'This help content is temporarily unavailable. Please try again later.',
           content: {
             message: {
-              text: 'We apologize for the inconvenience. The help content you requested is currently unavailable.';
+              text: 'We apologize for the inconvenience. The help content you requested is currently unavailable.' },
               action: 'Please check back later or contact support if this issue persists.'
             }
           },
-          difficulty: 'beginner';
+          difficulty: 'beginner',
           estimatedReadTime: 30;
           tags: ['placeholder', 'unavailable']
         }
       ],
-      _isPlaceholder: true;
+      _isPlaceholder: true,
       _originalError: error.message
-    };
+    }
   }
   logError(type, message, context = {) {
     const errorEntry = {
@@ -330,7 +330,7 @@ describe('Help System Error Handling', () => {
         if (language === 'invalid' && category === 'structure') {
           const invalidData = {
             // Missing required fields
-            title: 'Test';
+            title: 'Test',
             topics: []
           };
           // Call validation directly to trigger error
@@ -348,11 +348,11 @@ describe('Help System Error Handling', () => {
       helpManager.tryLoadContent = async (language, category') => {'
         if (language === 'mismatch' && category === 'test') {
           const invalidData = {
-            category: 'test';
+            category: 'test',
             title: 'Test';
-            description: 'Test';
+            description: 'Test',
             language: 'wrong',  // Mismatch
-            version: '1.0.0';
+            version: '1.0.0',
             lastUpdated: '2025-01-01';
             topics: [{ id: 'test' }]
           };
@@ -392,22 +392,22 @@ describe('Help System Error Handling', () => {
             throw new Error('Temporary failure') }
           // Succeed on third try
           return {
-            category: 'test';
+            category: 'test',
             title: 'Recovery Test';
-            description: 'Test recovery';
+            description: 'Test recovery',
             language: 'recovery';
-            version: '1.0.0';
+            version: '1.0.0',
             lastUpdated: '2025-01-01';
             topics: [{ 
-              id: 'test';
+              id: 'test',
               title: 'Test';
-              description: 'Test';
-              content: { test: 'content' };
+              description: 'Test',
+              content: { test: 'content' },
               difficulty: 'beginner';
-              estimatedReadTime: 60;
+              estimatedReadTime: 60,
               tags: ['test']
             }]
-          };
+          }
         }
         return originalTryLoad.call(helpManager, language, category');'
       };
@@ -417,6 +417,6 @@ describe('Help System Error Handling', () => {
       expect(content).toBeDefined();
       // Since it fails 3 times and we only have 2 fallbacks, it will generate placeholder
       expect(content._isPlaceholder || content.title).toBeTruthy();
-    };
+    }
   }
 }');'

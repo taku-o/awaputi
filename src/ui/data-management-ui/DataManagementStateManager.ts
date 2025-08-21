@@ -26,55 +26,55 @@ type BackupUpdateCallback = (action: string, data: any) => void,
 /**
  * UI state interface
  */
-interface UIState { isVisible: boolean;
-    currentView: string;
-    selectedItem: number;
-    scrollPosition: number;
+interface UIState { isVisible: boolean,
+    currentView: string,
+    selectedItem: number,
+    scrollPosition: number,
     errorMessage: string | null  }
 
 /**
  * Dialog history entry interface
  */
-interface DialogHistoryEntry { type: string;
-    data: any;
+interface DialogHistoryEntry { type: string,
+    data: any,
     timestamp: number;
 
 /**
  * Dialog state interface
  */
-interface DialogState { showingDialog: string | null;
-    dialogData: any;
-    dialogInput: string;
+interface DialogState { showingDialog: string | null,
+    dialogData: any,
+    dialogInput: string,
     isVisible: boolean;
 
 /**
  * Operation history entry interface
  */
-interface OperationHistoryEntry { type: string;
-    result: string;
-    message: string;
-    duration: number;
-    startTime: number;
-    endTime: number;
+interface OperationHistoryEntry { type: string,
+    result: string,
+    message: string,
+    duration: number,
+    startTime: number,
+    endTime: number,
     data: any;
 
 /**
  * Operation state interface
  */
-interface OperationState { operationInProgress: boolean;
-    operationType: string | null;
-    operationProgress: number;
-    operationMessage: string;
+interface OperationState { operationInProgress: boolean,
+    operationType: string | null,
+    operationProgress: number,
+    operationMessage: string,
     operationDuration: number;
 
 /**
  * Backup status interface
  */
-interface BackupStatus { lastBackup: string | number | Date | null;
-    backupCount: number;
-    totalSize: number;
-    autoBackupEnabled: boolean;
-    nextBackup: string | number | Date | null;
+interface BackupStatus { lastBackup: string | number | Date | null,
+    backupCount: number,
+    totalSize: number,
+    autoBackupEnabled: boolean,
+    nextBackup: string | number | Date | null,
     backupHistory: BackupHistoryEntry[];
 
 /**
@@ -108,9 +108,8 @@ export class UIStateManager {
 
     setVisible(visible: boolean): void {''
         if (this.isVisible !== visible) {
-            this.isVisible = visible }
-
-            this.notifyStateChange('visibility', { visible ) }
+            this.isVisible = visible };
+            this.notifyStateChange('visibility', { visible );
     }
 
     isUIVisible(): boolean { return this.isVisible }
@@ -123,7 +122,7 @@ export class UIStateManager {
             this.selectedItem = 0; // Reset selection when changing view
         }
 
-            this.notifyStateChange('view', { view ) }
+            this.notifyStateChange('view', { view );
     }
 
     getCurrentView(): string { return this.currentView }
@@ -133,7 +132,7 @@ export class UIStateManager {
         if (this.selectedItem !== index) {
             this.selectedItem = index }
 
-            this.notifyStateChange('selection', { index ) }
+            this.notifyStateChange('selection', { index );
     }
 
     getSelectedItem(): number { return this.selectedItem }
@@ -145,13 +144,13 @@ export class UIStateManager {
 
     getScrollPosition(): number { return this.scrollPosition }
 
-    scrollUp(): void { this.setScrollPosition(this.scrollPosition - 1) }
+    scrollUp(): void { this.setScrollPosition(this.scrollPosition - 1);
 
-    scrollDown(): void { this.setScrollPosition(this.scrollPosition + 1) }
+    scrollDown(): void { this.setScrollPosition(this.scrollPosition + 1);
 
-    moveSelectionUp(): void { this.setSelectedItem(Math.max(0, this.selectedItem - 1) }
+    moveSelectionUp(): void { this.setSelectedItem(Math.max(0, this.selectedItem - 1);
 
-    moveSelectionDown(maxItems: number): void { this.setSelectedItem(Math.min(maxItems - 1, this.selectedItem + 1) }
+    moveSelectionDown(maxItems: number): void { this.setSelectedItem(Math.min(maxItems - 1, this.selectedItem + 1);
 
     showError(message: string, duration: number = 5000): void { this.errorMessage = message;
         this.notifyStateChange('error', { message );
@@ -177,27 +176,25 @@ export class UIStateManager {
 
         if (this.errorTimeout) {
 
-            clearTimeout(this.errorTimeout) }
+            clearTimeout(this.errorTimeout);
             this.errorTimeout = null; }
-}
+} };
 
     getError(): string | null { return this.errorMessage }
 
-    onStateChange(callback: StateChangeCallback): void { this.stateChangeCallbacks.push(callback) }
+    onStateChange(callback: StateChangeCallback): void { this.stateChangeCallbacks.push(callback);
 
     private notifyStateChange(type: string, data: any): void { this.stateChangeCallbacks.forEach(callback => { )
-            try {) }
+            try {);
 
                 callback(type, data); }'
 
-            } catch (error) { console.error('State change callback error:', error }
-        };
-    }
-
+            } catch (error) { console.error('State change callback error:', error     }
+}
     getState(): UIState { return { isVisible: this.isVisible,
             currentView: this.currentView,
             selectedItem: this.selectedItem,
-    scrollPosition: this.scrollPosition },
+    scrollPosition: this.scrollPosition };
             errorMessage: this.errorMessage 
     }
 
@@ -214,10 +211,9 @@ export class UIStateManager {
  * Dialog State Manager
  * ダイアログ状態管理器 - モーダルダイアログの状態管理
  */
-export class DialogStateManager {'
+export class DialogStateManager {
     // ダイアログ状態
-    private showingDialog: string | null = null, // null, 'backup', 'export', 'import', 'clear', 'progress' }
-
+    private showingDialog: string | null = null, // null, 'backup', 'export', 'import', 'clear', 'progress' };
     private dialogData: any = {}''
     private dialogInput: string = ';'
     private dialogCallbacks: DialogChangeCallback[] = [],
@@ -227,11 +223,11 @@ export class DialogStateManager {'
     showDialog(type: string, data: any = { ): void {
         if (this.showingDialog) {
 
-            this.hideDialog('',
+            this.hideDialog(',
         this.dialogInput = data.defaultInput || ' }''
         // Add to history') }'
 
-        this.addToHistory({ type, data, timestamp: Date.now(  },
+        this.addToHistory({ type, data, timestamp: Date.now(  ,
         this.notifyDialogChange('show', { type, data ' }'
 ';'
 
@@ -243,7 +239,7 @@ export class DialogStateManager {'
             this.dialogData = {};
             this.dialogInput = ';'
 
-            this.notifyDialogChange('hide', { previousType ) }
+            this.notifyDialogChange('hide', { previousType );
     }
 
     getDialogType(): string | null { return this.showingDialog }
@@ -258,7 +254,7 @@ export class DialogStateManager {'
     getDialogInput(): string { return this.dialogInput }
 
     setDialogInput(input: string): void { this.dialogInput = input,
-        this.notifyDialogChange('inputUpdate', { input ) }
+        this.notifyDialogChange('inputUpdate', { input );
 
     isDialogVisible(): boolean { return this.showingDialog !== null }
 
@@ -273,20 +269,18 @@ export class DialogStateManager {'
 
     getDialogHistory(): DialogHistoryEntry[] { return [...this.dialogHistory],
 
-    onDialogChange(callback: DialogChangeCallback): void { this.dialogCallbacks.push(callback) }
+    onDialogChange(callback: DialogChangeCallback): void { this.dialogCallbacks.push(callback);
 
     private notifyDialogChange(action: string, data: any): void { this.dialogCallbacks.forEach(callback => { )
-            try {) }
+            try {);
 
                 callback(action, data); }'
 
-            } catch (error) { console.error('Dialog change callback error:', error }
-        };
-    }
-
+            } catch (error) { console.error('Dialog change callback error:', error     }
+}
     getState(): DialogState { return { showingDialog: this.showingDialog,
             dialogData: this.dialogData,
-    dialogInput: this.dialogInput },
+    dialogInput: this.dialogInput };
             isVisible: this.isDialogVisible(); 
     }
 ';'
@@ -301,7 +295,7 @@ export class DialogStateManager {'
     private, maxHistorySize: number = 50,
     // コールバック
     private, operationCallbacks: OperationChangeCallback[] = []','
-')',
+'),
     startOperation(type: string, message: string = ', timeout: number = 300000): void { // 5 minutes default'
         if (this.operationInProgress) {', '
             }
@@ -363,7 +357,7 @@ export class DialogStateManager {'
                 message,
                 duration);
                 startTime: this.operationStartTime,
-    endTime: Date.now() }
+    endTime: Date.now();
                 data' }'
 
             }');'
@@ -403,21 +397,19 @@ export class DialogStateManager {'
     getLastOperation(): OperationHistoryEntry | null { return this.operationHistory[this.operationHistory.length - 1] || null }
 
     getOperationsByType(type: string): OperationHistoryEntry[] { return this.operationHistory.filter(op => op.type === type);
-    onOperationChange(callback: OperationChangeCallback): void { this.operationCallbacks.push(callback) }
+    onOperationChange(callback: OperationChangeCallback): void { this.operationCallbacks.push(callback);
 
     private notifyOperationChange(action: string, data: any): void { this.operationCallbacks.forEach(callback => { )
-            try {) }
+            try {);
 
                 callback(action, data); }'
 
-            } catch (error) { console.error('Operation change callback error:', error }
-        };
-    }
-
+            } catch (error) { console.error('Operation change callback error:', error     }
+}
     getState(): OperationState { return { operationInProgress: this.operationInProgress,
             operationType: this.operationType,
             operationProgress: this.operationProgress,
-    operationMessage: this.operationMessage },
+    operationMessage: this.operationMessage ,
             operationDuration: this.getOperationDuration(); 
     }
 ';'
@@ -438,11 +430,11 @@ export class DialogStateManager {'
 export class BackupStatusManager {
     // バックアップ状況データ
     private backupStatus: BackupStatus = {
-        lastBackup: null;
-        backupCount: 0;
-        totalSize: 0;
-        autoBackupEnabled: true;
-        nextBackup: null;
+        lastBackup: null,
+        backupCount: 0,
+        totalSize: 0,
+        autoBackupEnabled: true,
+        nextBackup: null,
     backupHistory: [] };
     // 更新コールバック
     private updateCallbacks: BackupUpdateCallback[] = [];
@@ -474,8 +466,7 @@ export class BackupStatusManager {
         } catch (error) {
             console.error('Failed to load backup status:', error',' }
 
-            this.notifyUpdate('error', { error: (error as Error).message },
-        }
+            this.notifyUpdate('error', { error: (error as Error).message , }
     }
 
     getBackupStatus(): BackupStatus {
@@ -506,19 +497,18 @@ export class BackupStatusManager {
 
         this.backupStatus.backupHistory.push({ )
             ...backupInfo),
-            timestamp: Date.now( },
+            timestamp: Date.now( ,
         // Keep only last 20 backups
-        if (this.backupStatus.backupHistory.length > 20) { this.backupStatus.backupHistory.shift() }
+        if (this.backupStatus.backupHistory.length > 20) { this.backupStatus.backupHistory.shift();
 
         this.updateBackupStatus({ );
             lastBackup: backupInfo.timestamp || Date.now(),
             backupCount: this.backupStatus.backupCount + 1,
-    totalSize: this.backupStatus.totalSize + (backupInfo.size || 0 },
-    }
+    totalSize: this.backupStatus.totalSize + (backupInfo.size || 0 , }
 ';'
 
     formatBackupSize(bytes: number): string { ''
-        if(bytes === 0) return '0 B',
+        if(bytes === 0) return '0 B,
         ','
 
         const k = 1024,
@@ -529,7 +519,7 @@ export class BackupStatusManager {
 ';'
 
     formatBackupTime(timestamp: string | number | Date | null): string { ''
-        if(!timestamp) return 'Never',
+        if(!timestamp) return 'Never,
         
         const date = new Date(timestamp);
         const now = new Date();
@@ -556,7 +546,7 @@ export class BackupStatusManager {
             this.loadBackupStatus().catch(error => {),' }'
 
                 console.error('Periodic backup status update failed:', error); }
-            };
+            }
         }, interval);
     }
 
@@ -565,10 +555,10 @@ export class BackupStatusManager {
             this.updateInterval = null }
     }
 
-    onUpdate(callback: BackupUpdateCallback): void { this.updateCallbacks.push(callback) }
+    onUpdate(callback: BackupUpdateCallback): void { this.updateCallbacks.push(callback);
 
     private notifyUpdate(action: string, data: any): void { this.updateCallbacks.forEach(callback => { )
-            try {) }
+            try {);
 
                 callback(action, data);' }'
 

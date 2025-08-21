@@ -8,65 +8,54 @@ import { ErrorHandler  } from '../../utils/ErrorHandler.js';
 import { LoggingSystem  } from '../LoggingSystem.js';
 
 // 型定義
-export interface GameEngine { // ゲームエンジンの基本型定義 }
-
-export interface ErrorStatistics { count: number;
-    lastOccurred: number | null;
-    resolved: number;
+export interface GameEngine { // ゲームエンジンの基本型定義 };
+export interface ErrorStatistics { count: number,
+    lastOccurred: number | null,
+    resolved: number,
     unresolved: number;
     resolutionRate?: number;
-
-export interface OverallErrorStatistics { categories: Record<string, ErrorStatistics>,
-    totalErrors: number;
-    totalResolved: number;
+    export interface OverallErrorStatistics { categories: Record<string, ErrorStatistics>,
+    totalErrors: number,
+    totalResolved: number,
     overallResolutionRate: number;
-
-export interface ErrorResult { success: boolean;
-    strategy: string;
+    export interface ErrorResult { success: boolean,
+    strategy: string,
     suggestions: string[];
     data?: any;
-
-export interface FallbackOptions { useCache?: boolean,
+    export interface FallbackOptions { useCache?: boolean,
     cachedContent?: any;
     language?: string;
     clearCache?: boolean;
     rebuildIndex?: boolean;
-
-export interface TutorialStep { stepIndex: number;
+    export interface TutorialStep { stepIndex: number,
     id: string;
     title?: string;
-    targetElement?: string,  }
-
+    targetElement?: string };
 export interface TutorialOptions { currentStep?: TutorialStep | null,
     targetElement?: string;
-
-export interface SearchOptions { query?: string,
+    export interface SearchOptions { query?: string,
     rebuildIndex?: boolean;
-
-export interface UserErrorData { message: string;
-    suggestions: string[];
-    timestamp: number;
-    canRetry: boolean;
+    export interface UserErrorData { message: string,
+    suggestions: string[],
+    timestamp: number,
+    canRetry: boolean,
     helpAvailable: boolean;
-
-export interface ErrorContext { currentStep?: TutorialStep,
+    export interface ErrorContext { currentStep?: TutorialStep,
     query?: string;
     targetElement?: string;
     clearCache?: boolean;
     rebuildIndex?: boolean;
     [key: string]: any;
-
-export interface DefaultHelpContent { version: string;
-    category: string;
-    language: string;
+    export interface DefaultHelpContent { version: string,
+    category: string,
+    language: string,
     sections: Array<{
-        i,d: string;
-        title: string;
-    content: string;
-        difficulty: 'beginner' | 'intermediate' | 'advanced';
+        i,d: string,
+        title: string,
+    content: string,
+    difficulty: 'beginner' | 'intermediate' | 'advanced,
     tags: string[];>;
-}
-
+};
 export type FallbackStrategy = (error: Error, options: any) => ErrorResult;
 
 /**
@@ -86,12 +75,11 @@ export class HelpErrorHandler {
 
         this.gameEngine = gameEngine;
         this.loggingSystem = LoggingSystem.getInstance ? LoggingSystem.getInstance() : new LoggingSystem('''
-            CONTENT_LOAD: 'content_load';
-            TUTORIAL_EXECUTION: 'tutorial_execution';
-            SEARCH_OPERATION: 'search_operation';
-            TOOLTIP_DISPLAY: 'tooltip_display';
-            CONTEXT_DETECTION: 'context_detection' }
-
+            CONTENT_LOAD: 'content_load,
+            TUTORIAL_EXECUTION: 'tutorial_execution,
+            SEARCH_OPERATION: 'search_operation,
+            TOOLTIP_DISPLAY: 'tooltip_display,
+            CONTEXT_DETECTION: 'context_detection' };
             USER_INTERACTION: 'user_interaction' })
         // エラー統計
         this.errorStats = new Map<string, ErrorStatistics>();
@@ -115,7 +103,7 @@ export class HelpErrorHandler {
             
             // エラー統計の初期化
             Object.values(this.errorCategories).forEach(category => { this.errorStats.set(category, {
-                    count: 0);
+                    count: 0),
                     lastOccurred: null,
     resolved: 0 }
                     unresolved: 0);' }'
@@ -123,7 +111,7 @@ export class HelpErrorHandler {
             }');'
 
             this.loggingSystem.info('HelpErrorHandler', 'Help error handler initialized successfully';} catch (error) {
-            this.loggingSystem.error('HelpErrorHandler', 'Failed to initialize help error handler', error) }
+            this.loggingSystem.error('HelpErrorHandler', 'Failed to initialize help error handler', error);
     }
 
     /**
@@ -150,8 +138,7 @@ export class HelpErrorHandler {
 
                 this.incrementResolvedCount(this.errorCategories.CONTENT_LOAD);' }'
 
-                this.loggingSystem.info('HelpErrorHandler', `Content load error resolved using: ${result.strategy}`},
-            } else {  this.incrementUnresolvedCount(this.errorCategories.CONTENT_LOAD) }
+                this.loggingSystem.info('HelpErrorHandler', `Content load error resolved using: ${result.strategy}`} } else {  this.incrementUnresolvedCount(this.errorCategories.CONTENT_LOAD);
                 this.showUserFriendlyError(error, result.suggestions); }
             }
             ';'
@@ -181,8 +168,8 @@ export class HelpErrorHandler {
 
                 this.incrementResolvedCount(this.errorCategories.TUTORIAL_EXECUTION);' }'
 
-                this.loggingSystem.info('HelpErrorHandler', `Tutorial error resolved: ${result.strategy}`};
-            } else {  this.incrementUnresolvedCount(this.errorCategories.TUTORIAL_EXECUTION) }
+                this.loggingSystem.info('HelpErrorHandler', `Tutorial error resolved: ${result.strategy}`}
+            } else {  this.incrementUnresolvedCount(this.errorCategories.TUTORIAL_EXECUTION);
                 this.showUserFriendlyError(error, result.suggestions); }
             }
             ';'
@@ -207,8 +194,8 @@ export class HelpErrorHandler {
 
                 this.incrementResolvedCount(this.errorCategories.SEARCH_OPERATION);' }'
 
-                this.loggingSystem.info('HelpErrorHandler', `Search error resolved: ${result.strategy}`};
-            } else {  this.incrementUnresolvedCount(this.errorCategories.SEARCH_OPERATION) }
+                this.loggingSystem.info('HelpErrorHandler', `Search error resolved: ${result.strategy}`}
+            } else {  this.incrementUnresolvedCount(this.errorCategories.SEARCH_OPERATION);
                 this.showUserFriendlyError(error, result.suggestions); }
             }
             ';'
@@ -265,7 +252,7 @@ export class HelpErrorHandler {
                 suggestions,
                 timestamp: Date.now(
                 canRetry: this.canRetryError(error,
-                helpAvailable: this.isHelpAvailable(error  },
+                helpAvailable: this.isHelpAvailable(error  ,
             '
             // エラー表示UI（後続のタスクで実装）
             this.loggingSystem.info('HelpErrorHandler', `User-friendly error: ${ userMessage'`),''
@@ -274,7 +261,7 @@ export class HelpErrorHandler {
             if (suggestions.length > 0} }'
 
                 console.info('解決提案:', suggestions}';} catch (error) {'
-            this.loggingSystem.error('HelpErrorHandler', 'Failed to show user-friendly error', error) }
+            this.loggingSystem.error('HelpErrorHandler', 'Failed to show user-friendly error', error);
     }
 
     /**
@@ -288,15 +275,15 @@ export class HelpErrorHandler {
             // エラー統計の更新
             const stats = this.errorStats.get(category);
             if (stats) {
-                stats.count++,
+                stats.count++;
                 stats.lastOccurred = Date.now()','
             this.loggingSystem.error('HelpErrorHandler', `${category} error`, {
                 error: error.message,
     stack: error.stack }
                 context }
                 timestamp: Date.now()),
-                userAgent: navigator.userAgent,
-            } } catch (loggingError) { console.error('Failed to log help error:', loggingError }
+                userAgent: navigator.userAgent }
+        } catch (loggingError) { console.error('Failed to log help error:', loggingError }
     }
 
     /**
@@ -308,7 +295,7 @@ export class HelpErrorHandler {
         try {
             // Analytics システムとの連携（後続のタスクで実装）
             const analyticsData = {''
-                event: 'help_system_error',
+                event: 'help_system_error,
                 error_type: error.constructor.name,
     error_message: error.message,
                 context,
@@ -318,7 +305,7 @@ export class HelpErrorHandler {
             ' }'
 
         } catch (error) {
-            this.loggingSystem.error('HelpErrorHandler', 'Failed to report error to analytics', error) }
+            this.loggingSystem.error('HelpErrorHandler', 'Failed to report error to analytics', error);
     }
 
     /**
@@ -336,10 +323,9 @@ export class HelpErrorHandler {
             }
         
         return { categories: statistics,
-            totalErrors: Array.from(this.errorStats.values().reduce((sum, stats) => sum + stats.count, 0),
-            totalResolved: Array.from(this.errorStats.values().reduce((sum, stats) => sum + stats.resolved, 0) };
-            overallResolutionRate: this.calculateOverallResolutionRate(),
-    }
+            totalErrors: Array.from(this.errorStats.values())).reduce((sum, stats) => sum + stats.count, 0),
+            totalResolved: Array.from(this.errorStats.values())).reduce((sum, stats) => sum + stats.resolved, 0) };
+            overallResolutionRate: this.calculateOverallResolutionRate();
 
     // ---- プライベートメソッド ----
 
@@ -349,7 +335,7 @@ export class HelpErrorHandler {
     private setupFallbackStrategies(): void { // コンテンツ読み込みエラー戦略
         this.fallbackStrategies.set(this.errorCategories.CONTENT_LOAD, (error: Error, options: FallbackOptions): ErrorResult => { 
             // 1. キャッシュされたコンテンツを試行'
-            }'
+            }
 
             if (options.useCache) { }'
 
@@ -362,10 +348,10 @@ export class HelpErrorHandler {
             
             // 3. デフォルトコンテンツを提供
             return { success: true,''
-                strategy: 'default_content',
+                strategy: 'default_content,
                 data: this.getDefaultHelpContent('}'
 
-                suggestions: ['基本的なヘルプを表示しています]};};'
+                suggestions: ['基本的なヘルプを表示しています]}};'
 
         // チュートリアルエラー戦略
         this.fallbackStrategies.set(this.errorCategories.TUTORIAL_EXECUTION, (error: Error, options: TutorialOptions): ErrorResult => {  }
@@ -422,7 +408,7 @@ export class HelpErrorHandler {
                 strategy: 'manual_mode',' };'
 
                 suggestions: ['手動でヘルプを確認できます] }'
-            };
+            }
     }
 
     /**
@@ -436,8 +422,7 @@ export class HelpErrorHandler {
             case this.errorCategories.TUTORIAL_EXECUTION: return await this.recoverTutorialExecution(context);
             case this.errorCategories.SEARCH_OPERATION: }
                 return await this.recoverSearchOperation(context}
-            default: return false),
-            };
+            default: return false) };
     /**
      * コンテンツ読み込み復旧
      * @param context - コンテキスト
@@ -497,9 +482,9 @@ export class HelpErrorHandler {
      * @returns ユーザーメッセージ
      */''
     private translateErrorToUserMessage(error: Error): string { const errorMappings: Record<string, string> = {', 'NetworkError': 'ネットワーク接続を確認してください','
-            'TypeError': '予期しない問題が発生しました',
-            'SyntaxError': 'データの読み込みに失敗しました',
-            'ReferenceError': '必要な機能が見つかりません',
+            'TypeError': '予期しない問題が発生しました,
+            'SyntaxError': 'データの読み込みに失敗しました,
+            'ReferenceError': '必要な機能が見つかりません,
             'Default': 'ヘルプ機能で問題が発生しました' };
 ';'
 
@@ -514,7 +499,7 @@ export class HelpErrorHandler {
      */''
     private canRetryError(error: Error): boolean { ''
         const retryableErrors = ['NetworkError', 'TimeoutError', 'AbortError'],
-        return retryableErrors.includes(error.constructor.name) }
+        return retryableErrors.includes(error.constructor.name);
 
     /**
      * ヘルプ利用可能性の判定
@@ -529,14 +514,14 @@ export class HelpErrorHandler {
      * @returns デフォルトコンテンツ
      */''
     private getDefaultHelpContent('''
-            version: '1.0.0',
-            category: 'error_fallback',
-            language: 'ja',
+            version: '1.0.0,
+            category: 'error_fallback,
+            language: 'ja,
             sections: [{ ''
-                id: 'error_help',
-                title: 'ヘルプ利用について',
+                id: 'error_help,
+                title: 'ヘルプ利用について,
                 content: 'ヘルプ機能で問題が発生しました。基本的な操作方法については、メニューからチュートリアルをご確認ください。',]','
-                difficulty: 'beginner',']',
+                difficulty: 'beginner,']',
                 tags: ['error', 'basic] }]'
         }
 
@@ -545,7 +530,7 @@ export class HelpErrorHandler {
      * @returns デフォルト結果'
      */''
     private getDefaultErrorResult('';
-            strategy: 'none',
+            strategy: 'none,
             suggestions: ['しばらく時間をおいてから再度お試しください],'
     data: null);
             };
@@ -597,7 +582,7 @@ export class HelpErrorHandler {
             this.loggingSystem.info('HelpErrorHandler', 'Help error handler destroyed',' }'
 
         } catch (error) {
-            this.loggingSystem.error('HelpErrorHandler', 'Failed to destroy help error handler', error) }
+            this.loggingSystem.error('HelpErrorHandler', 'Failed to destroy help error handler', error);
 }
 
 // シングルトンインスタンス管理
@@ -609,7 +594,7 @@ let helpErrorHandlerInstance: HelpErrorHandler | null = null,
  * @returns HelpErrorHandlerインスタンス
  */
 export function getHelpErrorHandler(gameEngine: GameEngine): HelpErrorHandler { if (!helpErrorHandlerInstance) {
-        helpErrorHandlerInstance = new HelpErrorHandler(gameEngine) }
+        helpErrorHandlerInstance = new HelpErrorHandler(gameEngine) };
     return helpErrorHandlerInstance;
 }
 

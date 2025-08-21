@@ -57,8 +57,7 @@ export class UserInfoScene extends Scene { // コンポーネントシステム
         this.initializeUserComponents();
         // レガシー互換性プロパティ
         this.lastCleanupTime = Date.now()
-}
-
+};
     }
 
         console.log('[UserInfoScene] Main, Controller Pattern初期化完了'); }'
@@ -124,7 +123,7 @@ export class UserInfoScene extends Scene { // コンポーネントシステム
 
         this.eventBus.on('dialogClosed', () => {  this.isDialogOpen = false }
             this.activeDialog = null; }
-        };
+        }
     }
     
     // ========================================

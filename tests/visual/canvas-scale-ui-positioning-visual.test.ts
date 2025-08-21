@@ -97,7 +97,7 @@ describe('Canvas Scale UI Positioning Visual Tests', () => {
                 const renderSnapshot = renderUISnapshot();
                 snapshots[resolution.name] = createRenderingSnapshot(renderSnapshot);
                 // 各解像度でのスナップショット比較
-                expect(snapshots[resolution.name]).toMatchSnapshot(`ui-proportions-${resolution.name)`};
+                expect(snapshots[resolution.name]).toMatchSnapshot(`ui-proportions-${resolution.name)`}
             }
             
             // 異なる解像度間での相対的な位置関係の一貫性を確認
@@ -252,7 +252,7 @@ describe('Canvas Scale UI Positioning Visual Tests', () => {
             
             // リサイズとレンダリングの合計時間が許容範囲内であることを確認
             expect(totalTime).toBeLessThan(1000); // 1000ms以下
-        };
+        }
     }
     // ヘルパー関数
     function createMockContext() {
@@ -323,7 +323,7 @@ describe('Canvas Scale UI Positioning Visual Tests', () => {
                 width: call[2],
                 height: call[3],),
             canvasInfo: renderSnapshot.canvasInfo
-        };
+        }
     }
     function validateProportionalConsistency(snapshots) {
         const resolutionNames = Object.keys(snapshots);
@@ -364,6 +364,6 @@ describe('Canvas Scale UI Positioning Visual Tests', () => {
         textElements.forEach(call => {);
             expect(call[1]).toBeGreaterThan(10), // 最小マージン
             expect(call[2]).toBeGreaterThan(20), // 最小マージン
-        };
+        }
     }
 }');'

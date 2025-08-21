@@ -6,39 +6,39 @@ import { describe, test, beforeEach, expect, jest  } from '@jest/globals';
 import { MockFactory  } from '../mocks/MockFactory.js';
 // Type definitions for test objects
 interface Position {
-    x: number;
+    x: number,
     y: number;
 interface BubbleData {
-    type: string;
+    type: string,
     x: number;
-    y: number;
+    y: number,
     size: number;
     isAlive?: boolean;
     age?: number;
 interface TestBubbleInfo {
     [key: string]: any;
 interface StageConfig {
-    spawnRate: number;
+    spawnRate: number,
     maxBubbles: number;
     bubbleTypes: string[];
 interface MockGameEngine {
-    canvas: any;
+    canvas: any,
     ctx: any;
-    currentStage: { nam,e: string;
-    getInputManager: jest.Mock;
-    createExplosion: jest.Mock;
+    currentStage: { nam,e: string,
+    getInputManager: jest.Mock };
+    createExplosion: jest.Mock,
     returnBubbleToPool: jest.Mock;
     getBubbleFromPool: jest.Mock }
 interface MockPerformanceOptimizer {
-    adjustUpdateFrequency: jest.Mock;
+    adjustUpdateFrequency: jest.Mock,
     getMaxBubbles: jest.Mock;
     getCurrentRenderQuality: jest.Mock }
 interface BubbleManager {
-    gameEngine: MockGameEngine;
+    gameEngine: MockGameEngine,
     bubbles: any[];
-    spawner: any;
+    spawner: any,
     physicsEngine: any;
-    dragSystem: any;
+    dragSystem: any,
     effectProcessor: any;
     spawnBubble(): void;
     spawnSpecificBubble(type: string, position: Position): any;
@@ -72,26 +72,26 @@ describe('BubbleManager', () => {
         mockCanvas = MockFactory.createCanvasMock('),'
         mockContext = mockCanvas.getContext('2d');
         mockGameEngine = {
-            canvas: mockCanvas;
+            canvas: mockCanvas,
             ctx: mockContext;
-            currentStage: { name: 'normal' };
+            currentStage: { name: 'normal' },
             getInputManager: jest.fn(() => ({
-                isMousePressed: jest.fn(() => false);
-                getMousePosition: jest.fn(() => ({ x: 0, y: 0 ))));
+                isMousePressed: jest.fn(() => false),
+                getMousePosition: jest.fn(() => ({ x: 0, y: 0 )))),
             createExplosion: jest.fn(
             returnBubbleToPool: jest.fn(
             getBubbleFromPool: jest.fn((') => ({'
-                type: 'normal';
+                type: 'normal',
                 x: 100;
-                y: 100;
+                y: 100,
                 size: 30;
-                isAlive: true;
+                isAlive: true,
                 age: 0
     })
         );
         // Mock PerformanceOptimizer before importing BubbleManager
         const mockPerformanceOptimizer: MockPerformanceOptimizer = {
-            adjustUpdateFrequency: jest.fn(deltaTime => deltaTime);
+            adjustUpdateFrequency: jest.fn(deltaTime => deltaTime),
             getMaxBubbles: jest.fn(() => 50);
             getCurrentRenderQuality: jest.fn(() => 1.0) }');'
         // Mock the getPerformanceOptimizer function
@@ -182,7 +182,7 @@ describe('BubbleManager', () => {
     describe('Configuration', (') => {'
         test('should set stage config', (') => {'
             const stageConfig: StageConfig = {
-                spawnRate: 2.0;
+                spawnRate: 2.0,
                 maxBubbles: 100;
                 bubbleTypes: ['normal', 'boss']
             };
@@ -206,9 +206,9 @@ describe('BubbleManager', () => {
     describe('Test Bubble Management', (') => {'
         test('should add test bubbles', (') => {'
             const testBubbleData: BubbleData = {
-                type: 'normal';
+                type: 'normal',
                 x: 100;
-                y: 100;
+                y: 100,
                 size: 30
             };
             

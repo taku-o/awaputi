@@ -21,7 +21,7 @@ describe('Canvas Scale UI Positioning Integration Tests', () => {  let dom: any,
         `, {"
             pretendToBeVisual: true," }"
             resources: "usable"
-            };
+            }
         },
         (global: any).window = dom.window,
         (global: any).document = dom.window.document,
@@ -273,7 +273,7 @@ describe('Canvas Scale UI Positioning Integration Tests', () => {  let dom: any,
             
             // 連続リサイズ処理のパフォーマンスが許容範囲内であることを確認
             expect(executionTime.toBeLessThan(200); // 200ms以下
-        };
+        }
     }'
     // ヘルパー関数''
     function simulateScreenSize(width, height') { }'

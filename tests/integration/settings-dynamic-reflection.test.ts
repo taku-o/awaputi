@@ -305,6 +305,6 @@ describe('設定変更の動的反映機能統合テスト', () => {
             // 履歴が制限されることを確認
             const history = settingsManager.getNotificationHistory();
             expect(history.length).toBeLessThanOrEqual(100);
-        };
+        }
     }
 }');'

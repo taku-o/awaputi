@@ -8,18 +8,18 @@ type BackgroundEffectType = 'particles' | 'rain' | 'snow' | 'fog' | 'stars' | 'c
 /**
  * Background effect options interface
  */
-interface BackgroundEffectOptions { density: number;
-    speed: number;
-    color: string;
-    size: number;
+interface BackgroundEffectOptions { density: number,
+    speed: number,
+    color: string,
+    size: number,
     opacity: number;
 
 /**
  * Background effect interface
  */
-interface BackgroundEffect { effectType: BackgroundEffectType;
-    enabled: boolean;
-    intensity: number;
+interface BackgroundEffect { effectType: BackgroundEffectType,
+    enabled: boolean,
+    intensity: number,
     options: BackgroundEffectOptions;
 
 /**
@@ -38,7 +38,7 @@ export class BackgroundEffectRenderer {
 
         this.canvas = canvas
 
-    }
+    };
         this.errorHandler = getErrorHandler(); }
     }
     
@@ -68,10 +68,8 @@ export class BackgroundEffectRenderer {
                         break; }
 };'} catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'BackgroundEffectRenderer.renderBackgroundEffects'
-            };
-        }
-    }
-    
+                }
+}
     /**
      * パーティクル背景をレンダリング
      */
@@ -90,17 +88,15 @@ export class BackgroundEffectRenderer {
                 const size = effect.options.size * (0.5 + Math.sin(i + time) * 0.5),
                 
                 context.beginPath();
-                context.arc(x, y, size, 0, Math.PI * 2) }
+                context.arc(x, y, size, 0, Math.PI * 2);
                 context.fill(); }
             }
             ';'
 
             context.restore();'} catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'BackgroundEffectRenderer.renderParticleBackground'
-            };
-        }
-    }
-    
+                }
+}
     /**
      * 雨効果をレンダリング
      */
@@ -121,17 +117,15 @@ export class BackgroundEffectRenderer {
                 
                 context.beginPath();
                 context.moveTo(x, y);
-                context.lineTo(x - length * 0.3, y + length) }
+                context.lineTo(x - length * 0.3, y + length);
                 context.stroke(); }
             }
             ';'
 
             context.restore();'} catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'BackgroundEffectRenderer.renderRainEffect'
-            };
-        }
-    }
-    
+                }
+}
     /**
      * 雪効果をレンダリング
      */
@@ -150,7 +144,7 @@ export class BackgroundEffectRenderer {
                 const size = 2 + Math.sin(i) * 2,
                 
                 context.beginPath();
-                context.arc(x, y, size, 0, Math.PI * 2) }
+                context.arc(x, y, size, 0, Math.PI * 2);
                 context.fill(); }
             }
             ';'
@@ -165,7 +159,7 @@ export class BackgroundEffectRenderer {
      * 霧効果をレンダリング
      */'
     renderFogEffect(context: CanvasRenderingContext2D, effect: BackgroundEffect): void { try {'
-            context.save('',
+            context.save(',
             context.globalCompositeOperation = 'multiply');
             // 簡単な霧効果)
             const gradient = context.createLinearGradient(0, 0, this.canvas.width, this.canvas.height);
@@ -177,10 +171,8 @@ export class BackgroundEffectRenderer {
             context.fillRect(0, 0, this.canvas.width, this.canvas.height}
             context.restore(};'} catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'BackgroundEffectRenderer.renderFogEffect'
-            };
-        }
-    }
-    
+                }
+}
     /**
      * 星効果をレンダリング
      */
@@ -200,7 +192,7 @@ export class BackgroundEffectRenderer {
                 
                 context.globalAlpha = effect.options.opacity * twinkle,
                 context.beginPath();
-                context.arc(x, y, size, 0, Math.PI * 2) }
+                context.arc(x, y, size, 0, Math.PI * 2);
                 context.fill(); }
             }
             ';'

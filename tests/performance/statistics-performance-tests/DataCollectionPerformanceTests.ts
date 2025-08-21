@@ -13,8 +13,7 @@ export class DataCollectionPerformanceTests {
         this.performanceConfig = mainTestSuite.performanceConfig;
         this.environmentThresholds = mainTestSuite.environmentThresholds;
         
-        console.log('[DataCollectionPerformanceTests] Component initialized') }
-
+        console.log('[DataCollectionPerformanceTests] Component initialized') };
     /**
      * Register data collection performance tests
      */
@@ -47,7 +46,7 @@ export class DataCollectionPerformanceTests {
                         return stats;
                     },
                     { 
-                        retries: this.performanceConfig.retries;
+                        retries: this.performanceConfig.retries,
                         timeout: this.performanceConfig.timeout;
                         customThresholds: { min: 0, max: 2 }
                     }
@@ -100,7 +99,7 @@ export class DataCollectionPerformanceTests {
                         return results;
                     },
                     { 
-                        retries: this.performanceConfig.retries;
+                        retries: this.performanceConfig.retries,
                         timeout: this.performanceConfig.timeout * 2 // バッチ処理は時間がかかる
                     }
                 );
@@ -138,7 +137,7 @@ export class DataCollectionPerformanceTests {
                                     global.gc() }
                             },
                             { 
-                                environment: env;
+                                environment: env,
                                 iterations: Math.floor(eventCount / 1000 }
                         );
 
@@ -152,7 +151,7 @@ export class DataCollectionPerformanceTests {
                     },
                     { 
                         retries: 1, // メモリテストは再試行を減らす
-                        timeout: this.performanceConfig.timeout * 3;
+                        timeout: this.performanceConfig.timeout * 3,
                         thresholdType: 'memoryUsage'
                     }
                 );
@@ -187,7 +186,7 @@ export class DataCollectionPerformanceTests {
 
                 // 並行処理が2秒以内に完了することを確認
                 expect(totalTime.toBeLessThan(2000);
-            };
+            }
         }');'
     }
 }

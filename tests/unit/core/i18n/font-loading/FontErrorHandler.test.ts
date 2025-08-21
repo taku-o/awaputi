@@ -2,7 +2,7 @@ import { jest  } from '@jest/globals';
 import { FontErrorHandler  } from '../../../../../src/core/i18n/font-loading/FontErrorHandler.js';
 // Type definitions
 interface FontContext {
-    source: string;
+    source: string,
     fontFamily: string;
 interface ErrorStats {
     [source: string]: {
@@ -16,7 +16,7 @@ interface FontErrorConfig {
         verboseLoggin,g?: boolean;;
 }
 interface ConsoleSpy {
-    warn: jest.SpyInstance;
+    warn: jest.SpyInstance,
     error: jest.SpyInstance;
     log: jest.SpyInstance }
 describe('FontErrorHandler', () => {
@@ -208,6 +208,6 @@ describe('FontErrorHandler', () => {
         test('should use default configuration when none provided', () => {
             const handler = new FontErrorHandler();
             expect(handler.suppressionRules.repeatSuppression.enabled).toBe(true);
-            expect(handler.suppressionRules.repeatSuppression.maxOccurrences).toBe(3) };
+            expect(handler.suppressionRules.repeatSuppression.maxOccurrences).toBe(3) }
     }
 }');'

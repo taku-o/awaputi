@@ -12,15 +12,15 @@ import { getConfigurationManager  } from '../../src/core/ConfigurationManager.js
 // TODO: Mock types need to be properly exported from test types
 // import { MockAudioContext, MockAudioNode  } from '../../src/types/test.js';
 interface MockFunction<T = any> extends Function {
-    mockReturnValue: (value: T) => MockFunction<T>;
+    mockReturnValue: (value: T) => MockFunction<T>,
     mockImplementation: (impl: Function) => MockFunction<T> }
 interface AudioManagerStatus {
-    masterVolume: number;
+    masterVolume: number,
     sfxVolume: number;
-    bgmVolume: number;
+    bgmVolume: number,
     isMuted: boolean;
     configSync: {
-        audioConfi,g: boolean;
+        audioConfi,g: boolean },
         configManager: boolean;
 }
 // 簡単なモック関数
@@ -43,30 +43,30 @@ describe('AudioManager統合テスト', () => {
         // Web Audio API の基本的なモック
         (global: any).AudioContext = function(this {
             this.createGain = () => ({
-                gain: { value: 0 };
+                gain: { value: 0 },
                 connect: mockFn(
         disconnect: mockFn( } as any);
             this.createDynamicsCompressor = () => ({
-                threshold: { value: 0 };
-                knee: { value: 0 };
-                ratio: { value: 0 };
-                attack: { value: 0 };
-                release: { value: 0 };
+                threshold: { value: 0 },
+                knee: { value: 0 },
+                ratio: { value: 0 },
+                attack: { value: 0 },
+                release: { value: 0 },
                 connect: mockFn(
         disconnect: mockFn( } as any);
             this.createConvolver = () => ({
-                buffer: null;
+                buffer: null,
                 connect: mockFn(
         disconnect: mockFn( } as any);
             this.createBufferSource = () => ({
-                buffer: null;
-                playbackRate: { value: 1 };
+                buffer: null,
+                playbackRate: { value: 1 },
                 start: mockFn(
                 stop: mockFn(
                 connect: mockFn(
         addEventListener: mockFn( } as any);
             this.createStereoPanner = () => ({
-                pan: { value: 0 };
+                pan: { value: 0 },
         connect: mockFn( } as any);
             this.createBuffer = () => ({
                 getChannelData: () => new Float32Array(1024) } as any');'
@@ -86,7 +86,7 @@ describe('AudioManager統合テスト', () => {
             log: mockFn(
             warn: mockFn(
             error: mockFn(
-        info: mockFn( };
+        info: mockFn( }
     };
     beforeEach(() => {
         // 新しいインスタンスを作成

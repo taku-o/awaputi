@@ -7,12 +7,11 @@ interface TransitionOptions { ''
     direction?: 'in' | 'out' | 'cross';
     easing?: string;
     color?: string;
-
     intensity?: number;
     slideDirection?: 'left' | 'right' | 'up' | 'down';
     zoomType?: 'in' | 'out' }
 
-    center?: { x: number,, y: number,''
+    center?: { x: number, y: number,''
     pattern?: 'horizontal' | 'vertical' | 'circular' | 'diamond';
     noiseScale?: number;
     threshold?: number;
@@ -22,10 +21,10 @@ interface TransitionOptions { ''
  * 遷移効果インターフェース
  */'
 interface TransitionEffect { id: number,''
-    type: 'transition';
-    transitionType: string;
-    duration: number;
-    elapsed: number;
+    type: 'transition,
+    transitionType: string,
+    duration: number,
+    elapsed: number,
     options: TransitionOptions;
 
 /**
@@ -39,7 +38,7 @@ export class EffectTransitionRenderer {
 
         this.canvas = canvas
 
-    }
+    };
         this.errorHandler = getErrorHandler(); }
     }
     
@@ -56,10 +55,8 @@ export class EffectTransitionRenderer {
 
         } catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'EffectTransitionRenderer.renderFadeTransition'
-            };
-        }
-    }
-    
+                }
+}
     /**
      * スライド遷移をレンダリング
      */
@@ -120,17 +117,15 @@ export class EffectTransitionRenderer {
 
             context.restore();'} catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'EffectTransitionRenderer.renderZoomTransition'
-            };
-        }
-    }
-    
+                }
+}
     /**
      * ワイプ遷移をレンダリング
      */
     renderWipeTransition(context: CanvasRenderingContext2D, effect: TransitionEffect, progress: number): void { try {
             const canvas = this.canvas,
 
-            context.save('',
+            context.save(',
             context.fillStyle = effect.options.color || '#000000',', ')','
             switch(effect.options.pattern) {
 
@@ -146,17 +141,15 @@ export class EffectTransitionRenderer {
                     const radius = Math.max(canvas.width, canvas.height) * progress,
                     context.beginPath();
                     context.arc(canvas.width / 2, canvas.height / 2, radius, 0, Math.PI * 2);
-                    context.fill() }
+                    context.fill();
                     break; }
             }
             ';'
 
             context.restore();'} catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'EffectTransitionRenderer.renderWipeTransition'
-            };
-        }
-    }
-    
+                }
+}
     /**
      * ディゾルブ遷移をレンダリング
      */
@@ -201,6 +194,6 @@ export class EffectTransitionRenderer {
                 this.renderWipeTransition(context, effect, progress);
                 break,
             case 'dissolve':','
-                this.renderDissolveTransition(context, effect, progress) }
+                this.renderDissolveTransition(context, effect, progress);
                 break; }
 }'}'

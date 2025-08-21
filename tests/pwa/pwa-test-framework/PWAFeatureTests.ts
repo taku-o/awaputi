@@ -9,8 +9,7 @@ export class PWAFeatureTests {
         this.mainFramework = mainFramework;
         this.executor = mainFramework.executor;
         
-        console.log('[PWAFeatureTests] Feature tests component initialized') }
-    
+        console.log('[PWAFeatureTests] Feature tests component initialized') };
     /**
      * Run basic PWA feature tests
      */
@@ -33,10 +32,10 @@ export class PWAFeatureTests {
             const registration = await navigator.serviceWorker.getRegistration();
             if (registration') {'
                 this.executor.assert(registration.active !== null, 'Service Worker should be active');
-                return { registrationScope: registration.scope };
+                return { registrationScope: registration.scope }
             }
             
-            return { status: 'no-registration' };
+            return { status: 'no-registration' }
         }');'
         
         await this.executor.runTest('pwa-meta-tags', 'PWA meta tags check', async (') => {'
@@ -57,7 +56,7 @@ export class PWAFeatureTests {
                 }
             }
             
-            return { checkedTags: requiredMetaTags.length };
+            return { checkedTags: requiredMetaTags.length }
         }");"
         
         await this.executor.runTest('display-mode-detection', 'Display mode detection', async (') => {'
@@ -71,15 +70,15 @@ export class PWAFeatureTests {
             
             return {
                 displayMode: {
-                    standalone: isStandalone;
+                    standalone: isStandalone },
                     fullscreen: isFullscreen;
-                    minimalUI: isMinimalUI;
+                    minimalUI: isMinimalUI,
                     browser: isBrowser;
                     iosStandalone: isIOSStandalone,,
                 currentMode: isStandalone ? 'standalone' : 
                             isFullscreen ? 'fullscreen' :
                             isMinimalUI ? 'minimal-ui' : 'browser'
-            };
+            }
         };
     }
     
@@ -94,10 +93,10 @@ export class PWAFeatureTests {
             // Wait for registration completion
             await this.executor.waitForServiceWorkerState(registration, 'activated');
             return { 
-                scope: registration.scope;
+                scope: registration.scope,
                 state: registration.active? .state, : undefined
                 scriptURL: registration.active? .scriptURL
-            };
+            }
         }');'
         
         await this.executor.runTest('service-worker-caching', 'Service Worker cache test', async (') => {'
@@ -122,7 +121,7 @@ export class PWAFeatureTests {
             // Cleanup
             await caches.delete(cacheName');'
             
-            return { cacheTest: 'passed' };
+            return { cacheTest: 'passed' }
         }');'
         
         await this.executor.runTest('service-worker-messaging', 'Service Worker messaging', async () => {
@@ -140,7 +139,7 @@ export class PWAFeatureTests {
                         clearTimeout(timeout as any'),'
                         navigator.serviceWorker.removeEventListener('message', messageHandler);
                         resolve({
-                            messageReceived: true;
+                            messageReceived: true,
                             response: event.data.payload
                         )') }'
                 };
@@ -149,8 +148,8 @@ export class PWAFeatureTests {
                 
                 // Send test message
                 registration.active.postMessage({
-                    type: 'TEST_MESSAGE';
-                    payload: { test: 'data' };
+                    type: 'TEST_MESSAGE',
+                    payload: { test: 'data' }
             };
         }');'
         
@@ -163,10 +162,10 @@ export class PWAFeatureTests {
             await registration.update();
             
             return {
-                updateChecked: true;
+                updateChecked: true,
                 hasWaiting: registration.waiting !== null;
                 hasInstalling: registration.installing !== null
-            };
+            }
         };
     }
     
@@ -178,10 +177,10 @@ export class PWAFeatureTests {
         await this.executor.runTest('install-prompt-detection', 'Install prompt detection', async () => {
             // beforeinstallprompt event simulation (for test environment};
             const mockEvent = {
-                preventDefault: () => {};
-                prompt: async (') => ({ outcome: 'dismissed' }');
+                preventDefault: () => {},
+                prompt: async (') => ({ outcome: 'dismissed' }'),
                 platforms: ['web'];
-                userChoice: Promise.resolve({ outcome: 'dismissed' };
+                userChoice: Promise.resolve({ outcome: 'dismissed' }
             };
             
             // Check installable state from PWAManager
@@ -189,22 +188,22 @@ export class PWAFeatureTests {
                 const canInstall = window.pwaManager.canInstall();
                 const pwaState = window.pwaManager.getPWAState();
                 return {
-                    canInstall: canInstall;
+                    canInstall: canInstall,
                     installPromptAvailable: pwaState.installPromptAvailable;
-                    isInstalled: pwaState.isInstalled;
+                    isInstalled: pwaState.isInstalled,
                     isStandalone: pwaState.isStandalone
-                };
+                }
             }
             
             return { pwaManagerNotAvailable: true }');'
         
         await this.executor.runTest('installation-criteria', 'Installation criteria check', async (') => {'
             const criteria = {
-                manifest: false;
+                manifest: false,
                 serviceWorker: false;
-                https: false;
+                https: false,
                 responsive: false;
-                offline: false;
+                offline: false,
                 offline: false;
         };
             // Manifest check
@@ -232,7 +231,7 @@ export class PWAFeatureTests {
             
             const installable = Object.values(criteria.every(v => v);
             
-            return { criteria, installable };
+            return { criteria, installable }
         };
     }
     
@@ -253,16 +252,16 @@ export class PWAFeatureTests {
                     try {
                         const iconResponse = await fetch(icon.src);
                         iconTests.push({
-                            src: icon.src;
+                            src: icon.src,
                             sizes: icon.sizes;
                             loaded: iconResponse.ok,');'
                            , size: iconResponse.headers.get('content-length') || 'unknown'
-                        };
+                        }
                     } catch (error) {
                         iconTests.push({
-                            src: icon.src;
+                            src: icon.src,
                             sizes: icon.sizes;
-                            loaded: false;
+                            loaded: false,
                             error: error.message }');'
                     }
                 }
@@ -274,26 +273,26 @@ export class PWAFeatureTests {
                 try {
                     const iconResponse = await fetch(appleIcon.href'),'
                     iconTests.push({
-                        src: appleIcon.href;
+                        src: appleIcon.href,
                         type: 'apple-touch-icon';
-                        sizes: appleIcon.sizes || 'unknown';
+                        sizes: appleIcon.sizes || 'unknown',
                         loaded: iconResponse.ok) } catch (error') {'
                     iconTests.push({
-                        src: appleIcon.href;
+                        src: appleIcon.href,
                         type: 'apple-touch-icon';
-                        loaded: false;
-                        error: error.message };
+                        loaded: false,
+                        error: error.message }
                 }
             }
             
             const allLoaded = iconTests.every(test => test.loaded);
             
             return {
-                iconTests: iconTests;
+                iconTests: iconTests,
                 totalIcons: iconTests.length;
-                allIconsLoaded: allLoaded;
+                allIconsLoaded: allLoaded,
                 loadSuccessRate: iconTests.filter(t => t.loaded).length / iconTests.length
-            };
+            }
         }');'
         
         await this.executor.runTest('favicon-test', 'Favicon test', async (') => {'
@@ -313,24 +312,24 @@ export class PWAFeatureTests {
                     try {
                         const response = await fetch(faviconLink.href'),'
                         faviconTests.push({
-                            selector: selector;
+                            selector: selector,
                             href: faviconLink.href;
-                            loaded: response.ok;
-                            contentType: response.headers.get('content-type'};
+                            loaded: response.ok,
+                            contentType: response.headers.get('content-type'}
                     } catch (error) {
                         faviconTests.push({
-                            selector: selector;
+                            selector: selector,
                             href: faviconLink.href;
-                            loaded: false;
-                            error: error.message };
+                            loaded: false,
+                            error: error.message }
                     }
                 }
             }
             
             return {
-                faviconTests: faviconTests;
+                faviconTests: faviconTests,
                 totalFavicons: faviconTests.length;
-                allFaviconsLoaded: faviconTests.every(t => t.loaded) };
+                allFaviconsLoaded: faviconTests.every(t => t.loaded) }
         }');'
         
         await this.executor.runTest('splash-screen-test', 'Splash screen test', async (') => {'
@@ -341,24 +340,24 @@ export class PWAFeatureTests {
                 try {
                     const response = await fetch(splash.href);
                     splashTests.push({
-                        href: splash.href;
+                        href: splash.href,
                         media: splash.media;
                         loaded: response.ok,');'
                        , size: response.headers.get('content-length') || 'unknown'
-                    };
+                    }
                 } catch (error) {
                     splashTests.push({
-                        href: splash.href;
+                        href: splash.href,
                         media: splash.media;
-                        loaded: false;
-                        error: error.message };
+                        loaded: false,
+                        error: error.message }
                 }
             }
             
             return {
-                splashScreens: splashTests;
+                splashScreens: splashTests,
                 totalSplashScreens: splashTests.length;
-                allSplashScreensLoaded: splashTests.every(t => t.loaded) };
+                allSplashScreensLoaded: splashTests.every(t => t.loaded) }
         });
     }
     
@@ -369,17 +368,17 @@ export class PWAFeatureTests {
         console.log('[PWAFeatureTests] Starting browser compatibility tests');
         await this.executor.runTest('browser-feature-support', 'Browser feature support check', async (') => {'
             const features = {
-                serviceWorker: 'serviceWorker' in navigator;
+                serviceWorker: 'serviceWorker' in navigator,
                 cacheAPI: 'caches' in window;
-                pushAPI: 'PushManager' in window;
+                pushAPI: 'PushManager' in window,
                 notificationAPI: 'Notification' in window;
-                installPrompt: 'BeforeInstallPromptEvent' in window;
+                installPrompt: 'BeforeInstallPromptEvent' in window,
                 backgroundSync: 'serviceWorker' in navigator && 'sync' in window.ServiceWorkerRegistration.prototype;
-                webShare: 'share' in navigator;
+                webShare: 'share' in navigator,
                 badgeAPI: 'setAppBadge' in navigator;
-                fullscreen: 'requestFullscreen' in document.documentElement;
+                fullscreen: 'requestFullscreen' in document.documentElement,
                 vibrate: 'vibrate' in navigator;
-                deviceMotion: 'DeviceMotionEvent' in window;
+                deviceMotion: 'DeviceMotionEvent' in window,
                 screenOrientation: 'screen' in window && 'orientation' in window.screen;
                 webGL: ((') => {'
                     try {
@@ -394,14 +393,14 @@ export class PWAFeatureTests {
             const supportPercentage = (supportedFeatures / totalFeatures') * 100;'
             
             return {
-                features: features;
+                features: features,
                 supportedFeatures: supportedFeatures;
-                totalFeatures: totalFeatures;
+                totalFeatures: totalFeatures,
                 supportPercentage: supportPercentage;
                 browserCompatibility: supportPercentage >= 80 ? 'excellent' :
                                     supportPercentage >= 60 ? 'good' :
                                     supportPercentage >= 40 ? 'acceptable' : 'poor'
-            };
+            }
         }');'
         
         await this.executor.runTest('user-agent-detection', 'User agent detection', async () => {
@@ -410,35 +409,35 @@ export class PWAFeatureTests {
             
             // Browser detection
             const browsers = {
-                chrome: /Chrome/i.test(userAgent) && !/Edge/i.test(userAgent;
+                chrome: /Chrome/i.test(userAgent) && !/Edge/i.test(userAgent,
                 firefox: /Firefox/i.test(userAgent;
-                safari: /Safari/i.test(userAgent) && !/Chrome/i.test(userAgent;
+                safari: /Safari/i.test(userAgent) && !/Chrome/i.test(userAgent,
                 edge: /Edge/i.test(userAgent;
                 opera: /Opera/i.test(userAgent};
             // OS detection
             const os = {
-                windows: /Windows/i.test(userAgent;
+                windows: /Windows/i.test(userAgent,
                 mac: /Mac/i.test(userAgent;
-                linux: /Linux/i.test(userAgent;
+                linux: /Linux/i.test(userAgent,
                 android: /Android/i.test(userAgent;
                 ios: /iPhone|iPad|iPod/i.test(userAgent };
             
             // Device detection
             const device = {
-                mobile: /Mobile/i.test(userAgent;
+                mobile: /Mobile/i.test(userAgent,
                 tablet: /Tablet|iPad/i.test(userAgent;
                 desktop: !(/Mobile|Tablet|iPad/i.test(userAgent };
             
             return {
-                userAgent: userAgent;
+                userAgent: userAgent,
                 platform: platform;
-                browsers: browsers;
+                browsers: browsers,
                 os: os;
-                device: device;
+                device: device,
                 detectedBrowser: Object.keys(browsers.find(b => browsers[b]') || 'unknown','
                 detectedOS: Object.keys(os.find(o => os[o]') || 'unknown','
                 detectedDevice: Object.keys(device.find(d => device[d]') || 'unknown'
-            };
+            }
         }');'
     }
 }

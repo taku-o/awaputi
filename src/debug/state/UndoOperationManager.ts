@@ -6,7 +6,7 @@
 export class UndoOperationManager {
     constructor(parent?: any) {
         // TypeScript implementation
-    }
+    };
         console.log('[UndoOperationManager] Initialized'); }'
     }
 

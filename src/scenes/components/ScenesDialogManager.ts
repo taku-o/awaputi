@@ -8,44 +8,37 @@ import { ScenesBaseDialog, DialogData, GameEngine, EventBus, GameState, Accessib
 // Type definitions for dialog management
 export interface DialogClass {;
     new(gameEngine: GameEngine, eventBus: EventBus, state: GameState): ScenesBaseDialog;
-
-export interface DialogStackItem { type: string;
+    export interface DialogStackItem { type: string,
     data: DialogData;
-
-export interface DialogInfo { type: string;
-    data: DialogData;
+    export interface DialogInfo { type: string,
+    data: DialogData,
     DialogClass: DialogClass;
-
-export interface LayoutConfig { minWidth: number;
-    minHeight: number;
-    maxWidth: number;
-    maxHeight: number;
-    padding: number;
-    buttonHeight: number;
+    export interface LayoutConfig { minWidth: number,
+    minHeight: number,
+    maxWidth: number,
+    maxHeight: number,
+    padding: number,
+    buttonHeight: number,
     buttonSpacing: number;
-
-export interface AnimationConfig { fadeInDuration: number;
-    fadeOutDuration: number;
-    scaleInDuration: number;
+    export interface AnimationConfig { fadeInDuration: number,
+    fadeOutDuration: number,
+    scaleInDuration: number,
     enabled: boolean;
-
-export interface AnimationState { isAnimating: boolean;
-    startTime: number;
-    type: 'fade-in' | 'fade-out' | 'scale-in' | null  }
-
-export interface DialogLayout { x: number;
-    y: number;
-    width: number;
-    height: number;
-    contentX: number;
-    contentY: number;
-    contentWidth: number;
-    contentHeight: number;
-    buttonY: number;
-    buttonWidth: number;
+    export interface AnimationState { isAnimating: boolean,
+    startTime: number,
+    type: 'fade-in' | 'fade-out' | 'scale-in' | null  };
+export interface DialogLayout { x: number,
+    y: number,
+    width: number,
+    height: number,
+    contentX: number,
+    contentY: number,
+    contentWidth: number,
+    contentHeight: number,
+    buttonY: number,
+    buttonWidth: number,
     buttonHeight: number;
-
-export class ScenesDialogManager {
+    export class ScenesDialogManager {
     private gameEngine: GameEngine;
     private eventBus: EventBus;
     private state: GameState;
@@ -63,8 +56,8 @@ export class ScenesDialogManager {
     constructor(gameEngine: GameEngine, eventBus: EventBus, state: GameState) {
 
         this.gameEngine = gameEngine;
-        this.eventBus = eventBus;
-        this.state = state;
+    this.eventBus = eventBus;
+    this.state = state;
         // ダイアログレジストリ
         this.dialogs = new Map('}'
 
@@ -80,7 +73,7 @@ export class ScenesDialogManager {
      * @param type - ダイアログタイプ
      * @param DialogClass - ダイアログクラス
      */
-    registerDialog(type: string, DialogClass: DialogClass): void { this.dialogs.set(type, DialogClass) }
+    registerDialog(type: string, DialogClass: DialogClass): void { this.dialogs.set(type, DialogClass);
     
     /**
      * ダイアログを表示
@@ -93,15 +86,15 @@ export class ScenesDialogManager {
             // ダイアログクラスが登録されているかチェック
             if(!this.dialogs.has(type)) { }'
 
-                throw new Error(`Dialog, type '${type}' is, not registered`};
+                throw new Error(`Dialog, type '${type}' is, not registered`}
             }
             
             // 現在のダイアログをスタックに追加
             if (this.state.showingDialog) {
                 this.dialogStack.push({
             };
-                    type: this.state.showingDialog) }
-                    data: { ...this.state.dialogData) }
+                    type: this.state.showingDialog),
+                    data: { ...this.state.dialogData);
             
             // 新しいダイアログを作成
             const DialogClass = this.dialogs.get(type)!;
@@ -130,7 +123,7 @@ export class ScenesDialogManager {
                 dialog.onResult = (result) => { }
                     this.closeDialog().then(() => resolve(result).catch(reject);
                 
-                dialog.onError = (error) => { this.closeDialog().then(() => reject(error).catch(reject) }
+                dialog.onError = (error) => { this.closeDialog().then(() => reject(error).catch(reject);
                 });'} catch (error) {'
             this.handleError('showDialog', error as Error);
             throw error }
@@ -161,7 +154,7 @@ export class ScenesDialogManager {
 
                 this.state.set('showingDialog', null, false' }'
 
-                this.state.set('dialogData', {), false) }
+                this.state.set('dialogData', {), false);
             
             // スタックから前のダイアログを復元
             if (this.dialogStack.length > 0) {
@@ -174,9 +167,8 @@ export class ScenesDialogManager {
             ';'
             // イベント通知
             this.eventBus.emit('dialog-closed', { type: currentType ',' }
-
         } catch (error) {
-            this.handleError('closeDialog', error as Error) }
+            this.handleError('closeDialog', error as Error);
     }
     
     /**
@@ -191,8 +183,7 @@ export class ScenesDialogManager {
         
         return { type }
             data: this.state.dialogData || {},
-            DialogClass: this.dialogs.get(type)!,
-        } }
+            DialogClass: this.dialogs.get(type)! } }
     
     /**
      * ダイアログが表示されているかチェック
@@ -226,7 +217,7 @@ export class ScenesDialogManager {
             // アニメーション処理
             this.updateAnimation(context, layout);'} catch (error) {'
             this.handleError('render', error as Error);
-            this.renderErrorDialog(context) }
+            this.renderErrorDialog(context);
     }
     
     /**
@@ -255,7 +246,7 @@ export class ScenesDialogManager {
             contentWidth: width - (this.layout.padding * 2),
             contentHeight: height - (this.layout.padding * 2),
             buttonY: y + height - this.layout.padding - this.layout.buttonHeight,
-    buttonWidth: (width - (this.layout.padding * 3)) / 2 },
+    buttonWidth: (width - (this.layout.padding * 3)) / 2 ,
             buttonHeight: this.layout.buttonHeight 
     }
     
@@ -265,7 +256,7 @@ export class ScenesDialogManager {
      * @param layout - レイアウト情報
      */''
     private renderOverlay(context: CanvasRenderingContext2D, layout: DialogLayout): void { // 背景をダークオーバーレイで覆う
-        context.fillStyle = 'rgba(0, 0, 0, 0.5)',
+        context.fillStyle = 'rgba(0, 0, 0, 0.5),
         context.fillRect(0, 0, context.canvas.width, context.canvas.height);
         // ダイアログ背景を描画
         const cornerRadius = 8 }
@@ -296,7 +287,7 @@ export class ScenesDialogManager {
     private renderDialogContent(context: CanvasRenderingContext2D, layout: DialogLayout, dialogInfo: DialogInfo): void { const DialogClass = dialogInfo.DialogClass,
         const dialogInstance = new DialogClass(this.gameEngine, this.eventBus, this.state);
         // ダイアログの個別レンダリング
-        dialogInstance.render(context, layout) }
+        dialogInstance.render(context, layout);
     
     /**
      * エラーダイアログを描画
@@ -306,19 +297,19 @@ export class ScenesDialogManager {
         const layout = this.calculateDialogLayout(context.canvas);
         ','
         // エラー背景
-        context.fillStyle = '#FF6B6B',
+        context.fillStyle = '#FF6B6B,
 
         this.roundRect(context, layout.x, layout.y, layout.width, layout.height, 8);
-        context.fill('',
-        context.fillStyle = '#FFFFFF',
-        context.font = '16px, sans-serif',
-        context.textAlign = 'center',
-        context.textBaseline = 'middle',
+        context.fill(',
+        context.fillStyle = '#FFFFFF,
+        context.font = '16px, sans-serif,
+        context.textAlign = 'center,
+        context.textBaseline = 'middle,
 
         context.fillText()','
             'ダイアログの表示でエラーが発生しました'),
             layout.x + layout.width / 2),
-            layout.y + layout.height / 2) }
+            layout.y + layout.height / 2);
     
     /**
      * クリックイベントを処理
@@ -341,7 +332,7 @@ export class ScenesDialogManager {
             // ダイアログ外をクリックした場合は閉じる
             if(x < layout.x || x > layout.x + layout.width ||);
                 y < layout.y || y > layout.y + layout.height) {
-                this.closeDialog() }
+                this.closeDialog();
                 return true;
             
             // ダイアログ内のクリック処理
@@ -364,7 +355,7 @@ export class ScenesDialogManager {
         ';'
         try { // Escapeキーでダイアログを閉じる
             if(event.key === 'Escape' {'
-                this.closeDialog() }
+                this.closeDialog();
                 return true;
             
             const currentDialog = this.getCurrentDialog();
@@ -430,7 +421,7 @@ export class ScenesDialogManager {
             context.save();
             context.translate(centerX, centerY);
             context.scale(scale, scale);
-            context.translate(-centerX, -centerY) }
+            context.translate(-centerX, -centerY);
     }
     
     /**
@@ -438,14 +429,14 @@ export class ScenesDialogManager {
      * @returns アニメーション完了のPromise
      */
     private waitForAnimation(): Promise<void> { if (!this.animationState.isAnimating) {
-            return Promise.resolve() }
+            return Promise.resolve();
         
         return new Promise((resolve) => {  const checkComplete = () => {
                 if (!this.animationState.isAnimating) { }
-                    resolve(); else { requestAnimationFrame(checkComplete) }
+                    resolve(); else { requestAnimationFrame(checkComplete);
             };
             checkComplete();
-        };
+        }
     }
     
     /**
@@ -461,7 +452,7 @@ export class ScenesDialogManager {
         context: CanvasRenderingContext2D,
     x: number, ;
         y: number, ;
-        width: number );
+        width: number ),
         height: number,
     radius: number,
     ): void { context.beginPath(
@@ -474,7 +465,7 @@ export class ScenesDialogManager {
         context.quadraticCurveTo(x, y + height, x, y + height - radius);
         context.lineTo(x, y + radius);
         context.quadraticCurveTo(x, y, x + radius, y);
-        context.closePath() }
+        context.closePath();
     
     /**
      * イベントリスナーをセットアップ
@@ -494,7 +485,7 @@ export class ScenesDialogManager {
         // エラーイベントの監視
         this.eventBus.on('component-error', (error) => {  }
 
-            const errorData = error as { component: string,, error: Error;''
+            const errorData = error as { component: string, error: Error;''
             if (errorData.component === 'dialog') {', ' }
 
                 this.handleError('component-error', errorData.error); }
@@ -512,7 +503,7 @@ export class ScenesDialogManager {
         // エラーイベントを発火
         this.eventBus.emit('component-error', {''
             component: 'DialogManager')','
-            operation,')',
+            operation,'),
             error'),'
         ','
         // 重大なエラーの場合はダイアログを強制終了

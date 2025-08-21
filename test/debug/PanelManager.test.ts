@@ -38,8 +38,8 @@ class MockPanel { constructor(gameEngine, debugInterface, options = {) {
         this.visible = false;
         this.destroyed = false }
         this.state = { }
-            position: { x: 0, y: 0 };
-            size: { width: 300, height: 400 };
+            position: { x: 0, y: 0 },
+            size: { width: 300, height: 400 },
             data: {}
         } }
     show() { this.visible = true }
@@ -51,12 +51,12 @@ class MockPanel { constructor(gameEngine, debugInterface, options = {) {
     getState() {
     
 }
-        return { ...this.state };
+        return { ...this.state }
     }
     setState(state: any) {
     
 }
-        this.state = { ...this.state, ...state };
+        this.state = { ...this.state, ...state }
     }
 }
 // Error panel class for testing error handling'
@@ -370,6 +370,6 @@ describe('PanelManager', () => {  let panelManager: any,
             const clearIntervalSpy = jest.spyOn(global, 'clearInterval');
             panelManager.destroy() }
             expect(clearIntervalSpy.toHaveBeenCalled(); }
-            clearIntervalSpy.mockRestore(};
+            clearIntervalSpy.mockRestore(}
         };'
     }'}');

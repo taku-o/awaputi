@@ -11,7 +11,7 @@ export class AnalyticsTrendAnalyzer {
         // 統計計算用の定数
         this.ANOMALY_THRESHOLD = 2.0; // 標準偏差の倍数
         this.MIN_DATA_POINTS = 7; // 最小データポイント数
-    }
+    };
         this.SEASONAL_PERIOD = 7; // 週次の季節性（7日） }
     }
 
@@ -37,14 +37,13 @@ export class AnalyticsTrendAnalyzer {
 ','
             // データ取得
             const data = await this.storageManager.getData('sessions', {
-                startDate: analysisStartDate);
+                startDate: analysisStartDate),
                 endDate: endDate,
-                endDate: endDate,
-        };
+                endDate: endDate };
             if (data.length < this.MIN_DATA_POINTS) {
                 return { success: false,''
                     message: 'データが不足しています。7日以上のデータが必要です。' }
-                    dataPoints: data.length },
+                    dataPoints: data.length ,
                     requiredPoints: this.MIN_DATA_POINTS 
     }
 ';'
@@ -62,9 +61,8 @@ export class AnalyticsTrendAnalyzer {
         } catch (error) {
             console.error('週次トレンド分析エラー:', error','
             return { success: false,
-                error: error.message },
-                dataType: dataType,
-    }
+                error: error.message ,
+                dataType: dataType }
 
     /**
      * 月次トレンド分析を実行
@@ -89,14 +87,13 @@ export class AnalyticsTrendAnalyzer {
 ','
             // データ取得
             const data = await this.storageManager.getData('sessions', {
-                startDate: analysisStartDate);
+                startDate: analysisStartDate),
                 endDate: endDate,
-                endDate: endDate,
-        };
+                endDate: endDate };
             if (data.length < 30) {
                 return { success: false,''
                     message: 'データが不足しています。30日以上のデータが必要です。' }
-                    dataPoints: data.length },
+                    dataPoints: data.length ,
                     requiredPoints: 30 
     }
 ';'
@@ -114,9 +111,8 @@ export class AnalyticsTrendAnalyzer {
         } catch (error) {
             console.error('月次トレンド分析エラー:', error','
             return { success: false,
-                error: error.message },
-                dataType: dataType,
-    }
+                error: error.message ,
+                dataType: dataType }
 
     /**
      * トレンド分析の共通計算処理
@@ -134,16 +130,15 @@ export class AnalyticsTrendAnalyzer {
             dataType: dataType,
             dataPoints: data.length,
     timeRange: {
-                start: new Date(Math.min(...data.map(d = > d.startTime)  }
-                end: new Date(Math.max(...data.map(d => d.endTime || d.startTime)), 
-    },
+                start: new Date(Math.min(...data.map(d = > d.startTime),
+                end: new Date(Math.max(...data.map(d => d.endTime || d.startTime)) ,
             metrics: { scoreImprovement: this.calculateScoreImprovement(timeSeriesData,
-    playTimeChange: this.calculatePlayTimeChange(timeSeriesData,
+    playTimeChange: this.calculatePlayTimeChange(timeSeriesData ,
                 accuracyChange: this.calculateAccuracyChange(timeSeriesData  }
             trend: { ''
-                direction: null, // 'increasing', 'decreasing', 'stable',
+                direction: null, // 'increasing', 'decreasing', 'stable'  },
                 strength: 0, // 0-1の値,
-                confidence: 0 // 0-1の値  },
+                confidence: 0 // 0-1の値  ,
             timeSeriesData: timeSeriesData,
             summary: ';'
         },
@@ -167,7 +162,7 @@ export class AnalyticsTrendAnalyzer {
     extractMetrics(data, dataType) {
         return data.map(session => { )
             const duration = session.endTime ? ) : undefined
-                (session.endTime - session.startTime) / 1000 : session.duration || 0,
+                (session.endTime - session.startTime) / 1000: session.duration || 0,
             
             const accuracy = session.bubblesPopped && session.bubblesMissed ? undefined : undefined
                 session.bubblesPopped / (session.bubblesPopped + session.bubblesMissed) : 0,
@@ -177,8 +172,8 @@ export class AnalyticsTrendAnalyzer {
                 playTime: duration,
     accuracy: accuracy,
                 combo: session.maxCombo || 0 }
-                completed: session.completed || false },
-                date: new Date(session.startTime).toDateString(); 
+                completed: session.completed || false ,
+                date: new Date(session.startTime).toDateString();
     };'}');
     }
 
@@ -198,7 +193,7 @@ export class AnalyticsTrendAnalyzer {
 
             if(period === 'weekly' {'
                 // 週の開始日（月曜日）を基準にグループ化
-                const weekStart = new Date(date) }
+                const weekStart = new Date(date);
                 weekStart.setDate(date.getDate() - date.getDay() + 1);' }'
 
                 key = weekStart.toISOString().split('T'[0]; }
@@ -208,12 +203,12 @@ export class AnalyticsTrendAnalyzer {
                 key = `${date.getFullYear(}-${String(date.getMonth(} + 1'}.padStart(2, '0'}`;'
             }
             
-            if (!grouped.has(key) { grouped.set(key, []) }
+            if (!grouped.has(key) { grouped.set(key, []);
             grouped.get(key).push(metric);
         };
 
         // 集計データ生成
-        return Array.from(grouped.entries().map(([key, values]) => {  const totalSessions = values.length,
+        return Array.from(grouped.entries())).map(([key, values]) => {  const totalSessions = values.length,
             const avgScore = values.reduce((sum, v) => sum + v.score, 0) / totalSessions,
             const avgPlayTime = values.reduce((sum, v) => sum + v.playTime, 0) / totalSessions,
             const avgAccuracy = values.reduce((sum, v) => sum + v.accuracy, 0) / totalSessions,
@@ -349,16 +344,15 @@ export class AnalyticsTrendAnalyzer {
         switch(trend.direction) {
 
             case 'increasing':','
-                summary += 'パフォーマンスが向上傾向にあります。',
+                summary += 'パフォーマンスが向上傾向にあります。,
 
                 break,
             case 'decreasing':','
-                summary += 'パフォーマンスが低下傾向にあります。',
+                summary += 'パフォーマンスが低下傾向にあります。,
 
                 break }
 
-            default: summary += 'パフォーマンスは安定しています。', 
-    }
+            default: summary += 'パフォーマンスは安定しています。' }
 ';'
         // 具体的な変化
         if (Math.abs(metrics.scoreImprovement) > 5') { ''
@@ -402,7 +396,7 @@ export class AnalyticsTrendAnalyzer {
 
                     timestamp: dataPoint.timestamp || dataPoint.period,') }'
 
-                    type: value > mean ? 'outlier_high' : 'outlier_low'); 
+                    type: value > mean ? 'outlier_high' : 'outlier_low');
     };
 
         return anomalies;
@@ -429,8 +423,8 @@ export class AnalyticsTrendAnalyzer {
             
             return { ...dataPoint,
                 originalValue: dataPoint.averageScore || dataPoint.score || 0, 
-                seasonallyAdjusted: adjustedValue,,
-                seasonalIndex: seasonalIndex,) }
+                seasonallyAdjusted: adjustedValue,
+                seasonalIndex: seasonalIndex,);
 
     /**
      * 季節指数を計算
@@ -457,8 +451,7 @@ export class AnalyticsTrendAnalyzer {
         
         // 季節指数（全体平均に対する各季節の比率）
         return seasonalAverages.map(avg => );
-            overallAverage > 0 ? avg / overallAverage: 1),
-    }
+            overallAverage > 0 ? avg / overallAverage: 1);
 
     /**
      * キャッシュをクリア

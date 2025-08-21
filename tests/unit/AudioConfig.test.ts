@@ -5,27 +5,27 @@ import { describe, test, beforeEach, expect  } from '@jest/globals';
 import { AudioConfig, getAudioConfig  } from '../../src/config/AudioConfig.js';
 // Type definitions for test objects
 interface VolumeConfig {
-    master: number;
+    master: number,
     sfx: number;
-    bgm: number;
+    bgm: number,
     muted: boolean;
 interface QualityConfig {
-    sampleRate: number;
+    sampleRate: number,
     bufferSize: number;
-    channels: number;
+    channels: number,
     bitDepth: number;
 interface CompressorConfig {
-    threshold: number;
+    threshold: number,
     knee: number;
-    ratio: number;
+    ratio: number,
     attack: number;
     release: number;
 interface ReverbConfig {
-    duration: number;
+    duration: number,
     decay: number;
     wet: number;
 interface EffectConfig {
-    reverb: boolean;
+    reverb: boolean,
     compression: boolean;
     compressor: CompressorConfig;
 interface MockAudioManager {
@@ -33,9 +33,9 @@ interface MockAudioManager {
     toggleMute?: () => void;
     isMuted: boolean;
     getStatus?: (') => {'
-        masterVolum,e: number;
+        masterVolum,e: number,
         sfxVolume: number;
-        bgmVolume: number;
+        bgmVolume: number,
         isMuted: boolean;;
 }
 describe('AudioConfig', () => {
@@ -156,7 +156,7 @@ describe('AudioConfig', () => {
         test('applyToAudioManager がエラーなく実行されること', () => {
             // AudioManagerのモック
             const mockAudioManager: MockAudioManager = {
-                setVolume: () => {};
+                setVolume: () => {},
                 toggleMute: () => {};
                 isMuted: false;
             
@@ -166,11 +166,11 @@ describe('AudioConfig', () => {
         test('syncFromAudioManager がエラーなく実行されること', () => {
             // AudioManagerのモック
             const mockAudioManager: MockAudioManager = {
-                isMuted: true;
+                isMuted: true,
                 getStatus: () => ({
-                    masterVolume: 0.5;
+                    masterVolume: 0.5,
                     sfxVolume: 0.6;
-                    bgmVolume: 0.7;
+                    bgmVolume: 0.7,
                     isMuted: true,);
             };
             
@@ -182,6 +182,6 @@ describe('AudioConfig', () => {
         test('getAudioConfig が常に同じインスタンスを返すこと', () => {
             const instance1 = getAudioConfig();
             const instance2 = getAudioConfig();
-            expect(instance1).toBe(instance2) };
+            expect(instance1).toBe(instance2) }
     }
 }');'

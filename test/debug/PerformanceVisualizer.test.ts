@@ -39,7 +39,7 @@ const mockCanvas = { ''
     width: 800,
     height: 600,','
     style: {''
-        position: ',',
+        position: ',' };
         top: ',',
         right: ',',
         zIndex: ',',
@@ -78,21 +78,21 @@ const mockMonitor = { getCurrentMetrics: jest.fn(() => ({
            , fpsVariance: 2.5 }
     },
         memory: { usedMemory: 50.5,
-            totalMemory: 100.0,
+            totalMemory: 100.0 },
             pressureLevel: 0.3 }
     },
         render: { renderTime: 10.5,
-            drawCalls: 25,','
+            drawCalls: 25,',' };
             vertexCount: 1500' }'
     }'),'
         game: { bubbleCount: 15,
-            particleCount: 120,
+            particleCount: 120 },
             effectCount: 5,
             entityCount: 140,
             currentScore: 1500 }
         },'
         system: { ''
-            userAgent: 'Test Agent',','
+            userAgent: 'Test Agent',',' };
             platform: 'Test Platform',
             hardwareConcurrency: 4,
             deviceMemory: 8 }
@@ -200,7 +200,7 @@ describe('PerformanceVisualizer', () => {
             const chartNames = ['fps', 'memory', 'frameTime', 'drawCalls', 'entities'],'
             const spies = chartNames.map(name => {),' }'
                 const chart = visualizer.charts.get(name');' }'
-                return jest.spyOn(chart, 'addDataPoint'};
+                return jest.spyOn(chart, 'addDataPoint'}
             };
             visualizer.updateCharts();
             spies.forEach(spy => {  ) }'

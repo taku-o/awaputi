@@ -10,39 +10,32 @@ import { ErrorRecovery  } from './error/ErrorRecovery.js';
 import { UtilsErrorAnalyzer  } from './error/UtilsErrorAnalyzer.js';
 
 // Type definitions
-interface ErrorInfo { id: string;
+interface ErrorInfo { id: string,
     message: string;
     stack?: string;
-    context: string;
+    context: string,
     metadata: Record<string, any>;
     timestamp: number;
     severity?: string;
-
-interface ErrorStats { total: number;
+    interface ErrorStats { total: number,
     byType: Map<string, number>;
     byContext: Map<string, number>;
-    critical: number;
+    critical: number,
     recovered: number;
-
-interface FallbackState { audioDisabled: boolean;
-    canvasDisabled: boolean;
-    storageDisabled: boolean;
-    reducedEffects: boolean;
+    interface FallbackState { audioDisabled: boolean,
+    canvasDisabled: boolean,
+    storageDisabled: boolean,
+    reducedEffects: boolean,
     safeMode: boolean;
-
-type ErrorSeverity = 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
-
-interface PerformanceMemory { usedJSHeapSize: number;
+    type ErrorSeverity = 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
+    interface PerformanceMemory { usedJSHeapSize: number,
     jsHeapSizeLimit: number;
     totalJSHeapSize?: number;
-
-declare global { interface Performance {
+    declare global { interface Performance {
         memory?: PerformanceMemory;
-    
     interface Window {
     performance: Performance;
-
-export class ErrorHandler {
+    export class ErrorHandler {
     private isBrowser: boolean;
     private isNode: boolean;
     public, isInitialized: boolean;
@@ -63,37 +56,36 @@ export class ErrorHandler {
     // Delegated properties from sub-components
     public recoveryStrategies: Map<string, Function>;
     public fallbackState: FallbackState;
-
-    constructor('',
-        this.isBrowser = typeof, window !== 'undefined' && typeof, document !== 'undefined',
+    constructor(',
+        this.isBrowser = typeof, window !== 'undefined' && typeof, document !== 'undefined,
         this.isNode = typeof, process !== 'undefined' && !!process.versions && !!process.versions.node,
         
         // Main, controller state, this.isInitialized = false;
         
         // Initialize, sub-components, with dependency, injection)
         this.logger = new ErrorLogger(this, as any);
-        this.reporter = new UtilsErrorReporter(this, as any);
-        this.recovery = new ErrorRecovery(this, as any);
-        this.analyzer = new UtilsErrorAnalyzer(this, as any);
+    this.reporter = new UtilsErrorReporter(this, as any);
+    this.recovery = new ErrorRecovery(this, as any);
+    this.analyzer = new UtilsErrorAnalyzer(this, as any);
         // Legacy compatibility properties - delegated to sub-components
         this.errorLog = [];
-        this.maxLogSize = 100;
-        this.criticalErrors = new Set<string>();
-        this.recoveryAttempts = new Map<string, number>(),
+    this.maxLogSize = 100;
+    this.criticalErrors = new Set<string>();
+    this.recoveryAttempts = new Map<string, number>(),
         this.maxRecoveryAttempts = 3;
-        this.fallbackModes = new Map<string, boolean>(),
+    this.fallbackModes = new Map<string, boolean>(),
         this.errorStats = {
-            total: 0;
+            total: 0,
     byType: new Map<string, number>();
-            byContext: new Map<string, number>();
-            critical: 0;
+    byContext: new Map<string, number>();
+    critical: 0,
     recovered: 0  };
         // Delegated properties from sub-components
         this.recoveryStrategies = new Map<string, Function>();
-        this.fallbackState = { audioDisabled: false;
-            canvasDisabled: false;
-            storageDisabled: false;
-            reducedEffects: false;
+        this.fallbackState = { audioDisabled: false,
+            canvasDisabled: false,
+            storageDisabled: false,
+            reducedEffects: false,
     safeMode: false;
         this.initialize();
     }
@@ -111,7 +103,7 @@ export class ErrorHandler {
         } catch (error) {
             console.error('[ErrorHandler] Failed to initialize:', error);
             // Fallback to safe mode
-            this.enableSafeMode() }
+            this.enableSafeMode();
     }
     
     /**
@@ -120,14 +112,14 @@ export class ErrorHandler {
     private setupGlobalErrorHandlers(): void { // Browser environment only
         if (!this.isBrowser) {
 
-            console.log('[ErrorHandler] Skipping, global error, handlers in, non-browser, environment') }
+            console.log('[ErrorHandler] Skipping, global error, handlers in, non-browser, environment');
             return; }
         }
         ';'
         // Unhandled JavaScript errors
         window.addEventListener('error', (event: ErrorEvent) => { ''
             this.handleError(event.error, 'GLOBAL_ERROR', {
-                filename: event.filename);
+                filename: event.filename),
                 lineno: event.lineno,
     colno: event.colno }
                 message: event.message); 
@@ -162,7 +154,7 @@ export class ErrorHandler {
     private setupPerformanceMonitoring(): void { // Browser environment only
         if (!this.isBrowser) {
 
-            console.log('[ErrorHandler] Skipping, performance monitoring in non-browser environment') }
+            console.log('[ErrorHandler] Skipping, performance monitoring in non-browser environment');
             return; }
         }
         
@@ -191,7 +183,7 @@ export class ErrorHandler {
         let frameCount = 0;
         let lastTime = performance.now();
         
-        const monitorFPS = (): void => {  frameCount++,
+        const monitorFPS = (): void => {  frameCount++;
             const currentTime = performance.now();
             if (currentTime - lastTime >= 1000) {
             
@@ -227,7 +219,7 @@ export class ErrorHandler {
             const normalizedError = this.analyzer.normalizeError(error);
             const errorInfo: ErrorInfo = {''
                 id: normalizedError.id || crypto.randomUUID()','
-    message: normalizedError.message || 'Unknown error',')',
+    message: normalizedError.message || 'Unknown error,')',
                 timestamp: typeof normalizedError.timestamp === 'number' ? normalizedError.timestamp : Date.now(),
                 ...normalizedError,
                 context: context,
@@ -249,10 +241,9 @@ export class ErrorHandler {
 
             // Notify user using reporter(for, critical errors);
             if (severity === 'CRITICAL) { this.reporter.notifyUser(errorInfo),' }
-
-            } catch (handlingError) { // Error in error handling - ultimate fallback
+        } catch (handlingError) { // Error in error handling - ultimate fallback
             console.error('[ErrorHandler] Critical: Error in error, handling:', handlingError);
-            this.enableSafeMode() }
+            this.enableSafeMode();
     }
     
     /**
@@ -265,14 +256,14 @@ export class ErrorHandler {
         if (this.isBrowser && document.body) {
 
             const safeMsg = document.createElement('div');
-            safeMsg.textContent = 'Safe mode active: Some features may be disabled.',
-            safeMsg.style.cssText = `,
-                position: fixed, top: 10px,, right: 10px, 
-                background: #ff6b35,, color: white, 
+            safeMsg.textContent = 'Safe mode active: Some features may be disabled.,
+            safeMsg.style.cssText = ,
+                position: fixed, top: 10px, right: 10px, 
+                background: #ff6b35, color: white, 
                 padding: 10px, border-radius: 5px, 
                 z-index: 10000, font-family: Arial, sans-serif,
                 font-size: 14px, max-width: 300px,
-            `,
+            ,
             document.body.appendChild(safeMsg);
             setTimeout(() => { 
         }
@@ -316,9 +307,9 @@ export class ErrorHandler {
             this.handleError(new, Error('Test, error'), 'TEST', { testMode: true,');'
             this.handleError('String error test', 'TEST', { testMode: true )',' }
 
-            this.handleError({ message: 'Object error test' }, 'TEST', { testMode: true )','
+            this.handleError({ message: 'Object error test' , 'TEST', { testMode: true )','
 
-            console.log('[ErrorHandler] Error, handling test, completed') }
+            console.log('[ErrorHandler] Error, handling test, completed');
     }
     
     /**
@@ -328,7 +319,7 @@ export class ErrorHandler {
      * @param metadata - Additional metadata'
      */''
     static handle(error: Error | any, context: string = 'UNKNOWN', metadata: Record<string, any> = { ): void {
-        getErrorHandler().handleError(error, context, metadata) }
+        getErrorHandler().handleError(error, context, metadata);
 }
 
 // Singleton instance

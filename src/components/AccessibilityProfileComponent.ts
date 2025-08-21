@@ -1,14 +1,13 @@
 import { getErrorHandler  } from '../utils/ErrorHandler.js';
 import { getLocalizationManager  } from '../core/LocalizationManager.js';
 
-interface AccessibilityProfile { id: string;
-    name: string;
-    nameEn: string;
-    description: string;
-    descriptionEn: string;
-    icon: string;
-    settings: {
-        [ke,y: string]: boolean;
+interface AccessibilityProfile { id: string,
+    name: string,
+    nameEn: string,
+    description: string,
+    descriptionEn: string,
+    icon: string,
+    settings: { [ke,y: string]: boolean  ,
 
 interface GameEngine { sceneManager?: {
         currentScene?: {
@@ -19,11 +18,11 @@ interface GameEngine { sceneManager?: {
 
 interface AccessibilitySettingsManager { currentProfile?: string,
     applyProfile?: (profileId: string, settings: any) => Promise<void>;
-    notifySettingsChanged?: () => void,  }
+    notifySettingsChanged?: () => void }
 }
 
-interface SettingsManager { get: (key: string) => any;
-    set: (key: string, value: any) => void;
+interface SettingsManager { get: (key: string) => any,
+    set: (key: string, value: any) => void,
     save: () => void  }
 }
 ';'
@@ -36,9 +35,9 @@ interface LocalizationManager { // Define methods as needed }
 
 type StatusType = 'info' | 'success' | 'error';
 
-interface ProfileInfo { id: string;
-    name: string;
-    description: string;
+interface ProfileInfo { id: string,
+    name: string,
+    description: string,
     icon: string;
 
 /**
@@ -77,42 +76,42 @@ export class AccessibilityProfileComponent {
     constructor(gameEngine: GameEngine) {
 
         this.gameEngine = gameEngine;
-        this.errorHandler = getErrorHandler();
-        this.localizationManager = getLocalizationManager('''
-                id: 'default';
-                name: 'デフォルト';
-                nameEn: 'Default';
-                description: '標準設定';
-                descriptionEn: 'Standard settings';
-                icon: '🎮';
-                settings: {', 'accessibility.highContrast': false;'
+    this.errorHandler = getErrorHandler();
+    this.localizationManager = getLocalizationManager('''
+                id: 'default,
+    name: 'デフォルト,
+    nameEn: 'Default,
+    description: '標準設定,
+    descriptionEn: 'Standard settings,
+    icon: '🎮,
+    settings: { ', 'accessibility.highContrast': false;'
                     'accessibility.reducedMotion': false,
                     'accessibility.largeText': false,
-                    'accessibility.screenReader': false;
+                    'accessibility.screenReader': false  },
 
                     'accessibility.colorBlindSupport': false;,
 
             { ''
-                id: 'highContrast';
-                name: 'ハイコントラスト';
-                nameEn: 'High Contrast';
-                description: '見やすい高コントラスト表示';
-                descriptionEn: 'Enhanced visibility with high contrast';
-                icon: '🔆';
-                settings: {', 'accessibility.highContrast': true;'
+                id: 'highContrast,
+                name: 'ハイコントラスト,
+                nameEn: 'High Contrast,
+                description: '見やすい高コントラスト表示,
+                descriptionEn: 'Enhanced visibility with high contrast,
+                icon: '🔆,
+                settings: { ', 'accessibility.highContrast': true;'
                     'accessibility.reducedMotion': false,
                     'accessibility.largeText': true,
                     'accessibility.screenReader': true,
-                    'accessibility.colorBlindSupport': true;,
+                    'accessibility.colorBlindSupport': true;  },
 
             { ''
-                id: 'motorAccessibility';
-                name: 'モビリティ対応';
-                nameEn: 'Motor Accessibility';
-                description: 'モーション削減とナビゲーション支援';
+                id: 'motorAccessibility,
+                name: 'モビリティ対応,
+                nameEn: 'Motor Accessibility,
+                description: 'モーション削減とナビゲーション支援,
                 descriptionEn: 'Reduced motion and navigation assistance',';'
                 icon: '♿')','
-    settings: {', 'accessibility.highContrast': false;'
+    settings: { ', 'accessibility.highContrast': false;'
                     'accessibility.reducedMotion': true,
                     'accessibility.largeText': true,
                     'accessibility.screenReader': false,
@@ -120,7 +119,7 @@ export class AccessibilityProfileComponent {
         ];
         ';'
         // 現在のプロファイル
-        this.currentProfile = 'default';
+        this.currentProfile = 'default'  },
         
         // DOM要素
         this.container = null;
@@ -250,7 +249,7 @@ export class AccessibilityProfileComponent {
         // 各プロファイルオプションを作成
         this.profiles.forEach((profile, index) => {  ''
             const option = document.createElement('div');
-            option.className = 'dropdown-option',
+            option.className = 'dropdown-option,
             option.setAttribute('role', 'option');
             option.setAttribute('data-profile-id', profile.id',' }
 
@@ -259,25 +258,25 @@ export class AccessibilityProfileComponent {
             option.setAttribute('aria-label', `${profile.name} - ${ profile.description'`),'
 
             const, optionIcon = document.createElement('span');
-            optionIcon.className = 'option-icon',
+            optionIcon.className = 'option-icon,
             optionIcon.textContent = profile.icon,
 
             const, optionContent = document.createElement('div');
-            optionContent.className = 'option-content',
+            optionContent.className = 'option-content,
 
             const, optionName = document.createElement('div');
-            optionName.className = 'option-name',
+            optionName.className = 'option-name,
             optionName.textContent = profile.name,
 
             const, optionDescription = document.createElement('div');
-            optionDescription.className = 'option-description',
+            optionDescription.className = 'option-description,
             optionDescription.textContent = profile.description,
             
             optionContent.appendChild(optionName);
             optionContent.appendChild(optionDescription);
             option.appendChild(optionIcon};
             option.appendChild(optionContent}
-            dropdownOptions.appendChild(option};
+            dropdownOptions.appendChild(option}
         };
         
         selectionArea.appendChild(this.profileDropdown);
@@ -493,7 +492,7 @@ export class AccessibilityProfileComponent {
         this.profileDropdown.addEventListener('click', this.handleDropdownToggle.bind(this)),
         ','
         // ドロップダウンオプションのクリック
-        const dropdownOptions = this.container.querySelector('.dropdown-options',
+        const dropdownOptions = this.container.querySelector('.dropdown-options,
         if (dropdownOptions) {', ' }
 
             dropdownOptions.addEventListener('click', this.handleProfileSelect.bind(this)); }
@@ -521,7 +520,7 @@ export class AccessibilityProfileComponent {
 
         if (this.isDropdownOpen && dropdownOptions) {
 
-            dropdownOptions.style.display = 'block',
+            dropdownOptions.style.display = 'block,
             this.profileDropdown.setAttribute('aria-expanded', 'true');
             ','
             // 現在のプロファイルにフォーカス
@@ -531,7 +530,7 @@ export class AccessibilityProfileComponent {
                 currentOption.focus(};"
             }""
         } else if (dropdownOptions") { ""
-            dropdownOptions.style.display = 'none',
+            dropdownOptions.style.display = 'none,
             this.profileDropdown.setAttribute('aria-expanded', 'false) }'
     }
     
@@ -540,7 +539,7 @@ export class AccessibilityProfileComponent {
      */
     private handleDropdownClose(event: Event): void { const target = event.target as Node,
         if (this.container && !this.container.contains(target) && this.isDropdownOpen) {
-            this.handleDropdownToggle() }
+            this.handleDropdownToggle();
     }
     
     /**
@@ -592,7 +591,7 @@ export class AccessibilityProfileComponent {
             this.isApplying = true;
 
             this.applyButton.disabled = true,
-            this.showStatus('プロファイルを適用中...', 'info',
+            this.showStatus('プロファイルを適用中..., 'info',
             ','
 
             const profile = this.profiles.find(p => p.id === this.currentProfile);
@@ -608,8 +607,7 @@ export class AccessibilityProfileComponent {
 
             ' }'
 
-            console.log('[AccessibilityProfileComponent] Profile applied successfully: ', this.currentProfile};
-
+            console.log('[AccessibilityProfileComponent] Profile applied successfully: ', this.currentProfile}
         } catch (error) {
             this.errorHandler.handleError(error as Error, 'ACCESSIBILITY_PROFILE_APPLY_ERROR', {''
                 profileId: this.currentProfile',' }'
@@ -687,8 +685,7 @@ export class AccessibilityProfileComponent {
                         profileId: this.currentProfile  }
                         timestamp: Date.now();
     },
-                    bubbles: true,
-                },
+                    bubbles: true ,
 
                 this.container.dispatchEvent(event);'} catch (error) { console.warn('[AccessibilityProfileComponent] Error triggering settings update:', error }'
     }
@@ -717,7 +714,7 @@ export class AccessibilityProfileComponent {
             // ドロップダウンオプションの選択状態更新
             const options = this.container.querySelectorAll('.dropdown-option';
             options.forEach(option => {  '),'
-                const profileId = option.getAttribute('data-profile-id',
+                const profileId = option.getAttribute('data-profile-id,
                 if (profileId === this.currentProfile) { }'
 
                     option.setAttribute('aria-selected', 'true'); }
@@ -725,8 +722,7 @@ export class AccessibilityProfileComponent {
                 } else { }'
 
                     option.removeAttribute('aria-selected'; }'
-};
-
+}
         } catch (error) { console.error('[AccessibilityProfileComponent] Error updating UI:', error }
     }
     
@@ -757,13 +753,13 @@ export class AccessibilityProfileComponent {
             // ドロップダウンが閉じている場合
             if (event.key === 'Enter' || event.key === ', ') {
                 if (event.target === this.profileDropdown) {
-                    event.preventDefault() }
+                    event.preventDefault();
 
                     this.handleDropdownToggle(); }
 
                 } else if (event.target === this.applyButton) { event.preventDefault();
                     this.handleApplyProfile()','
-        const options = Array.from(this.container.querySelectorAll('.dropdown-option) as HTMLElement[],'
+        const options = Array.from(this.container.querySelectorAll())'.dropdown-option) as HTMLElement[],'
         const currentIndex = options.findIndex(option => option === document.activeElement);
         switch(event.key) {
 
@@ -774,7 +770,7 @@ export class AccessibilityProfileComponent {
             case 'ArrowUp':),
                 event.preventDefault();
                 const prevIndex = currentIndex > 0 ? currentIndex - 1 : options.length - 1,
-                options[prevIndex].focus('',
+                options[prevIndex].focus(',
             case 'Enter':','
             case ', ':','
                 event.preventDefault();
@@ -786,7 +782,7 @@ export class AccessibilityProfileComponent {
             case 'Escape':),
                 event.preventDefault();
                 this.handleDropdownToggle();
-                this.profileDropdown?.focus() }
+                this.profileDropdown?.focus();
                 break; }
 }
     
@@ -800,7 +796,7 @@ export class AccessibilityProfileComponent {
      */
     setProfile(profileId: string): boolean { const profile = this.profiles.find(p => p.id === profileId);
         if (profile) {
-            this.selectProfile(profileId) }
+            this.selectProfile(profileId);
             return true;
         return false;
     }
@@ -809,10 +805,10 @@ export class AccessibilityProfileComponent {
      * 利用可能なプロファイル一覧を取得
      */
     getAvailableProfiles(): ProfileInfo[] { return this.profiles.map(profile => ({
-            id: profile.id);
+            id: profile.id),
             name: profile.name,
     description: profile.description),
-            icon: profile.icon))  }
+            icon: profile.icon));
     }
     
     /**

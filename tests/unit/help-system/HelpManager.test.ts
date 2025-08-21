@@ -6,7 +6,7 @@ import { HelpManager  } from '../../../src/core/help/HelpManager';
 // Type definitions
 interface MockGameEngine {
     localizationManager: {
-        getCurrentLanguag,e: jest.Mock<() => string>;
+        getCurrentLanguag,e: jest.Mock<() => string> },
         getString: jest.Mock<(ke,y: string) => string>
     },
     sceneManager: {
@@ -18,28 +18,28 @@ interface MockScene {
     constructor: { nam,e: string;
 }
 interface MockContentLoader {
-    loadHelpContent: jest.Mock<(categor,y: string, language: string) => Promise<HelpContent[]>>;
+    loadHelpContent: jest.Mock<(categor,y: string, language: string) => Promise<HelpContent[]>>,
     getCachedContent: jest.Mock;
     setCachedContent: jest.Mock }
 interface MockSearchEngine {
     search: jest.Mock<(quer,y: string, options?: any) => Promise<SearchResult[]>>;
-    indexContent: jest.Mock;
+    indexContent: jest.Mock,
     getSuggestions: jest.Mock<(quer,y: string) => Promise<string[]>> }
 interface HelpContent {
-    id: string;
+    id: string,
     category: string;
-    title: string;
+    title: string,
     content: string;
     language: string;
 interface SearchResult {
-    id: string;
+    id: string,
     title: string;
     relevance: number;
 interface UsageStats {
-    totalTime: number;
+    totalTime: number,
     viewCount: number;
 interface UserProgress {
-    readSections: string[];
+    readSections: string[],
     totalReadSections: number;
     usageStats: Map<string, UsageStats> }
 interface Tooltip {
@@ -51,7 +51,7 @@ interface ContextualHelp {
 // Mock creation
 const mockGameEngine: MockGameEngine = {
     localizationManager: {
-        getCurrentLanguage: jest.fn((') => 'ja'),'
+        getCurrentLanguage: jest.fn((') => 'ja'),' };
         getString: jest.fn((key: string) => `translated_${key)`);
     }),
     sceneManager: {
@@ -89,9 +89,9 @@ describe('HelpManager', () => {
     }
     describe('コンテンツ管理', (') => {'
         const mockHelpContent: HelpContent = {
-            id: 'test-help';
+            id: 'test-help',
             category: 'gameplay';
-            title: 'テストヘルプ';
+            title: 'テストヘルプ',
             content: 'テスト用のヘルプコンテンツです';
             language: 'ja'
         };
@@ -140,7 +140,7 @@ describe('HelpManager', () => {
     describe('コンテキスト対応', (') => {'
         test('現在のシーンに基づくコンテキストヘルプを取得できる', (') => {'
             mockGameEngine.sceneManager.getCurrentScene.mockReturnValue({
-                constructor: { name: 'GameScene' };
+                constructor: { name: 'GameScene' }
             }');'
             const result = helpManager.getContextualHelp('bubble_click') as ContextualHelp;
             expect(result).toBeDefined();
@@ -217,6 +217,6 @@ describe('HelpManager', () => {
             const result = await helpManager.loadHelpContent('gameplay', 'ko');
             expect(helpManager.contentLoader.loadHelpContent).toHaveBeenCalledTimes(2);
             expect(result).toHaveLength(1);
-        };
+        }
     }
 }');'

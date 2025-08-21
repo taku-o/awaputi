@@ -9,17 +9,16 @@ import { getErrorHandler  } from '../../utils/ErrorHandler.js';
 export interface FontConfig { primary: FontSpec;
     fallback?: FontSpec[];
     localFallback?: string[];
-
-export interface FontSpec { family: string;
-    weight: string;
+    export interface FontSpec { family: string,
+    weight: string,
     style: string;
     url?: string;
-    display?: string,  }
+    display?: string };
 ';'
 
 export interface LoadedFont { family: string,''
-    status: 'loading' | 'loaded' | 'error';
-    timestamp: number;
+    status: 'loading' | 'loaded' | 'error,
+    timestamp: number,
     config: FontConfig;
 
 /**
@@ -43,7 +42,7 @@ export class FontManager {
         
         // 初期化
 
-    }
+    };
         this.initialize(); }
     }
     
@@ -70,16 +69,16 @@ export class FontManager {
      */''
     private initializeFontConfigs('''
         this.fontConfigs.set('ja', { primary: {''
-                family: 'Noto Sans JP',
-                weight: '400',
-                style: 'normal',
+                family: 'Noto Sans JP,
+                weight: '400,
+                style: 'normal,
                 url: 'https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300,400,500,700&display=swap',''
                 fallback: ['Hiragino Sans', 'Yu Gothic', 'Meiryo', 'sans-serif]'
-            };
+            } };
             secondary: { ''
-                family: 'M PLUS 1p',
-                weight: '400',
-                style: 'normal',
+                family: 'M PLUS 1p' ,
+                weight: '400,
+                style: 'normal,
                 url: 'https://fonts.googleapis.com/css2?family=M+PLUS+1p:wght@400,500,700&display=swap',''
                 fallback: ['Hiragino Sans', 'Yu Gothic', 'sans-serif]' }
 
@@ -87,14 +86,14 @@ export class FontManager {
         ';'
         // 中国語簡体字フォント
         this.fontConfigs.set('zh-CN', { primary: {''
-                family: 'Noto Sans SC',
-                weight: '400',
-                style: 'normal',
+                family: 'Noto Sans SC,
+                weight: '400,
+                style: 'normal,
                 url: 'https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300,400,500,700&display=swap',''
-                fallback: ['Microsoft YaHei', 'PingFang SC', 'Hiragino Sans GB', 'sans-serif] },'
+                fallback: ['Microsoft YaHei', 'PingFang SC', 'Hiragino Sans GB', 'sans-serif] },' };
 
             secondary: { ''
-                family: 'Source Han Sans CN',
+                family: 'Source Han Sans CN' ,
                 weight: '400',','
                 style: 'normal')','
     url: null, // ローカルフォント使用,
@@ -104,14 +103,14 @@ export class FontManager {
         ';'
         // 中国語繁体字フォント
         this.fontConfigs.set('zh-TW', { primary: {''
-                family: 'Noto Sans TC',
-                weight: '400',
-                style: 'normal',
+                family: 'Noto Sans TC,
+                weight: '400,
+                style: 'normal,
                 url: 'https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300,400,500,700&display=swap',''
-                fallback: ['Microsoft JhengHei', 'PingFang TC', 'Heiti TC', 'sans-serif] },'
+                fallback: ['Microsoft JhengHei', 'PingFang TC', 'Heiti TC', 'sans-serif] },' };
 
             secondary: { ''
-                family: 'Source Han Sans TW',
+                family: 'Source Han Sans TW' ,
                 weight: '400',','
                 style: 'normal')','
     url: null, // ローカルフォント使用,
@@ -121,14 +120,14 @@ export class FontManager {
         ';'
         // 韓国語フォント
         this.fontConfigs.set('ko', { primary: {''
-                family: 'Noto Sans KR',
-                weight: '400',
-                style: 'normal',
+                family: 'Noto Sans KR,
+                weight: '400,
+                style: 'normal,
                 url: 'https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300,400,500,700&display=swap',''
-                fallback: ['Malgun Gothic', 'Apple SD Gothic Neo', 'sans-serif] },'
+                fallback: ['Malgun Gothic', 'Apple SD Gothic Neo', 'sans-serif] },' };
 
             secondary: { ''
-                family: 'Source Han Sans K',
+                family: 'Source Han Sans K' ,
                 weight: '400',','
                 style: 'normal')','
     url: null, // ローカルフォント使用,
@@ -138,16 +137,16 @@ export class FontManager {
         ';'
         // 英語フォント
         this.fontConfigs.set('en', { primary: {''
-                family: 'Inter',
-                weight: '400',
-                style: 'normal',
+                family: 'Inter,
+                weight: '400,
+                style: 'normal,
                 url: 'https://fonts.googleapis.com/css2?family=Inter:wght@300,400,500,600,700&display=swap',''
                 fallback: ['Arial', 'Helvetica Neue', 'sans-serif]'
-            };
+            } };
             secondary: { ''
-                family: 'Roboto',
-                weight: '400',
-                style: 'normal',
+                family: 'Roboto' ,
+                weight: '400,
+                style: 'normal,
                 url: 'https://fonts.googleapis.com/css2?family=Roboto:wght@300,400,500,700&display=swap',''
                 fallback: ['Arial', 'sans-serif]' }
 
@@ -169,7 +168,7 @@ export class FontManager {
             }
             
             // 読み込み中の場合
-            if (this.loadingPromises.has(fontKey) { return this.loadingPromises.get(fontKey) }
+            if (this.loadingPromises.has(fontKey) { return this.loadingPromises.get(fontKey);
             
             // フォント設定を取得
             const fontConfig = this.fontConfigs.get(language);
@@ -189,8 +188,8 @@ export class FontManager {
             try { const result = await loadPromise,
                 this.loadedFonts.set(fontKey, font);
                 return result } finally { this.loadingPromises.delete(fontKey) } catch (error) { getErrorHandler().handleError(error, 'FONT_MANAGER_ERROR', {''
-                operation: 'loadFontsForLanguage',
-    language: language);
+                operation: 'loadFontsForLanguage,
+    language: language),
                 priority: priority,);
             return false;
     
@@ -234,7 +233,7 @@ export class FontManager {
             const existingLink = document.querySelector(`link[href="${fontConfig.url}"]`);
             if (existingLink) {"
 
-                resolve(true) }
+                resolve(true);
                 return; }
             }
             ";"
@@ -254,7 +253,7 @@ export class FontManager {
             };
             
             document.head.appendChild(link);
-        };
+        }
     }
     
     /**
@@ -266,10 +265,10 @@ export class FontManager {
         const context = canvas.getContext('2d');
         ','
         // テスト用テキスト
-        const testText = 'abcdefghijklmnopqrstuvwxyz0123456789',
+        const testText = 'abcdefghijklmnopqrstuvwxyz0123456789,
         ','
         // デフォルトフォントでのサイズを測定
-        context.font = '20px sans-serif',
+        context.font = '20px sans-serif,
         const defaultWidth = context.measureText(testText).width }
 
         // 指定フォントでのサイズを測定' }'
@@ -285,8 +284,7 @@ export class FontManager {
 }
             console.log(`Font, loaded (fallback, check): ${fontConfig.family}`);"
         } else { }"
-            console.warn(`Font, may not, be loaded: ${fontConfig.family}`"}",
-        }
+            console.warn(`Font, may not, be loaded: ${fontConfig.family}`"}" }
         
         return loaded;
     }
@@ -307,7 +305,7 @@ export class FontManager {
 
         if (font.fallback && Array.isArray(font.fallback)) { }"
             fontStack.push(...font.fallback.map(f => f.includes('') ? `"${f}"` : f"");
-        }"
+        }
 
         return fontStack.join(', ');
     }
@@ -328,9 +326,9 @@ export class FontManager {
             element.style.fontFamily = fontStack,
             
             // 言語固有の追加スタイル
-            this.applyLanguageSpecificStyles(element, language) }
+            this.applyLanguageSpecificStyles(element, language);
             return true; catch (error) { getErrorHandler().handleError(error, 'FONT_MANAGER_ERROR', {''
-                operation: 'applyFontToElement');
+                operation: 'applyFontToElement'),
                 language: language,);
             return false;
     
@@ -341,23 +339,23 @@ export class FontManager {
 
         switch(language) {''
             case 'ja':','
-                element.style.lineHeight = '1.7',
-                element.style.letterSpacing = '0.05em',
+                element.style.lineHeight = '1.7,
+                element.style.letterSpacing = '0.05em,
 
                 break,
             case 'zh-CN':','
             case 'zh-TW':','
-                element.style.lineHeight = '1.6',
-                element.style.letterSpacing = '0.02em',
+                element.style.lineHeight = '1.6,
+                element.style.letterSpacing = '0.02em,
 
                 break,
             case 'ko':','
-                element.style.lineHeight = '1.6',
-                element.style.letterSpacing = '0.03em',
+                element.style.lineHeight = '1.6,
+                element.style.letterSpacing = '0.03em,
 
                 break,
             case 'en':','
-            default: element.style.lineHeight = '1.5',
+            default: element.style.lineHeight = '1.5,
                 element.style.letterSpacing = 'normal' }
                 break; }
 }
@@ -371,7 +369,7 @@ export class FontManager {
         // プライマリフォント
         const primaryStack = this.getFontStack(language, 'primary),'
         css.push(` };
-            body {) }
+            body {);
 
                 font-family: ${primaryStack}
         `);
@@ -401,26 +399,26 @@ export class FontManager {
                 }
                 .small-text { font-size: 0.875rem }
 
-            `,
+            ,
             'zh-CN': `;
                 body { line-height: 1.6,
                     letter-spacing: 0.02em }
                 .small-text { font-size: 0.875rem }
 
-            `,
+            ,
             'zh-TW': `;
                 body { line-height: 1.6,
                     letter-spacing: 0.02em }
                 .small-text { font-size: 0.875rem }
 
-            `,
+            ,
             'ko': `;
                 body { line-height: 1.6,
                     letter-spacing: 0.03em,
                     word-break: keep-all }
                 .small-text { font-size: 0.875rem }
 
-            `,
+            ,
             'en': `;
                 body { line-height: 1.5,
                     letter-spacing: normal,
@@ -483,8 +481,7 @@ export class FontManager {
     } catch (error) { results.push({)
                     language: language,
     loaded: false),
-                    error: error.message  },
-            }
+                    error: error.message   }
         }
         
         return results;
@@ -496,7 +493,7 @@ export class FontManager {
     getStats() {
         return { configuredLanguages: Array.from(this.fontConfigs.keys(
 
-            loadedFonts: this.getLoadedFonts() }
+            loadedFonts: this.getLoadedFonts())),
 
             loadingInProgress: Array.from(this.loadingPromises.keys()),' };'
 
@@ -508,7 +505,7 @@ export class FontManager {
      */
     clearCache() {
         this.loadedFonts.clear();
-        this.loadingPromises.clear() }
+        this.loadingPromises.clear();
 
         console.log('Font, cache cleared'); }'
 }

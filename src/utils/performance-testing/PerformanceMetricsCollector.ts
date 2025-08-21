@@ -9,110 +9,93 @@ interface PerformanceTestSuite { baselines: Map<string, any>,
 
 interface PreviousTestResults { results: Map<string, TestCategoryResults> }
 
-interface TestCategoryResults { passed: boolean;
+interface TestCategoryResults { passed: boolean,
     tests: Record<string, TestResult> }
 
-interface TestResult { passed: boolean;
-    result: number;
+interface TestResult { passed: boolean,
+    result: number,
     expected: number;
     detail?: any;
-
-interface MetricEntry { duration: number;
-    timestamp: number;
+    interface MetricEntry { duration: number,
+    timestamp: number,
     detail: any;
-
-interface CollectedMetrics { timestamp: number;
-    memory: MemoryUsage;
-    frameRate: number;
+    interface CollectedMetrics { timestamp: number,
+    memory: MemoryUsage,
+    frameRate: number,
     testResults: Map<string, TestCategoryResults>;
     systemInfo: SystemInfo;
-
-interface MemoryUsage { usedJSHeapSize: number;
-    totalJSHeapSize: number;
-    jsHeapSizeLimit: number;
+    interface MemoryUsage { usedJSHeapSize: number,
+    totalJSHeapSize: number,
+    jsHeapSizeLimit: number,
     timestamp: number;
-
-interface SystemInfo { userAgent: string;
-    platform: string;
-    hardwareConcurrency: number | string;
-    language: string;
-    onLine: boolean;
-    cookieEnabled: boolean;
+    interface SystemInfo { userAgent: string,
+    platform: string,
+    hardwareConcurrency: number | string,
+    language: string,
+    onLine: boolean,
+    cookieEnabled: boolean,
     timestamp: number;
-
-interface AnalysisResult { overallPassed: boolean;
-    regressions: RegressionEntry[];
-    improvements: ImprovementEntry[];
+    interface AnalysisResult { overallPassed: boolean,
+    regressions: RegressionEntry[],
+    improvements: ImprovementEntry[],
     comparison: Map<string, ComparisonResult>;
     statistics: TestStatistics;
-
-interface RegressionEntry { category: string;
-    test: string;
-    result: number;
-    expected: number;
+    interface RegressionEntry { category: string,
+    test: string,
+    result: number,
+    expected: number,
     severity: SeverityLevel;
-
-interface ImprovementEntry { category: string;
-    test: string;
+    interface ImprovementEntry { category: string,
+    test: string,
     improvement: number;
-
-interface ComparisonResult { current: TestCategoryResults;
-    baseline: any;
+    interface ComparisonResult { current: TestCategoryResults,
+    baseline: any,
     deviation: Record<string, number> }
 
-interface TestStatistics { totalTests: number;
-    passedTests: number;
-    failedTests: number;
+interface TestStatistics { totalTests: number,
+    passedTests: number,
+    failedTests: number,
     categories: Map<string, CategoryStatistics>;
-    performance: any;
+    performance: any,
     passRate: number;
-
-interface CategoryStatistics { total: number;
-    passed: number;
-    failed: number;
-    averageResult: number;
+    interface CategoryStatistics { total: number,
+    passed: number,
+    failed: number,
+    averageResult: number,
     metrics: number[];
     variance?: number;
     standardDeviation?: number;
-
-interface TrendAnalysis { direction: TrendDirection;
-    magnitude: number;
+    interface TrendAnalysis { direction: TrendDirection,
+    magnitude: number,
     confidence: number;
-
-interface AdvancedAnalysis { trends: Map<string, TrendAnalysis>,
+    interface AdvancedAnalysis { trends: Map<string, TrendAnalysis>,
     correlations: Map<string, number>;
-    outliers: OutlierEntry[];
+    outliers: OutlierEntry[],
     performance_profile: PerformanceProfile;
-
-interface OutlierEntry { category: string;
-    test: string;
-    value: number;
-    zScore: number;
+    interface OutlierEntry { category: string,
+    test: string,
+    value: number,
+    zScore: number,
     severity: OutlierSeverity;
-
-interface PerformanceProfile { overall_score: number;
+    interface PerformanceProfile { overall_score: number,
     category_scores: Map<string, number>;
-    strengths: string[];
-    weaknesses: string[];
+    strengths: string[],
+    weaknesses: string[],
     recommendations: string[];
-
-interface ExportData { timestamp: number;
+    interface ExportData { timestamp: number,
     metrics: Record<string, MetricEntry[]>;
     summary: Summary;
-
-interface Summary { total_metrics: number;
-    total_entries: number;
+    interface Summary { total_metrics: number,
+    total_entries: number,
     categories: CategorySummary[];
-
-interface CategorySummary { name: string;
-    count: number;
+    interface CategorySummary { name: string,
+    count: number,
     average: number;
-
-type SeverityLevel = 'critical' | 'high' | 'medium' | 'low';
-type TrendDirection = 'improving' | 'degrading' | 'stable';
-type OutlierSeverity = 'extreme' | 'moderate';
-type ExportFormat = 'json' | 'csv';
-export class PerformanceMetricsCollector {
+    type SeverityLevel = 'critical' | 'high' | 'medium' | 'low';
+    type TrendDirection = 'improving' | 'degrading' | 'stable';
+    type OutlierSeverity = 'extreme' | 'moderate';
+    type ExportFormat = 'json' | 'csv';
+    export class PerformanceMetricsCollector {
     private performanceTestSuite: PerformanceTestSuite;
     private lastFrameTime: number | null;
     private, collectedMetrics: Map<string, MetricEntry[]>,
@@ -120,8 +103,8 @@ export class PerformanceMetricsCollector {
     constructor(performanceTestSuite: PerformanceTestSuite) {
 
         this.performanceTestSuite = performanceTestSuite;
-        this.lastFrameTime = null
-}
+    this.lastFrameTime = null
+};
         this.collectedMetrics = new Map(); }
     }
 
@@ -136,11 +119,11 @@ export class PerformanceMetricsCollector {
                 
                 // メトリクスを収集データに追加
                 if(!this.collectedMetrics.has(entry.name} { }
-                    this.collectedMetrics.set(entry.name, []};
+                    this.collectedMetrics.set(entry.name, []}
                 }
                 this.collectedMetrics.get(entry.name).push({ duration: entry.duration)
-                   , timestamp: entry.startTime }
-                    detail: entry.detail || {},
+            timestamp: entry.startTime }
+                    detail: entry.detail || {};
             }
 }
 
@@ -149,10 +132,10 @@ export class PerformanceMetricsCollector {
      */
     collectMetrics(testResults: Map<string, TestCategoryResults>): CollectedMetrics { const metrics = {
             timestamp: performance.now(
-            memory: this.getMemoryUsage();
+            memory: this.getMemoryUsage(),
             frameRate: this.getCurrentFrameRate(
-    testResults: testResults);
-            systemInfo: this.getSystemInfo(  },
+    testResults: testResults),
+            systemInfo: this.getSystemInfo(  };
 
         return metrics
     }
@@ -162,10 +145,10 @@ export class PerformanceMetricsCollector {
      */
     analyzeResults(testResults: Map<string, TestCategoryResults>): AnalysisResult { const analysis = {
             overallPassed: this.isOverallTestsPassed(testResults
-            regressions: this.detectRegressions(testResults);
-            improvements: this.detectImprovements(testResults);
+            regressions: this.detectRegressions(testResults),
+            improvements: this.detectImprovements(testResults),
             comparison: this.compareWithBaseline(testResults,
-    statistics: this.calculateTestStatistics(testResults },
+    statistics: this.calculateTestStatistics(testResults };
 
         return analysis
     }
@@ -180,11 +163,10 @@ export class PerformanceMetricsCollector {
             const baseline = this.performanceTestSuite.baselines.get(category);
             if (baseline) {
                 comparison.set(category, {
-                current: results);
-                    baseline: baseline) }
-                    deviation: this.calculateDeviation(results, baseline); }
-                };
-            }
+                current: results),
+                    baseline: baseline),
+                    deviation: this.calculateDeviation(results, baseline);     }
+}
         }
         
         return comparison;
@@ -214,12 +196,10 @@ export class PerformanceMetricsCollector {
                         category,
                         test: testName,
     result: testResult.result),
-                        expected: testResult.expected) }
+                        expected: testResult.expected),
                         severity: this.calculateRegressionSeverity(testResult); 
-    };
-                }
+        }
 }
-        
         return regressions;
     }
 
@@ -238,14 +218,11 @@ export class PerformanceMetricsCollector {
                         if (previousTest && this.isImprovement(testResult, previousTest) {
                             improvements.push({)
                                 category),
-                                test: testName) }
-                                improvement: this.calculateImprovement(testResult, previousTest); }
-                            };
-                        }
+                                test: testName),
+                                improvement: this.calculateImprovement(testResult, previousTest);     }
 }
-            }
-        }
-        
+    }
+}
         return improvements;
     }
 
@@ -256,8 +233,8 @@ export class PerformanceMetricsCollector {
             totalTests: 0,
             passedTests: 0,
             failedTests: 0,
-    categories: new Map<string, CategoryStatistics>() }
-            performance: {},
+    categories: new Map<string, CategoryStatistics>();
+            performance: {  },
         for(const [category, results] of testResults) {
 
             const categoryStats = {
@@ -269,8 +246,8 @@ export class PerformanceMetricsCollector {
     };
             for(const [testName, testResult] of Object.entries(results.tests) {
 
-                stats.totalTests++,
-                categoryStats.total++,
+                stats.totalTests++;
+                categoryStats.total++;
                 
                 if (testResult.passed) {
                     stats.passedTests++ }
@@ -285,7 +262,7 @@ export class PerformanceMetricsCollector {
             // カテゴリ平均の計算
             if (categoryStats.metrics.length > 0) {
                 categoryStats.averageResult = categoryStats.metrics.reduce((sum, val) => sum + val, 0) / categoryStats.metrics.length,
-                categoryStats.variance = this.calculateVariance(categoryStats.metrics) }
+                categoryStats.variance = this.calculateVariance(categoryStats.metrics);
                 categoryStats.standardDeviation = Math.sqrt(categoryStats.variance); }
             }
 
@@ -335,9 +312,9 @@ export class PerformanceMetricsCollector {
      * リグレッション重要度計算
      */
     calculateRegressionSeverity(testResult: TestResult): SeverityLevel { const deviation = Math.abs(testResult.result - testResult.expected) / testResult.expected,
-        if(deviation > 0.5) return 'critical',
-        if(deviation > 0.3) return 'high',
-        if(deviation > 0.1) return 'medium',
+        if(deviation > 0.5) return 'critical,
+        if(deviation > 0.3) return 'high,
+        if(deviation > 0.1) return 'medium,
         return 'low' }
 
     /**
@@ -358,12 +335,12 @@ export class PerformanceMetricsCollector {
     getMemoryUsage(): MemoryUsage { if (performance.memory) {
             return { usedJSHeapSize: performance.memory.usedJSHeapSize,
                 totalJSHeapSize: performance.memory.totalJSHeapSize,
-    jsHeapSizeLimit: performance.memory.jsHeapSizeLimit },
+    jsHeapSizeLimit: performance.memory.jsHeapSizeLimit };
                 timestamp: performance.now(); 
     }
         return { usedJSHeapSize: 0, 
-            totalJSHeapSize: 0, ,
-            jsHeapSizeLimit: 0 },
+            totalJSHeapSize: 0,
+            jsHeapSizeLimit: 0 };
             timestamp: performance.now(); 
     }
 
@@ -383,9 +360,9 @@ export class PerformanceMetricsCollector {
      * システム情報取得
      */''
     getSystemInfo('''
-            hardwareConcurrency: navigator.hardwareConcurrency || 'unknown',
+            hardwareConcurrency: navigator.hardwareConcurrency || 'unknown,
             language: navigator.language,
-            onLine: navigator.onLine);
+            onLine: navigator.onLine),
             cookieEnabled: navigator.cookieEnabled,
     timestamp: performance.now();
         }
@@ -398,16 +375,16 @@ export class PerformanceMetricsCollector {
     /**
      * メトリクスのクリア
      */
-    clearMetrics(): void { this.collectedMetrics.clear() }
+    clearMetrics(): void { this.collectedMetrics.clear();
 
     /**
      * 高度な統計分析
      */
     performAdvancedAnalysis(testResults: Map<string, TestCategoryResults>): AdvancedAnalysis { const analysis = {
-            trends: this.analyzeTrends(testResults);
-            correlations: this.analyzeCorrelations(testResults);
+            trends: this.analyzeTrends(testResults),
+            correlations: this.analyzeCorrelations(testResults),
             outliers: this.detectOutliers(testResults,
-    performance_profile: this.createPerformanceProfile(testResults },
+    performance_profile: this.createPerformanceProfile(testResults };
 
         return analysis
     }
@@ -423,7 +400,7 @@ export class PerformanceMetricsCollector {
                 const previousCategoryResults = previousResults.results.get(category);
                 if (previousCategoryResults) {
                     const trend = {''
-                        direction: 'stable',
+                        direction: 'stable,
     magnitude: 0 }
                         confidence: 0 
     };
@@ -451,7 +428,7 @@ export class PerformanceMetricsCollector {
      * 相関分析
      */
     analyzeCorrelations(testResults: Map<string, TestCategoryResults>): Map<string, number> { const correlations = new Map<string, number>(),
-        const categories = Array.from(testResults.keys();
+        const categories = Array.from(testResults.keys()));
         for(let, i = 0, i < categories.length, i++) {
 
             for (let, j = i + 1, j < categories.length, j++) {
@@ -460,11 +437,9 @@ export class PerformanceMetricsCollector {
                 
                 const correlation = this.calculateCorrelation();
                     testResults.get(cat1);
-                    testResults.get(cat2) }
-                correlations.set(`${cat1}_${cat2}`, correlation};
-            }
-        }
-
+                    testResults.get(cat2);
+                correlations.set(`${cat1}_${cat2}`, correlation    }
+}
         return correlations;
     }
 
@@ -503,7 +478,7 @@ export class PerformanceMetricsCollector {
     category_scores: new Map<string, number>(),
             strengths: [],
             weaknesses: [],
-    recommendations: []  },
+    recommendations: []  ,
         let totalScore = 0;
         let categoryCount = 0;
 
@@ -515,13 +490,13 @@ export class PerformanceMetricsCollector {
             
             profile.category_scores.set(category, score);
             totalScore += score,
-            categoryCount++,
+            categoryCount++;
 
             if (score >= 90) {
     
 }
                 profile.strengths.push(category); }
-            } else if (score < 70) { profile.weaknesses.push(category) }
+            } else if (score < 70) { profile.weaknesses.push(category);
         }
 
         profile.overall_score = categoryCount > 0 ? totalScore / categoryCount: 0,
@@ -573,16 +548,16 @@ export class PerformanceMetricsCollector {
      * データエクスポート'
      */''
     exportMetrics(format: ExportFormat = 'json': string | ExportData { const data = {'
-            timestamp: Date.now();
+            timestamp: Date.now(),
             metrics: Object.fromEntries(this.collectedMetrics,
-    summary: this.getSummary( },
+    summary: this.getSummary( ,
 
         switch(format) {
 
             case 'json':','
                 return JSON.stringify(data, null, 2);
             case 'csv':,
-                return this.convertToCSV(data) }
+                return this.convertToCSV(data);
             default: return data,
 
     /**
@@ -610,13 +585,13 @@ export class PerformanceMetricsCollector {
     getSummary(): Summary { const summary = {
             total_metrics: this.collectedMetrics.size,
             total_entries: 0,
-    categories: [] as CategorySummary[] },
+    categories: [] as CategorySummary[] ,
         for(const [metricName, entries] of this.collectedMetrics) {
 
             summary.total_entries += entries.length,
             summary.categories.push({)
                 name: metricName),
-                count: entries.length) }
+                count: entries.length),
 
                 average: entries.reduce((sum, entry) => sum + entry.duration, 0) / entries.length' }'
 

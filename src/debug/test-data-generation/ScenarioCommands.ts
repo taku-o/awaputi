@@ -6,7 +6,7 @@
 export class ScenarioCommands {
     constructor(parent?: any) {
         // TypeScript implementation
-    }
+    };
         console.log('[ScenarioCommands] Initialized'); }'
     }
 

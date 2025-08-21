@@ -3,35 +3,36 @@
  * テストデータの可視化表示クラス
  */
 
-interface TestResult { id: string;
-    name: string;
-    status: 'passed' | 'failed' | 'skipped';
+interface TestResult { id: string,
+    name: string,
+    status: 'passed' | 'failed' | 'skipped,
     duration: number;
     error?: Error;
     timestamp: number;
     tags?: string[];
-    category?: string,  }
+    category?: string }
 
-interface CoverageData { lines: {
-        tota,l: number;
+interface CoverageData { lines: { tota,l: number,
+        covered: number,
+    percentage: number,
+    branches: { total: number,
         covered: number;
-    percentage: number;
-    branches: { total: number;
+    },
+    percentage: number,
+    functions: { total: number,
         covered: number;
-    percentage: number;
-    functions: { total: number;
+    },
+    percentage: number,
+    statements: { total: number,
         covered: number;
-    percentage: number;
-    statements: { total: number;
-        covered: number;
-    percentage: number;
+    },
+    percentage: number,
     percentage: number;
         };
 export class TestDataVisualizer {
     private visualizer: any;
     constructor(visualizer: any) {
-        this.visualizer = visualizer }
-
+        this.visualizer = visualizer };
     public renderTestDetails()';'
         const container = this.getContainer('test-details);'
         if (!container) return;
@@ -58,7 +59,7 @@ export class TestDataVisualizer {
         `;
 
         this.setupTestDetailsEventHandlers();
-    }"
+    }
 
     public renderCoverageDetails(): void { ""
         const container = this.getContainer('coverage-details);'
@@ -83,14 +84,14 @@ export class TestDataVisualizer {
     public renderPerformanceMetrics(): void { const results = this.getTestResults(),""
         const metrics = this.calculatePerformanceMetrics(results),"
 
-        const container = this.getContainer('performance-metrics',
+        const container = this.getContainer('performance-metrics,
         if(!container) return,
 ','
 
         container.innerHTML = `','
             <div class="performance-metrics">","
-                <h3>Performance Metrics</h3>"",
-                <div class="metrics-grid">"",
+                <h3>Performance Metrics</h3>",
+                <div class="metrics-grid">",
                     <div class="metric-card">","
                         <h4>Total Duration</h4>" }"
                         <span class="metric-value">${metrics.totalDuration.toFixed(2"}"ms</span>"
@@ -162,13 +163,13 @@ export class TestDataVisualizer {
                 </tbody>;
             </table>;
         `;
-    }"
+    }
 
     private renderCoverageSummary(coverage: CoverageData): string { return `""
-            <div class="coverage-summary-grid">"",
+            <div class="coverage-summary-grid">",
                 <div class="coverage-card">","
-                    <h4>Lines</h4>"",
-                    <div class="coverage-progress">"",
+                    <h4>Lines</h4>",
+                    <div class="coverage-progress">",
                         <div class="progress-bar">" }"
                             <div class="progress-fill" style="width: ${coverage.lines.percentage}%"></div>"
                         </div>"";
@@ -211,31 +212,31 @@ export class TestDataVisualizer {
                 </div>;
             </div>;
         `;
-    }"
+    }
 
     private renderCoverageBreakdown(coverage: CoverageData): string { return `""
             <div class="coverage-breakdown">","
-                <h4>Coverage Breakdown by File</h4>"",
-                <div class="coverage-files">"",
-                    <div class="file-coverage">"",
-                        <span class="file-name">src/components/GameEngine.js</span>"",
-                        <div class="file-coverage-bar">"",
+                <h4>Coverage Breakdown by File</h4>",
+                <div class="coverage-files">",
+                    <div class="file-coverage">",
+                        <span class="file-name">src/components/GameEngine.js</span>",
+                        <div class="file-coverage-bar">",
                             <div class="coverage-fill" style="width: 85%"></div>","
-                        </div>"",
+                        </div>",
                         <span class="coverage-percentage">85%</span>","
-                    </div>"",
-                    <div class="file-coverage">"",
-                        <span class="file-name">src/components/BubbleManager.js</span>"",
-                        <div class="file-coverage-bar">"",
+                    </div>",
+                    <div class="file-coverage">",
+                        <span class="file-name">src/components/BubbleManager.js</span>",
+                        <div class="file-coverage-bar">",
                             <div class="coverage-fill" style="width: 92%"></div>","
-                        </div>"",
+                        </div>",
                         <span class="coverage-percentage">92%</span>","
-                    </div>"",
-                    <div class="file-coverage">"",
-                        <span class="file-name">src/utils/CollisionDetection.js</span>"",
-                        <div class="file-coverage-bar">"",
+                    </div>",
+                    <div class="file-coverage">",
+                        <span class="file-name">src/utils/CollisionDetection.js</span>",
+                        <div class="file-coverage-bar">",
                             <div class="coverage-fill" style="width: 76%"></div>","
-                        </div>"",
+                        </div>",
                         <span class="coverage-percentage">76%</span>,
                     </div>,
                 </div>,
@@ -249,16 +250,13 @@ export class TestDataVisualizer {
         if (statusFilter) {', ' }
 
             statusFilter.addEventListener('change', () => {  }
-                this.filterTests(); }
-            };
-        }
-
+                this.filterTests();     }
+}
         if (searchFilter) {', ' }
 
             searchFilter.addEventListener('input', () => {  }
-                this.filterTests(); }
-            };
-        }
+                this.filterTests();     }
+}
     }
 
     private filterTests()';'
@@ -269,18 +267,19 @@ export class TestDataVisualizer {
         rows.forEach(row => {  ')'
             const element = row as HTMLElement'), : undefined''
             const status = element.classList.contains('passed') ? 'passed' : ','
-                          element.classList.contains('failed') ? 'failed' : 'skipped',
+                          element.classList.contains('failed') ? 'failed' : 'skipped,
             const name = element.querySelector('.test-name'?.textContent?.toLowerCase() || ','
 ','
 
             const matchesStatus = !statusFilter || status === statusFilter,
             const matchesSearch = !searchFilter || name.includes(searchFilter);
  : undefined', '
-            element.style.display = matchesStatus && matchesSearch ? '' : 'none' };
+            element.style.display = matchesStatus && matchesSearch ? '' : 'none' }
     }
 
     private calculatePerformanceMetrics(results: TestResult[]): { totalDuration: number,
-        averageDuration: number,
+        averageDuration: number;
+    },
         slowestTest: TestResult | null,
     fastestTest: TestResult | null  } { if (!results.length) {
             return { totalDuration: 0,
@@ -307,22 +306,22 @@ export class TestDataVisualizer {
 
     private getCoverageData(): CoverageData { // Mock coverage data - would be real data in actual implementation
         return { }
-            lines: { total: 1250, covered: 1087, percentage: 86.9  },
-            branches: { total: 340, covered: 298, percentage: 87.6  },
-            functions: { total: 156, covered: 142, percentage: 91.0  },
+            lines: { total: 1250, covered: 1087, percentage: 86.9  ,
+            branches: { total: 340, covered: 298, percentage: 87.6  ,
+            functions: { total: 156, covered: 142, percentage: 91.0  ,
             statements: { total: 1180, covered: 1025, percentage: 86.9  }
 
-    private getContainer(id: string): HTMLElement | null { return document.getElementById(id) }
+    private getContainer(id: string): HTMLElement | null { return document.getElementById(id);
 ';'
 
     private getStatusIcon(status: string): string { ''
         switch(status) {
 
-            case 'passed': return '✓',
-            case 'failed': return '✗',
+            case 'passed': return '✓,
+            case 'failed': return '✗,
             case 'skipped': return '⚠' }
 
-            default: return '? ',
+            default: return '? ,
 
  : undefined';'
     private truncateText(text: string, maxLength: number): string { ''

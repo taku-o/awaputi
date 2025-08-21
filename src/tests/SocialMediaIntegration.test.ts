@@ -4,20 +4,20 @@
 import { jest  } from '@jest/globals';
 // Mock interfaces
 interface MockStatisticsManager { recordSocialEvent: jest.Mock }
-interface MockLocalizationManager { getCurrentLanguage: jest.Mock<string>;
+interface MockLocalizationManager { getCurrentLanguage: jest.Mock<string>,
     translate: jest.Mock<string>  }
 interface MockSeoMetaManager { updateOpenGraphTags: jest.Mock }
-interface MockGameEngine { statisticsManager: MockStatisticsManager;
-    localizationManager: MockLocalizationManager;
-    seoMetaManager: MockSeoMetaManager | null;
-    on: jest.Mock;
-    off: jest.Mock;
-    emit: jest.Mock;
+interface MockGameEngine { statisticsManager: MockStatisticsManager,
+    localizationManager: MockLocalizationManager,
+    seoMetaManager: MockSeoMetaManager | null,
+    on: jest.Mock,
+    off: jest.Mock,
+    emit: jest.Mock,
     isDebugMode: jest.Mock<boolean> }
-interface MockNavigator { onLine: boolean;
-    userAgent: string;
+interface MockNavigator { onLine: boolean,
+    userAgent: string,
     language: string;
-interface MockWindow { closed: boolean;
+    interface MockWindow { closed: boolean,
     close: jest.Mock }
 interface ShareData { type: string;
     score?: number;
@@ -30,22 +30,22 @@ interface ShareData { type: string;
     isHighScore?: boolean;
     stage?: string;
     name?: string;
-interface ShareOptions { platform?: string,
+    interface ShareOptions { platform?: string,
     forceExternal?: boolean;
     mode?: string;
     appId?: string;
-interface ShareResult { success: boolean;
+    interface ShareResult { success: boolean,
     method: string;
     platform?: string;
     error?: string;
-    optimized?: boolean,  }
+    optimized?: boolean }
 interface OptimizedMessage { text?: string,
     optimized?: boolean;
     message?: string;
     platform?: string;
     language?: string;
     metadata?: { optimized: boolean;
-interface MockShareContentGenerator { generateScoreMessage: jest.Mock<OptimizedMessage> }
+    interface MockShareContentGenerator { generateScoreMessage: jest.Mock<OptimizedMessage> }
 interface SocialSharingManagerInstance { shareContentGenerator: MockShareContentGenerator | null;
     detectPlatform(): string;
     generateTwitterShareUrl(data: ShareData | null): string;
@@ -58,7 +58,7 @@ interface SocialSharingManagerInstance { shareContentGenerator: MockShareContent
     share(data: ShareData, options?: ShareOptions): Promise<ShareResult>;
     isWebShareSupported: jest.Mock<boolean>;
     updatePerformanceStats(action: string): void;
-    getPerformanceStats(): { [key: string]: number | Date,, lastUpdate: Date;
+    getPerformanceStats(): { [key: string]: number | Date, lastUpdate: Date;
     initialize(): Promise<void>;
     cleanup(): void;
 }
@@ -73,10 +73,10 @@ describe('Social Media Integration', () => {  let socialSharingManager: SocialSh
         // GameEngineのモック
         mockGameEngine = {
             statisticsManager: {  }
-                recordSocialEvent: jest.fn(),
+                recordSocialEvent: jest.fn();
     },
             localizationManager: { ''
-                getCurrentLanguage: jest.fn<string>().mockReturnValue('ja),'
+                getCurrentLanguage: jest.fn<string>().mockReturnValue('ja),'  },
                 translate: jest.fn<string>().mockImplementation((key: string) => key) 
     };
         seoMetaManager: { updateOpenGraphTags: jest.fn( }
@@ -88,19 +88,19 @@ describe('Social Media Integration', () => {  let socialSharingManager: SocialSh
         
         // NavigatorのモックSetup
         mockNavigator = { onLine: true,''
-            userAgent: 'Mozilla/5.0(Chrome/90.0)',
+            userAgent: 'Mozilla/5.0(Chrome/90.0),
             language: 'ja-JP'
             };
         Object.defineProperty(window, 'navigator', { value: mockNavigator,''
             writable: true','
         // WindowのモックSetup
         Object.defineProperty(window, 'location', {'
-            value: {''
-                origin: 'https://test.example.com',
-                pathname: '/game',
-                href: 'https://test.example.com/game',
+            value: { ''
+                origin: 'https://test.example.com'   ,
+                pathname: '/game,
+                href: 'https://test.example.com/game,
                 search: '})'
-            writable: true),
+            writable: true);
         // Window.openのモック
         window.open = jest.fn().mockReturnValue({ )
             closed: false,
@@ -119,7 +119,7 @@ describe('Social Media Integration', () => {  let socialSharingManager: SocialSh
         jest.clearAllMocks();'}');
     describe('プラットフォーム検出の改善', () => {  ''
         test('Twitter アプリ内ブラウザを検出', () => {''
-            mockNavigator.userAgent = 'Mozilla/5.0 Twitter for iPhone',
+            mockNavigator.userAgent = 'Mozilla/5.0 Twitter for iPhone,
 
             const platform = socialSharingManager.detectPlatform(),' }'
 
@@ -127,7 +127,7 @@ describe('Social Media Integration', () => {  let socialSharingManager: SocialSh
 
         }');'
         test('Facebook アプリ内ブラウザを検出', () => {  ''
-            mockNavigator.userAgent = 'FBAN/FBIOS Mozilla/5.0',
+            mockNavigator.userAgent = 'FBAN/FBIOS Mozilla/5.0,
 
             const platform = socialSharingManager.detectPlatform(),' }'
 
@@ -157,7 +157,7 @@ describe('Social Media Integration', () => {  let socialSharingManager: SocialSh
     describe('Twitter共有機能強化', () => {  ''
         test('基本的なTwitter URL生成', () => {'
             const shareData: ShareData = {''
-                text: 'テストメッセージ',
+                text: 'テストメッセージ,
                 url: 'https://example.com',' }'
 
                 type: 'score' 
@@ -170,7 +170,7 @@ describe('Social Media Integration', () => {  let socialSharingManager: SocialSh
             expect(url).toContain('url=https: //example.com'
             }');'
         test('ハッシュタグが適切に生成される', () => {  const shareData: ShareData = {''
-                text: 'テストメッセージ',
+                text: 'テストメッセージ,
                 type: 'score'
             }
                 isHighScore: true;;
@@ -196,7 +196,7 @@ describe('Social Media Integration', () => {  let socialSharingManager: SocialSh
             expect(text!.length).toBeLessThanOrEqual(280 - 23);'}');
         test('メンション機能が動作する', () => {  : undefined'
             const shareData: ShareData = {''
-                text: 'テストメッセージ',
+                text: 'テストメッセージ,
                 mentions: ['user1', '@user2],' }
 
                 type: 'achievement' 
@@ -208,7 +208,7 @@ describe('Social Media Integration', () => {  let socialSharingManager: SocialSh
             expect(text).toContain('@user2';}');'
         test('Twitter共有ウィンドウが開かれる', async () => {  : undefined'
             const shareData: ShareData = {''
-                text: 'テストメッセージ',
+                text: 'テストメッセージ,
                 url: 'https://example.com',' }'
 
                 type: 'score' 
@@ -220,14 +220,14 @@ describe('Social Media Integration', () => {  let socialSharingManager: SocialSh
             expect(result.platform).toBe('twitter';
             expect(window.open).toHaveBeenCalledWith()';'
                 expect.stringContaining('twitter.com/intent/tweet');
-                'twitter-share',
+                'twitter-share,
                 expect.stringContaining('width=550';}');'
 
     }''
     describe('Facebook共有機能強化', () => {  ''
         test('基本的なFacebook URL生成', () => {'
             const shareData: ShareData = {''
-                title: 'テストタイトル',
+                title: 'テストタイトル,
                 url: 'https://example.com',' }'
 
                 type: 'score' 
@@ -239,7 +239,7 @@ describe('Social Media Integration', () => {  let socialSharingManager: SocialSh
             expect(url).toContain('u=https: //example.com,'
             expect(url).toContain('t=テストタイトル';}');'
         test('quote パラメータが設定される', () => {  const shareData: ShareData = {''
-                url: 'https://example.com',
+                url: 'https://example.com,
                 quote: 'カスタム引用テキスト',' }'
 
                 type: 'achievement' 
@@ -249,7 +249,7 @@ describe('Social Media Integration', () => {  let socialSharingManager: SocialSh
             const url = socialSharingManager.generateFacebookShareUrl(shareData);
             expect(url).toContain('quote=カスタム引用テキスト';}');'
         test('ハッシュタグが適切に設定される', () => {  const shareData: ShareData = {''
-                url: 'https://example.com',
+                url: 'https://example.com,
                 hashtag: '#CustomHashtag',' }'
 
                 type: 'score' 
@@ -279,7 +279,7 @@ describe('Social Media Integration', () => {  let socialSharingManager: SocialSh
             expect(url).toContain('facebook.com/dialog/share';
             expect(url).toContain('app_id=test123';}');'
         test('Facebook共有ウィンドウが開かれる', async () => {  const shareData: ShareData = {''
-                title: 'テストタイトル',
+                title: 'テストタイトル,
                 url: 'https://example.com',' }'
 
                 type: 'score' 
@@ -291,14 +291,14 @@ describe('Social Media Integration', () => {  let socialSharingManager: SocialSh
             expect(result.platform).toBe('facebook';
             expect(window.open).toHaveBeenCalledWith()';'
                 expect.stringContaining('facebook.com/sharer');
-                'facebook-share',
+                'facebook-share,
                 expect.stringContaining('width=626';}');'
 
     }''
     describe('OGタグ動的更新', () => {  ''
         test('スコア共有時のOGタグ更新', () => {'
             const shareData: ShareData = {''
-                type: 'score',
+                type: 'score,
                 score: 1500,
                 title: 'テストタイトル'
             }
@@ -316,8 +316,8 @@ describe('Social Media Integration', () => {  let socialSharingManager: SocialSh
             };
             ';}');
         test('実績共有時のOGタグ更新', () => {  const shareData: ShareData = {''
-                type: 'achievement',
-                name: 'テスト実績',
+                type: 'achievement,
+                name: 'テスト実績,
                 title: 'テストタイトル'
             }
                 url: window.location.href 
@@ -327,7 +327,7 @@ describe('Social Media Integration', () => {  let socialSharingManager: SocialSh
             socialSharingManager.updateOGTagsForFacebook(shareData);
             expect(mockGameEngine.seoMetaManager!.updateOpenGraphTags).toHaveBeenCalledWith(';'
                 expect.objectContaining({ ')'
-                    title: 'BubblePop - 実績「テスト実績」解除！',
+                    title: 'BubblePop - 実績「テスト実績」解除！,
                     description: expect.stringContaining('テスト実績,'
     url: shareData.url  };
             ';}');
@@ -342,7 +342,7 @@ describe('Social Media Integration', () => {  let socialSharingManager: SocialSh
     describe('最適化されたメッセージ生成', () => {  ''
         test('ShareContentGeneratorとの統合', () => {'
             const shareData: ShareData = {''
-                type: 'score',
+                type: 'score,
                 score: 1500,' }'
 
                 stage: 'normal' 
@@ -350,12 +350,12 @@ describe('Social Media Integration', () => {  let socialSharingManager: SocialSh
             // ShareContentGeneratorのモック
             socialSharingManager.shareContentGenerator = { ''
                 generateScoreMessage: jest.fn<OptimizedMessage>().mockReturnValue({''
-                    message: 'BubblePopで1,500点を達成！ #BubblePop #Gaming',
+                    message: 'BubblePopで1,500点を達成！ #BubblePop #Gaming,
                     platform: 'twitter',','
                     language: 'ja',' }'
 
                     metadata: { optimized: true,');'
-            };
+             },
 
             const result = socialSharingManager.generateOptimizedMessage(shareData, 'twitter) as OptimizedMessage;'
 
@@ -378,7 +378,7 @@ describe('Social Media Integration', () => {  let socialSharingManager: SocialSh
     describe('統合共有メソッド強化', () => {  ''
         test('プラットフォーム強制指定での共有', async () => {'
             const shareData: ShareData = {''
-                type: 'score',
+                type: 'score,
                 score: 1500,' }'
 
                 text: 'テストメッセージ' 
@@ -396,12 +396,12 @@ describe('Social Media Integration', () => {  let socialSharingManager: SocialSh
             // ShareContentGeneratorのモック
             socialSharingManager.shareContentGenerator = { ''
                 generateScoreMessage: jest.fn<OptimizedMessage>().mockReturnValue({''
-                    message: '最適化されたメッセージ',
+                    message: '最適化されたメッセージ,
                     platform: 'generic',','
                     language: 'ja'
             }
                     metadata: { optimized: true,);
-    };
+    }
             };
             
             // Web Share APIを無効化してフォールバックを使用
@@ -413,7 +413,7 @@ describe('Social Media Integration', () => {  let socialSharingManager: SocialSh
     describe('統計記録機能', () => {  ''
         test('Twitter共有統計が記録される', async () => {'
             const shareData: ShareData = {''
-                type: 'score',
+                type: 'score,
                 score: 1500,' }'
 
                 text: 'テストメッセージ' 
@@ -424,13 +424,13 @@ describe('Social Media Integration', () => {  let socialSharingManager: SocialSh
             expect(mockGameEngine.statisticsManager.recordSocialEvent).toHaveBeenCalledWith(';'
                 'twitterShareAttempt);'
                 expect.objectContaining({ hasText: true)'
-                   , hasUrl: false,')',
-                    dataType: 'score',
+            hasUrl: false,'),
+                    dataType: 'score,
             ',' }'
 
         }');'
         test('Facebook共有統計が記録される', async () => {  const shareData: ShareData = {''
-                type: 'achievement',
+                type: 'achievement,
                 title: 'テストタイトル',' }'
 
                 url: 'https://example.com }'
@@ -441,15 +441,15 @@ describe('Social Media Integration', () => {  let socialSharingManager: SocialSh
             expect(mockGameEngine.statisticsManager.recordSocialEvent).toHaveBeenCalledWith(';'
                 'facebookShareAttempt);'
                 expect.objectContaining({ hasUrl: true)'
-                   , hasTitle: true,')',
-                    dataType: 'achievement',
+            hasTitle: true,'),
+                    dataType: 'achievement,
             ',' }'
 
         }');'
         test('パフォーマンス統計が更新される', () => {  ''
             socialSharingManager.updatePerformanceStats('testAction),'
             const stats = socialSharingManager.getPerformanceStats();
-            expect(stats.testAction).toBe(1) }
+            expect(stats.testAction).toBe(1);
 
             expect(stats.lastUpdate).toBeDefined();' }'
 

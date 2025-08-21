@@ -14,17 +14,17 @@ import { ErrorTrackingSystem  } from '../../src/analytics/ErrorTrackingSystem';
 (global: any).fetch = jest.fn(() => Promise.resolve()');'
 Object.defineProperty(global, 'localStorage', {
     value: {,
-        getItem: jest.fn(
+        getItem: jest.fn( },
         setItem: jest.fn(
         removeItem: jest.fn(),
 )');'
 Object.defineProperty(window, 'performance', {
     value: {,
-        now: jest.fn(() => Date.now(),
+        now: jest.fn(() => Date.now() },
         timeOrigin: Date.now(
         navigation: { type: 0,
         redirectCount: 0 
-    };
+    }
             };
 )');'
 Object.defineProperty(window, 'location', {
@@ -49,7 +49,7 @@ describe('ErrorTrackingSystem', () => {
             enableContextCapture: true,
             enableUserActionTracking: true,
             maxErrors: 50
-        };
+        }
     }
     afterEach(() => {
         if (errorTracker) {
@@ -188,7 +188,7 @@ describe('ErrorTrackingSystem', () => {
                 type: 'click',
                 timestamp: Date.now(','
                 target: {
-                    tagName: 'BUTTON',
+                    tagName: 'BUTTON' },
                     id: 'test-button'
                 }
             };
@@ -225,7 +225,7 @@ describe('ErrorTrackingSystem', () => {
                 message: 'is not defined',
                 type: 'reference_error',
                 recovery: {
-                    attempted: false,
+                    attempted: false },
                     successful: false,
                     recoveryTime: null,
             };
@@ -267,7 +267,7 @@ describe('ErrorTrackingSystem', () => {
                     message: `Test error ${i}`),
                     timestamp: Date.now(
                     recovery: { attempted: false, successful: false,
-                };
+                }
             }
             const stats = errorTracker.getErrorStatistics();
             expect(stats.totalErrors).toBe(5);
@@ -301,7 +301,7 @@ describe('ErrorTrackingSystem', () => {
                     message: `Test error ${i}`),
                     timestamp: Date.now(
                     recovery: { attempted: false, successful: false,
-                };
+                }
             }
             expect(limitedTracker.errors).toHaveLength(3);
             limitedTracker.destroy();
@@ -427,6 +427,6 @@ describe('ErrorTrackingSystem', () => {
         test('destroy(')でリソースを解放する', () => {'
             errorTracker.destroy();
             expect(errorTracker.errors).toHaveLength(0);
-            expect(errorTracker.userActions).toHaveLength(0) };
+            expect(errorTracker.userActions).toHaveLength(0) }
     }
 }');'

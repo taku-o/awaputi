@@ -9,9 +9,9 @@ import { FontFallbackHandler  } from '../../../../../src/core/i18n/font-loading/
 import { FontErrorHandler  } from '../../../../../src/core/i18n/font-loading/FontErrorHandler.js';
 // Type definitions
 interface LoadResult {
-    success: boolean;
+    success: boolean,
     fontFamily: string;
-    source: string;
+    source: string,
     loadTime: number;
     cached?: boolean;
     fallbackUsed?: boolean;
@@ -46,11 +46,11 @@ interface MockElement {
         fontFamil,y?: string;;
 }
 interface MultiElementResult {
-    total: number;
+    total: number,
     successful: number;
     failed: number;
 interface ConsoleSpy {
-    warn: jest.SpyInstance;
+    warn: jest.SpyInstance,
     log: jest.SpyInstance }
 interface GlobalErrorHandler {
     handleError: jest.Mock<void, [Error]> }
@@ -185,7 +185,7 @@ describe('FontLoadingManager', () => {
             await fontLoadingManager.initialize();
             mockElement = {
                 style: {}
-            };
+            }
         }');'
         test('should apply font to element successfully', async (') => {'
             mockSourceManager.loadFromSource.mockResolvedValue({
@@ -361,6 +361,6 @@ describe('FontLoadingManager', () => {
             expect(fontLoadingManager.initialized).toBe(false);
             expect(fontLoadingManager.loadAttempts.size).toBe(0);
             expect(fontLoadingManager.failedSources.size).toBe(0);
-            expect(fontLoadingManager.successfulLoads.size).toBe(0) };
+            expect(fontLoadingManager.successfulLoads.size).toBe(0) }
     }
 }');'

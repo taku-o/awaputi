@@ -17,10 +17,10 @@
 // 型定義
 export interface ChartContext extends CanvasRenderingContext2D { canvas: HTMLCanvasElement;
 
-export interface ChartRenderer { render: (context: ChartContext, data: any[], options: ChartOptions) => ChartRenderResult  }
+export interface ChartRenderer { render: (context: ChartContext, data: any[], options: ChartOptions) => ChartRenderResult  };
 }
 
-export interface ChartRenderResult { type: ChartType;
+export interface ChartRenderResult { type: ChartType,
     dataPoints: number;
     min?: number;
     max?: number;
@@ -34,8 +34,7 @@ export interface ChartRenderResult { type: ChartType;
     points?: ScatterPoint[];
     bars?: ProgressBarData[];
     performance?: RenderPerformance;
-    error?: string,  }
-
+    error?: string };
 export interface ChartOptions { padding?: number,
     showAxes?: boolean;
     showGrid?: boolean;
@@ -49,91 +48,80 @@ export interface ChartOptions { padding?: number,
     animation?: AnimationConfig;
     interaction?: InteractionConfig;
     layout?: LayoutConfig;
-     }
-
-export interface ChartTheme { colors: ThemeColors;
+     };
+export interface ChartTheme { colors: ThemeColors,
     palette: string[];
     background?: string;
     gradients?: ThemeGradients;
-     }
-
-export interface ThemeColors { primary: string;
-    secondary: string;
-    accent: string;
-    dark: string;
-    light: string;
-    background: string;
-    text: string;
-    grid: string;
+     };
+export interface ThemeColors { primary: string,
+    secondary: string,
+    accent: string,
+    dark: string,
+    light: string,
+    background: string,
+    text: string,
+    grid: string,
     axis: string;
-
-export interface ThemeGradients { primary: string[];
-    secondary: string[];
+    export interface ThemeGradients { primary: string[],
+    secondary: string[],
     accent: string[];
-
-export interface AnimationConfig { enabled: boolean;
-    duration: number;
+    export interface AnimationConfig { enabled: boolean,
+    duration: number,
     easing: EasingFunction;
     staggerDelay?: number;
     loop?: boolean;
-
-export interface InteractionConfig { hover: HoverConfig;
-    click: ClickConfig;
+    export interface InteractionConfig { hover: HoverConfig,
+    click: ClickConfig,
     tooltip: TooltipConfig;
-
-export interface HoverConfig { enabled: boolean;
+    export interface HoverConfig { enabled: boolean;
     highlightColor?: string;
     cursor?: string;
     scale?: number;
-
-export interface ClickConfig { enabled: boolean;
+    export interface ClickConfig { enabled: boolean;
     callback?: (data: any, event: MouseEvent) => void;
-    selectMultiple?: boolean,  }
+    selectMultiple?: boolean };
 }
 
 export interface TooltipConfig { enabled: boolean;
     template?: string;
     position?: TooltipPosition;
     style?: TooltipStyle;
-    formatter?: (data: any) => string  }
+    formatter?: (data: any) => string  };
 }
 
-export interface TooltipStyle { background: string;
-    color: string;
-    border: string;
-    borderRadius: number;
-    padding: number;
-    fontSize: number;
+export interface TooltipStyle { background: string,
+    color: string,
+    border: string,
+    borderRadius: number,
+    padding: number,
+    fontSize: number,
     fontFamily: string;
     shadow?: string;
-
-export interface LayoutConfig { type: LayoutType;
+    export interface LayoutConfig { type: LayoutType;
     columns?: number;
     rows?: number;
     gap?: number;
     responsive?: boolean;
-
-export interface ChartArea { x: number;
-    y: number;
-    width: number;
+    export interface ChartArea { x: number,
+    y: number,
+    width: number,
     height: number;
-
-export interface ChartScales { xScale: number;
-    yScale: number;
-    xMin: number;
-    xMax: number;
-    yMin: number;
+    export interface ChartScales { xScale: number,
+    yScale: number,
+    xMin: number,
+    xMax: number,
+    yMin: number,
     yMax: number;
     xRange?: number;
     yRange?: number;
-
-export interface AnimationFrame { id: string;
-    progress: number;
-    duration: number;
-    startTime: number;
-    easing: EasingFunction;
+    export interface AnimationFrame { id: string,
+    progress: number,
+    duration: number,
+    startTime: number,
+    easing: EasingFunction,
     update: (progress: number) => void;
-    complete?: () => void  }
+    complete?: () => void  };
 }
 
 export interface ActiveInteraction { type: InteractionType;
@@ -141,97 +129,87 @@ export interface ActiveInteraction { type: InteractionType;
     data?: any;
     startTime: number;
     position?: InteractionPosition;
-
-export interface InteractionPosition { x: number;
-    y: number;
-    clientX: number;
+    export interface InteractionPosition { x: number,
+    y: number,
+    clientX: number,
     clientY: number;
-
-export interface LayoutArea { x: number;
-    y: number;
-    width: number;
-    height: number;
+    export interface LayoutArea { x: number,
+    y: number,
+    width: number,
+    height: number,
     index: number;
-
-export interface LayoutResult { areas: LayoutArea[];
-    totalArea: ChartArea;
-    columns: number;
+    export interface LayoutResult { areas: LayoutArea[],
+    totalArea: ChartArea,
+    columns: number,
     rows: number;
-
-export interface AreaChartData { x: number;
+    export interface AreaChartData { x: number,
     value: number;
     label?: string;
     color?: string;
     series?: string;
-
-export interface AreaData { path: AreaChartData[];
-    gradient: CanvasGradient;
-    color: string;
+    export interface AreaData { path: AreaChartData[],
+    gradient: CanvasGradient,
+    color: string,
     opacity: number;
-
-export interface ScatterChartData { x: number;
+    export interface ScatterChartData { x: number,
     y: number;
     size?: number;
     label?: string;
     color?: string;
     series?: string;
-
-export interface ScatterPoint { x: number;
-    y: number;
-    radius: number;
-    dataX: number;
+    export interface ScatterPoint { x: number,
+    y: number,
+    radius: number,
+    dataX: number,
     dataY: number;
     label?: string;
     color: string;
-
-export interface ProgressData { value: number;
+    export interface ProgressData { value: number,
     max: number;
     label?: string;
     color?: string;
-
-export interface ProgressBarData { x: number;
-    y: number;
-    width: number;
-    height: number;
-    progressWidth: number;
-    value: number;
-    max: number;
-    percentage: number;
+    export interface ProgressBarData { x: number,
+    y: number,
+    width: number,
+    height: number,
+    progressWidth: number,
+    value: number,
+    max: number,
+    percentage: number,
     color: string;
-
-export interface RenderPerformance { renderTime: number;
+    export interface RenderPerformance { renderTime: number;
     animationFrames?: number;
     interactionEvents?: number;
     memoryUsage?: number;
 
 // 列挙型
 export type ChartType = 'bar' | 'line' | 'pie' | 'area' | 'scatter' | 'progress' | 'bubble';
-export type EasingFunction = 'linear' | 'ease' | 'ease-in' | 'ease-out' | 'ease-in-out' | 'bounce' | 'elastic';
-export type InteractionType = 'hover' | 'click' | 'drag' | 'zoom' | 'pan';
-export type TooltipPosition = 'top' | 'bottom' | 'left' | 'right' | 'follow' | 'fixed';
-export type LayoutType = 'grid' | 'flex' | 'stack' | 'float' | 'absolute';
+    export type EasingFunction = 'linear' | 'ease' | 'ease-in' | 'ease-out' | 'ease-in-out' | 'bounce' | 'elastic';
+    export type InteractionType = 'hover' | 'click' | 'drag' | 'zoom' | 'pan';
+    export type TooltipPosition = 'top' | 'bottom' | 'left' | 'right' | 'follow' | 'fixed';
+    export type LayoutType = 'grid' | 'flex' | 'stack' | 'float' | 'absolute';
 
 // 定数
-export const DEFAULT_ANIMATION_CONFIG: AnimationConfig = { enabled: true;
-    duration: 1000;
-    easing: 'ease-out';
-    staggerDelay: 50;
+export const DEFAULT_ANIMATION_CONFIG: AnimationConfig = { enabled: true,
+    duration: 1000,
+    easing: 'ease-out,
+    staggerDelay: 50,
     loop: false, as const;
-export const DEFAULT_INTERACTION_CONFIG: InteractionConfig = { hover: {'
-        enabled: true;
-        cursor: 'pointer';
-    scale: 1.1  };
-    click: { enabled: true;
-    selectMultiple: false;
+    export const DEFAULT_INTERACTION_CONFIG: InteractionConfig = { hover: {'
+        enabled: true,
+    cursor: 'pointer,
+    scale: 1.1  } };
+    click: { enabled: true,
+    selectMultiple: false  ,
     tooltip: { enabled: true,''
-        position: 'follow';
-        style: {''
-            background: 'rgba(0, 0, 0, 0.8)',
-            color: '#FFFFFF';
-            border: 'none';
-            borderRadius: 4;
-    padding: 8;
-            fontSize: 12;
+        position: 'follow'  ,
+        style: { ''
+            background: 'rgba(0, 0, 0, 0.8)'  },
+            color: '#FFFFFF,
+            border: 'none,
+            borderRadius: 4,
+    padding: 8,
+            fontSize: 12,
             fontFamily: 'Arial, sans-serif' }
 } as const;
 ';'
@@ -240,54 +218,54 @@ export const EASING_FUNCTIONS: Record<EasingFunction, (t: number) => number> = {
     ease: (t) => t * t * (3 - 2 * t','
     'ease-in': (t') => t * t,'
     'ease-out': (t) => t * (2 - t','
-    'ease-in-out': (t) => t < 0.5 ? 2 * t * t: -1 + (4 - 2 * t) * t;
+    'ease-in-out': (t) => t < 0.5 ? 2 * t * t: -1 + (4 - 2 * t) * t,
     bounce: (t) => { 
         if (t < 0.36) return 7.5625 * t * t,
         if (t < 0.73) return 7.5625 * (t -= 0.545) * t + 0.75,
-        if (t < 0.91) return 7.5625 * (t -= 0.818) * t + 0.9375,  }
+        if (t < 0.91) return 7.5625 * (t -= 0.818) * t + 0.9375 };
         return 7.5625 * (t -= 0.955) * t + 0.984375;,
     elastic: (t) => t === 0 || t === 1 ? t : -Math.pow(2, 10 * (t - 1) * Math.sin((t - 1.1) * 5 * Math.PI);
 } as const;
 
-export const LAYOUT_DEFAULTS = { GRID_COLUMNS: 2;
-    GRID_GAP: 10;
-    MIN_CHART_SIZE: 100;
+export const LAYOUT_DEFAULTS = { GRID_COLUMNS: 2,
+    GRID_GAP: 10,
+    MIN_CHART_SIZE: 100,
     ASPECT_RATIO: 16 / 9  } as const;
-export const AREA_CONFIG = { DEFAULT_OPACITY: 0.6;
-    LINE_WIDTH: 2;
+export const AREA_CONFIG = { DEFAULT_OPACITY: 0.6,
+    LINE_WIDTH: 2,
     GRADIENT_STOPS: [0, 1] } as const;
 
-export const SCATTER_CONFIG = { DEFAULT_RADIUS: 5;
-    MIN_RADIUS: 2;
-    MAX_RADIUS: 20;
+export const SCATTER_CONFIG = { DEFAULT_RADIUS: 5,
+    MIN_RADIUS: 2,
+    MAX_RADIUS: 20,
     BORDER_WIDTH: 1  } as const;
-export const PROGRESS_CONFIG = { DEFAULT_HEIGHT: 30;
-    DEFAULT_SPACING: 10;
-    MIN_VALUE: 0;
+export const PROGRESS_CONFIG = { DEFAULT_HEIGHT: 30,
+    DEFAULT_SPACING: 10,
+    MIN_VALUE: 0,
     MAX_VALUE: 100  } as const;
 // ユーティリティ関数
-export function interpolate(start: number, end: number, progress: number): number { return start + (end - start) * progress }
+export function interpolate(start: number, end: number, progress: number): number { return start + (end - start) * progress };
 ';'
 
 export function clamp(value: number, min: number, max: number): number {;
     return Math.min(Math.max(value, min), max') }'
 
 export function generateGradient(context: CanvasRenderingContext2D, area: ChartArea, colors: string[], direction: 'horizontal' | 'vertical' = 'vertical'): CanvasGradient {;
-    const gradient = direction === 'horizontal',
+    const gradient = direction === 'horizontal,
         ? context.createLinearGradient(area.x, 0, area.x + area.width, 0);
         : context.createLinearGradient(0, area.y, 0, area.y + area.height);
-    colors.forEach((color, index) => {  }
+    colors.forEach((color, index) => {  };
         gradient.addColorStop(index / (colors.length - 1), color); }
     };
-    
+
     return gradient;
 }
 
-export function calculateGridLayout(chartCount: number, maxColumns: number = 4): { columns: number,, rows: number; { const columns = Math.min(Math.ceil(Math.sqrt(chartCount), maxColumns),
-    const rows = Math.ceil(chartCount / columns) }
-    return { columns, rows }
+export function calculateGridLayout(chartCount: number, maxColumns: number = 4): { columns: number, rows: number; { const columns = Math.min(Math.ceil(Math.sqrt(chartCount), maxColumns),
+    const rows = Math.ceil(chartCount / columns) };
+    return { columns, rows } };
 
-export function formatPercentage(value: number, max: number, decimals: number = 1): string { const percentage = (value / max) * 100 }
+export function formatPercentage(value: number, max: number, decimals: number = 1): string { const percentage = (value / max) * 100 };
     return `${percentage.toFixed(decimals}%`;
 }
 
@@ -302,7 +280,7 @@ export class ChartAnimationEngine {
 
         this.animations = new Map();
         this.isAnimating = false
-}
+};
         this.animationFrameId = null; }
     }
 
@@ -314,24 +292,24 @@ export class ChartAnimationEngine {
             
             if (!animationConfig.enabled) {
             
-                const result = renderer.render(context, data, options) }
+                const result = renderer.render(context, data, options);
                 resolve(result); }
                 return; }
             }
             
-            const animationId = `chart_${Date.now())`,
+            const animationId = `chart_${Date.now()),
             const startTime = performance.now();
             const animationFrame: AnimationFrame = { id: animationId,
                 progress: 0,
-    duration: animationConfig.duration,
+    duration: animationConfig.duration;
                 startTime,
                 easing: animationConfig.easing,
     update: (progress) => { 
                     // データのアニメーション補間
-                    const animatedData = this.interpolateData(data, progress, animationConfig) }
+                    const animatedData = this.interpolateData(data, progress, animationConfig);
                     renderer.render(context, animatedData, options); }
                 },
-                complete: () => {  const finalResult = renderer.render(context, data, options) }
+                complete: () => {  const finalResult = renderer.render(context, data, options);
                     resolve(finalResult); }
 };
             
@@ -352,10 +330,8 @@ export class ChartAnimationEngine {
                 return item * easedProgress;
             
             return { ...item };
-                value: (item.value || 0) * interpolate(0, 1, adjustedProgress); }
-            };
-    }
-
+                value: (item.value || 0) * interpolate(0, 1, adjustedProgress);     }
+}
     /**
      * アニメーションループの開始
      */
@@ -375,7 +351,7 @@ export class ChartAnimationEngine {
                     frame.progress = progress }
                     frame.update(progress); }
                     hasActiveAnimations = true; }
-                } else {  frame.complete?.() }
+                } else {  frame.complete?.();
                     this.animations.delete(id); }
 }
             
@@ -391,7 +367,7 @@ export class ChartAnimationEngine {
      */ : undefined
     stopAllAnimations(): void { this.animations.clear();
         if (this.animationFrameId) {
-            cancelAnimationFrame(this.animationFrameId) }
+            cancelAnimationFrame(this.animationFrameId);
             this.animationFrameId = null; }
         }
         this.isAnimating = false;
@@ -400,7 +376,7 @@ export class ChartAnimationEngine {
     /**
      * リソースの解放
      */
-    dispose(): void { this.stopAllAnimations() }
+    dispose(): void { this.stopAllAnimations();
 
 /**
  * チャートインタラクションマネージャー
@@ -413,7 +389,7 @@ export class ChartInteractionManager {
     constructor() {
 
         this.activeInteractions = new Map();
-        this.tooltipElement = null }
+        this.tooltipElement = null };
         this.eventListeners = new Map(); }
     }
 
@@ -430,17 +406,17 @@ export class ChartInteractionManager {
         }
         
         // ホバーエフェクトの設定
-        if (interactionConfig.hover.enabled) { this.setupHoverEffects(canvas, renderResult, interactionConfig.hover) }
+        if (interactionConfig.hover.enabled) { this.setupHoverEffects(canvas, renderResult, interactionConfig.hover);
         
         // クリックイベントの設定
-        if (interactionConfig.click.enabled) { this.setupClickEvents(canvas, renderResult, interactionConfig.click) }
+        if (interactionConfig.click.enabled) { this.setupClickEvents(canvas, renderResult, interactionConfig.click);
     }
 
     /**
      * ツールチップの設定
      */
     setupTooltips(canvas: HTMLCanvasElement, renderResult: ChartRenderResult, config: TooltipConfig): void { if (!this.tooltipElement) {
-            this.createTooltipElement(config.style || DEFAULT_INTERACTION_CONFIG.tooltip.style) }
+            this.createTooltipElement(config.style || DEFAULT_INTERACTION_CONFIG.tooltip.style);
         
         const mouseMoveHandler = (event: MouseEvent) => {  const rect = canvas.getBoundingClientRect();
             const x = event.clientX - rect.left,
@@ -449,7 +425,7 @@ export class ChartInteractionManager {
             const dataPoint = this.getDataPointAtPosition(x, y, renderResult);
             if (dataPoint) { }
                 this.showTooltip(event, dataPoint, config); }
-            } else { this.hideTooltip() }
+            } else { this.hideTooltip();
         };
         ';'
 
@@ -502,7 +478,7 @@ export class ChartInteractionManager {
      */
     private getDataPointAtPosition(x: number, y: number, renderResult: ChartRenderResult): any { // 実装は chartType に依存
         if (renderResult.points) {
-            return renderResult.points.find(point => { ) }
+            return renderResult.points.find(point => { );
                 const distance = Math.sqrt(Math.pow(x - point.x, 2) + Math.pow(y - point.y, 2); }
                 return distance <= point.radius;
         }
@@ -511,7 +487,7 @@ export class ChartInteractionManager {
         
             return renderResult.bars.find(bar => {
             });
-                return x >= bar.x && x <= bar.x + bar.width &&) }
+                return x >= bar.x && x <= bar.x + bar.width &&);
                        y >= bar.y && y <= bar.y + bar.height);
         
         return null;
@@ -522,7 +498,7 @@ export class ChartInteractionManager {
      */''
     private createTooltipElement(style: TooltipStyle): void { ''
         this.tooltipElement = document.createElement('div');
-        this.tooltipElement.style.cssText = `,
+        this.tooltipElement.style.cssText = ,
             position: absolute,
             background: ${style.background},
             color: ${style.color},
@@ -602,7 +578,7 @@ export class ChartInteractionManager {
      * イベントリスナーの追加
      */
     private addEventListener(element: HTMLElement, type: string, listener: EventListener): void { if (!this.eventListeners.has(element) {
-            this.eventListeners.set(element, new Map() }
+            this.eventListeners.set(element, new Map();
         
         const elementListeners = this.eventListeners.get(element)!;
         elementListeners.set(type, listener);
@@ -622,7 +598,7 @@ export class ChartInteractionManager {
         
         // ツールチップ要素の削除
         if (this.tooltipElement && this.tooltipElement.parentNode) {
-            this.tooltipElement.parentNode.removeChild(this.tooltipElement) }
+            this.tooltipElement.parentNode.removeChild(this.tooltipElement);
             this.tooltipElement = null; }
         }
 
@@ -694,8 +670,7 @@ export class ChartInteractionManager {
         return { areas }
             totalArea: { x: 0, y: 0, width, height },
             columns: chartCount,
-    rows: 1,
-        } }
+    rows: 1 } }
 
     /**
      * スタックレイアウトの計算
@@ -718,10 +693,8 @@ export class ChartInteractionManager {
         return { areas }
             totalArea: { x: 0, y: 0, width, height },
             columns: 1,
-    rows: chartCount,
-        } }
+    rows: chartCount     }
 }
-
 /**
  * エリアグラフレンダラー
  */
@@ -735,44 +708,43 @@ export class AreaChartRenderer implements ChartRenderer { render(context: ChartC
             // 軸の描画
             if (options.showAxes) {
     
-}
+};
                 this.renderAxes(context, chartArea, scales, options); }
             }
             
             // グリッドの描画
-            if (options.showGrid) { this.renderGrid(context, chartArea, scales, options) }
+            if (options.showGrid) { this.renderGrid(context, chartArea, scales, options);
             ;
             // エリアの描画
             const areas = this.renderAreas(context, processedData, chartArea, scales, options);
             ';'
 
             return { ''
-                type: 'area';
-                dataPoints: processedData.length;
-                yMin: scales.yMin;
-                yMax: scales.yMax;
-                xMin: scales.xMin;
+                type: 'area,
+                dataPoints: processedData.length,
+                yMin: scales.yMin,
+                yMax: scales.yMax,
+                xMin: scales.xMin,
     xMax: scales.xMax;
                 areas,
                 chartArea };
                 scales }
-            } catch (error) {
+        } catch (error) {
             console.error('Area chart rendering failed:', error','
 
             return { ''
                 type: 'area'
             };
                 dataPoints: 0 }
-                chartArea: { x: 0, y: 0, width: 0, height: 0  },
+                chartArea: { x: 0, y: 0, width: 0, height: 0  ,
                 areas: [],
     error: (error, as Error).message ;
-            } }
-    }
-
+                }
+}
     private calculateChartArea(canvas: HTMLCanvasElement, options: ChartOptions): ChartArea { const padding = options.padding || 20,
         return { x: padding,
             y: padding,
-    width: canvas.width - (padding * 2) },
+    width: canvas.width - (padding * 2) ,
             height: canvas.height - (padding * 2); 
     }
 ';'
@@ -796,7 +768,7 @@ export class AreaChartRenderer implements ChartRenderer { render(context: ChartC
             xMax,
             yMin,
             yMax,
-            xRange: xMax - xMin },
+            xRange: xMax - xMin ,
             yRange: yMax - yMin 
     }
 
@@ -812,10 +784,10 @@ export class AreaChartRenderer implements ChartRenderer { render(context: ChartC
         context.beginPath();
         context.moveTo(chartArea.x, chartArea.y + chartArea.height);
         context.lineTo(chartArea.x + chartArea.width, chartArea.y + chartArea.height);
-        context.stroke() }
+        context.stroke();
 
     private renderGrid(context: ChartContext, chartArea: ChartArea, scales: ChartScales, options: ChartOptions): void { ''
-        context.strokeStyle = '#E5E7EB',
+        context.strokeStyle = '#E5E7EB,
         context.lineWidth = 0.5,
         
         // 水平グリッド線
@@ -824,7 +796,7 @@ export class AreaChartRenderer implements ChartRenderer { render(context: ChartC
             const y = chartArea.y + (chartArea.height / ySteps) * i,
             context.beginPath();
             context.moveTo(chartArea.x, y);
-            context.lineTo(chartArea.x + chartArea.width, y) }
+            context.lineTo(chartArea.x + chartArea.width, y);
             context.stroke(); }
 }
 
@@ -879,44 +851,43 @@ export class ScatterChartRenderer implements ChartRenderer { render(context: Cha
             // 軸の描画
             if (options.showAxes) {
     
-}
+};
                 this.renderAxes(context, chartArea, scales, options); }
             }
             
             // グリッドの描画
-            if (options.showGrid) { this.renderGrid(context, chartArea, scales, options) }
+            if (options.showGrid) { this.renderGrid(context, chartArea, scales, options);
             ;
             // 散布点の描画
             const points = this.renderPoints(context, processedData, chartArea, scales, options);
             ';'
 
             return { ''
-                type: 'scatter';
-                dataPoints: processedData.length;
-                xMin: scales.xMin;
-                xMax: scales.xMax;
-                yMin: scales.yMin;
+                type: 'scatter,
+                dataPoints: processedData.length,
+                xMin: scales.xMin,
+                xMax: scales.xMax,
+                yMin: scales.yMin,
     yMax: scales.yMax;
                 points,
                 chartArea };
                 scales }
-            } catch (error) {
+        } catch (error) {
             console.error('Scatter chart rendering failed:', error','
 
             return { ''
                 type: 'scatter'
             };
                 dataPoints: 0 }
-                chartArea: { x: 0, y: 0, width: 0, height: 0  },
+                chartArea: { x: 0, y: 0, width: 0, height: 0  ,
                 points: [],
     error: (error, as Error).message ;
-            } }
-    }
-
+                }
+}
     private calculateChartArea(canvas: HTMLCanvasElement, options: ChartOptions): ChartArea { const padding = options.padding || 20,
         return { x: padding,
             y: padding,
-    width: canvas.width - (padding * 2) },
+    width: canvas.width - (padding * 2) ,
             height: canvas.height - (padding * 2); 
     }
 ';'
@@ -930,9 +901,9 @@ export class ScatterChartRenderer implements ChartRenderer { render(context: Cha
                 y: item.y ? ? 0, : undefined
                 size: clamp(item.size ? ? SCATTER_CONFIG.DEFAULT_RADIUS, SCATTER_CONFIG.MIN_RADIUS, SCATTER_CONFIG.MAX_RADIUS), : undefined
                 label: item.label,
-    color: item.color },
+    color: item.color ,
                 series: item.series 
-    };
+    }
     }
 
     private calculateScales(data: ScatterChartData[], chartArea: ChartArea): ChartScales { const xValues = data.map(d => d.x);
@@ -947,7 +918,7 @@ export class ScatterChartRenderer implements ChartRenderer { render(context: Cha
             xMax,
             yMin,
             yMax,
-            xRange: xMax - xMin },
+            xRange: xMax - xMin ,
             yRange: yMax - yMin 
     }
 
@@ -963,10 +934,10 @@ export class ScatterChartRenderer implements ChartRenderer { render(context: Cha
         context.beginPath();
         context.moveTo(chartArea.x, chartArea.y + chartArea.height);
         context.lineTo(chartArea.x + chartArea.width, chartArea.y + chartArea.height);
-        context.stroke() }
+        context.stroke();
 
     private renderGrid(context: ChartContext, chartArea: ChartArea, scales: ChartScales, options: ChartOptions): void { ''
-        context.strokeStyle = '#E5E7EB',
+        context.strokeStyle = '#E5E7EB,
         context.lineWidth = 0.5,
         
         const gridSteps = 5,
@@ -976,7 +947,7 @@ export class ScatterChartRenderer implements ChartRenderer { render(context: Cha
             const y = chartArea.y + (chartArea.height / gridSteps) * i,
             context.beginPath();
             context.moveTo(chartArea.x, y);
-            context.lineTo(chartArea.x + chartArea.width, y) }
+            context.lineTo(chartArea.x + chartArea.width, y);
             context.stroke(); }
         }
         
@@ -985,7 +956,7 @@ export class ScatterChartRenderer implements ChartRenderer { render(context: Cha
             const x = chartArea.x + (chartArea.width / gridSteps) * i,
             context.beginPath();
             context.moveTo(x, chartArea.y);
-            context.lineTo(x, chartArea.y + chartArea.height) }
+            context.lineTo(x, chartArea.y + chartArea.height);
             context.stroke(); }
 }
 
@@ -1001,7 +972,7 @@ export class ScatterChartRenderer implements ChartRenderer { render(context: Cha
             context.fillStyle = color,
             context.beginPath();
             context.arc(x, y, radius, 0, 2 * Math.PI);
-            context.fill('',
+            context.fill(',
             context.strokeStyle = '#FFFFFF')
             context.lineWidth = SCATTER_CONFIG.BORDER_WIDTH)
             context.stroke();
@@ -1011,7 +982,7 @@ export class ScatterChartRenderer implements ChartRenderer { render(context: Cha
                 radius,
                 dataX: item.x),
                 dataY: item.y,
-    label: item.label) }
+    label: item.label);
                 color }
         };
         
@@ -1031,27 +1002,26 @@ export class ProgressBarRenderer implements ChartRenderer { render(context: Char
             ','
 
             return { ''
-                type: 'progress';
+                type: 'progress,
     dataPoints: processedData.length;
                 bars };
                 chartArea }
-            } catch (error) {
+        } catch (error) {
             console.error('Progress bar rendering failed:', error','
 
             return { ''
                 type: 'progress'
             };
                 dataPoints: 0 }
-                chartArea: { x: 0, y: 0, width: 0, height: 0  };
-                bars: [];
+                chartArea: { x: 0, y: 0, width: 0, height: 0  ,
+                bars: [],
     error: (error, as Error).message ;
-            } }
-    }
-
+                }
+}
     private calculateChartArea(canvas: HTMLCanvasElement, options: ChartOptions): ChartArea { const padding = options.padding || 20,
         return { x: padding,
             y: padding,
-    width: canvas.width - (padding * 2) },
+    width: canvas.width - (padding * 2) ,
             height: canvas.height - (padding * 2); 
     }
 ';'
@@ -1060,15 +1030,13 @@ export class ProgressBarRenderer implements ChartRenderer { render(context: Char
         return data.map((item, index) => { ''
             if(typeof, item === 'number' { }'
                 return {  };
-                    value: clamp(item, PROGRESS_CONFIG.MIN_VALUE, PROGRESS_CONFIG.MAX_VALUE) }
-                    label: `Progress ${index + 1}`,
-                    max: PROGRESS_CONFIG.MAX_VALUE,
-                } }
+                    value: clamp(item, PROGRESS_CONFIG.MIN_VALUE, PROGRESS_CONFIG.MAX_VALUE);
+                    label: `Progress ${index + 1},
+                    max: PROGRESS_CONFIG.MAX_VALUE } }
             return { value: clamp(item.value, PROGRESS_CONFIG.MIN_VALUE, item.max || PROGRESS_CONFIG.MAX_VALUE) };
                 max: item.max || PROGRESS_CONFIG.MAX_VALUE }
-                label: item.label || `Progress ${index + 1}`,
-                color: item.color,
-            } }
+                label: item.label || `Progress ${index + 1},
+                color: item.color } }
 
     private renderProgressBars(context: ChartContext, data: ProgressData[], chartArea: ChartArea, options: ChartOptions): ProgressBarData[] { const barHeight = PROGRESS_CONFIG.DEFAULT_HEIGHT,
         const barSpacing = PROGRESS_CONFIG.DEFAULT_SPACING,
@@ -1082,7 +1050,7 @@ export class ProgressBarRenderer implements ChartRenderer { render(context: Char
             const color = item.color || options.theme.palette[index % options.theme.palette.length],
             ','
             // 背景バー
-            context.fillStyle = '#E5E7EB',
+            context.fillStyle = '#E5E7EB,
             context.fillRect(chartArea.x, y, chartArea.width, barHeight);
             // プログレスバー
             context.fillStyle = color,
@@ -1098,7 +1066,7 @@ export class ProgressBarRenderer implements ChartRenderer { render(context: Char
             context.textAlign = 'left';
             
             // ラベル
-            if (item.label) { context.fillText(item.label, chartArea.x, y - 5) }
+            if (item.label) { context.fillText(item.label, chartArea.x, y - 5);
             ;
             // パーセンテージ
             const percentage = formatPercentage(item.value, item.max);
@@ -1110,7 +1078,7 @@ export class ProgressBarRenderer implements ChartRenderer { render(context: Char
                 width: chartArea.width,
                 height: barHeight),
                 progressWidth)','
-               , value: item.value,')',
+               , value: item.value,'),
                 max: item.max','
                 percentage: parseFloat(percentage.replace('%', '),'
                 color }

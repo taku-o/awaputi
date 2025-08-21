@@ -7,25 +7,21 @@ import { StatisticsFilterUI  } from './StatisticsFilterUI.js';
 import { StatisticsRenderer  } from './StatisticsRenderer.js';
 import { StatisticsDashboardRenderer  } from './StatisticsDashboardRenderer.js';
 
-interface StatisticsDisplaySettings { showDashboard: boolean;
-    showCharts: boolean;
-    showDetailedStats: boolean;
-    enableAnimations: boolean;
+interface StatisticsDisplaySettings { showDashboard: boolean,
+    showCharts: boolean,
+    showDetailedStats: boolean,
+    enableAnimations: boolean,
     compactMode: boolean;
-
-interface GameEngine { statisticsManager?: {
+    interface GameEngine { statisticsManager?: {
         getDetailedStatistics(period: string): Promise<any>;
     errorHandler?: { handleError(error: Error, context: any): void;
-
-interface EventBus { on(event: string, callback: Function): void;
-
+    interface EventBus { on(event: string, callback: Function): void;
     off(event: string): void;
     emit(event: string, data?: any): void;
-
-interface StatisticsState { accessibilitySettings?: {
-        highContras,t: boolean;
-        largeText: boolean;
-    reducedMotion: boolean;
+    interface StatisticsState { accessibilitySettings?: {
+        highContras,t: boolean,
+        largeText: boolean,
+    reducedMotion: boolean,
     reducedMotion: boolean;
         };
 type StatisticsViewMode = 'dashboard' | 'charts' | 'details';
@@ -48,11 +44,11 @@ export class StatisticsTab extends TabComponent { // 統計表示設定
         super(gameEngine, eventBus, state);
         
         this.statisticsDisplaySettings = {
-            showDashboard: true;
-            showCharts: true;
-            showDetailedStats: true;
-    enableAnimations: true;
-            compactMode: false;
+            showDashboard: true,
+            showCharts: true,
+            showDetailedStats: true,
+    enableAnimations: true,
+            compactMode: false,
             compactMode: false;
         };
     /**
@@ -84,7 +80,7 @@ export class StatisticsTab extends TabComponent { // 統計表示設定
      */''
     private setupEventListeners()';'
         this.eventBus.on('statistics-filter-changed', (filterData: { period: string ) => { 
-            this.currentPeriodFilter = filterData.period }
+            this.currentPeriodFilter = filterData.period } };
 
             this.loadStatisticsData();' }'
 
@@ -95,8 +91,7 @@ export class StatisticsTab extends TabComponent { // 統計表示設定
     }');'
         ';'
         // 統計データ更新イベント
-        this.eventBus.on('statistics-data-updated', (data: any) => { this.statisticsData = data }),
-    }
+        this.eventBus.on('statistics-data-updated', (data: any) => { this.statisticsData = data }) }
     
     /**
      * 統計データの読み込み
@@ -115,7 +110,7 @@ export class StatisticsTab extends TabComponent { // 統計表示設定
             this.eventBus.emit('statistics-data-updated', this.statisticsData);
 
         } catch (error) { this.errorHandler?.handleError(error as Error, { : undefined)'
-                context: 'StatisticsTab.loadStatisticsData',')',
+                context: 'StatisticsTab.loadStatisticsData,')',
                 details: '統計データの読み込みに失敗しました'
             };
             this.statisticsData = null;
@@ -131,7 +126,7 @@ export class StatisticsTab extends TabComponent { // 統計表示設定
      * @param height - 描画高さ
      */
     render(context: CanvasRenderingContext2D, x: number, y: number, width: number, height: number): void { try {
-            this.renderStatistics(context, x, y, width, height) }
+            this.renderStatistics(context, x, y, width, height);
 
         } catch (error) { this.renderErrorFallback(context, x, y, width, height, error as Error);
             this.eventBus.emit('component-error', { ')'
@@ -153,7 +148,7 @@ export class StatisticsTab extends TabComponent { // 統計表示設定
         
         // 統計フィルターUIの描画
         if (this.filterUI) {
-            const filterHeight = this.filterUI.render(context, x + this.contentPadding, currentY, contentWidth) }
+            const filterHeight = this.filterUI.render(context, x + this.contentPadding, currentY, contentWidth);
             currentY += filterHeight + 10; }
         }
         
@@ -162,7 +157,7 @@ export class StatisticsTab extends TabComponent { // 統計表示設定
         
         if (!this.statisticsData) {
         
-            this.renderNoDataMessage(context, x, currentY, width, availableHeight) }
+            this.renderNoDataMessage(context, x, currentY, width, availableHeight);
             return; }
         }
         ;
@@ -182,7 +177,7 @@ export class StatisticsTab extends TabComponent { // 統計表示設定
 
                 break;
             case 'details':
-                if (this.statisticsRenderer) { this.statisticsRenderer.render(context, x + this.contentPadding, currentY + 20, contentWidth, availableHeight - 20) }
+                if (this.statisticsRenderer) { this.statisticsRenderer.render(context, x + this.contentPadding, currentY + 20, contentWidth, availableHeight - 20);
                 break;
         }
     }
@@ -196,13 +191,13 @@ export class StatisticsTab extends TabComponent { // 統計表示設定
      * @param height - 描画高さ'
      */''
     private renderNoDataMessage(context: CanvasRenderingContext2D, x: number, y: number, width: number, height: number): void { ''
-        context.fillStyle = this.accessibilitySettings.highContrast ? '#888888' : '#cccccc',
-        context.font = this.accessibilitySettings.largeText ? '24px Arial' : '20px Arial',
-        context.textAlign = 'center',
-        context.textBaseline = 'middle',
+        context.fillStyle = this.accessibilitySettings.highContrast ? '#888888' : '#cccccc,
+        context.font = this.accessibilitySettings.largeText ? '24px Arial' : '20px Arial,
+        context.textAlign = 'center,
+        context.textBaseline = 'middle,
 
-        const message = 'まだ記録がありません',
-        context.fillText(message, x + width / 2, y + height / 2) }
+        const message = 'まだ記録がありません,
+        context.fillText(message, x + width / 2, y + height / 2);
     
     /**
      * 統計チャートの描画（暫定実装）
@@ -214,15 +209,15 @@ export class StatisticsTab extends TabComponent { // 統計表示設定
      */''
     private renderStatisticsCharts(context: CanvasRenderingContext2D, x: number, y: number, width: number, height: number): void { // チャート描画の暫定実装
         // TODO: 後続のコンポーネント抽出で詳細実装
-        context.fillStyle = this.accessibilitySettings.highContrast ? '#444444' : '#f0f0f0',
+        context.fillStyle = this.accessibilitySettings.highContrast ? '#444444' : '#f0f0f0,
         context.fillRect(x, y, width, height);
-        context.fillStyle = this.accessibilitySettings.highContrast ? '#FFFFFF' : '#333333',
-        context.font = this.accessibilitySettings.largeText ? '18px Arial' : '16px Arial',
-        context.textAlign = 'center',
-        context.textBaseline = 'middle',
+        context.fillStyle = this.accessibilitySettings.highContrast ? '#FFFFFF' : '#333333,
+        context.font = this.accessibilitySettings.largeText ? '18px Arial' : '16px Arial,
+        context.textAlign = 'center,
+        context.textBaseline = 'middle,
 
-        const message = 'チャート表示機能は開発中です',
-        context.fillText(message, x + width / 2, y + height / 2) }
+        const message = 'チャート表示機能は開発中です,
+        context.fillText(message, x + width / 2, y + height / 2);
     
     /**
      * クリックイベント処理
@@ -269,13 +264,13 @@ export class StatisticsTab extends TabComponent { // 統計表示設定
                 this.filterUI.update(deltaTime); }
             }
             
-            if (this.dashboardRenderer && this.dashboardRenderer.update) { this.dashboardRenderer.update(deltaTime) }
+            if (this.dashboardRenderer && this.dashboardRenderer.update) { this.dashboardRenderer.update(deltaTime);
             ';'
 
             if (this.statisticsRenderer && this.statisticsRenderer.update) { this.statisticsRenderer.update(deltaTime),' }'
 
             } catch (error) { this.errorHandler?.handleError(error as Error, { : undefined)'
-                context: 'StatisticsTab.update',')',
+                context: 'StatisticsTab.update,')',
                 details: 'StatisticsTab更新処理でエラーが発生しました'
             }';'
         }
@@ -286,11 +281,11 @@ export class StatisticsTab extends TabComponent { // 統計表示設定
      * @param screenWidth - 画面幅
      * @returns レイアウト設定
      */'
-    getResponsiveLayout(screenWidth: number): { columns: number,, fontSize: string; { ''
+    getResponsiveLayout(screenWidth: number): { columns: number, fontSize: string; { ''
         if (screenWidth < 600) { }'
 
             return { columns: 1, fontSize: 'small'
-            }'} else if (screenWidth < 800) { }'
+            }'} else if (screenWidth < 800) { }' };
 
             return { columns: 2, fontSize: 'medium'
             }
@@ -334,7 +329,7 @@ export class StatisticsTab extends TabComponent { // 統計表示設定
             this.filterUI.cleanup(); }
         }
         
-        if (this.statisticsRenderer && this.statisticsRenderer.cleanup) { this.statisticsRenderer.cleanup() }
+        if (this.statisticsRenderer && this.statisticsRenderer.cleanup) { this.statisticsRenderer.cleanup();
         
         if (this.dashboardRenderer && this.dashboardRenderer.cleanup) {
         ','

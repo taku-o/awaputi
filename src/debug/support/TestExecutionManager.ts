@@ -6,7 +6,7 @@
 export class TestExecutionManager {
     constructor(parent?: any) {
         // TypeScript implementation
-    }
+    };
         console.log('[TestExecutionManager] Initialized'); }'
     }
 

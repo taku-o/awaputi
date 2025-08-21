@@ -4,20 +4,19 @@
  */
 
 // Type definitions for error reporter system
-interface ErrorInfo { id: string;
-    context: string;
-    message: string;
+interface ErrorInfo { id: string,
+    context: string,
+    message: string,
     timestamp: string;
     name?: string;
     stack?: string;
     metadata?: Record<string, any>;
     recovered?: boolean;
-
-interface NotificationConfig { autoHide: boolean;
-    hideDelay: number;
-    maxConcurrentNotifications: number;
-    position: 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left' | 'top-center' | 'bottom-center';
-    showReloadButton: boolean;
+    interface NotificationConfig { autoHide: boolean,
+    hideDelay: number,
+    maxConcurrentNotifications: number,
+    position: 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left' | 'top-center' | 'bottom-center,
+    showReloadButton: boolean,
     showCloseButton: boolean;
 ';'
 
@@ -29,10 +28,8 @@ type NotificationAction = 'dismiss' | 'reload' | 'report';
 type SeverityLevel = 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW';
 
 interface SeverityConfig { [key: string]: string;
-
-interface PositionStyles { [key: string]: string;
-
-export class UtilsErrorReporter {
+    interface PositionStyles { [key: string]: string;
+    export class UtilsErrorReporter {
     private mainController: MainController;
     private notificationConfig: NotificationConfig;
     private activeNotifications: Set<HTMLElement>;
@@ -44,18 +41,17 @@ export class UtilsErrorReporter {
         
         // Notification configuration
         this.notificationConfig = {
-            autoHide: true;
+            autoHide: true,
     hideDelay: 10000, // 10 seconds;
-            maxConcurrentNotifications: 3;
-            position: 'top-right';
-    showReloadButton: true;
-            showCloseButton: true;
+    maxConcurrentNotifications: 3,
+    position: 'top-right,
+    showReloadButton: true,
+    showCloseButton: true;
         ';'
         // Active notifications tracking
         this.activeNotifications = new Set()';'
         console.log('[ErrorReporter] Error reporting component initialized');
-    }
-    
+    };
     /**
      * Notify user about error
      * @param errorInfo - Error information
@@ -99,7 +95,7 @@ export class UtilsErrorReporter {
      */
     private showErrorNotification(errorInfo: ErrorInfo): void { // Check notification limits
         if (this.activeNotifications.size >= this.notificationConfig.maxConcurrentNotifications) {
-            this.queueNotification(errorInfo) }
+            this.queueNotification(errorInfo);
             return; }
         }
         
@@ -125,7 +121,7 @@ export class UtilsErrorReporter {
      * @returns Notification element
      */''
     private createNotificationElement(errorInfo: ErrorInfo): HTMLElement { const notificationId = ++this.notificationId,
-        const notification = document.createElement('div') }
+        const notification = document.createElement('div');
 
         notification.id = `error-notification-${notificationId}`;
         notification.className = 'error-notification';
@@ -173,9 +169,9 @@ export class UtilsErrorReporter {
      * @returns Icon character or HTML'
      */''
     private getSeverityIcon(severity: string): string { const icons: SeverityConfig = {''
-            CRITICAL: '🚨',
-            HIGH: '⚠️',
-            MEDIUM: 'ℹ️',
+            CRITICAL: '🚨,
+            HIGH: '⚠️,
+            MEDIUM: 'ℹ️,
             LOW: '📝'
             };
         return icons[severity] || icons.MEDIUM;
@@ -187,9 +183,9 @@ export class UtilsErrorReporter {
      * @returns User-friendly title'
      */''
     private getSeverityTitle(severity: string): string { const titles: SeverityConfig = {''
-            CRITICAL: 'システムエラー',
-            HIGH: '重要なエラー',
-            MEDIUM: '警告',
+            CRITICAL: 'システムエラー,
+            HIGH: '重要なエラー,
+            MEDIUM: '警告,
             LOW: '情報'
             };
         return titles[severity] || titles.MEDIUM;
@@ -275,13 +271,13 @@ export class UtilsErrorReporter {
         const title = notification.querySelector('.error-notification-title' as HTMLElement;
         if (title) {', ' }
 
-            title.style.cssText = 'margin: 0; font-size: 16px; font-weight: 600; color: #333;, flex: 1;'; 
+            title.style.cssText = 'margin: 0; font-size: 16px; font-weight: 600, color: #333;, flex: 1;'; 
     }
         ';'
         // Close button styles
         const closeBtn = notification.querySelector('.error-notification-close' as HTMLElement;
         if (closeBtn) {
-            closeBtn.style.cssText = `,
+            closeBtn.style.cssText = ,
                 background: none,
     border: none,
                 font-size: 20px,
@@ -313,8 +309,8 @@ export class UtilsErrorReporter {
         // Button styles
         notification.querySelectorAll('.error-btn'.forEach(btn => {  ')'
             const button = btn as HTMLElement'),'
-            const isPrimary = button.classList.contains('error-btn-primary',
-            button.style.cssText = `,
+            const isPrimary = button.classList.contains('error-btn-primary,
+            button.style.cssText = ,
                 padding: 8px 16px,
     border: none,
                 border-radius: 4px,
@@ -337,7 +333,7 @@ export class UtilsErrorReporter {
      * @returns CSS position styles'
      */''
     private getPositionStyles('''
-            'top-right': 'top: 20px;, right: 20px;',', 'top-left': 'top: 20px;, left: 20px;',', 'bottom-right': 'bottom: 20px;, right: 20px;',', 'bottom-left': 'bottom: 20px,  left: 20px;',', 'top-center': 'top: 20px; left: 50%;, transform: translateX(-50%);',', 'bottom-center': 'bottom: 20px; left: 50%;, transform: translateX(-50%);
+            'top-right': 'top: 20px;, right: 20px;',', 'top-left': 'top: 20px;, left: 20px;',', 'bottom-right': 'bottom: 20px;, right: 20px;',', 'bottom-left': 'bottom: 20px,  left: 20px;',', 'top-center': 'top: 20px, left: 50%;, transform: translateX(-50%);',', 'bottom-center': 'bottom: 20px, left: 50%;, transform: translateX(-50%);
         };
 
         return positions[this.notificationConfig.position] || positions['top-right];'
@@ -349,9 +345,9 @@ export class UtilsErrorReporter {
      * @returns Color code'
      */''
     private getSeverityColor(severity: string): string { const colors: SeverityConfig = {''
-            CRITICAL: '#dc3545',
-            HIGH: '#fd7e14',
-            MEDIUM: '#ffc107',
+            CRITICAL: '#dc3545,
+            HIGH: '#fd7e14,
+            MEDIUM: '#ffc107,
             LOW: '#17a2b8'
             };
         return colors[severity] || colors.MEDIUM;
@@ -386,10 +382,8 @@ export class UtilsErrorReporter {
 
         notification.addEventListener('mouseleave', () => { }
 
-            notification.style.transform = 'translateX(0) scale(1)'; }
-        };
-    }
-    
+            notification.style.transform = 'translateX(0) scale(1)';     }
+}
     /**
      * Display notification with animation
      * @param notification - Notification element
@@ -429,20 +423,18 @@ export class UtilsErrorReporter {
             case 'reload':','
                 if(confirm('ページを再読み込みしますか？未保存の変更は失われる可能性があります。' {''
                     location.reload()','
-            case 'report':')',
+            case 'report':'),
                 this.showReportDialog(notification.dataset.errorId || '),'
                 break }
             default: }
-                console.warn(`[ErrorReporter] Unknown, action: ${action}`};
-        }
-    }
-    
+                console.warn(`[ErrorReporter] Unknown, action: ${action}`    }
+}
     /**
      * Show report dialog
      * @param errorId - Error ID
      */
     private showReportDialog(errorId: string): void { // Implementation for error reporting dialog }
-        console.log(`[ErrorReporter] Report, dialog for, error: ${errorId}`};
+        console.log(`[ErrorReporter] Report, dialog for, error: ${errorId}`}
     }
     
     /**
@@ -452,8 +444,8 @@ export class UtilsErrorReporter {
     private dismissNotification(notification: HTMLElement): void { ''
         if(!notification || !notification.parentNode) return,
 
-        notification.style.opacity = '0',
-        notification.style.transform = 'translateX(100%)',
+        notification.style.opacity = '0,
+        notification.style.transform = 'translateX(100%),
         
         setTimeout(() => { 
             if (notification.parentNode) { }
@@ -476,10 +468,8 @@ export class UtilsErrorReporter {
                 notification.style.top = `${20 + offset}px`;
             } else {  }
                 notification.style.bottom = `${20 + offset}px`;
-            }
-        };
-    }
-    
+                }
+}
     /**
      * Process queued notifications
      */
@@ -489,10 +479,8 @@ export class UtilsErrorReporter {
             if (errorInfo) {
     
 }
-                this.showErrorNotification(errorInfo); }
+                this.showErrorNotification(errorInfo);     }
 }
-    }
-    
     /**
      * Show fallback UI for compatibility issues'
      */''
@@ -572,7 +560,7 @@ export class UtilsErrorReporter {
     /**
      * Clear all active notifications
      */
-    clearAllNotifications(): void { this.activeNotifications.forEach(notification => { ) }
+    clearAllNotifications(): void { this.activeNotifications.forEach(notification => { );
             this.dismissNotification(notification); }
         };
         this.notificationQueue = [];
@@ -595,6 +583,6 @@ export class UtilsErrorReporter {
      */'
     destroy(): void { ''
         this.clearAllNotifications()','
-        console.log('[ErrorReporter] Reporter, destroyed') }
+        console.log('[ErrorReporter] Reporter, destroyed');
 
     }'}'

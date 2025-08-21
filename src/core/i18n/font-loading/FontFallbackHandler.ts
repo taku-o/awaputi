@@ -1,29 +1,25 @@
 // 型定義
 export interface FontFallbackConfig { development?: {
         verboseLoggin,g?: boolean;
-
-export interface FallbackInfo { language: string;
-    originalFont: string | null;
-    fallbackChain: string[];
+    export interface FallbackInfo { language: string,
+    originalFont: string | null,
+    fallbackChain: string[],
     appliedAt: number;
-
-export interface FallbackStats { totalApplied: number;
+    export interface FallbackStats { totalApplied: number,
     byLanguage: Record<string, number>;
-    systemFontsCount: number;
+    systemFontsCount: number,
     availableSystemFonts: string[];
-
-export class FontFallbackHandler {
+    export class FontFallbackHandler {
     private config: FontFallbackConfig;
     private, fallbackChains: Record<string, string[]>,
     private systemFonts: Set<string>;
     private appliedFallbacks: Map<HTMLElement, FallbackInfo>;
-
     constructor(config: FontFallbackConfig = {) {
 
         this.config = config;
-        this.fallbackChains = this._initializeFallbackChains();
-        this.systemFonts = this._detectSystemFonts()
-}
+    this.fallbackChains = this._initializeFallbackChains();
+    this.systemFonts = this._detectSystemFonts()
+};
         this.appliedFallbacks = new Map<HTMLElement, FallbackInfo>(); }
     }
 
@@ -43,10 +39,10 @@ export class FontFallbackHandler {
         const systemFonts = new Set<string>(),
 
         const testFonts = [','
-            'Arial', 'Helvetica', 'Times New Roman', 'Georgia', 'Verdana',
-            'Trebuchet MS', 'Courier New', 'Impact', 'Comic Sans MS',
-            'Hiragino Sans', 'Yu Gothic', 'Meiryo', 'MS Gothic',
-            'PingFang SC', 'Microsoft YaHei', 'SimHei',
+            'Arial, 'Helvetica', 'Times New Roman', 'Georgia', 'Verdana',
+            'Trebuchet MS, 'Courier New', 'Impact', 'Comic Sans MS',
+            'Hiragino Sans, 'Yu Gothic', 'Meiryo', 'MS Gothic',
+            'PingFang SC, 'Microsoft YaHei', 'SimHei',
             'PingFang TC', 'Microsoft JhengHei', 'PMingLiU',]','
             'Apple SD Gothic Neo', 'Malgun Gothic', 'Dotum'],
         ],
@@ -61,7 +57,7 @@ export class FontFallbackHandler {
 
     private _isFontAvailable(fontName: string): boolean { ''
         const canvas = document.createElement('canvas');
-        const context = canvas.getContext('2d',
+        const context = canvas.getContext('2d,
         if (!context) {
     
 }
@@ -85,7 +81,7 @@ export class FontFallbackHandler {
             if (font === 'sans-serif' || font === 'serif' || font === 'monospace) { }'
                 return true;
             return this.systemFonts.has(font);
-        };
+        }
     }
 
     applyFallback(element: HTMLElement, language: string, originalFont: string | null = null): boolean { if (!element) {
@@ -99,15 +95,15 @@ export class FontFallbackHandler {
         element.style.fontFamily = fontFamily;
         
         this.appliedFallbacks.set(element, { language: language)
-           , originalFont: originalFont),
+            originalFont: originalFont),
             fallbackChain: fallbackChain,
     appliedAt: Date.now(  };
         if (this.config.development?.verboseLogging) { : undefined 
-            console.log(`[FontFallbackHandler] Applied, fallback for ${language}: ${fontFamily}`};
+            console.log(`[FontFallbackHandler] Applied, fallback for ${language}: ${fontFamily}`}
         }
 
         return true;
-    }
+    } };
 
     applyFallbackToElements(selector: string, language: string, originalFont: string | null = null): number { const elements = document.querySelectorAll(selector);
         let appliedCount = 0,
@@ -146,13 +142,13 @@ export class FontFallbackHandler {
         fonts.forEach(font => { '),'
             if (font === 'sans-serif' || font === 'serif' || font === 'monospace) { }'
                 validFonts.push(font); }
-            } else if (this.systemFonts.has(font) { validFonts.push(font) }
+            } else if (this.systemFonts.has(font) { validFonts.push(font);
         };
 
         if (validFonts.length === 0) {
 ','
 
-            const fallback = this.getSystemFontForLanguage(language) }
+            const fallback = this.getSystemFontForLanguage(language);
 
             validFonts.push(fallback); }
         }
@@ -162,14 +158,14 @@ export class FontFallbackHandler {
 
     getFallbackInfo(element: HTMLElement): FallbackInfo | null { return this.appliedFallbacks.get(element) || null }
 
-    clearFallbackHistory(): void { this.appliedFallbacks.clear() }
+    clearFallbackHistory(): void { this.appliedFallbacks.clear();
 
     getStats(): FallbackStats { const stats: FallbackStats = {
             totalApplied: this.appliedFallbacks.size }
             byLanguage: {},
             systemFontsCount: this.systemFonts.size,
     availableSystemFonts: Array.from(this.systemFonts);
-        };
+    };
 
         for(const [element, info] of this.appliedFallbacks.entries() {
 

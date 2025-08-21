@@ -4,42 +4,33 @@
  */
 
 // 型定義
-interface Position { x: number;
+interface Position { x: number,
     y: number;
-
-interface Margins { top: number;
-    right: number;
-    bottom: number;
+    interface Margins { top: number,
+    right: number,
+    bottom: number,
     left: number;
-
-interface Breakpoints { mobile: number;
-    tablet: number;
+    interface Breakpoints { mobile: number,
+    tablet: number,
     desktop: number;
-
-interface CanvasInfo { baseWidth: number;
-    baseHeight: number;
-    displayWidth: number;
+    interface CanvasInfo { baseWidth: number,
+    baseHeight: number,
+    displayWidth: number,
     displayHeight: number;
-
-interface ScaledCoordinateManager { getCanvasInfo(): CanvasInfo;
-
-interface UIElement { type: string;
+    interface ScaledCoordinateManager { getCanvasInfo(): CanvasInfo;
+    interface UIElement { type: string,
     name: string;
     offset?: Position;
-
-interface Container { x?: number,
+    interface Container { x?: number,
     y?: number;
     width?: number;
     height?: number;
-
-interface LayoutResult { element: UIElement;
+    interface LayoutResult { element: UIElement,
     position: Position;
-
-type DeviceType = 'mobile' | 'tablet' | 'desktop';
-type StatusElement = 'score' | 'time' | 'hp';
-type Edge = 'top' | 'right' | 'bottom' | 'left';
-
-export class UIPositionCalculator {
+    type DeviceType = 'mobile' | 'tablet' | 'desktop';
+    type StatusElement = 'score' | 'time' | 'hp';
+    type Edge = 'top' | 'right' | 'bottom' | 'left';
+    export class UIPositionCalculator {
     private scaledCoordinateManager: ScaledCoordinateManager;
     private defaultMargins: Margins;
     private breakpoints: Breakpoints;
@@ -51,13 +42,13 @@ export class UIPositionCalculator {
         // デフォルトマージン（ベース座標系）
         this.defaultMargins = {
             top: 5,  // ボタンを上端により近く;
-            right: 5, // ボタンを右端により近く;
-            bottom: 20 }
+    right: 5, // ボタンを右端により近く;
+    bottom: 20 };
             left: 20 
     };
         // ブレークポイント設定
-        this.breakpoints = { mobile: 480;
-            tablet: 768;
+        this.breakpoints = { mobile: 480,
+            tablet: 768,
     desktop: 1024  };
         // ステータス要素の垂直間隔
         this.statusVerticalSpacing = 40;
@@ -145,13 +136,13 @@ export class UIPositionCalculator {
                 case 'mobile':,
                     return { top: 5,   // すべてのデバイスで右上端配置
                         right: 5 }
-                        bottom: 15 },
+                        bottom: 15 };
                         left: 15 
     };
                 case 'tablet':
                     return { top: 5,   // すべてのデバイスで右上端配置
                         right: 5,
-    bottom: 18 },
+    bottom: 18 };
                         left: 18 
     };
                 case 'desktop':';'
@@ -179,12 +170,12 @@ export class UIPositionCalculator {
                     position = this.getButtonPosition(element.name, index),' }'
 
                 } else if (element.type === 'dialog) { position = this.getDialogPosition(element.name) } else {  // カスタム配置ロジック（ベース座標）'
-                    const baseX = margins.left + (element.offset?.x || 0) }
+                    const baseX = margins.left + (element.offset?.x || 0);
                     const baseY = margins.top + (element.offset?.y || 0); : undefined 
                     position = { x: baseX, y: baseY,
                 
                 positions.push({ element: element)
-                   , position: position,);
+            position: position,);
             ';'
 
             return positions;} catch (error) {

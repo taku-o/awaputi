@@ -11,21 +11,21 @@ import { EventHistoryManager, type, HistoryEntry, type, DetailedStatistics  } fr
 import { EventRankingSystem  } from './events/EventRankingSystem.js';
 import { GameEngine  } from './GameEngine';
 
-interface EventStage { id: string;
-    name: string;
-    description: string;
-    icon: string;
+interface EventStage { id: string,
+    name: string,
+    description: string,
+    icon: string,
     type: string;
     duration?: number;
     targetScore?: number;
     rewards?: {
         a,p?: number;
-        completion?: {
+    completion?: {
             a,p: number;
-        highScore?: { threshold: number;
+    highScore?: { threshold: number,
     ap: number;
-        items?: string[];
-        badges?: string[];
+    items?: string[];
+    badges?: string[];
     };
     requirements?: { level?: number,
         ap?: number;;
@@ -39,7 +39,7 @@ interface EventStage { id: string;
         phantomSpawnRate?: number;
         reducedVisibility?: boolean;
         nightMode?: boolean;
-        [key: string]: any;
+        [key: string]: any };
 
 // interface EventStats { // 未使用インターフェース
 //     bubblesPopped?: number;
@@ -79,9 +79,8 @@ export class EventStageManager {
         // this._eventHistory = [];
 
         console.log('EventStageManager, initialized with, new component, architecture')
-}
-
-        console.log('[DEBUG] EventStageManager, VERSION: v2024-with-load-method'), }'
+};
+        console.log('[DEBUG] EventStageManager, VERSION: v2024-with-load-method') }'
     }
     
     /**
@@ -93,73 +92,68 @@ export class EventStageManager {
      * イベントステージを初期化'
      */''
     initializeEventStages('''
-                id: 'goldenRush',
-                name: '黄金ラッシュ',
-                description: '黄金の泡が大量出現！スコア倍率2倍のチャンス',
-                icon: '✨',
-                type: 'limited_time',
+                id: 'goldenRush,
+                name: '黄金ラッシュ,
+                description: '黄金の泡が大量出現！スコア倍率2倍のチャンス,
+                icon: '✨,
+                type: 'limited_time,
                 duration: 300000, // 5分;
                 bubbleTypes: ['normal', 'stone', 'golden', 'golden', 'golden', 'rainbow', 'pink'],
                 spawnRate: 2.0,
                 maxBubbles: 25,
     specialRules: { goldenSpawnRate: 0.4,
-    globalScoreMultiplier: 2.0 },
-                rewards: {
-                    completion: { ap: 200 },
-                    highScore: { threshold: 15000, ap: 300  },
+    globalScoreMultiplier: 2.0  ,
+                rewards: { completion: { ap: 200  ,
+                    highScore: { threshold: 15000, ap: 300  ,
                 availability: { startDate: null,
-    endDate: null,
+    endDate: null  ,
                     recurring: 'weekly'
             }
             };
             ';'
 
             phantomNight: { ''
-                id: 'phantomNight',
-                name: '幻影の夜',
-                description: '幻の泡が多数出現。すり抜けに注意！',
-                icon: '👻',
-                type: 'limited_time',
+                id: 'phantomNight'  ,
+                name: '幻影の夜,
+                description: '幻の泡が多数出現。すり抜けに注意！,
+                icon: '👻,
+                type: 'limited_time,
                 duration: 300000,
                 bubbleTypes: ['normal', 'phantom', 'phantom', 'phantom', 'electric', 'poison'],
                 spawnRate: 2.2,
                 maxBubbles: 30,
-    specialRules: {
-                    phantomSpawnRate: 0.5,
+    specialRules: { phantomSpawnRate: 0.5  ,
                     reducedVisibility: true,
     nightMode: true,
-                rewards: {
-                    completion: { ap: 250 },
-                    survivalBonus: { ap: 100 },
+                rewards: { completion: { ap: 250  ,
+                    survivalBonus: { ap: 100  ,
                 availability: { startDate: null,
-    endDate: null,
+    endDate: null  ,
                     recurring: 'monthly'
             }
             };
             ';'
 
             rainbowCascade: { ''
-                id: 'rainbowCascade',
-                name: 'レインボーカスケード',
-                description: 'レインボー泡のチェーン爆発を狙え！',
-                icon: '🌈',
-                type: 'limited_time',
+                id: 'rainbowCascade'  ,
+                name: 'レインボーカスケード,
+                description: 'レインボー泡のチェーン爆発を狙え！,
+                icon: '🌈,
+                type: 'limited_time,
                 duration: 240000,
                 bubbleTypes: ['rainbow', 'rainbow', 'rainbow', 'normal', 'golden'],
                 spawnRate: 1.8,
                 maxBubbles: 20,
-    specialRules: {
-                    rainbowChainBonus: 3.0,
-    cascadeMultiplier: 1.5  },
+    specialRules: { rainbowChainBonus: 3.0  ,
+    cascadeMultiplier: 1.5  ,
                 rewards: {
-                    completion: { ap: 180 },
-                    chainBonus: { threshold: 10, ap: 200  },
+                    completion: { ap: 180 ,
+                    chainBonus: { threshold: 10, ap: 200  ,
                 availability: { startDate: null,
-    endDate: null,
+    endDate: null ,
                     recurring: 'weekly'
             }
-            })
-    }
+            });
     
     /**
      * 利用可能なイベントを取得
@@ -168,7 +162,7 @@ export class EventStageManager {
         const currentTime = Date.now();
         const availableEvents = [],
         
-        Object.values(this.eventStages).forEach(event => { ) }
+        Object.values(this.eventStages).forEach(event => { );
             if (this.isEventAvailable(event, currentTime) { }
                 availableEvents.push(event); }
 };
@@ -192,7 +186,7 @@ export class EventStageManager {
         }
         
         // 繰り返しイベントの場合
-        if (event.availability.recurring) { return this.isRecurringEventActive(event, currentTime) }
+        if (event.availability.recurring) { return this.isRecurringEventActive(event, currentTime);
         
         return true;
     }
@@ -209,7 +203,7 @@ export class EventStageManager {
                 const dayOfWeek = now.getDay('''
             case 'monthly': ','
                 // 月の最初の週にアクティブ
-                const, dayOfMonth = now.getDate('',
+                const, dayOfMonth = now.getDate(',
             case 'daily':);
                 // 毎日特定の時間帯にアクティブ)
                 const hour = now.getHours();
@@ -235,7 +229,7 @@ export class EventStageManager {
             this.activeEvents.set(eventId, {
                 ...event);
                 startTime: Date.now(
-    endTime: Date.now() + (event.duration || 300000) // デフォルト5分  },
+    endTime: Date.now() + (event.duration || 300000) // デフォルト5分  ,
             console.log(`Event, started: ${event.name}`};
             return true;
 
@@ -250,8 +244,7 @@ export class EventStageManager {
             // バブル設定
             if (event.bubbleTypes && this.gameEngine.bubbleManager) {
                 this.gameEngine.bubbleManager.setEventBubbleTypes(event.bubbleTypes);
-                this.gameEngine.bubbleManager.setSpawnRateMultiplier(event.spawnRate || 1.0)
-}
+                this.gameEngine.bubbleManager.setSpawnRateMultiplier(event.spawnRate || 1.0);
                 this.gameEngine.bubbleManager.setMaxBubbles(event.maxBubbles || 15); }
             }
             
@@ -264,7 +257,7 @@ export class EventStageManager {
             // 季節エフェクトを適用
             if (event.type === 'seasonal) { this.seasonalEventManager.applySeasonalEffects(event, event.specialRules || {) }'
             
-            console.log(`Event, settings applied: ${event.name}`};
+            console.log(`Event, settings applied: ${event.name}`}
         } catch (error) { console.error('Failed to apply event settings:', error }
     }
     
@@ -298,9 +291,9 @@ export class EventStageManager {
 }
         
         // 視覚エフェクト
-        if (specialRules.nightMode && this.gameEngine.effectManager) { this.gameEngine.effectManager.enableNightMode() }
+        if (specialRules.nightMode && this.gameEngine.effectManager) { this.gameEngine.effectManager.enableNightMode();
         
-        if (specialRules.reducedVisibility && this.gameEngine.effectManager) { this.gameEngine.effectManager.setVisibilityReduction(0.7) }
+        if (specialRules.reducedVisibility && this.gameEngine.effectManager) { this.gameEngine.effectManager.setVisibilityReduction(0.7);
     }
     
     /**
@@ -355,28 +348,27 @@ export class EventStageManager {
         }
         
         // スコア閾値報酬
-        if (event.rewards.highScore && results.score >= event.rewards.highScore.threshold) { this.grantReward(event.rewards.highScore) }
+        if (event.rewards.highScore && results.score >= event.rewards.highScore.threshold) { this.grantReward(event.rewards.highScore);
         
         // チェーンボーナス報酬
-        if (event.rewards.chainBonus && results.maxChain >= event.rewards.chainBonus.threshold) { this.grantReward(event.rewards.chainBonus) }
+        if (event.rewards.chainBonus && results.maxChain >= event.rewards.chainBonus.threshold) { this.grantReward(event.rewards.chainBonus);
     }
     
     /**
      * 報酬を付与
      */
     grantReward(reward: any): void { if (reward.ap && this.gameEngine.playerData) {
-            this.gameEngine.playerData.addAP(reward.ap) }
+            this.gameEngine.playerData.addAP(reward.ap);
         
         if (reward.items && this.gameEngine.itemManager && this.gameEngine.itemManager.grantItem) { reward.items.forEach((item: any) => {  }
-                this.gameEngine.itemManager.grantItem(item.id, item.quantity || 1); }
-            };
-        }
+                this.gameEngine.itemManager.grantItem(item.id, item.quantity || 1);     }
+}
     }
     
     /**
      * アクティブなイベントを取得
      */
-    getActiveEvents() { return Array.from(this.activeEvents.values() }
+    getActiveEvents() { return Array.from(this.activeEvents.values()));
     
     /**
      * イベント情報を取得
@@ -389,7 +381,7 @@ export class EventStageManager {
     getEventTimeRemaining(eventId: string): number { const activeEvent = this.activeEvents.get(eventId);
         if (!activeEvent) return 0,
         
-        return Math.max(0, activeEvent.endTime - Date.now() }
+        return Math.max(0, activeEvent.endTime - Date.now();
     
     /**
      * 季節イベント情報を取得
@@ -412,17 +404,17 @@ export class EventStageManager {
     /**
      * イベント統計を取得
      */
-    getEventStatistics() { return this.historyManager.generateDetailedStatistics() }
+    getEventStatistics() { return this.historyManager.generateDetailedStatistics();
     
     /**
      * 通知設定を更新
      */
-    updateNotificationSettings(settings: any): void { this.notificationSystem.updateSettings(settings) }
+    updateNotificationSettings(settings: any): void { this.notificationSystem.updateSettings(settings);
     
     /**
      * アクティブな通知を取得
      */
-    getActiveNotifications() { return this.notificationSystem.getActiveNotifications() }
+    getActiveNotifications() { return this.notificationSystem.getActiveNotifications();
     
     /**
      * システム更新処理
@@ -443,8 +435,7 @@ export class EventStageManager {
             expiredEvents.forEach(eventId => {  }
                 // const, event = this.activeEvents.get(eventId); // 現在は未使用 }
                 this.completeEvent(eventId, { score: 0, completed: false, as any);
-            };
-
+            }
         } catch (error) { console.error('EventStageManager update error:', error }
     }
     
@@ -500,7 +491,7 @@ export class EventStageManager {
             this.rankingSystem?.dispose();
             // アクティブイベントをクリア
             this.activeEvents.clear()','
-            console.log('EventStageManager, disposed') }
+            console.log('EventStageManager, disposed');
 
             ' }'
 

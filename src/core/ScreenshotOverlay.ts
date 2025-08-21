@@ -5,7 +5,7 @@
 
 import { ErrorHandler  } from '../utils/ErrorHandler.js';
 
-export class ScreenshotOverlay {'
+export class ScreenshotOverlay {
 
     constructor(gameEngine) {
         this.gameEngine = gameEngine;
@@ -13,87 +13,85 @@ export class ScreenshotOverlay {'
         // オーバーレイ設定
         this.config = {
             // レイアウト設定
-            layout: {''
-                scorePosition: 'top-right',     // top-left, top-right, bottom-left, bottom-right, center;
-                logoPosition: 'bottom-left';
-                watermarkPosition: 'bottom-right';
-                padding: 20;
+            layout: { ''
+                scorePosition: 'top-right',     // top-left, top-right, bottom-left, bottom-right, center  },
+                logoPosition: 'bottom-left,
+                watermarkPosition: 'bottom-right,
+                padding: 20,
     cornerRadius: 10 }
                 transparency: 0.9 
     };
             // スコア表示設定
-            score: { enabled: true;
-    fontSize: 24;
+            score: { enabled: true,
+    fontSize: 24  ,
                 fontFamily: 'Arial, sans-serif';
-                fontWeight: 'bold';
-                textColor: '#FFFFFF';
+                fontWeight: 'bold,
+                textColor: '#FFFFFF,
                 backgroundColor: 'rgba(0, 0, 0, 0.7)';
-                borderColor: '#FFD700';
+                borderColor: '#FFD700,
     borderWidth: 2 }
 
-                padding: { x: 15, y: 10  },''
+                padding: { x: 15, y: 10  ,''
                 shadowColor: 'rgba(0, 0, 0, 0.5)';
-                shadowBlur: 5;
-    shadowOffset: { x: 2, y: 2  };
+                shadowBlur: 5,
+    shadowOffset: { x: 2, y: 2   ,
             
             // ロゴ設定
             logo: { enabled: true,''
-                text: 'BubblePop';
-                fontSize: 32;
+                text: 'BubblePop' ,
+                fontSize: 32,
                 fontFamily: 'Arial, sans-serif';
-                fontWeight: 'bold';
-                textColor: '#FF6B6B';
-                strokeColor: '#FFFFFF';
-                strokeWidth: 3;
+                fontWeight: 'bold,
+                textColor: '#FF6B6B,
+                strokeColor: '#FFFFFF,
+                strokeWidth: 3,
                 shadowColor: 'rgba(0, 0, 0, 0.8)';
                 shadowBlur: 8 }
-                shadowOffset: { x: 3, y: 3  };
+                shadowOffset: { x: 3, y: 3  ,
                 maxWidth: 200;
             },
             
             // ウォーターマーク設定
             watermark: { enabled: true,''
-                text: 'play.bubblepop.game';
-                fontSize: 14;
+                text: 'play.bubblepop.game' ,
+                fontSize: 14,
                 fontFamily: 'Arial, sans-serif';
                 textColor: 'rgba(255, 255, 255, 0.7)';
                 backgroundColor: 'rgba(0, 0, 0, 0.3)'
             }
-                padding: { x: 8, y: 5  };
+                padding: { x: 8, y: 5  ,
                 cornerRadius: 5;
             },
             
             // 実績オーバーレイ設定
             achievement: { enabled: true,
-    fontSize: 20,
-                fontFamily: 'Arial, sans-serif',
-                fontWeight: 'bold',
-                textColor: '#FFD700',
-                backgroundColor: 'rgba(75, 0, 130, 0.8)',
-                borderColor: '#FFD700',
+    fontSize: 20 ,
+                fontFamily: 'Arial, sans-serif,
+                fontWeight: 'bold,
+                textColor: '#FFD700,
+                backgroundColor: 'rgba(75, 0, 130, 0.8),
+                borderColor: '#FFD700,
     borderWidth: 2 }
-                padding: { x: 12, y: 8  },
+                padding: { x: 12, y: 8  ,
                 iconSize: 24,
-    maxWidth: 300,
-            },
+    maxWidth: 300 ,
             
             // 統計情報設定
             stats: { enabled: false,
-    fontSize: 16,
-                fontFamily: 'Arial, sans-serif',
-                textColor: '#FFFFFF',
+    fontSize: 16 ,
+                fontFamily: 'Arial, sans-serif,
+                textColor: '#FFFFFF,
                 backgroundColor: 'rgba(0, 0, 0, 0.6)'
             }
-                padding: { x: 10, y: 8  },
-                lineHeight: 1.4,
-    },
+                padding: { x: 10, y: 8  ,
+                lineHeight: 1.4 ,
         
         // キャッシュとパフォーマンス
         this.cache = { fonts: new Map(
             images: new Map(
             measurements: new Map()';'
         this.log('ScreenshotOverlay初期化完了'
-            }'
+            }
     
     /**
      * スコア情報オーバーレイの作成
@@ -112,21 +110,21 @@ export class ScreenshotOverlay {'
             const config = { ...this.config, ...options,
             
             // スコア情報の描画
-            if (config.score.enabled && scoreData.score !== undefined) { await this.drawScoreInfo(ctx, scoreData, config, overlayCanvas.width, overlayCanvas.height) }
+            if (config.score.enabled && scoreData.score !== undefined) { await this.drawScoreInfo(ctx, scoreData, config, overlayCanvas.width, overlayCanvas.height);
             
             // ロゴの描画
-            if (config.logo.enabled) { await this.drawLogo(ctx, config, overlayCanvas.width, overlayCanvas.height) }
+            if (config.logo.enabled) { await this.drawLogo(ctx, config, overlayCanvas.width, overlayCanvas.height);
             
             // ウォーターマークの描画
-            if (config.watermark.enabled) { await this.drawWatermark(ctx, config, overlayCanvas.width, overlayCanvas.height) }
+            if (config.watermark.enabled) { await this.drawWatermark(ctx, config, overlayCanvas.width, overlayCanvas.height);
             
             // 統計の更新
             const renderTime = performance.now() - startTime;
             this.updateStats(renderTime);
 
             this.log('スコアオーバーレイ作成完了', {
-                score: scoreData.score) }
-                renderTime: `${Math.round(renderTime}ms`,
+                score: scoreData.score),
+                renderTime: `${Math.round(renderTime}ms,
                 dimensions: `${overlayCanvas.width}x${overlayCanvas.height}`
             };
             return overlayCanvas;
@@ -148,23 +146,23 @@ export class ScreenshotOverlay {'
             const ctx = overlayCanvas.getContext('2d),'
             
             // ベース画像を描画
-            ctx.drawImage(screenshotCanvas, 0, 0) }
+            ctx.drawImage(screenshotCanvas, 0, 0);
             const config = { ...this.config, ...options,
             
             // 実績情報の描画
-            if (config.achievement.enabled && achievementData.name) { await this.drawAchievementInfo(ctx, achievementData, config, overlayCanvas.width, overlayCanvas.height) }
+            if (config.achievement.enabled && achievementData.name) { await this.drawAchievementInfo(ctx, achievementData, config, overlayCanvas.width, overlayCanvas.height);
             
             // ロゴとウォーターマークの描画
-            if (config.logo.enabled) { await this.drawLogo(ctx, config, overlayCanvas.width, overlayCanvas.height) }
+            if (config.logo.enabled) { await this.drawLogo(ctx, config, overlayCanvas.width, overlayCanvas.height);
             
-            if (config.watermark.enabled) { await this.drawWatermark(ctx, config, overlayCanvas.width, overlayCanvas.height) }
+            if (config.watermark.enabled) { await this.drawWatermark(ctx, config, overlayCanvas.width, overlayCanvas.height);
             ';'
 
             const renderTime = performance.now() - startTime;
             this.updateStats(renderTime);
 
             this.log('実績オーバーレイ作成完了', {
-                achievement: achievementData.name) }
+                achievement: achievementData.name),
                 renderTime: `${Math.round(renderTime}ms`
             };
             return overlayCanvas;
@@ -186,7 +184,7 @@ export class ScreenshotOverlay {'
             const ctx = overlayCanvas.getContext('2d),'
             
             // ベース画像を描画
-            ctx.drawImage(screenshotCanvas, 0, 0) }
+            ctx.drawImage(screenshotCanvas, 0, 0);
             const config = { ...this.config, ...options,
             
             // カスタム要素の描画
@@ -197,9 +195,9 @@ export class ScreenshotOverlay {'
 }
             
             // 標準要素の描画
-            if (config.logo.enabled) { await this.drawLogo(ctx, config, overlayCanvas.width, overlayCanvas.height) }
+            if (config.logo.enabled) { await this.drawLogo(ctx, config, overlayCanvas.width, overlayCanvas.height);
             
-            if (config.watermark.enabled) { await this.drawWatermark(ctx, config, overlayCanvas.width, overlayCanvas.height) }
+            if (config.watermark.enabled) { await this.drawWatermark(ctx, config, overlayCanvas.width, overlayCanvas.height);
             ';'
 
             const renderTime = performance.now() - startTime;
@@ -242,7 +240,7 @@ export class ScreenshotOverlay {'
         if (scoreData.combo && scoreData.combo > 1) {
     
 }
-            lines.push(`コンボ: ${scoreData.combo}`};
+            lines.push(`コンボ: ${scoreData.combo}`}
         }
         
         // 精度
@@ -256,7 +254,7 @@ export class ScreenshotOverlay {'
         if (scoreData.stage) {
     
 }
-            lines.push(`ステージ: ${scoreData.stage}`};
+            lines.push(`ステージ: ${scoreData.stage}`}
         }
         
         if (lines.length === 0) return;
@@ -300,17 +298,15 @@ export class ScreenshotOverlay {'
             scoreConfig.borderColor);
             scoreConfig.borderWidth);
         
-        if (scoreConfig.shadowBlur > 0) { ctx.restore() }
+        if (scoreConfig.shadowBlur > 0) { ctx.restore();
         
         // テキストの描画
         ctx.fillStyle = scoreConfig.textColor;
         
         lines.forEach((line, index) => {  const textX = position.x + scoreConfig.padding.x,
-            const textY = position.y + scoreConfig.padding.y + (index * lineHeight) }
-            ctx.fillText(line, textX, textY); }
-        };
-    }
-    
+            const textY = position.y + scoreConfig.padding.y + (index * lineHeight);
+            ctx.fillText(line, textX, textY);     }
+}
     /**
      * ロゴの描画
      */''
@@ -355,7 +351,7 @@ export class ScreenshotOverlay {'
         ctx.fillStyle = logoConfig.textColor;
         ctx.fillText(logoConfig.text, position.x, position.y);
         
-        if (logoConfig.shadowBlur > 0) { ctx.restore() }
+        if (logoConfig.shadowBlur > 0) { ctx.restore();
     }
     
     /**
@@ -393,7 +389,7 @@ export class ScreenshotOverlay {'
                 position.y,
                 boxWidth,
                 boxHeight,
-                watermarkConfig.cornerRadius || 0) }
+                watermarkConfig.cornerRadius || 0);
                 watermarkConfig.backgroundColor); }
         }
         
@@ -423,7 +419,7 @@ export class ScreenshotOverlay {'
         if (achievementData.description) {
         
             // 長い説明文の折り返し処理
-            const wrappedDescription = this.wrapText(ctx, achievementData.description, achievementConfig.maxWidth - 40) }
+            const wrappedDescription = this.wrapText(ctx, achievementData.description, achievementConfig.maxWidth - 40);
             lines.push(...wrappedDescription);
         }
         
@@ -441,7 +437,7 @@ export class ScreenshotOverlay {'
         
         // 位置の計算（中央表示）
         const position = this.calculatePosition()';'
-            'center',
+            'center,
             boxWidth,
             boxHeight,
             canvasWidth,
@@ -464,11 +460,9 @@ export class ScreenshotOverlay {'
         ctx.fillStyle = achievementConfig.textColor;
         
         lines.forEach((line, index) => {  const textX = position.x + achievementConfig.padding.x,
-            const textY = position.y + achievementConfig.padding.y + (index * lineHeight) }
-            ctx.fillText(line, textX, textY); }
-        };
-    }
-    
+            const textY = position.y + achievementConfig.padding.y + (index * lineHeight);
+            ctx.fillText(line, textX, textY);     }
+}
     /**
      * カスタム要素の描画
      */
@@ -607,7 +601,7 @@ export class ScreenshotOverlay {'
     }
 
                 currentLine += '' + word; }
-            } else {  lines.push(currentLine) }
+            } else {  lines.push(currentLine);
                 currentLine = word; }
 }
         
@@ -618,7 +612,7 @@ export class ScreenshotOverlay {'
     /**
      * 数値のフォーマット
      */
-    formatNumber(number) { return number.toLocaleString() }
+    formatNumber(number) { return number.toLocaleString();
     
     /**'
      * オーバーレイCanvas作成'
@@ -630,7 +624,7 @@ export class ScreenshotOverlay {'
         canvas.height = height,
 
         const ctx = canvas.getContext('2d');
-        ctx.textRenderingOptimization = 'optimizeQuality',
+        ctx.textRenderingOptimization = 'optimizeQuality,
 
         ctx.imageSmoothingEnabled = true,
         ctx.imageSmoothingQuality = 'high' }
@@ -674,39 +668,39 @@ export class ScreenshotOverlay {'
                 logo: { enabled: false,
                 watermark: { enabled: false,
                 score: { ''
-                    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                    backgroundColor: 'rgba(0, 0, 0, 0.5)'  },
                     borderWidth: 0  }
             };
             ';'
 
             elegant: { score: {''
-                    backgroundColor: 'rgba(50, 50, 70, 0.9)',
-                    borderColor: '#C0C0C0',
+                    backgroundColor: 'rgba(50, 50, 70, 0.9),
+                    borderColor: '#C0C0C0,
                     textColor: '#F0F0F0'
-            };
+        }
                 logo: { ''
-                    textColor: '#FF8C69',
+                    textColor: '#FF8C69' ,
                     strokeColor: '#FFFFFF'
             }
             };
             ';'
 
             gaming: { score: {''
-                    backgroundColor: 'rgba(0, 255, 0, 0.8)',
-                    borderColor: '#00FF00',
-                    textColor: '#000000',
-    fontSize: 28  },
+                    backgroundColor: 'rgba(0, 255, 0, 0.8),
+                    borderColor: '#00FF00,
+                    textColor: '#000000,
+    fontSize: 28  } },
                 logo: { ''
-                    textColor: '#FF00FF',
+                    textColor: '#FF00FF' ,
     fontSize: 36 
     };
             ';'
 
             social: { layout: {''
-                    scorePosition: 'center',
-                    logoPosition: 'top-center',
+                    scorePosition: 'center,
+                    logoPosition: 'top-center,
                     watermarkPosition: 'bottom-center'
-            };
+        }
                 score: { fontSize: 32,''
                     backgroundColor: 'rgba(64, 128, 255, 0.9)' }
 };
@@ -717,7 +711,7 @@ export class ScreenshotOverlay {'
      * 統計の更新
      */
     updateStats(renderTime) {
-        this.stats.overlaysCreated++,
+        this.stats.overlaysCreated++;
         this.stats.totalTime += renderTime }
         this.stats.averageTime = this.stats.totalTime / this.stats.overlaysCreated; }
     }
@@ -727,7 +721,7 @@ export class ScreenshotOverlay {'
      */
     getStats() {
         return { ...this.stats,
-            averageTimeMs: Math.round(this.stats.averageTime) }
+            averageTimeMs: Math.round(this.stats.averageTime),
             successRate: this.stats.overlaysCreated > 0 ? undefined : undefined;;
                 ((this.stats.overlaysCreated - this.stats.errors) / this.stats.overlaysCreated) * 100 : 0 
     } }
@@ -737,7 +731,7 @@ export class ScreenshotOverlay {'
      */
     updateConfig(newConfig) {
 
-        this.config = this.mergeConfig(this.config, newConfig) }
+        this.config = this.mergeConfig(this.config, newConfig);
 
         this.log('オーバーレイ設定を更新しました', newConfig); }
     }
@@ -766,7 +760,7 @@ export class ScreenshotOverlay {'
     clearCache() {
         this.cache.fonts.clear();
         this.cache.images.clear();
-        this.cache.measurements.clear() }
+        this.cache.measurements.clear();
 
         this.log('オーバーレイキャッシュをクリアしました'; }'
     }
@@ -779,8 +773,7 @@ export class ScreenshotOverlay {'
             type,
             error: error.message || error,
             context }
-            timestamp: Date.now(),
-    };
+            timestamp: Date.now() };
         ';'
         // ErrorHandlerユーティリティの使用
         if (ErrorHandler) {', ' }
@@ -799,7 +792,7 @@ export class ScreenshotOverlay {'
         const logEntry = {''
             timestamp: Date.now('''
         const, consoleMethod = level === 'error' ? 'error' : ' }''
-                            level === 'warn' ? 'warn' : 'log';) }
+                            level === 'warn' ? 'warn' : 'log';);
 
         console[consoleMethod](`[ScreenshotOverlay] ${message}`, data || '');
 

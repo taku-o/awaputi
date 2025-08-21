@@ -29,22 +29,22 @@ describe('KeyboardShortcut Router Integration', () => {
             switchScene: jest.fn().mockReturnValue(true),
            , getCurrentScene: jest.fn(').mockReturnValue({'
                 constructor: { name: 'TestScene' },
-    };
+    }
         };
         
         // Mock GameEngine
         mockGameEngine = {
             sceneManager: mockSceneManager,
             settingsManager: {
-                get: jest.fn(
+                get: jest.fn( },
         set: jest.fn( },
             responsiveCanvasManager: {
                 toggleFullscreen: jest.fn( },
             audioManager: {
                 toggleMute: jest.fn().mockReturnValue(false
-            );
+            ) };
             performanceStats: {,
-            isDebugMode: jest.fn().mockReturnValue(false),
+            isDebugMode: jest.fn().mockReturnValue(false) },
             isDebugMode: jest.fn().mockReturnValue(false),
         };
         keyboardManager = new CoreKeyboardShortcutManager(mockGameEngine) };
@@ -224,6 +224,6 @@ describe('KeyboardShortcut Router Integration', () => {
             keyboardManager.handleDocumentationHelp();
             expect(consoleSpy').toHaveBeenCalledWith('[KeyboardShortcutManager] Documentation help opened via Ctrl+H keys');'
             consoleSpy.mockRestore();
-        };
+        }
     }
 }');'

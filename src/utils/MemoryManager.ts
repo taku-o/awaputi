@@ -6,26 +6,24 @@ interface MemoryManagerConfig { cleanupInterval?: number,
     memoryThreshold?: number;
     enableLeakDetection?: boolean;
     enableProactiveCleanup?: boolean;
-
-interface MemoryStats { objectsCreated: number;
-    objectsDestroyed: number;
-    timersCreated: number;
-    timersCleared: number;
-    listenersAdded: number;
+    interface MemoryStats { objectsCreated: number,
+    objectsDestroyed: number,
+    timersCreated: number,
+    timersCleared: number,
+    listenersAdded: number,
     listenersRemoved: number;
     // Component-aggregated stats
-    memoryLeaksDetected: number;
-    memoryLeaksSuspected: number;
-    proactiveCleanups: number;
-    memoryPressureEvents: number;
+    memoryLeaksDetected: number,
+    memoryLeaksSuspected: number,
+    proactiveCleanups: number,
+    memoryPressureEvents: number,
     cleanupEfficiency: number;
     // Current state
-    currentMemoryPressure: number;
-    leakRiskLevel: 'low' | 'medium' | 'high' | 'critical';
+    currentMemoryPressure: number,
+    leakRiskLevel: 'low' | 'medium' | 'high' | 'critical,
     memoryHealthScore: number;
-
-interface TrackedObject { id: string;
-    type: string;
+    interface TrackedObject { id: string,
+    type: string,
     createdAt: number;
     lastAccessed?: number;
     size?: number;
@@ -56,21 +54,21 @@ export class MemoryManager {
         this._initializeSubComponents(config);
         // Main statistics
         this.stats = {
-            objectsCreated: 0;
-            objectsDestroyed: 0;
-            timersCreated: 0;
-            timersCleared: 0;
-            listenersAdded: 0;
-            listenersRemoved: 0;
+            objectsCreated: 0,
+    objectsDestroyed: 0,
+    timersCreated: 0,
+    timersCleared: 0,
+    listenersAdded: 0,
+    listenersRemoved: 0;
             // Component-aggregated stats
-            memoryLeaksDetected: 0;
-            memoryLeaksSuspected: 0;
-            proactiveCleanups: 0;
-            memoryPressureEvents: 0;
-            cleanupEfficiency: 1.0;
+            memoryLeaksDetected: 0,
+    memoryLeaksSuspected: 0,
+    proactiveCleanups: 0,
+    memoryPressureEvents: 0,
+    cleanupEfficiency: 1.0;
             // Current state
-           , currentMemoryPressure: 0;
-            leakRiskLevel: 'low' }
+            currentMemoryPressure: 0,
+            leakRiskLevel: 'low' };
             memoryHealthScore: 1.0 
     };
         // Main cleanup interval
@@ -116,7 +114,7 @@ export class MemoryManager {
     private bindMethods(): void { this.track = this.track.bind(this);
         this.untrack = this.untrack.bind(this);
         this.cleanup = this.cleanup.bind(this);
-        this.performIntelligentCleanup = this.performIntelligentCleanup.bind(this) }
+        this.performIntelligentCleanup = this.performIntelligentCleanup.bind(this);
     
     /**
      * Initialize memory monitoring'
@@ -140,10 +138,10 @@ export class MemoryManager {
         
         try {
             const trackedInfo: TrackedObject = {
-                id: this.generateObjectId(),
+                id: this.generateObjectId();
                 type,
                 createdAt: Date.now(
-    size: this.estimateObjectSize(obj  },
+    size: this.estimateObjectSize(obj  };
             
             this.trackedObjects.set(obj, trackedInfo);
             this.stats.objectsCreated++;
@@ -165,10 +163,10 @@ export class MemoryManager {
             const trackedInfo = this.trackedObjects.get(obj);
             if (trackedInfo) {
                 this.trackedObjects.delete(obj);
-                this.stats.objectsDestroyed++,
+                this.stats.objectsDestroyed++;
                 
                 // Notify sub-components
-                this.leakDetector.untrackObject(obj) }
+                this.leakDetector.untrackObject(obj);
                 this.usageAnalyzer.recordObjectDestruction(trackedInfo);' }'
 
             } catch (error) { console.error('[MemoryManager] Error untracking object:', error }
@@ -294,7 +292,7 @@ export class MemoryManager {
      */
     getMemoryReport(): any { return { stats: this.getStats(
             usageReport: this.usageAnalyzer.getUsageReport(
-    leakReport: this.leakDetector.getLeakReport() },
+    leakReport: this.leakDetector.getLeakReport() ,
             cleanupReport: (this.proactiveCleanup, as any).getCleanupReport ? (this.proactiveCleanup, as any).getCleanupReport() : null;
     
     /**
@@ -309,9 +307,9 @@ export class MemoryManager {
             }
             
             // Destroy sub-components if destroy method exists
-            if ((this.leakDetector, as any).destroy) { (this.leakDetector, as any).destroy() }
-            if ((this.proactiveCleanup, as any).destroy) { (this.proactiveCleanup, as any).destroy() }
-            if ((this.usageAnalyzer, as any).destroy) { (this.usageAnalyzer, as any).destroy() }
+            if ((this.leakDetector, as any).destroy) { (this.leakDetector, as any).destroy();
+            if ((this.proactiveCleanup, as any).destroy) { (this.proactiveCleanup, as any).destroy();
+            if ((this.usageAnalyzer, as any).destroy) { (this.usageAnalyzer, as any).destroy();
             ;
             // Clear tracking
             this.trackedObjects = new WeakMap()';'
@@ -328,7 +326,7 @@ let memoryManagerInstance: MemoryManager | null = null,
  * @returns MemoryManager instance
  */
 export function getMemoryManager(): MemoryManager { if (!memoryManagerInstance) {
-        memoryManagerInstance = new MemoryManager() }
+        memoryManagerInstance = new MemoryManager() };
     return memoryManagerInstance;
 }
 
@@ -346,10 +344,9 @@ class LeakDetector { private trackedObjects: Map<object, any> = new Map();
 
     trackObject(obj: object, trackedInfo: any): void { this.trackedObjects.set(obj, {
                 ...trackedInfo);
-            trackedAt: Date.now(  }),
-    }
+            trackedAt: Date.now(  }) }
     
-    untrackObject(obj: object): void { this.trackedObjects.delete(obj) }
+    untrackObject(obj: object): void { this.trackedObjects.delete(obj);
 
     detectLeaks(): any[] { // 基本的なリーク検出ロジック
         const now = Date.now();
@@ -357,7 +354,7 @@ class LeakDetector { private trackedObjects: Map<object, any> = new Map();
         
         this.trackedObjects.forEach((info, obj) => {  }
             if (now - info.trackedAt > 300000) { // 5分以上古いオブジェクト }
-                leaks.push({ object: obj, info };
+                leaks.push({ object: obj, info }
             }
         };
         
@@ -386,7 +383,7 @@ class MemoryUsageAnalyzer { private creationHistory: any[] = []
             ...trackedInfo),
             timestamp: Date.now( };
         // 履歴の上限管理
-        if (this.creationHistory.length > 1000) { this.creationHistory = this.creationHistory.slice(-500) }
+        if (this.creationHistory.length > 1000) { this.creationHistory = this.creationHistory.slice(-500);
     }
     
     recordObjectDestruction(_trackedInfo: any): void { // Record object destruction for analysis
@@ -422,21 +419,19 @@ class ProactiveCleanupManager { private cleanupHandlers: Map<string, () => void>
         // Constructor accepts optional config }
     }
 
-    registerCleanupHandler(key: string, handler: () => void): void { this.cleanupHandlers.set(key, handler) }
+    registerCleanupHandler(key: string, handler: () => void): void { this.cleanupHandlers.set(key, handler);
 
     performCleanup(): void { this.cleanupHandlers.forEach((handler, key) => { 
             try { }
                 handler(); }
-            } catch (error) {
+        } catch (error) {
                 console.error(`[ProactiveCleanupManager] Error in cleanup handler ${key}:`, error);
-            }
-        };
-    }
-
+                }
+}
     performIntelligentCleanup(_usageReport: any, leakReport: any): any { const result = {
             performedActions: [] as string[],
             freedMemory: 0,
-    timestamp: new Date().toISOString( },
+    timestamp: new Date().toISOString( ,
         // 基本クリーンアップ実行
         this.performCleanup()';'
         result.performedActions.push('basic_cleanup';
@@ -444,7 +439,7 @@ class ProactiveCleanupManager { private cleanupHandlers: Map<string, () => void>
         // リークが検出された場合の追加処理
         if (leakReport.leakCount > 0) {
 
-            result.performedActions.push('leak_detection_cleanup') }
+            result.performedActions.push('leak_detection_cleanup');
             result.freedMemory = leakReport.leakCount * 1024; // 仮想的なメモリ解放量 }
         }
 

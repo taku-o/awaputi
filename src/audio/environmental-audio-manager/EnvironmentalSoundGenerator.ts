@@ -3,9 +3,9 @@ import { getErrorHandler  } from '../../utils/ErrorHandler';
 /**
  * Sound characteristics interface (from, BiomeDefinitionManager)
  */
-export interface SoundCharacteristics { frequency: number;
-    amplitude: number;
-    noiseLevel: number;
+export interface SoundCharacteristics { frequency: number,
+    amplitude: number,
+    noiseLevel: number,
     modulation: number;
 
 /**
@@ -21,7 +21,7 @@ export class EnvironmentalSoundGenerator {
 
         this.audioContext = audioContext
 
-     }
+     };
         this.environmentBuffers = new Map(); }
     }
     
@@ -71,15 +71,12 @@ export class EnvironmentalSoundGenerator {
                 this.environmentBuffers.set('cave_resonance', caveBuffer); }
             }
             
-            console.log(`Generated ${this.environmentBuffers.size} basic, environmental sounds`};
-
+            console.log(`Generated ${this.environmentBuffers.size} basic, environmental sounds`}
         } catch (error) { getErrorHandler().handleError(error, 'AUDIO_ERROR', {''
-                operation: 'generateBasicEnvironmentalSounds',')',
+                operation: 'generateBasicEnvironmentalSounds,')',
                 component: 'EnvironmentalSoundGenerator'
-            };
-        }
-    }
-    
+                }
+}
     /**
      * 音響データを取得または生成
      */
@@ -100,13 +97,13 @@ export class EnvironmentalSoundGenerator {
                 case 'cave_wind':','
                     buffer = this._generateWindSound('''
                 case 'waves': ','
-                    buffer = this._generateWaveSound('',
+                    buffer = this._generateWaveSound(',
                 case 'rain':','
                 case 'thunderstorm':','
-                    buffer = this._generateRainSound('',
+                    buffer = this._generateRainSound(',
                 case 'leaves':','
                 case 'forest':','
-                    buffer = this._generateForestSound('',
+                    buffer = this._generateForestSound(',
                 case 'machinery':','
                 case 'traffic':','
                     buffer = this._generateMachinerySound()','
@@ -115,16 +112,16 @@ export class EnvironmentalSoundGenerator {
                     break,
                 default:,
                     // 汎用環境音を生成
-                    buffer = this._generateGenericEnvironmentalSound(soundType, characteristics) }
+                    buffer = this._generateGenericEnvironmentalSound(soundType, characteristics);
                     break; }
             }
             
-            if (buffer) { this.environmentBuffers.set(soundType, buffer) }
+            if (buffer) { this.environmentBuffers.set(soundType, buffer);
             
             return buffer;
         } catch (error) { getErrorHandler().handleError(error, 'AUDIO_ERROR', {''
                 operation: 'getOrGenerateSound',','
-                component: 'EnvironmentalSoundGenerator');
+                component: 'EnvironmentalSoundGenerator'),
                 soundType: soundType,);
             return null;
     
@@ -368,7 +365,7 @@ export class EnvironmentalSoundGenerator {
                 frequency: 1.0,
                 amplitude: 0.3,
                 noiseLevel: 0.2,
-    modulation: 0.1  },
+    modulation: 0.1  ,
             const soundChars = characteristics || defaultCharacteristics;
             
             for(let, i = 0; i < buffer.length; i++) {
@@ -392,19 +389,19 @@ export class EnvironmentalSoundGenerator {
             
             return buffer;
         } catch (error) { getErrorHandler().handleError(error, 'AUDIO_ERROR', {''
-                operation: '_generateGenericEnvironmentalSound');
+                operation: '_generateGenericEnvironmentalSound'),
                 soundType: soundType,);
             return null;
     
     /**
      * 生成済みバッファを取得
      */
-    getBuffer(soundType: string): AudioBuffer | undefined { return this.environmentBuffers.get(soundType) }
+    getBuffer(soundType: string): AudioBuffer | undefined { return this.environmentBuffers.get(soundType);
     
     /**
      * バッファをクリア
      */
-    clearBuffers(): void { this.environmentBuffers.clear() }
+    clearBuffers(): void { this.environmentBuffers.clear();
     
     /**
      * 生成済み音響の数を取得'

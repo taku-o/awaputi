@@ -13,8 +13,8 @@ import { LeaderboardTab  } from '../LeaderboardTab.js';
 import { ChallengesTab  } from '../ChallengesTab.js';
 
 // タブ情報のインターフェース
-interface Tab { id: string;
-    name: string;
+interface Tab { id: string,
+    name: string,
     icon: string;
 
 // タブコンポーネントのインターフェース
@@ -42,8 +42,7 @@ interface EventBus { on(event: string, callback: (data?: any) => void): void;
 interface SceneState { get(key: string): any;
     set(key: string, value: any): void;
     markDirty(keys: string[]): void;
-
-export class UserInfoTabManager {
+    export class UserInfoTabManager {
     private gameEngine: GameEngine;
     private eventBus: EventBus;
     private sceneState: SceneState;
@@ -58,15 +57,15 @@ export class UserInfoTabManager {
     private tabComponents: Map<string, TabComponent> = new Map('}'
 
         { id: 'statistics', name: '統計', icon: '📊'
-            },''
+            ,''
         { id: 'achievements', name: '実績', icon: '🏆'
-            },''
+            ,''
         { id: 'leaderboard', name: 'ランキング', icon: '👑'
-            },''
+            ,''
         { id: 'challenges', name: 'チャレンジ', icon: '🎯'
-            },''
+            ,''
         { id: 'help', name: 'ヘルプ', icon: '❓'
-            },''
+            ,''
         { id: 'management', name: '管理', icon: '⚙️'
             }
     ];
@@ -77,7 +76,7 @@ export class UserInfoTabManager {
         this.eventBus = eventBus;
         this.sceneState = sceneState;
         
-        this.initializeTabComponents() }
+        this.initializeTabComponents();
         this.setupEventListeners(); }
     }
     
@@ -88,7 +87,7 @@ export class UserInfoTabManager {
         this.componentFactory.set('statistics', () => {  ''
             if(!this.componentCache.has('statistics' {'
                 const component = new StatisticsTab(this.gameEngine, this.eventBus, this.sceneState);
-                component.initialize() }
+                component.initialize();
 
                 this.componentCache.set('statistics', component'; }'
 
@@ -100,7 +99,7 @@ export class UserInfoTabManager {
         this.componentFactory.set('help', () => {  ''
             if(!this.componentCache.has('help' {'
                 const component = new HelpTab(this.gameEngine, this.eventBus, this.sceneState);
-                component.initialize() }
+                component.initialize();
 
                 this.componentCache.set('help', component'; }'
 
@@ -112,7 +111,7 @@ export class UserInfoTabManager {
         this.componentFactory.set('management', () => {  ''
             if(!this.componentCache.has('management' {'
                 const component = new ManagementTab(this.gameEngine, this.eventBus, this.sceneState);
-                component.initialize() }
+                component.initialize();
 
                 this.componentCache.set('management', component'; }'
 
@@ -124,7 +123,7 @@ export class UserInfoTabManager {
         this.componentFactory.set('achievements', () => {  ''
             if(!this.componentCache.has('achievements' {'
                 const component = new AchievementsTab(this.gameEngine, this.eventBus, this.sceneState);
-                component.initialize() }
+                component.initialize();
 
                 this.componentCache.set('achievements', component'; }'
 
@@ -136,7 +135,7 @@ export class UserInfoTabManager {
         this.componentFactory.set('leaderboard', () => {  ''
             if(!this.componentCache.has('leaderboard' {'
                 const component = new LeaderboardTab(this.gameEngine, this.eventBus, this.sceneState);
-                component.initialize() }
+                component.initialize();
 
                 this.componentCache.set('leaderboard', component'; }'
 
@@ -148,7 +147,7 @@ export class UserInfoTabManager {
         this.componentFactory.set('challenges', () => {  ''
             if(!this.componentCache.has('challenges' {'
                 const component = new ChallengesTab(this.gameEngine, this.eventBus, this.sceneState);
-                component.initialize() }
+                component.initialize();
 
                 this.componentCache.set('challenges', component'; }'
 
@@ -169,7 +168,7 @@ export class UserInfoTabManager {
         this.eventBus.on('tabsUpdated', () => { }
 
             this.sceneState.markDirty(['tabs]'; }'
-        };
+        }
     }
     
     /**
@@ -202,7 +201,7 @@ export class UserInfoTabManager {
         this.getActiveTabComponent()';'
         this.sceneState.markDirty(['activeTab', 'tabs]);'
         
-        console.log(`Tab, switched to: ${tabId}`};
+        console.log(`Tab, switched to: ${tabId}`}
     }
     
     /**
@@ -233,7 +232,7 @@ export class UserInfoTabManager {
         const component = this.componentFactory.get(tabName)!();
         
         // アクセス時間を記録（メモリ管理用）
-        if (component) { component.lastAccessTime = Date.now() }
+        if (component) { component.lastAccessTime = Date.now();
         
         return component;
     }
@@ -259,13 +258,13 @@ export class UserInfoTabManager {
     public renderTabContent(;
         ctx: CanvasRenderingContext2D,
     contentX: number, ;
-        contentY: number );
+        contentY: number ),
         contentWidth: number,
     contentHeight: number,
     ): void { const activeComponent = this.getActiveTabComponent(
         if (!activeComponent) {
 
-            this.renderNoContent(ctx, contentX, contentY, contentWidth, contentHeight) }
+            this.renderNoContent(ctx, contentX, contentY, contentWidth, contentHeight);
             return; }
         }
         ';'
@@ -279,7 +278,7 @@ export class UserInfoTabManager {
     public renderTabHeaders(;
         ctx: CanvasRenderingContext2D,
     headerX: number, ;
-        headerY: number );
+        headerY: number ),
         headerWidth: number,
     headerHeight: number,
     ): void { const tabWidth = headerWidth / this.tabs.length,
@@ -289,25 +288,25 @@ export class UserInfoTabManager {
             const isActive = tab.id === this.activeTab,
             ','
             // タブ背景
-            ctx.fillStyle = isActive ? '#4A90E2' : '#2A2A2A',
+            ctx.fillStyle = isActive ? '#4A90E2' : '#2A2A2A,
             ctx.fillRect(tabX, headerY, tabWidth, headerHeight);
             ','
             // タブ境界線
-            ctx.strokeStyle = '#555',
+            ctx.strokeStyle = '#555,
 
             ctx.lineWidth = 1,
             ctx.strokeRect(tabX, headerY, tabWidth, headerHeight);
             ','
             // タブテキスト
-            ctx.fillStyle = isActive ? '#FFFFFF' : '#CCCCCC',
-            ctx.font = '16px Arial',
-            ctx.textAlign = 'center',
-            ctx.textBaseline = 'middle',
+            ctx.fillStyle = isActive ? '#FFFFFF' : '#CCCCCC,
+            ctx.font = '16px Arial,
+            ctx.textAlign = 'center,
+            ctx.textBaseline = 'middle,
             
             const textX = tabX + tabWidth / 2,
             const textY = headerY + headerHeight / 2 }
              }
-            ctx.fillText(`${tab.icon} ${tab.name}`, textX, textY};
+            ctx.fillText(`${tab.icon} ${tab.name}`, textX, textY}
         };
     }
     
@@ -317,17 +316,17 @@ export class UserInfoTabManager {
     private renderNoContent(;
         ctx: CanvasRenderingContext2D,
     x: number, ;
-        y: number );
+        y: number ),
         width: number)','
     height: number';'
     '): void { ''
-        ctx.fillStyle = '#333333',
+        ctx.fillStyle = '#333333,
         ctx.fillRect(x, y, width, height);
-        ctx.fillStyle = '#CCCCCC',
-        ctx.font = '16px Arial',
-        ctx.textAlign = 'center',
-        ctx.textBaseline = 'middle',
-        ctx.fillText('コンテンツが利用できません', x + width / 2, y + height / 2) }
+        ctx.fillStyle = '#CCCCCC,
+        ctx.font = '16px Arial,
+        ctx.textAlign = 'center,
+        ctx.textBaseline = 'middle,
+        ctx.fillText('コンテンツが利用できません', x + width / 2, y + height / 2);
     
     /**
      * タブヘッダーのクリック処理
@@ -336,7 +335,7 @@ export class UserInfoTabManager {
         x: number, ;
         y: number, ;
         headerX: number, ;
-        headerY: number );
+        headerY: number ),
         headerWidth: number,
     headerHeight: number,
     ): boolean { if (y < headerY || y > headerY + headerHeight) {
@@ -348,7 +347,7 @@ export class UserInfoTabManager {
         if (clickedTabIndex >= 0 && clickedTabIndex < this.tabs.length) {
         
             const clickedTab = this.tabs[clickedTabIndex],
-            this.switchTab(clickedTab.id) }
+            this.switchTab(clickedTab.id);
             return true;
         
         return false;
@@ -361,7 +360,7 @@ export class UserInfoTabManager {
         x: number, ;
         y: number, ;
         contentX: number, ;
-        contentY: number );
+        contentY: number ),
         contentWidth: number,
     contentHeight: number';'
     ': boolean { ''

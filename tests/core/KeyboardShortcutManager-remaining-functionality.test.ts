@@ -17,15 +17,15 @@ const dom = new JSDOM('<!DOCTYPE html><html><body></body></html>');
 // Mock game engine components
 const mockGameEngine = {
     sceneManager: {
-        getCurrentScene: jest.fn(
+        getCurrentScene: jest.fn( },
         switchScene: jest.fn(() => true)),
     audioManager: {
-        toggleMute: jest.fn(() => false)),
+        toggleMute: jest.fn(() => false)) },
     settingsManager: {
-        get: jest.fn(() => 0.5),
+        get: jest.fn(() => 0.5) },
         set: jest.fn(
     responsiveCanvasManager: {
-        toggleFullscreen: jest.fn(),
+        toggleFullscreen: jest.fn() },
     isDebugMode: jest.fn(() => false),
         performanceStats: {
             };
@@ -391,7 +391,7 @@ describe('CoreKeyboardShortcutManager - Remaining Functionality (Issue #169')', 
             ],
             
             expectedShortcuts.forEach(shortcut => {);
-                expect(shortcuts[shortcut]).toBeDefined() };
+                expect(shortcuts[shortcut]).toBeDefined() }
         }
     }');'
 }

@@ -9,74 +9,74 @@ interface MockConfigManager {
     setValidationRule: jest.Mock<(categor,y: string, key: string, rule => void>);
     getCategory: jest.Mock<() => Record<string, any>> }
 interface MockGetCall {
-    category: string;
+    category: string,
     key: string;
     defaultValue: any;
 interface ParticleConfig {
-    maxCount: number;
+    maxCount: number,
     poolSize: number;
-    quality: number;
+    quality: number,
     enabled: boolean;
     bubble: {
-        coun,t: number;
+        coun,t: number },
         size: number;
-        speed: number;
+        speed: number,
         life: number,,
     star: {
-        count: number;
+        count: number },
         size: number;
-        speed: number;
+        speed: number,
         life: number,,
     explosion: {
-        count: number;
+        count: number },
         size: number;
-        speed: number;
+        speed: number,
         life: number;
 }
 interface ScreenEffectConfig {
-    shakeIntensity: number;
+    shakeIntensity: number,
     flashDuration: number;
-    zoomSensitivity: number;
+    zoomSensitivity: number,
     enabled: boolean;
     shake: {
-        intensit,y: number;
+        intensit,y: number },
         duration: number;
         damping: number,,
     flash: {
-        intensity: number;
+        intensity: number },
         duration: number,,
     zoom: {
-        min: number;
+        min: number },
         max: number;
         speed: number,,
     tint: {
-        intensity: number;
+        intensity: number },
         duration: number;
 }
 interface AnimationConfig {
-    duration: number;
+    duration: number,
     easing: string;
-    enabled: boolean;
+    enabled: boolean,
     pop: {
-        duratio,n: number;
+        duratio,n: number },
         scale: number;
         easing: string,,
     fade: {
-        duration: number;
+        duration: number },
         easing: string,,
     slide: {
-        duration: number;
+        duration: number },
         distance: number;
         easing: string,,
     bounce: {
-        duration: number;
+        duration: number },
         height: number;
         easing: string;
 }
 interface MockParticleManager {
-    maxParticles: number;
+    maxParticles: number,
     poolSize: number;
-    particlePool: any[];
+    particlePool: any[],
     initializePool: () => void;
     initializePoolCalled?: boolean;
 interface MockEffectManager {
@@ -113,7 +113,7 @@ class TestEffectsConfig {
             this._initializeAnimationConfig();
             this._setupValidationRules()) catch (error) {
             // エラーハンドリングもモック化
-            };
+            }
     }
     private _initializeParticleConfig('): void {'
         this.configManager.set('effects', 'particles.maxCount', 500'),'
@@ -173,21 +173,21 @@ class TestEffectsConfig {
             quality: this.configManager.get('effects', 'particles.quality', 1.0');'
             enabled: this.configManager.get('effects', 'particles.enabled', true');'
             bubble: {
-                count: this.configManager.get('effects', 'particles.bubble.count', 15');'
+                count: this.configManager.get('effects', 'particles.bubble.count', 15');' };
                 size: this.configManager.get('effects', 'particles.bubble.size', 3');'
                 speed: this.configManager.get('effects', 'particles.bubble.speed', 100');'
                 life: this.configManager.get('effects', 'particles.bubble.life', 800') };'
             star: {
-                count: this.configManager.get('effects', 'particles.star.count', 10');'
+                count: this.configManager.get('effects', 'particles.star.count', 10');' };
                 size: this.configManager.get('effects', 'particles.star.size', 4');'
                 speed: this.configManager.get('effects', 'particles.star.speed', 80');'
                 life: this.configManager.get('effects', 'particles.star.life', 1200') };'
             explosion: {
-                count: this.configManager.get('effects', 'particles.explosion.count', 30');'
+                count: this.configManager.get('effects', 'particles.explosion.count', 30');' };
                 size: this.configManager.get('effects', 'particles.explosion.size', 5');'
                 speed: this.configManager.get('effects', 'particles.explosion.speed', 150');'
                 life: this.configManager.get('effects', 'particles.explosion.life', 1500) }
-        };
+        }
     }
     getMaxParticleCount('): number { return this.configManager.get('effects', 'particles.maxCount', 500) }'
     getParticlePoolSize('): number { return this.configManager.get('effects', 'particles.poolSize', 100) }'
@@ -204,20 +204,20 @@ class TestEffectsConfig {
             zoomSensitivity: this.configManager.get('effects', 'screen.zoomSensitivity', 1.0');'
             enabled: this.configManager.get('effects', 'screen.enabled', true');'
             shake: {
-                intensity: this.configManager.get('effects', 'screen.shake.intensity', 10');'
+                intensity: this.configManager.get('effects', 'screen.shake.intensity', 10');' };
                 duration: this.configManager.get('effects', 'screen.shake.duration', 500');'
                 damping: this.configManager.get('effects', 'screen.shake.damping', 0.9') };'
             flash: {
-                intensity: this.configManager.get('effects', 'screen.flash.intensity', 0.5');'
+                intensity: this.configManager.get('effects', 'screen.flash.intensity', 0.5');' };
                 duration: this.configManager.get('effects', 'screen.flash.duration', 200') };'
             zoom: {
-                min: this.configManager.get('effects', 'screen.zoom.min', 0.8');'
+                min: this.configManager.get('effects', 'screen.zoom.min', 0.8');' };
                 max: this.configManager.get('effects', 'screen.zoom.max', 1.2');'
                 speed: this.configManager.get('effects', 'screen.zoom.speed', 0.3') };'
             tint: {
-                intensity: this.configManager.get('effects', 'screen.tint.intensity', 0.3');'
+                intensity: this.configManager.get('effects', 'screen.tint.intensity', 0.3');' };
                 duration: this.configManager.get('effects', 'screen.tint.duration', 500) }
-        };
+        }
     }
     getShakeIntensity('): number { return this.configManager.get('effects', 'screen.shakeIntensity', 1.0) }'
     getFlashDuration('): number { return this.configManager.get('effects', 'screen.flashDuration', 200) }'
@@ -233,21 +233,21 @@ class TestEffectsConfig {
             easing: this.configManager.get('effects', 'animations.easing', 'easeOut');
             enabled: this.configManager.get('effects', 'animations.enabled', true');'
             pop: {
-                duration: this.configManager.get('effects', 'animations.pop.duration', 300');'
+                duration: this.configManager.get('effects', 'animations.pop.duration', 300');' };
                 scale: this.configManager.get('effects', 'animations.pop.scale', 1.2');'
                 easing: this.configManager.get('effects', 'animations.pop.easing', 'easeOutBack') };
             fade: {
-                duration: this.configManager.get('effects', 'animations.fade.duration', 500');'
+                duration: this.configManager.get('effects', 'animations.fade.duration', 500');' };
                 easing: this.configManager.get('effects', 'animations.fade.easing', 'easeInOut') };
             slide: {
-                duration: this.configManager.get('effects', 'animations.slide.duration', 400');'
+                duration: this.configManager.get('effects', 'animations.slide.duration', 400');' };
                 distance: this.configManager.get('effects', 'animations.slide.distance', 50');'
                 easing: this.configManager.get('effects', 'animations.slide.easing', 'easeOutQuad') };
             bounce: {
-                duration: this.configManager.get('effects', 'animations.bounce.duration', 600');'
+                duration: this.configManager.get('effects', 'animations.bounce.duration', 600');' };
                 height: this.configManager.get('effects', 'animations.bounce.height', 30');'
                 easing: this.configManager.get('effects', 'animations.bounce.easing', 'easeOutBounce') }
-        };
+        }
     }
     getAnimationDuration('): number { return this.configManager.get('effects', 'animations.duration', 300) }'
     getAnimationEasing('): string { return this.configManager.get('effects', 'animations.easing', 'easeOut') }'
@@ -349,26 +349,26 @@ describe('EffectsConfig', () => {
                 
             const particleConfig = effectsConfig.getParticleConfig();
             expect(particleConfig).toEqual({
-                maxCount: 400;
+                maxCount: 400,
                 poolSize: 80;
-                quality: 0.8;
+                quality: 0.8,
                 enabled: true;
                 bubble: {
-                    count: 15;
+                    count: 15 },
                     size: 3;
-                    speed: 100;
+                    speed: 100,
                     life: 800
                 },
                 star: {
-                    count: 10;
+                    count: 10 },
                     size: 4;
-                    speed: 80;
+                    speed: 80,
                     life: 1200
                 },
                 explosion: {
-                    count: 30;
+                    count: 30 },
                     size: 5;
-                    speed: 150;
+                    speed: 150,
                     life: 1500)
                 }');'
         }
@@ -421,26 +421,26 @@ describe('EffectsConfig', () => {
                 
             const screenEffectConfig = effectsConfig.getScreenEffectConfig();
             expect(screenEffectConfig).toEqual({
-                shakeIntensity: 0.8;
+                shakeIntensity: 0.8,
                 flashDuration: 150;
-                zoomSensitivity: 1.2;
+                zoomSensitivity: 1.2,
                 enabled: true;
                 shake: {
-                    intensity: 10;
+                    intensity: 10 },
                     duration: 500;
                     damping: 0.9
                 },
                 flash: {
-                    intensity: 0.5;
+                    intensity: 0.5 },
                     duration: 200
                 },
                 zoom: {
-                    min: 0.8;
+                    min: 0.8 },
                     max: 1.2;
                     speed: 0.3
                 },
                 tint: {
-                    intensity: 0.3;
+                    intensity: 0.3 },
                     duration: 500)
                 }');'
         }
@@ -493,25 +493,25 @@ describe('EffectsConfig', () => {
                 
             const animationConfig = effectsConfig.getAnimationConfig();
             expect(animationConfig').toEqual({'
-                duration: 250;
+                duration: 250,
                 easing: 'easeInOut';
-                enabled: true;
+                enabled: true,
                 pop: {
-                    duration: 300;
+                    duration: 300 },
                     scale: 1.2;
                     easing: 'easeOutBack'
                 },
                 fade: {
-                    duration: 500;
+                    duration: 500 },
                     easing: 'easeInOut'
                 },
                 slide: {
-                    duration: 400;
+                    duration: 400 },
                     distance: 50;
                     easing: 'easeOutQuad'
                 },
                 bounce: {
-                    duration: 600;
+                    duration: 600 },
                     height: 30)
                     easing: 'easeOutBounce)'
                 }');'
@@ -542,9 +542,9 @@ describe('EffectsConfig', () => {
         test('applyToParticleManager がParticleManagerに設定を適用すること', () => {
             // ParticleManagerのモック
             const mockParticleManager: MockParticleManager = {
-                maxParticles: 300;
+                maxParticles: 300,
                 poolSize: 50;
-                particlePool: Array(50;
+                particlePool: Array(50,
                 initializePool: function() { this.initializePoolCalled = true }
             };
             
@@ -562,9 +562,9 @@ describe('EffectsConfig', () => {
         test('syncFromParticleManager がParticleManagerから設定を同期すること', () => {
             // ParticleManagerのモック
             const mockParticleManager: MockParticleManager = {
-                maxParticles: 400;
+                maxParticles: 400,
                 poolSize: 80;
-                particlePool: [];
+                particlePool: [],
         initializePool: jest.fn( };
             
             effectsConfig.syncFromParticleManager(mockParticleManager);
@@ -603,7 +603,7 @@ describe('EffectsConfig', () => {
             const instance1 = getTestEffectsConfig();
             const instance2 = getTestEffectsConfig();
             expect(instance1).toBe(instance2);
-        };
+        }
     }
 }');'
 }}}}}}}))))))

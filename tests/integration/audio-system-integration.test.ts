@@ -38,12 +38,12 @@ describe('音響システム統合テスト', () => {
             return {
                 createGain: () => ({
                     gain: { 
-                        value: 1,
+                        value: 1 },
                         setValueAtTime: mockFn(
                         exponentialRampToValueAtTime: mockFn(}
                     },
                     connect: mockFn(
-        disconnect: mockFn( };
+        disconnect: mockFn( },
                 createAnalyser: () => ({
                     fftSize: 256,
                     frequencyBinCount: 128,
@@ -51,14 +51,14 @@ describe('音響システム統合テスト', () => {
                     getFloatFrequencyData: mockFn(
                     getByteFrequencyData: mockFn(
                     connect: mockFn(
-        disconnect: mockFn( };
+        disconnect: mockFn( },
                 createBiquadFilter: (') => ({'
                     type: 'lowpass',
                     frequency: { value: 350 },
                     Q: { value: 1 },
                     gain: { value: 0 },
                     connect: mockFn(
-        disconnect: mockFn( };
+        disconnect: mockFn( },
                 createDynamicsCompressor: () => ({
                     threshold: { value: -24 },
                     knee: { value: 30 },
@@ -66,12 +66,12 @@ describe('音響システム統合テスト', () => {
                     attack: { value: 0.003 },
                     release: { value: 0.25 },
                     connect: mockFn(
-        disconnect: mockFn( };
+        disconnect: mockFn( },
                 createConvolver: () => ({
                     buffer: null,
                     normalize: true,
                     connect: mockFn(
-        disconnect: mockFn( };
+        disconnect: mockFn( },
                 createBufferSource: () => ({
                     buffer: null,
                     loop: false,
@@ -83,7 +83,7 @@ describe('音響システム統合テスト', () => {
                     connect: mockFn(
                     disconnect: mockFn(
                     addEventListener: mockFn(
-        removeEventListener: mockFn( };
+        removeEventListener: mockFn( },
                 createOscillator: (') => ({'
                     type: 'sine',
                     frequency: { value: 440 },
@@ -92,11 +92,11 @@ describe('音響システム統合テスト', () => {
                     stop: mockFn(
                     connect: mockFn(
                     disconnect: mockFn(
-        addEventListener: mockFn( };
+        addEventListener: mockFn( },
                 createStereoPanner: () => ({
                     pan: { value: 0 },
                     connect: mockFn(
-        disconnect: mockFn( };
+        disconnect: mockFn( },
                 createBuffer: mockFn(() => ({
                     length: 44100,
                     sampleRate: 44100,
@@ -108,7 +108,7 @@ describe('音響システム統合テスト', () => {
                     numberOfChannels: 2),
                    , getChannelData: mockFn(() => new Float32Array(44100) })'),'
                 destination: {
-                    channelCount: 2,
+                    channelCount: 2 },
                     channelCountMode: 'explicit',
                     channelInterpretation: 'speakers'
                 },
@@ -169,10 +169,10 @@ describe('音響システム統合テスト', () => {
             querySelector: mockFn(null,
             querySelectorAll: mockFn([],
             body: {
-                appendChild: mockFn(
+                appendChild: mockFn( },
         removeChild: mockFn( },
             head: {
-                appendChild: mockFn(
+                appendChild: mockFn( },
         removeChild: mockFn( },
             hidden: false,
             addEventListener: mockFn(
@@ -202,7 +202,7 @@ describe('音響システム統合テスト', () => {
         audioAccessibilitySupport = {
             audioManager: audioManager,
             settings: {
-                visualFeedback: false,
+                visualFeedback: false },
                 captioning: false,
                 colorIndication: false,
                 patternRecognition: false,
@@ -220,12 +220,12 @@ describe('音響システム統合テスト', () => {
                 eventHistory: 0,
                 eventCounts: {},
                 vibrationManager: { available: false, enabled: false,
-            );
+            ) };
         dispose: mockFn( },
         vibrationManager = {
             config: { enabled: false, globalIntensity: 1.0 },
             deviceInfo: { hasVibration: true,
-            triggerVibration: mockFn(
+            triggerVibration: mockFn( },
             setEnabled: mockFn(
             setGlobalIntensity: mockFn(
             getDeviceInfo: mockFn({ hasVibration: true ,
@@ -530,6 +530,6 @@ describe('音響システム統合テスト', () => {
             expect(validResult.toBeTruthy();
             const status = audioManager.getStatus();
             expect(status.isActive).toBe(true);
-        };
+        }
     }
 }');'

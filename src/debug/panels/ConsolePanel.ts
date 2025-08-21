@@ -4,7 +4,7 @@
 
 interface GameEngine { developerConsole?: DeveloperConsole,
     configManager?: ConfigManager;
-    stop: () => void;
+    stop: () => void,
     start: () => void  }
 }
 
@@ -29,7 +29,7 @@ export class ConsolePanel {
         this.gameEngine = gameEngine;
         this.debugInterface = debugInterface;
         this.element = null
-}
+};
         this.developerConsole = gameEngine.developerConsole; }
     }
 
@@ -108,7 +108,7 @@ export class ConsolePanel {
                     this.executeCommand(command);' }'
 
                     input.value = '; }'
-};
+}
         }';'
     }
 
@@ -125,7 +125,7 @@ export class ConsolePanel {
 
                 const, result = this.developerConsole.executeCommand(command);' }'
 
-                this.addOutput(result, 'result'};
+                this.addOutput(result, 'result'}
 
             } else {  // フォールバック：基本的なコマンド処理
                 const result = this.executeBasicCommand(command),' }'
@@ -169,12 +169,11 @@ export class ConsolePanel {
                 this.gameEngine.stop()','
                 return 'ゲームを一時停止しました',')'
             case 'game.resume()':','
-                this.gameEngine.start('',
+                this.gameEngine.start(',
                 return 'ゲームを再開しました'
         }
             default: };
-                return `未知のゲームコマンド: ${command}`)
-        }
+                return `未知のゲームコマンド: ${command}`);
     }
 
     /**
@@ -241,7 +240,7 @@ export class ConsolePanel {
         if (history) {
 
             const div = document.createElement('div');
-            div.className = 'history-item',
+            div.className = 'history-item,
 
             div.textContent = command,
             div.addEventListener('click', () => { ''
@@ -256,9 +255,8 @@ export class ConsolePanel {
                 const firstChild = history.firstChild,
                 if (firstChild) {
             }
-                    history.removeChild(firstChild); }
+                    history.removeChild(firstChild);     }
 }
-        }
     }
 
     /**
@@ -288,15 +286,13 @@ export class ConsolePanel {
             const output = this.element.querySelector('#console-output) as HTMLElement,'
             if (output) {
         }
-                output.scrollTop = output.scrollHeight; }
+                output.scrollTop = output.scrollHeight;     }
 }
-    }
-
     /**
      * パネルを破棄
      */'
     public destroy(): void { if (this.element && this.element.parentNode) {''
-            this.element.parentNode.removeChild(this.element) }
+            this.element.parentNode.removeChild(this.element);
         this.element = null;
 
     }'}'

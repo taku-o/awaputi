@@ -6,7 +6,7 @@
 export class GameStateGenerationCommands {
     constructor(parent?: any) {
         // TypeScript implementation
-    }
+    };
         console.log('[GameStateGenerationCommands] Initialized'); }'
     }
 

@@ -5,45 +5,38 @@ interface ViewportCullerConfig { enabled?: boolean,
     cullingMargin?: number;
     gridSize?: number;
     historySize?: number;
-
-interface Viewport { x: number;
-    y: number;
-    width: number;
+    interface Viewport { x: number,
+    y: number,
+    width: number,
     height: number;
-
-interface Frustum { left: number;
-    right: number;
-    top: number;
-    bottom: number;
-    near: number;
+    interface Frustum { left: number,
+    right: number,
+    top: number,
+    bottom: number,
+    near: number,
     far: number;
-
-interface ObjectBounds { x: number;
-    y: number;
-    width: number;
+    interface ObjectBounds { x: number,
+    y: number,
+    width: number,
     height: number;
-
-interface RenderableObject { id: string;
-    bounds: ObjectBounds;
+    interface RenderableObject { id: string,
+    bounds: ObjectBounds,
     metadata: Record<string, any>;
-    visible: boolean;
-    lastCullCheck: number;
+    visible: boolean,
+    lastCullCheck: number,
     gridCells: Set<string>;
-
-interface CullingStats { totalObjects: number;
-    culledObjects: number;
-    cullingEfficiency: number;
-    renderTime: number;
+    interface CullingStats { totalObjects: number,
+    culledObjects: number,
+    cullingEfficiency: number,
+    renderTime: number,
     cullingTime: number;
-
-interface PerformanceEntry { timestamp: number;
-    cullingTime: number;
-    cullingEfficiency: number;
-    totalObjects: number;
+    interface PerformanceEntry { timestamp: number,
+    cullingTime: number,
+    cullingEfficiency: number,
+    totalObjects: number,
     culledObjects: number;
-
-interface VisibleObjectData { id: string;
-    bounds: ObjectBounds;
+    interface VisibleObjectData { id: string,
+    bounds: ObjectBounds,
     metadata: Record<string, any> }
 
 /**
@@ -70,7 +63,7 @@ export class AdvancedViewportCuller {
         
         // Culling state
 
-     }
+     };
         this.enabled = config.enabled !== undefined ? config.enabled: true 
         this.viewport = { x: 0, y: 0, width: 0, height: 0  }
         this.cullingMargin = config.cullingMargin || 50;
@@ -85,14 +78,14 @@ export class AdvancedViewportCuller {
         this.visibilityCache = new Map<string, boolean>();
         
         // Frustum culling
-        this.frustum = { left: 0, right: 0, top: 0, bottom: 0;
+        this.frustum = { left: 0, right: 0, top: 0, bottom: 0,
             near: 0, far: 1000  };
         
         // Statistics
-        this.stats = { totalObjects: 0;
-            culledObjects: 0;
-            cullingEfficiency: 0;
-            renderTime: 0;
+        this.stats = { totalObjects: 0,
+            culledObjects: 0,
+            cullingEfficiency: 0,
+            renderTime: 0,
     cullingTime: 0  };
         // Performance tracking
         this.performanceHistory = [];
@@ -106,11 +99,11 @@ export class AdvancedViewportCuller {
             this.viewport = { x, y, width, height };
             
             // Update frustum
-            this.frustum = { left: x - this.cullingMargin;
-                right: x + width + this.cullingMargin;
-                top: y - this.cullingMargin;
-                bottom: y + height + this.cullingMargin;
-                near: 0;
+            this.frustum = { left: x - this.cullingMargin,
+                right: x + width + this.cullingMargin,
+                top: y - this.cullingMargin,
+                bottom: y + height + this.cullingMargin,
+                near: 0,
     far: 1000  };
             // Clear visibility cache when viewport changes
             this.visibilityCache.clear();
@@ -119,7 +112,7 @@ export class AdvancedViewportCuller {
             this._updateSpatialGrid();
 
         } catch (error) {
-            this.errorHandler.logError('Failed to set viewport', error) }
+            this.errorHandler.logError('Failed to set viewport', error);
     }
     
     /**
@@ -131,16 +124,16 @@ export class AdvancedViewportCuller {
             const object: RenderableObject = {
                 id }
                 bounds: { ...bounds
-                metadata,
+                metadata  },
                 visible: false,
                 lastCullCheck: 0,
-    gridCells: new Set<string>() },
+    gridCells: new Set<string>() };
             
             this.renderableObjects.set(id, object);
             this._assignToGrid(object);
 
         } catch (error) {
-            this.errorHandler.logError('Failed to add object to culler', error) }
+            this.errorHandler.logError('Failed to add object to culler', error);
     }
     
     /**
@@ -151,12 +144,12 @@ export class AdvancedViewportCuller {
             if (object) {
                 this._removeFromGrid(object);
                 this.renderableObjects.delete(id);
-                this.culledObjects.delete(id) }
+                this.culledObjects.delete(id);
 
                 this.visibilityCache.delete(id);' }'
 
             } catch (error) {
-            this.errorHandler.logError('Failed to remove object from culler', error) }
+            this.errorHandler.logError('Failed to remove object from culler', error);
     }
     
     /**
@@ -172,14 +165,14 @@ export class AdvancedViewportCuller {
                 this._assignToGrid(object);
                 // Invalidate cached visibility
                 this.visibilityCache.delete(id),'} catch (error) {'
-            this.errorHandler.logError('Failed to update object in culler', error) }
+            this.errorHandler.logError('Failed to update object in culler', error);
     }
     
     /**
      * Perform culling for current frame
      */
     cullObjects(): string[] { if (!this.enabled) {
-            return Array.from(this.renderableObjects.keys() }
+            return Array.from(this.renderableObjects.keys()));
         
         const startTime = performance.now();
         const visibleObjects: string[] = [],
@@ -195,10 +188,8 @@ export class AdvancedViewportCuller {
                 if (cell) {
                     for (const objectId of cell) {
             }
-                        objectsToCheck.add(objectId); }
+                        objectsToCheck.add(objectId);     }
 }
-            }
-            
             // Perform visibility test on collected objects
             for (const objectId of objectsToCheck) {
                 const object = this.renderableObjects.get(objectId);
@@ -206,7 +197,7 @@ export class AdvancedViewportCuller {
                     object.visible = true }
                     visibleObjects.push(objectId); }
                 } else if (object) { object.visible = false,
-                    this.culledObjects.add(objectId) }
+                    this.culledObjects.add(objectId);
             }
             
             // Update statistics
@@ -225,7 +216,7 @@ export class AdvancedViewportCuller {
 
         } catch (error) {
             this.errorHandler.logError('Failed to cull objects', error);
-            return Array.from(this.renderableObjects.keys();
+            return Array.from(this.renderableObjects.keys()));
     /**
      * Check if specific object is visible
      */
@@ -257,7 +248,7 @@ export class AdvancedViewportCuller {
             culledObjects: 0,
             cullingEfficiency: 0,
             renderTime: 0,
-    cullingTime: 0 },
+    cullingTime: 0 };
         this.performanceHistory = [];
     }
     
@@ -272,7 +263,7 @@ export class AdvancedViewportCuller {
         return !(bounds.x + bounds.width < this.frustum.left ||,
                 bounds.x > this.frustum.right ||,
                 bounds.y + bounds.height < this.frustum.top ||,
-                bounds.y > this.frustum.bottom) }
+                bounds.y > this.frustum.bottom);
     
     /**
      * Assign object to spatial grid cells
@@ -289,7 +280,7 @@ export class AdvancedViewportCuller {
             for (let, y = startY; y <= endY; y++) { }
                 const cellKey = `${x},${y}`;
                 
-                if (!this.spatialGrid.has(cellKey) { this.spatialGrid.set(cellKey, new Set<string>() }
+                if (!this.spatialGrid.has(cellKey) { this.spatialGrid.set(cellKey, new Set<string>();
                 
                 this.spatialGrid.get(cellKey)!.add(object.id);
                 object.gridCells.add(cellKey);
@@ -305,9 +296,8 @@ export class AdvancedViewportCuller {
                 cell.delete(object.id);
                 if (cell.size === 0) {
             }
-                    this.spatialGrid.delete(cellKey); }
+                    this.spatialGrid.delete(cellKey);     }
 }
-        }
         object.gridCells.clear();
     }
     
@@ -325,10 +315,8 @@ export class AdvancedViewportCuller {
     
 }
             for (let, y = startY; y <= endY; y++) { }
-                cells.add(`${x},${y}`};
-            }
-        }
-        
+                cells.add(`${x},${y}`    }
+}
         return cells;
     }
     
@@ -341,11 +329,11 @@ export class AdvancedViewportCuller {
      * Track performance metrics
      */
     private _trackPerformance(): void { const entry: PerformanceEntry = {
-            timestamp: Date.now();
+            timestamp: Date.now(),
             cullingTime: this.stats.cullingTime,
             cullingEfficiency: this.stats.cullingEfficiency,
             totalObjects: this.stats.totalObjects,
-    culledObjects: this.stats.culledObjects },
+    culledObjects: this.stats.culledObjects };
         this.performanceHistory.push(entry);
         
         if (this.performanceHistory.length > this.historySize) {

@@ -7,10 +7,10 @@ export class GameBalanceCollector {
         this.dataCollector = dataCollector;
         
         // バブル出現データ
-        this.bubbleSpawnData = {}
+        this.bubbleSpawnData = {};
             totalSpawned: 0 }
-            typeDistribution: {};
-            spawnTimings: [];
+            typeDistribution: {},
+            spawnTimings: [],
     difficultyProgression: [];
         },
         
@@ -19,8 +19,7 @@ export class GameBalanceCollector {
             bubbleScores: {},
             comboScores: [],
             bonusScores: [],
-    totalScoreProgression: [],
-        },
+    totalScoreProgression: [] ,
         
         // アイテム効果データ
         this.itemEffectiveness = {
@@ -46,20 +45,20 @@ export class GameBalanceCollector {
      */
     collectBubbleSpawn(bubbleInfo) {
         const spawnData = {
-            type: 'bubbleSpawn',
+            type: 'bubbleSpawn,
             bubbleType: bubbleInfo.type,
     position: {
                 x: bubbleInfo.position.x }
                 y: bubbleInfo.position.y 
-    },''
+    ,''
             spawnTime: Date.now('''
-            difficulty: bubbleInfo.difficulty || 'normal',
+            difficulty: bubbleInfo.difficulty || 'normal,
             stageProgress: bubbleInfo.stageProgress || 0,
             surroundingBubbles: bubbleInfo.surroundingBubbles || [],
             expectedLifetime: bubbleInfo.expectedLifetime || 0,
             scoreValue: bubbleInfo.scoreValue || 0,
     contextInfo: { currentScore: bubbleInfo.currentScore || 0,
-                remainingTime: bubbleInfo.remainingTime || 0,
+                remainingTime: bubbleInfo.remainingTime || 0 ,
                 playerHP: bubbleInfo.playerHP || 0,
     activeItems: bubbleInfo.activeItems || [] })
         // 内部統計の更新)
@@ -75,19 +74,19 @@ export class GameBalanceCollector {
      */''
     collectScoreData(scoreInfo) {
         const scoreData = {''
-            type: 'scoreAnalysis',
-            scoreType: scoreInfo.type, // 'bubble', 'combo', 'bonus', 'time',
+            type: 'scoreAnalysis,
+            scoreType: scoreInfo.type, // 'bubble, 'combo', 'bonus', 'time',
             amount: scoreInfo.amount,
             multiplier: scoreInfo.multiplier || 1,
             baseScore: scoreInfo.baseScore || scoreInfo.amount,
     source: scoreInfo.source, // バブルタイプやボーナス種類,
             timing: {
-                reactionTime: scoreInfo.reactionTime || null,
+                reactionTime: scoreInfo.reactionTime || null ,
     comboCount: scoreInfo.comboCount || 0 }
                 timeInStage: scoreInfo.timeInStage || 0 
     };
             contextInfo: { ''
-                difficulty: scoreInfo.difficulty || 'normal',
+                difficulty: scoreInfo.difficulty || 'normal' ,
     stageProgress: scoreInfo.stageProgress || 0,
                 totalScore: scoreInfo.totalScore || 0,
                 playerSkillLevel: scoreInfo.playerSkillLevel || 'novice'
@@ -109,21 +108,21 @@ export class GameBalanceCollector {
      */''
     collectItemEffectData(itemInfo) {
         const effectData = {''
-            type: 'itemEffect',
+            type: 'itemEffect,
             itemType: itemInfo.itemType,
-            action: itemInfo.action, // 'activate', 'expire', 'cancel',
+            action: itemInfo.action, // 'activate, 'expire', 'cancel',
             duration: itemInfo.duration || null,
             cost: itemInfo.cost || 0,
     effectiveness: {
-                scoreBoost: itemInfo.scoreBoost || 0,
+                scoreBoost: itemInfo.scoreBoost || 0 ,
     timeExtension: itemInfo.timeExtension || 0 }
                 accuracyImprovement: itemInfo.accuracyImprovement || 0 }
                 customEffects: itemInfo.customEffects || {},
             usage: { activationTiming: itemInfo.activationTiming || 0, // ステージ開始からの時間
-                stageProgress: itemInfo.stageProgress || 0,
+                stageProgress: itemInfo.stageProgress || 0 ,
                 playerSituation: itemInfo.playerSituation || 'normal' // 'desperate', 'comfortable', 'optimal' },
             outcome: { scoreIncrease: itemInfo.scoreIncrease || 0,
-                survivalTime: itemInfo.survivalTime || 0,
+                survivalTime: itemInfo.survivalTime || 0 ,
                 bubblesPopped: itemInfo.bubblesPopped || 0,
     stageCompleted: itemInfo.stageCompleted || false 
     };
@@ -163,7 +162,7 @@ export class GameBalanceCollector {
                 break,
             default:,
                 // 一般的なゲームバランスデータとして処理
-                this.processGeneralBalanceData(balanceData) }
+                this.processGeneralBalanceData(balanceData);
                 break; }
 }
     
@@ -173,7 +172,7 @@ export class GameBalanceCollector {
      */''
     processGeneralBalanceData(balanceData) {
         const processedData = {''
-            type: 'generalGameBalance',
+            type: 'generalGameBalance,
             timestamp: Date.now(
     stageId: balanceData.stageId }
             difficulty: balanceData.difficulty }
@@ -184,12 +183,11 @@ export class GameBalanceCollector {
     playerPerformance: balanceData.playerPerformance || {},
             difficultyMetrics: balanceData.difficultyMetrics || {},
             balanceWarnings: balanceData.balanceWarnings || [],
-    rawData: balanceData,
-        },
+    rawData: balanceData ,
         
         // 警告の処理
-        if (processedData.balanceWarnings && processedData.balanceWarnings.length > 0) { processedData.balanceWarnings.forEach(warning => {) }
-                console.warn(`[Game Balance] ${warning.severity}: ${warning.message}`, warning.data};
+        if (processedData.balanceWarnings && processedData.balanceWarnings.length > 0) { processedData.balanceWarnings.forEach(warning => {);
+                console.warn(`[Game Balance] ${warning.severity}: ${warning.message}`, warning.data}
             };
         }
         
@@ -203,24 +201,24 @@ export class GameBalanceCollector {
      */''
     collectStageDifficultyData(stageInfo) {
         const difficultyData = {''
-            type: 'stageDifficulty',
+            type: 'stageDifficulty,
             stageId: stageInfo.stageId,
             difficulty: stageInfo.difficulty,
             playTime: stageInfo.playTime,
             completed: stageInfo.completed,
             finalScore: stageInfo.finalScore || 0,
     bubbleStats: {
-                totalSpawned: stageInfo.totalSpawned || 0,
+                totalSpawned: stageInfo.totalSpawned || 0 ,
                 popped: stageInfo.popped || 0,
     missed: stageInfo.missed || 0 }
                 expired: stageInfo.expired || 0 
     };
             playerPerformance: { accuracy: stageInfo.accuracy || 0,
-                averageReactionTime: stageInfo.averageReactionTime || 0,
+                averageReactionTime: stageInfo.averageReactionTime || 0 ,
                 maxCombo: stageInfo.maxCombo || 0,
-    itemsUsed: stageInfo.itemsUsed || 0 },
+    itemsUsed: stageInfo.itemsUsed || 0 ,
             exitInfo: { ''
-                reason: stageInfo.exitReason || 'completed',
+                reason: stageInfo.exitReason || 'completed' ,
                 timeRemaining: stageInfo.timeRemaining || 0,
                 hpRemaining: stageInfo.hpRemaining || 0,
     progressPercent: stageInfo.progressPercent || 0 
@@ -240,7 +238,7 @@ export class GameBalanceCollector {
      * @param {Object} spawnData - 出現データ
      */
     updateBubbleSpawnStats(spawnData) {
-        this.bubbleSpawnData.totalSpawned++,
+        this.bubbleSpawnData.totalSpawned++;
         
         // タイプ別分布
         if (!this.bubbleSpawnData.typeDistribution[spawnData.bubbleType]) {
@@ -251,7 +249,7 @@ export class GameBalanceCollector {
         
         // 出現タイミング
         this.bubbleSpawnData.spawnTimings.push({ time: spawnData.spawnTime)
-           , type: spawnData.bubbleType),
+            type: spawnData.bubbleType),
             stageProgress: spawnData.stageProgress),
         // 難易度進行
         this.bubbleSpawnData.difficultyProgression.push({)
@@ -293,8 +291,7 @@ export class GameBalanceCollector {
         this.scoreDistribution.totalScoreProgression.push({ );
             time: Date.now(),
             totalScore: scoreData.contextInfo.totalScore,
-    stageProgress: scoreData.contextInfo.stageProgress },
-    }
+    stageProgress: scoreData.contextInfo.stageProgress  }
     
     /**
      * アイテム効果統計の更新
@@ -363,7 +360,7 @@ export class GameBalanceCollector {
                 this.difficultyAnalysis.failurePoints[stageId] = []; }
             }
             this.difficultyAnalysis.failurePoints[stageId].push({ progressPercent: difficultyData.exitInfo.progressPercent)
-               , reason: difficultyData.exitInfo.reason),
+            reason: difficultyData.exitInfo.reason),
                 playerPerformance: difficultyData.playerPerformance  }
     }
     
@@ -380,12 +377,10 @@ export class GameBalanceCollector {
                 type: 'score_anomaly',' }'
 
                 severity: variance > 0.8 ? 'high' : 'medium'), 
-                message: `Unusual score, detected: ${scoreData.amount} (expected: ${expectedScore}}`,
+                message: `Unusual score, detected: ${scoreData.amount} (expected: ${expectedScore}},
                 data: scoreData,
-    variance: variance,
-            } }
-    }
-    
+    variance: variance     }
+}
     /**
      * 難易度バランスチェック
      * @param {Object} difficultyData - 難易度データ
@@ -398,11 +393,10 @@ export class GameBalanceCollector {
             this.generateBalanceWarning({)'
                 type: 'difficulty_spike',' }'
 
-                severity: 'high') }
-                message: `Low completion rate for stage ${stageId}: ${(completionRate * 100}.toFixed(1}%`,
+                severity: 'high'),
+                message: `Low completion rate for stage ${stageId}: ${(completionRate * 100}.toFixed(1}%,
                 data: difficultyData,
-    completionRate: completionRate,
-            } }
+    completionRate: completionRate } }
         
         // 平均プレイ時間の異常検出
         const avgPlayTime = this.getAveragePlayTime(stageId);
@@ -412,28 +406,26 @@ export class GameBalanceCollector {
             this.generateBalanceWarning({)'
                 type: 'playtime_anomaly',' }'
 
-                severity: 'medium') }
-                message: `Unusually long play time for stage ${stageId}: ${avgPlayTime}ms (expected: ${expectedPlayTime}ms}`,
+                severity: 'medium'),
+                message: `Unusually long play time for stage ${stageId}: ${avgPlayTime}ms (expected: ${expectedPlayTime}ms},
                 data: difficultyData,
                 avgPlayTime: avgPlayTime,
-    expectedPlayTime: expectedPlayTime,
-            } }
-    }
-    
+    expectedPlayTime: expectedPlayTime     }
+}
     /**
      * バランス警告の生成
      * @param {Object} warning - 警告情報'
      */''
     generateBalanceWarning(warning) {
         const warningData = {''
-            type: 'balanceWarning',
+            type: 'balanceWarning,
             timestamp: Date.now(),
             warningType: warning.type,
             severity: warning.severity,
             message: warning.message,
             data: warning.data,
     metrics: {
-                variance: warning.variance,
+                variance: warning.variance ,
                 completionRate: warning.completionRate,
     avgPlayTime: warning.avgPlayTime }
                 expectedPlayTime: warning.expectedPlayTime 
@@ -514,21 +506,21 @@ export class GameBalanceCollector {
     generateBalanceReport() {
         return { timestamp: Date.now(
             bubbleBalance: {
-                totalSpawned: this.bubbleSpawnData.totalSpawned,
-    typeDistribution: this.calculateDistributionPercentages(this.bubbleSpawnData.typeDistribution) }
-                spawnRate: this.calculateSpawnRate() },
+                totalSpawned: this.bubbleSpawnData.totalSpawned ,
+    typeDistribution: this.calculateDistributionPercentages(this.bubbleSpawnData.typeDistribution),
+                spawnRate: this.calculateSpawnRate() ,
                 balanceScore: this.calculateBubbleBalanceScore(); 
     },
             scoreBalance: { averageScoresByType: this.calculateAverageScoresByType(),
-                scoreVariance: this.calculateScoreVariance(),
+                scoreVariance: this.calculateScoreVariance() ,
                 comboEffectiveness: this.calculateComboEffectiveness(
     balanceScore: this.calculateScoreBalanceScore( }
             itemBalance: { usageDistribution: this.calculateItemUsageDistribution(),
-                effectivenessRatings: this.calculateItemEffectivenessRatings(),
+                effectivenessRatings: this.calculateItemEffectivenessRatings() ,
                 costBenefitAnalysis: this.calculateCostBenefitAnalysis(
     balanceScore: this.calculateItemBalanceScore( }
             difficultyBalance: { completionRates: this.calculateCompletionRates(),
-                playTimeAnalysis: this.calculatePlayTimeAnalysis(),
+                playTimeAnalysis: this.calculatePlayTimeAnalysis() ,
                 failureAnalysis: this.calculateFailureAnalysis(
     balanceScore: this.calculateDifficultyBalanceScore( }
             overallBalance: { score: this.calculateOverallBalanceScore(
@@ -540,7 +532,7 @@ export class GameBalanceCollector {
      * @param {Object} distribution - 分布データ
      * @returns {Object}
      */
-    calculateDistributionPercentages(distribution) { const total = Object.values(distribution).reduce((sum, count) => sum + count, 0) }
+    calculateDistributionPercentages(distribution) { const total = Object.values(distribution).reduce((sum, count) => sum + count, 0);
         const percentages = {};
         
         for(const [key, count] of Object.entries(distribution) { percentages[key] = total > 0 ? (count / total * 100).toFixed(2) : 0 }
@@ -650,7 +642,7 @@ export class GameBalanceCollector {
      * アイテム使用分布の計算
      * @returns {Object}
      */
-    calculateItemUsageDistribution() { return this.calculateDistributionPercentages(this.itemEffectiveness.usageFrequency) }
+    calculateItemUsageDistribution() { return this.calculateDistributionPercentages(this.itemEffectiveness.usageFrequency);
     
     /**
      * アイテム効果評価の計算
@@ -671,8 +663,7 @@ export class GameBalanceCollector {
                 ratings[itemType] = {
                     averageImpact: averageImpact.toFixed(2,
     usage: usage,
-                    rating: (averageImpact * Math.log(usage + 1).toFixed(2),
-    }
+                    rating: (averageImpact * Math.log(usage + 1).toFixed(2);
         }
         
         return ratings;
@@ -683,8 +674,8 @@ export class GameBalanceCollector {
      * @returns {Object}
      */''
     calculateCostBenefitAnalysis('''
-            mostEfficient: 'timeExtender',
-            leastEfficient: 'scoreBooster',
+            mostEfficient: 'timeExtender,
+            leastEfficient: 'scoreBooster,
             averageROI: '2.3x);'
             };
     /**
@@ -732,10 +723,10 @@ export class GameBalanceCollector {
                 ','
 
                 analysis[stageId] = {''
-                    average: (average / 1000).toFixed(1) + 's',
-                    min: (min / 1000).toFixed(1) + 's',
+                    average: (average / 1000).toFixed(1) + 's,
+                    min: (min / 1000).toFixed(1) + 's,
                     max: (max / 1000).toFixed(1) + 's' }
-                    samples: times.length 
+                    samples: times.length; 
     }
         }
         
@@ -759,7 +750,7 @@ export class GameBalanceCollector {
                 const avgProgress = failures.reduce((sum, f) => sum + f.progressPercent, 0) / failures.length; }
                 const commonReasons = {};
                 
-                failures.forEach(f => {  ) }
+                failures.forEach(f => {  );
                     commonReasons[f.reason] = (commonReasons[f.reason] || 0) + 1; }
                 };
                 
@@ -768,8 +759,8 @@ export class GameBalanceCollector {
                 ';'
 
                 analysis[stageId] = { ''
-                    averageFailurePoint: avgProgress.toFixed(1) + '%',
-                    mostCommonReason: mostCommonReason ? mostCommonReason[0] : 'unknown',
+                    averageFailurePoint: avgProgress.toFixed(1) + '%,
+                    mostCommonReason: mostCommonReason ? mostCommonReason[0] : 'unknown,
     totalFailures: failures.length  }
         }
         
@@ -790,9 +781,9 @@ export class GameBalanceCollector {
         const score = rates.reduce((sum, rate) => { 
     }
             if (rate >= idealRange[0] && rate <= idealRange[1]) { }
-                return sum + 100; else if (rate < idealRange[0]) { return sum + (rate / idealRange[0]) * 100 } else { return sum + (100 - (rate - idealRange[1]) * 2),, 0) / rates.length,
+                return sum + 100; else if (rate < idealRange[0]) { return sum + (rate / idealRange[0]) * 100 } else { return sum + (100 - (rate - idealRange[1]) * 2), 0) / rates.length,
         
-        return Math.max(0, score).toFixed(1) }
+        return Math.max(0, score).toFixed(1);
     
     /**
      * 総合バランススコアの計算

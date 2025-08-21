@@ -20,7 +20,7 @@ interface ScoreConfig {
     combo?: {
         maxMultiplier: number;
     ageBonus?: {
-        earlyBonus: number;
+        earlyBonus: number },
         lateBonus: number;
 }
 interface StageConfig {
@@ -32,14 +32,14 @@ interface ItemConfig {
     costMultiplier?: number;
     maxLevel?: number;
 interface ValidationError {
-    property: string;
+    property: string,
     rule: string;
     error: string;
 interface ValidationWarning {
-    property: string;
+    property: string,
     message: string;
 interface ValidationResult {
-    isValid: boolean;
+    isValid: boolean,
     errors: ValidationError[];
     warnings: ValidationWarning[];
     bubbleType?: string;
@@ -47,11 +47,11 @@ interface ValidationResult {
     timestamp?: number;
     executionTime?: number;
 interface ValidationStats {
-    totalValidations: number;
+    totalValidations: number,
     failedValidations: number;
     successRate: string;
 interface ValidationHistoryEntry {
-    validationId: string;
+    validationId: string,
     bubbleType: string;
 interface ValidationRule {
     type: string;
@@ -59,7 +59,7 @@ interface ValidationRule {
     max?: number;
     description: string;
 interface PropertyValidationResult {
-    isValid: boolean;
+    isValid: boolean,
     error: string | null }
 // Jest の設定
 const mockErrorHandler: MockErrorHandler = {
@@ -204,7 +204,7 @@ describe('BalanceConfigurationValidator', () => {
         test('should validate valid score config', () => {
             const scoreConfig: ScoreConfig = {
                 baseScores: {
-                    normal: 15,
+                    normal: 15 },
                     stone: 25,
                     boss: 100
                 },
@@ -212,7 +212,7 @@ describe('BalanceConfigurationValidator', () => {
                     maxMultiplier: 2.5
                 },
                 ageBonus: {
-                    earlyBonus: 2.0,
+                    earlyBonus: 2.0 },
                     lateBonus: 3.0
                 }
             };
@@ -235,7 +235,7 @@ describe('BalanceConfigurationValidator', () => {
         test('should generate warnings for logical inconsistencies', () => {
             const scoreConfig: ScoreConfig = {
                 baseScores: {
-                    normal: 25,
+                    normal: 25 },
                     stone: 20 //, Warning: stone should be higher than normal
                 }
             };
@@ -390,7 +390,7 @@ describe('BalanceConfigurationValidator', () => {
         test('should validate score progression in score config', () => {
             const scoreConfig: ScoreConfig = {
                 baseScores: {
-                    normal: 15,
+                    normal: 15 },
                     stone: 25,
                     iron: 40,
                     diamond: 60,
@@ -403,6 +403,6 @@ describe('BalanceConfigurationValidator', () => {
             const orderWarnings = result.warnings.filter(w => ');'
                 w.message.includes('should be higher than');
             expect(orderWarnings).toHaveLength(0);
-        };
+        }
     }
 }');'

@@ -6,47 +6,47 @@
 /**
  * Layout configuration interface
  */
-interface LayoutConfig { padding: number;
-    itemHeight: number;
-    headerHeight: number;
-    dialogPadding: number;
-    buttonHeight: number;
-    buttonWidth: number;
+interface LayoutConfig { padding: number,
+    itemHeight: number,
+    headerHeight: number,
+    dialogPadding: number,
+    buttonHeight: number,
+    buttonWidth: number,
     sectionSpacing: number;
 
 /**
  * Color theme interface
  */
-interface ColorTheme { background: string;
-    cardBackground: string;
-    primary: string;
-    secondary: string;
-    success: string;
-    warning: string;
-    danger: string;
-    text: string;
-    textSecondary: string;
-    border: string;
+interface ColorTheme { background: string,
+    cardBackground: string,
+    primary: string,
+    secondary: string,
+    success: string,
+    warning: string,
+    danger: string,
+    text: string,
+    textSecondary: string,
+    border: string,
     overlay: string;
 
 /**
  * Bounds interface
  */
-interface Bounds { x: number;
-    y: number;
-    width: number;
+interface Bounds { x: number,
+    y: number,
+    width: number,
     height: number;
 
 /**
  * Button position interface
  */
-interface ButtonPosition { x: number;
+interface ButtonPosition { x: number,
     width: number;
 
 /**
  * Text metrics interface
  */
-interface TextMetrics { width: number;
+interface TextMetrics { width: number,
     height: number;
 
 /**
@@ -80,8 +80,8 @@ interface ProgressBarOptions { backgroundColor?: string,
  * Backup status interface
  */
 interface BackupStatus { lastBackup?: string | number | Date,
-    backupCount: number;
-    totalSize: number;
+    backupCount: number,
+    totalSize: number,
     autoBackupEnabled: boolean;
 
 /**
@@ -108,18 +108,17 @@ export class UILayoutManager {
     private canvas: HTMLCanvasElement | null = null;
     private ctx: CanvasRenderingContext2D | null = null';'
 
-    constructor('', background: '#0f0f1a';
-            cardBackground: '#1a1a2e';
-            primary: '#4a90e2';
-            secondary: '#6bb0ff';
-            success: '#10B981';
-            warning: '#F59E0B';
-            danger: '#EF4444';
-            text: '#ffffff';
-            textSecondary: '#cccccc';
+    constructor(', background: '#0f0f1a',
+            cardBackground: '#1a1a2e,
+            primary: '#4a90e2,
+            secondary: '#6bb0ff,
+            success: '#10B981,
+            warning: '#F59E0B,
+            danger: '#EF4444,
+            text: '#ffffff,
+            textSecondary: '#cccccc,
             border: '#333',';'
-            overlay: 'rgba(0, 0, 0, 0.8)' }
-
+            overlay: 'rgba(0, 0, 0, 0.8)' };
     setCanvas(canvas: HTMLCanvasElement): void { this.canvas = canvas,
         this.ctx = canvas.getContext('2d' }'
 
@@ -129,9 +128,9 @@ export class UILayoutManager {
     getColors(): ColorTheme {
         return { ...this.colors }
 
-    updateLayoutConfig(updates: Partial<LayoutConfig>): void { Object.assign(this.layoutConfig, updates) }
+    updateLayoutConfig(updates: Partial<LayoutConfig>): void { Object.assign(this.layoutConfig, updates);
 
-    updateColors(updates: Partial<ColorTheme>): void { Object.assign(this.colors, updates) }
+    updateColors(updates: Partial<ColorTheme>): void { Object.assign(this.colors, updates);
 
     calculateMenuBounds(): Bounds {
         if (!this.canvas) return { x: 0, y: 0, width: 0, height: 0  }
@@ -170,7 +169,7 @@ export class UILayoutManager {
         const startX = (containerWidth - totalWidth) / 2;
         
         return { x: startX + buttonIndex * (buttonWidth + padding }
-            width: buttonWidth,
+            width: buttonWidth;
 }
 
 /**
@@ -180,23 +179,23 @@ export class UILayoutManager {
 export, class UIRenderer {
     private, layoutManager: UILayoutManager,
     private, canvas: HTMLCanvasElement | null = null,
-    ctx: CanvasRenderingContext2D | null = null,
+    ctx: CanvasRenderingContext2D | null = null;
     constructor(layoutManager: UILayoutManager) {
         this.layoutManager = layoutManager }
 
     setCanvas(canvas: HTMLCanvasElement): void { this.canvas = canvas,
         this.ctx = canvas.getContext('2d);'
-        this.layoutManager.setCanvas(canvas) }
+        this.layoutManager.setCanvas(canvas);
 
     clear(): void { if (!this.ctx || !this.canvas) return,
         
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height) }
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
     drawBackground(): void { if (!this.ctx || !this.canvas) return,
 
         const colors = this.layoutManager.getColors();
         this.ctx.fillStyle = colors.background,
-        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height) }
+        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
     drawCard(x: number, y: number, width: number, height: number, selected: boolean = false): void { if (!this.ctx) return,
 
@@ -207,13 +206,13 @@ export, class UIRenderer {
         // Border
         this.ctx.strokeStyle = selected ? colors.secondary: colors.border,
         this.ctx.lineWidth = selected ? 2 : 1,
-        this.roundRect(x, y, width, height, 8, false) }
+        this.roundRect(x, y, width, height, 8, false);
 
     drawText(text: string, x: number, y: number, options: TextOptions = { ): void {
         if (!this.ctx) return,
 
-        const colors = this.layoutManager.getColors('',
-            align = 'left',
+        const colors = this.layoutManager.getColors(',
+            align = 'left,
             baseline = 'top),'
             maxWidth = null','
             bold = false } = options;
@@ -224,14 +223,14 @@ export, class UIRenderer {
         this.ctx.textAlign = align;
         this.ctx.textBaseline = baseline;
 );
-        if (maxWidth) { this.ctx.fillText(text, x, y, maxWidth) } else { this.ctx.fillText(text, x, y) }
+        if (maxWidth) { this.ctx.fillText(text, x, y, maxWidth) } else { this.ctx.fillText(text, x, y);
     }
 
     drawButton(x: number, y: number, width: number, height: number, text: string, options: ButtonOptions = { ): void {
         if (!this.ctx) return,
 
-        const colors = this.layoutManager.getColors('',
-            variant = 'primary',
+        const colors = this.layoutManager.getColors(',
+            variant = 'primary,
             fontSize = 14 } = options;
 );
         let backgroundColor: string, textColor: string, borderColor: string),
@@ -260,10 +259,10 @@ export, class UIRenderer {
         this.drawText(text, x + width / 2, y + height / 2, {
                 fontSize
             color: textColor,
-            align: 'center',
-            baseline: 'middle');
+            align: 'center,
+            baseline: 'middle'),
             bold: true,
-            bold: true,
+            bold: true;
         };
     drawProgressBar(x: number, y: number, width: number, height: number, progress: number, options: ProgressBarOptions = { ): void {
         if (!this.ctx) return,
@@ -297,7 +296,7 @@ export, class UIRenderer {
         if (showText && text) { this.drawText(text, x + width / 2, y + height / 2, {)
                 fontSize: 12)','
     color: colors.text,
-                align: 'center',
+                align: 'center,
                 baseline: 'middle'
             }
                 bold: true); 
@@ -305,15 +304,15 @@ export, class UIRenderer {
 
     drawIcon(icon: string, x: number, y: number, size: number = 24, color: string | null = null): void { if (!this.ctx) return,
 
-        const colors = this.layoutManager.getColors('',
-        this.ctx.textAlign = 'center',
+        const colors = this.layoutManager.getColors(',
+        this.ctx.textAlign = 'center,
         this.ctx.textBaseline = 'middle')
-        this.ctx.fillText(icon, x + size / 2, y + size / 2) }
+        this.ctx.fillText(icon, x + size / 2, y + size / 2);
 
     drawOverlay(alpha: number = 0.8): void { if (!this.ctx || !this.canvas) return,
 
         this.ctx.fillStyle = `rgba(0, 0, 0, ${alpha}`; }
-        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height};
+        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height}
     }
 
     drawScrollbar(x: number, y: number, width: number, height: number, scrollPosition: number, totalItems: number, visibleItems: number): void { if (!this.ctx || totalItems <= visibleItems) return,
@@ -327,11 +326,11 @@ export, class UIRenderer {
         const thumbY = y + (scrollPosition / (totalItems - visibleItems) * (height - thumbHeight),
 
         this.ctx.fillStyle = colors.border,
-        this.roundRect(x + 2, thumbY, width - 4, thumbHeight, 3, true) }
+        this.roundRect(x + 2, thumbY, width - 4, thumbHeight, 3, true);
 
     drawMenuHeader(bounds: Bounds, title: string): void { if (!this.ctx) return,
 
-        const colors = this.layoutManager.getColors() }
+        const colors = this.layoutManager.getColors();
         const { padding } = this.layoutManager.getLayoutConfig();
 
         // Header background
@@ -345,17 +344,17 @@ export, class UIRenderer {
 
         // Title
         this.drawText(title, bounds.x + padding, bounds.y + 30, { fontSize: 24)
-           , color: colors.text,
-            align: 'left',
-            baseline: 'middle',')',
+            color: colors.text,
+            align: 'left,
+            baseline: 'middle,')',
             bold: true'),'
 ','
         // Close button
         this.drawText('×', bounds.x + bounds.width - 30, bounds.y + 30, {)
             fontSize: 20','
     color: colors.textSecondary,
-            align: 'center',
-            baseline: 'middle',')',
+            align: 'center,
+            baseline: 'middle,')',
             bold: true' }'
 
     drawStatusIndicator(x: number, y: number, status: 'success' | 'warning' | 'error' | string, text: string = '): void { if (!this.ctx) return,'
@@ -411,7 +410,7 @@ export, class UIRenderer {
     
 }
             this.ctx.fill(); }
-        } else { this.ctx.stroke() }
+        } else { this.ctx.stroke();
     }
 
     // Text measurement utilities
@@ -421,8 +420,8 @@ export, class UIRenderer {
         this.ctx.font = `${bold ? 'bold ' : '}${fontSize}px Arial, sans-serif`;'
         const metrics = this.ctx.measureText(text);
         
-        return { width: metrics.width },
-            height: fontSize,
+        return { width: metrics.width ,
+            height: fontSize;
 ';'
 
     wrapText(text: string, maxWidth: number, fontSize: number = 16): string[] { ''
@@ -439,12 +438,12 @@ export, class UIRenderer {
             const testLine = currentLine + (currentLine ? ', ' : ') + word,'
             const metrics = this.ctx.measureText(testLine);
             if (metrics.width > maxWidth && currentLine) {
-                lines.push(currentLine) }
+                lines.push(currentLine);
                 currentLine = word; }
             } else { currentLine = testLine }
         }
 
-        if (currentLine) { lines.push(currentLine) }
+        if (currentLine) { lines.push(currentLine);
 
         return lines;
 
@@ -459,11 +458,11 @@ export class ViewRenderer {
 
         this.uiRenderer = uiRenderer
 
-     }
+     };
         this.layoutManager = layoutManager; }
     }
 
-    renderOverviewView(bounds: Bounds, backupStatus: BackupStatus, selectedItem: number): void { const colors = this.layoutManager.getColors() }
+    renderOverviewView(bounds: Bounds, backupStatus: BackupStatus, selectedItem: number): void { const colors = this.layoutManager.getColors();
         const { padding, itemHeight } = this.layoutManager.getLayoutConfig();
 
         let currentY = bounds.y + 80; // After header
@@ -476,25 +475,25 @@ export class ViewRenderer {
         this.renderQuickActionsCard(bounds.x + padding, currentY, bounds.width - padding * 2, selectedItem);
     }
 
-    renderBackupStatusCard(x: number, y: number, width: number, backupStatus: BackupStatus, selected: boolean = false): void { const colors = this.layoutManager.getColors() }
+    renderBackupStatusCard(x: number, y: number, width: number, backupStatus: BackupStatus, selected: boolean = false): void { const colors = this.layoutManager.getColors();
         const { padding } = this.layoutManager.getLayoutConfig();
         // Card background
         this.uiRenderer.drawCard(x, y, width, 100, selected);
 ';'
         // Title
         this.uiRenderer.drawText('Backup Status', x + padding, y + padding, { fontSize: 18)
-           , bold: true','
+            bold: true','
         // Last backup
         const lastBackupText = backupStatus.lastBackup ','
             ? new Date(backupStatus.lastBackup).toLocaleString('''
             : 'Never' };
         this.uiRenderer.drawText(`Last Backup: ${lastBackupText}`, x + padding, y + padding + 25, { fontSize: 14)
-           , color: colors.textSecondary),
+            color: colors.textSecondary),
         // Backup count and size
         const sizeText = this.formatFileSize(backupStatus.totalSize }
         this.uiRenderer.drawText(`${backupStatus.backupCount} backups (${sizeText}}`, x + padding, y + padding + 45, { fontSize: 14,
             color: colors.textSecondary'
-            }'
+            }
 
         }');'
 ';'
@@ -504,10 +503,9 @@ export class ViewRenderer {
 
         this.uiRenderer.drawStatusIndicator(x + width - 120, y + padding + 25, ')';
             backupStatus.autoBackupEnabled ? 'success' : 'warning');
-            `Auto: ${autoStatus}`},
-    }
+            `Auto: ${autoStatus}`} }
 
-    renderQuickActionsCard(x: number, y: number, width: number, selectedItem: number): void { const colors = this.layoutManager.getColors() }
+    renderQuickActionsCard(x: number, y: number, width: number, selectedItem: number): void { const colors = this.layoutManager.getColors();
         const { padding, buttonHeight, buttonWidth } = this.layoutManager.getLayoutConfig();
 ';'
         // Card background
@@ -518,14 +516,14 @@ export class ViewRenderer {
             bold: true'),'
         // Action buttons
         const, actions: ActionDef[] = ['
-            }'
+            }
 
             { text: 'Create Backup', variant: 'primary'
-            },''
+            ,''
             { text: 'Export Data', variant: 'secondary'
-            },''
+            ,''
             { text: 'Import Data', variant: 'secondary'
-            },]'
+            ,]'
             { text: 'Clear Data', variant: 'danger'
             }]
         ];
@@ -544,12 +542,12 @@ export class ViewRenderer {
             ,
             this.uiRenderer.drawButton(buttonX, buttonY, buttonWidth, buttonHeight, action.text, {)
                 selected: isSelected,
-                variant: action.variant), 
-    };
+                variant: action.variant); 
+    }
     }
 
     renderExportView(bounds: Bounds, selectedItem: number, exportOptions: ExportOptions = { ): void {
-        const colors = this.layoutManager.getColors() }
+        const colors = this.layoutManager.getColors();
         const { padding } = this.layoutManager.getLayoutConfig();
 
         let currentY = bounds.y + 80;
@@ -578,12 +576,12 @@ export class ViewRenderer {
             }
             
             this.uiRenderer.drawText(format, x + padding * 2, itemY, { )
-                fontSize: 14 },
+                fontSize: 14 };
     }
 ';'
 
     formatFileSize(bytes: number): string { ''
-        if(bytes === 0) return '0 B',
+        if(bytes === 0) return '0 B,
         ','
 
         const k = 1024,

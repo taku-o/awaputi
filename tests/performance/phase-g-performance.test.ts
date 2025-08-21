@@ -47,7 +47,7 @@ describe('Phase G Performance Tests', () => {
             name,
             iterations,
             metrics: {
-                avg: parseFloat(avg.toFixed(3,
+                avg: parseFloat(avg.toFixed(3 },
                 median: parseFloat(median.toFixed(3,
                 p95: parseFloat(p95.toFixed(3,
                 p99: parseFloat(p99.toFixed(3,
@@ -104,7 +104,7 @@ describe('Phase G Performance Tests', () => {
                 bytes: ((data.before.estimatedBytes - data.after.estimatedBytes) / data.before.estimatedBytes * 100).toFixed(1,
                 totalComponentWords: Object.values(data.components).reduce((sum, comp) => sum + comp.words, 0),
                 totalComponentBytes: Object.values(data.components).reduce((sum, comp) => sum + comp.estimatedBytes, 0}
-            };
+            }
         }');'
         return fileSizes;
     };
@@ -126,7 +126,7 @@ describe('Phase G Performance Tests', () => {
                 body: { appendChild: jest.fn(), removeChild: jest.fn(),
             (global: any).window = { 
                 speechSynthesis: {
-                    speak: jest.fn(
+                    speak: jest.fn( },
                     cancel: jest.fn(
                     getVoices: jest.fn(() => [])),
             );
@@ -142,9 +142,9 @@ describe('Phase G Performance Tests', () => {
                     connect: jest.fn(
         gain: { value: 0.5
             );
-                )),
+                )) };
         destination: {
-    };
+    }
             }');'
         }
         test('インスタンス化パフォーマンス', async (') => {'
@@ -346,7 +346,7 @@ describe('Phase G Performance Tests', () => {
                 console.log(`  削減率: ${data.reduction.words)% (語数}, ${data.reduction.bytes}% (バイト数)`);
                 console.log(`  総コンポーネントサイズ: ${data.reduction.totalComponentWords}語 (${data.reduction.totalComponentBytes)バイト)`),
                 // 削減率40%以上の確認
-                expect(parseFloat(data.reduction.words).toBeGreaterThan(40};
+                expect(parseFloat(data.reduction.words).toBeGreaterThan(40}
             };
         }
     }');'
@@ -373,6 +373,6 @@ describe('Phase G Performance Tests', () => {
             // 5%以内の確認
             expect(instantiationDegradation.toBeLessThan(5);
             expect(methodDegradation.toBeLessThan(5);
-        };
+        }
     }
 }');'

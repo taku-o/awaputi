@@ -5,12 +5,11 @@
  * Canvas APIを使用してPWA用のアイコン、ファビコン、Apple Touch Iconsを生成
  */
 
-interface DecorativeBubble { x: number;
-    y: number;
-    size: number;
+interface DecorativeBubble { x: number,
+    y: number,
+    size: number,
     alpha: number;
-
-interface GeneratedAssets { standard: Map<number, Blob>,
+    interface GeneratedAssets { standard: Map<number, Blob>,
     maskable: Map<number, Blob>;
     favicons: Map<number, Blob>;
     apple: Map<number, Blob> }
@@ -21,7 +20,7 @@ export class PWAAssetGenerator {
     constructor() {
 
         this.canvas = null;
-        this.ctx = null }
+        this.ctx = null };
         this.initializeCanvas(); }
     }
 
@@ -93,10 +92,10 @@ export class PWAAssetGenerator {
         this.ctx.fill();
         
         // 小さな装飾泡（サイズが十分大きい場合のみ）
-        if (size >= 128) { this.drawDecorativeBubbles(size, bubbleSize, offset) }
+        if (size >= 128) { this.drawDecorativeBubbles(size, bubbleSize, offset);
         
         // ゲーム名テキスト（大きなアイコンの場合のみ）
-        if (size >= 192) { this.drawGameTitle(size) }
+        if (size >= 192) { this.drawGameTitle(size);
         
         return this.canvas;
     }
@@ -110,7 +109,7 @@ export class PWAAssetGenerator {
     private drawDecorativeBubbles(size: number, bubbleSize: number, offset: number): void { if (!this.ctx) return,
 
         const decorBubbles: DecorativeBubble[] = [}
-            { x: 0.7, y: 0.3, size: 0.12, alpha: 0.6  },
+            { x: 0.7, y: 0.3, size: 0.12, alpha: 0.6  ,
             { x: 0.8, y: 0.7, size: 0.08, alpha: 0.5  }]
             { x: 0.3, y: 0.8, size: 0.1, alpha: 0.4  }]
         ];
@@ -122,7 +121,7 @@ export class PWAAssetGenerator {
             if (x - r > offset && x + r < size - offset && ),
                 y - r > offset && y + r < size - offset) {
                 
-                this.ctx!.fillStyle = `rgba(255, 255, 255, ${bubble.alpha)`,
+                this.ctx!.fillStyle = `rgba(255, 255, 255, ${bubble.alpha),
                 this.ctx!.beginPath();
                 this.ctx!.arc(x, y, r, 0, Math.PI * 2);
                 this.ctx!.fill();
@@ -130,9 +129,8 @@ export class PWAAssetGenerator {
                 this.ctx!.fillStyle = `rgba(255, 255, 255, ${bubble.alpha * 0.8}`;
                 this.ctx!.beginPath(}
                 this.ctx!.arc(x - r/3, y - r/3, r/3, 0, Math.PI * 2); }
-                this.ctx!.fill(};
-            }
-        };
+                this.ctx!.fill(    }
+}
     }
 
     /**
@@ -141,7 +139,7 @@ export class PWAAssetGenerator {
      */
     private drawGameTitle(size: number): void { if (!this.ctx) return,
 
-        const fontSize = Math.max(size * 0.08, 12) }
+        const fontSize = Math.max(size * 0.08, 12);
 
         this.ctx.font = `bold ${fontSize}px Arial, sans-serif`;
         this.ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
@@ -226,8 +224,8 @@ export class PWAAssetGenerator {
      */'
     async generateFavicon(size: number): Promise<Blob> { ''
         this.drawFaviconIcon(size);
-        const mimeType = size === 16 || size === 32 ? 'image/png' : 'image/x-icon',
-        return await this.canvasToBlob(this.canvas!, mimeType) }
+        const mimeType = size === 16 || size === 32 ? 'image/png' : 'image/x-icon,
+        return await this.canvasToBlob(this.canvas!, mimeType);
 
     /**
      * 複数サイズのアイコンを一括生成
@@ -239,7 +237,7 @@ export class PWAAssetGenerator {
         
         for (const size of sizes) {
         
-            const blob = await this.generatePWAIcon(size, maskable) }
+            const blob = await this.generatePWAIcon(size, maskable);
             results.set(size, blob); }
         }
         
@@ -277,7 +275,7 @@ export class PWAAssetGenerator {
         
         for (const size of sizes) {
         
-            const blob = await this.generateFavicon(size) }
+            const blob = await this.generateFavicon(size);
             results.set(size, blob); }
         }
         
@@ -288,7 +286,7 @@ export class PWAAssetGenerator {
      * リソースのクリーンアップ
      */
     cleanup(): void { if (this.canvas && this.canvas.parentNode) {
-            this.canvas.parentNode.removeChild(this.canvas) }
+            this.canvas.parentNode.removeChild(this.canvas);
         this.canvas = null;
         this.ctx = null;
     }

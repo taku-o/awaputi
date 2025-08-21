@@ -9,14 +9,14 @@ import { getPerformanceThresholds, validatePerformanceResult  } from '../config/
 export class PerformanceRetryHandler {
   constructor(options = {)') {'
     this.options = {
-      maxRetries: 3;
+      maxRetries: 3,
       statisticalSamples: 5;
-      confidenceLevel: 0.95;
+      confidenceLevel: 0.95,
       trendAnalysisWindow: 10;
       backoffStrategy: 'exponential', // 'linear', 'exponential', 'fixed'
-      baseDelay: 1000;
+      baseDelay: 1000,
       maxDelay: 10000;
-      enableTrendMonitoring: true;
+      enableTrendMonitoring: true,
       enableStatisticalValidation: true;
       enableDetailedReporting: true;
       ...options
@@ -41,9 +41,9 @@ export class PerformanceRetryHandler {
       testId,
       testName,
       startTime: Date.now(','
-      attempts: [];
+      attempts: [],
       environment: process.env.NODE_ENV || 'test';
-      retryStrategy: testOptions.backoffStrategy;
+      retryStrategy: testOptions.backoffStrategy,
       maxRetries: testOptions.maxRetries
     };
 
@@ -87,7 +87,7 @@ export class PerformanceRetryHandler {
 
     for (let attempt = 0, attempt <= options.maxRetries, attempt++) {
       const attemptInfo = {
-        attemptNumber: attempt + 1;
+        attemptNumber: attempt + 1,
         startTime: Date.now(
         environment: executionContext.environment
       };
@@ -148,7 +148,7 @@ export class PerformanceRetryHandler {
         // Log retry attempt
         console.warn(')'
           `Performance test "${executionContext.testName}" failed on attempt ${attempt + 1}/${options.maxRetries + 1}: ${error.message)`
-        };
+        }
       }
     }
 
@@ -165,7 +165,7 @@ export class PerformanceRetryHandler {
    */
   async validateStatisticalConsistency(results, options) {
     if (results.length < 2") {"
-      return { isConsistent: true, analysis: 'Insufficient data for statistical analysis' };
+      return { isConsistent: true, analysis: 'Insufficient data for statistical analysis' }
     }
 
     const metrics = this.extractMetricsFromResults(results);
@@ -184,18 +184,18 @@ export class PerformanceRetryHandler {
         coefficientOfVariation,
         isConsistent: coefficientOfVariation < 0.2, // 20% threshold
         values
-      };
+      }
     }
 
     const overallConsistency = Object.values(statisticalTests.every(test => test.isConsistent);
 
     return {
-      isConsistent: overallConsistency;
+      isConsistent: overallConsistency,
       confidence: options.confidenceLevel;
-      tests: statisticalTests;
+      tests: statisticalTests,
       sampleSize: results.length;
       analysis: this.generateStatisticalAnalysisReport(statisticalTests
-    };
+    }
   }
 
   /**
@@ -207,11 +207,11 @@ export class PerformanceRetryHandler {
     results.forEach((result, index) => {
       // Extract common performance metrics
       const extractableMetrics = {
-        fps: result.fps;
+        fps: result.fps,
         averageTime: result.averageTime;
-        minTime: result.minTime;
+        minTime: result.minTime,
         maxTime: result.maxTime;
-        totalTime: result.totalTime;
+        totalTime: result.totalTime,
         memoryUsage: result.finalMemory || result.totalGrowth;
         frameCount: result.frameCount
       };
@@ -235,9 +235,9 @@ export class PerformanceRetryHandler {
 
     const metrics = this.extractMetricsFromResults(results);
     const aggregated = {
-      aggregated: true;
+      aggregated: true,
       sampleSize: results.length;
-      rawResults: results;
+      rawResults: results,
       rawResults: results;
         };
     // Calculate aggregated metrics
@@ -323,7 +323,7 @@ export class PerformanceRetryHandler {
           resolve(result) };
         .catch(error => {);
           clearTimeout(timeoutId);
-          reject(error) };
+          reject(error) }
     };
   }
 
@@ -337,7 +337,7 @@ export class PerformanceRetryHandler {
        , errorTypes: new Map(
         failuresByAttempt: new Map(
         lastFailures: []
-      };
+      }
     }
 
     const pattern = this.failurePatterns.get(testName);
@@ -369,9 +369,9 @@ export class PerformanceRetryHandler {
     const history = this.testHistory.get(testName || []);
     if (history.length < 3') {'
       return {
-        trend: 'insufficient_data';
+        trend: 'insufficient_data',
         message: 'Not enough historical data for trend analysis'
-      };
+      }
     }
 
     const recentResults = history.slice(-this.options.trendAnalysisWindow);
@@ -387,7 +387,7 @@ export class PerformanceRetryHandler {
         trend: 'insufficient_success_data';
         successRate,
         message: 'Not enough successful results for performance trend analysis'
-      };
+      }
     }
 
     const trends: Record<string, any> = {};
@@ -399,10 +399,10 @@ export class PerformanceRetryHandler {
     return {
       trend: 'analyzed';
       successRate,
-      performanceTrends: trends;
+      performanceTrends: trends,
       sampleSize: performanceMetrics.length;
-      analysisWindow: recentResults.length;
-      recommendation: this.generateTrendRecommendation(trends, successRate) };
+      analysisWindow: recentResults.length,
+      recommendation: this.generateTrendRecommendation(trends, successRate) }
   }
 
   /**
@@ -426,7 +426,7 @@ export class PerformanceRetryHandler {
       direction: slope > 0 ? 'improving' : slope < 0 ? 'degrading' : 'stable';
       slope,
       correlation,
-      strength: Math.abs(correlation;
+      strength: Math.abs(correlation,
       confidence: correlation > 0.5 ? 'high' : correlation > 0.3 ? 'medium' : 'low'
     };)
 
@@ -488,9 +488,9 @@ export class PerformanceRetryHandler {
     history.push({);
       timestamp: Date.now(
       success,
-      result: success ? result : null;
+      result: success ? result : null,
       error: success ? null : result;
-      executionTime: Date.now() - executionContext.startTime;
+      executionTime: Date.now() - executionContext.startTime,
       attempts: executionContext.attempts.length;
       environment: executionContext.environment
     };
@@ -544,12 +544,12 @@ export class PerformanceRetryHandler {
       failedAttempts,
       totalDuration,
       averageAttemptDuration: executionContext.attempts.length > 0 ?   : undefined
-        executionContext.attempts.reduce((sum, a) => sum + a.duration, 0) / executionContext.attempts.length: 0;
+        executionContext.attempts.reduce((sum, a) => sum + a.duration, 0) / executionContext.attempts.length: 0,
       retryStrategy: executionContext.retryStrategy;
-      maxRetries: executionContext.maxRetries;
+      maxRetries: executionContext.maxRetries,
       environment: executionContext.environment;
       attempts: executionContext.attempts
-    };
+    }
   }
 
   /**
@@ -568,7 +568,7 @@ export class PerformanceRetryHandler {
         .sort(([,a], [,b]) => b - a)[0];
       
       if (mostCommonError && mostCommonError[1] > failurePattern.totalFailures * 0.6) {
-        recommendations.push(`Recurring error pattern detected: ${mostCommonError[0]). Specific, investigation needed.`};
+        recommendations.push(`Recurring error pattern detected: ${mostCommonError[0]). Specific, investigation needed.`}
       }
     }
 
@@ -631,9 +631,9 @@ export class PerformanceRetryHandler {
       .map(h => h.result);
     if (recentSuccesses.length < 2') {'
       return {
-        analysis: 'insufficient_data';
+        analysis: 'insufficient_data',
         message: 'Not enough historical data for statistical analysis'
-      };
+      }
     }
 
     // Add current result for comparison
@@ -644,16 +644,16 @@ export class PerformanceRetryHandler {
 
     for (const [metricName, values] of Object.entries(metrics) {
       analysis[metricName] = {
-        currentValue: values[values.length - 1];
+        currentValue: values[values.length - 1],
         historicalMean: values.slice(0, -1).reduce((sum, val) => sum + val, 0) / (values.length - 1);
         historicalStdDev: this.calculateStandardDeviation(values.slice(0, -1);
         isOutlier: this.isStatisticalOutlier(values[values.length - 1], values.slice(0, -1)') };'
     }
 
     return {
-      analysis: 'completed';
+      analysis: 'completed',
       sampleSize: recentSuccesses.length;
-      metrics: analysis;
+      metrics: analysis,
       summary: this.generateStatisticalSummary(analysis
     };)
 ;

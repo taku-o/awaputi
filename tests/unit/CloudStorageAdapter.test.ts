@@ -4,23 +4,23 @@ import { CloudStorageAdapter, createCloudStorageAdapter  } from '../../src/core/
 interface CloudStorageConfig {
     provider: string;
     apiEndpoint?: string;
-    timeout: number;
+    timeout: number,
     retryAttempts: number;
     chunkSize?: number;
     customOption?: string;
 // Authentication data interface
 interface AuthData {
-    token: string;
+    token: string,
     expiresAt: Date;
     userId?: string;
 // Credentials interface
 interface Credentials {
-    username: string;
+    username: string,
     password: string;
 // Mock localStorage interface
 interface MockLocalStorage {
-    getItem: jest.MockedFunction<(ke,y: string) => string | null>;
-    setItem: jest.MockedFunction<(ke,y: string, value: string) => void>;
+    getItem: jest.MockedFunction<(ke,y: string) => string | null>,
+    setItem: jest.MockedFunction<(ke,y: string, value: string) => void>,
     removeItem: jest.MockedFunction<(ke,y: string) => void> }
 // Mock fetch response interface
 interface MockResponse {
@@ -29,7 +29,7 @@ interface MockResponse {
     json: (') => Promise<any> }'
 // Sync queue item interface
 interface SyncQueueItem {
-    operation: string;
+    operation: string,
     key: string;
     data?: any;
 describe('CloudStorageAdapter', () => {
@@ -43,7 +43,7 @@ describe('CloudStorageAdapter', () => {
         
         // navigator.onLineのモック
         Object.defineProperty(navigator, 'onLine', {
-            writable: true;
+            writable: true,
             value: true,);
         // localStorageのモック
         const localStorageMock: MockLocalStorage = {
@@ -56,7 +56,7 @@ describe('CloudStorageAdapter', () => {
         global.addEventListener = jest.fn();
         global.removeEventListener = jest.fn('),'
         adapter = new CloudStorageAdapter({
-            provider: 'test';
+            provider: 'test',
             apiEndpoint: 'https://api.test.com'
         ) }
     afterEach(() => {
@@ -77,7 +77,7 @@ describe('CloudStorageAdapter', () => {
             expect(defaultAdapter.config.retryAttempts).toBe(3) }');'
         test('カスタム設定が適用される', () => {
             const customAdapter = new CloudStorageAdapter({
-                timeout: 60000;
+                timeout: 60000,
                 retryAttempts: 5;
                 chunkSize: 2048
             };
@@ -89,7 +89,7 @@ describe('CloudStorageAdapter', () => {
     describe('認証機能', (') => {'
         test('有効なトークンが正しく検証される', (') => {'
             const validAuthData: AuthData = {
-                token: 'valid-token';
+                token: 'valid-token',
                 expiresAt: new Date(Date.now() + 60 * 60 * 1000) // 1時間後
             };
             
@@ -97,7 +97,7 @@ describe('CloudStorageAdapter', () => {
         }');'
         test('期限切れトークンが無効と判定される', (') => {'
             const expiredAuthData: AuthData = {
-                token: 'expired-token';
+                token: 'expired-token',
                 expiresAt: new Date(Date.now() - 60 * 60 * 1000) // 1時間前
             };
             
@@ -110,7 +110,7 @@ describe('CloudStorageAdapter', () => {
         }');'
         test('認証成功時に適切に処理される', async (') => {'
             const mockResponse = {
-                token: 'new-token';
+                token: 'new-token',
                 userId: 'user123';
                 expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000}
             };
@@ -119,7 +119,7 @@ describe('CloudStorageAdapter', () => {
                 ok: true);
                , json: () => Promise.resolve(mockResponse) } as MockResponse');'
             const credentials: Credentials = {
-                username: 'test';
+                username: 'test',
                 password: 'password'
             };
             
@@ -149,7 +149,7 @@ describe('CloudStorageAdapter', () => {
             expect(mockFetch').toHaveBeenCalledWith('
                 'https: //api.test.com/data/testKey';
                 expect.objectContaining({
-                    method: 'PUT';
+                    method: 'PUT',
                     headers: expect.objectContaining({
                         'Authorization': 'Bearer test-token') }
             );
@@ -190,7 +190,7 @@ describe('CloudStorageAdapter', () => {
             adapter.authToken = 'test-token',
             
             try {
-                await adapter.set('testKey', { data: 'test' };
+                await adapter.set('testKey', { data: 'test' }
             } catch (error ) {
                 expect(error.message').toContain('Offline - queued for sync') }'
             
@@ -250,7 +250,7 @@ describe('CloudStorageAdapter', () => {
             mockFetch.mockResolvedValueOnce({
                 ok: true);
                , json: (') => Promise.resolve({ status: 'error','
-       , message: 'Service unavailable' };
+       , message: 'Service unavailable' }
     };
             } as MockResponse);
             await expect(adapter.testConnection()').rejects.toThrow('Connection test failed');'
@@ -266,7 +266,7 @@ describe('CloudStorageAdapter', () => {
             expect(awsAdapter.config.apiEndpoint').toContain('aws') }');
         test('カスタム設定が適用される', (') => {'
             const customAdapter = createCloudStorageAdapter('gcp', {
-                timeout: 15000;
+                timeout: 15000,
                 customOption: 'test'
             };
             expect(customAdapter.config.provider').toBe('gcp');'
@@ -304,6 +304,6 @@ describe('CloudStorageAdapter', () => {
             expect(adapter.syncQueue).toEqual([]);
             expect(adapter.conflictQueue).toEqual([]);
             expect(adapter.authToken).toBeNull();
-            expect(adapter.userId).toBeNull() };
+            expect(adapter.userId).toBeNull() }
     }
 }');'

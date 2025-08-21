@@ -7,26 +7,22 @@ interface Console { commands?: Map<string, CommandData> }
 
 interface CommandData { description: string;
     hidden?: boolean;
+    interface GameEngine { // Game engine interface }
 
-interface GameEngine { // Game engine interface }
-
-interface AutocompleteSettings { maxSuggestions: number;
-    fuzzyMatch: boolean;
-    contextAware: boolean;
+interface AutocompleteSettings { maxSuggestions: number,
+    fuzzyMatch: boolean,
+    contextAware: boolean,
     learningEnabled: boolean;
-
-interface Suggestion { text: string;
-    type: 'command' | 'recent' | 'popular';
-    description: string;
-    score: number;
+    interface Suggestion { text: string,
+    type: 'command' | 'recent' | 'popular,
+    description: string,
+    score: number,
     usage: number;
-
-interface ExecutionHistoryEntry { command: string;
-    args: any[];
-    success: boolean;
+    interface ExecutionHistoryEntry { command: string,
+    args: any[],
+    success: boolean,
     timestamp: number;
-
-export class EnhancedAutocompleteEngine {
+    export class EnhancedAutocompleteEngine {
     private console: Console;
     private gameEngine: GameEngine;
     private settings: AutocompleteSettings;
@@ -36,18 +32,17 @@ export class EnhancedAutocompleteEngine {
     constructor(console: Console, gameEngine: GameEngine) {
 
         this.console = console;
-        this.gameEngine = gameEngine;
-        this.settings = {
-            maxSuggestions: 10;
-            fuzzyMatch: true;
-    contextAware: true;
-            learningEnabled: true;
+    this.gameEngine = gameEngine;
+    this.settings = {
+            maxSuggestions: 10,
+    fuzzyMatch: true,
+    contextAware: true,
+    learningEnabled: true;
         // 学習データ
         this.usageStats = new Map();
-        this.executionHistory = [];
-        this.maxHistorySize = 1000;
-    }
-
+    this.executionHistory = [];
+    this.maxHistorySize = 1000;
+    };
     /**
      * 自動補完候補を取得
      */''
@@ -56,7 +51,7 @@ export class EnhancedAutocompleteEngine {
             return this.getRecentCommands();
 
         const input = partial.trim();
-        if (input.length === 0) { return this.getPopularCommands() }
+        if (input.length === 0) { return this.getPopularCommands();
 
         const suggestions: Suggestion[] = [];
         
@@ -67,7 +62,7 @@ export class EnhancedAutocompleteEngine {
         if (this.settings.fuzzyMatch) { suggestions.push(...this.getFuzzyMatches(input);
         // 重複除去とスコア順ソート
         return this.deduplicateAndSort(suggestions);
-            .slice(0, this.settings.maxSuggestions) }
+            .slice(0, this.settings.maxSuggestions);
 
     /**
      * 前方一致を取得
@@ -82,14 +77,12 @@ export class EnhancedAutocompleteEngine {
             if (command.startsWith(input) && !data.hidden) {
                 matches.push({'
                     text: command,','
-                    type: 'command');
-                    description: data.description;
-    score: 900 - (command.length - input.length) }
+                    type: 'command'),
+                    description: data.description,
+    score: 900 - (command.length - input.length),
                     usage: this.getUsageCount(command); 
-    };
-            }
         }
-        
+}
         return matches;
     }
 
@@ -106,14 +99,12 @@ export class EnhancedAutocompleteEngine {
             if (!command.startsWith(input) && !data.hidden && command.includes(input)) {
                 matches.push({'
                     text: command,','
-                    type: 'command';
-    description: data.description);
-                    score: 700) }
+                    type: 'command,
+    description: data.description),
+                    score: 700),
                     usage: this.getUsageCount(command); 
-    };
-            }
         }
-        
+}
         return matches;
     }
 
@@ -124,11 +115,11 @@ export class EnhancedAutocompleteEngine {
             .slice(-5)','
             .reverse()','
             .map((entry, index) => ({'
-                text: entry.command;
-                type: 'recent' as const;
-                description: 'Recently used';
-                score: 1000 - index * 10;
-    usage: this.getUsageCount(entry.command)  }
+                text: entry.command,
+                type: 'recent' as const,
+                description: 'Recently used,
+                score: 1000 - index * 10,
+    usage: this.getUsageCount(entry.command);
             };
         
         return this.deduplicateAndSort(recentCommands);
@@ -137,7 +128,7 @@ export class EnhancedAutocompleteEngine {
     /**
      * 人気のコマンドを取得
      */
-    private getPopularCommands(): Suggestion[] { const popularCommands = Array.from(this.usageStats.entries()
+    private getPopularCommands(): Suggestion[] { const popularCommands = Array.from(this.usageStats.entries()))
             .sort((a, b) => b[1] - a[1]),
             .slice(0, 5)','
             .map(([command, count], index) => { ''
@@ -146,7 +137,7 @@ export class EnhancedAutocompleteEngine {
                 return { text: command,''
                     type: 'popular' as const,
                     description: data ? data.description : 'Popular command', 
-                    score: 900 - index * 10 },
+                    score: 900 - index * 10 };
                     usage: count;);
         
         return popularCommands;
@@ -186,13 +177,13 @@ export class EnhancedAutocompleteEngine {
             success,
             timestamp: Date.now(  };
         // 履歴サイズ制限
-        if (this.executionHistory.length > this.maxHistorySize) { this.executionHistory.shift() }
+        if (this.executionHistory.length > this.maxHistorySize) { this.executionHistory.shift();
     }
 
     /**
      * 設定を更新
      */
-    public updateSettings(settings: Partial<AutocompleteSettings>): void { Object.assign(this.settings, settings) }
+    public updateSettings(settings: Partial<AutocompleteSettings>): void { Object.assign(this.settings, settings);
 
     /**
      * リソースの解放

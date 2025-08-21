@@ -20,11 +20,11 @@ interface ImageOptimizationOptions { quality?: number,
     enableLazyLoad?: boolean;
 
 // パフォーマンスメトリクスインターフェース
-interface PerformanceMetrics { loadTime: number;
-    firstContentfulPaint: number;
-    largestContentfulPaint: number;
-    firstInputDelay: number;
-    cumulativeLayoutShift: number;
+interface PerformanceMetrics { loadTime: number,
+    firstContentfulPaint: number,
+    largestContentfulPaint: number,
+    firstInputDelay: number,
+    cumulativeLayoutShift: number,
     timestamp: number;
 
 // 最適化結果インターフェース
@@ -37,7 +37,7 @@ interface OptimizationResult { success: boolean;
 
 // 読み込みタスクインターフェース
 interface LoadingTask { id: string,''
-    status: 'pending' | 'loading' | 'completed' | 'failed';
+    status: 'pending' | 'loading' | 'completed' | 'failed,
     startTime: number;
     endTime?: number;
     result?: any;
@@ -61,7 +61,7 @@ export class SEOPerformanceOptimizer {
         this.loadingTasks = new Map();
         this.performanceObserver = null;
         this.metrics = []
-}
+};
         this._initialize(); }
     }
     
@@ -106,21 +106,21 @@ export class SEOPerformanceOptimizer {
                 this._recordLayoutShift(entry),' }'
 
             } else if (entry.entryType === 'first-input) { this._recordFirstInputDelay(entry) }'
-        };
+        }
     }
     
     /**
      * ペイントメトリクスの記録
      */
     private _recordPaintMetric(entry: PerformanceEntry): void {
-        seoLogger.performance(`Paint: ${entry.name}`, entry.startTime};
+        seoLogger.performance(`Paint: ${entry.name}`, entry.startTime}
     }
     
     /**
      * レイアウトシフトの記録'
      */''
     private _recordLayoutShift(entry: PerformanceEntry): void { ''
-        seoLogger.performance('Layout Shift', (entry: any).value || 0) }
+        seoLogger.performance('Layout Shift', (entry: any).value || 0);
     
     /**
      * 初回入力遅延の記録'
@@ -191,12 +191,12 @@ export class SEOPerformanceOptimizer {
                             reject(new, Error('Failed, to optimize, image)'; }'
 
                         }'}, `image/${options.format || 'webp'}`, options.quality || 0.8);'
-                } catch (error) { reject(error) }
+                } catch (error) { reject(error);
             };
 
             img.onerror = () => reject(new, Error('Failed, to load, image);'
             img.src = URL.createObjectURL(blob);
-        };
+        }
     }
     
     /**
@@ -230,7 +230,7 @@ export class SEOPerformanceOptimizer {
      * Core Web Vitals の測定
      */
     measureCoreWebVitals(): PerformanceMetrics { const metrics: PerformanceMetrics = {
-            loadTime: performance.now();
+            loadTime: performance.now(),
             firstContentfulPaint: 0,
             largestContentfulPaint: 0,
             firstInputDelay: 0,
@@ -253,12 +253,13 @@ export class SEOPerformanceOptimizer {
      * パフォーマンス統計の取得
      */
     getPerformanceStats(): { averageLoadTime: number,
-        averageFCP: number,
+        averageFCP: number;
+    },
         metricsCount: number,
     cacheHitRate: number; { if (this.metrics.length === 0) {
             return { averageLoadTime: 0,
                 averageFCP: 0,
-    metricsCount: 0 },
+    metricsCount: 0 ,
                 cacheHitRate: 0 
     }
         
@@ -267,7 +268,7 @@ export class SEOPerformanceOptimizer {
         
         return { averageLoadTime: totalLoadTime / this.metrics.length,
             averageFCP: totalFCP / this.metrics.length,
-    metricsCount: this.metrics.length },
+    metricsCount: this.metrics.length ,
             cacheHitRate: this.imageCache.size > 0 ? 0.8 : 0 // 簡易計算 
         }
     
@@ -275,7 +276,7 @@ export class SEOPerformanceOptimizer {
      * リソースのクリーンアップ
      */
     cleanup(): void { if (this.performanceObserver) {
-            this.performanceObserver.disconnect() }
+            this.performanceObserver.disconnect();
         
         this.imageCache.clear();
         this.metadataCache.clear();

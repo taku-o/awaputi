@@ -12,45 +12,45 @@ interface BubbleData {
     x?: number;
     y?: number;
 interface StageProgress {
-    bestScore: number;
+    bestScore: number,
     completed: boolean;
 interface DetailedStatistics {
     bubbleTypes: {
-        normal: { poppe,d: number;
-        stone: { popped: number;
+        normal: { poppe,d: number,
+        stone: { popped: number,
         rainbow: { popped: number;
     },
     sessionData: {
-        lastSessionDate: string;
+        lastSessionDate: string },
         consecutiveDays: number;
         totalPlayTime: number,,
     combos: {
-        maxCombo: number,,
+        maxCombo: number, };
     accuracy: {
         overall: number;
 }
 interface PlayerDataType {
-    totalBubblesPopped: number;
+    totalBubblesPopped: number,
     totalScore: number;
-    totalPlayTime: number;
+    totalPlayTime: number,
     consecutiveDays: number;
-    maxCombo: number;
+    maxCombo: number,
     stages: Record<string, StageProgress>;
-    accuracy: number;
+    accuracy: number,
     achievements: Set<string>;
 // Mock dependencies
 class MockPlayerData {
-    data: PlayerDataType;
+    data: PlayerDataType,
     saveCallCount: number;
     constructor() {
         this.data = {
-            totalBubblesPopped: 0;
+            totalBubblesPopped: 0,
             totalScore: 0;
-            totalPlayTime: 0;
+            totalPlayTime: 0,
             consecutiveDays: 0;
-            maxCombo: 0;
+            maxCombo: 0,
             stages: {};
-            accuracy: 100;
+            accuracy: 100,
         achievements: new Set(
     );
         this.saveCallCount = 0;
@@ -68,12 +68,12 @@ class MockPlayerData {
     getDetailedStatistics(): DetailedStatistics {
         return {
             bubbleTypes: {
-                normal: { popped: this.data.totalBubblesPopped };
-                stone: { popped: Math.floor(this.data.totalBubblesPopped * 0.2) };
+                normal: { popped: this.data.totalBubblesPopped },
+                stone: { popped: Math.floor(this.data.totalBubblesPopped * 0.2) },
                 rainbow: { popped: Math.floor(this.data.totalBubblesPopped * 0.1) }
             },
             sessionData: {
-                lastSessionDate: new Date().toISOString();
+                lastSessionDate: new Date().toISOString() },
                 consecutiveDays: this.data.consecutiveDays;
                 totalPlayTime: this.data.totalPlayTime
             },
@@ -83,11 +83,11 @@ class MockPlayerData {
             accuracy: {
                 overall: this.data.accuracy
             }
-        };
+        }
     }
 }
 interface PlayedSound {
-    soundId: string;
+    soundId: string,
     options: Record<string, any> }
 class MockAudioManager {
     playedSounds: PlayedSound[];
@@ -105,11 +105,11 @@ class MockBubbleManager {
         this.popCount = 0 }
     popBubble(bubble: BubbleData): { score: number,, combo: number; {
         this.popCount++,
-        return { score: 10, combo: 1 };
+        return { score: 10, combo: 1 }
     }
 }
 class MockScoreManager {
-    totalScore: number;
+    totalScore: number,
     currentCombo: number;
     addScoreOriginal: (points: number, multiplier?: number) => number;
     breakComboOriginal: () => boolean;
@@ -136,7 +136,7 @@ class MockGameScene {
     constructor() {
         this.gameOverOriginal = this.gameOver.bind(this) }
     gameOver(reason: string'): { reason: string,, score: number; {'
-        return { reason, score: 1000 };
+        return { reason, score: 1000 }
     }
 }
 describe('Achievement System Integration', () => {
@@ -286,7 +286,7 @@ describe('Achievement System Integration', () => {
                 eventIntegrator.handleBubblePopped('normal', {) }
             // バッチ更新を実行
             const updates = Array.from({length: 1000), (_, i') => ({'
-                achievementId: 'bubble_master';
+                achievementId: 'bubble_master',
                 value: i + 1
             };
             achievementManager.batchUpdateProgress(updates);
@@ -299,9 +299,9 @@ describe('Achievement System Integration', () => {
             // 大量の通知を生成
             for (let i = 0, i < 100, i++') {'
                 const achievement = {
-                    id: `test_${i}`;
+                    id: `test_${i}`,
                     name: `Test ${i}`;
-                    icon: '🏆';
+                    icon: '🏆',
                     rarity: 'common'
                 };
                 notificationSystem.showUnlockNotification(achievement);
@@ -344,7 +344,7 @@ describe('Achievement System Integration', () => {
             Object.keys(statistics.categories).forEach(categoryKey => {
                 const categoryStats = statistics.categories[categoryKey]);
                 expect(categoryStats.total).toBeGreaterThan(0);
-                expect(categoryStats.completionRate).toBeGreaterThanOrEqual(0) };
+                expect(categoryStats.completionRate).toBeGreaterThanOrEqual(0) }
         }
     }');'
     describe('エラーハンドリング統合', (') => {'
@@ -417,6 +417,6 @@ describe('Achievement System Integration', () => {
             const finalStats = statsUI.getStatistics();
             expect(finalStats.overall.unlocked).toBe(unlockedCount);
             expect(finalStats.overall.completionRate).toBeGreaterThan(0);
-        };
+        }
     }
 }');'

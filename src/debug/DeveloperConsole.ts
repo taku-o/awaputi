@@ -12,12 +12,11 @@ import { ExecutionContext  } from './ExecutionContext.js';
 
 import type { GameEngine } from '../core/GameEngine';
 
-interface CommandParameter { name: string;
-    type: string;
-    required: boolean;
+interface CommandParameter { name: string,
+    type: string,
+    required: boolean,
     description: string;
-
-interface CommandOptions { description?: string,
+    interface CommandOptions { description?: string,
     usage?: string;
     group?: string;
     aliases?: string[];
@@ -25,64 +24,53 @@ interface CommandOptions { description?: string,
     examples?: string[];
     permissions?: string;
     hidden?: boolean;
-
-interface CommandData { name: string;
-    handler: CommandHandler;
-    description: string;
-    usage: string;
-    group: string;
-    aliases: string[];
-    parameters: CommandParameter[];
-    examples: string[];
-    permissions: string;
+    interface CommandData { name: string,
+    handler: CommandHandler,
+    description: string,
+    usage: string,
+    group: string,
+    aliases: string[],
+    parameters: CommandParameter[],
+    examples: string[],
+    permissions: string,
     hidden: boolean;
-
-interface ParsedCommand { name: string;
-    args: string[];
+    interface ParsedCommand { name: string,
+    args: string[],
     raw: string;
-
-interface OutputLine { message: string;
-    type: string;
-    timestamp: string;
+    interface OutputLine { message: string,
+    type: string,
+    timestamp: string,
     id: number;
-
-interface ExecutionMetadata { success: boolean;
-    executionTime: number;
-    errorMessage: string | null;
-    resultType: string;
-    commandName: string;
+    interface ExecutionMetadata { success: boolean,
+    executionTime: number,
+    errorMessage: string | null,
+    resultType: string,
+    commandName: string,
     args: string[];
-
-interface HistoryEntry { command: string;
-    timestamp: number;
+    interface HistoryEntry { command: string,
+    timestamp: number,
     metadata: any;
-
-interface AutocompleteSuggestion { suggestion: string;
+    interface AutocompleteSuggestion { suggestion: string,
     type: string;
     description?: string;
-
-interface HistorySearchOptions { type?: string,
+    interface HistorySearchOptions { type?: string,
     limit?: number;
     includeMetadata?: boolean;
-
-interface HistoryStatistics { totalCommands: number;
-    sessionCommands: number;
-    averageCommandLength: number;
-    historySize: number;
+    interface HistoryStatistics { totalCommands: number,
+    sessionCommands: number,
+    averageCommandLength: number,
+    historySize: number,
     topCommands: [string, number][];
     errorCommands: Set<string>;
     currentSession?: {
-        command,s: any[];
-    totalTime: number;
+        command,s: any[] ,
+    totalTime: number,
     totalTime: number;
         };
 interface ExportOptions { includeMetadata?: boolean;
-
-interface ImportOptions { merge?: boolean;
-
-type CommandHandler = (args: string[], context?: ExecutionContext, console?: DeveloperConsole) => any;
-
-export class DeveloperConsole {
+    interface ImportOptions { merge?: boolean;
+    type CommandHandler = (args: string[], context?: ExecutionContext, console?: DeveloperConsole) => any;
+    export class DeveloperConsole {
     private gameEngine: GameEngine;
     private, commands: Map<string, CommandData>,
     private commandGroups: Map<string, Set<string>>;
@@ -102,23 +90,22 @@ export class DeveloperConsole {
     public isOpen: boolean;
     public currentInput: string;
     public suggestions: AutocompleteSuggestion[];
-
     constructor(gameEngine: GameEngine) {
 
         this.gameEngine = gameEngine;
         
         // コマンド管理
         this.commands = new Map();
-        this.commandGroups = new Map();
-        this.aliases = new Map();
+    this.commandGroups = new Map();
+    this.aliases = new Map();
         
         // 拡張履歴管理
         this.historyManager = new EnhancedHistoryManager(this);
         
         // 後方互換性のため既存インターフェースも保持
         this.history = [];
-        this.historyIndex = -1;
-        this.maxHistorySize = 100;
+    this.historyIndex = -1;
+    this.maxHistorySize = 100;
         
         // 拡張自動補完
         this.enhancedAutocomplete = new EnhancedAutocompleteEngine(this, gameEngine);
@@ -129,28 +116,28 @@ export class DeveloperConsole {
         
         // 出力管理
         this.outputBuffer = [];
-        this.maxOutputLines = 500;
+    this.maxOutputLines = 500;
         
         // 状態
         this.isOpen = false;
-        this.currentInput = ';'
+    this.currentInput = ';'
         this.suggestions = [];
         
         // 拡張コマンド群
         this.configurationCommands = new ConfigurationCommands(gameEngine);
-        this.testDataGenerationCommands = new TestDataGenerationCommands(gameEngine) }
+    this.testDataGenerationCommands = new TestDataGenerationCommands(gameEngine) };
         this.initialize(); }
     }
 
     private initialize(): void { this.registerBuiltinCommands();
         this.registerExtensionCommands();
-        this.loadHistory() }
+        this.loadHistory();
 
     /**
      * コンソールの表示/非表示切り替え
      */
     toggle(): void { if (this.isOpen) {
-            this.hide() } else { this.show() }
+            this.hide() } else { this.show();
     }
 
     show(): void { this.isOpen = true;
@@ -168,17 +155,17 @@ export class DeveloperConsole {
             handler,
             description: options.description || ','
             usage: options.usage || name,
-            group: options.group || 'custom',
+            group: options.group || 'custom,
             aliases: options.aliases || [],
     parameters: options.parameters || [],
             examples: options.examples || [],
-            permissions: options.permissions || 'user',
-    hidden: options.hidden || false  },
+            permissions: options.permissions || 'user,
+    hidden: options.hidden || false  };
         // メインコマンドの登録
         this.commands.set(name, commandData);
         
         // エイリアスの登録
-        for (const alias of commandData.aliases) { this.aliases.set(alias, name) }
+        for (const alias of commandData.aliases) { this.aliases.set(alias, name);
         
         // グループへの追加
         this.addToGroup(commandData.group, name);
@@ -204,9 +191,8 @@ export class DeveloperConsole {
             // 結果の出力
             if(result !== undefined} { }'
 
-                this.output(result, 'result'};
-
-            } catch (error) { }
+                this.output(result, 'result'}
+        } catch (error) { }
 
             this.output(`Error: ${(error, as, Error'}'.message}`, 'error');
             console.error('Console command error:', error);
@@ -230,7 +216,7 @@ export class DeveloperConsole {
         
         return { name: resolvedName,
             args };
-            raw: commandLine,
+            raw: commandLine;
 
     /**
      * コマンドラインのトークン化
@@ -256,7 +242,7 @@ export class DeveloperConsole {
             } else { current += char }
         }
         
-        if (current.trim() { tokens.push(current.trim() }
+        if (current.trim() { tokens.push(current.trim();
         
         return tokens;
     }
@@ -266,7 +252,7 @@ export class DeveloperConsole {
      */
     private async executeCommand(parsed: ParsedCommand): Promise<any> { const command = this.commands.get(parsed.name);
         if (!command) { }
-            throw new Error(`Unknown, command: ${parsed.name}`};
+            throw new Error(`Unknown, command: ${parsed.name}`}
         }
         
         // パラメータのバリデーション
@@ -295,7 +281,7 @@ export class DeveloperConsole {
                 executionTime,
                 errorMessage,
                 resultType: typeof result,
-    commandName: parsed.name);
+    commandName: parsed.name),
                 args: parsed.args  }
         
         return result;
@@ -312,8 +298,7 @@ export class DeveloperConsole {
             throw new Error(' }'
 
                 `Command '${command.name}' requires, at least ${required.length} arguments. ` +)
-                `Usage: ${ command.usage}` },
-        }
+                `Usage: ${ command.usage}` } }
         
         // 型チェック
         for(let, i = 0; i < command.parameters.length && i < args.length; i++) {
@@ -350,12 +335,12 @@ export class DeveloperConsole {
             message,
             type,
             timestamp,
-            id: Date.now() + Math.random(  },
+            id: Date.now() + Math.random(  ,
         
         this.outputBuffer.push(outputLine);
         
         // バッファサイズの制限
-        if (this.outputBuffer.length > this.maxOutputLines) { this.outputBuffer.shift() }
+        if (this.outputBuffer.length > this.maxOutputLines) { this.outputBuffer.shift();
         
         // UIへの通知
         this.notifyOutput(outputLine);
@@ -373,7 +358,7 @@ export class DeveloperConsole {
         
         this.history.push(command);
         
-        if (this.history.length > this.maxHistorySize) { this.history.shift() }
+        if (this.history.length > this.maxHistorySize) { this.history.shift();
         
         this.historyIndex = this.history.length;
         this.saveHistory();
@@ -388,7 +373,7 @@ export class DeveloperConsole {
         
             // 既存の履歴インデックスも更新（後方互換性）
             const simpleHistory = this.historyManager.history.map(e => e.command);
-            this.historyIndex = simpleHistory.indexOf(entry.command) }
+            this.historyIndex = simpleHistory.indexOf(entry.command);
             return entry.command;
         ;
         // フォールバック: 既存の実装
@@ -399,7 +384,7 @@ export class DeveloperConsole {
             this.historyIndex = Math.max(0; this.historyIndex - 1);' }'
 
         } else if(direction === 'down' { ''
-            this.historyIndex = Math.min(this.history.length; this.historyIndex + 1) }
+            this.historyIndex = Math.min(this.history.length; this.historyIndex + 1);
         
         return this.historyIndex < this.history.length ';'
 
@@ -424,7 +409,7 @@ export class DeveloperConsole {
      * 履歴検索
      */
     searchHistory(query: string, options: HistorySearchOptions = { ): HistoryEntry[] {
-        return this.historyManager.search(query, options) }
+        return this.historyManager.search(query, options);
 
     /**
      * 履歴統計の取得
@@ -438,20 +423,20 @@ export class DeveloperConsole {
      * 履歴のインポート'
      */''
     importHistory(data: string, format: string = 'json', options: ImportOptions = { ): any {
-        return this.historyManager.importHistory(data, format, options) }
+        return this.historyManager.importHistory(data, format, options);
 
     /**
      * 自動補完設定の更新
      */
     updateAutocompleteSettings(settings: any): void { if (this.enhancedAutocomplete) {
-            this.enhancedAutocomplete.updateSettings(settings) }
+            this.enhancedAutocomplete.updateSettings(settings);
     }
 
     /**
      * グループへの追加
      */
     private addToGroup(group: string, commandName: string): void { if (!this.commandGroups.has(group) {
-            this.commandGroups.set(group, new Set() }
+            this.commandGroups.set(group, new Set();
         this.commandGroups.get(group)!.add(commandName);
     }
 
@@ -473,7 +458,7 @@ export class DeveloperConsole {
     private loadHistory()';'
             const saved = localStorage.getItem('debug-console-history);'
             if (saved) {
-                this.history = JSON.parse(saved) }
+                this.history = JSON.parse(saved);
 
                 this.historyIndex = this.history.length;' }'
 
@@ -485,8 +470,8 @@ export class DeveloperConsole {
      */''
     private registerBuiltinCommands()';'
         this.register('help', this.helpCommand.bind(this), { ''
-            description: 'Show available commands or detailed help for a specific command',
-            usage: 'help [command]',
+            description: 'Show available commands or detailed help for a specific command,
+            usage: 'help [command],
             parameters: ['
             }]'
                 { name: 'command', type: 'string', required: false, description: 'Specific command to get help for'
@@ -497,8 +482,8 @@ export class DeveloperConsole {
         }'),'
         // クリアコマンド
         this.register('clear', this.clearCommand.bind(this), { ''
-            description: 'Clear the console output',
-            usage: 'clear',
+            description: 'Clear the console output,
+            usage: 'clear,
             aliases: ['cls'],
             group: 'system'}
 
@@ -506,8 +491,8 @@ export class DeveloperConsole {
 ';'
         // 履歴コマンド
         this.register('history', this.historyCommand.bind(this), { ''
-            description: 'Show command history',
-            usage: 'history [count]',
+            description: 'Show command history,
+            usage: 'history [count],
             parameters: ['
             }]'
                 { name: 'count', type: 'number', required: false, description: 'Number of recent commands to show'
@@ -517,19 +502,19 @@ export class DeveloperConsole {
         }'),'
         // 履歴検索コマンド
         this.register('history.search', this.historySearchCommand.bind(this), { ''
-            description: 'Search command history',
-            usage: 'history.search <query> [options]',
+            description: 'Search command history,
+            usage: 'history.search <query> [options],
             parameters: ['
-            }'
+            }
 
                 { name: 'query', type: 'string', required: true, description: 'Search query'
-            },''
+            ,''
                 { name: 'type', type: 'string', required: false, description: 'Search, type: exact, contains, fuzzy, regex' },]'
                 { name: 'limit', type: 'number', required: false, description: 'Maximum results to show'
             }]
             ],
             examples: [';'
-                'history.search config',
+                'history.search config,
                 'history.search "game.set" exact',]';'
                 'history.search "conf.*get" regex']';'
             ],
@@ -537,22 +522,22 @@ export class DeveloperConsole {
         }'),'
         // 履歴統計コマンド
         this.register('history.stats', this.historyStatsCommand.bind(this), { ''
-            description: 'Show command history statistics',
-            usage: 'history.stats',
+            description: 'Show command history statistics,
+            usage: 'history.stats,
             group: 'system'}
 
         }');'
 ';'
         // 履歴エクスポートコマンド
         this.register('history.export', this.historyExportCommand.bind(this), {;
-            description: 'Export command history',
-            usage: 'history.export [format]',
+            description: 'Export command history,
+            usage: 'history.export [format],
             parameters: ['
             }]'
                 { name: 'format', type: 'string', required: false, description: 'Export, format: json, csv, text' }]
             ],
             examples: [';'
-                'history.export',
+                'history.export,
                 'history.export csv',]';'
                 'history.export text']';'
             ],
@@ -560,8 +545,8 @@ export class DeveloperConsole {
         }'),'
         // エコーコマンド
         this.register('echo', this.echoCommand.bind(this), { ''
-            description: 'Print text to console',
-            usage: 'echo <text>',
+            description: 'Print text to console,
+            usage: 'echo <text>,
             parameters: ['
             }]'
                 { name: 'text', type: 'string', required: true, description: 'Text to print'
@@ -572,13 +557,13 @@ export class DeveloperConsole {
         }'),'
         // 変数設定コマンド
         this.register('set', this.setCommand.bind(this), { ''
-            description: 'Set a variable in the console context',
-            usage: 'set <name> <value>',
+            description: 'Set a variable in the console context,
+            usage: 'set <name> <value>,
             parameters: ['
-            }'
+            }
 
                 { name: 'name', type: 'string', required: true, description: 'Variable name'
-            },]'
+            ,]'
                 { name: 'value', type: 'string', required: true, description: 'Variable value'
             }]'
             ],
@@ -587,8 +572,8 @@ export class DeveloperConsole {
         }'),'
         // 変数取得コマンド
         this.register('get', this.getCommand.bind(this), { ''
-            description: 'Get a variable from the console context',
-            usage: 'get <name>',
+            description: 'Get a variable from the console context,
+            usage: 'get <name>,
             parameters: ['
             }]'
                 { name: 'name', type: 'string', required: true, description: 'Variable name'
@@ -599,8 +584,8 @@ export class DeveloperConsole {
         }'),'
         // JavaScriptコマンド
         this.register('js', this.jsCommand.bind(this), { ''
-            description: 'Execute JavaScript code',
-            usage: 'js <code>',
+            description: 'Execute JavaScript code,
+            usage: 'js <code>,
             parameters: ['
             }]'
                 { name: 'code', type: 'string', required: true, description: 'JavaScript code to execute'
@@ -611,16 +596,15 @@ export class DeveloperConsole {
         }'),'
         // コマンド一覧
         this.register('commands', this.commandsCommand.bind(this), { ''
-            description: 'List all available commands',
-            usage: 'commands [group]',
+            description: 'List all available commands,
+            usage: 'commands [group],
             parameters: ['
             }]'
                 { name: 'group', type: 'string', required: false, description: 'Filter by command group'
             }]'
             ],
             examples: ['commands', 'commands game],'
-            group: 'system',
-        } }
+            group: 'system' } }
 
     /**
      * 拡張コマンドの登録
@@ -628,15 +612,15 @@ export class DeveloperConsole {
     private registerExtensionCommands(): void { // 設定管理コマンドの登録
         this.configurationCommands.registerCommands(this);
         // テストデータ生成コマンドの登録
-        this.testDataGenerationCommands.registerCommands(this) }
+        this.testDataGenerationCommands.registerCommands(this);
 
     // 組み込みコマンドの実装
     private helpCommand(args: string[]): string { if (args.length === 0) {''
-            const groups = Array.from(this.commandGroups.keys().sort()','
+            const groups = Array.from(this.commandGroups.keys())).sort()','
             let output = 'Available command groups: \n')),
             for (const group of groups) { }
 
-                const commands = Array.from(this.commandGroups.get(group)!'); }'
+                const commands = Array.from(this.commandGroups.get())group)!'); }'
                 output += `  ${group}: ${commands.length} commands\n`;
             }
 
@@ -653,9 +637,9 @@ export class DeveloperConsole {
                 return `Command '${commandName}' not found.`;
             }
             
-            let output = `Command: ${command.name}\n`,
-            output += `Description: ${command.description}\n`,
-            output += `Usage: ${command.usage}\n`,
+            let output = `Command: ${command.name}\n,
+            output += `Description: ${command.description}\n,
+            output += `Usage: ${command.usage}\n,
 
             if (command.aliases.length > 0) { }'
 
@@ -665,7 +649,7 @@ export class DeveloperConsole {
 
             if (command.parameters.length > 0) {
 
-                output += 'Parameters: \n',
+                output += 'Parameters: \n,
                 for (const param of command.parameters) {
             }
 
@@ -699,11 +683,11 @@ export class DeveloperConsole {
 
             return 'No command history available.';
         
-        let output = `Recent commands(${recentHistory.length} of ${ allHistory.length):\n`,
+        let output = `Recent commands(${recentHistory.length} of ${ allHistory.length):\n,
         recentHistory.forEach((entry, index} => { '
             const num = allHistory.length - count + index + 1,
             const time = new Date(entry.timestamp}.toLocaleTimeString('}''
-            const status = entry.metadata.success ? '✓' : '✗';) }
+            const status = entry.metadata.success ? '✓' : '✗';);
 
             const execTime = entry.metadata.executionTime ? ` (${entry.metadata.executionTime.toFixed(1}ms')` : ';
             
@@ -727,13 +711,13 @@ export class DeveloperConsole {
         const limit = args[2] ? parseInt(args[2]) : 20;
         
         const results = this.searchHistory(query, { type: searchType)
-           , limit: limit),
+            limit: limit),
             includeMetadata: true,
 
         if (results.length === 0) { }'
 
             return `No commands found matching "${query}".`;
-        }"
+        }
 
         let output = `Search results for "${query}" (${results.length} found):\n`;"
         results.forEach((entry, index) => {  ""
@@ -754,8 +738,8 @@ export class DeveloperConsole {
         let, output = 'Command, History Statistics: \n' }
         output += `  Total, Commands: ${stats.totalCommands}\n`;)
         output += `  Session Commands: ${stats.sessionCommands}\n`;)
-        output += `  Average Command Length: ${stats.averageCommandLength.toFixed(1} characters\n`,
-        output += `  History Size: ${stats.historySize}\n`,
+        output += `  Average Command Length: ${stats.averageCommandLength.toFixed(1} characters\n,
+        output += `  History Size: ${stats.historySize}\n,
 
         if (stats.topCommands.length > 0) {
 
@@ -763,7 +747,7 @@ export class DeveloperConsole {
             }
             stats.topCommands.forEach(([cmd, count], index) => { }
                 output += `    ${index + 1}. ${cmd}: ${count} times\n`;
-            };
+            }
         }
         ';'
 
@@ -772,16 +756,15 @@ export class DeveloperConsole {
             output += `\n  Commands with Errors: ${Array.from(stats.errorCommands}.join(', '}\n`;
         }
         
-        if (stats.currentSession) { const sessionTime = Math.round(stats.currentSession.totalTime / 1000) }
-            output += `\n  Current Session: ${stats.currentSession.commands.length} commands in ${sessionTime}s\n`,
-        }
+        if ())stats.currentSession) { const sessionTime = Math.round(stats.currentSession.totalTime / 1000);
+            output += `\n  Current Session: ${stats.currentSession.commands.length} commands in ${sessionTime}s\n` }
         
         return output;
 
     }
 
     private historyExportCommand(args: string[]): string { ''
-        const format = args[0] || 'json',
+        const format = args[0] || 'json,
         
         try {
             const exported = this.exportHistory(format, {
@@ -805,7 +788,7 @@ export class DeveloperConsole {
         return args.join(', ');
     private setCommand(args: string[]): string { const [name, ...valueParts] = args,
         const value = valueParts.join(', ');
-        this.context.setVariable(name, value) }
+        this.context.setVariable(name, value);
         return `Set ${name} = ${value}`;
     }
 
@@ -841,14 +824,14 @@ export class DeveloperConsole {
         
         let commands: string[],
         if (groupFilter) {
-            const groupCommands = this.commandGroups.get(groupFilter) }
+            const groupCommands = this.commandGroups.get(groupFilter);
 
             if (!groupCommands) { }'
 
                 return `Group '${groupFilter}' not found.`;
             }
             commands = Array.from(groupCommands);
-        } else { commands = Array.from(this.commands.keys() }
+        } else { commands = Array.from(this.commands.keys()));
 
         commands.sort('''
             ? `Commands, in group '${groupFilter}': \n`''
@@ -865,9 +848,9 @@ export class DeveloperConsole {
     }
 
     // パブリックAPI
-    getCommands(): string[] { return Array.from(this.commands.keys() }
+    getCommands(): string[] { return Array.from(this.commands.keys()));
 
-    getCommandGroups(): string[] { return Array.from(this.commandGroups.keys() }
+    getCommandGroups(): string[] { return Array.from(this.commandGroups.keys()));
 
     getHistory(): string[] { return [...this.history],
 
@@ -884,9 +867,9 @@ export class DeveloperConsole {
             this.configurationCommands.destroy(); }
         }
         
-        if (this.enhancedAutocomplete) { this.enhancedAutocomplete.destroy() }
+        if (this.enhancedAutocomplete) { this.enhancedAutocomplete.destroy();
         
-        if (this.historyManager) { this.historyManager.destroy() }
+        if (this.historyManager) { this.historyManager.destroy();
         
         this.commands.clear();
         this.commandGroups.clear();

@@ -15,70 +15,62 @@
  */
 
 // 型定義
-export interface PersonalizationConfig { enabled: boolean;
-    trackInteractions: boolean;
-    personalizeContent: boolean;
-    rememberPreferences: boolean;
+export interface PersonalizationConfig { enabled: boolean,
+    trackInteractions: boolean,
+    personalizeContent: boolean,
+    rememberPreferences: boolean,
     adaptToProgress: boolean;
-
-export interface UserProfile { skill_level: SkillLevel;
-    preferred_help_type: HelpType;
-    learning_style: LearningStyle;
-    accessibility_needs: AccessibilityNeed[];
-    play_frequency: PlayFrequency;
-    help_usage_pattern: UsagePattern;
-    created_at: number;
+    export interface UserProfile { skill_level: SkillLevel,
+    preferred_help_type: HelpType,
+    learning_style: LearningStyle,
+    accessibility_needs: AccessibilityNeed[],
+    play_frequency: PlayFrequency,
+    help_usage_pattern: UsagePattern,
+    created_at: number,
     last_updated: number;
-
-export interface UserPreferences { auto_show: boolean;
-    animation_speed: AnimationSpeed;
-    content_detail_level: DetailLevel;
-    voice_output: boolean;
-    high_contrast: boolean;
-    large_text: boolean;
-    reduced_motion: boolean;
-    keyboard_navigation: boolean;
+    export interface UserPreferences { auto_show: boolean,
+    animation_speed: AnimationSpeed,
+    content_detail_level: DetailLevel,
+    voice_output: boolean,
+    high_contrast: boolean,
+    large_text: boolean,
+    reduced_motion: boolean,
+    keyboard_navigation: boolean,
     screen_reader_support: boolean;
-
-export interface ProgressData { topics_viewed: Set<string>;
-    concepts_mastered: Set<string>;
-    help_requests: number;
-    successful_interactions: number;
-    error_recovery_success: number;
+    export interface ProgressData { topics_viewed: Set<string>,
+    concepts_mastered: Set<string>,
+    help_requests: number,
+    successful_interactions: number,
+    error_recovery_success: number,
     preferred_topics: Map<string, number>;
     difficulty_progression: DifficultyProgression[];
-
-export interface DifficultyProgression { timestamp: number;
-    level: SkillLevel;
-    confidence: number;
+    export interface DifficultyProgression { timestamp: number,
+    level: SkillLevel,
+    confidence: number,
     evidence: ProgressionEvidence[];
-
-export interface ProgressionEvidence { type: EvidenceType;
-    value: number;
-    weight: number;
+    export interface ProgressionEvidence { type: EvidenceType,
+    value: number,
+    weight: number,
     description: string;
-
-export interface InteractionRecord { timestamp: number;
+    export interface InteractionRecord { timestamp: number,
     type: InteractionType;
     topic?: string;
     successful: boolean;
     duration?: number;
-    context: InteractionContext;
+    context: InteractionContext,
     user_profile: UserProfile;
     concept_mastered?: string;
     error_resolved?: boolean;
     used_visuals?: boolean;
     used_audio?: boolean;
     used_interaction?: boolean;
-
-export interface InteractionContext { triggerType?: TriggerType,
+    export interface InteractionContext { triggerType?: TriggerType,
     gameState?: string;
     errorType?: string;
     difficulty?: string;
     timeOfDay?: number;
     sessionDuration?: number;
-
-export interface PersonalizedContent { // 基本調整
+    export interface PersonalizedContent { // 基本調整
     detail_level?: DetailLevel;
     simplified_language?: boolean;
     concise_format?: boolean;
@@ -134,97 +126,91 @@ export interface PersonalizedContent { // 基本調整
     step_by_step_guidance?: boolean;
     quiet_mode?: boolean;
     reduced_distractions?: boolean;
-
-export interface ContentRecommendation { topic: string;
-    score: number;
-    reason: RecommendationReason[];
+    export interface ContentRecommendation { topic: string,
+    score: number,
+    reason: RecommendationReason[],
     priority: RecommendationPriority;
-
-export interface RecommendationReason { type: ReasonType;
-    weight: number;
+    export interface RecommendationReason { type: ReasonType,
+    weight: number,
     description: string;
-
-export interface PersonalizationStats { userProfile: UserProfile;
-    interactionCount: number;
-    successRate: number;
-    topicsViewed: number;
-    conceptsMastered: number;
-    preferences: UserPreferences;
-    learningEfficiency: number;
+    export interface PersonalizationStats { userProfile: UserProfile,
+    interactionCount: number,
+    successRate: number,
+    topicsViewed: number,
+    conceptsMastered: number,
+    preferences: UserPreferences,
+    learningEfficiency: number,
     adaptationScore: number;
-
-export interface SkillAnalysis { currentLevel: SkillLevel;
-    confidenceScore: number;
-    strengthAreas: string[];
-    improvementAreas: string[];
+    export interface SkillAnalysis { currentLevel: SkillLevel,
+    confidenceScore: number,
+    strengthAreas: string[],
+    improvementAreas: string[],
     nextStepRecommendations: string[];
-
-export interface LearningPatternAnalysis { primaryStyle: LearningStyle;
+    export interface LearningPatternAnalysis { primaryStyle: LearningStyle;
     secondaryStyle?: LearningStyle;
-    confidence: number;
-    evidenceCount: number;
+    confidence: number,
+    evidenceCount: number,
     adaptationSuggestions: string[];
-
-export interface BehavioralInsights { engagementLevel: EngagementLevel;
-    preferredContentTypes: ContentType[];
-    optimaltimeOfDay: number[];
-    sessionDurationPreference: number;
+    export interface BehavioralInsights { engagementLevel: EngagementLevel,
+    preferredContentTypes: ContentType[],
+    optimaltimeOfDay: number[],
+    sessionDurationPreference: number,
     errorRecoveryPattern: RecoveryPattern;
 
 // 列挙型
 export type SkillLevel = 'beginner' | 'intermediate' | 'advanced' | 'expert';
-export type HelpType = 'minimal' | 'detailed' | 'interactive' | 'visual';
-export type LearningStyle = 'visual' | 'auditory' | 'kinesthetic' | 'reading';
-export type AccessibilityNeed = 'screen_reader' | 'motor_impairment' | 'cognitive_support' | 'visual_impairment' | 'hearing_impairment';
-export type PlayFrequency = 'occasional' | 'regular' | 'frequent' | 'daily';
-export type UsagePattern = 'reactive' | 'mixed' | 'proactive';
-export type AnimationSpeed = 'slow' | 'normal' | 'fast' | 'none';
-export type DetailLevel = 'minimal' | 'medium' | 'detailed' | 'comprehensive';
-export type InteractionType = 'help_request' | 'error' | 'success' | 'dismissal' | 'proactive' | 'exploration';
-export type TriggerType = 'error' | 'firstVisit' | 'stuck' | 'timeout' | 'manual' | 'contextual';
-export type EvidenceType = 'success_rate' | 'completion_time' | 'error_frequency' | 'help_usage' | 'feature_adoption';
-export type FontSizeOption = 'small' | 'medium' | 'large' | 'xl';
-export type ContentPriority = 'low' | 'normal' | 'high' | 'urgent';
-export type RecommendationPriority = 'low' | 'medium' | 'high' | 'critical';
-export type ReasonType = 'skill_match' | 'learning_style' | 'error_pattern' | 'progress_gap' | 'preference_alignment';
-export type EngagementLevel = 'low' | 'medium' | 'high' | 'very_high';
-export type ContentType = 'tutorial' | 'reference' | 'troubleshooting' | 'tips' | 'advanced_techniques';
-export type RecoveryPattern = 'self_sufficient' | 'help_seeking' | 'trial_and_error' | 'guidance_dependent';
+    export type HelpType = 'minimal' | 'detailed' | 'interactive' | 'visual';
+    export type LearningStyle = 'visual' | 'auditory' | 'kinesthetic' | 'reading';
+    export type AccessibilityNeed = 'screen_reader' | 'motor_impairment' | 'cognitive_support' | 'visual_impairment' | 'hearing_impairment';
+    export type PlayFrequency = 'occasional' | 'regular' | 'frequent' | 'daily';
+    export type UsagePattern = 'reactive' | 'mixed' | 'proactive';
+    export type AnimationSpeed = 'slow' | 'normal' | 'fast' | 'none';
+    export type DetailLevel = 'minimal' | 'medium' | 'detailed' | 'comprehensive';
+    export type InteractionType = 'help_request' | 'error' | 'success' | 'dismissal' | 'proactive' | 'exploration';
+    export type TriggerType = 'error' | 'firstVisit' | 'stuck' | 'timeout' | 'manual' | 'contextual';
+    export type EvidenceType = 'success_rate' | 'completion_time' | 'error_frequency' | 'help_usage' | 'feature_adoption';
+    export type FontSizeOption = 'small' | 'medium' | 'large' | 'xl';
+    export type ContentPriority = 'low' | 'normal' | 'high' | 'urgent';
+    export type RecommendationPriority = 'low' | 'medium' | 'high' | 'critical';
+    export type ReasonType = 'skill_match' | 'learning_style' | 'error_pattern' | 'progress_gap' | 'preference_alignment';
+    export type EngagementLevel = 'low' | 'medium' | 'high' | 'very_high';
+    export type ContentType = 'tutorial' | 'reference' | 'troubleshooting' | 'tips' | 'advanced_techniques';
+    export type RecoveryPattern = 'self_sufficient' | 'help_seeking' | 'trial_and_error' | 'guidance_dependent';
 
 // 定数
-export const DEFAULT_PERSONALIZATION_CONFIG: PersonalizationConfig = { enabled: true;
-    trackInteractions: true;
-    personalizeContent: true;
-    rememberPreferences: true;
+export const DEFAULT_PERSONALIZATION_CONFIG: PersonalizationConfig = { enabled: true,
+    trackInteractions: true,
+    personalizeContent: true,
+    rememberPreferences: true,
     adaptToProgress: true, as const;
 ';'
 
-export const DEFAULT_USER_PROFILE: UserProfile = {;
-    skill_level: 'beginner';
-    preferred_help_type: 'detailed';
-    learning_style: 'visual';
-    accessibility_needs: [];
-    play_frequency: 'occasional';
-    help_usage_pattern: 'reactive';
+export const DEFAULT_USER_PROFILE: UserProfile = {,
+    skill_level: 'beginner,
+    preferred_help_type: 'detailed,
+    learning_style: 'visual,
+    accessibility_needs: [],
+    play_frequency: 'occasional,
+    help_usage_pattern: 'reactive,
     created_at: Date.now(
-    last_updated: Date.now('';
-    animation_speed: 'normal';
-    content_detail_level: 'medium';
-    voice_output: false;
-    high_contrast: false;
-    large_text: false;
-    reduced_motion: false;
-    keyboard_navigation: false;
+    last_updated: Date.now(',
+    animation_speed: 'normal,
+    content_detail_level: 'medium,
+    voice_output: false,
+    high_contrast: false,
+    large_text: false,
+    reduced_motion: false,
+    keyboard_navigation: false,
     screen_reader_support: false, as const;
-export const SKILL_THRESHOLDS = {
-    beginner_to_intermediate: { successRate: 0.6, masteredConcepts: 5  };
-    intermediate_to_advanced: { successRate: 0.8, masteredConcepts: 10  };
+    export const SKILL_THRESHOLDS = {
+    beginner_to_intermediate: { successRate: 0.6, masteredConcepts: 5  ,
+    intermediate_to_advanced: { successRate: 0.8, masteredConcepts: 10  ,
     advanced_to_expert: { successRate: 0.9, masteredConcepts: 20  } as const;
 
 export const PLAY_FREQUENCY_THRESHOLDS = {
-    occasional: { requestsPerDay: 1 };
-    regular: { requestsPerDay: 3 };
-    frequent: { requestsPerDay: 5 };
+    occasional: { requestsPerDay: 1  ,
+    regular: { requestsPerDay: 3  ,
+    frequent: { requestsPerDay: 5  ,
     daily: { requestsPerDay: 10 } as const;
 ';'
 
@@ -234,30 +220,29 @@ export const LEARNING_STYLE_INDICATORS = {;
     kinesthetic: ['interactive_elements', 'hands_on_practice', 'gesture_input'],
     reading: ['detailed_text', 'structured_content', 'reference_materials] } as const;'
 
-export const RECOMMENDATION_WEIGHTS = { skill_match: 0.3;
-    learning_style: 0.2;
-    error_pattern: 0.25;
-    progress_gap: 0.15;
+export const RECOMMENDATION_WEIGHTS = { skill_match: 0.3,
+    learning_style: 0.2,
+    error_pattern: 0.25,
+    progress_gap: 0.15,
     preference_alignment: 0.1  } as const;
 ';'
 
 export const STORAGE_KEYS = {;
-    userProfile: 'bubblePop_userProfile';
-    preferences: 'bubblePop_helpPreferences';
-    progress: 'bubblePop_helpProgress';
+    userProfile: 'bubblePop_userProfile,
+    preferences: 'bubblePop_helpPreferences,
+    progress: 'bubblePop_helpProgress,
     history: 'bubblePop_helpHistory'
             } as const;
 // ユーティリティ関数
 export function calculateSkillProgression(;
-    successRate: number);
-    masteredConcepts: number;
+    successRate: number),
+    masteredConcepts: number,
     currentLevel: SkillLevel')';
 '): SkillLevel { ''
     if (currentLevel === 'beginner''
         const threshold = SKILL_THRESHOLDS.beginner_to_intermediate,
         if(successRate >= threshold.successRate && masteredConcepts >= threshold.masteredConcepts) {
-    }
-
+    };
             return 'intermediate';
     } else if (currentLevel === 'intermediate' const threshold = SKILL_THRESHOLDS.intermediate_to_advanced,
         if(successRate >= threshold.successRate && masteredConcepts >= threshold.masteredConcepts) {', ' }
@@ -272,17 +257,17 @@ export function calculateSkillProgression(;
 }
 
 export function inferLearningStyleFromInteractions(interactions: InteractionRecord[]): LearningStyle { const styleCounts = {
-        visual: 0;
-        auditory: 0;
-        kinesthetic: 0;
+        visual: 0,
+        auditory: 0,
+        kinesthetic: 0,
     reading: 0 };
     interactions.forEach(interaction => {  );
-        if (interaction.used_visuals) styleCounts.visual++,
-        if (interaction.used_audio) styleCounts.auditory++,
+        if (interaction.used_visuals) styleCounts.visual++;
+        if (interaction.used_audio) styleCounts.auditory++;
         if (interaction.used_interaction) styleCounts.kinesthetic++ }
         if (interaction.duration && interaction.duration > 5000) styleCounts.reading++; }
     };
-    
+
     const maxStyle = Object.keys(styleCounts).reduce((a, b) => ;
         styleCounts[a as keyof typeof styleCounts] > styleCounts[b as keyof typeof styleCounts] ? a: b;
     ) as LearningStyle;
@@ -305,25 +290,24 @@ export function calculatePersonalizationScore(;
     ','
     // アクセシビリティ適合度
     userProfile.accessibility_needs.forEach(need => { '),'
-        if(need === 'screen_reader' && content.alt_text' score += 10,' }
-
+        if(need === 'screen_reader' && content.alt_text' score += 10,' };
         if (need === 'visual_impairment' && content.high_contrast) score += 10; }
     };
-    
+
     return Math.min(score, 100);
 }
 
 export function serializeProgressData(data: ProgressData): string { return JSON.stringify({)
         ...data),
-        topics_viewed: Array.from(data.topics_viewed);
+        topics_viewed: Array.from(data.topics_viewed),
         concepts_mastered: Array.from(data.concepts_mastered,
     preferred_topics: Array.from(data.preferred_topics.entries( };
 }
 
-export function deserializeProgressData(serialized: string): ProgressData { const parsed = JSON.parse(serialized);
+export function deserializeProgressData())serialized: string): ProgressData { const parsed = JSON.parse(serialized);
     return { ...parsed,
         topics_viewed: new Set(parsed.topics_viewed || [],
-    concepts_mastered: new Set(parsed.concepts_mastered || []) },
+    concepts_mastered: new Set(parsed.concepts_mastered || []) };
         preferred_topics: new Map(parsed.preferred_topics || []); 
     }
 
@@ -334,7 +318,7 @@ export class HelpPersonalizationEngine {
     private preferences: UserPreferences;
     private progressData: ProgressData;
     private, analyticsTimer: number | null = null;
-    constructor() { }
+    constructor() { };
         this.learningConfig = { ...DEFAULT_PERSONALIZATION_CONFIG;
         this.userProfile = this.loadUserProfile();
         this.interactionHistory = [];
@@ -348,7 +332,7 @@ export class HelpPersonalizationEngine {
      * パーソナライゼーションを初期化
      */
     private initializePersonalization(): void { this.updateUserProfile();
-        this.startLearning() }
+        this.startLearning();
 
     /**
      * ユーザープロファイルを読み込み
@@ -392,10 +376,10 @@ export class HelpPersonalizationEngine {
             } catch (error) { console.warn('[HelpPersonalizationEngine] Failed to load progress data:', error }
         
         return { topics_viewed: new Set<string>(
-            concepts_mastered: new Set<string>();
-            help_requests: 0;
-            successful_interactions: 0;
-            error_recovery_success: 0;
+            concepts_mastered: new Set<string>(),
+            help_requests: 0,
+            successful_interactions: 0,
+            error_recovery_success: 0,
             preferred_topics: new Map<string, number>() };
             difficulty_progression: [] 
     }
@@ -429,7 +413,7 @@ export class HelpPersonalizationEngine {
         // ヘルプ使用パターンの分析
         this.updateHelpUsagePattern();
         this.userProfile.last_updated = now,
-        this.saveUserProfile() }
+        this.saveUserProfile();
 
     /**
      * スキルレベルを更新
@@ -444,9 +428,9 @@ export class HelpPersonalizationEngine {
         if (newLevel !== this.userProfile.skill_level) {
         
             this.progressData.difficulty_progression.push({);
-                timestamp: Date.now();
-                level: newLevel;
-    confidence: this.calculateConfidenceScore(successRate, masteredConcepts) }
+                timestamp: Date.now(),
+                level: newLevel,
+    confidence: this.calculateConfidenceScore(successRate, masteredConcepts);
                 evidence: this.generateProgressionEvidence(successRate, masteredConcepts); }
             };
             
@@ -468,25 +452,25 @@ export class HelpPersonalizationEngine {
         successRate: number,
     masteredConcepts: number';'
     '): ProgressionEvidence[] { return [{''
-                type: 'success_rate',
+                type: 'success_rate,
     value: successRate,
                 weight: 0.4,' }'
 
-                description: `成功率: ${(successRate * 100}.toFixed(1'}'%`},
+                description: `成功率: ${(successRate * 100}.toFixed(1'}'%`};
             { ''
-                type: 'feature_adoption',
+                type: 'feature_adoption,
                 value: masteredConcepts,
     weight: 0.3 }
                 description: `習得済み概念: ${masteredConcepts}個`
             };
             { ''
-                type: 'help_usage',
+                type: 'help_usage,
                 value: this.progressData.help_requests,
     weight: 0.2 }
                 description: `ヘルプ利用回数: ${this.progressData.help_requests}回`
             };
             { ''
-                type: 'error_frequency',
+                type: 'error_frequency,
                 value: this.calculateErrorRecoveryRate(
     weight: 0.1 }
                 description: `エラー回復率: ${(this.calculateErrorRecoveryRate(} * 100}.toFixed(1}%`]
@@ -577,28 +561,28 @@ export class HelpPersonalizationEngine {
         switch(this.userProfile.skill_level) {
 
             case 'beginner':','
-                adjustments.detail_level = 'detailed',
+                adjustments.detail_level = 'detailed,
                 adjustments.include_examples = true,
                 adjustments.include_basics = true,
                 adjustments.simplified_language = true,
 
                 break,
             case 'intermediate':','
-                adjustments.detail_level = 'medium',
+                adjustments.detail_level = 'medium,
                 adjustments.include_examples = true,
                 adjustments.include_tips = true,
                 adjustments.focus_on_efficiency = true,
 
                 break,
             case 'advanced':','
-                adjustments.detail_level = 'minimal',
+                adjustments.detail_level = 'minimal,
                 adjustments.include_advanced_tips = true,
                 adjustments.focus_on_optimization = true,
                 adjustments.concise_format = true,
 
                 break,
             case 'expert':','
-                adjustments.detail_level = 'minimal',
+                adjustments.detail_level = 'minimal,
                 adjustments.concise_format = true,
                 adjustments.focus_on_optimization = true,
                 adjustments.show_only_essentials = true }
@@ -717,7 +701,7 @@ export class HelpPersonalizationEngine {
         // エラー状況での調整
         if (context.triggerType === 'error') {
 
-            adjustments.priority = 'high',
+            adjustments.priority = 'high,
             adjustments.focus_on_solution = true,
             adjustments.calming_tone = true }
             adjustments.step_by_step_guidance = true; }
@@ -755,22 +739,22 @@ export class HelpPersonalizationEngine {
 
         const record: InteractionRecord = {''
             timestamp: Date.now('''
-            type: interaction.type || 'help_request',
+            type: interaction.type || 'help_request,
             topic: interaction.topic,
             successful: interaction.successful || false,
     duration: interaction.duration }
             context: interaction.context || {},
             user_profile: { ...this.userProfile,
-            concept_mastered: interaction.concept_mastered,
+            concept_mastered: interaction.concept_mastered ,
             error_resolved: interaction.error_resolved,
             used_visuals: interaction.used_visuals,
             used_audio: interaction.used_audio,
-    used_interaction: interaction.used_interaction) },
+    used_interaction: interaction.used_interaction) ,
         );
         this.interactionHistory.push(record);
         
         // 履歴サイズを制限
-        if (this.interactionHistory.length > 1000) { this.interactionHistory = this.interactionHistory.slice(-500) }
+        if (this.interactionHistory.length > 1000) { this.interactionHistory = this.interactionHistory.slice(-500);
         
         this.updateProgressFromInteraction(record);
         this.saveInteractionHistory();
@@ -779,7 +763,7 @@ export class HelpPersonalizationEngine {
     /**
      * インタラクションから進捗を更新
      */
-    private updateProgressFromInteraction(interaction: InteractionRecord): void { this.progressData.help_requests++,
+    private updateProgressFromInteraction(interaction: InteractionRecord): void { this.progressData.help_requests++;
         
         if (interaction.successful) {
     
@@ -795,7 +779,7 @@ export class HelpPersonalizationEngine {
             this.progressData.preferred_topics.set(interaction.topic, currentPreference + 1); }
         }
         
-        if (interaction.concept_mastered) { this.progressData.concepts_mastered.add(interaction.concept_mastered) }
+        if (interaction.concept_mastered) { this.progressData.concepts_mastered.add(interaction.concept_mastered);
         
         if (interaction.error_resolved) { this.progressData.error_recovery_success++ }
         
@@ -816,7 +800,7 @@ export class HelpPersonalizationEngine {
         // 進捗に基づく推奨
         const progressBasedContent = this.getProgressBasedRecommendations();
         recommendations.push(...progressBasedContent);
-        return this.prioritizeRecommendations(recommendations) }
+        return this.prioritizeRecommendations(recommendations);
 
     /**
      * スキルベースの推奨を取得
@@ -833,8 +817,7 @@ export class HelpPersonalizationEngine {
                     weight: RECOMMENDATION_WEIGHTS.skill_match }]
                     description: `${this.userProfile.skill_level}レベルに適した内容`]'
                 }],''
-                priority: 'medium',
-            } }';'
+                priority: 'medium' } }';'
         
         return recommendations;
     }
@@ -860,7 +843,7 @@ export class HelpPersonalizationEngine {
 
         if (recentErrors > 3) {
             recommendations.push({''
-                topic: 'troubleshooting',
+                topic: 'troubleshooting,
     score: 80,
                 reason: [{''
                     type: 'error_pattern'
@@ -868,22 +851,20 @@ export class HelpPersonalizationEngine {
                     weight: RECOMMENDATION_WEIGHTS.error_pattern }]
                     description: `最近のエラー頻度: ${recentErrors}回`]'
                 }],')'
-                priority: 'high'),
-        }
+                priority: 'high');
         ';'
 
         const viewedTopics = Array.from(this.progressData.topics_viewed);
         if (viewedTopics.length < 3) {
             recommendations.push({''
-                topic: 'overview',
+                topic: 'overview,
     score: 70,
                 reason: [{''
                     type: 'progress_gap')','
     weight: RECOMMENDATION_WEIGHTS.progress_gap }]'
                     description: '基本的なトピックの学習が不足' }]'
                 }],')'
-                priority: 'medium'),
-        }
+                priority: 'medium');
         
         return recommendations;
     }
@@ -896,7 +877,7 @@ export class HelpPersonalizationEngine {
 
         if (masteredConcepts > 10) {
             recommendations.push({''
-                topic: 'advanced_topics',
+                topic: 'advanced_topics,
     score: 65,
                 reason: [{''
                     type: 'progress_gap'
@@ -905,15 +886,14 @@ export class HelpPersonalizationEngine {
                     description: `習得済み概念: ${masteredConcepts}個`]'
                 }],')'
                 priority: 'medium')' } else {  recommendations.push({''
-                topic: 'foundational_concepts',
+                topic: 'foundational_concepts,
     score: 60,
                 reason: [{''
                     type: 'progress_gap')','
     weight: RECOMMENDATION_WEIGHTS.progress_gap,' }]'
                     description: '基礎概念の強化が必要' }]'
                 }],')'
-                priority: 'medium'),
-        }
+                priority: 'medium');
         
         return recommendations;
     }
@@ -923,7 +903,7 @@ export class HelpPersonalizationEngine {
      */
     private prioritizeRecommendations(recommendations: ContentRecommendation[]): ContentRecommendation[] { return recommendations
             .sort((a, b) => b.score - a.score),
-            .slice(0, 5) }
+            .slice(0, 5);
     }
 
     /**
@@ -982,7 +962,7 @@ export class HelpPersonalizationEngine {
      */
     private getLearningStyleRelevanceScore(topic: string): number { // 学習スタイルとトピックの関連度を計算
         // 実装の簡素化のためランダム値を返す
-        return Math.random() }
+        return Math.random();
 
     /**
      * 学習を開始
@@ -991,7 +971,7 @@ export class HelpPersonalizationEngine {
         
         // 定期的な分析とプロファイル更新
         this.analyticsTimer = window.setInterval(() => { 
-            this.analyzeUserBehavior() }
+            this.analyzeUserBehavior();
             this.updateUserProfile(); }
         }, 300000); // 5分ごと
     }
@@ -1005,7 +985,7 @@ export class HelpPersonalizationEngine {
         // 学習スタイルの推測
         this.inferLearningStyle(recentInteractions);
         // 設定の自動調整
-        this.autoAdjustPreferences(recentInteractions) }
+        this.autoAdjustPreferences(recentInteractions);
 
     /**
      * 学習スタイルを推測
@@ -1027,7 +1007,7 @@ export class HelpPersonalizationEngine {
 
         if (dismissalRate > 0.7) {
 
-            this.preferences.content_detail_level = 'minimal',
+            this.preferences.content_detail_level = 'minimal,
             this.preferences.auto_show = false }
             this.savePreferences(); }
 }
@@ -1066,29 +1046,29 @@ export class HelpPersonalizationEngine {
     updatePersonalizationConfig(newConfig: Partial<PersonalizationConfig>): void { Object.assign(this.learningConfig, newConfig);
         if (!this.learningConfig.enabled && this.analyticsTimer) {
         
-            clearInterval(this.analyticsTimer) }
+            clearInterval(this.analyticsTimer);
             this.analyticsTimer = null; }
-        } else if (this.learningConfig.enabled && !this.analyticsTimer) { this.startLearning() }
+        } else if (this.learningConfig.enabled && !this.analyticsTimer) { this.startLearning();
     }
 
     /**
      * ユーザー設定を更新
      */
     updatePreferences(newPreferences: Partial<UserPreferences>): void { Object.assign(this.preferences, newPreferences);
-        this.savePreferences() }
+        this.savePreferences();
 
     /**
      * 統計情報を取得
      */
     getPersonalizationStats(): PersonalizationStats { return { }
             userProfile: { ...this.userProfile,
-            interactionCount: this.interactionHistory.length,
+            interactionCount: this.interactionHistory.length ,
             successRate: this.calculateSuccessRate(),
             topicsViewed: this.progressData.topics_viewed.size,
             conceptsMastered: this.progressData.concepts_mastered.size,
     preferences: { ...this.preferences,
-            learningEfficiency: this.calculateLearningEfficiency(
-    adaptationScore: this.calculateAdaptationScore() }
+            learningEfficiency: this.calculateLearningEfficiency( ,
+    adaptationScore: this.calculateAdaptationScore();
 
     /**
      * 学習効率を計算
@@ -1103,7 +1083,7 @@ export class HelpPersonalizationEngine {
      */
     private calculateAdaptationScore(): number { const profileAge = Date.now() - this.userProfile.created_at,
         const adaptationRate = this.progressData.difficulty_progression.length / (profileAge / (1000 * 60 * 60 * 24)),
-        return Math.min(adaptationRate * 100, 100) }
+        return Math.min(adaptationRate * 100, 100);
 
     /**
      * スキル分析を取得
@@ -1113,9 +1093,8 @@ export class HelpPersonalizationEngine {
                 this.calculateSuccessRate();
                 this.progressData.concepts_mastered.size),
             strengthAreas: this.identifyStrengthAreas(
-    improvementAreas: this.identifyImprovementAreas() },
-            nextStepRecommendations: this.generateNextStepRecommendations(),
-    }
+    improvementAreas: this.identifyImprovementAreas() ,
+            nextStepRecommendations: this.generateNextStepRecommendations();
 
     /**
      * 強みのある領域を特定
@@ -1165,13 +1144,13 @@ export class HelpPersonalizationEngine {
     private generateNextStepRecommendations()';'
         if (this.userProfile.skill_level === 'beginner') {
 
-            recommendations.push('基本操作の練習を継続') }
+            recommendations.push('基本操作の練習を継続');
 
             recommendations.push('ヘルプ機能の積極的活用');' }'
 
         } else if (this.userProfile.skill_level === 'intermediate') { ''
             recommendations.push('応用テクニックの学習');
-            recommendations.push('効率性の向上に focus') }
+            recommendations.push('効率性の向上に focus');
 
         } else {
             recommendations.push('高度な最適化技術の探求'),' }'

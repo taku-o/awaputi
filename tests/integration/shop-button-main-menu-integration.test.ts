@@ -58,12 +58,12 @@ describe('Shop Button Main Menu Integration Tests', () => {
             canvas: mockCanvas,
             sceneManager: {
                 hasScene: jest.fn().mockReturnValue(true),
-               , switchScene: jest.fn(').mockReturnValue(true,'
+               , switchScene: jest.fn(').mockReturnValue(true,' };
                 currentScene: {
                     constructor: { name: 'MainMenuScene' }
                 };
             localizationManager: {
-                getCurrentLanguage: jest.fn(').mockReturnValue('ja','
+                getCurrentLanguage: jest.fn(').mockReturnValue('ja',' };
                 t: jest.fn((key') => {'
                     const translations = {
                         'menu.start': 'ゲーム開始',
@@ -76,7 +76,7 @@ describe('Shop Button Main Menu Integration Tests', () => {
                 ')}'
             },
             playerData: {
-                username: 'TestPlayer',
+                username: 'TestPlayer' },
                 ap: 100,
                 tap: 50,
         save: jest.fn( } },
@@ -99,7 +99,7 @@ describe('Shop Button Main Menu Integration Tests', () => {
             gameEngine: mockGameEngine,
             sceneManager: {
                 switchScene: jest.fn().mockReturnValue(true
-            );
+            ) };
         
         // シーンとデータマネージャーの初期化
         mainMenuScene = new MainMenuScene(mockGameEngine);
@@ -173,7 +173,7 @@ describe('Shop Button Main Menu Integration Tests', () => {
                 const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
                 mainMenuScene.openShop('),'
                 expect(consoleSpy.toHaveBeenCalledWith('[MainMenuScene] Failed to switch to shop scene');
-                consoleSpy.mockRestore() };
+                consoleSpy.mockRestore() }
         }
     }');'
     describe('ステージ選択画面でのキーボード操作テスト', (') => {'
@@ -208,7 +208,7 @@ describe('Shop Button Main Menu Integration Tests', () => {
             invalidKeys.forEach(keyCode => {);
                 const result = stageSelectDataManager.handleStageKeyInput({ code: keyCode,);
                 expect(result.toBe(false);
-            };
+            }
         }
     }');'
     describe('シーン間の連携テスト', (') => {'

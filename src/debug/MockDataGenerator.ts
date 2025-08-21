@@ -48,7 +48,7 @@ interface MockComponent { initialized?: boolean,
     generateScoreDistribution?: () => any;
     generateBubbleDistribution?: () => any;
     generateLargeBubbleSet?: (count: number) => MockBubble[];
-    generateValidationRules?: () => any,  }
+    generateValidationRules?: () => any }
 }
 ';'
 
@@ -56,74 +56,67 @@ interface ComponentDefinition { name: string,''
     class: new(generator: MockDataGenerator) => MockComponent  }
 }
 
-interface MockBubble { id: string;
-    type: string;
-    size: number;
-    position: { x: number,, y: number,,
+interface MockBubble { id: string,
+    type: string,
+    size: number,
+    position: { x: number, y: number,
     color: string;
-    health: number;
+    },
+    health: number,
     score: number;
 }
 
-interface MockPlayerData { id: string;
-    name: string;
-    level: number;
-    totalScore: number;
-    highScore: number;
-    gamesPlayed: number;
+interface MockPlayerData { id: string,
+    name: string,
+    level: number,
+    totalScore: number,
+    highScore: number,
+    gamesPlayed: number,
     accuracy: number;
-
-interface MockGameState { id: string;
-    state: string;
-    timestamp: number;
-    level: number;
-    score: number;
+    interface MockGameState { id: string,
+    state: string,
+    timestamp: number,
+    level: number,
+    score: number,
     lives: number;
-
-interface ValidationResult { valid: boolean;
-    errors: string[];
+    interface ValidationResult { valid: boolean,
+    errors: string[],
     warnings: string[];
-
-interface AudioSettings { masterVolume: number;
-    musicVolume: number;
-    effectsVolume: number;
+    interface AudioSettings { masterVolume: number,
+    musicVolume: number,
+    effectsVolume: number,
     enabled: boolean;
 ';'
 
 interface GraphicsSettings { ''
-    quality: 'low' | 'medium' | 'high' | 'ultra';
-    particles: 'off' | 'low' | 'medium' | 'high';
-    effects: boolean;
+    quality: 'low' | 'medium' | 'high' | 'ultra,
+    particles: 'off' | 'low' | 'medium' | 'high,
+    effects: boolean,
     fullscreen: boolean;
 ';'
 
 interface GameplaySettings { ''
-    difficulty: 'easy' | 'normal' | 'hard' | 'expert';
-    autoSave: boolean;
-    showHints: boolean;
+    difficulty: 'easy' | 'normal' | 'hard' | 'expert,
+    autoSave: boolean,
+    showHints: boolean,
     pauseOnFocusLoss: boolean;
-
-interface Configuration { audio: AudioSettings;
-    graphics: GraphicsSettings;
+    interface Configuration { audio: AudioSettings,
+    graphics: GraphicsSettings,
     gameplay: GameplaySettings;
-
-interface Statistics { totalGames: number;
-    totalScore: number;
-    averageScore: number;
-    highScore: number;
-    accuracy: number;
-    playTime: number;
-    bubbleTypes: any;
-    scoreDistribution: any;
+    interface Statistics { totalGames: number,
+    totalScore: number,
+    averageScore: number,
+    highScore: number,
+    accuracy: number,
+    playTime: number,
+    bubbleTypes: any,
+    scoreDistribution: any,
     bubbleDistribution: any;
-
-interface Position { x: number;
+    interface Position { x: number,
     y: number;
-
-type DataType = 'bubble' | 'bubbles' | 'player' | 'gameState' | 'statistics' | 'achievements' | 'performance';
-type Scenario = 'center' | 'corner' | 'edge' | 'random';
-
-export class MockDataGenerator {
+    type DataType = 'bubble' | 'bubbles' | 'player' | 'gameState' | 'statistics' | 'achievements' | 'performance';
+    type Scenario = 'center' | 'corner' | 'edge' | 'random';
+    export class MockDataGenerator {
     private gameEngine: GameEngine;
     private, components: Map<string, MockComponent>,
     private initialized: boolean;
@@ -131,10 +124,10 @@ export class MockDataGenerator {
     constructor(gameEngine: GameEngine) {
 
         this.gameEngine = gameEngine;
-        this.components = new Map();
-        this.initialized = false;
-        this.errorHandler = ComponentErrorHandler
-}
+    this.components = new Map();
+    this.initialized = false;
+    this.errorHandler = ComponentErrorHandler
+};
         this.initialize(); }
     }
 
@@ -143,14 +136,14 @@ export class MockDataGenerator {
             this.initialized = true,' }'
 
         } catch (error) {
-            this.errorHandler.handleComponentError(error as Error, 'MockDataGenerator', 'initialization',
+            this.errorHandler.handleComponentError(error as Error, 'MockDataGenerator, 'initialization',
             throw error }
     }
 
     private async initializeComponents('''
-            { name: 'bubbleGenerator', class: MockBubbleDataGenerator as any  },''
-            { name: 'userGenerator', class: MockUserDataGenerator as any  },''
-            { name: 'gameStateGenerator', class: MockGameStateGenerator as any  },''
+            { name: 'bubbleGenerator', class: MockBubbleDataGenerator as any  ,''
+            { name: 'userGenerator', class: MockUserDataGenerator as any  ,''
+            { name: 'gameStateGenerator', class: MockGameStateGenerator as any  ,''
             { name: 'validator', class: MockDataValidator as any  }
         ];
 );
@@ -162,7 +155,7 @@ export class MockDataGenerator {
 }
                     component.setErrorHandler(this.errorHandler.handleComponentError); }
                 }
-                if (component.initialize) { await component.initialize() }
+                if (component.initialize) { await component.initialize();
                 this.components.set(name, component);
             } catch (error) {
                 console.error(`Failed to initialize ${name}:`, error);
@@ -174,14 +167,13 @@ export class MockDataGenerator {
     private createFallbackComponent(name: string): MockComponent { return {  },
             initialized: false,
             generate: () => ({})
-            generateBubble: () => this.createFallbackBubble();
+            generateBubble: () => this.createFallbackBubble(),
             generateBubbles: () => [],
-            generatePlayerData: () => this.createFallbackPlayerData();
-            generateGameState: () => this.createFallbackGameState();
-            validateData: () => ({ valid: true, errors: [], warnings: []  }),
-        }
+            generatePlayerData: () => this.createFallbackPlayerData(),
+            generateGameState: () => this.createFallbackGameState(),
+            validateData: () => ({ valid: true, errors: [], warnings: []  }) }
 
-    public getComponent(name: string): MockComponent | undefined { return this.components.get(name) }
+    public getComponent(name: string): MockComponent | undefined { return this.components.get(name);
 
     // === 公開API（後方互換性維持） ===
 
@@ -205,10 +197,11 @@ export class MockDataGenerator {
                 case 'achievements':','
                     return this.generateAchievements()','
                 case 'performance':),
-                    return this.generatePerformanceMetrics(options) }
+                    return this.generatePerformanceMetrics(options);
                 default: }
 
-                    throw new Error(`Unknown, data type: ${type}`};} catch (error) { }
+                    throw new Error(`Unknown, data type: ${type}`}
+        } catch (error) { }
 
             return this.errorHandler.handleComponentError(error as Error, 'MockDataGenerator', `generate(${type}`);
 
@@ -224,7 +217,7 @@ export class MockDataGenerator {
 
     public generateBubble(options: any = { )): MockBubble {''
         const generator = this.getComponent('bubbleGenerator),'
-        return generator?.generateBubble ? generator.generateBubble(options) : this.createFallbackBubble() }
+        return generator?.generateBubble ? generator.generateBubble(options) : this.createFallbackBubble();
 
     public generateBubbles(count: number = 10, options: any = { )): MockBubble[] {''
         const generator = this.getComponent('bubbleGenerator),'
@@ -235,7 +228,7 @@ export class MockDataGenerator {
         return generator?.generateBubbleProperties ? generator.generateBubbleProperties(template) : {}
 
     public getBubbleColor(type: string | null = null): string { ''
-        const generator = this.getComponent('bubbleGenerator',
+        const generator = this.getComponent('bubbleGenerator,
         return generator?.getBubbleColor ? generator.getBubbleColor(type) : '#4ECDC4' }
 
     public addBubbleVariations(bubble: MockBubble): MockBubble { ''
@@ -251,7 +244,7 @@ export class MockDataGenerator {
 
     public generatePlayerData(options: any = { )): MockPlayerData {''
         const generator = this.getComponent('userGenerator),'
-        return generator?.generatePlayerData ? generator.generatePlayerData(options) : this.createFallbackPlayerData() }
+        return generator?.generatePlayerData ? generator.generatePlayerData(options) : this.createFallbackPlayerData();
 
     public generatePlayerName()';'
         const generator = this.getComponent('userGenerator';
@@ -288,7 +281,7 @@ export class MockDataGenerator {
 
     public generateGameState(options: any = { )): MockGameState {''
         const generator = this.getComponent('gameStateGenerator),'
-        return generator?.generateGameState ? generator.generateGameState(options) : this.createFallbackGameState() }
+        return generator?.generateGameState ? generator.generateGameState(options) : this.createFallbackGameState();
 
     public generatePerformanceMetrics(options: any = { )): any {''
         const generator = this.getComponent('gameStateGenerator' }'
@@ -336,26 +329,25 @@ export class MockDataGenerator {
             accuracy: this.randomFloat(0.4, 0.9);
             playTime: this.randomInt(3600, 360000);
             bubbleTypes: this.generateBubbleTypeStats(
-    scoreDistribution: this.generateScoreDistribution() },
-            bubbleDistribution: this.generateBubbleDistribution(),
+    scoreDistribution: this.generateScoreDistribution() };
+            bubbleDistribution: this.generateBubbleDistribution();
     }
 
-    public generateConfiguration(): Configuration { return { audio: {
-                masterVolume: this.randomFloat(0.5, 1.0);
-                musicVolume: this.randomFloat(0.3, 0.8),,
-                effectsVolume: this.randomFloat(0.4, 1.0),' };'
+    public generateConfiguration(): Configuration { return { audio: { masterVolume: this.randomFloat(0.5, 1.0),
+                musicVolume: this.randomFloat(0.3, 0.8),
+                effectsVolume: this.randomFloat(0.4, 1.0),'  },'
 
                 enabled: this.randomChoice([true, false]); }
             },
 
             graphics: { ''
-                quality: this.randomChoice(['low', 'medium', 'high', 'ultra]',
+                quality: this.randomChoice(['low', 'medium', 'high', 'ultra]'  },
                 particles: this.randomChoice(['off', 'low', 'medium', 'high]),'
                 effects: this.randomChoice([true, false]);
                 fullscreen: this.randomChoice([true, false] },
 
             gameplay: { ''
-                difficulty: this.randomChoice(['easy', 'normal', 'hard', 'expert]),'
+                difficulty: this.randomChoice(['easy', 'normal', 'hard', 'expert]),'  },
                 autoSave: true,
     showHints: this.randomChoice([true, false]);
                 pauseOnFocusLoss: this.randomChoice([true, false] }
@@ -398,7 +390,7 @@ export class MockDataGenerator {
 
     public shuffleArray<T>(array: T[]): T[] { const shuffled = [...array],
         for(let, i = shuffled.length - 1, i > 0, i--) {
-            const j = Math.floor(Math.random() * (i + 1)) }
+            const j = Math.floor(Math.random() * (i + 1));
             [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]; }
         }
         return shuffled;
@@ -410,33 +402,33 @@ export class MockDataGenerator {
     // === フォールバック実装 ===
 
     private createFallbackBubble('''
-            type: 'normal',
+            type: 'normal,
     size: 30,
-            position: { x: 0, y: 0  },''
-            color: '#4ECDC4',
+            position: { x: 0, y: 0  ,''
+            color: '#4ECDC4,
             health: 1,
-    score: 10,
+    score: 10;
         } }
 
     private createFallbackPlayerData('';
-            name: 'Player',
+            name: 'Player,
             level: 1,
             totalScore: 0,
             highScore: 0,
             gamesPlayed: 0,
-    accuracy: 0.5,
+    accuracy: 0.5;
         } }
 
     private createFallbackGameState('';
-            state: 'menu',
+            state: 'menu,
             timestamp: Date.now(,
             level: 1,
             score: 0,
-    lives: 3),
+    lives: 3);
             };
     // === 位置・シナリオ関連（レガシーサポート） ===
 ')';
-    public getScenarioPosition(scenario: Scenario): Position { const positions: Record<Scenario, Position> = { }', 'center': { x: 400, y: 300  },', 'corner': { x: 50, y: 50  },', 'edge': { x: 400, y: 50  },', 'random': { x: this.randomFloat(0, 800), y: this.randomFloat(0, 600 }
+    public getScenarioPosition(scenario: Scenario): Position { const positions: Record<Scenario, Position> = { }', 'center': { x: 400, y: 300  ,', 'corner': { x: 50, y: 50  ,', 'edge': { x: 400, y: 50  ,', 'random': { x: this.randomFloat(0, 800), y: this.randomFloat(0, 600 }
 
         };
         return positions[scenario] || positions['random'];

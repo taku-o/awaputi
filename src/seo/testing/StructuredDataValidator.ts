@@ -8,39 +8,37 @@
 import { seoLogger  } from '../SEOLogger.js';
 import { seoErrorHandler  } from '../SEOErrorHandler.js';
 
-interface MainController { baseUrl: string;
+interface MainController { baseUrl: string,
     validationRules: Map<string, ValidationRules> }
 
-interface ValidationRules { required: string[];
-    allowedContexts: string[];
+interface ValidationRules { required: string[],
+    allowedContexts: string[],
     videoGameProperties: string[];
-
-interface TestResult { name: string;
-    passed: boolean;
+    interface TestResult { name: string,
+    passed: boolean,
     message: string;
-
-interface ValidationResults { category: string;
-    tests: TestResult[];
-    passed: number;
-    failed: number;
+    interface ValidationResults { category: string,
+    tests: TestResult[],
+    passed: number,
+    failed: number,
     warnings: number;
 ';'
 
 interface StructuredDataObject { ', '@context': string,', '@type': string,
-    name: string;
+    name: string,
     description: string;
     genre?: string;
     gamePlatform?: string[];
     operatingSystem?: string[];
     applicationCategory?: string;
-    url: string;
+    url: string,
     image: string;
     author?: {', '@type': string,'
         name: string;
     datePublished?: string;
     inLanguage?: string[];
     isAccessibleForFree?: boolean;
-    [key: string]: any;
+    [key: string]: any };
 
 export class StructuredDataValidator {
     private mainController: MainController;
@@ -49,7 +47,7 @@ export class StructuredDataValidator {
 
         this.mainController = mainController
 
-    }
+    };
         this.baseUrl = mainController.baseUrl; }
     }
 
@@ -76,14 +74,14 @@ export class StructuredDataValidator {
 
             if (!structuredData || Object.keys(structuredData).length === 0') { results.tests.push({)'
                     name: 'Structured data presence')','
-    passed: false,')',
+    passed: false,'),
                     message: '❌ No structured data found'),
-                results.failed++,
-                return results,  }
+                results.failed++;
+                return results }
             ';'
             // 必須プロパティの存在確認
             for (const requiredProp of rules.required) { const test: TestResult = { }
-                    name: `Required, property: ${requiredProp}`,
+                    name: `Required, property: ${requiredProp},
                     passed: false,
                     message: ';'
                 },
@@ -102,16 +100,16 @@ export class StructuredDataValidator {
             // @contextの検証
             if (structuredData['@context]''
                 const contextTest: TestResult =''
-                    name: 'Schema.org context validation',
+                    name: 'Schema.org context validation,
                     passed: false,
 
                     message: '};'
                 const context = structuredData['@context];'
                 if(rules.allowedContexts.includes(context) { contextTest.passed = true }
-                    contextTest.message = `✅ Valid schema context: ${context}`,
+                    contextTest.message = `✅ Valid schema context: ${context},
                     results.passed++;
                 } else {  }
-                    contextTest.message = `⚠️ Non-standard schema context: ${context}`,
+                    contextTest.message = `⚠️ Non-standard schema context: ${context},
                     results.warnings++;
                 }
 
@@ -124,7 +122,7 @@ export class StructuredDataValidator {
                 for (const prop of rules.videoGameProperties) {
             }
                     const test: TestResult = { }
-                        name: `VideoGame, property: ${prop}`,
+                        name: `VideoGame, property: ${prop},
                         passed: false,
                         message: ';'
                     },
@@ -154,27 +152,27 @@ export class StructuredDataValidator {
             return results;
 
         } catch (error) {
-            return seoErrorHandler.handle(error, 'validateStructuredData',
+            return seoErrorHandler.handle(error, 'validateStructuredData,
 
     /**
      * JSON-LD検証とschema.org準拠チェック
      * @returns Promise<ValidationResults>'
      */''
     async validateJsonLdCompliance('''
-                category: 'JSON-LD Compliance',
+                category: 'JSON-LD Compliance,
                 tests: [],
                 passed: 0,
                 failed: 0,
-    warnings: 0 },
+    warnings: 0 ,
 
             const structuredData = await this._extractStructuredData('';
-                name: 'JSON-LD format validation',
+                name: 'JSON-LD format validation,
                 passed: false,
                 message: ');'
             }', ');
 
             if(this._isValidJsonLd(structuredData)) { formatTest.passed = true,
-                formatTest.message = '✅ Valid JSON-LD format',
+                formatTest.message = '✅ Valid JSON-LD format,
                 results.passed++ }
 
             } else {
@@ -186,7 +184,7 @@ export class StructuredDataValidator {
             
             // Schema.org vocabulary検証
             const vocabTest: TestResult = { ''
-                name: 'Schema.org vocabulary validation',
+                name: 'Schema.org vocabulary validation,
                 passed: false,
                 message: '};'
             ';'
@@ -207,14 +205,14 @@ export class StructuredDataValidator {
             return results;
 
         } catch (error) {
-            return seoErrorHandler.handle(error, 'validateJsonLdCompliance',
+            return seoErrorHandler.handle(error, 'validateJsonLdCompliance,
 
     /**
      * Rich Snippetテスト実行
      * @returns Promise<ValidationResults>'
      */''
     async testRichSnippets('''
-                category: 'Rich, Snippet Testing',
+                category: 'Rich, Snippet Testing,
                 tests: [],
                 passed: 0,
                 failed: 0,
@@ -224,7 +222,7 @@ export class StructuredDataValidator {
 
             const snippetTypes = ['Game', 'SoftwareApplication', 'WebApplication'];', ')';'
             for (const snippetType of snippetTypes) { const test: TestResult = { }
-                    name: `${snippetType} rich snippet compatibility`,
+                    name: `${snippetType} rich snippet compatibility,
                     passed: false,
                     message: ';'
                 },
@@ -243,7 +241,7 @@ export class StructuredDataValidator {
             
             // Google構造化データテストツール互換性
             const googleTest: TestResult = { ''
-                name: 'Google Structured Data Test compatibility',
+                name: 'Google Structured Data Test compatibility,
                 passed: false,
                 message: '};'
             ';'
@@ -264,7 +262,7 @@ export class StructuredDataValidator {
             return results;
 
         } catch (error) {
-            return seoErrorHandler.handle(error, 'testRichSnippets',
+            return seoErrorHandler.handle(error, 'testRichSnippets,
 
     // プライベートメソッド
     
@@ -273,16 +271,16 @@ export class StructuredDataValidator {
      * @private
      */''
     private async _extractStructuredData('''
-            '@context': 'https://schema.org',
-            '@type': 'VideoGame',
-            'name': 'BubblePop',
-            'description': 'HTML5 Canvas を使用したバブルポップゲーム',
-            'genre': 'パズル・アクション',
+            '@context': 'https://schema.org,
+            '@type': 'VideoGame,
+            'name': 'BubblePop,
+            'description': 'HTML5 Canvas を使用したバブルポップゲーム,
+            'genre': 'パズル・アクション,
             'gamePlatform': ['Web Browser],'
             'operatingSystem': ['Any'],
-            'applicationCategory': 'Game',
+            'applicationCategory': 'Game,
             'url': this.baseUrl,
-            'image': `${this.baseUrl}/assets/images/game-screenshot.png`,', 'author': { ', '@type': 'Organization',
+            'image': `${this.baseUrl}/assets/images/game-screenshot.png,', 'author': { ', '@type': 'Organization',
                 'name': 'BubblePop Games' 
     },', 'datePublished': '2024-01-01','
             'inLanguage': ['ja', 'en'],
@@ -294,7 +292,7 @@ export class StructuredDataValidator {
      * @private'
      */''
     private async _validateJsonLdFormat(structuredData: StructuredDataObject): Promise<TestResult> { const test: TestResult = {''
-            name: 'JSON-LD format validation',
+            name: 'JSON-LD format validation,
             passed: false,
             message: '};'
         ';'
@@ -313,8 +311,7 @@ export class StructuredDataValidator {
 } else { }'
 
                 test.message = '❌ Missing required @context or @type'; }
-
-            } catch (error) { }
+        } catch (error) { }
 
             test.message = `❌ JSON-LD validation error: ${error, instanceof Error ? error.message : 'Unknown, error'}`;
         }
@@ -327,14 +324,14 @@ export class StructuredDataValidator {
      * @private'
      */''
     private async _testRichSnippets(structuredData: StructuredDataObject): Promise<TestResult> { const test: TestResult = {''
-            name: 'Rich snippets compatibility',
+            name: 'Rich snippets compatibility,
             passed: false,
             message: '};'
         ';'
         try { // Rich Snippet生成に必要な基本プロパティの確認
             const requiredForRichSnippets = ['name', 'description', 'image'],
 
-            const hasRequiredProps = requiredForRichSnippets.every(prop => ')',
+            const hasRequiredProps = requiredForRichSnippets.every(prop => '),
                 structuredData[prop] && structuredData[prop] !== '),'
 
             if (hasRequiredProps) {
@@ -345,8 +342,7 @@ export class StructuredDataValidator {
             } else { }'
 
                 test.message = '⚠️ Rich snippets may not display optimally'; }
-
-            } catch (error) { }
+        } catch (error) { }
 
             test.message = `⚠️ Rich snippets test error: ${error, instanceof Error ? error.message : 'Unknown, error'}`;
         }
@@ -400,10 +396,9 @@ export class StructuredDataValidator {
      */''
     private async _checkGoogleStructuredDataTestCompatibility(structuredData: StructuredDataObject): Promise<boolean> { // Google構造化データテストツールで問題となりやすい項目をチェック
         const issues: string[] = [],
-        ,
         // 画像URLの形式チェック
         if(structuredData.image && !structuredData.image.startsWith('http)' {''
-            issues.push('Image, URL should, be absolute') }
+            issues.push('Image, URL should, be absolute');
         ';'
         // URLの形式チェック
         if(structuredData.url && !structuredData.url.startsWith('http)' { ''

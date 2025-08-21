@@ -6,15 +6,13 @@
  */
 
 // Type definitions
-interface Bounds { x: number;
-    y: number;
-    width: number;
+interface Bounds { x: number,
+    y: number,
+    width: number,
     height: number;
-
-interface QuadTreeObject { bounds: Bounds;
+    interface QuadTreeObject { bounds: Bounds;
     [key: string]: any;
-
-export class QuadTree {
+    export class QuadTree {
     private bounds: Bounds;
     private maxObjects: number;
     private maxLevels: number;
@@ -24,11 +22,11 @@ export class QuadTree {
     constructor(bounds: Bounds, maxObjects: number = 10, maxLevels: number = 5, level: number = 0) {
     
         this.bounds = bounds;
-        this.maxObjects = maxObjects;
-        this.maxLevels = maxLevels;
-        this.level = level;
-        this.objects = []
-}
+    this.maxObjects = maxObjects;
+    this.maxLevels = maxLevels;
+    this.level = level;
+    this.objects = []
+};
         this.nodes = []; }
     }
     
@@ -45,27 +43,24 @@ export class QuadTree {
             y: y),
             width: subWidth,
     height: subHeight), this.maxObjects, this.maxLevels, this.level + 1),
-    height: subHeight), this.maxObjects, this.maxLevels, this.level + 1),
-        };
+    height: subHeight), this.maxObjects, this.maxLevels, this.level + 1) };
         this.nodes[1] = new QuadTree({
             x: x,
             y: y),
             width: subWidth,
     height: subHeight), this.maxObjects, this.maxLevels, this.level + 1),
-    height: subHeight), this.maxObjects, this.maxLevels, this.level + 1),
-        };
+    height: subHeight), this.maxObjects, this.maxLevels, this.level + 1) };
         this.nodes[2] = new QuadTree({
             x: x,
             y: y + subHeight),
             width: subWidth,
     height: subHeight), this.maxObjects, this.maxLevels, this.level + 1),
-    height: subHeight), this.maxObjects, this.maxLevels, this.level + 1),
-        };
+    height: subHeight), this.maxObjects, this.maxLevels, this.level + 1) };
         this.nodes[3] = new QuadTree({
             x: x + subWidth,
             y: y + subHeight),
             width: subWidth,
-    height: subHeight), this.maxObjects, this.maxLevels, this.level + 1) }
+    height: subHeight), this.maxObjects, this.maxLevels, this.level + 1);
     
     getIndex(bounds: Bounds): number { let index = -1,
         const verticalMidpoint = this.bounds.x + (this.bounds.width / 2),
@@ -92,7 +87,7 @@ export class QuadTree {
             const index = this.getIndex(object.bounds);
             if (index !== -1) {
             
-                this.nodes[index].insert(object) }
+                this.nodes[index].insert(object);
                 return; }
 }
         
@@ -112,10 +107,8 @@ export class QuadTree {
                 if (index !== -1) {
             }
                     this.nodes[index].insert(this.objects.splice(i, 1)[0]); }
-                } else { i++ }
+                } else { i++     }
 }
-    }
-    
     retrieve(bounds: Bounds): QuadTreeObject[] { const returnObjects = this.objects.slice();
         if (this.nodes.length > 0) {
         

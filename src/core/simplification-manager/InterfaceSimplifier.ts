@@ -15,36 +15,28 @@
  */
 
 // 型定義
-export interface SimplificationRules { hideElements: HideElementsRules;
-    animations: AnimationRules;
-    effects: EffectRules;
-    typography: TypographyRules;
-    colors: ColorRules;
+export interface SimplificationRules { hideElements: HideElementsRules,
+    animations: AnimationRules,
+    effects: EffectRules,
+    typography: TypographyRules,
+    colors: ColorRules,
     layout: LayoutRules;
-
-export interface HideElementsRules { decorative: string[];
-    secondary: string[];
-    advanced: string[];
+    export interface HideElementsRules { decorative: string[],
+    secondary: string[],
+    advanced: string[],
     nonEssential: string[];
-
-export interface AnimationRules { disable: string[];
+    export interface AnimationRules { disable: string[],
     reduce: AnimationReductionConfig;
-
-export interface AnimationReductionConfig { duration: string;
+    export interface AnimationReductionConfig { duration: string,
     easing: string;
-
-export interface EffectRules { disable: string[];
-    reduce: Record<string, string> }
-
+    export interface EffectRules { disable: string[],
+    reduce: Record<string, string> };
 export interface TypographyRules { simplify: Record<string, string>,
-    sizes: Record<string, string> }
-
+    sizes: Record<string, string> };
 export interface ColorRules { highContrast: Record<string, string>,
-    monochrome: Record<string, string> }
-
+    monochrome: Record<string, string> };
 export interface LayoutRules { simplify: Record<string, string>,
-    grid: Record<string, string> }
-
+    grid: Record<string, string> };
 export interface SimplificationOptions { highContrast?: boolean,
     monochrome?: boolean;
     largeText?: boolean;
@@ -55,81 +47,66 @@ export interface SimplificationOptions { highContrast?: boolean,
     simplifyNavigation?: boolean;
     customSelectors?: string[];
     preserveElements?: string[];
-
-export interface SimplificationOperation { type: OperationType;
+    export interface SimplificationOperation { type: OperationType;
     target?: ElementCategory;
     parameters?: Record<string, any>;
     priority?: number;
     reversible?: boolean;
-
-export interface ActiveSimplification { level: SimplificationLevel;
-    options: SimplificationOptions;
-    operations: OperationResult[];
+    export interface ActiveSimplification { level: SimplificationLevel,
+    options: SimplificationOptions,
+    operations: OperationResult[],
     timestamp: number;
-
-export interface OperationResult { success: boolean;
+    export interface OperationResult { success: boolean,
     operation: OperationType;
     category?: ElementCategory;
     elementsAffected?: number;
     elements?: HTMLElement[];
     styleElement?: HTMLStyleElement;
     error?: string;
-
-export interface OriginalState { element: HTMLElement;
-    property: string;
+    export interface OriginalState { element: HTMLElement,
+    property: string,
     value: string;
-
-export interface SimplificationResult { success: boolean;
+    export interface SimplificationResult { success: boolean;
     id?: string;
     operationsApplied?: number;
     details?: OperationResult[];
     error?: string;
-
-export interface RevertResult { success: boolean;
+    export interface RevertResult { success: boolean;
     operationsReverted?: number;
     error?: string;
-
-export interface RevertAllResult { success: boolean;
-    revertedSimplifications: number;
+    export interface RevertAllResult { success: boolean,
+    revertedSimplifications: number,
     results: RevertResult[];
-
-export interface SimplificationStats { activeSimplifications: number;
-    totalOperations: number;
-    originalStatesStored: number;
+    export interface SimplificationStats { activeSimplifications: number,
+    totalOperations: number,
+    originalStatesStored: number,
     observedElements: number;
-
-export interface StyleInjection { id: string;
-    css: string;
-    element: HTMLStyleElement;
+    export interface StyleInjection { id: string,
+    css: string,
+    element: HTMLStyleElement,
     timestamp: number;
-
-export interface ElementMatch { element: HTMLElement;
-    selector: string;
-    category: ElementCategory;
+    export interface ElementMatch { element: HTMLElement,
+    selector: string,
+    category: ElementCategory,
     affectedProperties: string[];
-
-export interface TransformationContext { level: SimplificationLevel;
-    options: SimplificationOptions;
-    targetElements: Set<HTMLElement>;
+    export interface TransformationContext { level: SimplificationLevel,
+    options: SimplificationOptions,
+    targetElements: Set<HTMLElement>,
     appliedStyles: Map<string, StyleInjection>;
     preservedElements: Set<HTMLElement>;
-
-export interface ValidationResult { isValid: boolean;
-    errors: ValidationError[];
+    export interface ValidationResult { isValid: boolean,
+    errors: ValidationError[],
     warnings: ValidationWarning[];
-
-export interface ValidationError { field: string;
-    message: string;
+    export interface ValidationError { field: string,
+    message: string,
     code: string;
-
-export interface ValidationWarning { field: string;
-    message: string;
+    export interface ValidationWarning { field: string,
+    message: string,
     suggestion: string;
 
 // 列挙型
 export type SimplificationLevel = 'none' | 'minimal' | 'moderate' | 'significant' | 'extreme';
-
-export type OperationType = ';'
+    export type OperationType = ';'
     | 'hideElements', ';'
     | 'disableAnimations', ';'
     | 'reduceAnimations', ';'
@@ -141,7 +118,7 @@ export type OperationType = ';'
     | 'applyHighContrast', ';'
     | 'applyMonochrome', ';'
     | 'increaseFontSize';
-export type ElementCategory = 'decorative' | 'secondary' | 'advanced' | 'nonEssential';
+    export type ElementCategory = 'decorative' | 'secondary' | 'advanced' | 'nonEssential';
 
 // 定数
 export const DEFAULT_SIMPLIFICATION_RULES: SimplificationRules = { hideElements: {
@@ -160,82 +137,82 @@ export const DEFAULT_SIMPLIFICATION_RULES: SimplificationRules = { hideElements:
         nonEssential: [','
             '.social-media', '.share-buttons', '.rating-widget',]','
             '.recommendation', '.trending', '.related-content'],
-        ] },
+        ] } };
 
     animations: { disable: [']', 'animation', 'transition', 'transform'],
-        ],
-        reduce: {''
-            duration: '0.1s';
+        ]  },
+        reduce: { ''
+            duration: '0.1s'  ,
             easing: 'linear'
             }
     };
-    effects: { disable: [', 'box-shadow', 'text-shadow', 'filter',]',
+    effects: { disable: [, 'box-shadow', 'text-shadow', 'filter',]',
             'backdrop-filter', 'clip-path'],
-        ],
+        ]  },
         reduce: {', 'box-shadow': 'none','
-            'text-shadow': 'none',
+            'text-shadow': 'none,
             'filter': 'none' 
     },
 
     typography: { simplify: {', 'font-family': 'Arial, sans-serif','
-            'font-weight': 'normal',
-            'text-decoration': 'none' },
+            'font-weight': 'normal,
+            'text-decoration': 'none' } };
 
         sizes: { ', 'font-size': '14px','
             'line-height': '1.5' 
     },
 
     colors: { highContrast: {', 'color': '#000000','
-            'background-color': '#ffffff',
-            'border-color': '#666666' },
+            'background-color': '#ffffff,
+            'border-color': '#666666' } };
 
         monochrome: { ''
             filter: 'grayscale(100%)' 
-    };
+     ,
     layout: { simplify: {', 'padding': '8px','
-            'margin': '4px',
-            'border-radius': '0px',
-            'border': '1px solid #ccc' },
+            'margin': '4px,
+            'border-radius': '0px,
+            'border': '1px solid #ccc' } };
 
         grid: { ', 'display': 'block','
-            'float': 'none',
+            'float': 'none,
             'position': 'static' 
     } as const;
 
-export const OPERATION_PRIORITIES: Record<OperationType, number> = { hideElements: 1;
-    disableAnimations: 2;
-    reduceAnimations: 3;
-    disableEffects: 4;
-    reduceEffects: 5;
-    simplifyTypography: 6;
-    simplifyColors: 7;
-    simplifyLayout: 8;
-    applyHighContrast: 9;
-    applyMonochrome: 10;
+export const OPERATION_PRIORITIES: Record<OperationType, number> = { hideElements: 1,
+    disableAnimations: 2,
+    reduceAnimations: 3,
+    disableEffects: 4,
+    reduceEffects: 5,
+    simplifyTypography: 6,
+    simplifyColors: 7,
+    simplifyLayout: 8,
+    applyHighContrast: 9,
+    applyMonochrome: 10,
     increaseFontSize: 11  } as const;
 export const CSS_TEMPLATES = { DISABLE_ANIMATIONS: `
         *, *::before, *::after {
             animation-duration: 0.01ms !important;
             animation-iteration-count: 1 !important;
             transition-duration: 0.01ms !important;
-            scroll-behavior: auto !important }
-    `,
+            scroll-behavior: auto !important };
+    ,
     REDUCE_ANIMATIONS: `;
         *, *::before, *::after { animation-duration: 0.1s !important;
             transition-duration: 0.1s !important;
             transition-timing-function: linear !important }
         }
-    `,
+    ,
     DISABLE_EFFECTS: `;
         * { box-shadow: none !important;
-            text-shadow: none !important;
+            text-shadow: none !important,
             filter: none !important;
             backdrop-filter: none !important;
             clip-path: none !important }
-    `,
+    ,
     REDUCE_EFFECTS: `;
         * { box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important,
-            text-shadow: none !important;
+            text-shadow: none !important,
             filter: none !important  }
     `;
     SIMPLIFY_TYPOGRAPHY: `;
@@ -243,14 +220,14 @@ export const CSS_TEMPLATES = { DISABLE_ANIMATIONS: `
             font-weight: normal !important;
             text-decoration: none !important;
             font-style: normal !important }
-    `,
+    ,
     SIMPLIFY_COLORS: `;
         * { background-image: none !important;
             background-gradient: none !important }
-    `,
+    ,
     SIMPLIFY_LAYOUT: `;
-        * { border-radius: 0 !important;
-            padding: 8px !important;
+        * { border-radius: 0 !important,
+            padding: 8px !important,
     margin: 4px !important  }
     `;
     HIGH_CONTRAST: `;
@@ -264,7 +241,7 @@ export const CSS_TEMPLATES = { DISABLE_ANIMATIONS: `
     `;
     MONOCHROME: `;
         * { filter: grayscale(100%) !important }
-    `,
+    ,
     LARGE_TEXT: `;
         * { font-size: 18px !important;
             line-height: 1.6 !important }
@@ -282,7 +259,7 @@ export function validateSimplificationOptions(options: Partial<SimplificationOpt
     // カスタムセレクタの検証
     if (options.customSelectors) {
         options.customSelectors.forEach((selector, index) => { 
-    }
+    };
             try { }
                 document.querySelector(selector);' }'
 
@@ -291,9 +268,8 @@ export function validateSimplificationOptions(options: Partial<SimplificationOpt
                     field: `customSelectors[${index}]`)'
                     message: `Invalid CSS, selector: ${selector}`,')'
                     code: 'INVALID_SELECTOR');
-                };
-            }
-        };
+                    }
+}
     }
     
     // 保存要素セレクタの検証
@@ -308,7 +284,7 @@ export function validateSimplificationOptions(options: Partial<SimplificationOpt
                     field: `preserveElements[${index}]`)'
                     message: `Invalid CSS, selector: ${selector}`,')'
                     code: 'INVALID_PRESERVE_SELECTOR');
-                };
+                }
             }
         }';'
     }
@@ -335,7 +311,7 @@ export function generateStyleId(operationType: OperationType): string { }'
 
 export function sortOperationsByPriority(operations: SimplificationOperation[]): SimplificationOperation[] { return [...operations].sort((a, b) => { 
         const priorityA = OPERATION_PRIORITIES[a.type] || 999,
-        const priorityB = OPERATION_PRIORITIES[b.type] || 999 }
+        const priorityB = OPERATION_PRIORITIES[b.type] || 999 };
         return priorityA - priorityB;);
 }
 ';'
@@ -344,8 +320,7 @@ export function isElementVisible(element: HTMLElement): boolean {,
     const style = window.getComputedStyle(element);
     return style.display !== 'none' && ','
            style.visibility !== 'hidden' && ','
-           style.opacity !== '0' }
-
+           style.opacity !== '0' };
 export function findAffectedElements(selectors: string[]): ElementMatch[] { const matches: ElementMatch[] = [],
     
     selectors.forEach(selector => { )
@@ -355,19 +330,17 @@ export function findAffectedElements(selectors: string[]): ElementMatch[] { cons
                 if (element, instanceof HTMLElement) {
                     matches.push({)
                         element)','
-                        selector }
-
+                        selector };
                         category: 'decorative', // デフォルト') }'
 
                         affectedProperties: ['display]'; }'
-                    };
-                }
-            };
+                        }
+}
         } catch (error) {
             console.warn(`Invalid selector: ${selector}`, error);
         }
     };
-    
+
     return matches;
 }
 
@@ -385,7 +358,7 @@ export class InterfaceSimplifier {
         this.simplificationRules = JSON.parse(JSON.stringify(DEFAULT_SIMPLIFICATION_RULES);
         this.originalStates = new Map();
         this.observedElements = new Set();
-        this.appliedStyles = new Map() }
+        this.appliedStyles = new Map() };
         this.setupMutationObserver(); }
     }
 
@@ -395,24 +368,21 @@ export class InterfaceSimplifier {
     private setupMutationObserver(): void { this.mutationObserver = new MutationObserver((mutations) => {;
             mutations.forEach(mutation => {);
                 if(mutation.type === 'childList' {'
-                    mutation.addedNodes.forEach(node => {) }
+                    mutation.addedNodes.forEach(node => {);
                         if (node.nodeType === Node.ELEMENT_NODE) { }
-                            this.applyActiveSimplifications(node, as HTMLElement); }
-};
-                }
-
+                            this.applyActiveSimplifications(node, as HTMLElement);     }
+}
             };'}');
 
         if (typeof, document !== 'undefined) { this.mutationObserver.observe(document.body, {)'
                 childList: true,
-                subtree: true), 
-    }
+                subtree: true);
 
     /**
      * 簡素化を適用
      */
     applySimplification(level: SimplificationLevel, options: SimplificationOptions = { ): SimplificationResult { }
-        const simplificationId = `simplification_${Date.now())`,
+        const simplificationId = `simplification_${Date.now()),
         
         try { // オプションの検証
             const validation = validateSimplificationOptions(options);
@@ -439,14 +409,12 @@ export class InterfaceSimplifier {
     timestamp: Date.now(  };
             return { success: true,
                 id: simplificationId,
-    operationsApplied: appliedOperations.length },
+    operationsApplied: appliedOperations.length ,
                 details: appliedOperations; catch (error) {
             console.error('Simplification failed:', error);
             return { success: false,
-                error: (error, as Error).message }
-            }
-    }
-
+                error: (error, as Error).message     }
+}
     /**
      * 簡素化操作を取得
      */
@@ -468,9 +436,9 @@ export class InterfaceSimplifier {
                 operations.push(' }'
 
                     { type: 'hideElements', target: 'decorative'
-            },''
+            ,''
                     { type: 'hideElements', target: 'secondary'
-            },')'
+            ,')'
                     { type: 'disableAnimations' }')'
                     { type: 'reduceEffects''', '),'
 
@@ -480,12 +448,12 @@ export class InterfaceSimplifier {
                 operations.push(' }'
 
                     { type: 'hideElements', target: 'decorative'
-            },''
+            ,''
                     { type: 'hideElements', target: 'secondary'
-            },''
+            ,''
                     { type: 'hideElements', target: 'advanced'
-            },''
-                    { type: 'disableAnimations' },')'
+            ,''
+                    { type: 'disableAnimations' ,')'
                     { type: 'disableEffects' }')'
                     { type: 'simplifyTypography''', '),'
 
@@ -495,16 +463,16 @@ export class InterfaceSimplifier {
                 operations.push(' }'
 
                     { type: 'hideElements', target: 'decorative'
-            },''
+            ,''
                     { type: 'hideElements', target: 'secondary'
-            },''
+            ,''
                     { type: 'hideElements', target: 'advanced'
-            },''
+            ,''
                     { type: 'hideElements', target: 'nonEssential'
-            },''
-                    { type: 'disableAnimations' },''
-                    { type: 'disableEffects' },''
-                    { type: 'simplifyTypography' },')'
+            ,''
+                    { type: 'disableAnimations' ,''
+                    { type: 'disableEffects' ,''
+                    { type: 'simplifyTypography' ,')'
                     { type: 'simplifyColors' }')'
                     { type: 'simplifyLayout' )
                 ','
@@ -537,31 +505,29 @@ export class InterfaceSimplifier {
                 case 'disableAnimations':','
                     return this.disableAnimations('''
                 case 'reduceAnimations': ','
-                    return, this.reduceAnimations('',
+                    return, this.reduceAnimations(',
                 case 'disableEffects':','
-                    return, this.disableEffects('',
+                    return, this.disableEffects(',
                 case 'reduceEffects':','
-                    return, this.reduceEffects('',
+                    return, this.reduceEffects(',
                 case 'simplifyTypography':','
-                    return, this.simplifyTypography('',
+                    return, this.simplifyTypography(',
                 case 'simplifyColors':','
-                    return, this.simplifyColors('',
+                    return, this.simplifyColors(',
                 case 'simplifyLayout':','
-                    return, this.simplifyLayout('',
+                    return, this.simplifyLayout(',
                 case 'applyHighContrast':','
-                    return, this.applyHighContrast('',
+                    return, this.applyHighContrast(',
                 case 'applyMonochrome':','
                     return, this.applyMonochrome()','
                 case 'increaseFontSize':),
-                    return this.increaseFontSize() }
+                    return this.increaseFontSize();
                 default: }
-                    throw new Error(`Unknown, operation: ${operation.type}`};
-            } catch (error) { return { success: false,
-                operation: operation.type },
-                error: (error, as Error).message }
-            }
-    }
-
+                    throw new Error(`Unknown, operation: ${operation.type}`}
+        } catch (error) { return { success: false,
+                operation: operation.type ,
+                error: (error, as Error).message     }
+}
     /**
      * 要素を非表示
      */'
@@ -585,9 +551,9 @@ export class InterfaceSimplifier {
 ';'
 
         return { success: true,''
-            operation: 'hideElements',
+            operation: 'hideElements,
             category,
-            elementsAffected: hiddenElements.length },
+            elementsAffected: hiddenElements.length ,
             elements: hiddenElements,
 
     /**
@@ -752,8 +718,7 @@ export class InterfaceSimplifier {
             this.originalStates.set(key, {
                 element);
                 property }
-                value: element.style[property as any] || window.getComputedStyle(element)[property as any]},
-        }
+                value: element.style[property as any] || window.getComputedStyle(element)[property as any] }
     }
 
     /**
@@ -776,10 +741,8 @@ export class InterfaceSimplifier {
 
             return { success: true,
                 operationsReverted: revertedOperations, catch (error) { return { success: false,
-                error: (error, as Error).message }
-            }
-    }
-
+                error: (error, as Error).message     }
+}
     /**
      * 操作を元に戻す
      */'
@@ -800,7 +763,7 @@ export class InterfaceSimplifier {
                     if (operation.styleElement) {
                         const styleId = operation.styleElement.id,
                         operation.styleElement.remove();
-                        this.appliedStyles.delete(styleId) }
+                        this.appliedStyles.delete(styleId);
                         return true;
                     return false;} catch (error) {
             console.error('Failed to revert operation:', error);
@@ -809,10 +772,10 @@ export class InterfaceSimplifier {
     /**
      * 全ての簡素化を元に戻す
      */
-    revertAllSimplifications(): RevertAllResult { const simplificationIds = Array.from(this.activeSimplifications.keys();
+    revertAllSimplifications(): RevertAllResult { const simplificationIds = Array.from(this.activeSimplifications.keys()));
         const results: RevertResult[] = [],
 
-        simplificationIds.forEach(id => { ) }
+        simplificationIds.forEach(id => { );
 
             results.push(this.revertSimplification(id); }'
 
@@ -828,7 +791,7 @@ export class InterfaceSimplifier {
         this.observedElements.clear();
 
         return { success: true,
-            revertedSimplifications: results.filter(r = > r.success).length  },
+            revertedSimplifications: results.filter(r = > r.success).length  ,
             results }
         }
 
@@ -842,72 +805,71 @@ export class InterfaceSimplifier {
                     selectors.forEach(selector => {)'
                         try {','
                             if(element.matches && element.matches(selector)) {''
-                                this.saveOriginalState(element, 'display') }
+                                this.saveOriginalState(element, 'display');
 
                                 element.style.display = 'none'; }
                                 this.observedElements.add(element); }
-                            } catch (error) {
+        } catch (error) {
                             console.warn(`Invalid selector: ${selector}`, error);
-                        }
-                    };
-                }
-            };
+                            }
+}
+            }
         };
     }
 
     /**
      * アクティブな簡素化を取得
      */
-    getActiveSimplifications(): Array<{ id: string, & ActiveSimplification> { return Array.from(this.activeSimplifications.entries().map(([id, simplification]) => ({
+    getActiveSimplifications(): Array<{ id: string, & ActiveSimplification> { return Array.from(this.activeSimplifications.entries())).map(([id, simplification]) => ({
             id,
             ...simplification
-        };
+        }
     }
 
     /**
      * 適用されたスタイルを取得
      */
-    getAppliedStyles(): StyleInjection[] { return Array.from(this.appliedStyles.values() }
+    getAppliedStyles(): StyleInjection[] { return Array.from(this.appliedStyles.values()));
 
     /**
      * 元の状態を取得
      */
-    getOriginalStates(): OriginalState[] { return Array.from(this.originalStates.values() }
+    getOriginalStates(): OriginalState[] { return Array.from(this.originalStates.values()));
 
     /**
      * 簡素化統計を取得
      */
     getStats(): SimplificationStats { const active = this.activeSimplifications.size,
-        const totalOperations = Array.from(this.activeSimplifications.values();
+        const totalOperations = Array.from(this.activeSimplifications.values()));
             .reduce((sum, s) => sum + s.operations.length, 0),
 
         return { activeSimplifications: active,
             totalOperations,
-            originalStatesStored: this.originalStates.size },
+            originalStatesStored: this.originalStates.size ,
             observedElements: this.observedElements.size 
     }
 
     /**
      * 簡素化ルールを更新
      */
-    updateSimplificationRules(newRules: Partial<SimplificationRules>): void { Object.assign(this.simplificationRules, newRules) }
+    updateSimplificationRules(newRules: Partial<SimplificationRules>): void { Object.assign(this.simplificationRules, newRules);
 
     /**
      * 簡素化ルールを取得
      */
-    getSimplificationRules(): SimplificationRules { return JSON.parse(JSON.stringify(this.simplificationRules) }
+    getSimplificationRules(): SimplificationRules { return JSON.parse(JSON.stringify(this.simplificationRules);
 
     /**
      * 特定レベルの簡素化が適用されているか確認
      */
-    hasSimplificationLevel(level: SimplificationLevel): boolean { return Array.from(this.activeSimplifications.values()
+    hasSimplificationLevel(level: SimplificationLevel): boolean { return Array.from(this.activeSimplifications.values()))
             .some(simplification => simplification.level === level);
     /**
      * 特定操作が適用されているか確認
      */
-    hasOperationType(operationType: OperationType): boolean { return Array.from(this.activeSimplifications.values()
+    hasOperationType(operationType: OperationType): boolean { return Array.from(this.activeSimplifications.values()))
             .some(simplification => );
-                simplification.operations.some(op => op.operation === operationType) }
+                simplification.operations.some(op => op.operation === operationType);
     }
 
     /**

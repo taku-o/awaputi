@@ -2,36 +2,29 @@ import fs from 'fs/promises';
 import path from 'path';
 
 // Type definitions
-interface TargetFile { filePath: string;
-    currentFilePath: string;
-    expectedWordCount: number;
+interface TargetFile { filePath: string,
+    currentFilePath: string,
+    expectedWordCount: number,
     description: string;
-
-interface GitCommit { commit: string;
+    interface GitCommit { commit: string,
     message: string;
-
-interface GitHistoryError { error: string;
+    interface GitHistoryError { error: string,
     gitHistoryFailed: boolean;
-
-interface SizeAnalysis { bytes: number;
-    wordCount: number;
-    lineCount: number;
-    characters: number;
+    interface SizeAnalysis { bytes: number,
+    wordCount: number,
+    lineCount: number,
+    characters: number,
     lastModified: string;
-
-interface SizeAnalysisError { error: string;
+    interface SizeAnalysisError { error: string,
     analyzeFailed: boolean;
-
-interface FileComparison { identical: boolean;
-    backupLines: number;
-    currentLines: number;
-    sizeDifference: number;
+    interface FileComparison { identical: boolean,
+    backupLines: number,
+    currentLines: number,
+    sizeDifference: number,
     comparedAt: string;
-
-interface ComparisonError { error: string;
+    interface ComparisonError { error: string,
     comparisonFailed: boolean;
-
-interface InvestigationResult extends TargetFile { exists: boolean;
+    interface InvestigationResult extends TargetFile { exists: boolean;
     sizeAnalysis?: SizeAnalysis | SizeAnalysisError;
     gitHistory?: GitCommit[] | GitHistoryError[];
     currentFileExists: boolean;
@@ -39,26 +32,23 @@ interface InvestigationResult extends TargetFile { exists: boolean;
     investigatedAt: string;
     error?: string;
     investigationFailed?: boolean;
-
-interface ReportSummary { totalFiles: number;
-    existingFiles: number;
-    missingFiles: number;
-    currentFilesExist: number;
+    interface ReportSummary { totalFiles: number,
+    existingFiles: number,
+    missingFiles: number,
+    currentFilesExist: number,
     investigationErrors: number;
-
-interface SizeEstimate { bytes: number;
+    interface SizeEstimate { bytes: number,
     words: number;
 ';'
 
 interface Recommendation { ''
-    type: 'safe_deletion' | 'needs_attention';
-    message: string;
+    type: 'safe_deletion' | 'needs_attention,
+    message: string,
     files: string[];
-
-interface InvestigationReport { summary: ReportSummary;
-    files: InvestigationResult[];
-    totalSizeEstimate: SizeEstimate;
-    recommendations: Recommendation[];
+    interface InvestigationReport { summary: ReportSummary,
+    files: InvestigationResult[],
+    totalSizeEstimate: SizeEstimate,
+    recommendations: Recommendation[],
     generatedAt: string;
 
 /**
@@ -68,32 +58,32 @@ interface InvestigationReport { summary: ReportSummary;
 export class BackupFileInvestigator {
     private targetFiles: TargetFile[]';'
 
-    constructor('', filePath: 'src/utils/TestConfigurationGenerator_old.js';
-                currentFilePath: 'src/utils/TestConfigurationGenerator.js';
-                expectedWordCount: 3288;
-                description: 'Task 4完了時のバックアップ'
+    constructor(', filePath: 'src/utils/TestConfigurationGenerator_old.js',
+                currentFilePath: 'src/utils/TestConfigurationGenerator.js,
+    expectedWordCount: 3288,
+    description: 'Task 4完了時のバックアップ'
             };
             { ''
-                filePath: 'src/utils/performance-monitoring/PerformanceDataAnalyzer_Original.js',
-                currentFilePath: 'src/utils/performance-monitoring/PerformanceDataAnalyzer.js',
+                filePath: 'src/utils/performance-monitoring/PerformanceDataAnalyzer_Original.js,
+                currentFilePath: 'src/utils/performance-monitoring/PerformanceDataAnalyzer.js,
                 expectedWordCount: 2871,
                 description: 'Task 2完了時のオリジナル保存'
             };
             { ''
-                filePath: 'src/debug/TestDataGenerationCommands_old.js',
-                currentFilePath: 'src/debug/TestDataGenerationCommands.js',
+                filePath: 'src/debug/TestDataGenerationCommands_old.js,
+                currentFilePath: 'src/debug/TestDataGenerationCommands.js,
                 expectedWordCount: 2621,
                 description: '分割プロジェクトでのバックアップ'
             };
             { ''
-                filePath: 'src/debug/TestDataGenerationCommands_backup.js',
-                currentFilePath: 'src/debug/TestDataGenerationCommands.js',
+                filePath: 'src/debug/TestDataGenerationCommands_backup.js,
+                currentFilePath: 'src/debug/TestDataGenerationCommands.js,
                 expectedWordCount: 2621,
                 description: '重複バックアップ'
             };
             { ''
-                filePath: 'src/seo/SEOTester_original.js',
-                currentFilePath: 'src/seo/SEOTester.js',
+                filePath: 'src/seo/SEOTester_original.js,
+                currentFilePath: 'src/seo/SEOTester.js,
                 expectedWordCount: 2576,
                 description: '分割プロジェクトでのオリジナル保存'
             };
@@ -110,11 +100,11 @@ export class BackupFileInvestigator {
             try {
                 const investigation = await this.investigateFile(targetFile }
                 results.push(investigation); }
-            } catch (error) { results.push({)
+        } catch (error) { results.push({)
                     ...targetFile),
                     exists: false),
                     currentFileExists: false),
-                    investigatedAt: new Date().toISOString();
+                    investigatedAt: new Date().toISOString(),
     error: (error, as Error).message,
                     investigationFailed: true,);
             }
@@ -170,7 +160,7 @@ export class BackupFileInvestigator {
     /**
      * 対応する現在ファイルの存在確認
      */
-    async checkCurrentFileExists(currentFilePath: string): Promise<boolean> { return this.checkFileExists(currentFilePath) }
+    async checkCurrentFileExists(currentFilePath: string): Promise<boolean> { return this.checkFileExists(currentFilePath);
 
     /**
      * ファイルサイズの分析
@@ -185,10 +175,10 @@ export class BackupFileInvestigator {
             return { bytes: stats.size,
                 wordCount,
                 lineCount,
-                characters: content.length },
+                characters: content.length };
                 lastModified: stats.mtime.toISOString(); 
     } catch (error) { return { error: (error, as Error).message };
-                analyzeFailed: true,
+                analyzeFailed: true;
     }
 
     /**
@@ -208,12 +198,12 @@ export class BackupFileInvestigator {
             if (!stdout.trim() { return [] }"
 
             return stdout.trim().split('\n'.map(line => {  '),'
-                const [commit, ...messageParts] = line.split(', ') }
+                const [commit, ...messageParts] = line.split(', ');
 
                 return { commit,' };'
 
                     message: messageParts.join(', '); }
-                };
+                }
         } catch (error) { return [{
                 error: (error, as Error).message],
                 gitHistoryFailed: true;]
@@ -233,18 +223,17 @@ export class BackupFileInvestigator {
             return { identical: backupContent === currentContent,
                 backupLines: backupLines.length,
                 currentLines: currentLines.length,
-    sizeDifference: currentContent.length - backupContent.length },
+    sizeDifference: currentContent.length - backupContent.length };
                 comparedAt: new Date().toISOString(); 
     } catch (error) { return { error: (error, as Error).message };
-                comparisonFailed: true,
+                comparisonFailed: true;
     }
 
     /**
      * 調査結果レポートの生成
      */
     async generateInvestigationReport(investigationResults: InvestigationResult[]): Promise<InvestigationReport> { const report: InvestigationReport = {
-            summary: {
-                totalFiles: investigationResults.length,
+            summary: { totalFiles: investigationResults.length  ,
                 existingFiles: investigationResults.filter(r => r.exists).length,
                 missingFiles: investigationResults.filter(r => !r.exists).length,
                 currentFilesExist: investigationResults.filter(r => r.currentFileExists).length,
@@ -252,11 +241,11 @@ export class BackupFileInvestigator {
             };
             files: investigationResults,
             totalSizeEstimate: { bytes: investigationResults''
-                    .filter(r => r.sizeAnalysis && !('analyzeFailed' in, r.sizeAnalysis'',
-                    .reduce((sum, r) => sum + (r.sizeAnalysis, as SizeAnalysis).bytes, 0'),'
+                    .filter(r => r.sizeAnalysis && !('analyzeFailed' in, r.sizeAnalysis',
+                    .reduce((sum, r) => sum + (r.sizeAnalysis, as SizeAnalysis).bytes, 0'),'  },
                 words: investigationResults','
                     .filter(r => r.sizeAnalysis && !('analyzeFailed' in, r.sizeAnalysis);
-                    .reduce((sum, r) => sum + (r.sizeAnalysis, as SizeAnalysis).wordCount, 0) }
+                    .reduce((sum, r) => sum + (r.sizeAnalysis, as SizeAnalysis).wordCount, 0);
             },
             recommendations: this.generateRecommendations(investigationResults,
     generatedAt: new Date().toISOString();
@@ -278,7 +267,7 @@ export class BackupFileInvestigator {
 
         if (safeToDelete.length > 0) {
             recommendations.push({)'
-                type: 'safe_deletion')  }
+                type: 'safe_deletion'),
                 message: `${safeToDelete.length}個のファイルは安全に削除できる可能性があります`
             }
                 files: safeToDelete.map(f => f.filePath});
@@ -287,7 +276,7 @@ export class BackupFileInvestigator {
 
         if (needsAttention.length > 0) {
             recommendations.push({)'
-                type: 'needs_attention') }
+                type: 'needs_attention'),
                 message: `${needsAttention.length}個のファイルは追加の調査が必要です`
             }
 

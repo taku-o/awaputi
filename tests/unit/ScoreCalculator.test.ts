@@ -6,28 +6,28 @@ import { ScoreCalculator  } from '../../src/core/ScoreCalculator.js';
 // Type definitions
 interface ScoreConfig {
     baseScores: {
-        norma,l: number;
+        norma,l: number },
         stone: number;
-        iron: number;
+        iron: number,
         diamond: number;
-        rainbow: number;
+        rainbow: number,
         pink: number;
-        clock: number;
+        clock: number,
         electric: number;
-        poison: number;
+        poison: number,
         spiky: number;
-        cracked: number;
+        cracked: number,
         escaping: number;
-        boss: number;
+        boss: number,
         score: number,,
     combo: {
-        multiplierIncrement: number;
+        multiplierIncrement: number },
         maxMultiplier: number;
-        bonusInterval: number;
+        bonusInterval: number,
         bonusMultiplier: number;
         baseTimeout: number,,
     ageBonus: {
-        earlyBonus: number;
+        earlyBonus: number },
         lateBonus: number;
         midBonus: number;
 }
@@ -40,27 +40,27 @@ interface ScoreCalculationParams {
     specialMultiplier?: number;
     itemMultiplier?: number;
 interface ScoreResult {
-    baseScore: number;
+    baseScore: number,
     multipliers: {
-        comb,o: number;
+        comb,o: number },
         total: number,,
-    finalScore: number;
+    finalScore: number,
     comboBonus: number;
 interface ScoreHistoryItem {
-    finalScore: number;
+    finalScore: number,
     multipliers: {
-        comb,o: number,,
+        comb,o: number, };
     comboBonus: number;
 interface ScoreStatistics {
-    total: number;
+    total: number,
     average: number;
-    highest: number;
+    highest: number,
     lowest: number;
-    comboCount: number;
+    comboCount: number,
     bonusCount: number;
     totalEntries: number;
 interface BubbleInfo {
-    type: string;
+    type: string,
     ageRatio: number;
 interface GameState {
     currentCombo?: number;
@@ -68,11 +68,11 @@ interface GameState {
     timeRemaining?: number;
     currentScore?: number;
 interface RecommendedStrategy {
-    priority: string;
+    priority: string,
     reasoning: string;
     targetBubbles: BubbleInfo[];
 interface DebugInfo {
-    hasGameConfig: boolean;
+    hasGameConfig: boolean,
     scoreConfig: ScoreConfig;
     version: string;
 // モックGameConfig
@@ -80,34 +80,34 @@ class MockGameConfig implements MockGameConfig {
     getScoreConfig('): ScoreConfig {'
         return {
             baseScores: {
-                normal: 15;
+                normal: 15 },
                 stone: 35;
-                iron: 65;
+                iron: 65,
                 diamond: 120;
-                rainbow: 400;
+                rainbow: 400,
                 pink: 25;
-                clock: 180;
+                clock: 180,
                 electric: 20;
-                poison: 8;
+                poison: 8,
                 spiky: 85;
-                cracked: 30;
+                cracked: 30,
                 escaping: 50;
-                boss: 800;
+                boss: 800,
                 score: 250
             },
             combo: {
-                multiplierIncrement: 0.08;
+                multiplierIncrement: 0.08 },
                 maxMultiplier: 2.5;
-                bonusInterval: 5;
+                bonusInterval: 5,
                 bonusMultiplier: 8;
                 baseTimeout: 2000
             },
             ageBonus: {
-                earlyBonus: 2.0;
+                earlyBonus: 2.0 },
                 lateBonus: 3.0;
                 midBonus: 1.5
             }
-        };
+        }
     }
 }
 describe('ScoreCalculator', () => {

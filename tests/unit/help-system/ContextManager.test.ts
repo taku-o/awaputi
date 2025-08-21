@@ -9,17 +9,17 @@ interface MockGameEngine {
         getCurrentScen,e: jest.Mock<() => MockScene>
     },
     bubbleManager: {
-        getBubbles: jest.Mock<() => any[]>;
+        getBubbles: jest.Mock<() => any[]> },
         getActiveBubbleTypes: jest.Mock<() => string[]>
     },
     scoreManager: {
-        getCurrentScore: jest.Mock<() => number>;
+        getCurrentScore: jest.Mock<() => number> },
         getCurrentCombo: jest.Mock<() => number>
     },
     canvas: { width: number,, height: number;
 }
 interface MockScene {
-    constructor: { nam,e: string;
+    constructor: { nam,e: string,
     getCurrentState: jest.Mock<(') => SceneState>,'
 }
 interface SceneState {
@@ -33,24 +33,24 @@ interface GameContext {
     gameState?: GameState;
     error?: boolean;
 interface GameState {
-    bubbleCount: number;
+    bubbleCount: number,
     timeRemaining: number;
-    currentScore: number;
+    currentScore: number,
     currentCombo: number;
     activeBubbleTypes: string[];
 interface HelpItem {
-    priority: 'high' | 'medium' | 'low';
+    priority: 'high' | 'medium' | 'low',
     category: string;
     content?: string;
 interface TooltipContent {
     title: string;
     description?: string;
 interface Tooltip {
-    x: number;
+    x: number,
     y: number;
     content: TooltipContent;
 interface SuggestedAction {
-    action: string;
+    action: string,
     reason: string;
     priority?: 'urgent' | 'normal' }
 interface UserBehavior {
@@ -59,12 +59,12 @@ interface UserBehavior {
     preferredBubbleTypes?: string[];
     sessionTime: number;
 interface SmartHelp {
-    category: 'basic' | 'intermediate' | 'advanced';
+    category: 'basic' | 'intermediate' | 'advanced',
     suggestions: string[];
 interface MockDOMRect {
-    left: number;
+    left: number,
     top: number;
-    width: number;
+    width: number,
     height: number;
 interface MockElement {
     id?: string;
@@ -75,12 +75,12 @@ const mockGameEngine: MockGameEngine = {
         getCurrentScene: jest.fn((') => ({ '
             constructor: { name: 'GameScene' ,
             getCurrentState: jest.fn(() => ({ bubbleCount: 5, timeRemaining: 120 )) }))
-    ),
+    ) };
     bubbleManager: {
-        getBubbles: jest.fn(() => []),
+        getBubbles: jest.fn(() => []) },
         getActiveBubbleTypes: jest.fn((') => ['normal', 'stone'])),'
     scoreManager: {
-        getCurrentScore: jest.fn(() => 1500),
+        getCurrentScore: jest.fn(() => 1500) },
         getCurrentCombo: jest.fn(() => 3)),
     canvas: { width: 800,
         height: 600
@@ -139,7 +139,7 @@ describe('ContextManager', () => {
             const context: GameContext = {
                 sceneName: 'GameScene',
                 gameState: {
-                    bubbleCount: 10,
+                    bubbleCount: 10 },
                     timeRemaining: 30,
                     currentCombo: 0,
                     currentScore: 0,
@@ -155,7 +155,7 @@ describe('ContextManager', () => {
             const context: GameContext = {
                 sceneName: 'GameScene',
                 gameState: {
-                    bubbleCount: 0, // Emergency situation
+                    bubbleCount: 0, // Emergency situation };
                     timeRemaining: 10,
                     currentCombo: 0,
                     currentScore: 0,
@@ -354,6 +354,6 @@ describe('ContextManager', () => {
             expect(contextManager.tooltipElements.size).toBe(0);
             expect(contextManager.currentTooltip).toBeNull();
             expect(contextManager.contextCache.size).toBe(0);
-        };
+        }
     }
 }');'

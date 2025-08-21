@@ -10,8 +10,8 @@ import LocalExecutionErrorHandler from '../../../src/utils/local-execution/Local
 import { ErrorHandler  } from '../../../src/utils/ErrorHandler.js';
 // Type definitions
 interface MockWindow {
-    location: { protoco,l: string;
-    addEventListener: jest.Mock<void, [string, EventListener]>;
+    location: { protoco,l: string,
+    addEventListener: jest.Mock<void, [string, EventListener]> };
     removeEventListener: jest.Mock<void, [string, EventListener]>;
     performance: { now: (') => number };'
 }
@@ -20,7 +20,7 @@ interface MockDocument {
     createElement: jest.Mock<any, [string]>;
     querySelector: jest.Mock<any, [string]>;
     body: {
-        appendChil,d: jest.Mock<void, [any]> };
+        appendChil,d: jest.Mock<void, [any]> }
 }
 interface MockSessionStorage {
     getItem: jest.Mock<string | null, [string]>;
@@ -31,25 +31,25 @@ interface MockErrorHandler {
     configure: jest.Mock<void, [any]>;
     getErrorStats: jest.Mock<ErrorStats, []> }
 interface ErrorStats {
-    total: number;
+    total: number,
     byType: Map<string, number>;
     byContext: Map<string, number> }
 interface ErrorCategory {
-    name: string;
+    name: string,
     severity: string;
     recoverable: boolean;
 interface ErrorAnalysis {
-    category: string;
+    category: string,
     severity: string;
     recoverable: boolean;
 interface DebugInfo {
-    isInitialized: boolean;
+    isInitialized: boolean,
     config: any;
     errorCategories: Record<string, ErrorCategory>;
     handledGuidanceTypes: string[];
 // モック設定
 const mockWindow: MockWindow = {
-    location: { protocol: 'file:' };
+    location: { protocol: 'file:' },
     addEventListener: jest.fn(
     removeEventListener: jest.fn(
     performance: { now: () => Date.now() }
@@ -82,7 +82,7 @@ describe('LocalExecutionErrorHandler Integration Tests', () => {
             handleError: jest.fn(
             configure: jest.fn(
             getErrorStats: jest.fn(() => ({
-                total: 0;
+                total: 0,
                 byType: new Map(
         byContext: new Map(
     )
@@ -100,7 +100,7 @@ describe('LocalExecutionErrorHandler Integration Tests', () => {
     describe('Initialization Integration', (') => {'
         test('should initialize with main ErrorHandler integration', async () => {
             const config = {
-                enableMainErrorHandlerIntegration: true;
+                enableMainErrorHandlerIntegration: true,
                 enableDebugLogging: true;
             LocalExecutionErrorHandler.initialize(config, mockErrorHandler);
             expect(LocalExecutionErrorHandler.isInitialized).toBe(true);
@@ -129,7 +129,7 @@ describe('LocalExecutionErrorHandler Integration Tests', () => {
     describe('Error Reporting Integration', () => {
         beforeEach(() => {
             LocalExecutionErrorHandler.initialize({
-                enableMainErrorHandlerIntegration: true;
+                enableMainErrorHandlerIntegration: true,
                 enableDebugLogging: false,, mockErrorHandler);
         }');'
         test('should report CORS errors to main ErrorHandler', (') => {'
@@ -141,7 +141,7 @@ describe('LocalExecutionErrorHandler Integration Tests', () => {
                 'LOCAL_EXECUTION_RESOURCE',
                 expect.objectContaining({
                     resource,
-                    category: 'cors';
+                    category: 'cors',
                     localExecution: true,);
             );
         }');'
@@ -179,11 +179,11 @@ describe('LocalExecutionErrorHandler Integration Tests', () => {
                     localExecution: expect.objectContaining({
                         errorCategories: expect.objectContaining({
                             LOCAL_EXECUTION_CORS: expect.objectContaining({
-                                name: 'Local Execution CORS Error';
+                                name: 'Local Execution CORS Error',
                                 severity: 'HIGH';
                                 recoverable: true,);
     }
-    };
+    }
     }
             );
         }');'
@@ -210,7 +210,7 @@ describe('LocalExecutionErrorHandler Integration Tests', () => {
             mockErrorHandler.handleError = jest.fn((') => {'
                 throw new Error('Reporting failed')),
             LocalExecutionErrorHandler.initialize({
-                enableMainErrorHandlerIntegration: true;
+                enableMainErrorHandlerIntegration: true,
                 enableDebugLogging: false,), mockErrorHandler');'
             const consoleSpy = jest.spyOn(console, 'log').mockImplementation(() => {),
             expect(() => {
@@ -239,13 +239,13 @@ describe('LocalExecutionErrorHandler Integration Tests', () => {
     describe('Debug Information Integration', (') => {'
         test('should provide comprehensive debug information', () => {
             LocalExecutionErrorHandler.initialize({
-                enableMainErrorHandlerIntegration: true;
+                enableMainErrorHandlerIntegration: true,
                 enableDebugLogging: true,, mockErrorHandler);
             const debugInfo = LocalExecutionErrorHandler.getDebugInfo();
             expect(debugInfo).toMatchObject({
-                isInitialized: true;
+                isInitialized: true,
                 config: expect.objectContaining({
-                    enableMainErrorHandlerIntegration: true;
+                    enableMainErrorHandlerIntegration: true,
                 errorCategories: LocalExecutionErrorHandler.ERROR_CATEGORIES;
         handledGuidanceTypes: expect.any(Array) }
         }');'
@@ -253,7 +253,7 @@ describe('LocalExecutionErrorHandler Integration Tests', () => {
     describe('User-Friendly Message Generation', () => {
         beforeEach(() => {
             LocalExecutionErrorHandler.initialize({
-                enableMainErrorHandlerIntegration: true;
+                enableMainErrorHandlerIntegration: true,
                 enableUserNotifications: true,, mockErrorHandler);
         }');'
         test('should generate appropriate CORS error messages', (') => {'
@@ -268,7 +268,7 @@ describe('LocalExecutionErrorHandler Integration Tests', () => {
             const corsError = LocalExecutionErrorHandler._analyzeError('),'
                 new Error('CORS policy blocked this request');
             expect(corsError').toMatchObject({'
-                category: 'cors';
+                category: 'cors',
                 severity: 'high';
                 recoverable: false,');'
         }
@@ -276,7 +276,7 @@ describe('LocalExecutionErrorHandler Integration Tests', () => {
             const unknownError = LocalExecutionErrorHandler._analyzeError('),'
                 new Error('Some random error');
             expect(unknownError').toMatchObject({'
-                category: 'unknown';
+                category: 'unknown',
                 severity: 'medium';
                 recoverable: true,);
         }
@@ -305,6 +305,6 @@ describe('LocalExecutionErrorHandler Integration Tests', () => {
                 );
             }
             expect(mockErrorHandler.handleError).toHaveBeenCalledTimes(100);
-        };
+        }
     }
 }');'

@@ -8,38 +8,39 @@
 type LogLevel = 'info' | 'warn' | 'error' | 'error-detail' | 'performance' | 'validation';
 
 // ログエントリーインターフェース
-interface LogEntry { level: LogLevel;
-    message: string;
-    data: any;
+interface LogEntry { level: LogLevel,
+    message: string,
+    data: any,
     timestamp: number;
 
 // 検証データインターフェース
-interface ValidationData { component: string;
-    isValid: boolean;
-    issues: string[];
+interface ValidationData { component: string,
+    isValid: boolean,
+    issues: string[],
     timestamp: string;
 
 // エラーサマリーインターフェース
-interface ErrorSummary { totalErrors: number;
+interface ErrorSummary { totalErrors: number,
     errorTypes: Record<string, number>;
     recentErrors: LogEntry[];
 
 // コンポーネントヘルスインターフェース
-interface ComponentHealth { total: number;
-    passed: number;
-    failed: number;
+interface ComponentHealth { total: number,
+    passed: number,
+    failed: number,
     issues: string[];
 
 // ヘルスレポートインターフェース
-interface HealthReport { timestamp: string;
+interface HealthReport { timestamp: string,
     summary: {
         totalValidation,s: number;
-        passedValidations: number;
-        failedValidations: number;
-        errors: number;
-    warnings: number;
+    },
+        passedValidations: number,
+        failedValidations: number,
+        errors: number,
+    warnings: number,
     componentHealth: Record<string, ComponentHealth>;
-    recentIssues: LogEntry[];
+    recentIssues: LogEntry[],
     healthScore: number;
 }
 
@@ -50,7 +51,7 @@ export class SEOLogger {
     constructor() {
     
         this.logs = [];
-        this.maxLogs = 100 }
+        this.maxLogs = 100 };
         this.debugMode = false; }
     }
     
@@ -65,16 +66,14 @@ export class SEOLogger {
     info(message: string, data: any = { )): void {''
         this._log('info', message, data);
         if (this.debugMode) { }
-            console.log(`[SEO Info] ${message}`, data};
-        }
-    }
-    
+            console.log(`[SEO Info] ${message}`, data    }
+}
     /**
      * 警告ログ'
      */''
     warn(message: string, data: any = { )): void {''
-        this._log('warn', message, data) }
-        console.warn(`[SEO Warning] ${message}`, data};
+        this._log('warn', message, data);
+        console.warn(`[SEO Warning] ${message}`, data}
     }
     
     /**
@@ -89,7 +88,7 @@ export class SEOLogger {
 
             this._log('error-detail', error.stack || ', {'
             };
-                name: error.name) }
+                name: error.name),
                 message: error.message)}';'
         }
     }
@@ -103,10 +102,8 @@ export class SEOLogger {
             duration,
         
         if (this.debugMode) { }
-            console.log(`[SEO Performance] ${operation}: ${duration}ms`, details};
-        }
-    }
-    
+            console.log(`[SEO Performance] ${operation}: ${duration}ms`, details    }
+}
     /**
      * SEO検証ログ
      */
@@ -120,7 +117,7 @@ export class SEOLogger {
         
         if (!isValid} { }
             issues.forEach(issue => {});
-                console.warn(`[SEO, Validation] ${component}: ${issue}`};
+                console.warn(`[SEO, Validation] ${component}: ${issue}`}
             };
         }
     }
@@ -132,12 +129,12 @@ export class SEOLogger {
             level,
             message,
             data,
-            timestamp: Date.now(  },
+            timestamp: Date.now(  ,
         
         this.logs.push(logEntry);
         
         // ログサイズ管理
-        if (this.logs.length > this.maxLogs) { this.logs.shift() }
+        if (this.logs.length > this.maxLogs) { this.logs.shift();
     }
     
     /**
@@ -146,7 +143,7 @@ export class SEOLogger {
     export(level?: LogLevel | null): LogEntry[] { if (!level) {
             return [...this.logs],
         
-        return this.logs.filter(log => log.level === level) }
+        return this.logs.filter(log => log.level === level);
     
     /**
      * ログのクリア
@@ -162,7 +159,7 @@ export class SEOLogger {
         ';'
 
         errors.forEach(error => {  ')'
-            const type = error.data?.name || 'Unknown') }
+            const type = error.data?.name || 'Unknown');
             errorTypes[type] = (errorTypes[type] || 0) + 1; }
         };
         
@@ -199,13 +196,13 @@ export class SEOLogger {
             }
         };
         
-        return { timestamp: new Date().toISOString();
+        return { timestamp: new Date().toISOString(),
             summary: {
-                totalValidations: validations.length,
+                totalValidations: validations.length ,
                 passedValidations: validations.length - failedValidations.length,
                 failedValidations: failedValidations.length,
-    errors: errors.length },
-                warnings: warnings.length 
+    errors: errors.length ,
+                warnings: warnings.length; 
     };
             componentHealth,
             recentIssues: [...errors, ...warnings].slice(-20);

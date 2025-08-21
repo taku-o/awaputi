@@ -9,101 +9,92 @@
  */
 
 // 型定義
-export interface StatisticalConfig { significanceLevel: number;
-    minimumSampleSize: number;
+export interface StatisticalConfig { significanceLevel: number,
+    minimumSampleSize: number,
     maxSampleSize: number;
     confidenceLevel?: number;
-    precisionThreshold?: number,  }
-
-export interface BasicStatistics { count: number;
-    sum: number;
-    mean: number;
-    variance: number;
-    standardDeviation: number;
-    minimum: number;
-    maximum: number;
-    median: number;
-    q1: number;
-    q3: number;
-    range: number;
-    iqr: number;
-    skewness: number;
+    precisionThreshold?: number };
+export interface BasicStatistics { count: number,
+    sum: number,
+    mean: number,
+    variance: number,
+    standardDeviation: number,
+    minimum: number,
+    maximum: number,
+    median: number,
+    q1: number,
+    q3: number,
+    range: number,
+    iqr: number,
+    skewness: number,
     kurtosis: number;
     standardError?: number;
-    coefficientOfVariation?: number,  }
-
+    coefficientOfVariation?: number };
 export interface SignificanceTestOptions { testType?: StatisticalTestType,
     alternativeHypothesis?: AlternativeHypothesis;
     equalVariances?: boolean;
     pairedTest?: boolean;
     continuityCorrection?: boolean;
-
-export interface SignificanceTestResult { test: StatisticalTestType;
-    pValue: number | null;
-    significant: boolean;
-    testStatistic: number | null;
-    confidenceInterval: ConfidenceInterval | null;
-    effectSize: EffectSize | null;
+    export interface SignificanceTestResult { test: StatisticalTestType,
+    pValue: number | null,
+    significant: boolean,
+    testStatistic: number | null,
+    confidenceInterval: ConfidenceInterval | null,
+    effectSize: EffectSize | null,
     interpretation: string;
     degreesOfFreedom?: number;
     criticalValue?: number;
-    power?: number,  }
-
+    power?: number };
 export interface TTestResult extends Omit<SignificanceTestResult, 'test'> {,
-    test: 't-test';
-    testStatistic: number;
-    degreesOfFreedom: number;
-    meanDifference: number;
+    test: 't-test,
+    testStatistic: number,
+    degreesOfFreedom: number,
+    meanDifference: number,
     standardError: number;
     pooledVariance?: number;
 
 export interface MannWhitneyResult extends Omit<SignificanceTestResult, 'test'> {,
-    test: 'mann-whitney-u';
-    testStatistic: number;
-    u1: number;
-    u2: number;
-    zScore: number;
-    rankSum1: number;
+    test: 'mann-whitney-u,
+    testStatistic: number,
+    u1: number,
+    u2: number,
+    zScore: number,
+    rankSum1: number,
     rankSum2: number;
     continuityCorrection?: boolean;
 
-export interface EffectSize { cohensD: number;
-    interpretation: EffectSizeInterpretation;
+export interface EffectSize { cohensD: number,
+    interpretation: EffectSizeInterpretation,
     magnitude: number;
     hedgesG?: number;
     glassD?: number;
     rankBiserial?: number;
-
-export interface ConfidenceInterval { lower: number;
-    upper: number;
-    level: number;
+    export interface ConfidenceInterval { lower: number,
+    upper: number,
+    level: number,
     margin: number;
-
-export interface NormalityTestResult { isNormal: boolean;
-    pValue: number | null;
+    export interface NormalityTestResult { isNormal: boolean,
+    pValue: number | null,
     test: NormalityTestType;
     testStatistic?: number;
     criticalValue?: number;
     skewness?: number;
     kurtosis?: number;
     normalityScore?: number;
-
-export interface DataValidationResult { valid: boolean;
-    errors: string[];
-    warnings: string[];
-    validCount: number;
-    totalCount: number;
+    export interface DataValidationResult { valid: boolean,
+    errors: string[],
+    warnings: string[],
+    validCount: number,
+    totalCount: number,
     validRatio: number;
     outlierCount?: number;
-    missingCount?: number,  }
-
-export interface RankData { value: number;
-    group: number;
+    missingCount?: number };
+export interface RankData { value: number,
+    group: number,
     rank: number;
     tiesCount?: number;
-
-export interface DistributionParameters { mean: number;
-    variance: number;
+    export interface DistributionParameters { mean: number,
+    variance: number,
     standardDeviation: number;
     shape?: number;
     scale?: number;
@@ -133,66 +124,60 @@ export type DistributionType = ';'
     | 'normal' | 'uniform' | 't-distribution' | 'chi-square' | 'f-distribution';
 
 // 定数
-export const DEFAULT_STATISTICAL_CONFIG: StatisticalConfig = { significanceLevel: 0.05;
-    minimumSampleSize: 5;
-    maxSampleSize: 10000;
-    confidenceLevel: 0.95;
+export const DEFAULT_STATISTICAL_CONFIG: StatisticalConfig = { significanceLevel: 0.05,
+    minimumSampleSize: 5,
+    maxSampleSize: 10000,
+    confidenceLevel: 0.95,
     precisionThreshold: 1e-10  };
-export const EFFECT_SIZE_THRESHOLDS = { negligible: 0.0;
-    small: 0.2;
-    medium: 0.5;
-    large: 0.8;
+export const EFFECT_SIZE_THRESHOLDS = { negligible: 0.0,
+    small: 0.2,
+    medium: 0.5,
+    large: 0.8,
     very_large: 1.2  } as const;
-export const NORMALITY_THRESHOLDS = { skewness: 2.0;
-    kurtosis: 7.0;
-    shapiroWilk: 0.05;
+export const NORMALITY_THRESHOLDS = { skewness: 2.0,
+    kurtosis: 7.0,
+    shapiroWilk: 0.05,
     normalityScore: 0.5  } as const;
-export const MATHEMATICAL_CONSTANTS = { SQRT_2: Math.sqrt(2;
-    SQRT_PI: Math.sqrt(Math.PI);
-    EULER: Math.E;
+export const MATHEMATICAL_CONSTANTS = { SQRT_2: Math.sqrt(2,
+    SQRT_PI: Math.sqrt(Math.PI),
+    EULER: Math.E,
     GOLDEN_RATIO: (1 + Math.sqrt(5) / 2  } as const;
 ;
 // ユーティリティ関数
 export function isValidNumber(value: any): value is number {;
-    return typeof value === 'number' && !isNaN(value) && isFinite(value) }
-
-export function isValidArray(data: any): data is number[] { return Array.isArray(data) && data.every(isValidNumber) }
-
-export function validateStatisticalInput(data: any[]): number[] { return data.filter(isValidNumber) }
-
+    return typeof value === 'number' && !isNaN(value) && isFinite(value) };
+export function isValidArray(data: any): data is number[] { return Array.isArray(data) && data.every(isValidNumber) };
+export function validateStatisticalInput(data: any[]): number[] { return data.filter(isValidNumber) };
 export function calculatePooledVariance(stats1: BasicStatistics, stats2: BasicStatistics): number { const n1 = stats1.count;
     const n2 = stats2.count,
     
     if (n1 <= 1 || n2 <= 1) return 0,
     
-    return ((n1 - 1) * stats1.variance + (n2 - 1) * stats2.variance) / (n1 + n2 - 2) }
+    return ((n1 - 1) * stats1.variance + (n2 - 1) * stats2.variance) / (n1 + n2 - 2) };
 ';'
 
 export function interpretEffectSize(cohensD: number): EffectSizeInterpretation { const absD = Math.abs(cohensD);
-    if(absD < EFFECT_SIZE_THRESHOLDS.small) return 'negligible',
-    if(absD < EFFECT_SIZE_THRESHOLDS.medium) return 'small',
-    if(absD < EFFECT_SIZE_THRESHOLDS.large) return 'medium',
-    if(absD < EFFECT_SIZE_THRESHOLDS.very_large) return 'large',
-    return 'very_large' }
-
-export function calculateStandardError(standardDeviation: number, sampleSize: number): number { return sampleSize > 0 ? standardDeviation / Math.sqrt(sampleSize) : 0 }
-
-export function calculateCoefficientOfVariation(mean: number, standardDeviation: number): number { return mean !== 0 ? Math.abs(standardDeviation / mean) : 0 }
-
-export function createEmptyStatistics(): BasicStatistics { return { count: 0;
-        sum: 0;
-        mean: 0;
-        variance: 0;
-        standardDeviation: 0;
-        minimum: 0;
-        maximum: 0;
-        median: 0;
-        q1: 0;
-        q3: 0;
-        range: 0;
-        iqr: 0;
-        skewness: 0;
-        kurtosis: 0;
+    if(absD < EFFECT_SIZE_THRESHOLDS.small) return 'negligible,
+    if(absD < EFFECT_SIZE_THRESHOLDS.medium) return 'small,
+    if(absD < EFFECT_SIZE_THRESHOLDS.large) return 'medium,
+    if(absD < EFFECT_SIZE_THRESHOLDS.very_large) return 'large,
+    return 'very_large' };
+export function calculateStandardError(standardDeviation: number, sampleSize: number): number { return sampleSize > 0 ? standardDeviation / Math.sqrt(sampleSize) : 0 };
+export function calculateCoefficientOfVariation(mean: number, standardDeviation: number): number { return mean !== 0 ? Math.abs(standardDeviation / mean) : 0 };
+export function createEmptyStatistics(): BasicStatistics { return { count: 0,
+        sum: 0,
+        mean: 0,
+        variance: 0,
+        standardDeviation: 0,
+        minimum: 0,
+        maximum: 0,
+        median: 0,
+        q1: 0,
+        q3: 0,
+        range: 0,
+        iqr: 0,
+        skewness: 0,
+        kurtosis: 0,
     standardError: 0 };
         coefficientOfVariation: 0 
     }
@@ -200,16 +185,15 @@ export function createEmptyStatistics(): BasicStatistics { return { count: 0;
 export class StatisticalAnalyzer {
     private config: StatisticalConfig;
     constructor(config: Partial<StatisticalConfig> = {) {
-        this.config = { ...DEFAULT_STATISTICAL_CONFIG, ...config }
-
+        this.config = { ...DEFAULT_STATISTICAL_CONFIG, ...config };
     /**
      * 基本統計を計算
      */
     calculateBasicStatistics(data: any[]): BasicStatistics { if (!Array.isArray(data) || data.length === 0) {
-            return createEmptyStatistics() }
+            return createEmptyStatistics();
 
         const validData = validateStatisticalInput(data);
-        if (validData.length === 0) { return createEmptyStatistics() }
+        if (validData.length === 0) { return createEmptyStatistics();
 
         const n = validData.length;
         const sum = validData.reduce((a, b) => a + b, 0);
@@ -230,15 +214,15 @@ export class StatisticalAnalyzer {
         return { count: n;
             sum,
             mean,
-            variance: isNaN(variance) ? 0 : variance;
-            standardDeviation: isNaN(stdDev) ? 0 : stdDev;
-            minimum: min;
+            variance: isNaN(variance) ? 0 : variance,
+            standardDeviation: isNaN(stdDev) ? 0 : stdDev,
+            minimum: min,
     maximum: max;
             median,
             q1,
             q3,
-            range: max - min;
-            iqr: q3 - q1;
+            range: max - min,
+            iqr: q3 - q1,
     skewness: this.calculateSkewness(validData, mean, stdDev);
             kurtosis: this.calculateKurtosis(validData, mean, stdDev);
             standardError: calculateStandardError(stdDev, n) };
@@ -288,8 +272,8 @@ export class StatisticalAnalyzer {
      * 統計的有意性検定を実行
      */
     performSignificanceTest(
-        data1: any[] );
-        data2: any[];
+        data1: any[] ),
+        data2: any[],
     options: SignificanceTestOptions = { ): SignificanceTestResult {
         const validData1 = validateStatisticalInput(data1);
         const validData2 = validateStatisticalInput(data2);
@@ -297,12 +281,12 @@ export class StatisticalAnalyzer {
         const stats2 = this.calculateBasicStatistics(validData2);
         if (stats1.count < this.config.minimumSampleSize || stats2.count < this.config.minimumSampleSize) {
             return { ''
-                test: 'insufficient_data';
-                pValue: null;
-                significant: false;
-    testStatistic: null;
-                confidenceInterval: null;
-                effectSize: null;
+                test: 'insufficient_data,
+                pValue: null,
+                significant: false,
+    testStatistic: null,
+                confidenceInterval: null,
+                effectSize: null,
                 interpretation: `データが不十分です（最低${this.config.minimumSampleSize}サンプル必要）`
             }
 
@@ -374,14 +358,14 @@ export class StatisticalAnalyzer {
         const marginOfError = criticalValue * standardError;
         const meanDiff = stats1.mean - stats2.mean;
         
-        const confidenceInterval: ConfidenceInterval = { lower: meanDiff - marginOfError;
-            upper: meanDiff + marginOfError;
-            level: this.config.confidenceLevel!;
+        const confidenceInterval: ConfidenceInterval = { lower: meanDiff - marginOfError,
+            upper: meanDiff + marginOfError,
+            level: this.config.confidenceLevel!,
     margin: marginOfError;
 ';'
 
         return { ''
-            test: 't-test';
+            test: 't-test,
     testStatistic: tStatistic;
             degreesOfFreedom,
             pValue: pValue * 2, // 両側検定,
@@ -389,7 +373,7 @@ export class StatisticalAnalyzer {
             standardError,
             pooledVariance,
             significant: false, // 後で設定される,
-            confidenceInterval,,
+            confidenceInterval,
             effectSize: null, // 後で設定される,
             interpretation: ', // 後で設定される };'
             criticalValue }
@@ -451,14 +435,14 @@ export class StatisticalAnalyzer {
         ';'
 
         return { ''
-            test: 'mann-whitney-u';
-            testStatistic: U;
-            u1: U1;
-            u2: U2;
+            test: 'mann-whitney-u,
+            testStatistic: U,
+            u1: U1,
+            u2: U2,
     zScore: z;
             pValue,
-            rankSum1: R1;
-            rankSum2: R2;
+            rankSum1: R1,
+            rankSum2: R2,
     significant: false, // 後で設定される,
             confidenceInterval: null, // Mann-Whitney Uでは通常計算しない,
             effectSize: null, // 後で設定される' };'
@@ -520,7 +504,7 @@ export class StatisticalAnalyzer {
 
                 pValue: null,
                 test: 'skewness_kurtosis' }
-                skewness: stats.skewness },
+                skewness: stats.skewness };
                 kurtosis: stats.kurtosis 
     }
         
@@ -541,7 +525,7 @@ export class StatisticalAnalyzer {
      */
     approximateTTestPValue(t: number, df: number): number { if (df > 30) {
             // 大きな自由度では標準正規分布で近似
-            return 1 - this.standardNormalCDF(t) }
+            return 1 - this.standardNormalCDF(t);
         
         // 簡易的なt分布近似
         const factor = 1 + (t * t) / df;
@@ -584,7 +568,7 @@ export class StatisticalAnalyzer {
     /**
      * 標準正規分布の累積分布関数
      */
-    standardNormalCDF(x: number): number { return 0.5 * (1 + this.erf(x / MATHEMATICAL_CONSTANTS.SQRT_2) }
+    standardNormalCDF(x: number): number { return 0.5 * (1 + this.erf(x / MATHEMATICAL_CONSTANTS.SQRT_2);
 
     /**
      * 誤差関数（erf）
@@ -621,11 +605,11 @@ export class StatisticalAnalyzer {
             switch(effectSize) { : undefined''
                 case 'large':','
                 case 'very_large':','
-                    return '統計的に有意で、実用的にも大きな違いがあります。',
+                    return '統計的に有意で、実用的にも大きな違いがあります。,
                 case 'medium':','
-                    return '統計的に有意で、中程度の実用的な違いがあります。',
+                    return '統計的に有意で、中程度の実用的な違いがあります。,
                 case 'small':','
-                    return '統計的に有意ですが、実用的な違いは小さいです。',
+                    return '統計的に有意ですが、実用的な違いは小さいです。,
                 case 'negligible':','
                     return '統計的に有意ですが、実用的な違いはほとんどありません。' }
 
@@ -642,10 +626,10 @@ export class StatisticalAnalyzer {
         if(!Array.isArray(data)) {''
             errors.push('データが配列ではありません),'
             return { valid: false, 
-                errors, ,
-                warnings, ,
-                validCount: 0, ,
-                totalCount: 0 },
+                errors,
+                warnings,
+                validCount: 0,
+                totalCount: 0 };
                 validRatio: 0  
     }
 
@@ -653,10 +637,10 @@ export class StatisticalAnalyzer {
 
             errors.push('データが空です),'
             return { valid: false, 
-                errors, ,
-                warnings, ,
+                errors,
+                warnings,
                 validCount: 0 }
-                totalCount: data.length },
+                totalCount: data.length };
                 validRatio: 0  
     }
         
@@ -674,20 +658,20 @@ export class StatisticalAnalyzer {
         if (validNumbers.length < this.config.minimumSampleSize) {
     
 }
-            warnings.push(`サンプルサイズが推奨値（${this.config.minimumSampleSize}）を下回っています`};
+            warnings.push(`サンプルサイズが推奨値（${this.config.minimumSampleSize}）を下回っています`}
         }
         
         if (validNumbers.length > this.config.maxSampleSize) {
     
 }
-            warnings.push(`サンプルサイズが上限（${this.config.maxSampleSize}）を超えています`};
+            warnings.push(`サンプルサイズが上限（${this.config.maxSampleSize}）を超えています`}
         }
         
         return { valid: errors.length === 0,
             errors,
             warnings,
             validCount: validNumbers.length,
-    totalCount: data.length,
+    totalCount: data.length;
             validRatio };
             missingCount }
         }
@@ -708,7 +692,7 @@ export class StatisticalAnalyzer {
      * 統計分析レポートの生成
      */
     generateAnalysisReport(data1: any[], data2: any[]): { data1Stats: BasicStatistics,
-        data2Stats: BasicStatistics,
+        data2Stats: BasicStatistics ,
         testResult: SignificanceTestResult,
         validation1: DataValidationResult,
         validation2: DataValidationResult,

@@ -5,14 +5,14 @@
  */
 
 // パーティクルの型定義
-export interface SeasonalParticle { x: number;
-    y: number;
-    vx: number;
-    vy: number;
-    size: number;
-    color: string;
-    life: number;
-    decay: number;
+export interface SeasonalParticle { x: number,
+    y: number,
+    vx: number,
+    vy: number,
+    size: number,
+    color: string,
+    life: number,
+    decay: number,
     type: string;
     rotation?: number;
     rotationSpeed?: number;
@@ -33,30 +33,27 @@ export interface SeasonalParticle { x: number;
     alpha?: number;
     wobbleOffset?: number;
     twinkle?: boolean;
-    twinkleSpeed?: number,  }
-
+    twinkleSpeed?: number };
 // エフェクトの型定義
-export interface SeasonalEffect { id: string;
-    type: string;
-    x: number;
-    y: number;
-    config: EffectConfig;
-    createdTime: number;
+export interface SeasonalEffect { id: string,
+    type: string,
+    x: number,
+    y: number,
+    config: EffectConfig,
+    createdTime: number,
     particles: SeasonalParticle[];
-
-export interface EffectConfig { colors: string[];
+    export interface EffectConfig { colors: string[],
     particleTypes: string[];
     size?: number;
     intensity?: number;
     particleCount?: number;
 
 // テーマ設定の型定義
-export interface ThemeConfig { colors: {
-        primar,y: string[];
-        accent?: string[];;
-    particles: { types: string[];
-    effects: { bubbleDestruction: string;
-        comboEffect?: string;
+export interface ThemeConfig { colors: { primar,y: string[],
+        accent?: string[];,
+    particles: { types: string[],
+    effects: { bubbleDestruction: string,
+        comboEffect?: string  },
 
 // Quality Controller インターフェース
 export interface QualityController { canExecuteEffect(type: 'particle', priority: 'normal' | 'important' | 'critical): boolean,'
@@ -64,10 +61,9 @@ export interface QualityController { canExecuteEffect(type: 'particle', priority
 
 // Error Handler インターフェース
 export interface ErrorHandler { handleError(error: Error, context: string): void;
-
-export interface EffectStatistics { activeEffects: number;
-    totalParticles: number;
-    memoryUsage: number;
+    export interface EffectStatistics { activeEffects: number,
+    totalParticles: number,
+    memoryUsage: number,
     memoryUsage: number;
         };
 export class SeasonalParticleRenderer {
@@ -79,7 +75,7 @@ export class SeasonalParticleRenderer {
     
         this.qualityController = qualityController || null;
         this.errorHandler = errorHandler || null;
-        this.activeSeasonalEffects = new Map<string, SeasonalEffect>() }
+        this.activeSeasonalEffects = new Map<string, SeasonalEffect>() };
         this.seasonalParticles = []; }
     }
     
@@ -130,7 +126,7 @@ export class SeasonalParticleRenderer {
         if(!theme) return,
         ','
         // コンボエフェクトは重要度が高い
-        const priority = comboCount >= 10 ? 'critical' : 'important',
+        const priority = comboCount >= 10 ? 'critical' : 'important,
         if (this.qualityController && !this.qualityController.canExecuteEffect('particle', priority) {
     
 }
@@ -172,7 +168,7 @@ export class SeasonalParticleRenderer {
             y: y,
             config: config,
             createdTime: performance.now(
-    particles: []  },
+    particles: []  ,
         ';'
         // エフェクトタイプに応じたパーティクル生成
         switch(effectType) {
@@ -227,10 +223,8 @@ export class SeasonalParticleRenderer {
     type: 'cherry_blossom'),
                 rotation: Math.random() * Math.PI * 2 }
                 rotationSpeed: (Math.random() - 0.5) * 0.1 
-    };
         }
-    }
-    
+}
     /**
      * 水しぶきエフェクト（夏）
      * @param effect - エフェクト
@@ -250,8 +244,7 @@ export class SeasonalParticleRenderer {
                 size: 2 + Math.random('''
                 type: 'water_drop,'
     gravity: 0.15  }
-                bounce: 0.3) 
-    };
+                bounce: 0.3);
         }
     }
     
@@ -276,10 +269,8 @@ export class SeasonalParticleRenderer {
                 rotation: Math.random() * Math.PI * 2,
     rotationSpeed: (Math.random() - 0.5) * 0.15 }
                 flutter: Math.random() * 0.1 
-    };
         }
-    }
-    
+}
     /**
      * 氷の粉砕エフェクト（冬）
      * @param effect - エフェクト
@@ -297,13 +288,11 @@ export class SeasonalParticleRenderer {
     vx: Math.cos(angle) * velocity,
                 vy: Math.sin(angle) * velocity,
                 size: 2 + Math.random()','
-                type: 'ice_crystal',
+                type: 'ice_crystal,
     sparkle: true,
                 sparkleIntensity: 0.5 + Math.random() * 0.5 
-    };
         }
-    }
-    
+}
     /**
      * 花火エフェクト（新年）
      * @param effect - エフェクト
@@ -321,11 +310,10 @@ export class SeasonalParticleRenderer {
     vx: Math.cos(angle) * velocity,
                 vy: Math.sin(angle) * velocity,
                 size: 3 + Math.random('''
-                type: 'firework',
+                type: 'firework,
                 brightness: 1.0,
     trail: true,
-                trailLength: 5) 
-    };
+                trailLength: 5);
         }
     }
     
@@ -348,8 +336,7 @@ export class SeasonalParticleRenderer {
                 size: 4 + Math.random('''
                 type: 'heart,'
     pulse: true,
-                pulseSpeed: 0.1) 
-    };
+                pulseSpeed: 0.1);
         }
     }
     
@@ -370,11 +357,10 @@ export class SeasonalParticleRenderer {
     vx: Math.cos(angle) * velocity,
                 vy: Math.sin(angle) * velocity,
                 size: 5 + Math.random('''
-                type: 'ghost',
+                type: 'ghost,
                 opacity: 0.7,
     wobble: true,
-                wobbleAmplitude: 1) 
-    };
+                wobbleAmplitude: 1);
         }
     }
     
@@ -397,8 +383,7 @@ export class SeasonalParticleRenderer {
                 size: 3 + Math.random('''
                 type: 'christmas_star,'
     twinkle: true,
-                twinkleSpeed: 0.15) 
-    };
+                twinkleSpeed: 0.15);
         }
     }
     
@@ -419,8 +404,7 @@ export class SeasonalParticleRenderer {
     vx: Math.cos(angle) * velocity,
                 vy: Math.sin(angle) * velocity,
                 size: 3 + Math.random('}''
-                type: 'default') 
-    };
+                type: 'default');
         }
     }
     
@@ -453,12 +437,12 @@ export class SeasonalParticleRenderer {
                 particle.life -= particle.decay * deltaTime;
                 
                 // 死んだパーティクルを除去
-                if (particle.life <= 0) { effect.particles.splice(index, 1) }
+                if (particle.life <= 0) { effect.particles.splice(index, 1);
             }
             
             // エフェクトが空になったら削除
-            if (effect.particles.length === 0) { this.activeSeasonalEffects.delete(effectId) }
-        };
+            if (effect.particles.length === 0) { this.activeSeasonalEffects.delete(effectId);
+        }
     }
     
     /**
@@ -488,9 +472,9 @@ export class SeasonalParticleRenderer {
      * @param context - 描画コンテキスト
      */
     renderParticles(context: CanvasRenderingContext2D): void { this.activeSeasonalEffects.forEach(effect => { )
-            effect.particles.forEach(particle => {) }
+            effect.particles.forEach(particle => {);
                 this._renderParticle(context, particle); }
-            };
+            }
         };
     }
     
@@ -546,7 +530,7 @@ export class SeasonalParticleRenderer {
         context.moveTo(0, 3);
         context.bezierCurveTo(-5, -2, -15, 2, 0, 15);
         context.bezierCurveTo(15, 2, 5, -2, 0, 3);
-        context.fill() }
+        context.fill();
     
     /**
      * 星形状の描画
@@ -568,7 +552,7 @@ export class SeasonalParticleRenderer {
             if (i === 0) {
         }
                 context.moveTo(x, y); }
-            } else { context.lineTo(x, y) }
+            } else { context.lineTo(x, y);
         }
         context.closePath();
         context.fill();
@@ -582,7 +566,7 @@ export class SeasonalParticleRenderer {
      */
     private _drawCircle(context: CanvasRenderingContext2D, size: number): void { context.beginPath();
         context.arc(0, 0, size, 0, Math.PI * 2);
-        context.fill() }
+        context.fill();
     
     /**
      * ランダムな色を取得

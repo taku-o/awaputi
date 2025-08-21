@@ -160,7 +160,7 @@ describe.skip('Analytics Final Integration Tests (TEMPORARILY DISABLED - Issue #
                     currentScore: 2500,
                     stageProgress: 0.4,
                     playerHP: 100,
-                    timeRemaining: 180000 };
+                    timeRemaining: 180000 }
             }.not.toThrow(');'
         }
         test('プレイヤーデータシステムとの統合確認', async () => {
@@ -218,7 +218,7 @@ describe.skip('Analytics Final Integration Tests (TEMPORARILY DISABLED - Issue #
                 analyticsManager.recordPlayerInteractionPattern({
                     bubbleType: undefined,
                     action: null,
-                    reactionTime: -100 };
+                    reactionTime: -100 }
             }.not.toThrow();
             expect(() => {
                 analyticsManager.trackPerformanceMetrics({
@@ -259,7 +259,7 @@ describe.skip('Analytics Final Integration Tests (TEMPORARILY DISABLED - Issue #
                     currentScore: 100,
                     stageProgress: 0.1,
                     playerHP: 100,
-                    timeRemaining: 290000 };
+                    timeRemaining: 290000 }
             }.not.toThrow();
         }
     }');'
@@ -275,7 +275,7 @@ describe.skip('Analytics Final Integration Tests (TEMPORARILY DISABLED - Issue #
                     totalSessions: 10,
                     averageScore: 4500,
                     totalPlayTime: 1800000
-                };
+                }
             }');'
             const basicStats = await analyticsAPI.getData({
                 endpoint: '/stats/basic' };
@@ -368,7 +368,7 @@ describe.skip('Analytics Final Integration Tests (TEMPORARILY DISABLED - Issue #
                 email: 'test@example.com',
                 ipAddress: '192.168.1.1',
                 sessionData: {
-                    score: 5000,
+                    score: 5000 },
                     accuracy: 0.85
                 }
             };
@@ -431,7 +431,7 @@ describe.skip('Analytics Final Integration Tests (TEMPORARILY DISABLED - Issue #
             // バブル生成記録
             analyticsManager.trackGameBalance({
                 bubbleSpawn: {
-                    bubbleType: 'boss',
+                    bubbleType: 'boss' },
                     spawnPosition: { x: 400, y: 200 },
                     spawnTiming: Date.now(','
                     surroundingBubbles: ['normal', 'stone']
@@ -440,14 +440,14 @@ describe.skip('Analytics Final Integration Tests (TEMPORARILY DISABLED - Issue #
             // スコア獲得記録
             analyticsManager.trackGameBalance({
                 scoreEvent: {
-                    scoreGain: 500,
+                    scoreGain: 500 },
                     source: 'combo_bonus',
                     comboMultiplier: 2.0
                 }');'
             // アイテム使用記録
             analyticsManager.trackGameBalance({
                 itemUsage: {
-                    itemType: 'speed_boost',
+                    itemType: 'speed_boost' },
                     usageTiming: 'strategic',
                     effectDuration: 5000,
                     impactOnScore: 300
@@ -477,7 +477,7 @@ describe.skip('Analytics Final Integration Tests (TEMPORARILY DISABLED - Issue #
             // すべての機能が正常に動作することを確認
             const finalStats = analyticsManager.getAnalyticsStats();
             expect(finalStats.isInitialized).toBe(true);
-            expect(finalStats.isGameAnalyticsEnabled).toBe(true) };
+            expect(finalStats.isGameAnalyticsEnabled).toBe(true) }
     }
 };
 // ヘルパー関数: テストデータ生成

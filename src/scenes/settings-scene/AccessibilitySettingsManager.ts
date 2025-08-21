@@ -16,62 +16,52 @@ interface Profile { name: string;
     description?: string;
     settings: ProfileSettings;
     created?: number;
-    custom?: boolean,  }
+    custom?: boolean }
 
 interface ProfileSettings { [key: string]: any;
-
-interface ProfileHistoryEntry { profile: string;
+    interface ProfileHistoryEntry { profile: string,
     timestamp: number;
-
-interface ValidationResult { valid: boolean;
+    interface ValidationResult { valid: boolean;
     error?: string;
     data?: any;
-
-interface Notification { message: string;
-    type: NotificationType;
-    timestamp: number;
+    interface Notification { message: string,
+    type: NotificationType,
+    timestamp: number,
     id: string;
-
-interface Statistics { settingsChanged: number;
-    profilesUsed: number;
-    exportCount: number;
-    importCount: number;
-    validationErrors: number;
+    interface Statistics { settingsChanged: number,
+    profilesUsed: number,
+    exportCount: number,
+    importCount: number,
+    validationErrors: number,
     sessionStart: number;
-
-interface ExtendedStatistics extends Statistics { sessionDuration: number;
-    profileCount: number;
-    currentProfile: string;
-    validationErrors: number;
+    interface ExtendedStatistics extends Statistics { sessionDuration: number,
+    profileCount: number,
+    currentProfile: string,
+    validationErrors: number,
     notifications: number;
-
-interface ValidationError { key: string;
+    interface ValidationError { key: string,
     error: string;
-
-interface SettingOption { value: string;
+    interface SettingOption { value: string,
     label: string;
-
-interface AccessibilitySetting { key: string;
-    label: string;
-    type: SettingType;
+    interface AccessibilitySetting { key: string,
+    label: string,
+    type: SettingType,
     description: string;
     validator?: string;
     min?: number;
     max?: number;
     step?: number;
     options?: SettingOption[];
-
-interface ExportData { timestamp: string;
-    version: string;
-    currentProfile: string;
+    interface ExportData { timestamp: string,
+    version: string,
+    currentProfile: string,
     settings: ProfileSettings;
     profiles?: { [key: string]: Profile;
-
-interface ProfileInfo { name: string;
-    displayName: string;
-    description: string;
-    isCustom: boolean;
-    created: number | null }
+    interface ProfileInfo { name: string,
+    displayName: string,
+    description: string,
+    isCustom: boolean,
+    created: number | null } };
 
 // ゲームエンジンの拡張型
 interface ExtendedGameEngine extends GameEngine { settingsManager?: {
@@ -100,23 +90,22 @@ export class AccessibilitySettingsManager { private gameEngine: ExtendedGameEngi
     
     // 設定統計
     private stats: Statistics = {
-        settingsChanged: 0;
-        profilesUsed: 0;
-        exportCount: 0;
-        importCount: 0;
-        validationErrors: 0;
-    sessionStart: Date.now(  }
-    
+        settingsChanged: 0,
+        profilesUsed: 0,
+        exportCount: 0,
+        importCount: 0,
+        validationErrors: 0,
+    sessionStart: Date.now(  };
     // 通知システム
     private notifications: Notification[] = [];
     private, notificationTimeout: NodeJS.Timeout | null = null;
     constructor(gameEngine: ExtendedGameEngine) {
     
         this.gameEngine = gameEngine;
-        this.loggingSystem = getLoggingSystem() }
+        this.loggingSystem = getLoggingSystem();
         this.initialize(); }
-    }
-    
+    } };
+
     /**
      * 初期化処理
      */
@@ -248,7 +237,7 @@ export class AccessibilitySettingsManager { private gameEngine: ExtendedGameEngi
     private loadProfiles()';'
             const savedProfiles = localStorage.getItem('accessibilityProfiles);'
             if (savedProfiles) {
-                const profiles = JSON.parse(savedProfiles) }
+                const profiles = JSON.parse(savedProfiles);
                 Object.entries(profiles).forEach(([name, settings]) => {  }
                     this.profiles.set(name, settings as Profile); }
 
@@ -269,7 +258,7 @@ export class AccessibilitySettingsManager { private gameEngine: ExtendedGameEngi
                     'accessibility.screenReader': false,
                     'accessibility.colorBlindSupport': false,
                     'accessibility.fontSize': 16,
-                    'accessibility.contrastLevel': 'normal',
+                    'accessibility.contrastLevel': 'normal,
                     'accessibility.keyboardNavigation': true,
                     'accessibility.voiceGuidance': false,
                     'accessibility.subtitles': false' 
@@ -286,7 +275,7 @@ export class AccessibilitySettingsManager { private gameEngine: ExtendedGameEngi
                     'accessibility.screenReader': true,
                     'accessibility.colorBlindSupport': true,
                     'accessibility.fontSize': 20,
-                    'accessibility.contrastLevel': 'high',
+                    'accessibility.contrastLevel': 'high,
                     'accessibility.keyboardNavigation': true,
                     'accessibility.voiceGuidance': true,
                     'accessibility.subtitles': true' 
@@ -303,7 +292,7 @@ export class AccessibilitySettingsManager { private gameEngine: ExtendedGameEngi
                     'accessibility.screenReader': false,
                     'accessibility.colorBlindSupport': false,
                     'accessibility.fontSize': 18,
-                    'accessibility.contrastLevel': 'normal',
+                    'accessibility.contrastLevel': 'normal,
                     'accessibility.keyboardNavigation': true,
                     'accessibility.voiceGuidance': false,
                     'accessibility.subtitles': false;';'
@@ -334,28 +323,28 @@ export class AccessibilitySettingsManager { private gameEngine: ExtendedGameEngi
               description: '色覚に配慮した表示にします',' }'
 
               validator: 'boolean' }''
-            { key: 'accessibility.fontSize', label: 'フォントサイズ', type: 'slider',
+            { key: 'accessibility.fontSize, label: 'フォントサイズ', type: 'slider',
 
               min: 8, max: 32, step: 1,
               description: '基本フォントサイズを調整します（ピクセル）',' }'
 
-              validator: 'fontSize' },
-            { key: 'accessibility.contrastLevel', label: 'コントラストレベル', type: 'select',
+              validator: 'fontSize' ,
+            { key: 'accessibility.contrastLevel, label: 'コントラストレベル', type: 'select',
 
               options: ['
-            }'
+            }
 
                 { value: 'low', label: '低'
-            },''
+            ,''
                 { value: 'normal', label: '標準'
-            },''
+            ,''
                 { value: 'high', label: '高'
-            },]'
+            ,]'
                 { value: 'maximum', label: '最高'
             }]'
               ],
-              description: '画面のコントラスト強度を選択します',
-              validator: 'options' },
+              description: '画面のコントラスト強度を選択します,
+              validator: 'options' ,
             { key: 'accessibility.keyboardNavigation', label: 'キーボードナビゲーション', type: 'toggle',''
               description: 'キーボードのみでの操作を有効にします',' }'
 
@@ -448,7 +437,7 @@ export class AccessibilitySettingsManager { private gameEngine: ExtendedGameEngi
         // 設定値を実際に設定
         if (this.gameEngine.settingsManager) {
             this.gameEngine.settingsManager.set(key, value);
-            this.stats.settingsChanged++,
+            this.stats.settingsChanged++;
             
             // リアルタイムプレビューの適用
             if (this.previewEnabled && this.previewCallbacks.has(key) {
@@ -481,7 +470,7 @@ export class AccessibilitySettingsManager { private gameEngine: ExtendedGameEngi
             profile: this.currentProfile,
     timestamp: Date.now( };
         // 履歴サイズ制限
-        if (this.profileHistory.length > 10) { this.profileHistory.shift() }
+        if (this.profileHistory.length > 10) { this.profileHistory.shift();
         
         // 設定を適用
         let successCount = 0;
@@ -515,7 +504,7 @@ export class AccessibilitySettingsManager { private gameEngine: ExtendedGameEngi
 };
         
         this.profiles.set(name, { name: name)
-           , description: description),
+            description: description),
             settings: currentSettings),
             created: Date.now(
     custom: true,);
@@ -531,7 +520,7 @@ export class AccessibilitySettingsManager { private gameEngine: ExtendedGameEngi
     public exportSettings(format: string = 'json', includeProfiles: boolean = false': boolean { try {'
             const exportData: ExportData = {''
                 timestamp: new Date('''
-                version: '1.0.0',
+                version: '1.0.0,
     currentProfile: this.currentProfile }
                 settings: {})
             // 現在の設定を収集
@@ -555,7 +544,7 @@ export class AccessibilitySettingsManager { private gameEngine: ExtendedGameEngi
 
                 case 'json': }
                     exportContent = JSON.stringify(exportData, null, 2); }
-                    filename = `accessibility-settings-${Date.now()).json`,
+                    filename = `accessibility-settings-${Date.now()).json,
                     break,
                     ','
 
@@ -575,8 +564,8 @@ export class AccessibilitySettingsManager { private gameEngine: ExtendedGameEngi
             URL.revokeObjectURL(url);
             ','
 
-            this.stats.exportCount++,
-            this.showNotification('設定をエクスポートしました', 'success',
+            this.stats.exportCount++;
+            this.showNotification('設定をエクスポートしました, 'success',
             
             return true,
 
@@ -598,7 +587,7 @@ export class AccessibilitySettingsManager { private gameEngine: ExtendedGameEngi
                     ','
                     // データ形式の検証
                     if (!importData.settings) {
-            }'
+            }
 
                         throw new Error('無効な設定ファイル形式です'; }'
                     }
@@ -613,26 +602,23 @@ export class AccessibilitySettingsManager { private gameEngine: ExtendedGameEngi
                             importedCount++; }
 
                         } else { : undefined''
-                            this.loggingSystem.warn('AccessibilitySettingsManager', `Invalid setting: ${key }`, validationResult.error};
+                            this.loggingSystem.warn('AccessibilitySettingsManager', `Invalid setting: ${key }`, validationResult.error}
                         }
                     };
                     
                     // プロファイルをインポート
                     if (importData.profiles) { Object.entries(importData.profiles).forEach(([name, profile]) => {  }
-                            this.profiles.set(name, profile); }
-                        };
-                    }
-                    
+                            this.profiles.set(name, profile);     }
+}
                     this.saveProfiles();
                     this.stats.importCount++;
 
                     this.showNotification(`設定をインポートしました（${ importedCount}項目）`, 'success'}
-                    resolve(true};
-
-                } catch (error) {
+                    resolve(true}
+        } catch (error) {
                     this.loggingSystem.error('AccessibilitySettingsManager', 'Import failed', error','
                     this.showNotification('インポートに失敗しました', 'error),'
-                    reject(error) }
+                    reject(error);
             };
 
             reader.onerror = () => {  ''
@@ -643,7 +629,7 @@ export class AccessibilitySettingsManager { private gameEngine: ExtendedGameEngi
             };
             
             reader.readAsText(file);
-        };
+        }
     }
     
     /**
@@ -652,7 +638,7 @@ export class AccessibilitySettingsManager { private gameEngine: ExtendedGameEngi
     private saveProfiles(): void { try { }
             const profilesData: { [key: string]: Profile, = {}
 
-            this.profiles.forEach((profile, name) => { profilesData[name] = profile,' }'
+            this.profiles.forEach((profile, name) => { profilesData[name] = profile,' }' }
 
             }');'
 
@@ -676,8 +662,7 @@ export class AccessibilitySettingsManager { private gameEngine: ExtendedGameEngi
 
         }, 5000');'
 
-        this.loggingSystem.info('AccessibilitySettingsManager', `Notification: ${type} - ${message}`,
-    }
+        this.loggingSystem.info('AccessibilitySettingsManager', `Notification: ${type} - ${message}` }
     
     /**
      * コントラスト比の計算
@@ -690,7 +675,7 @@ export class AccessibilitySettingsManager { private gameEngine: ExtendedGameEngi
             const b = rgb & 0xff,
             
             const [rs, gs, bs] = [r, g, b].map(c => {)
-                c = c / 255) }
+                c = c / 255);
                 return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4););
             
             return 0.2126 * rs + 0.7152 * gs + 0.0722 * bs; }
@@ -710,9 +695,9 @@ export class AccessibilitySettingsManager { private gameEngine: ExtendedGameEngi
                 name,
                 displayName: profile.name)','
                 description: profile.description || ','
-    isCustom: profile.custom || false) }
+    isCustom: profile.custom || false),
                 created: profile.created || null); 
-    };
+    }
         };
 
         return profiles.sort((a, b) => {  // デフォルトプロファイルを最初に
@@ -725,7 +710,7 @@ export class AccessibilitySettingsManager { private gameEngine: ExtendedGameEngi
             
             // 標準プロファイルは名前順
             return a.displayName.localeCompare(b.displayName);
-        };
+        }
     }
     
     /**
@@ -735,21 +720,21 @@ export class AccessibilitySettingsManager { private gameEngine: ExtendedGameEngi
             sessionDuration: Date.now() - this.stats.sessionStart,
             profileCount: this.profiles.size,
             currentProfile: this.currentProfile,
-    validationErrors: this.validationErrors.length },
-            notifications: this.notifications.length 
+    validationErrors: this.validationErrors.length ,
+            notifications: this.notifications.length; 
     }
     
     /**
      * クリーンアップ
      */''
     public cleanup('';
-            'high-contrast-preview',
-            'large-text-preview',
+            'high-contrast-preview,
+            'large-text-preview,
             'reduced-motion-preview',';'
             'color-blind-support-preview');
         
         // 通知タイマーをクリア
-        if (this.notificationTimeout) { clearTimeout(this.notificationTimeout) }
+        if (this.notificationTimeout) { clearTimeout(this.notificationTimeout);
         
         // データをクリア
         this.profiles.clear();

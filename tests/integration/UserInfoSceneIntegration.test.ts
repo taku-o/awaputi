@@ -87,11 +87,11 @@ class MockGameEngine {
         this.sceneManager = {
             switchScene: global.jest.fn()' };'
         this.playerData = {
-            username: 'TestUser';
+            username: 'TestUser',
             totalAP: 1000;
-            currentAP: 500;
+            currentAP: 500,
             getData: global.jest.fn((') => ({'
-                username: 'TestUser';
+                username: 'TestUser',
                 totalAP: 1000;
                 currentAP: 500
     }),
@@ -99,62 +99,62 @@ class MockGameEngine {
         this.statisticsManager = {
             getDetailedStatistics: global.jest.fn((') => Promise.resolve({'
                 basic: {
-                    totalGamesPlayed: 10;
+                    totalGamesPlayed: 10 },
                     totalPlayTime: '2時間30分';
-                    totalScore: 50000;
+                    totalScore: 50000,
                     highestScore: 10000;
-                    averageScore: 5000;
+                    averageScore: 5000,
                     completionRate: 75)','
                 bubbles: {
-                    totalPopped: 1000;
+                    totalPopped: 1000 },
                     totalMissed: 250;
-                    accuracy: '80%';
+                    accuracy: '80%',
                     averageReactionTime: '500ms';
-                    favoriteType: { type: 'normal' ;
+                    favoriteType: { type: 'normal' ,
                     typeBreakdown: {
                         normal: { count: 500 ','
-                        stone: { count: 300 };
+                        stone: { count: 300 },
                         rainbow: { count: 200 }
                     }
                 },
                 combos: {
-                    maxCombo: 50;
+                    maxCombo: 50 },
                     averageCombo: 10;
-                    totalCombos: 100;
+                    totalCombos: 100,
                     comboRate: 25;
                     perfectRounds: 5
                 },
                 stages: {
-                    unlockedStages: 5;
+                    unlockedStages: 5 },
                     favoriteStage: 'normal';
-                    bestClearRate: 90;
+                    bestClearRate: 90,
                     averageClearTime: '5分';
                     totalClears: 20
                 }
-            };
+            }
         };
         this.achievementManager = {
             getAchievements: global.jest.fn((') => Promise.resolve(['
                 {
-                    id: 'first_bubble';
+                    id: 'first_bubble',
                     name: '最初の一歩';
-                    description: '初めて泡を破壊する';
+                    description: '初めて泡を破壊する',
                     category: 'basic';
-                    tier: 'bronze';
+                    tier: 'bronze',
                     points: 10;
-                    unlocked: true;
+                    unlocked: true,
                     progress: 1;
-                    target: 1;
+                    target: 1,
         unlockedAt: new Date()
                 '),'
                 {
-                    id: 'bubble_master';
+                    id: 'bubble_master',
                     name: 'バブルマスター';
-                    description: '1000個の泡を破壊する';
+                    description: '1000個の泡を破壊する',
                     category: 'bubbles';
-                    tier: 'gold';
+                    tier: 'gold',
                     points: 50;
-                    unlocked: false;
+                    unlocked: false,
                     progress: 500;
         target: 1000
             };
@@ -169,7 +169,7 @@ class MockGameEngine {
         this.debugMode = false;
         this.accessibilityManager = {
             getSettings: global.jest.fn(() => ({
-                highContrast: false;
+                highContrast: false,
                 largeText: false;
                 reducedMotion: false,))
         );
@@ -310,7 +310,7 @@ describe('UserInfoScene Integration Tests', () => {
         test('should handle tab clicks', () => {
             userInfoScene.enter();
             const event = {
-                clientX: 200;
+                clientX: 200,
                 clientY: 100 // タブエリア内
             };
             
@@ -333,7 +333,7 @@ describe('UserInfoScene Integration Tests', () => {
             userInfoScene.enter('),'
             userInfoScene.switchTab('statistics');
             const event = {
-                clientX: 400;
+                clientX: 400,
                 clientY: 300 // コンテンツエリア内
             };
             
@@ -424,7 +424,7 @@ describe('UserInfoScene Integration Tests', () => {
         test('should handle keyboard navigation', () => {
             userInfoScene.enter('),'
             const event = {
-                key: 'Tab';
+                key: 'Tab',
         preventDefault: global.jest.fn( };
             
             userInfoScene.handleKeyPress(event);
@@ -433,7 +433,7 @@ describe('UserInfoScene Integration Tests', () => {
         }');'
         test('should support high contrast mode', () => {
             gameEngine.accessibilityManager.getSettings = global.jest.fn(() => ({
-                highContrast: true;
+                highContrast: true,
                 largeText: false;
                 reducedMotion: false,));
             userInfoScene.enter();
@@ -471,7 +471,7 @@ describe('UserInfoScene Integration Tests', () => {
             userInfoScene.showingDialog = 'username',
             
             const event = {
-                clientX: 400;
+                clientX: 400,
                 clientY: 300
             };
             
@@ -479,6 +479,6 @@ describe('UserInfoScene Integration Tests', () => {
             userInfoScene.handleClick(event);
             // ダイアログマネージャーが存在することを確認
             expect(userInfoScene.dialogManager).toBeDefined();
-        };
+        }
     }
 }');'

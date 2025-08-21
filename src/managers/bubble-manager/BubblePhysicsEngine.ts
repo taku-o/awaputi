@@ -1,6 +1,6 @@
 import type { BubblePhysicsEngine as IBubblePhysicsEngine, 
-    Bubble, ,
-    Position, ,
+    Bubble,
+    Position,
     Vector2  } from '../../types/game';
 
 /**
@@ -9,7 +9,7 @@ import type { BubblePhysicsEngine as IBubblePhysicsEngine,
  * 泡の物理計算、力学、特殊効果、境界処理を専門的に管理します
  */
 export class BubblePhysicsEngine implements IBubblePhysicsEngine { public gameEngine: any;
-    public mousePosition: Position = { x: 0, y: 0  }
+    public mousePosition: Position = { x: 0, y: 0  };
     private dragPhysics = { friction: 0.98,    // 空気抵抗
         bounce: 0.7,       // 跳ね返り係数,
         gravity: 50,       // 重力加速度,
@@ -189,7 +189,7 @@ export class BubblePhysicsEngine implements IBubblePhysicsEngine { public gameEn
             bubble.position.x > -margin &&,
             bubble.position.x < 800 + margin &&,
             bubble.position.y > -margin &&,
-            bubble.position.y < 600 + margin) }
+            bubble.position.y < 600 + margin);
     
     /**
      * 画面外の泡の処理
@@ -216,7 +216,7 @@ export class BubblePhysicsEngine implements IBubblePhysicsEngine { public gameEn
             
             // その他の泡は時間経過で消滅
             if (!offscreenBubbles.has(bubble) {
-                offscreenBubbles.add(bubble) }
+                offscreenBubbles.add(bubble);
                 offscreenTimer.set(bubble, 0); }
             }
             
@@ -248,7 +248,7 @@ export class BubblePhysicsEngine implements IBubblePhysicsEngine { public gameEn
      */''
     shouldDisappearOffscreen(bubbleType: string): boolean { ''
         const disappearTypes = ['rainbow', 'pink', 'clock', 'score', 'electric', 'poison'],
-        return disappearTypes.includes(bubbleType) }
+        return disappearTypes.includes(bubbleType);
     
     /**
      * 指定範囲内のバブルを取得
@@ -278,7 +278,7 @@ export class BubblePhysicsEngine implements IBubblePhysicsEngine { public gameEn
         // @ts-ignore 将来の方向ベクトル計算で使用予定
         const _direction = {
             x: (endPos.x - startPos.x) / pathLength,
-    y: (endPos.y - startPos.y) / pathLength  },
+    y: (endPos.y - startPos.y) / pathLength  ,
         // パス上のバブルを検出
         bubbles.forEach(bubble => {  );
             if (!bubble.isAlive) return,

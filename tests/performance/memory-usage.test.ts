@@ -8,13 +8,13 @@
 import { jest  } from '@jest/globals';
 import { getCacheSystem  } from '../../src/core/CacheSystem.js';
 interface CacheConfig {
-    maxSize: number;
+    maxSize: number,
     ttl: number;
     cleanupInterval: number;
 interface CacheStats {
-    size: number;
+    size: number,
     hits: number;
-    misses: number;
+    misses: number,
     hitRate: number;
 interface CacheSystem {
     get(key: string): any;
@@ -28,15 +28,15 @@ interface CacheSystem {
 // Mock performance API if not available
 if (typeof performance === 'undefined') {
     (global: any).performance = {
-        now: () => Date.now();
+        now: () => Date.now(),
         mark: () => {};
-        measure: () => {};
+        measure: () => {},
         memory: {
-            usedJSHeapSize: 50 * 1024 * 1024;
+            usedJSHeapSize: 50 * 1024 * 1024 },
             totalJSHeapSize: 100 * 1024 * 1024;
             jsHeapSizeLimit: 200 * 1024 * 1024
         }
-    };
+    }
 }
 // サンプルデータ生成関数
 function generateSampleData(size: number'): string {'
@@ -45,7 +45,7 @@ function generateTestObjects(count: number, size: number = 1024): Array<{ id: st
     const objects: Array<{ id: string,, data: string;> = [];
     for (let i = 0; i < count; i++) {
         objects.push({
-            id: `test-${i}`;
+            id: `test-${i}`,
         data: generateSampleData(size);
         }
     }
@@ -64,7 +64,7 @@ function measureExecutionTime<T>(fn: () => T): { result: T,, time: number; {
     const start = performance.now();
     const result = fn();
     const end = performance.now();
-    return { result, time: end - start };
+    return { result, time: end - start }
 }
 // メモリリーク検出ヘルパー
 function detectMemoryGrowth(measurements: number[], threshold: number = 10 * 1024 * 1024): boolean {
@@ -74,8 +74,8 @@ function detectMemoryGrowth(measurements: number[], threshold: number = 10 * 102
     return growth > threshold }
 // テスト用設定
 const testConfigs: { [key: string]: CacheConfig, = {
-    small: { maxSize: 100, ttl: 30000, cleanupInterval: 5000 };
-    medium: { maxSize: 1000, ttl: 60000, cleanupInterval: 10000 };
+    small: { maxSize: 100, ttl: 30000, cleanupInterval: 5000 },
+    medium: { maxSize: 1000, ttl: 60000, cleanupInterval: 10000 },
     large: { maxSize: 10000, ttl: 120000, cleanupInterval: 20000 }
 };
 describe('Memory Usage Tests', () => {
@@ -83,7 +83,7 @@ describe('Memory Usage Tests', () => {
     
     beforeEach(() => {
         cache = getCacheSystem({
-            maxSize: 1000;
+            maxSize: 1000,
             ttl: 60000;
             cleanupInterval: 10000
         } as any;
@@ -212,7 +212,7 @@ describe('Memory Usage Tests', () => {
     describe('自動クリーンアップ機能テスト', (') => {'
         test('TTL期限切れデータの自動削除', async () => {
             const shortTTLCache = getCacheSystem({
-                maxSize: 100;
+                maxSize: 100,
                 ttl: 100, // 100ms
                 cleanupInterval: 50
             } as CacheSystem;
@@ -280,6 +280,6 @@ describe('Memory Usage Tests', () => {
             expect(afterDestroy.hits).toBe(0);
             expect(afterDestroy.misses).toBe(0'),'
             // キャッシュが空であることを確認
-            expect(cache.get('destroy-test-0').toBeNull() };
+            expect(cache.get('destroy-test-0').toBeNull() }
     }
 }');'

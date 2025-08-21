@@ -155,7 +155,7 @@ describe('Configuration Access Performance Tests', () => {
         console.log(`キャッシュヒット数: ${stats.cacheHits)`),
         console.log(`キャッシュミス数: ${stats.cacheMisses)`),
         // ヒット率が50%以上であることを確認
-        expect(hitRate.toBeGreaterThan(50)};
+        expect(hitRate.toBeGreaterThan(50)}
     }');'
     test('メモリ使用量の監視', () => {
         // 大量の設定値を作成
@@ -166,7 +166,7 @@ describe('Configuration Access Performance Tests', () => {
         // 各設定値に複数回アクセス（キャッシュに保存させる）
         for (let i = 0; i < 100; i++) {
             for (let j = 0, j < 5, j++') {'
-                configManager.get('test', `key${i)`};
+                configManager.get('test', `key${i)`}
             }
         }
         
@@ -212,7 +212,7 @@ describe('Configuration Access Performance Tests', () => {
         // エラーが発生しないことを確認
         expect(errorCount.toBe(0);
         // 平均アクセス時間が合理的であることを確認
-        expect(avgTime.toBeLessThan(0.1)};
+        expect(avgTime.toBeLessThan(0.1)}
     }');'
     test('キャッシュ最適化の効果', () => {
         // 最適化前の状態を測定
@@ -222,7 +222,7 @@ describe('Configuration Access Performance Tests', () => {
         for (let i = 0, i < 50, i++') {'
             const key = `test.key${i}`;
             configManager.set('test', `key${i}`, `value${i}`);
-            testKeys.push(['test', `key${i)`]};
+            testKeys.push(['test', `key${i)`]}
         }
         
         // 一部のキーに頻繁にアクセス

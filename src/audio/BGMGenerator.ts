@@ -1,21 +1,21 @@
 import { getErrorHandler  } from '../utils/ErrorHandler.js';
 
 // 音楽スケール型定義
-interface Scales { major: number[];
-    minor: number[];
-    pentatonic: number[];
+interface Scales { major: number[],
+    minor: number[],
+    pentatonic: number[],
     blues: number[];
 
 // 和音進行型定義
-interface ChordProgressions { pop: string[];
-    jazz: string[];
-    classical: string[];
+interface ChordProgressions { pop: string[],
+    jazz: string[],
+    classical: string[],
     ambient: string[];
 
 // リズムパターン型定義
-interface RhythmPatterns { simple: number[];
-    complex: number[];
-    syncopated: number[];
+interface RhythmPatterns { simple: number[],
+    complex: number[],
+    syncopated: number[],
     ambient: number[];
 
 // トラック設定型定義
@@ -26,15 +26,15 @@ interface TrackConfig { style?: string,
     timeSignature?: string;
 
 // メロディ音符型定義
-interface MelodyNote { frequency: number;
-    scaleIndex: number;
-    duration: number;
+interface MelodyNote { frequency: number,
+    scaleIndex: number,
+    duration: number,
     velocity: number;
 
 // ハーモニー音符型定義
-interface HarmonyNote { frequency: number;
-    scaleIndex: number;
-    duration: number;
+interface HarmonyNote { frequency: number,
+    scaleIndex: number,
+    duration: number,
     velocity: number;
 
 // メロディデータ型定義
@@ -67,8 +67,8 @@ export class BGMGenerator {
         // 音楽理論定義
         this.scales = {
             major: [0, 2, 4, 5, 7, 9, 11];
-            minor: [0, 2, 3, 5, 7, 8, 10];
-            pentatonic: [0, 2, 4, 7, 9] }
+    minor: [0, 2, 3, 5, 7, 8, 10];
+    pentatonic: [0, 2, 4, 7, 9] };
             blues: [0, 3, 5, 6, 7, 10] }
         };
         ';'
@@ -97,10 +97,10 @@ export class BGMGenerator {
      */''
     generateTrack(trackConfig: TrackConfig): AudioBuffer | null { try {
             const { ''
-                style = 'ambient',
+                style = 'ambient,
                 duration = 30,
                 tempo = 120,
-                key = 'C',
+                key = 'C,
                 timeSignature = '4/4' } = trackConfig;
             
             console.log(`Generating ${style} track: ${duration}s, ${tempo}BPM, key=${ key)`),
@@ -120,10 +120,9 @@ export class BGMGenerator {
                 case 'dramatic':
                     return this.generateDramaticTrack(buffer, trackConfig}
                 default: }
-                    return this.generateAmbientTrack(buffer, trackConfig};
-
-            } catch (error) { getErrorHandler().handleError(error as Error, 'BGM_GENERATOR_ERROR', {''
-                operation: 'generateTrack');
+                    return this.generateAmbientTrack(buffer, trackConfig}
+        } catch (error) { getErrorHandler().handleError(error as Error, 'BGM_GENERATOR_ERROR', {''
+                operation: 'generateTrack'),
                 trackConfig: trackConfig,';'
             return null;
     
@@ -348,7 +347,7 @@ export class BGMGenerator {
         }
                      }
                     sample += Math.sin(2 * Math.PI * harmonicFreq * t) * amplitude * envelope; }
-                };
+                }
             };
             
             // ブラス風のメロディ（最高潮部分）
@@ -432,7 +431,7 @@ export class BGMGenerator {
             scale[(degree + 4) % scale.length]               // 五度;
         ];
         
-        return chordTones.map(semitones => {  ) }
+        return chordTones.map(semitones => {  );
             return rootFreq * Math.pow(2, semitones / 12););
     }
     
@@ -458,7 +457,7 @@ export class BGMGenerator {
     scaleIndex: scaleIndex),
                     duration: 1, // 相対的な長さ }
                     velocity: 0.7 + Math.random() * 0.3 // ランダムなベロシティ 
-    };
+    }
             } else { melody.push(null), // 休符 }
         }
         
@@ -517,8 +516,8 @@ export class BGMGenerator {
                     scaleIndex: harmonyNote,
                     duration: note.duration }
                     velocity: note.velocity * 0.7 // ハーモニーは少し小さく 
-    };
-            } else { harmony.push(null) }
+    }
+            } else { harmony.push(null);
         };
         
         return harmony;

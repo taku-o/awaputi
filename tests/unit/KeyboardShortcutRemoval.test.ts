@@ -7,7 +7,7 @@ import { CoreKeyboardShortcutManager  } from '../../src/core/KeyboardShortcutMan
 // Type definitions
 interface MockGameEngine {
     settingsManager: {
-        get: jest.Mock<(ke,y: string) => any>;
+        get: jest.Mock<(ke,y: string) => any> },
         set: jest.Mock<(ke,y: string, value => void>) };
     audioManager: {
         toggleMute: jest.Mock<() => void>
@@ -23,11 +23,11 @@ interface MockGameEngine {
 interface MockErrorHandler {
     handleError: jest.Mock<(erro,r: Error, context: string) => void> }
 interface ShortcutDefinition {
-    keys: string[];
+    keys: string[],
     action: string;
     description?: string;
 interface ShortcutStats {
-    totalShortcuts: number;
+    totalShortcuts: number,
     enabledShortcuts: number;
     disabledShortcuts?: number;
 interface HelpSections {
@@ -35,14 +35,14 @@ interface HelpSections {
 // Create mocks
 const mockGameEngine: MockGameEngine = {
     settingsManager: {
-        get: jest.fn(
+        get: jest.fn( },
         set: jest.fn( };
     audioManager: {
-        toggleMute: jest.fn( };
+        toggleMute: jest.fn( },
     responsiveCanvasManager: {
-        toggleFullscreen: jest.fn( };
+        toggleFullscreen: jest.fn( },
     sceneManager: {
-        getCurrentScene: jest.fn( };
+        getCurrentScene: jest.fn( },
     isDebugMode: jest.fn(() => false);
     );
 const mockErrorHandler: MockErrorHandler = {
@@ -71,7 +71,7 @@ describe('Keyboard Shortcut Removal (Issue #170')', () => {'
             expect(shortcuts.fullscreen).toBeUndefined() }');'
         test('should not trigger fullscreen on F key press', (') => {'
             const keyEvent = new KeyboardEvent('keydown', { 
-                code: 'KeyF';
+                code: 'KeyF',
                 key: 'f';
                 bubbles: true,);
             document.dispatchEvent(keyEvent);
@@ -86,7 +86,7 @@ describe('Keyboard Shortcut Removal (Issue #170')', () => {'
             expect(shortcuts.mute).toBeUndefined() }');'
         test('should not trigger mute on M key press', (') => {'
             const keyEvent = new KeyboardEvent('keydown', { 
-                code: 'KeyM';
+                code: 'KeyM',
                 key: 'm';
                 bubbles: true,);
             document.dispatchEvent(keyEvent);
@@ -102,9 +102,9 @@ describe('Keyboard Shortcut Removal (Issue #170')', () => {'
             expect(shortcuts.volumeDown).toBeUndefined() }');'
         test('should not trigger volume up on Ctrl+↑', (') => {'
             const keyEvent = new KeyboardEvent('keydown', { 
-                code: 'ArrowUp';
+                code: 'ArrowUp',
                 key: 'ArrowUp';
-                ctrlKey: true;
+                ctrlKey: true,
                 bubbles: true,);
             document.dispatchEvent(keyEvent);
             expect(mockGameEngine.settingsManager.set').not.toHaveBeenCalledWith('
@@ -113,9 +113,9 @@ describe('Keyboard Shortcut Removal (Issue #170')', () => {'
         }');'
         test('should not trigger volume down on Ctrl+↓', (') => {'
             const keyEvent = new KeyboardEvent('keydown', { 
-                code: 'ArrowDown';
+                code: 'ArrowDown',
                 key: 'ArrowDown';
-                ctrlKey: true;
+                ctrlKey: true,
                 bubbles: true,);
             document.dispatchEvent(keyEvent);
             expect(mockGameEngine.settingsManager.set').not.toHaveBeenCalledWith('
@@ -134,9 +134,9 @@ describe('Keyboard Shortcut Removal (Issue #170')', () => {'
             expect(shortcuts.reducedMotion).toBeUndefined() }');'
         test('should not trigger high contrast on Ctrl+Alt+H', (') => {'
             const keyEvent = new KeyboardEvent('keydown', { 
-                code: 'KeyH';
+                code: 'KeyH',
                 key: 'h';
-                ctrlKey: true;
+                ctrlKey: true,
                 altKey: true;
                 bubbles: true,);
             document.dispatchEvent(keyEvent);
@@ -146,9 +146,9 @@ describe('Keyboard Shortcut Removal (Issue #170')', () => {'
         }');'
         test('should not trigger large text on Ctrl+Alt+T', (') => {'
             const keyEvent = new KeyboardEvent('keydown', { 
-                code: 'KeyT';
+                code: 'KeyT',
                 key: 't';
-                ctrlKey: true;
+                ctrlKey: true,
                 altKey: true;
                 bubbles: true,);
             document.dispatchEvent(keyEvent);
@@ -158,9 +158,9 @@ describe('Keyboard Shortcut Removal (Issue #170')', () => {'
         }');'
         test('should not trigger reduced motion on Ctrl+Alt+M', (') => {'
             const keyEvent = new KeyboardEvent('keydown', { 
-                code: 'KeyM';
+                code: 'KeyM',
                 key: 'm';
-                ctrlKey: true;
+                ctrlKey: true,
                 altKey: true;
                 bubbles: true,);
             document.dispatchEvent(keyEvent);
@@ -181,9 +181,9 @@ describe('Keyboard Shortcut Removal (Issue #170')', () => {'
             expect(shortcuts.importSettings).toBeUndefined() }');'
         test('should not trigger profile switch on Ctrl+P', (') => {'
             const keyEvent = new KeyboardEvent('keydown', { 
-                code: 'KeyP';
+                code: 'KeyP',
                 key: 'p';
-                ctrlKey: true;
+                ctrlKey: true,
                 bubbles: true,);
             // Confirm no settings processing is triggered
             document.dispatchEvent(keyEvent);
@@ -194,9 +194,9 @@ describe('Keyboard Shortcut Removal (Issue #170')', () => {'
         }');'
         test('should not trigger export on Ctrl+E', (') => {'
             const keyEvent = new KeyboardEvent('keydown', { 
-                code: 'KeyE';
+                code: 'KeyE',
                 key: 'e';
-                ctrlKey: true;
+                ctrlKey: true,
                 bubbles: true,);
             document.dispatchEvent(keyEvent);
             // Confirm export processing is not triggered
@@ -204,9 +204,9 @@ describe('Keyboard Shortcut Removal (Issue #170')', () => {'
         }');'
         test('should not trigger import on Ctrl+I', (') => {'
             const keyEvent = new KeyboardEvent('keydown', { 
-                code: 'KeyI';
+                code: 'KeyI',
                 key: 'i';
-                ctrlKey: true;
+                ctrlKey: true,
                 bubbles: true,);
             document.dispatchEvent(keyEvent);
             // Confirm import processing is not triggered
@@ -286,6 +286,6 @@ describe('Keyboard Shortcut Removal (Issue #170')', () => {'
             expect(mockGameEngine.responsiveCanvasManager.toggleFullscreen).not.toHaveBeenCalled();
             expect(mockGameEngine.audioManager.toggleMute).not.toHaveBeenCalled();
             expect(mockGameEngine.settingsManager.set).not.toHaveBeenCalled();
-        };
+        }
     }
 }');'

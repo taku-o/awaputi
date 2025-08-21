@@ -16,14 +16,14 @@ const localStorageMock = (() => {
         removeItem: jest.fn((key) => {
             delete store[key]),
         clear: jest.fn(() => {
-            store = {)) };
+            store = {)) }
 })(');'
 Object.defineProperty(window, 'localStorage', {
     value: localStorageMock,);
 // モックの作成
 const mockGameEngine = {
     settingsManager: {
-        get: jest.fn(
+        get: jest.fn( },
         set: jest.fn(
         save: jest.fn(
         load: jest.fn(
@@ -75,7 +75,7 @@ describe('Settings Persistence (Issue #170')', () => {'
                 'accessibility.currentProfile': 'default'
             };
             return defaults[key];
-        };
+        }
     }
     afterEach((') => {'
         document.body.innerHTML = ' }');
@@ -242,7 +242,7 @@ describe('Settings Persistence (Issue #170')', () => {'
                 if (includeProfiles') {'
                     exportData.profiles = {
                         'highContrast': { name: 'High Contrast', settings: {} }
-                    };
+                    }
                 }
                 
                 return true;
@@ -320,6 +320,6 @@ describe('Settings Persistence (Issue #170')', () => {'
             const result = await importExportComponent.handleImport(invalidFile);
             expect(result.toBe(false);
             expect(mockErrorHandler.handleError).toHaveBeenCalled();
-            importExportComponent.dispose() };
+            importExportComponent.dispose() }
     }
 }');'

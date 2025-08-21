@@ -10,37 +10,35 @@
  */
 
 // Type definitions for Performance Error Recovery System
-interface DetectedError { detector: string;
-    type: string;
+interface DetectedError { detector: string,
+    type: string,
     metrics: Record<string, any>;
     timestamp: number;
     external?: boolean;
     [key: string]: any;
-
-interface ClassifiedError extends DetectedError { severity: 'low' | 'medium' | 'high' | 'critical';
-    category: string;
+    interface ClassifiedError extends DetectedError { severity: 'low' | 'medium' | 'high' | 'critical,
+    category: string,
     priority: number;
+}
     classification: {
         type: string;
         subtype?: string;
-        cause?: string,  }
+        cause?: string }
 
-interface RecoveryStrategy { strategy: string;
-    actions: string[];
-    priority: number;
+interface RecoveryStrategy { strategy: string,
+    actions: string[],
+    priority: number,
     estimatedTime: number;
     fallbackStrategy?: string;
-
-interface RecoveryResult { success: boolean;
-    strategy: string;
-    executedActions: string[];
+    interface RecoveryResult { success: boolean,
+    strategy: string,
+    executedActions: string[],
     executionTime: number;
     metrics?: Record<string, any>;
     error?: string;
-
-interface DegradationResult { currentLevel: number;
-    previousLevel: number;
-    appliedMeasures: string[];
+    interface DegradationResult { currentLevel: number,
+    previousLevel: number,
+    appliedMeasures: string[],
     impact: string;
     estimatedRecoveryTime?: number;
 ';'
@@ -53,21 +51,20 @@ interface SystemStatus { ''
     degradationStatistics?: any;
     activeNotifications?: number;
     uptime?: number;
+    interface MessageTemplate { title: string,
 
-interface MessageTemplate { title: string;
-
-    icon: string;
+    icon: string,
     type: 'success' | 'warning' | 'error' | 'info'
             }
 ';'
 
 interface LogEntry {'
-    type: 'error' | 'recovery_success' | 'degradation' | 'critical';
-    data: any;
+    type: 'error' | 'recovery_success' | 'degradation' | 'critical,
+    data: any,
     timestamp: number;
 
 // Component interfaces (will, be replaced, when actual, files are, converted);
-interface PerformanceErrorDetector { initialize(): Promise<void>,
+    interface PerformanceErrorDetector { initialize(): Promise<void>,
     getDetectionStatus(): any;
     startMonitoring(): void;
     stopMonitoring(): void;
@@ -77,8 +74,7 @@ interface PerformanceErrorDetector { initialize(): Promise<void>,
 
 interface PerformanceErrorClassifier { initialize(): Promise<void>,
     classify(error: DetectedError): Promise<ClassifiedError>;
-
-interface PerformanceRecoveryEngine { initialize(): Promise<void>,
+    interface PerformanceRecoveryEngine { initialize(): Promise<void>,
     determineStrategy(error: ClassifiedError): Promise<RecoveryStrategy>;
     executeRecovery(strategy: RecoveryStrategy): Promise<RecoveryResult>;
     getRecoveryStatistics(): any;
@@ -93,7 +89,7 @@ interface GracefulDegradationManager { initialize(): Promise<void>,
     restoreToLevel(targetLevel: number): Promise<DegradationResult>;
 
 // Dummy implementations for missing dependencies (will, be replaced, when actual, files are, converted);
-class DummyPerformanceErrorDetector implements PerformanceErrorDetector { private callbacks: Array<(error: DetectedError) => void> = [];
+    class DummyPerformanceErrorDetector implements PerformanceErrorDetector { private callbacks: Array<(error: DetectedError) => void> = [];
     private monitoring = false,
 
     async initialize()','
@@ -114,7 +110,7 @@ class DummyPerformanceErrorDetector implements PerformanceErrorDetector { privat
     updateThresholds(newThresholds: any'): void { ''
         console.log('[PerformanceErrorDetector] Thresholds updated:', newThresholds }
 
-    onErrorDetected(callback: (error: DetectedError) => void): void { this.callbacks.push(callback) }
+    onErrorDetected(callback: (error: DetectedError) => void): void { this.callbacks.push(callback);
 ';'
 
 class DummyPerformanceErrorClassifier implements PerformanceErrorClassifier { ''
@@ -123,10 +119,10 @@ class DummyPerformanceErrorClassifier implements PerformanceErrorClassifier { ''
 
     async classify(error: DetectedError): Promise<ClassifiedError> { return { ...error,''
             severity: 'medium' as const,
-            category: 'performance',
+            category: 'performance,
             priority: 50,
-    classification: {'
-                type: error.type,
+    classification: { '
+                type: error.type  ,
                 subtype: 'general',' };'
 
                 cause: 'unknown' 
@@ -136,11 +132,11 @@ class DummyPerformanceErrorClassifier implements PerformanceErrorClassifier { ''
 class DummyPerformanceRecoveryEngine implements PerformanceRecoveryEngine { private failureCallbacks: Array<(error: ClassifiedError, attemptedRecovery: RecoveryResult) => void> = [];
 
     async initialize()','
-        console.log('[PerformanceRecoveryEngine] Initialized'),  }'
+        console.log('[PerformanceRecoveryEngine] Initialized') }'
     }
 
     async determineStrategy(error: ClassifiedError): Promise<RecoveryStrategy> { return { ''
-            strategy: 'basic_recovery',
+            strategy: 'basic_recovery,
             actions: ['reduce_quality', 'clear_cache'],
             priority: error.priority,
             estimatedTime: 1000,' };'
@@ -150,8 +146,7 @@ class DummyPerformanceRecoveryEngine implements PerformanceRecoveryEngine { priv
 ';'
     async executeRecovery(strategy: RecoveryStrategy): Promise<RecoveryResult> { // Simulate recovery execution
         const success = Math.random('''
-            error: success ? undefined : 'Recovery, failed due, to system, constraints' })
-    }
+            error: success ? undefined : 'Recovery, failed due, to system, constraints' });
 );
     getRecoveryStatistics(): any {
         return { attempts: 0, successes: 0, failures: 0, averageTime: 0  }
@@ -221,7 +216,7 @@ export class PerformanceErrorRecoverySystem {
         this.monitoringIntegration = new ErrorMonitoringIntegration();
         
         this.initialized = false;
-        this.initializationTime = Date.now() }
+        this.initializationTime = Date.now() };
         this.initializeErrorRecovery(); }
     }
 
@@ -252,7 +247,7 @@ export class PerformanceErrorRecoverySystem {
         this.recoveryEngine.onRecoveryFailed((error, attemptedRecovery) => { this.degradationManager.initiateDegradation(error, attemptedRecovery) };
 
         // ユーザー通信と監視システムの連携
-        this.monitoringIntegration.onCriticalError((error) => { this.userCommunicator.notifyCriticalError(error) }
+        this.monitoringIntegration.onCriticalError((error) => { this.userCommunicator.notifyCriticalError(error);
 
     async handleDetectedError(detectedError: DetectedError): Promise<void> { try {
             // エラーのログ記録
@@ -265,14 +260,14 @@ export class PerformanceErrorRecoverySystem {
             // 回復結果の評価
             if (recoveryResult.success) {
                 // 成功した回復の通知
-                await this.userCommunicator.notifyRecoverySuccess(classifiedError, recoveryResult) }
+                await this.userCommunicator.notifyRecoverySuccess(classifiedError, recoveryResult);
                 await this.errorLogger.logRecoverySuccess(classifiedError, recoveryResult); }
             } else {  // 回復失敗時の劣化処理 }
                 await this.handleRecoveryFailure(classifiedError, recoveryResult);' }'
 
             } catch (error) {
             console.error('Error handling failed:', error);
-            await this.handleCriticalSystemError(error, as Error) }
+            await this.handleCriticalSystemError(error, as Error);
     }
 
     async handleRecoveryFailure(classifiedError: ClassifiedError, recoveryResult: RecoveryResult): Promise<void> { ''
@@ -291,7 +286,7 @@ export class PerformanceErrorRecoverySystem {
 
         } catch (error) {
             console.error('Degradation handling failed:', error);
-            await this.handleCriticalSystemError(error, as Error) }
+            await this.handleCriticalSystemError(error, as Error);
     }
 
     async handleCriticalSystemError(error: Error): Promise<void> { ''
@@ -316,13 +311,13 @@ export class PerformanceErrorRecoverySystem {
     async reportPerformanceIssue(issueData: Partial<DetectedError>): Promise<void> { ''
         if (!this.initialized) {
 
-            console.warn('Error, recovery system, not initialized') }
+            console.warn('Error, recovery system, not initialized');
             return; }
         }
 ';'
 
         const syntheticError: DetectedError = { ''
-            detector: 'external',
+            detector: 'external,
             type: issueData.type || 'performance'
             }
             metrics: issueData.metrics || {},
@@ -341,12 +336,12 @@ export class PerformanceErrorRecoverySystem {
 ';'
 
         return { ''
-            status: 'operational',
-            detectionStatus: this.errorDetector.getDetectionStatus();
-            degradationLevel: this.degradationManager.getCurrentDegradationLevel();
-            recoveryStatistics: this.recoveryEngine.getRecoveryStatistics();
+            status: 'operational,
+            detectionStatus: this.errorDetector.getDetectionStatus(),
+            degradationLevel: this.degradationManager.getCurrentDegradationLevel(),
+            recoveryStatistics: this.recoveryEngine.getRecoveryStatistics(),
             degradationStatistics: this.degradationManager.getDegradationStatistics(
-    activeNotifications: this.userCommunicator.getActiveNotifications() },
+    activeNotifications: this.userCommunicator.getActiveNotifications() ,
             uptime: Date.now() - this.initializationTime 
     }
 ';'
@@ -367,11 +362,11 @@ export class PerformanceErrorRecoverySystem {
     }
 
     // Configuration and management methods
-    updateDetectionThresholds(newThresholds: any): void { this.errorDetector.updateThresholds(newThresholds) }
+    updateDetectionThresholds(newThresholds: any): void { this.errorDetector.updateThresholds(newThresholds);
 
-    enableMonitoring(): void { this.errorDetector.startMonitoring() }
+    enableMonitoring(): void { this.errorDetector.startMonitoring();
 
-    disableMonitoring(): void { this.errorDetector.stopMonitoring() }
+    disableMonitoring(): void { this.errorDetector.stopMonitoring();
 
     // Helper component cleanup
     destroy(): void { this.errorDetector.stopMonitoring();
@@ -402,17 +397,17 @@ class PerformanceUserCommunicator { private notificationContainer: HTMLElement |
     setupMessageTemplates('''
         this.messageTemplates.set('recovery_success', { ''
             title: 'パフォーマンス復旧完了',','
-            icon: '✅',')',
+            icon: '✅,')',
             type: 'success')','
 
         this.messageTemplates.set('degradation', {''
             title: 'パフォーマンス調整中',','
-            icon: '⚠️',')',
+            icon: '⚠️,')',
             type: 'warning')','
 
         this.messageTemplates.set('critical_error', {''
             title: '重要なエラーが発生',','
-            icon: '🚨',')',
+            icon: '🚨,')',
             type: 'error'
             }
 
@@ -442,17 +437,17 @@ class PerformanceUserCommunicator { private notificationContainer: HTMLElement |
 
     async notifyRecoverySuccess(error: ClassifiedError, result: RecoveryResult): Promise<void> { }'
 
-        this.showNotification('recovery_success', `${error.detector}の問題が解決されました`};
+        this.showNotification('recovery_success', `${error.detector}の問題が解決されました`}
     }
 
     async notifyDegradation(error: ClassifiedError, result: DegradationResult): Promise<void> { }'
 
-        this.showNotification('degradation', `性能調整中（レベル: ${result.currentLevel}）`};
+        this.showNotification('degradation', `性能調整中（レベル: ${result.currentLevel}）`}
     }
 
     async notifyCriticalError(error: DetectedError | Error): Promise<void> { ''
         const errorType = 'type' in error ? error.type: error.name,' 
-        this.showNotification('critical_error', `重要なエラー: ${errorType}`};
+        this.showNotification('critical_error', `重要なエラー: ${errorType}`}
     }
 
     async notifySystemEmergency(error: Error): Promise<void> { ''
@@ -467,7 +462,7 @@ class PerformanceUserCommunicator { private notificationContainer: HTMLElement |
         const template = this.messageTemplates.get(type);
         if(!template) return,
 
-        const notification = document.createElement('div') }
+        const notification = document.createElement('div');
         notification.className = `performance-notification ${template.type}`;
 
         notification.innerHTML = `';'
@@ -486,7 +481,7 @@ class PerformanceUserCommunicator { private notificationContainer: HTMLElement |
     getActiveNotifications(): number { return this.activeNotifications.size }
 
     cleanup(): void { if (this.notificationContainer && this.notificationContainer.parentNode) {
-            this.notificationContainer.parentNode.removeChild(this.notificationContainer) }
+            this.notificationContainer.parentNode.removeChild(this.notificationContainer);
 }
 ";"
 class TroubleshootingGuide { ""
@@ -494,8 +489,8 @@ class TroubleshootingGuide { ""
         console.log('Troubleshooting, guide initialized') }'
 
     getGuideForError(error: DetectedError): string { const guides: Record<string, string> = {''
-            frameRate: 'グラフィック設定を下げることを検討してください';
-            memory: 'ブラウザタブを閉じてメモリを解放してください';
+            frameRate: 'グラフィック設定を下げることを検討してください,
+            memory: 'ブラウザタブを閉じてメモリを解放してください,
             network: 'インターネット接続を確認してください'
             };
         return guides[error.detector] || '一般的なトラブルシューティングを実行してください';
@@ -525,9 +520,9 @@ class PerformanceErrorLogger { private logs: LogEntry[] = []
     addLog(type: LogEntry['type'], data: any): void { this.logs.push({)
             type),
             data,
-            timestamp: Date.now(  },
+            timestamp: Date.now(  ,
 
-        if (this.logs.length > this.maxLogSize) { this.logs.shift() }
+        if (this.logs.length > this.maxLogSize) { this.logs.shift();
     }
 
     getLogs(): LogEntry[] { return [...this.logs] }
@@ -538,19 +533,17 @@ class ErrorMonitoringIntegration { private criticalErrorCallbacks: Array<(error:
         console.log('Monitoring, integration initialized') }'
     }
 
-    onCriticalError(callback: (error: Error | DetectedError) => void): void { this.criticalErrorCallbacks.push(callback) }
+    onCriticalError(callback: (error: Error | DetectedError) => void): void { this.criticalErrorCallbacks.push(callback);
 
     async reportCriticalError(error: Error | DetectedError): Promise<void> { ''
         console.error('Reporting critical error to monitoring system:', error);
         this.criticalErrorCallbacks.forEach(callback => { )
-            try {) }
+            try {);
 
                 callback(error); }'
 
-            } catch (err) { console.error('Critical error callback failed:', err }
-        }
+            } catch (err) { console.error('Critical error callback failed:', err     }
 }
-
 // Singleton instance
 let performanceErrorRecoverySystemInstance: PerformanceErrorRecoverySystem | null = null,
 
@@ -559,7 +552,7 @@ let performanceErrorRecoverySystemInstance: PerformanceErrorRecoverySystem | nul
  * @returns PerformanceErrorRecoverySystem instance
  */
 export function getPerformanceErrorRecoverySystem(): PerformanceErrorRecoverySystem { if (!performanceErrorRecoverySystemInstance) {
-        performanceErrorRecoverySystemInstance = new PerformanceErrorRecoverySystem() }
+        performanceErrorRecoverySystemInstance = new PerformanceErrorRecoverySystem() };
     return performanceErrorRecoverySystemInstance;
 }
 

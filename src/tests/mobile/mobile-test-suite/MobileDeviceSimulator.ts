@@ -7,69 +7,69 @@
 declare const jest: any,
 
 // Type definitions
-interface DeviceConfig { devices: string[];
+interface DeviceConfig { devices: string[],
     browsers: string[];
-
-interface ScreenInfo { width: number;
-    height: number;
+    interface ScreenInfo { width: number,
+    height: number,
     pixelRatio: number;
-
-interface CurrentDevice { name: string;
-    screen: ScreenInfo;
-    userAgent: string;
-    orientation: 'portrait' | 'landscape';
+    interface CurrentDevice { name: string,
+    screen: ScreenInfo,
+    userAgent: string,
+    orientation: 'portrait' | 'landscape,
     battery: {
         leve,l: number;
-    charging: boolean;
-    connection: { type: string;
+    },
+    charging: boolean,
+    connection: { type: string,
     effectiveType: string;
+    },
     effectiveType: string;
         };
-interface SimulationState { isActive: boolean;
-    mocksApplied: boolean;
+interface SimulationState { isActive: boolean,
+    mocksApplied: boolean,
     originalValues: Map<string, any>;
     activeListeners: Map<string, any> }
 
-interface TouchPoint { identifier: number;
-    clientX: number;
-    clientY: number;
-    pageX: number;
-    pageY: number;
-    screenX: number;
-    screenY: number;
+interface TouchPoint { identifier: number,
+    clientX: number,
+    clientY: number,
+    pageX: number,
+    pageY: number,
+    screenX: number,
+    screenY: number,
     target: Element;
-
-interface DeviceInfo { userAgent: string;
-    screen: ScreenInfo;
+    interface DeviceInfo { userAgent: string,
+    screen: ScreenInfo,
     pixelRatio: number;
-
-interface DeviceUtils { createTouchEvent: (type: string, touches: TouchPoint[]) => Event;
+    interface DeviceUtils { createTouchEvent: (type: string, touches: TouchPoint[]) => Event,
     createTouch: (x: number, y: number, id?: number) => TouchPoint;
-    createDeviceInfo: (device: string) => DeviceInfo;
-    measurePerformance: (testFunction: () => Promise<void>) => Promise<number>;
-    wait: (ms: number) => Promise<void>;
+    createDeviceInfo: (device: string) => DeviceInfo,
+    measurePerformance: (testFunction: () => Promise<void>) => Promise<number>,
+    wait: (ms: number) => Promise<void>,
     randomDelay: (min: number, max: number) => Promise<void>  }
 }
 
-interface MockedAPIs { vibrate: any;
+interface MockedAPIs { vibrate: any,
     speechSynthesis: {
         spea,k: any;
-        cancel: any;
-    getVoices: any;
-    deviceMotion: any;
-    deviceOrientation: any;
-    getBattery: any;
-    serviceWorker: { register: any;
-    ready: Promise<any>;
-    connection: { effectiveType: string;
+    },
+        cancel: any,
+    getVoices: any,
+    deviceMotion: any,
+    deviceOrientation: any,
+    getBattery: any,
+    serviceWorker: { register: any,
+    ready: Promise<any>   ,
+    connection: { effectiveType: string,
         downlink: number;
-        rtt: number;
-    saveData: boolean;
+    },
+        rtt: number,
+    saveData: boolean,
     saveData: boolean;
         };
-interface DebugInfo { deviceConfig: DeviceConfig;
-    currentDevice: CurrentDevice;
-    simulationState: SimulationState;
+interface DebugInfo { deviceConfig: DeviceConfig,
+    currentDevice: CurrentDevice,
+    simulationState: SimulationState,
     mocksStatus: Record<string, boolean> }
 
 export class MobileDeviceSimulator {
@@ -86,14 +86,14 @@ export class MobileDeviceSimulator {
         // デバイス設定
         this.deviceConfig = {
             devices: [';'
-                'iPhone SE', 'iPhone 12', 'iPhone 14 Pro',
-                'Samsung Galaxy S21', 'Samsung Galaxy Note 20',
+                'iPhone SE, 'iPhone 12, 'iPhone 14 Pro',
+                'Samsung Galaxy S21, 'Samsung Galaxy Note 20,
                 'iPad Air', 'iPad Pro',]','
                 'Pixel 6', 'OnePlus 9'],
             ],
             browsers: [','
                 'Safari Mobile', 'Chrome Mobile', 'Firefox Mobile',]','
-                'Samsung Internet', 'Edge Mobile'] }
+                'Samsung Internet', 'Edge Mobile'] };
             ] }
         };
         
@@ -101,12 +101,12 @@ export class MobileDeviceSimulator {
         this.currentDevice = {;
             name: 'iPhone 12' }
 
-            screen: { width: 390, height: 844, pixelRatio: 3  },''
+            screen: { width: 390, height: 844, pixelRatio: 3  ,''
             userAgent: ','
-            orientation: 'portrait',
-            battery: { level: 1.0, charging: false,,''
+            orientation: 'portrait,
+            battery: { level: 1.0, charging: false,''
             connection: { type: '4g', effectiveType: '4g'
-            };
+             ,
         
         // シミュレーション状態
         this.simulationState = { isActive: false,
@@ -117,32 +117,30 @@ export class MobileDeviceSimulator {
         // モック設定
         this.mocks = { // 振動API, vibrate: jest.fn(),
             // 音声合成API
-           , speechSynthesis: {
-                speak: jest.fn(),
+            speechSynthesis: { speak: jest.fn()  ,
                 cancel: jest.fn(
     getVoices: jest.fn(() => []) 
     };
             // デバイス API
             deviceMotion: jest.fn(),
-            deviceOrientation: jest.fn(),
+            deviceOrientation: jest.fn();
             // バッテリー API
-           , getBattery: jest.fn(() => Promise.resolve({ level: 0.8)
+            getBattery: jest.fn(() => Promise.resolve({ level: 0.8)
                 charging: false),
                 chargingTime: Infinity),
-                dischargingTime: 28800)),
+                dischargingTime: 28800));
             // PWA API
-           , serviceWorker: {
-                register: jest.fn(() => Promise.resolve(),
-                ready: Promise.resolve({) }
-                    active: { postMessage: jest.fn( }'}',
+            serviceWorker: { register: jest.fn(() => Promise.resolve()  ,
+                ready: Promise.resolve({);
+                    active: { postMessage: jest.fn( }'}';
             },
             
             // ネットワーク API
             connection: { ''
-                effectiveType: '4g',
+                effectiveType: '4g'   ,
                 downlink: 10,
                 rtt: 50,
-    saveData: false,
+    saveData: false;
         // ユーティリティ設定
         this.utils = {} as DeviceUtils;
         
@@ -177,15 +175,15 @@ export class MobileDeviceSimulator {
                 pageY: y,
                 screenX: x,
                 screenY: y,
-    target: this.mobileTestSuite.testContainer || document.body  },
+    target: this.mobileTestSuite.testContainer || document.body  };
             // デバイス情報生成
             createDeviceInfo: (device: string): DeviceInfo => ({ userAgent: this.getDeviceUserAgent(device),
                 screen: this.getDeviceScreen(device,
-    pixelRatio: this.getDevicePixelRatio(device },
+    pixelRatio: this.getDevicePixelRatio(device };
             // パフォーマンス測定
-            measurePerformance: async (testFunction: () => Promise<void>): Promise<number> => {  const start = performance.now(),
+            measurePerformance: async (testFunction: () => Promise<void>): Promise<number> => {  const start = performance.now();
                 await testFunction();
-                const end = performance.now() }
+                const end = performance.now();
                 return end - start;,
             
             // 非同期待機
@@ -200,7 +198,7 @@ export class MobileDeviceSimulator {
      * デバイスシミュレーション開始'
      */''
     async startSimulation(deviceName: string = 'iPhone, 12): Promise<void> { if (this.simulationState.isActive) {'
-            await this.stopSimulation() }
+            await this.stopSimulation();
         
         console.log(`[MobileDeviceSimulator] ${ deviceName) シミュレーション開始`),
         
@@ -208,7 +206,7 @@ export class MobileDeviceSimulator {
         this.setDevice(deviceName);
         this.applyMocks(};
         this.setupDeviceEnvironment(}
-        console.log(`[MobileDeviceSimulator] ${deviceName} シミュレーション開始完了`};
+        console.log(`[MobileDeviceSimulator] ${deviceName} シミュレーション開始完了`}
     }
     
     /**
@@ -233,7 +231,7 @@ export class MobileDeviceSimulator {
      * デバイス設定
      */
     setDevice(deviceName: string): void { if (!this.deviceConfig.devices.includes(deviceName) { }
-            throw new Error(`Unknown, device: ${deviceName}`};
+            throw new Error(`Unknown, device: ${deviceName}`}
         }
         
         this.currentDevice = { name: deviceName,
@@ -243,17 +241,17 @@ export class MobileDeviceSimulator {
             orientation: 'portrait'
             }
 
-            battery: { level: 1.0, charging: false,,''
+            battery: { level: 1.0, charging: false,''
             connection: { type: '4g', effectiveType: '4g'
-            };
+             ,
         
-        console.log(`[MobileDeviceSimulator] デバイス設定: ${deviceName}`};
+        console.log(`[MobileDeviceSimulator] デバイス設定: ${deviceName}`}
     }
     
     /**
      * デフォルトデバイス設定
      */
-    private setDefaultDevice(deviceName: string): void { this.setDevice(deviceName) }
+    private setDefaultDevice(deviceName: string): void { this.setDevice(deviceName);
     
     /**
      * モック適用
@@ -284,18 +282,18 @@ export class MobileDeviceSimulator {
         // 画面サイズ設定
         Object.defineProperty(window, 'innerWidth', {)
             value: this.currentDevice.screen.width','
-    writable: true,')',
+    writable: true,'),
             configurable: true','
 
         Object.defineProperty(window, 'innerHeight', {)
             value: this.currentDevice.screen.height','
-    writable: true,')',
+    writable: true,'),
             configurable: true'),'
         ','
         // デバイスピクセル比設定
         Object.defineProperty(window, 'devicePixelRatio', {)
             value: this.currentDevice.screen.pixelRatio','
-    writable: true,')',
+    writable: true,'),
             configurable: true'),'
         ','
         // タッチサポート設定
@@ -331,7 +329,7 @@ export class MobileDeviceSimulator {
         // イベントリスナー設定
         this.setupEventListeners();
         // メディアクエリ設定
-        this.setupMediaQueries() }
+        this.setupMediaQueries();
     
     /**
      * CSS環境変数設定
@@ -368,15 +366,15 @@ export class MobileDeviceSimulator {
         document.addEventListener('touchmove', touchHandler, { passive: false,';'
         document.addEventListener('touchend', touchHandler, { passive: false )','
 
-        this.simulationState.activeListeners.set('touch', touchHandler) }
+        this.simulationState.activeListeners.set('touch', touchHandler);
     
     /**
      * メディアクエリ設定
      */
     private setupMediaQueries(): void { // モバイル用メディアクエリのシミュレーション
         const mediaQueries = { }
-            mobile: `(max-width: ${this.currentDevice.screen.width}px)`,
-            tablet: `(min-width: 768px) and (max-width: 1024px)`,
+            mobile: `(max-width: ${this.currentDevice.screen.width}px),
+            tablet: `(min-width: 768px) and (max-width: 1024px),
             desktop: `(min-width: 1025px')`;'
         },
 
@@ -419,7 +417,7 @@ export class MobileDeviceSimulator {
         const newOrientation: 'portrait' | 'landscape' = this.currentDevice.orientation === 'portrait' ? 'landscape' : 'portrait'),
         this.setOrientation(newOrientation);
         
-        console.log(`[MobileDeviceSimulator] 向き変更: ${newOrientation}`};
+        console.log(`[MobileDeviceSimulator] 向き変更: ${newOrientation}`}
     }
     
     /**
@@ -448,7 +446,7 @@ export class MobileDeviceSimulator {
         }
         
         // 環境変数更新
-        if (this.simulationState.isActive) { this.setCSSEnvironmentVariables() }
+        if (this.simulationState.isActive) { this.setCSSEnvironmentVariables();
     }
     
     /**
@@ -461,13 +459,13 @@ export class MobileDeviceSimulator {
         Object.values(this.mocks).forEach(mock => {  '),'
             if (typeof, mock === 'function' && (mock, as any).mockClear) { }
 
-                (mock, as any).mockClear() }
+                (mock, as any).mockClear();
 
             } else if (typeof, mock === 'object' && mock !== null' { ''
                 Object.values(mock).forEach(subMock => { '),'
                     if (typeof, subMock === 'function' && (subMock, as any).mockClear) { }
                         (subMock, as any).mockClear(); }
-};
+}
 
             }'}');
         
@@ -494,7 +492,7 @@ export class MobileDeviceSimulator {
     /**
      * デバイス画面サイズ取得'
      */''
-    getDeviceScreen(device: string): ScreenInfo { const screens: Record<string, ScreenInfo> = { }', 'iPhone SE': { width: 375, height: 667, pixelRatio: 2  },', 'iPhone 12': { width: 390, height: 844, pixelRatio: 3  },', 'iPhone 14 Pro': { width: 393, height: 852, pixelRatio: 3  },', 'Samsung Galaxy S21': { width: 384, height: 854, pixelRatio: 2.75  },', 'Samsung Galaxy Note 20': { width: 412, height: 915, pixelRatio: 2.625  },', 'iPad Air': { width: 820, height: 1180, pixelRatio: 2  },', 'iPad Pro': { width: 1024, height: 1366, pixelRatio: 2  },', 'Pixel 6': { width: 412, height: 915, pixelRatio: 2.625  },', 'OnePlus 9': { width: 412, height: 919, pixelRatio: 2.625  }'
+    getDeviceScreen(device: string): ScreenInfo { const screens: Record<string, ScreenInfo> = { }', 'iPhone SE': { width: 375, height: 667, pixelRatio: 2  ,', 'iPhone 12': { width: 390, height: 844, pixelRatio: 3  ,', 'iPhone 14 Pro': { width: 393, height: 852, pixelRatio: 3  ,', 'Samsung Galaxy S21': { width: 384, height: 854, pixelRatio: 2.75  ,', 'Samsung Galaxy Note 20': { width: 412, height: 915, pixelRatio: 2.625  ,', 'iPad Air': { width: 820, height: 1180, pixelRatio: 2  ,', 'iPad Pro': { width: 1024, height: 1366, pixelRatio: 2  ,', 'Pixel 6': { width: 412, height: 915, pixelRatio: 2.625  ,', 'OnePlus 9': { width: 412, height: 919, pixelRatio: 2.625  }'
 
         };
         return screens[device] || screens['iPhone 12];'
@@ -520,11 +518,12 @@ export class MobileDeviceSimulator {
      * シミュレーション状態取得
      */
     getSimulationState(): { isActive: boolean,
-        currentDevice: string,
+        currentDevice: string;
+    },
         mocksApplied: boolean,
     activeListeners: number, { return { isActive: this.simulationState.isActive,
             currentDevice: this.currentDevice.name,
-    mocksApplied: this.simulationState.mocksApplied },
+    mocksApplied: this.simulationState.mocksApplied ,
             activeListeners: this.simulationState.activeListeners.size 
     }
     

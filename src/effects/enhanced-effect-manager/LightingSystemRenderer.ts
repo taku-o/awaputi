@@ -3,26 +3,26 @@ import { getErrorHandler  } from '../../utils/ErrorHandler';
 /**
  * RGBカラーインターフェース
  */
-interface RGBColor { r: number;
-    g: number;
+interface RGBColor { r: number,
+    g: number,
     b: number;
 
 /**
  * 光源インターフェース
  */
-interface LightSource { x: number;
-    y: number;
-    radius: number;
+interface LightSource { x: number,
+    y: number,
+    radius: number,
     intensity: number;
     currentIntensity?: number;
-    color: RGBColor;
+    color: RGBColor,
     enabled: boolean;
     castShadows?: boolean;
 
 /**
  * 影を投影するオブジェクトインターフェース
  */
-interface ShadowObject { x: number;
+interface ShadowObject { x: number,
     y: number;
     size?: number;
     type?: string;
@@ -30,16 +30,16 @@ interface ShadowObject { x: number;
 /**
  * 影キャスターインターフェース
  */
-interface ShadowCaster { object: ShadowObject;
-    enabled: boolean;
-    opacity: number;
-    shadowType: 'hard' | 'soft';
+interface ShadowCaster { object: ShadowObject,
+    enabled: boolean,
+    opacity: number,
+    shadowType: 'hard' | 'soft,
     blur: number;
 
 /**
  * バブルオブジェクトインターフェース
  */
-interface BubbleObject { x: number;
+interface BubbleObject { x: number,
     y: number;
     size?: number;
     type?: string;
@@ -56,7 +56,7 @@ export class LightingSystemRenderer {
 
         this.canvas = canvas
 
-    }
+    };
         this.errorHandler = getErrorHandler(); }
     }
     
@@ -77,26 +77,24 @@ export class LightingSystemRenderer {
                     light.x, light.y, light.radius),
                 
                 const intensity = light.currentIntensity || light.intensity,
-                const alpha = Math.min(intensity, 1.0) }
+                const alpha = Math.min(intensity, 1.0);
                  }
                 gradient.addColorStop(0, `rgba(${light.color.r}, ${light.color.g}, ${light.color.b}, ${alpha}`};
                 gradient.addColorStop(1, `rgba(${light.color.r}, ${light.color.g}, ${ light.color.b), 0)`),
 
-                context.globalCompositeOperation = 'screen',
+                context.globalCompositeOperation = 'screen,
                 context.fillStyle = gradient,
                 context.fillRect(
                     light.x - light.radius);
                     light.y - light.radius),
                     light.radius * 2 };
                     light.radius * 2}
-                context.restore(};
+                context.restore(}
 
             };'} catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'LightingSystemRenderer.renderLighting'
-            };
-        }
-    }
-    
+                }
+}
     /**
      * 基本的な影レンダリング
      */
@@ -136,13 +134,11 @@ export class LightingSystemRenderer {
                     this.renderObjectShadow(context, caster.object, shadowX, shadowY, dx / distance, dy / distance);
                     
                     context.restore();
-                };
+                }
             };'} catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'LightingSystemRenderer.renderBasicShadows'
-            };
-        }
-    }
-    
+                }
+}
     /**
      * 高度な影レンダリング
      */
@@ -161,7 +157,7 @@ export class LightingSystemRenderer {
                     
                     // 高品質バブル影 }
                     this.renderBubbleShadow(context, caster.object as BubbleObject, light, distance); }
-                };
+                }
             };'} catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'LightingSystemRenderer.renderAdvancedShadows'
             }';'
@@ -183,19 +179,17 @@ export class LightingSystemRenderer {
                 context.scale(scaleX, scaleY);
                 context.beginPath();
                 context.arc(0, 0, radius * 0.8, 0, Math.PI * 2);
-                context.fill() }
+                context.fill();
                 context.restore(); }
             } else {  // 一般的な円形影
                 context.beginPath();
-                context.arc(shadowX, shadowY, 15, 0, Math.PI * 2) }
+                context.arc(shadowX, shadowY, 15, 0, Math.PI * 2);
                 context.fill();' }'
 
             } catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'LightingSystemRenderer.renderObjectShadow'
-            };
-        }
-    }
-    
+                }
+}
     /**
      * バブル専用の高品質影
      */
@@ -212,8 +206,8 @@ export class LightingSystemRenderer {
             const shadowX = bubble.x + Math.cos(lightAngle) * shadowDistance,
             const shadowY = bubble.y + Math.sin(lightAngle) * shadowDistance + radius * 0.5,
 
-            context.save('',
-            context.globalCompositeOperation = 'multiply',
+            context.save(',
+            context.globalCompositeOperation = 'multiply,
             
             // グラデーション影
             const, gradient = context.createRadialGradient();

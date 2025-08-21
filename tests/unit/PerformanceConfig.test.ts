@@ -7,11 +7,11 @@ import { ConfigurationManager, getConfigurationManager  } from '../../src/core/C
 import { getErrorHandler  } from '../../src/utils/ErrorHandler.js';
 // モックの型定義
 interface MockCall {
-    category: string;
+    category: string,
     key: string;
     defaultValue?: any;
 interface SetCall {
-    category: string;
+    category: string,
     key: string;
     value: any;
 interface ValidationRule {
@@ -25,22 +25,22 @@ interface MockConfigManager {
     setValidationRule: jest.Mock<void, [string, string, any]>;
     getCategory: jest.Mock<any, [string]> }
 interface QualityPreset {
-    renderQuality: number;
+    renderQuality: number,
     particleQuality: number;
-    effectQuality: number;
+    effectQuality: number,
     audioQuality: number;
-    enableShadows: boolean;
+    enableShadows: boolean,
     enableBlur: boolean;
-    enableAntiAliasing: boolean;
+    enableAntiAliasing: boolean,
     enableReflections: boolean;
 interface PerformanceOptimizer {
-    targetFPS: number;
+    targetFPS: number,
     maxHistorySize: number;
     adaptiveMode?: boolean;
     performanceLevel?: string;
-    setAdaptiveMode: (mod,e: boolean) => void;
+    setAdaptiveMode: (mod,e: boolean) => void,
     optimizationInterval: number;
-    setPerformanceLevel: (leve,l: string) => void;
+    setPerformanceLevel: (leve,l: string) => void,
     settings: Record<string, any> }
 // モックの設定
 let mockGetCalls: MockCall[] = [],
@@ -392,7 +392,7 @@ describe('PerformanceConfig', () => {
                 optimizationInterval: 3000,
                 setPerformanceLevel: jest.fn(
                 settings: {
-                    maxBubbles: 15,
+                    maxBubbles: 15 },
                     maxParticles: 300,
                     renderQuality: 0.8,
                     particleQuality: 0.6,
@@ -428,6 +428,6 @@ describe('PerformanceConfig', () => {
         test('getPerformanceConfig が常に同じインスタンスを返すこと', () => {
             const instance1 = getPerformanceConfig();
             const instance2 = getPerformanceConfig();
-            expect(instance1).toBe(instance2) };
+            expect(instance1).toBe(instance2) }
     }
 }');'

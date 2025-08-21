@@ -45,11 +45,11 @@ describe('Analytics System Integration Performance Tests', () => {
             enableBehaviorAnalysis: true,
             autoInitialize: false,
             performanceOptimization: {
-                batchSize: 20,
+                batchSize: 20 },
                 batchTimeout: 1000,
                 cacheSize: 500
             }
-        };
+        }
     }
     afterEach(async () => {
         if (analyticsManager) {
@@ -247,7 +247,7 @@ describe('Analytics System Integration Performance Tests', () => {
             // 複数セッションの同時実行
             for (let sessionId = 0, sessionId < INTEGRATION_THRESHOLDS.CONCURRENT_SESSIONS, sessionId++) {
                 const sessionPromise = simulateGameSession(analyticsManager, `session_${sessionId)`, 50),
-                concurrentSessions.push(sessionPromise};
+                concurrentSessions.push(sessionPromise}
             }
             
             await Promise.all(concurrentSessions);
@@ -320,7 +320,7 @@ describe('Analytics System Integration Performance Tests', () => {
             // システムが正常に動作し続けることを確認
             const stats = analyticsManager.getAnalyticsStats();
             expect(stats.isInitialized).toBe(true);
-        };
+        }
     }
 };
 // ヘルパー関数: テストデータ生成

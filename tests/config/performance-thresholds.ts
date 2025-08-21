@@ -10,31 +10,31 @@ export const PERFORMANCE_THRESHOLDS = {
   // Continuous Integration Environment
   ci: {
     frameRate: {
-      min: 25,           // Minimum acceptable FPS
+      min: 25,           // Minimum acceptable FPS };
       target: 30,        // Target FPS
       max: 45,          // Maximum expected FPS
       variance: 5        // Acceptable variance in FPS
     },
     renderTime: {
-      max: 50,          // Maximum render time in ms
+      max: 50,          // Maximum render time in ms };
       average: 35,      // Target average render time
       target: 25,       // Optimal render time
       variance: 10      // Acceptable variance in ms
     },
     memoryUsage: {
-      max: 100 * 1024 * 1024,          // 100MB maximum memory usage
+      max: 100 * 1024 * 1024,          // 100MB maximum memory usage };
       growth: 10 * 1024 * 1024,        // 10MB acceptable growth per operation
       leak: 5 * 1024 * 1024,           // 5MB acceptable memory leak per test
       baseline: 20 * 1024 * 1024       // 20MB baseline memory usage
     },
     loadTime: {
-      max: 5000,        // 5 seconds maximum load time
+      max: 5000,        // 5 seconds maximum load time };
       target: 3000,     // 3 seconds target load time
       component: 1000,  // 1 second per component load
       asset: 500        // 500ms per asset load
     },
     network: {
-      timeout: 10000,   // 10 seconds network timeout
+      timeout: 10000,   // 10 seconds network timeout };
       retries: 3,       // Maximum network retries
       delay: 1000       // Delay between retries
     }
@@ -43,31 +43,31 @@ export const PERFORMANCE_THRESHOLDS = {
   // Local Development Environment
   local: {
     frameRate: {
-      min: 35,
+      min: 35 },
       target: 45,
       max: 60,
       variance: 8
     },
     renderTime: {
-      max: 35,
+      max: 35 },
       average: 25,
       target: 16,
       variance: 8
     },
     memoryUsage: {
-      max: 150 * 1024 * 1024,          // 150MB maximum
+      max: 150 * 1024 * 1024,          // 150MB maximum };
       growth: 15 * 1024 * 1024,        // 15MB acceptable growth
       leak: 8 * 1024 * 1024,           // 8MB acceptable leak
       baseline: 30 * 1024 * 1024       // 30MB baseline
     },
     loadTime: {
-      max: 3000,
+      max: 3000 },
       target: 2000,
       component: 500,
       asset: 200
     },
     network: {
-      timeout: 5000,
+      timeout: 5000 },
       retries: 2,
       delay: 500
     }
@@ -76,31 +76,31 @@ export const PERFORMANCE_THRESHOLDS = {
   // Production Environment
   production: {
     frameRate: {
-      min: 45,
+      min: 45 },
       target: 55,
       max: 60,
       variance: 5
     },
     renderTime: {
-      max: 25,
+      max: 25 },
       average: 18,
       target: 16,
       variance: 5
     },
     memoryUsage: {
-      max: 200 * 1024 * 1024,          // 200MB maximum
+      max: 200 * 1024 * 1024,          // 200MB maximum };
       growth: 20 * 1024 * 1024,        // 20MB acceptable growth
       leak: 10 * 1024 * 1024,          // 10MB acceptable leak
       baseline: 40 * 1024 * 1024       // 40MB baseline
     },
     loadTime: {
-      max: 2000,
+      max: 2000 },
       target: 1500,
       component: 300,
       asset: 150
     },
     network: {
-      timeout: 3000,
+      timeout: 3000 },
       retries: 1,
       delay: 200
     }
@@ -191,21 +191,21 @@ export const TEST_CONFIGURATIONS = {
  */
 export const DEVICE_ADJUSTMENTS = {
   mobile: {
-    frameRateMultiplier: 0.8,     // 80% of desktop expectations
+    frameRateMultiplier: 0.8,     // 80% of desktop expectations };
     renderTimeMultiplier: 1.5,    // 50% more render time allowed
     memoryMultiplier: 0.6,        // 60% of desktop memory limits
     loadTimeMultiplier: 2.0       // Double the load time allowance
   },
   
   desktop: {
-    frameRateMultiplier: 1.0,
+    frameRateMultiplier: 1.0 },
     renderTimeMultiplier: 1.0,
     memoryMultiplier: 1.0,
     loadTimeMultiplier: 1.0
   },
 
   tablet: {
-    frameRateMultiplier: 0.9,
+    frameRateMultiplier: 0.9 },
     renderTimeMultiplier: 1.2,
     memoryMultiplier: 0.8,
     loadTimeMultiplier: 1.5
@@ -369,9 +369,9 @@ export function createPerformanceTestSuite(options = {}') {'
       name: component),
      , thresholds: getPerformanceThresholds(environment, device, component) },
     metadata: {
-      created: new Date().toISOString(','
+      created: new Date().toISOString(',' };
       version: '1.0.0',
       generator: 'performance-thresholds.js'
     }
-  };
+  }
 }

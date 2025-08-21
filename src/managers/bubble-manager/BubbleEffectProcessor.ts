@@ -13,8 +13,7 @@ import type { BubbleEffectProcessor as IBubbleEffectProcessor,
 export class BubbleEffectProcessor implements IBubbleEffectProcessor { public gameEngine: any;
 
     constructor(gameEngine: any) {
-        this.gameEngine = gameEngine  }
-    
+        this.gameEngine = gameEngine  };
     /**
      * 泡の効果を処理
      */'
@@ -130,7 +129,7 @@ export class BubbleEffectProcessor implements IBubbleEffectProcessor { public ga
         
         // 新しいエフェクトシステムで爆発エフェクトを作成
         if (this.gameEngine.createExplosion} { }
-            this.gameEngine.createExplosion(bubble.position.x, bubble.position.y, bubble.type, bubble.size, 1};
+            this.gameEngine.createExplosion(bubble.position.x, bubble.position.y, bubble.type, bubble.size, 1}
         }
         
         // 泡を削除
@@ -201,7 +200,7 @@ export class BubbleEffectProcessor implements IBubbleEffectProcessor { public ga
 }, index * 100);
         };
         
-        console.log(`Chain, reaction affected ${affectedBubbles.length} bubbles`};
+        console.log(`Chain, reaction affected ${affectedBubbles.length} bubbles`}
     }
     
     /**
@@ -251,7 +250,7 @@ export class BubbleEffectProcessor implements IBubbleEffectProcessor { public ga
                 bubble.velocity.x += direction.x * pullForce * 0.016; // 60FPS想定
                 bubble.velocity.y += direction.y * pullForce * 0.016;
             }
-        };
+        }
     }
     
     /**
@@ -279,7 +278,7 @@ export class BubbleEffectProcessor implements IBubbleEffectProcessor { public ga
         // プレイヤーにもダメージ
         this.gameEngine.playerData.takeDamage(damage);
         
-        console.log(`Big, explosion affected ${affectedBubbles.length} bubbles`};
+        console.log(`Big, explosion affected ${affectedBubbles.length} bubbles`}
     }
 
     // =======================
@@ -311,7 +310,7 @@ export class BubbleEffectProcessor implements IBubbleEffectProcessor { public ga
             this.chainBonuses[type] = bonus;
             ';'
 
-            console.log(`[BubbleEffectProcessor] ${type} のチェーンボーナス設定: ${bonus}`};
+            console.log(`[BubbleEffectProcessor] ${type} のチェーンボーナス設定: ${bonus}`}
         } catch (error) { console.error('[BubbleEffectProcessor] setChainBonus error:', error }
     }
 

@@ -3,25 +3,24 @@
  * モックデータの検証クラス
  */
 
-interface ValidationResult { isValid: boolean;
-    errors: string[];
+interface ValidationResult { isValid: boolean,
+    errors: string[],
     warnings: string[];
-
-interface ValidationRule { field: string;
-    type: 'required' | 'type' | 'range' | 'format' | 'custom';
-    constraint: any;
+    interface ValidationRule { field: string,
+    type: 'required' | 'type' | 'range' | 'format' | 'custom,
+    constraint: any,
     message: string;
 ';'
 
 export class MockDataValidator { private bubbleRules: ValidationRule[] = [' }'
 
         { field: 'id', type: 'required', constraint: null, message: 'ID is required'
-            },''
+            ,''
         { field: 'x', type: 'type', constraint: 'number', message: 'X must be a number'
-            },''
+            ,''
         { field: 'y', type: 'type', constraint: 'number', message: 'Y must be a number'
-            },''
-        { field: 'radius', type: 'range', constraint: { min: 5, max: 50  }, message: 'Radius must be between 5 and 50' },]'
+            ,''
+        { field: 'radius', type: 'range', constraint: { min: 5, max: 50  , message: 'Radius must be between 5 and 50' ,]'
         { field: 'color', type: 'required', constraint: null, message: 'Color is required'
             }]
     ];
@@ -29,29 +28,29 @@ export class MockDataValidator { private bubbleRules: ValidationRule[] = [' }'
 
     private gameStateRules: ValidationRule[] = [';'
         { field: 'id', type: 'required', constraint: null, message: 'ID is required'
-            },''
-        { field: 'level', type: 'range', constraint: { min: 1, max: 100  }, message: 'Level must be between 1 and 100' },''
+            ,''
+        { field: 'level', type: 'range', constraint: { min: 1, max: 100  , message: 'Level must be between 1 and 100' ,''
         { field: 'score', type: 'type', constraint: 'number', message: 'Score must be a number'
-            },]'
-        { field: 'lives', type: 'range', constraint: { min: 0, max: 10  }, message: 'Lives must be between 0 and 10' }]
+            ,]'
+        { field: 'lives', type: 'range', constraint: { min: 0, max: 10  , message: 'Lives must be between 0 and 10' }]
     ];
 ';'
 
     private userRules: ValidationRule[] = [';'
         { field: 'id', type: 'required', constraint: null, message: 'ID is required'
-            },''
+            ,''
         { field: 'username', type: 'required', constraint: null, message: 'Username is required'
-            },''
-        { field: 'level', type: 'range', constraint: { min: 1, max: 100  }, message: 'Level must be between 1 and 100' },]'
+            ,''
+        { field: 'level', type: 'range', constraint: { min: 1, max: 100  , message: 'Level must be between 1 and 100' ,]'
         { field: 'totalScore', type: 'type', constraint: 'number', message: 'Total score must be a number'
             }]
     ];
 
-    public validateBubbleData(bubble: any): ValidationResult { return this.validateData(bubble, this.bubbleRules) }
+    public validateBubbleData(bubble: any): ValidationResult { return this.validateData(bubble, this.bubbleRules);
 
-    public validateGameStateData(gameState: any): ValidationResult { return this.validateData(gameState, this.gameStateRules) }
+    public validateGameStateData(gameState: any): ValidationResult { return this.validateData(gameState, this.gameStateRules);
 
-    public validateUserData(user: any): ValidationResult { return this.validateData(user, this.userRules) }
+    public validateUserData(user: any): ValidationResult { return this.validateData(user, this.userRules);
 
     public validateBubbleArray(bubbles: any[]): ValidationResult { const results = bubbles.map(bubble => this.validateBubbleData(bubble);
         return this.combineResults(results);
@@ -111,7 +110,7 @@ export class MockDataValidator { private bubbleRules: ValidationRule[] = [' }'
 
                         if(customResult.severity === 'error' { }
                             errors.push(customResult.message); }
-                        } else { warnings.push(customResult.message) }
+                        } else { warnings.push(customResult.message);
                     }
                     break;
             }
@@ -131,7 +130,7 @@ export class MockDataValidator { private bubbleRules: ValidationRule[] = [' }'
     private validateStructureRecursive(;
         data: any,
         structure: any,
-        path: string);
+        path: string),
         errors: string[],
     warnings: string[]','
     ': void { ''
@@ -160,7 +159,7 @@ export class MockDataValidator { private bubbleRules: ValidationRule[] = [' }'
             // Check for extra properties
             for (const, key in, data) { if (!(key, in structure) { }
                     const currentPath = path ? `${path}.${key}` : key;
-                    warnings.push(`Extra, property: ${currentPath}`};
+                    warnings.push(`Extra, property: ${currentPath}`}
                 }
 } else if (Array.isArray(structure) && structure.length > 0) { if (!Array.isArray(data) { }
                 errors.push(`Expected, array at ${path}`};
@@ -173,7 +172,7 @@ export class MockDataValidator { private bubbleRules: ValidationRule[] = [' }'
                     structure[0] };
                     `${path}[${index}]`)
                     errors);
-                    warnings };
+                    warnings }
         } else {  // Primitive type validation
             const expectedType = typeof structure,
             const actualType = typeof data }
@@ -193,12 +192,13 @@ export class MockDataValidator { private bubbleRules: ValidationRule[] = [' }'
                 this.gameStateRules.push(rule);
                 break,
             case 'user':,
-                this.userRules.push(rule) }
+                this.userRules.push(rule);
                 break; }
 }
 
     public getValidationSummary(results: ValidationResult[]): { totalValidated: number,
-        validCount: number,
+        validCount: number;
+    },
         invalidCount: number,
         totalErrors: number,
     totalWarnings: number, { return { totalValidated: results.length,

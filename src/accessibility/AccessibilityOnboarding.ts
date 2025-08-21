@@ -6,21 +6,20 @@
 import { getErrorHandler  } from '../utils/ErrorHandler.js';
 
 // Interfaces for onboarding structures
-interface OnboardingConfig { enabled: boolean;
-    showOnFirstVisit: boolean;
-    showOnAccessibilityRequest: boolean;
-    skipOption: boolean;
-    progressTracking: boolean;
-    adaptiveContent: boolean;
+interface OnboardingConfig { enabled: boolean,
+    showOnFirstVisit: boolean,
+    showOnAccessibilityRequest: boolean,
+    skipOption: boolean,
+    progressTracking: boolean,
+    adaptiveContent: boolean,
     language: string;
-
-interface OnboardingStep { id: string;
-    title: string;
-    description: string;
-    actionRequired: boolean;
-    completed: boolean;
-    skippable: boolean;
-    duration: number;
+    interface OnboardingStep { id: string,
+    title: string,
+    description: string,
+    actionRequired: boolean,
+    completed: boolean,
+    skippable: boolean,
+    duration: number,
     content: StepContent;
     validation?: () => boolean;
     action?: () => void }'
@@ -33,40 +32,38 @@ interface StepContent { ''
     audio?: string;
     interactive?: boolean;
     customContent?: any;
-
-interface UserPreferences { needsScreenReader: boolean;
-    needsKeyboardNav: boolean;
-    needsHighContrast: boolean;
-    needsLargeText: boolean;
-    needsReducedMotion: boolean;
-    needsCaptions: boolean;
-    needsSimplifiedUI: boolean;
+    interface UserPreferences { needsScreenReader: boolean,
+    needsKeyboardNav: boolean,
+    needsHighContrast: boolean,
+    needsLargeText: boolean,
+    needsReducedMotion: boolean,
+    needsCaptions: boolean,
+    needsSimplifiedUI: boolean,
     preferredLanguage: string;
-
-interface OnboardingProgress { currentStep: number;
-    completedSteps: string[];
-    skippedSteps: string[];
-    startTime: number;
-    lastActiveTime: number;
-    preferences: UserPreferences;
+    interface OnboardingProgress { currentStep: number,
+    completedSteps: string[],
+    skippedSteps: string[],
+    startTime: number,
+    lastActiveTime: number,
+    preferences: UserPreferences,
     assessmentResults: AssessmentResults;
 ';'
 
 interface AssessmentResults { ''
-    visualAcuity: 'normal' | 'low' | 'very-low';
-    motorControl: 'normal' | 'limited' | 'very-limited';
-    cognitiveLoad: 'normal' | 'reduced' | 'minimal';
+    visualAcuity: 'normal' | 'low' | 'very-low,
+    motorControl: 'normal' | 'limited' | 'very-limited,
+    cognitiveLoad: 'normal' | 'reduced' | 'minimal,
     hearingAbility: 'normal' | 'impaired' | 'deaf'
             }
 
-interface AnimationState { currentAnimation: string | null;
-    isAnimating: boolean;
+interface AnimationState { currentAnimation: string | null,
+    isAnimating: boolean,
     animationQueue: string[];
 
 // AccessibilityManager interface (minimal, definition);
-interface AccessibilityManager { applyProfile?: (profile: any) => void;
+    interface AccessibilityManager { applyProfile?: (profile: any) => void;
     saveProfile?: (profile: any) => void;
-    gameEngine?: any,  }
+    gameEngine?: any }
 }
 
 export class AccessibilityOnboarding {
@@ -88,12 +85,12 @@ export class AccessibilityOnboarding {
         
         // オンボーディング設定
         this.config = { : undefined
-            enabled: true;
-            showOnFirstVisit: true;
-            showOnAccessibilityRequest: true;
-            skipOption: true;
-            progressTracking: true;
-    adaptiveContent: true;
+            enabled: true,
+            showOnFirstVisit: true,
+            showOnAccessibilityRequest: true,
+            skipOption: true,
+            progressTracking: true,
+    adaptiveContent: true,
     adaptiveContent: true;
         };
             language: 'ja' 
@@ -109,45 +106,45 @@ export class AccessibilityOnboarding {
      * オンボーディングステップの作成'
      */''
     private createOnboardingSteps('''
-                id: 'welcome',
-                title: 'アクセシビリティ機能へようこそ',
-                description: 'BubblePopをより快適にプレイするための機能をご案内します',
+                id: 'welcome,
+                title: 'アクセシビリティ機能へようこそ,
+                description: 'BubblePopをより快適にプレイするための機能をご案内します,
                 actionRequired: false,
                 completed: false,
                 skippable: false,
     duration: 5000,
                 content: { ''
-                    type: 'intro',
-                    visual: 'welcome-animation',
+                    type: 'intro'  ,
+                    visual: 'welcome-animation,
                     audio: 'welcome-narration'
             }
             };
             // ニーズ評価
             { ''
-                id: 'assessment',
-                title: 'あなたに最適な設定を見つけましょう',
-                description: 'いくつかの質問に答えて、最適な設定を見つけます',
+                id: 'assessment,
+                title: 'あなたに最適な設定を見つけましょう,
+                description: 'いくつかの質問に答えて、最適な設定を見つけます,
                 actionRequired: true,
                 completed: false,
                 skippable: true,
     duration: 60000,
-                content: {''
-                    type: 'configuration',
-    interactive: true,
+                content: { ''
+                    type: 'configuration'  ,
+    interactive: true;
 
                 },''
                 action: () => this.runNeedsAssessment('''
-                id: 'visual-support',
-                title: '視覚サポート機能',
-                description: 'コントラスト調整、拡大表示、色覚サポートなど',
+                id: 'visual-support,
+                title: '視覚サポート機能,
+                description: 'コントラスト調整、拡大表示、色覚サポートなど,
                 actionRequired: false,
                 completed: false,
                 skippable: true,
     duration: 30000,
                 content: { ''
-                    type: 'feature',','
-                    visual: 'visual-features-demo',
-    interactive: true,
+                    type: 'feature',','  },
+                    visual: 'visual-features-demo,
+    interactive: true;
 
                 },')'
                 validation: () => this.progress.preferences.needsHighContrast || ,
@@ -156,109 +153,97 @@ export class AccessibilityOnboarding {
             
             // キーボード操作
             { ''
-                id: 'keyboard-navigation',
-                title: 'キーボード操作',
-                description: 'マウスを使わずにゲームを楽しむ方法',
+                id: 'keyboard-navigation,
+                title: 'キーボード操作,
+                description: 'マウスを使わずにゲームを楽しむ方法,
                 actionRequired: true,
                 completed: false,
                 skippable: true,
     duration: 45000,
                 content: {''
-                    type: 'practice',
+                    type: 'practice' ,
     interactive: true,
                 action: () => this.practiceKeyboardNavigation(
-                validation: () => this.progress.preferences.needsKeyboardNav,
-            },
+                validation: () => this.progress.preferences.needsKeyboardNav ,
             
             // スクリーンリーダー
             { ''
-                id: 'screen-reader',
-                title: 'スクリーンリーダー対応',
-                description: '音声読み上げ機能の使い方',
+                id: 'screen-reader,
+                title: 'スクリーンリーダー対応,
+                description: '音声読み上げ機能の使い方,
                 actionRequired: false,
                 completed: false,
                 skippable: true,
     duration: 40000,
                 content: {''
-                    type: 'feature',
-                    audio: 'screen-reader-guide',
-    interactive: true,
-
-                },''
-                validation: () => this.progress.preferences.needsScreenReader,
-            },
+                    type: 'feature' ,
+                    audio: 'screen-reader-guide,
+    interactive: true ,''
+                validation: () => this.progress.preferences.needsScreenReader ,
             
             // 音声・字幕設定
             { ''
-                id: 'audio-captions',
-                title: '音声と字幕',
-                description: '字幕表示と音の視覚化',
+                id: 'audio-captions,
+                title: '音声と字幕,
+                description: '字幕表示と音の視覚化,
                 actionRequired: false,
                 completed: false,
                 skippable: true,
     duration: 25000,
                 content: {''
-                    type: 'feature',
-                    visual: 'caption-demo',
-    interactive: true,
-
-                },''
-                validation: () => this.progress.preferences.needsCaptions,
-            },
+                    type: 'feature' ,
+                    visual: 'caption-demo,
+    interactive: true ,''
+                validation: () => this.progress.preferences.needsCaptions ,
             
             // 簡素化UI
             { ''
-                id: 'simplified-ui',
-                title: 'シンプルモード',
-                description: '必要な情報だけを表示する簡素化インターフェース',
+                id: 'simplified-ui,
+                title: 'シンプルモード,
+                description: '必要な情報だけを表示する簡素化インターフェース,
                 actionRequired: false,
                 completed: false,
                 skippable: true,
     duration: 20000,
                 content: {''
-                    type: 'feature',
-                    visual: 'simplified-ui-demo',
-    interactive: true,
-
-                },''
-                validation: () => this.progress.preferences.needsSimplifiedUI,
-            },
+                    type: 'feature' ,
+                    visual: 'simplified-ui-demo,
+    interactive: true ,''
+                validation: () => this.progress.preferences.needsSimplifiedUI ,
             
             // カスタマイズ
             { ''
-                id: 'customization',
-                title: '詳細カスタマイズ',
-                description: 'さらに細かい設定を行います',
+                id: 'customization,
+                title: '詳細カスタマイズ,
+                description: 'さらに細かい設定を行います,
                 actionRequired: true,
                 completed: false,
                 skippable: true,
     duration: 60000,
                 content: {''
-                    type: 'configuration',
-    interactive: true,
-
-                },''
+                    type: 'configuration' ,
+    interactive: true ,''
                 action: () => this.showCustomizationPanel('''
-                id: 'practice',
-                title: '練習してみましょう',
-                description: '設定した機能を使って実際にプレイしてみます',
+                id: 'practice,
+                title: '練習してみましょう,
+                description: '設定した機能を使って実際にプレイしてみます,
                 actionRequired: true,
                 completed: false,
                 skippable: true,
     duration: 120000,
                 content: { ')'
-                    type: 'practice',
-    interactive: true,,')'
+                    type: 'practice' ,
+    interactive: true,')'
                 action: () => this.startPracticeSession('''
-                id: 'completion',
-                title: '設定完了！',
-                description: 'いつでも設定を変更できます',
+                id: 'completion,
+                title: '設定完了！,
+                description: 'いつでも設定を変更できます,
                 actionRequired: false,
                 completed: false,
                 skippable: false,
     duration: 10000,
                 content: { ''
-                    type: 'summary',
+                    type: 'summary' ,
                     visual: 'completion-animation'
             }
             };
@@ -277,12 +262,11 @@ export class AccessibilityOnboarding {
                 preferredLanguage: 'ja' 
     };
             assessmentResults: { ''
-                visualAcuity: 'normal',
-                motorControl: 'normal',
-                cognitiveLoad: 'normal',
+                visualAcuity: 'normal' ,
+                motorControl: 'normal,
+                cognitiveLoad: 'normal,
                 hearingAbility: 'normal'
-            })
-    }
+            });
     
     /**
      * オンボーディングの開始
@@ -290,7 +274,7 @@ export class AccessibilityOnboarding {
     async start(options: { onComplete?: () => void, onSkip?: () => void } = {}): Promise<void> { ''
         if (this.isActive) {
 
-            console.warn('Onboarding, is already, active') }
+            console.warn('Onboarding, is already, active');
             return; }
         }
         
@@ -366,7 +350,7 @@ export class AccessibilityOnboarding {
      */""
     private applyOnboardingStyles(): void { ""
         const style = document.createElement('style),'
-        style.textContent = `,
+        style.textContent = ,
             .accessibility-onboarding {
                 position: fixed,
                 top: 0,
@@ -383,7 +367,7 @@ export class AccessibilityOnboarding {
                 left: 0,
                 right: 0,
                 bottom: 0,
-    background: rgba(0, 0, 0, 0.8) }
+    background: rgba(0, 0, 0, 0.8);
             
             .onboarding-content { position: relative,
                 background: white,
@@ -534,7 +518,7 @@ export class AccessibilityOnboarding {
             case 'ArrowLeft': ','
                 this.previousStep()','
             case 'ArrowRight':),
-                this.nextStep() }
+                this.nextStep();
                 break; }
 }
     
@@ -569,7 +553,7 @@ export class AccessibilityOnboarding {
         this.updateStepUI(step);
         
         // ステップ固有のアクションを実行
-        if (step.action) { await step.action() }
+        if (step.action) { await step.action();
         
         // アニメーション
         await this.animateStepTransition(step);
@@ -591,11 +575,11 @@ export class AccessibilityOnboarding {
         if(!this.onboardingContainer) return,
         ','
         // タイトル
-        const title = this.onboardingContainer.querySelector('.onboarding-title',
+        const title = this.onboardingContainer.querySelector('.onboarding-title,
         if(title) title.textContent = step.title,
         ','
         // 説明文
-        const description = this.onboardingContainer.querySelector('.onboarding-description',
+        const description = this.onboardingContainer.querySelector('.onboarding-description,
         if(description) description.textContent = step.description,
         ','
         // インタラクティブコンテンツ
@@ -657,7 +641,7 @@ export class AccessibilityOnboarding {
      */''
     private createVisualContent(step: OnboardingStep, container: HTMLElement): void { // プレースホルダー実装
         const visual = document.createElement('div),'
-        visual.style.cssText = `,
+        visual.style.cssText = ,
             width: 100%,
             height: 200px,
             background: #f0f0f0,
@@ -680,55 +664,55 @@ export class AccessibilityOnboarding {
                 <h3>あなたのニーズを教えてください</h3>","
 
                 <div class="form-group">","
-                    <label>"",
+                    <label>",
                         <input type="checkbox" name="screenReader" value="true">,
                         スクリーンリーダーを使用している,
                     </label>,
                 </div>","
 
                 <div class="form-group">","
-                    <label>"",
+                    <label>",
                         <input type="checkbox" name="keyboardOnly" value="true">,
                         キーボードのみで操作したい,
                     </label>,
                 </div>","
 
                 <div class="form-group">","
-                    <label>"",
+                    <label>",
                         <input type="checkbox" name="highContrast" value="true">,
                         高コントラスト表示が必要,
                     </label>,
                 </div>","
 
                 <div class="form-group">","
-                    <label>"",
+                    <label>",
                         <input type="checkbox" name="largeText" value="true">,
                         文字を大きく表示したい,
                     </label>,
                 </div>","
 
                 <div class="form-group">","
-                    <label>"",
+                    <label>",
                         <input type="checkbox" name="reducedMotion" value="true">,
                         アニメーションを減らしたい,
                     </label>,
                 </div>","
 
                 <div class="form-group">","
-                    <label>"",
+                    <label>",
                         <input type="checkbox" name="captions" value="true">,
                         字幕表示が必要,
                     </label>,
                 </div>","
 
                 <div class="form-group">","
-                    <label>"",
+                    <label>",
                         <input type="checkbox" name="simplifiedUI" value="true">,
                         シンプルなインターフェースを使いたい,
                     </label>,
                 </div>,
             </form>,
-        `,
+        ,
         ","
         // フォーム変更の監視""
         const form = container.querySelector('form');
@@ -746,31 +730,29 @@ export class AccessibilityOnboarding {
                 <h3>キーボード操作を練習しましょう</h3>,
                 <p>以下のボタンをTabキーで移動し、Enterキーで選択してください：</p>","
 
-                <div class="practice-buttons">"",
-                    <button class="practice-btn" data-target="1">ボタン 1</button>"",
-                    <button class="practice-btn" data-target="2">ボタン 2</button>"",
-                    <button class="practice-btn" data-target="3">ボタン 3</button>"",
+                <div class="practice-buttons">",
+                    <button class="practice-btn" data-target="1">ボタン 1</button>",
+                    <button class="practice-btn" data-target="2">ボタン 2</button>",
+                    <button class="practice-btn" data-target="3">ボタン 3</button>",
                     <button class="practice-btn" data-target="4">ボタン 4</button>,
                 </div>","
 
-                <div class="practice-result">"",
+                <div class="practice-result">",
                     <p>選択したボタン: <span id="selected-button">なし</span></p>,
                 </div>,
             </div>,
-        `,
+        ,
         ","
         // ボタンイベントの設定""
-        const buttons = container.querySelectorAll('.practice-btn',
+        const buttons = container.querySelectorAll('.practice-btn,
         buttons.forEach(button => { '),'
             button.addEventListener('click', (event) => {''
                 const target = (event.target, as HTMLElement').getAttribute('data-target'),'
                 const resultSpan = container.querySelector('#selected-button' }'
                 if (resultSpan) { }
                     resultSpan.textContent = `ボタン ${target}`;
-                }
-            };
-    }
-    
+                    }
+}
     /**
      * カスタマイズパネルの作成'
      */''
@@ -786,7 +768,7 @@ export class AccessibilityOnboarding {
      * 練習エリアの作成"
      */""
     private createPracticeArea(container: HTMLElement): void { // Stub implementation"
-        container.innerHTML = `"",
+        container.innerHTML = `",
             <div class="practice-area">,
                 <h3>練習モード</h3>,
                 <p>設定した機能を使って練習してみましょう。</p>,
@@ -895,7 +877,7 @@ export class AccessibilityOnboarding {
      * ステップ遷移アニメーション
      */
     private async animateStepTransition(step: OnboardingStep): Promise<void> { // Stub implementation
-        return Promise.resolve() }
+        return Promise.resolve();
     
     /**
      * 次のステップへ
@@ -911,7 +893,7 @@ export class AccessibilityOnboarding {
         
         // 最後のステップの場合
         if (this.currentStepIndex === this.onboardingSteps.length - 1) {
-            await this.complete() }
+            await this.complete();
             return; }
         }
         
@@ -952,7 +934,7 @@ export class AccessibilityOnboarding {
         this.saveProgress();
         
         // 完了コールバック
-        if (this.onCompleteCallback) { this.onCompleteCallback() }
+        if (this.onCompleteCallback) { this.onCompleteCallback();
         
         // UIのクリーンアップ
         setTimeout(() => { this.cleanup() } 2000);
@@ -976,17 +958,16 @@ export class AccessibilityOnboarding {
      */ : undefined''
     private createAccessibilityProfile('''
             name: 'Custom, Profile';
-            preferences: this.progress.preferences);
+            preferences: this.progress.preferences),
             assessmentResults: this.progress.assessmentResults),
             createdAt: Date.now(
-    onboardingCompleted: true,
-        } }
+    onboardingCompleted: true } }
     
     /**
      * 閉じる
      */
     close(): void { if (this.onSkipCallback) {
-            this.onSkipCallback() }
+            this.onSkipCallback();
         
         this.cleanup();
     }
@@ -999,7 +980,7 @@ export class AccessibilityOnboarding {
         if (this.onboardingContainer) {
         ','
 
-            this.onboardingContainer.remove() }
+            this.onboardingContainer.remove();
 
         document.removeEventListener('keydown', this.handleKeydown.bind(this); }
     }
@@ -1009,7 +990,7 @@ export class AccessibilityOnboarding {
      */
     private updateProgress(): void { this.progress.currentStep = this.currentStepIndex,
         this.progress.lastActiveTime = Date.now();
-        this.saveProgress() }
+        this.saveProgress();
     
     /**
      * 進捗の保存'
@@ -1103,11 +1084,11 @@ export class AccessibilityOnboarding {
      * 設定の適用
      */'
     applyConfig(config: { onboarding?: Partial<OnboardingConfig>;): void { if (config.onboarding) {''
-            Object.assign(this.config, config.onboarding) }
+            Object.assign(this.config, config.onboarding);
 
         console.log('AccessibilityOnboarding, configuration applied');
-    }
-    
+    } };
+
     /**
      * 有効状態の設定'
      */''
@@ -1125,7 +1106,7 @@ export class AccessibilityOnboarding {
         if (this.isActive') {'
         ','
 
-            this.cleanup() }
+            this.cleanup();
 
         console.log('AccessibilityOnboarding, destroyed'); }
 

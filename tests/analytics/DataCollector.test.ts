@@ -33,7 +33,7 @@ class MockPrivacyManager {
 }
 class MockStorageManager {
     constructor() {
-        this.savedData = {};
+        this.savedData = {}
     }
     
     async saveData(storeName, data) {
@@ -48,7 +48,7 @@ class MockStorageManager {
         return this.savedData[storeName] || [])
     ,
     clearData(') {'
-        this.savedData = {};
+        this.savedData = {}
     }
 }
 describe('DataCollector', () => {
@@ -78,9 +78,9 @@ describe('DataCollector', () => {
     describe('セッション管理', (') => {'
         test('セッション開始が正常に動作する', (') => {'
             const sessionInfo = {
-                stageId: 'normal';
+                stageId: 'normal',
                 difficulty: 'medium';
-                soundEnabled: true;
+                soundEnabled: true,
                 effectsEnabled: true;
                 effectsEnabled: true;
         };
@@ -100,11 +100,11 @@ describe('DataCollector', () => {
             
             // セッション終了
             const endInfo = {
-                finalScore: 1000;
+                finalScore: 1000,
                 bubblesPopped: 50;
-                bubblesMissed: 5;
+                bubblesMissed: 5,
                 maxCombo: 10;
-                completed: true;
+                completed: true,
                 exitReason: 'completed'
             };
             
@@ -138,14 +138,14 @@ describe('DataCollector', () => {
         }
         test('バブルインタラクションが正常に収集される', (') => {'
             const bubbleData = {
-                bubbleType: 'normal';
+                bubbleType: 'normal',
                 action: 'popped';
-                reactionTime: 500;
-                position: { x: 100, y: 200 };
+                reactionTime: 500,
+                position: { x: 100, y: 200 },
                 scoreGained: 10;
-                comboCount: 3;
+                comboCount: 3,
                 remainingBubbles: 20;
-                currentHP: 90;
+                currentHP: 90,
                 timeRemaining: 240000
             };
             
@@ -160,20 +160,20 @@ describe('DataCollector', () => {
             expect(bubbleEvent.data.position).toEqual({ x: 100, y: 200 )' }'
         test('パフォーマンスデータが正常に収集される', (') => {'
             const performanceMetrics = {
-                fps: 60;
+                fps: 60,
                 memoryUsage: {
-                    used: 1024 * 1024;
+                    used: 1024 * 1024 },
                     total: 2048 * 1024;
                     limit: 4096 * 1024
                 },
                 loadTimes: {
-                    assets: 500;
+                    assets: 500 },
                     scripts: 300;
                     total: 800
                 },
                 errors: [
                     {
-                        type: 'TypeError';
+                        type: 'TypeError',
                         message: 'Cannot read property of undefined';
                         stack: 'Error stack trace...'
                     }
@@ -189,13 +189,13 @@ describe('DataCollector', () => {
         }');'
         test('スコアデータが正常に収集される', (') => {'
             const scoreData = {
-                type: 'bubble';
+                type: 'bubble',
                 amount: 10;
-                totalScore: 150;
+                totalScore: 150,
                 multiplier: 1.5;
-                source: 'normal';
+                source: 'normal',
                 comboCount: 2;
-                timeRemaining: 200000;
+                timeRemaining: 200000,
                 activeItems: ['timeExtender']
             };
             
@@ -208,13 +208,13 @@ describe('DataCollector', () => {
         }');'
         test('アイテム使用データが正常に収集される', (') => {'
             const itemData = {
-                itemType: 'timeExtender';
+                itemType: 'timeExtender',
                 action: 'used';
-                cost: 50;
+                cost: 50,
                 duration: 30000;
-                effectiveness: 0.8;
+                effectiveness: 0.8,
                 playerAP: 200;
-                stageProgress: 0.6;
+                stageProgress: 0.6,
                 currentScore: 500
             };
             
@@ -237,7 +237,7 @@ describe('DataCollector', () => {
             mockPrivacyManager.optOutFeatures.add('behaviorAnalysis');
             dataCollector.startSession({ stageId: 'test' }');'
             dataCollector.collectBubbleInteraction({
-                bubbleType: 'normal';
+                bubbleType: 'normal',
                 action: 'popped' };
             // セッション開始は記録されるが、バブルインタラクションは記録されない
             expect(dataCollector.eventQueue.length).toBe(1);
@@ -248,7 +248,7 @@ describe('DataCollector', () => {
             dataCollector.startSession({ stageId: 'test' };
             dataCollector.collectPerformanceData({ fps: 60 }');'
             dataCollector.collectBubbleInteraction({
-                bubbleType: 'normal';
+                bubbleType: 'normal',
                 action: 'popped' };
             // セッション開始とバブルインタラクションは記録されるが、パフォーマンスデータは記録されない
             expect(dataCollector.eventQueue.length).toBe(2);
@@ -274,7 +274,7 @@ describe('DataCollector', () => {
             // バッチサイズ分のデータを追加
             for (let i = 0; i < 49; i++') {'
                 dataCollector.collectBubbleInteraction({
-                    bubbleType: 'normal';
+                    bubbleType: 'normal',
                     action: 'popped')') }'
             
             console.log('After adding 49 interactions, queue length:', dataCollector.eventQueue.length);
@@ -286,7 +286,7 @@ describe('DataCollector', () => {
             expect(dataCollector.eventQueue.length).toBe(50');'
             // 1つ追加してバッチサイズを超える - これでaddToQueue内でprocessBatchが呼ばれる
             dataCollector.collectBubbleInteraction({
-                bubbleType: 'normal';
+                bubbleType: 'normal',
                 action: 'popped' };
             // processBatchは非同期なので少し待つ
             await new Promise(resolve => setTimeout(resolve, 50)');'
@@ -301,7 +301,7 @@ describe('DataCollector', () => {
             const testDataCollector = new DataCollector(mockPrivacyManager, mockStorageManager'),'
             testDataCollector.startSession({ stageId: 'test' }');'
             testDataCollector.collectBubbleInteraction({
-                bubbleType: 'normal';
+                bubbleType: 'normal',
                 action: 'popped' };
             expect(testDataCollector.eventQueue.length).toBe(2);
             // バッチタイムアウト（5秒）を進める
@@ -399,7 +399,7 @@ describe('DataCollector', () => {
             dataCollector.setPaused(true);
             expect(dataCollector.isPaused).toBe(true');'
             dataCollector.collectBubbleInteraction({
-                bubbleType: 'normal';
+                bubbleType: 'normal',
                 action: 'popped' };
             expect(dataCollector.eventQueue.length).toBe(1); // 増えない
             
@@ -409,7 +409,7 @@ describe('DataCollector', () => {
         test('キューのクリアが正常に動作する', (') => {'
             dataCollector.startSession({ stageId: 'test' }');'
             dataCollector.collectBubbleInteraction({
-                bubbleType: 'normal';
+                bubbleType: 'normal',
                 action: 'popped' };
             expect(dataCollector.eventQueue.length).toBe(2);
             const initialDropped = dataCollector.eventStats.dropped;
@@ -420,7 +420,7 @@ describe('DataCollector', () => {
         test('強制フラッシュが正常に動作する', async (') => {'
             dataCollector.startSession({ stageId: 'test' }');'
             dataCollector.collectBubbleInteraction({
-                bubbleType: 'normal';
+                bubbleType: 'normal',
                 action: 'popped' };
             expect(dataCollector.eventQueue.length).toBe(2);
             await dataCollector.flushQueue();
@@ -433,7 +433,7 @@ describe('DataCollector', () => {
             const initialStats = dataCollector.getEventStats('),'
             dataCollector.startSession({ stageId: 'test' }');'
             dataCollector.collectBubbleInteraction({
-                bubbleType: 'normal';
+                bubbleType: 'normal',
                 action: 'popped' };
             const stats = dataCollector.getEventStats();
             expect(stats.collected).toBe(initialStats.collected + 1);
@@ -447,13 +447,13 @@ describe('DataCollector', () => {
         test('破棄処理が正常に動作する', async (') => {'
             dataCollector.startSession({ stageId: 'test' }');'
             dataCollector.collectBubbleInteraction({
-                bubbleType: 'normal';
+                bubbleType: 'normal',
                 action: 'popped' };
             await dataCollector.destroy();
             expect(dataCollector.batchTimer).toBeNull();
             expect(dataCollector.eventQueue.length).toBe(0);
             expect(dataCollector.currentSessionId).toBeNull();
             expect(dataCollector.sessionStartTime).toBeNull();
-        };
+        }
     }
 }');'

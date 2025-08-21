@@ -11,93 +11,92 @@
 import { StatisticalAnalyzer, BasicStatistics, SignificanceTestResult  } from './StatisticalAnalyzer.js';
 
 // 型定義
-export interface StageConfig { difficultyLevels: DifficultyLevel[];
-    performanceMetrics: PerformanceMetricType[];
-    minimumPlaysForAnalysis: number;
-    maxStagesForComparison: number;
+export interface StageConfig { difficultyLevels: DifficultyLevel[],
+    performanceMetrics: PerformanceMetricType[],
+    minimumPlaysForAnalysis: number,
+    maxStagesForComparison: number,
     trendAnalysisWindow: number;
-export interface PlayData { score?: number,
+    export interface PlayData { score?: number,
     completionTime?: number;
     accuracy?: number;
     timestamp?: string | number;
     date?: string | number;
     difficulty?: DifficultyLevel;
     metadata?: PlayMetadata;
-export interface PlayMetadata { gameMode?: string,
+    export interface PlayMetadata { gameMode?: string,
     playerLevel?: number;
     attempts?: number;
     powerUpsUsed?: string[];
     achievements?: string[];
     sessionId?: string;
-export interface StageData { [stageId: string]: PlayData[];
-export interface StageStatistics { stageId: string;
-    playCount: number;
-    scores: BasicStatistics;
-    times: BasicStatistics;
-    accuracy: BasicStatistics;
-    difficultyLevel: DifficultyLevel;
-    lastPlayed: Date | null;
-    improvementTrend: ImprovementTrend;
-    consistency: number;
+    export interface StageData { [stageId: string]: PlayData[];
+    export interface StageStatistics { stageId: string,
+    playCount: number,
+    scores: BasicStatistics,
+    times: BasicStatistics,
+    accuracy: BasicStatistics,
+    difficultyLevel: DifficultyLevel,
+    lastPlayed: Date | null,
+    improvementTrend: ImprovementTrend,
+    consistency: number,
     performanceRating: number;
     masteryLevel?: number;
     skillLevel?: SkillLevel;
-     }
+     };
 export interface StagePerformanceMetrics { [stageId: string]: {
         insufficient_dat,a?: boolean;
         // 効率性メトリクス
         scorePerSecond?: BasicStatistics;
-        accuracyConsistency?: number;
-        timeConsistency?: number;
+    accuracyConsistency?: number;
+    timeConsistency?: number;
         // 学習・改善メトリクス
         learningRate?: number;
-        masteryLevel?: number;
-        plateauDetection?: PlateauDetection;
+    masteryLevel?: number;
+    plateauDetection?: PlateauDetection;
         // 相対的パフォーマンス
         relativePerformance?: RelativePerformance;
-        strengthAreas?: string[];
-        weaknessAreas?: string[];
+    strengthAreas?: string[];
+    weaknessAreas?: string[];
         // 時系列分析
         recentTrend?: ImprovementTrend;
-        seasonalPatterns?: SeasonalPattern;
-
-export interface DifficultyAdjustedMetrics { [stageId: string]: {
-        adjustedScor,e: number;
-        adjustedTime: number;
-        adjustedAccuracy: number;
-        difficultyAdjustmentFactor: number;
-        normalizedPerformance: NormalizedPerformance;
+    seasonalPatterns?: SeasonalPattern;
+    export interface DifficultyAdjustedMetrics { [stageId: string]: {
+        adjustedScor,e: number,
+        adjustedTime: number,
+    adjustedAccuracy: number,
+    difficultyAdjustmentFactor: number,
+    normalizedPerformance: NormalizedPerformance,
     skillLevel: SkillLevel;
-
-export interface StageComparisonResult { timestamp: string;
-    stageSummary: { [stageId: string]: StageStatistics;
-    individualComparisons: { [key: string]: PairwiseComparison;
-    performanceMetrics: StagePerformanceMetrics;
-    difficultyAdjustedMetrics: DifficultyAdjustedMetrics;
-    overallTrends: OverallTrends;
+    export interface StageComparisonResult { timestamp: string,
+    stageSummary: { [stageId: string]: StageStatistics,
+    individualComparisons: { [key: string]: PairwiseComparison,
+    performanceMetrics: StagePerformanceMetrics  ,
+    difficultyAdjustedMetrics: DifficultyAdjustedMetrics,
+    overallTrends: OverallTrends,
     recommendations: StageRecommendation[];
     error?: string;
 }
 
-export interface PairwiseComparison { stage1: StageInfo;
-    stage2: StageInfo;
+export interface PairwiseComparison { stage1: StageInfo,
+    stage2: StageInfo,
     comparisons: {
-        scor,e: SignificanceTestResult;
-        time: SignificanceTestResult;
-    accuracy: SignificanceTestResult;
-    summary: string[];
+        scor,e: SignificanceTestResult ,
+        time: SignificanceTestResult,
+    accuracy: SignificanceTestResult,
+    summary: string[],
     recommendations: string[];
-    effectSizes?: { score: number;
+    effectSizes?: { score: number,
         time: number;
-    accuracy: number;
+    };
+    accuracy: number,
     accuracy: number;
         };
-export interface StageInfo { id: string;
+export interface StageInfo { id: string,
     stats: StageStatistics;
-export interface OverallTrends { insufficient_data?: boolean,
+    export interface OverallTrends { insufficient_data?: boolean,
     overallPerformance?: {,
-        averageScore: BasicStatistics;
-        averageTime: BasicStatistics;
+        averageScore: BasicStatistics };
+        averageTime: BasicStatistics,
     averageAccuracy: BasicStatistics;
     consistencyAcrossStages?: number;
     strongestStages?: StageRanking[];
@@ -106,47 +105,46 @@ export interface OverallTrends { insufficient_data?: boolean,
     masteryProgression?: MasteryProgression;
     }
 
-export interface StageRanking { id: string;
+export interface StageRanking { id: string,
     rating: number;
     relativeScore?: number;
-    percentileRank?: number,  }
-export interface ImprovementOpportunity { stage: string;
-    type: ImprovementType;
+    percentileRank?: number };
+export interface ImprovementOpportunity { stage: string,
+    type: ImprovementType,
     priority: Priority;
     description?: string;
-    estimatedImpact?: number,  }
-export interface MasteryProgression { overallMastery: number;
-    masteryByDifficulty: { [difficulty: string]: number;
-    progressionRate: number;
+    estimatedImpact?: number };
+export interface MasteryProgression { overallMastery: number,
+    masteryByDifficulty: { [difficulty: string]: number,
+    progressionRate: number,
     nextMilestone?: string;
-}
-
-export interface StageRecommendation { type: RecommendationType;
-    priority: Priority;
-    stage: string;
+ },
+export interface StageRecommendation { type: RecommendationType,
+    priority: Priority,
+    stage: string,
     message: string;
     actionItems?: string[];
     expectedOutcome?: string;
-    timeframe?: string,  }
-export interface PlateauDetection { isOnPlateau: boolean;
+    timeframe?: string };
+export interface PlateauDetection { isOnPlateau: boolean,
     confidence: number;
     variationCoefficient?: number;
     trend?: ImprovementTrend;
     plateauDuration?: number;
-    breakoutStrategy?: string,  }
-export interface RelativePerformance { relativeScore: number;
+    breakoutStrategy?: string };
+export interface RelativePerformance { relativeScore: number,
     percentileRank: number;
     standardizedScore?: number;
-    rankingPosition?: number,  }
-export interface NormalizedPerformance { score: number;
-    time: number;
-    accuracy: number;
+    rankingPosition?: number };
+export interface NormalizedPerformance { score: number,
+    time: number,
+    accuracy: number,
     overall: number;
     efficiency?: number;
-export interface SeasonalPattern { detected: boolean;
+    export interface SeasonalPattern { detected: boolean,
     pattern: SeasonalPatternType;
     confidence?: number;
-    description?: string,  }
+    description?: string };
 ;
 // 列挙型
 export type DifficultyLevel = 'easy' | 'normal' | 'hard' | 'expert' | 'master' | 'unknown';
@@ -200,16 +198,15 @@ export const TREND_SLOPE_THRESHOLDS = { improving: 50,
 ';'
 // ユーティリティ関数
 export function isValidPlayData(play: any): play is PlayData {,
-    return play && typeof play === 'object' }
-export function extractValidPlays(plays: any[]): PlayData[] { return plays.filter(isValidPlayData) }
-export function getPlayScore(play: PlayData): number { return play.score || 0 }
-export function getPlayTime(play: PlayData): number { return play.completionTime || 0 }
-export function getPlayAccuracy(play: PlayData): number { return play.accuracy || 0 }
+    return play && typeof play === 'object' };
+export function extractValidPlays(plays: any[]): PlayData[] { return plays.filter(isValidPlayData) };
+export function getPlayScore(play: PlayData): number { return play.score || 0 };
+export function getPlayTime(play: PlayData): number { return play.completionTime || 0 };
+export function getPlayAccuracy(play: PlayData): number { return play.accuracy || 0 };
 ';'
 
 export function getPlayTimestamp(play: PlayData): number {,
-    if (play.timestamp) {', ' }
-
+    if (play.timestamp) {', ' };
         return typeof play.timestamp === 'string' ? new Date(play.timestamp).getTime() : play.timestamp;
     if (play.date) {', ' }
 
@@ -219,7 +216,7 @@ export function getPlayTimestamp(play: PlayData): number {,
 
 export function calculateEfficiency(play: PlayData): number { const score = getPlayScore(play);
     const time = getPlayTime(play);
-    return time > 0 ? score / time: 0 }
+    return time > 0 ? score / time: 0 };
 ';'
 
 export function normalizeDifficultyLevel(level: string): DifficultyLevel {,
@@ -227,20 +224,20 @@ export function normalizeDifficultyLevel(level: string): DifficultyLevel {,
     if(['easy', 'tutorial].some(keyword => normalized.includes(keyword)) return 'easy','
     if(['hard].some(keyword => normalized.includes(keyword)) return 'hard','
     if(['expert', 'master].some(keyword => normalized.includes(keyword)) return 'expert','
-    return 'normal',
+    return 'normal,
 
 export function createEmptyStageStatistics(stageId: string): StageStatistics { return { stageId },
-        playCount: 0,
+        playCount: 0;
 }
-        scores: { count: 0, sum: 0, mean: 0, variance: 0, standardDeviation: 0, minimum: 0, maximum: 0, median: 0, q1: 0, q3: 0, range: 0, iqr: 0, skewness: 0, kurtosis: 0  },
-        times: { count: 0, sum: 0, mean: 0, variance: 0, standardDeviation: 0, minimum: 0, maximum: 0, median: 0, q1: 0, q3: 0, range: 0, iqr: 0, skewness: 0, kurtosis: 0  },
+        scores: { count: 0, sum: 0, mean: 0, variance: 0, standardDeviation: 0, minimum: 0, maximum: 0, median: 0, q1: 0, q3: 0, range: 0, iqr: 0, skewness: 0, kurtosis: 0  ,
+        times: { count: 0, sum: 0, mean: 0, variance: 0, standardDeviation: 0, minimum: 0, maximum: 0, median: 0, q1: 0, q3: 0, range: 0, iqr: 0, skewness: 0, kurtosis: 0  ,
 
-        accuracy: { count: 0, sum: 0, mean: 0, variance: 0, standardDeviation: 0, minimum: 0, maximum: 0, median: 0, q1: 0, q3: 0, range: 0, iqr: 0, skewness: 0, kurtosis: 0  },''
-        difficultyLevel: 'unknown',
+        accuracy: { count: 0, sum: 0, mean: 0, variance: 0, standardDeviation: 0, minimum: 0, maximum: 0, median: 0, q1: 0, q3: 0, range: 0, iqr: 0, skewness: 0, kurtosis: 0  ,''
+        difficultyLevel: 'unknown,
         lastPlayed: null,
-        improvementTrend: 'insufficient_data',
+        improvementTrend: 'insufficient_data,
         consistency: 0,
-    performanceRating: 0,
+    performanceRating: 0;
     } }
 
 export class StageComparisonAnalyzer {
@@ -250,7 +247,7 @@ export class StageComparisonAnalyzer {
 
     constructor(
         statisticalAnalyzer: StatisticalAnalyzer;)
-        config: Partial<StageConfig> = {}
+        config: Partial<StageConfig> = {};
         difficultyAdjustments: Partial<Record<DifficultyLevel, number>> = { ) {
         this.statisticalAnalyzer = statisticalAnalyzer }
         this.stageConfig = { ...DEFAULT_STAGE_CONFIG, ...config,
@@ -262,11 +259,11 @@ export class StageComparisonAnalyzer {
     compareStagePerformance(stageData: StageData, options: Record<string, any> = { ): StageComparisonResult {
         const results: StageComparisonResult = {
             timestamp: new Date().toISOString(  }
-            stageSummary: {};
-            individualComparisons: {};
-            performanceMetrics: {};
-            difficultyAdjustedMetrics: {};
-            overallTrends: {};
+            stageSummary: {  },
+            individualComparisons: {  },
+            performanceMetrics: {  },
+            difficultyAdjustedMetrics: {  },
+            overallTrends: {  },
             recommendations: [];
         },
 
@@ -302,11 +299,11 @@ export class StageComparisonAnalyzer {
             };
                 timestamp: new Date().toISOString();
 }
-                stageSummary: {};
-                individualComparisons: {};
-                performanceMetrics: {};
-                difficultyAdjustedMetrics: {};
-                overallTrends: {};
+                stageSummary: {  },
+                individualComparisons: {  },
+                performanceMetrics: {  },
+                difficultyAdjustedMetrics: {  },
+                overallTrends: {  },
                 recommendations: [];
             } }
     /**
@@ -317,23 +314,23 @@ export class StageComparisonAnalyzer {
         for(const [stageId, plays] of Object.entries(stageData) {
             const validPlays = extractValidPlays(plays);
             if (validPlays.length === 0) {
-                statistics[stageId] = createEmptyStageStatistics(stageId) }
+                statistics[stageId] = createEmptyStageStatistics(stageId);
                 continue; }
             // 各メトリクスの統計計算
             const scoreData = validPlays.map(getPlayScore).filter(s => s > 0);
             const timeData = validPlays.map(getPlayTime).filter(t => t > 0);
-            const accuracyData = validPlays.map(getPlayAccuracy).filter(a => a >= 0);
+            const accuracyData = validPlays.map(getPlayAccuracy).filter(a => a >= 0) };
 
             statistics[stageId] = { stageId,
-                playCount: validPlays.length;
-                scores: this.statisticalAnalyzer.calculateBasicStatistics(scoreData);
-                times: this.statisticalAnalyzer.calculateBasicStatistics(timeData);
-                accuracy: this.statisticalAnalyzer.calculateBasicStatistics(accuracyData);
-                difficultyLevel: this.getDifficultyLevel(stageId);
-                lastPlayed: this.getLastPlayedDate(validPlays);
-                improvementTrend: this.calculateImprovementTrend(validPlays);
-                consistency: this.calculateConsistency(validPlays);
-                performanceRating: this.calculatePerformanceRating(validPlays;
+                playCount: validPlays.length,
+                scores: this.statisticalAnalyzer.calculateBasicStatistics(scoreData),
+                times: this.statisticalAnalyzer.calculateBasicStatistics(timeData),
+                accuracy: this.statisticalAnalyzer.calculateBasicStatistics(accuracyData),
+                difficultyLevel: this.getDifficultyLevel(stageId),
+                lastPlayed: this.getLastPlayedDate(validPlays),
+                improvementTrend: this.calculateImprovementTrend(validPlays),
+                consistency: this.calculateConsistency(validPlays),
+                performanceRating: this.calculatePerformanceRating(validPlays,
     masteryLevel: this.calculateMasteryLevel(validPlays  }
 
         return statistics
@@ -352,23 +349,23 @@ export class StageComparisonAnalyzer {
             const plays = extractValidPlays(stageData[stageId] || []);
             
             metrics[stageId] = { // 効率性メトリクス
-                scorePerSecond: this.calculateScorePerSecond(plays);
-                accuracyConsistency: this.calculateAccuracyConsistency(plays);
+                scorePerSecond: this.calculateScorePerSecond(plays),
+                accuracyConsistency: this.calculateAccuracyConsistency(plays),
                 timeConsistency: this.calculateTimeConsistency(plays);
                 // 学習・改善メトリクス
-                learningRate: this.calculateLearningRate(plays);
-                masteryLevel: this.calculateMasteryLevel(plays);
+                learningRate: this.calculateLearningRate(plays),
+                masteryLevel: this.calculateMasteryLevel(plays),
                 plateauDetection: this.detectPerformancePlateau(plays);
                 // 相対的パフォーマンス
-               , relativePerformance: this.calculateRelativePerformance(stats, stageStats);
-                strengthAreas: this.identifyStrengthAreas(stats);
+            relativePerformance: this.calculateRelativePerformance(stats, stageStats);
+                strengthAreas: this.identifyStrengthAreas(stats),
                 weaknessAreas: this.identifyWeaknessAreas(stats);
                 // 時系列分析
-                recentTrend: this.analyzeRecentTrend(plays;
+                recentTrend: this.analyzeRecentTrend(plays,
     seasonalPatterns: this.detectSeasonalPatterns(plays  }
 
         return metrics
-    }
+    } };
 
     /**
      * 難易度調整済みメトリクスを計算
@@ -380,11 +377,11 @@ export class StageComparisonAnalyzer {
             const adjustmentFactor = this.difficultyAdjustments[difficultyLevel],
 
             adjustedMetrics[stageId] = {
-                adjustedScore: stats.scores.mean / adjustmentFactor;
-                adjustedTime: stats.times.mean * adjustmentFactor;
-                adjustedAccuracy: stats.accuracy.mean;
-                difficultyAdjustmentFactor: adjustmentFactor;
-    normalizedPerformance: this.calculateNormalizedPerformance(stats, adjustmentFactor) }
+                adjustedScore: stats.scores.mean / adjustmentFactor,
+                adjustedTime: stats.times.mean * adjustmentFactor,
+                adjustedAccuracy: stats.accuracy.mean,
+                difficultyAdjustmentFactor: adjustmentFactor,
+    normalizedPerformance: this.calculateNormalizedPerformance(stats, adjustmentFactor);
                 skillLevel: this.calculateSkillLevel(stats, adjustmentFactor); }
             }
 
@@ -396,7 +393,7 @@ export class StageComparisonAnalyzer {
      */
     compareIndividualStages(stageData: StageData, stageStats: { [stageId: string]: StageStatistics ): { [key: string]: PairwiseComparison; {
         const comparisons: { [key: string]: PairwiseComparison, = {}
-        const stageIds = Object.keys(stageStats).slice(0, this.stageConfig.maxStagesForComparison);
+        const stageIds = Object.keys(stageStats).slice(0, this.stageConfig.maxStagesForComparison) };
 
         for(let, i = 0; i < stageIds.length; i++) {
 
@@ -432,14 +429,14 @@ export class StageComparisonAnalyzer {
             stage1Plays.map(getPlayAccuracy);
             stage2Plays.map(getPlayAccuracy);
         return { }
-            stage1: { id: stage1Id, stats: stage1Stats,,
-            stage2: { id: stage2Id, stats: stage2Stats,,
-            comparisons: { score: scoreComparison;
-                time: timeComparison;
-    accuracy: accuracyComparison;
+            stage1: { id: stage1Id, stats: stage1Stats,
+            stage2: { id: stage2Id, stats: stage2Stats,
+            comparisons: { score: scoreComparison,
+                time: timeComparison  ,
+    accuracy: accuracyComparison,
             summary: this.generateComparisonSummary(stage1Id, stage2Id, { score: scoreComparison)
-               , time: timeComparison);
-                accuracy: accuracyComparison;
+            time: timeComparison),
+                accuracy: accuracyComparison,
     recommendations: this.generatePairwiseRecommendations(stage1Id, stage2Id, stage1Stats, stage2Stats }
 
     /**
@@ -455,14 +452,14 @@ export class StageComparisonAnalyzer {
         const avgAccuracy = stageIds.map(id => stageStats[id].accuracy.mean);
 
         return { overallPerformance: {
-                averageScore: this.statisticalAnalyzer.calculateBasicStatistics(avgScores;
-    averageTime: this.statisticalAnalyzer.calculateBasicStatistics(avgTimes) };
+                averageScore: this.statisticalAnalyzer.calculateBasicStatistics(avgScores,
+    averageTime: this.statisticalAnalyzer.calculateBasicStatistics(avgTimes) } };
                 averageAccuracy: this.statisticalAnalyzer.calculateBasicStatistics(avgAccuracy);
     },
-            consistencyAcrossStages: this.calculateCrossStageConsistency(stageStats);
-            strongestStages: this.identifyStrongestStages(stageStats);
-            weakestStages: this.identifyWeakestStages(stageStats);
-            improvementOpportunities: this.identifyImprovementOpportunities(stageStats;
+            consistencyAcrossStages: this.calculateCrossStageConsistency(stageStats),
+            strongestStages: this.identifyStrongestStages(stageStats),
+            weakestStages: this.identifyWeakestStages(stageStats),
+            improvementOpportunities: this.identifyImprovementOpportunities(stageStats,
     masteryProgression: this.analyzeMasteryProgression(stageStats);
         }
 
@@ -478,7 +475,7 @@ export class StageComparisonAnalyzer {
                     type: 'practice_more',','
                     priority: 'medium'
             }
-                    stage: stageId;
+                    stage: stageId,
 
                     message: `${stageId}はプレイ回数が少ないです。より多く練習することで正確な分析が可能になります。`,''
                     actionItems: ['追加のプレイセッションを計画', '定期的な練習スケジュールの設定],'
@@ -491,7 +488,7 @@ export class StageComparisonAnalyzer {
                     type: 'break_plateau',','
                     priority: 'high'
             }
-                    stage: stageId;
+                    stage: stageId,
 
                     message: `${stageId}でパフォーマンスが停滞しています。練習方法を変えることを推奨します。`,''
                     actionItems: ['新しい戦略の試行', '休憩後の再挑戦', '類似ステージでの練習],'
@@ -512,7 +509,7 @@ export class StageComparisonAnalyzer {
                     actionItems: ['集中練習セッション', '基本スキルの見直し', '上級者のプレイ動画参考],'
                     expectedOutcome: '弱点の改善',')';
                     timeframe: '2-4週間');
-            };
+            }
         }
 
         // 得意ステージの活用
@@ -529,7 +526,7 @@ export class StageComparisonAnalyzer {
                     actionItems: ['成功パターンの分析', '他ステージへの応用', 'コンフィデンス向上],'
                     expectedOutcome: '全体的なスキル向上',')';
                     timeframe: '継続的');
-            };
+            }
         }
 
         return recommendations;
@@ -537,14 +534,14 @@ export class StageComparisonAnalyzer {
 
     // ヘルパーメソッド群
 
-    private getDifficultyLevel(stageId: string): DifficultyLevel { return normalizeDifficultyLevel(stageId) }
+    private getDifficultyLevel(stageId: string): DifficultyLevel { return normalizeDifficultyLevel(stageId);
     private getLastPlayedDate(plays: PlayData[]): Date | null { if (plays.length === 0) return null;
         const timestamps = plays.map(getPlayTimestamp);
         return new Date(Math.max(...timestamps);
 ','
 
     private calculateImprovementTrend(plays: PlayData[]): ImprovementTrend { ''
-        if(plays.length < 3) return 'insufficient_data',
+        if(plays.length < 3) return 'insufficient_data,
         
         const recentPlays = plays.slice(-Math.min(this.stageConfig.trendAnalysisWindow, plays.length);
         const scores = recentPlays.map(getPlayScore);
@@ -578,7 +575,7 @@ export class StageComparisonAnalyzer {
         
         // CV (変動係数) の逆数として一貫性を計算
         const cv = stats.standardDeviation / stats.mean,
-        return Math.max(0, 1 - cv) }
+        return Math.max(0, 1 - cv);
     private calculatePerformanceRating(plays: PlayData[]): number { if (plays.length === 0) return 0;
         
         const avgScore = plays.reduce((sum, p) => sum + getPlayScore(p), 0) / plays.length,
@@ -614,7 +611,7 @@ export class StageComparisonAnalyzer {
         
         const stats = this.statisticalAnalyzer.calculateBasicStatistics(timeData);
         const cv = stats.mean > 0 ? stats.standardDeviation / stats.mean: 1;
-        return Math.max(0, 1 - cv) }
+        return Math.max(0, 1 - cv);
     private calculateLearningRate(plays: PlayData[]): number { if (plays.length < 3) return 0;
         
         const scores = plays.map(getPlayScore);
@@ -640,8 +637,8 @@ export class StageComparisonAnalyzer {
         ';'
 
         return { ''
-            isOnPlateau: isLowVariation && trend === 'stable';
-            confidence: isLowVariation ? 0.8 : 0.3;
+            isOnPlateau: isLowVariation && trend === 'stable,
+            confidence: isLowVariation ? 0.8 : 0.3,
     variationCoefficient: cv;
             trend,' };'
 
@@ -652,7 +649,7 @@ export class StageComparisonAnalyzer {
         const avgScores = allStages.map(s => s.scores.mean);
         const overallAvg = avgScores.reduce((sum, score) => sum + score, 0) / avgScores.length,
         
-        return { relativeScore: overallAvg > 0 ? stageStats.scores.mean / overallAvg : 0 };
+        return { relativeScore: overallAvg > 0 ? stageStats.scores.mean / overallAvg : 0 ,
             percentileRank: this.calculatePercentileRank(stageStats.scores.mean, avgScores); }
         }
 
@@ -661,26 +658,26 @@ export class StageComparisonAnalyzer {
         return (rank / sortedValues.length) * 100,
     private identifyStrengthAreas(stats: StageStatistics): string[] { const strengths: string[] = [];
 
-        if(stats.scores.mean > PERFORMANCE_THRESHOLDS.highScore) strengths.push('高スコア',
-        if(stats.accuracy.mean > PERFORMANCE_THRESHOLDS.highAccuracy) strengths.push('高精度',
+        if(stats.scores.mean > PERFORMANCE_THRESHOLDS.highScore) strengths.push('高スコア,
+        if(stats.accuracy.mean > PERFORMANCE_THRESHOLDS.highAccuracy) strengths.push('高精度,
         if(stats.consistency > PERFORMANCE_THRESHOLDS.highConsistency) strengths.push('安定性');
         if (stats.improvementTrend === 'improving') strengths.push('継続的改善),'
         
         return strengths }
     private identifyWeaknessAreas(stats: StageStatistics): string[] { const weaknesses: string[] = [];
 
-        if(stats.scores.mean < PERFORMANCE_THRESHOLDS.lowScore) weaknesses.push('低スコア',
-        if(stats.accuracy.mean < PERFORMANCE_THRESHOLDS.lowAccuracy) weaknesses.push('低精度',
-        if(stats.consistency < PERFORMANCE_THRESHOLDS.lowConsistency) weaknesses.push('不安定',
-        if(stats.times.mean > PERFORMANCE_THRESHOLDS.slowTime) weaknesses.push('時間効率',
+        if(stats.scores.mean < PERFORMANCE_THRESHOLDS.lowScore) weaknesses.push('低スコア,
+        if(stats.accuracy.mean < PERFORMANCE_THRESHOLDS.lowAccuracy) weaknesses.push('低精度,
+        if(stats.consistency < PERFORMANCE_THRESHOLDS.lowConsistency) weaknesses.push('不安定,
+        if(stats.times.mean > PERFORMANCE_THRESHOLDS.slowTime) weaknesses.push('時間効率,
         
         return weaknesses }
 ';'
 
     private analyzeRecentTrend(plays: PlayData[]): ImprovementTrend { const recentPlays = plays.slice(-5);
-        if(recentPlays.length < 3) return 'insufficient_data',
+        if(recentPlays.length < 3) return 'insufficient_data,
         
-        return this.calculateImprovementTrend(recentPlays) }
+        return this.calculateImprovementTrend(recentPlays);
 
     private detectSeasonalPatterns(plays: PlayData[]): SeasonalPattern { // 簡易的な季節パターン検出（実装は要カスタマイズ）' }'
 
@@ -690,9 +687,9 @@ export class StageComparisonAnalyzer {
         const normalizedTime = stats.times.mean * adjustmentFactor,
         const normalizedAccuracy = stats.accuracy.mean,
         
-        return { score: normalizedScore;
-            time: normalizedTime;
-            accuracy: normalizedAccuracy;
+        return { score: normalizedScore,
+            time: normalizedTime,
+            accuracy: normalizedAccuracy,
     overall: (normalizedScore / 1000 + normalizedAccuracy * 100) / 2 };
             efficiency: normalizedTime > 0 ? normalizedScore / normalizedTime : 0 ;
     } }
@@ -700,10 +697,10 @@ export class StageComparisonAnalyzer {
     private calculateSkillLevel(stats: StageStatistics, adjustmentFactor: number): SkillLevel { const normalizedPerformance = this.calculateNormalizedPerformance(stats, adjustmentFactor);
         const overall = normalizedPerformance.overall,
 
-        if(overall >= SKILL_LEVEL_THRESHOLDS.expert) return 'expert',
-        if(overall >= SKILL_LEVEL_THRESHOLDS.advanced) return 'advanced',
-        if(overall >= SKILL_LEVEL_THRESHOLDS.intermediate) return 'intermediate',
-        if(overall >= SKILL_LEVEL_THRESHOLDS.beginner) return 'beginner',
+        if(overall >= SKILL_LEVEL_THRESHOLDS.expert) return 'expert,
+        if(overall >= SKILL_LEVEL_THRESHOLDS.advanced) return 'advanced,
+        if(overall >= SKILL_LEVEL_THRESHOLDS.intermediate) return 'intermediate,
+        if(overall >= SKILL_LEVEL_THRESHOLDS.beginner) return 'beginner,
         return 'novice' }
     private generateComparisonSummary(stage1Id: string, stage2Id: string, comparisons: { score: SignificanceTestResult, time: SignificanceTestResult,  accuracy: SignificanceTestResult ): string[] {
         const summary: string[] = [];
@@ -712,11 +709,11 @@ export class StageComparisonAnalyzer {
     
 }
             const better = comparisons.score.testStatistic > 0 ? stage1Id: stage2Id 
-            summary.push(`スコア: ${better}が有意に優秀`};
+            summary.push(`スコア: ${better}が有意に優秀`}
         }
         
         if (comparisons.time.significant && comparisons.time.testStatistic !== null) { const faster = comparisons.time.testStatistic < 0 ? stage1Id: stage2Id 
-            summary.push(`時間: ${faster}が有意に高速`};
+            summary.push(`時間: ${faster}が有意に高速`}
         }
         ';'
 
@@ -730,21 +727,21 @@ export class StageComparisonAnalyzer {
         
         // スコア比較による推奨
         if (stage1Stats.scores.mean < stage2Stats.scores.mean * 0.8) { }
-            recommendations.push(`${stage1Id}のスコア向上に注力してください`};
+            recommendations.push(`${stage1Id}のスコア向上に注力してください`}
         }
         
         // 時間比較による推奨
         if (stage1Stats.times.mean > stage2Stats.times.mean * 1.2) {
     
 }
-            recommendations.push(`${stage1Id}の時間効率を改善してください`};
+            recommendations.push(`${stage1Id}の時間効率を改善してください`}
         }
         
         // 精度比較による推奨
         if (stage1Stats.accuracy.mean < stage2Stats.accuracy.mean * 0.9) {
     
 }
-            recommendations.push(`${stage1Id}の精度向上が必要です`};
+            recommendations.push(`${stage1Id}の精度向上が必要です`}
         }
         
         return recommendations;
@@ -758,8 +755,8 @@ export class StageComparisonAnalyzer {
         return Object.entries(stageStats);
             .map(([id, stats]) => ({ 
                 id, 
-                rating: stats.performanceRating;
-    percentileRank: this.calculatePercentileRank(stats.performanceRating, Object.values(stageStats).map(s => s.performanceRating) }
+                rating: stats.performanceRating,
+    percentileRank: this.calculatePercentileRank(stats.performanceRating, Object.values(stageStats).map(s => s.performanceRating);
             });
             .sort((a, b) => b.rating - a.rating);
             .slice(0, 3);
@@ -770,8 +767,8 @@ export class StageComparisonAnalyzer {
             .filter(([id, stats]) => stats.playCount >= this.stageConfig.minimumPlaysForAnalysis),
             .map(([id, stats]) => ({ 
                 id, 
-                rating: stats.performanceRating;
-    percentileRank: this.calculatePercentileRank(stats.performanceRating, Object.values(stageStats).map(s => s.performanceRating) }
+                rating: stats.performanceRating,
+    percentileRank: this.calculatePercentileRank(stats.performanceRating, Object.values(stageStats).map(s => s.performanceRating);
             });
             .sort((a, b) => a.rating - b.rating);
             .slice(0, 3);
@@ -787,8 +784,8 @@ export class StageComparisonAnalyzer {
 
             if (stats.improvementTrend === 'declining') {
                 opportunities.push({ '
-                    stage: stageId;
-                    type: 'declining_performance';
+                    stage: stageId,
+                    type: 'declining_performance,
                     priority: 'high',','
                     description: 'パフォーマンスが低下傾向にあります'
             }
@@ -796,8 +793,8 @@ export class StageComparisonAnalyzer {
     }
 
             if (stats.consistency < 0.5) { opportunities.push({ '
-                    stage: stageId;
-                    type: 'inconsistent_performance';
+                    stage: stageId,
+                    type: 'inconsistent_performance,
                     priority: 'medium',','
                     description: 'パフォーマンスが不安定です'
             }
@@ -805,8 +802,8 @@ export class StageComparisonAnalyzer {
     }
 
             if (stats.accuracy.mean < 0.7) { opportunities.push({ '
-                    stage: stageId;
-                    type: 'low_accuracy';
+                    stage: stageId,
+                    type: 'low_accuracy,
                     priority: 'high',','
                     description: '精度が低く改善が必要です'
             }
@@ -820,16 +817,16 @@ export class StageComparisonAnalyzer {
         const masteryLevels = Object.entries(stageStats);
             .filter(([id, stats]) => stats.playCount >= this.stageConfig.minimumPlaysForAnalysis),
             .map(([id, stats]) => ({
-                stage: id;
-                mastery: stats.masteryLevel || 0;
+                stage: id,
+                mastery: stats.masteryLevel || 0,
     difficulty: stats.difficultyLevel 
  }
             };
         const overallMastery = masteryLevels.length > 0 ;
-            ? masteryLevels.reduce((sum, m) => sum + m.mastery, 0) / masteryLevels.length: 0;
+            ? masteryLevels.reduce((sum, m) => sum + m.mastery, 0) / masteryLevels.length: 0 };
         
         return { overallMastery,
-            masteryByDifficulty: this.groupMasteryByDifficulty(masteryLevels;
+            masteryByDifficulty: this.groupMasteryByDifficulty(masteryLevels,
     progressionRate: this.calculateProgressionRate(masteryLevels) };
             nextMilestone: this.determineNextMilestone(overallMastery);
     }
@@ -868,10 +865,10 @@ export class StageComparisonAnalyzer {
             ? progression.reduce((sum, p) => sum + p, 0) / progression.length: 0;
 
     private determineNextMilestone(overallMastery: number): string { ''
-        if(overallMastery < 0.3) return '基本スキルの習得',
-        if(overallMastery < 0.6) return '中級レベルへの到達',
-        if(overallMastery < 0.8) return '上級スキルの開発',
-        if(overallMastery < 0.95) return '専門性の向上',
+        if(overallMastery < 0.3) return '基本スキルの習得,
+        if(overallMastery < 0.6) return '中級レベルへの到達,
+        if(overallMastery < 0.8) return '上級スキルの開発,
+        if(overallMastery < 0.95) return '専門性の向上,
         return 'マスタリーの維持' }
     /**
      * 設定の更新

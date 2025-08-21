@@ -6,11 +6,10 @@
 interface Console { commands?: Map<string, any>,
     aliases?: Map<string, any> }
 
-interface Suggestion { text: string;
-    type: 'exact' | 'prefix' | 'partial';
+interface Suggestion { text: string,
+    type: 'exact' | 'prefix' | 'partial,
     score: number;
-
-export class AutocompleteEngine {
+    export class AutocompleteEngine {
     private console: Console | null;
     private, cache: Map<string, string[]>,
     private lastUpdate: number;
@@ -18,9 +17,9 @@ export class AutocompleteEngine {
     constructor(console: Console) {
 
         this.console = console;
-        this.cache = new Map();
-        this.lastUpdate = 0
-}
+    this.cache = new Map();
+    this.lastUpdate = 0
+};
         this.cacheTimeout = 5000; // 5秒でキャッシュ無効化 }
     }
 
@@ -33,7 +32,7 @@ export class AutocompleteEngine {
 
         const trimmedInput = input.trim().toLowerCase();
         
-        if (trimmedInput.length === 0) { return this.getAllCommands().slice(0, 10) }
+        if (trimmedInput.length === 0) { return this.getAllCommands().slice(0, 10);
 
         // キャッシュチェック
         const cacheKey = trimmedInput;
@@ -61,8 +60,7 @@ export class AutocompleteEngine {
         if (exactMatch) {
             suggestions.push({'
                 text: exactMatch,','
-                type: 'exact')
-        }
+                type: 'exact'),
                 score: 1000'; '
     }
 
@@ -82,7 +80,7 @@ export class AutocompleteEngine {
             '),'
 
             .map(cmd => ({)'
-                text: cmd,')',
+                text: cmd,'),
                 type: 'partial' as const,
     score: 800 - cmd.length - cmd.toLowerCase().indexOf(input) * 10  }
             };
@@ -104,7 +102,7 @@ export class AutocompleteEngine {
         const commands: string[] = [],
         
         // 登録されたコマンドを取得
-        for (const commandName of this.console.commands.keys() { commands.push(commandName) }
+        for (const commandName of this.console.commands.keys() { commands.push(commandName);
         
         // エイリアスも追加
         if (this.console.aliases) {

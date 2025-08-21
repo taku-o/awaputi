@@ -24,12 +24,12 @@ const mockGameEngine = {
         switchScene: jest.fn(() => true),
     ),
     audioManager: {
-        toggleMute: jest.fn(() => false)),
+        toggleMute: jest.fn(() => false)) },
     settingsManager: {
-        get: jest.fn(() => 0.5),
+        get: jest.fn(() => 0.5) },
         set: jest.fn(
     responsiveCanvasManager: {
-        toggleFullscreen: jest.fn(),
+        toggleFullscreen: jest.fn() },
     isDebugMode: jest.fn(() => false),
         performanceStats: {
             };
@@ -96,13 +96,13 @@ describe('Keyboard Shortcuts Documentation Validation (Issue #169')', () => {'
                         const docKey = convertKeyCodeToDocFormat(key);
                         if (docKey) {
                             implementedKeys.push(docKey) }
-                    };
+                    }
                 }
             }
             // Verify documented shortcuts are implemented
             const notImplemented = uniqueDocumentedShortcuts.filter(docKey => {
                 return !implementedKeys.some(implKey => );
-                    implKey.toLowerCase() === docKey.toLowerCase(};
+                    implKey.toLowerCase() === docKey.toLowerCase(}
             };
             if (notImplemented.length > 0') {'
                 console.warn('Shortcuts documented but not implemented:', notImplemented) }
@@ -157,12 +157,12 @@ describe('Keyboard Shortcuts Documentation Validation (Issue #169')', () => {'
                         const docKey = convertKeyCodeToDocFormat(key);
                         if (docKey) {
                             implementedKeys.push(docKey) }
-                    };
+                    }
                 }
             }
             const notImplemented = uniqueDocumentedShortcuts.filter(docKey => {
                 return !implementedKeys.some(implKey => );
-                    implKey.toLowerCase() === docKey.toLowerCase(};
+                    implKey.toLowerCase() === docKey.toLowerCase(}
             };
             if (notImplemented.length > 0') {'
                 console.warn('Shortcuts documented in English but not implemented:', notImplemented) }
@@ -238,7 +238,7 @@ describe('Keyboard Shortcuts Documentation Validation (Issue #169')', () => {'
                 expect(Array.isArray(entries).toBe(true);
                 entries.forEach(entry => {);
                     expect(typeof entry').toBe('string'),'
-                    expect(entry.length).toBeGreaterThan(0) };
+                    expect(entry.length).toBeGreaterThan(0) }
             }
         }');'
     }
@@ -279,14 +279,14 @@ describe('Keyboard Shortcuts Documentation Validation (Issue #169')', () => {'
                 const enHasRemoved = enPattern.test(englishDoc);
                 if (jpHasRemoved || enHasRemoved') {'
                     const shortcut = ['S', 'H', 'I'][index],
-                    console.warn(`Removed shortcut ${shortcut} still found: JP=${jpHasRemoved}, EN=${enHasRemoved)`};
+                    console.warn(`Removed shortcut ${shortcut} still found: JP=${jpHasRemoved}, EN=${enHasRemoved)`}
                 }
                 
                 expect(jpHasRemoved).toBe(false);
                 expect(enHasRemoved).toBe(false);
-            };
+            }
         }
-    };
+    }
 }
 /**
  * Convert KeyboardEvent code to documentation format

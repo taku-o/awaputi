@@ -60,7 +60,7 @@ describe('Username Input Performance Tests', () => {
             // Calculate transformation
             const { scale } = canvasInfo;
             const result = {
-                x: baseX * scale;
+                x: baseX * scale,
         y: baseY * scale
             };
             // Cache result(with size limit
@@ -90,11 +90,11 @@ describe('Username Input Performance Tests', () => {
         // Get cache statistics
         getCacheStats() {
             return {
-                canvasInfoCached: !!this._canvasInfoCache;
+                canvasInfoCached: !!this._canvasInfoCache,
                 canvasInfoCacheAge: performance.now() - this._canvasInfoCacheTime;
-                coordinateCacheSize: this._coordinateCache.size;
+                coordinateCacheSize: this._coordinateCache.size,
                 coordinateCacheMaxSize: this._maxCacheSize
-            };
+            }
         }
     }
     beforeEach(() => {
@@ -110,15 +110,15 @@ describe('Username Input Performance Tests', () => {
         // Mock ResponsiveCanvasManager
         mockResponsiveCanvasManager = {
             getCanvasInfo: jest.fn().mockReturnValue({
-                scale: 1.5;
+                scale: 1.5,
                 displayWidth: 800;
-                displayHeight: 600;
+                displayHeight: 600,
                 actualWidth: 1200;
-                actualHeight: 900;
+                actualHeight: 900,
                 pixelRatio: 2) };
         // Mock GameEngine
         mockGameEngine = {
-            responsiveCanvasManager: mockResponsiveCanvasManager;
+            responsiveCanvasManager: mockResponsiveCanvasManager,
             debug: false;
         usernameInputManager = new PerformanceOptimizedUsernameInputManager(mockGameEngine);
     };
@@ -242,7 +242,7 @@ describe('Username Input Performance Tests', () => {
         }');'
         it('should validate coordinates quickly', () => {
             const canvasInfo = {
-                actualWidth: 1920;
+                actualWidth: 1920,
                 actualHeight: 1080
             };
             
@@ -332,11 +332,11 @@ describe('Username Input Performance Tests', () => {
             usernameInputManager.clearCache();
             // Update mock to simulate new canvas size
             mockResponsiveCanvasManager.getCanvasInfo.mockReturnValue({
-                scale: 2.0;
+                scale: 2.0,
                 displayWidth: 1600;
-                displayHeight: 1200;
+                displayHeight: 1200,
                 actualWidth: 1600;
-                actualHeight: 1200;
+                actualHeight: 1200,
                 pixelRatio: 1);
             const startTime = performance.now();
             // New canvas info should be retrieved and cached
@@ -345,6 +345,6 @@ describe('Username Input Performance Tests', () => {
             const endTime = performance.now();
             expect(newCoordinates.toEqual({ x: 800, y: 600 );
             expect(endTime - startTime).toBeLessThan(1), // Should handle resize quickly
-        };
+        }
     }
 }');'

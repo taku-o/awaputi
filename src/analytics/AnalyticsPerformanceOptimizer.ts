@@ -10,18 +10,18 @@ export class AnalyticsPerformanceOptimizer {
         // 設定
         this.config = {
             // バッチ処理設定
-            batchSize: options.batchSize || 50;
+            batchSize: options.batchSize || 50,
     batchTimeout: options.batchTimeout || 5000, // 5秒;
             maxBatchDelay: options.maxBatchDelay || 30000, // 30秒;
             // キャッシュ設定
-            cacheSize: options.cacheSize || 1000;
+            cacheSize: options.cacheSize || 1000,
     cacheTimeout: options.cacheTimeout || 300000, // 5分;
             // メモリ管理設定
             memoryCleanupInterval: options.memoryCleanupInterval || 60000, // 1分;
             maxMemoryThreshold: options.maxMemoryThreshold || 100 * 1024 * 1024, // 100MB;
             // パフォーマンス監視設定
             performanceCheckInterval: options.performanceCheckInterval || 1000, // 1秒;
-            fpsThreshold: options.fpsThreshold || 30;
+            fpsThreshold: options.fpsThreshold || 30,
     memoryWarningThreshold: options.memoryWarningThreshold || 80 * 1024 * 1024, // 80MB
     }
             ...options
@@ -37,21 +37,21 @@ export class AnalyticsPerformanceOptimizer {
         this.cacheTimestamps = new Map();
         
         // メモリ管理
-        this.memoryUsage = { current: 0;
-            peak: 0;
+        this.memoryUsage = { current: 0,
+            peak: 0,
     lastCleanup: Date.now(  }
         
         // パフォーマンス監視
-        this.performanceMetrics = { fps: 60;
-            frameTime: 16.67;
-            memoryUsage: 0;
-            eventProcessingTime: 0;
+        this.performanceMetrics = { fps: 60,
+            frameTime: 16.67,
+            memoryUsage: 0,
+            eventProcessingTime: 0,
     cacheHitRate: 0  };
         // 最適化統計
-        this.optimizationStats = { batchesProcessed: 0;
-            cacheHits: 0;
-            cacheMisses: 0;
-            memoryCleanups: 0;
+        this.optimizationStats = { batchesProcessed: 0,
+            cacheHits: 0,
+            cacheMisses: 0,
+            memoryCleanups: 0,
     performanceWarnings: 0  };
         // 初期化
         this.initialize();
@@ -62,7 +62,7 @@ export class AnalyticsPerformanceOptimizer {
      */
     initialize() {
         this.startPerformanceMonitoring();
-        this.startMemoryCleanup() }
+        this.startMemoryCleanup();
         this.optimizeEventProcessing(); }
     }
     
@@ -136,7 +136,7 @@ export class AnalyticsPerformanceOptimizer {
         const event = { : undefined
             type: eventType,
             data: data,
-    timestamp: Date.now() }
+    timestamp: Date.now(),
             handler: originalHandler;;
         this.eventQueue.push(event);
         
@@ -151,7 +151,7 @@ export class AnalyticsPerformanceOptimizer {
         
         // 最大遅延時間チェック
         const timeSinceLastBatch = Date.now() - this.lastBatchTime;
-        if (timeSinceLastBatch > this.config.maxBatchDelay) { this.processBatch() }
+        if (timeSinceLastBatch > this.config.maxBatchDelay) { this.processBatch();
     }
     
     /**
@@ -163,14 +163,14 @@ export class AnalyticsPerformanceOptimizer {
         const batchEvents = this.eventQueue.splice(0);
         // タイマーをクリア
         if (this.batchTimer) {
-            clearTimeout(this.batchTimer) }
+            clearTimeout(this.batchTimer);
             this.batchTimer = null; }
         }
         
         try { // 非同期でバッチ処理
             await this.processBatchAsync(batchEvents);
             // 統計更新
-            this.optimizationStats.batchesProcessed++,
+            this.optimizationStats.batchesProcessed++;
             this.lastBatchTime = Date.now();
             
             // 処理時間記録
@@ -180,7 +180,7 @@ export class AnalyticsPerformanceOptimizer {
         } catch (error) {
             console.error('Batch processing failed:', error);
             // エラー時は個別処理にフォールバック
-            this.fallbackToIndividualProcessing(batchEvents) }
+            this.fallbackToIndividualProcessing(batchEvents);
     }
     
     /**
@@ -205,7 +205,7 @@ export class AnalyticsPerformanceOptimizer {
                 groups[event.type] = [];
             groups[event.type].push(event);
             return groups;
-        }, {};
+        }, {}
     }
     
     /**
@@ -223,7 +223,7 @@ export class AnalyticsPerformanceOptimizer {
                     await handler(type, batchData, { batch: true; else {  // 個別処理
                     for (const event of events) { }
                         await handler(event.type, event.data); }
-} catch (error) {
+        } catch (error) {
                 console.error(`Event group processing failed for type ${type}:`, error);
             }
 }
@@ -283,23 +283,21 @@ export class AnalyticsPerformanceOptimizer {
 }
         
         keysToDelete.forEach(key => {  );
-            this.cache.delete(key) }
+            this.cache.delete(key);
             this.cacheTimestamps.delete(key); }
         };
         
         // サイズ制限に達している場合、古いエントリから削除
         if (this.cache.size >= this.config.cacheSize) {
-            const sortedEntries = Array.from(this.cacheTimestamps.entries();
+            const sortedEntries = Array.from(this.cacheTimestamps.entries()));
                 .sort((a, b) => a[1] - b[1]),
             
             const deleteCount = Math.floor(this.config.cacheSize * 0.2), // 20%削除
             for (let, i = 0, i < deleteCount && i < sortedEntries.length, i++) {
                 const key = sortedEntries[i][0],
-                this.cache.delete(key) }
-                this.cacheTimestamps.delete(key); }
+                this.cache.delete(key);
+                this.cacheTimestamps.delete(key);     }
 }
-    }
-    
     /**
      * メモリクリーンアップ開始
      */
@@ -332,7 +330,7 @@ export class AnalyticsPerformanceOptimizer {
             try {
         }
                 window.gc(); }
-            } catch (e) { // gc()が利用できない場合は無視 }
+        } catch (e) { // gc()が利用できない場合は無視 }
         }
         
         this.optimizationStats.memoryCleanups++;
@@ -365,7 +363,7 @@ export class AnalyticsPerformanceOptimizer {
         if (details.fps < this.config.fpsThreshold} {
     }
             this.config.batchSize = Math.max(10, Math.floor(this.config.batchSize * 0.8); }
-            this.config.batchTimeout = Math.min(10000, this.config.batchTimeout * 1.2};
+            this.config.batchTimeout = Math.min(10000, this.config.batchTimeout * 1.2}
         }
         
         this.optimizationStats.performanceWarnings++;
@@ -379,7 +377,7 @@ export class AnalyticsPerformanceOptimizer {
             performanceMetrics: { ...this.performanceMetrics,
             memoryUsage: { ...this.memoryUsage,
             config: { ...this.config,
-            eventQueueSize: this.eventQueue.length,
+            eventQueueSize: this.eventQueue.length ,
     cacheSize: this.cache.size } }
     
     /**
@@ -390,7 +388,7 @@ export class AnalyticsPerformanceOptimizer {
 }
         this.config = { ...this.config, ...newConfig,
 
-        console.log('Analytics performance configuration updated:', newConfig) }
+        console.log('Analytics performance configuration updated:', newConfig);
     
     /**
      * パフォーマンス最適化レポート生成
@@ -399,16 +397,15 @@ export class AnalyticsPerformanceOptimizer {
         const stats = this.getOptimizationStats();
         return { summary: {'
                 batchesProcessed: stats.batchesProcessed,
-                cacheHitRate: stats.performanceMetrics.cacheHitRate.toFixed(2) + '%',
-                averageFPS: stats.performanceMetrics.fps }
+                cacheHitRate: stats.performanceMetrics.cacheHitRate.toFixed(2) + '%,
+                averageFPS: stats.performanceMetrics.fps } },
 
                 memoryUsage: (stats.memoryUsage.current / 1024 / 1024).toFixed(2) + 'MB',' };'
 
                 eventProcessingTime: stats.performanceMetrics.eventProcessingTime + 'ms' 
     };
             recommendations: this.generateOptimizationRecommendations(stats,
-    detailedStats: stats,
-        } }
+    detailedStats: stats } }
     
     /**
      * 最適化推奨事項生成
@@ -450,7 +447,7 @@ export class AnalyticsPerformanceOptimizer {
         }
         
         // 残りのイベントを処理
-        if (this.eventQueue.length > 0) { this.processBatch() }
+        if (this.eventQueue.length > 0) { this.processBatch();
         
         // キャッシュクリア
         this.cache.clear();

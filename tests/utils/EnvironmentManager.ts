@@ -17,8 +17,7 @@ export class EnvironmentManager {
      */
     static setupTestEnvironment() {
         if (this.initialized) {
-            return }
-
+            return };
         try {
             // JSDOM環境の修正
             this._fixJSDOMEnvironment();
@@ -50,20 +49,20 @@ export class EnvironmentManager {
             // DOM readyStateの設定
             if (!window.document.readyState') {'
                 Object.defineProperty(window.document, 'readyState', {
-                    value: 'complete';
+                    value: 'complete',
                     configurable: true)') }'
             
             // HTMLElement.prototype の基本メソッドを確保
             if (typeof HTMLElement !== 'undefined') {
                 if (!HTMLElement.prototype.getBoundingClientRect) {
                     HTMLElement.prototype.getBoundingClientRect = jest.fn(() => ({
-                        left: 0;
+                        left: 0,
                         top: 0;
-                        right: 100;
+                        right: 100,
                         bottom: 100;
-                        width: 100;
+                        width: 100,
                         height: 100;
-                        x: 0;
+                        x: 0,
                         y: 0
                     ))) }
             
@@ -86,19 +85,19 @@ export class EnvironmentManager {
                 if (contextType === '2d') {
                     // より完全な2D context mockを提供
                     const mockContext = {
-                        canvas: this;
+                        canvas: this,
                         fillStyle: '#000000';
-                        strokeStyle: '#000000';
+                        strokeStyle: '#000000',
                         lineWidth: 1;
-                        lineCap: 'butt';
+                        lineCap: 'butt',
                         lineJoin: 'miter';
-                        miterLimit: 10;
+                        miterLimit: 10,
                         globalAlpha: 1;
-                        globalCompositeOperation: 'source-over';
+                        globalCompositeOperation: 'source-over',
                         imageSmoothingEnabled: true;
-                        font: '10px sans-serif';
+                        font: '10px sans-serif',
                         textAlign: 'start';
-                        textBaseline: 'alphabetic';
+                        textBaseline: 'alphabetic',
                         direction: 'inherit';
                         direction: 'inherit';
         };
@@ -138,7 +137,7 @@ export class EnvironmentManager {
                         // Text
                         fillText: jest.fn(
                         strokeText: jest.fn(
-                        measureText: jest.fn(() => ({ width: 100 ));
+                        measureText: jest.fn(() => ({ width: 100 )),
                         measureText: jest.fn(() => ({ width: 100 ));
         };
                         // Images
@@ -148,7 +147,7 @@ export class EnvironmentManager {
                         // Pixel manipulation
                         createImageData: jest.fn(
                         getImageData: jest.fn(() => ({
-                            data: new Uint8ClampedArray(4;
+                            data: new Uint8ClampedArray(4,
                             width: 1;
                             height: 1
                         )),
@@ -156,7 +155,7 @@ export class EnvironmentManager {
                         putImageData: jest.fn(
         };
                         // Path
-                        isPointInPath: jest.fn(() => false;
+                        isPointInPath: jest.fn(() => false,
                         isPointInStroke: jest.fn(() => false;
                         isPointInStroke: jest.fn(() => false;
         };
@@ -210,7 +209,7 @@ export class EnvironmentManager {
             this.cleanupTasks.push((') => {'
                 process.removeAllListeners('unhandledRejection');
                 originalHandler.forEach(handler => {'),'
-                    process.on('unhandledRejection', handler) };
+                    process.on('unhandledRejection', handler) }
             }');'
         }
         
@@ -224,7 +223,7 @@ export class EnvironmentManager {
             };
             
             this.cleanupTasks.push(() => {
-                window.onerror = originalOnError };
+                window.onerror = originalOnError }
         }
     }
 
@@ -286,7 +285,7 @@ export class EnvironmentManager {
                 throw error } finally {
                 // テスト完了後のクリーンアップ
                 this.cleanupTestEnvironment() }
-        };
+        }
     }
 
     /**
@@ -325,7 +324,7 @@ export class EnvironmentManager {
             testElements.forEach(element => {);
                 if (element.parentNode) {
                     element.parentNode.removeChild(element: any) }
-            };
+            }
         }
     }
 
@@ -368,20 +367,20 @@ export class EnvironmentManager {
      */
     static generateErrorReport(error, context = {) {
         return {
-            timestamp: new Date().toISOString();
+            timestamp: new Date().toISOString(),
             error: {
-                name: error.name;
+                name: error.name },
                 message: error.message;
                 stack: error.stack
             },
             environment: {
-                nodeVersion: process.version;
+                nodeVersion: process.version },
                 jestVersion: jest.getVersion ? jest.getVersion(') : 'unknown','
-                platform: process.platform;
+                platform: process.platform,
                 initialized: this.initialized
             },
             context,
-            healthCheck: this.validateEnvironmentHealth( };
+            healthCheck: this.validateEnvironmentHealth( }
     }
 }
 

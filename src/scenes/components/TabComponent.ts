@@ -7,11 +7,10 @@ import { GameEngine  } from '../../core/GameEngine';
 import { ComponentEventBus  } from './ComponentEventBus';
 import { SceneState  } from './SceneState';
 
-export interface AccessibilitySettings { highContrast: boolean;
-    largeText: boolean;
+export interface AccessibilitySettings { highContrast: boolean,
+    largeText: boolean,
     reducedMotion: boolean;
-
-export abstract class TabComponent { protected gameEngine: GameEngine;
+    export abstract class TabComponent { protected gameEngine: GameEngine;
     protected, eventBus: ComponentEventBus;
     protected state: SceneState;
     // タブコンポーネントの基本プロパティ
@@ -25,18 +24,18 @@ export abstract class TabComponent { protected gameEngine: GameEngine;
     protected, accessibilitySettings: AccessibilitySettings;
     constructor(gameEngine: GameEngine, eventBus: ComponentEventBus, state: SceneState) {
         this.gameEngine = gameEngine;
-        this.eventBus = eventBus;
-        this.state = state;
+    this.eventBus = eventBus;
+    this.state = state;
         
         // エラーハンドリング
         this.errorHandler = gameEngine.errorHandler;
         
         // アクセシビリティ設定
         this.accessibilitySettings = state.accessibilitySettings || {
-            highContrast: false;
-    largeText: false;
-            reducedMotion: false;
-            reducedMotion: false;
+            highContrast: false,
+    largeText: false,
+    reducedMotion: false,
+    reducedMotion: false;
         };
     /**
      * コンポーネントの初期化
@@ -102,21 +101,21 @@ export abstract class TabComponent { protected gameEngine: GameEngine;
      * @param error - 発生したエラー
      */
     protected renderErrorFallback(;
-        context: CanvasRenderingContext2D;
+        context: CanvasRenderingContext2D,
     x: number, ;
         y: number, ;
-        width: number );
-        height: number;
+        width: number ),
+        height: number,
     error: Error';'
     '): void { // エラーメッセージを表示'
-        context.fillStyle = this.accessibilitySettings.highContrast ? '#FF0000' : '#FF6B6B',
+        context.fillStyle = this.accessibilitySettings.highContrast ? '#FF0000' : '#FF6B6B,
         context.fillRect(x, y, width, height);
-        context.fillStyle = this.accessibilitySettings.highContrast ? '#FFFFFF' : '#333333',
-        context.font = this.accessibilitySettings.largeText ? '18px sans-serif' : '16px sans-serif',
-        context.textAlign = 'center',
-        context.textBaseline = 'middle',
+        context.fillStyle = this.accessibilitySettings.highContrast ? '#FFFFFF' : '#333333,
+        context.font = this.accessibilitySettings.largeText ? '18px sans-serif' : '16px sans-serif,
+        context.textAlign = 'center,
+        context.textBaseline = 'middle,
 
-        const errorText = 'コンポーネントの読み込みでエラーが発生しました',
+        const errorText = 'コンポーネントの読み込みでエラーが発生しました,
         context.fillText(errorText, x + width / 2, y + height / 2);
         ','
         // デバッグ情報（開発時のみ）

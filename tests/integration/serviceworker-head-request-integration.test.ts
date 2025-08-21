@@ -23,7 +23,7 @@ describe('ServiceWorker HEAD Request Integration', () => {
                 status: options.status || 200,
                 statusText: options.statusText || 'OK',
                 headers: {
-                    get: (key) => headers.get(key),
+                    get: (key) => headers.get(key) },
                     has: (key) => headers.has(key),
                     set: (key, value) => headers.set(key, value);
                     entries: () => headers.entries(),
@@ -80,7 +80,7 @@ describe('ServiceWorker HEAD Request Integration', () => {
                             'Content-Type': 'text/plain',
                             'Cache-Control': 'no-cache'
                         }
-                    };
+                    }
                 }
             };
             
@@ -111,7 +111,7 @@ describe('ServiceWorker HEAD Request Integration', () => {
                             'Content-Type': 'text/plain',
                             'Cache-Control': 'no-cache'
                         }
-                    };
+                    }
                 }
             };
             
@@ -227,7 +227,7 @@ describe('ServiceWorker HEAD Request Integration', () => {
                     return new Response(null, {
                         status: 503,
                         statusText: 'Service Unavailable'
-                    };
+                    }
                 }
             };
             

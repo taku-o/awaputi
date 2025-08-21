@@ -35,14 +35,14 @@ describe('ComparisonEngine - Performance and Scalability Tests', () => {
             // 現在のデータ（直近1週間）
             const currentSessions = [
                 {
-                    sessionId: 'current1';
+                    sessionId: 'current1',
                     startTime: Date.now() - 2 * 24 * 60 * 60 * 1000;
                     endTime: Date.now(') - 2 * 24 * 60 * 60 * 1000 + 300000,'
-                    finalScore: 1200;
+                    finalScore: 1200,
                     bubblesPopped: 90;
-                    bubblesMissed: 10;
+                    bubblesMissed: 10,
                     maxCombo: 20;
-                    completed: true;
+                    completed: true,
                     playerId: 'current_player'
                 }
             ];
@@ -51,104 +51,104 @@ describe('ComparisonEngine - Performance and Scalability Tests', () => {
             const benchmarkSessions = [
                 // プレイヤー1（平均的）
                 {
-                    sessionId: 'bench1_1';
+                    sessionId: 'bench1_1',
                     startTime: Date.now() - 30 * 24 * 60 * 60 * 1000;
                     endTime: Date.now(') - 30 * 24 * 60 * 60 * 1000 + 300000,'
-                    finalScore: 1000;
+                    finalScore: 1000,
                     bubblesPopped: 80;
-                    bubblesMissed: 20;
+                    bubblesMissed: 20,
                     maxCombo: 15;
-                    completed: true;
+                    completed: true,
                     playerId: 'player1'
                 },
                 {
-                    sessionId: 'bench1_2';
+                    sessionId: 'bench1_2',
                     startTime: Date.now() - 29 * 24 * 60 * 60 * 1000;
                     endTime: Date.now(') - 29 * 24 * 60 * 60 * 1000 + 300000,'
-                    finalScore: 1100;
+                    finalScore: 1100,
                     bubblesPopped: 85;
-                    bubblesMissed: 15;
+                    bubblesMissed: 15,
                     maxCombo: 18;
-                    completed: true;
+                    completed: true,
                     playerId: 'player1'
                 },
                 {
-                    sessionId: 'bench1_3';
+                    sessionId: 'bench1_3',
                     startTime: Date.now() - 28 * 24 * 60 * 60 * 1000;
                     endTime: Date.now(') - 28 * 24 * 60 * 60 * 1000 + 300000,'
-                    finalScore: 1050;
+                    finalScore: 1050,
                     bubblesPopped: 82;
-                    bubblesMissed: 18;
+                    bubblesMissed: 18,
                     maxCombo: 16;
-                    completed: true;
+                    completed: true,
                     playerId: 'player1'
                 },
                 // プレイヤー2（低スキル）
                 {
-                    sessionId: 'bench2_1';
+                    sessionId: 'bench2_1',
                     startTime: Date.now() - 60 * 24 * 60 * 60 * 1000;
                     endTime: Date.now(') - 60 * 24 * 60 * 60 * 1000 + 300000,'
-                    finalScore: 800;
+                    finalScore: 800,
                     bubblesPopped: 70;
-                    bubblesMissed: 30;
+                    bubblesMissed: 30,
                     maxCombo: 10;
-                    completed: false;
+                    completed: false,
                     playerId: 'player2'
                 },
                 {
-                    sessionId: 'bench2_2';
+                    sessionId: 'bench2_2',
                     startTime: Date.now() - 59 * 24 * 60 * 60 * 1000;
                     endTime: Date.now(') - 59 * 24 * 60 * 60 * 1000 + 300000,'
-                    finalScore: 850;
+                    finalScore: 850,
                     bubblesPopped: 75;
-                    bubblesMissed: 25;
+                    bubblesMissed: 25,
                     maxCombo: 12;
-                    completed: false;
+                    completed: false,
                     playerId: 'player2'
                 },
                 {
-                    sessionId: 'bench2_3';
+                    sessionId: 'bench2_3',
                     startTime: Date.now() - 58 * 24 * 60 * 60 * 1000;
                     endTime: Date.now(') - 58 * 24 * 60 * 60 * 1000 + 300000,'
-                    finalScore: 900;
+                    finalScore: 900,
                     bubblesPopped: 78;
-                    bubblesMissed: 22;
+                    bubblesMissed: 22,
                     maxCombo: 14;
-                    completed: true;
+                    completed: true,
                     playerId: 'player2'
                 },
                 // プレイヤー3（高スキル）
                 {
-                    sessionId: 'bench3_1';
+                    sessionId: 'bench3_1',
                     startTime: Date.now() - 45 * 24 * 60 * 60 * 1000;
                     endTime: Date.now(') - 45 * 24 * 60 * 60 * 1000 + 300000,'
-                    finalScore: 1500;
+                    finalScore: 1500,
                     bubblesPopped: 95;
-                    bubblesMissed: 5;
+                    bubblesMissed: 5,
                     maxCombo: 25;
-                    completed: true;
+                    completed: true,
                     playerId: 'player3'
                 },
                 {
-                    sessionId: 'bench3_2';
+                    sessionId: 'bench3_2',
                     startTime: Date.now() - 44 * 24 * 60 * 60 * 1000;
                     endTime: Date.now(') - 44 * 24 * 60 * 60 * 1000 + 300000,'
-                    finalScore: 1600;
+                    finalScore: 1600,
                     bubblesPopped: 98;
-                    bubblesMissed: 2;
+                    bubblesMissed: 2,
                     maxCombo: 30;
-                    completed: true;
+                    completed: true,
                     playerId: 'player3'
                 },
                 {
-                    sessionId: 'bench3_3';
+                    sessionId: 'bench3_3',
                     startTime: Date.now() - 43 * 24 * 60 * 60 * 1000;
                     endTime: Date.now(') - 43 * 24 * 60 * 60 * 1000 + 300000,'
-                    finalScore: 1550;
+                    finalScore: 1550,
                     bubblesPopped: 96;
-                    bubblesMissed: 4;
+                    bubblesMissed: 4,
                     maxCombo: 28;
-                    completed: true;
+                    completed: true,
                     playerId: 'player3'
                 }
             ];
@@ -195,9 +195,9 @@ describe('ComparisonEngine - Performance and Scalability Tests', () => {
 
         test('パーセンタイル順位が正しく計算される', () => {
             const stats = {
-                percentile25: 800;
+                percentile25: 800,
                 median: 1000;
-                percentile75: 1200;
+                percentile75: 1200,
                 min: 600;
                 max: 1500
             };
@@ -216,19 +216,19 @@ describe('ComparisonEngine - Performance and Scalability Tests', () => {
             const current = { averageScore: 1200, averageAccuracy: 0.9 };
             const benchmark = {
                 averageScore: {
-                    mean: 1000;
+                    mean: 1000 },
                     median: 1000;
-                    percentile25: 850;
+                    percentile25: 850,
                     percentile75: 1200;
-                    min: 800;
+                    min: 800,
                     max: 1500
                 },
                 averageAccuracy: {
-                    mean: 0.8;
+                    mean: 0.8 },
                     median: 0.8;
-                    percentile25: 0.75;
+                    percentile25: 0.75,
                     percentile75: 0.85;
-                    min: 0.7;
+                    min: 0.7,
                     max: 0.95
                 }
             };
@@ -247,7 +247,7 @@ describe('ComparisonEngine - Performance and Scalability Tests', () => {
 
         test('ベンチマークサマリーが正しく生成される', (') => {'
             const comparison = {
-                above_average: 2;
+                above_average: 2,
                 below_average: 0;
                 average: 1
             };
@@ -263,20 +263,20 @@ describe('ComparisonEngine - Performance and Scalability Tests', () => {
             const comparison = {
                 metrics: {
                     score: {
-                        performance: 'above_average';
+                        performance: 'above_average' },
                         displayCurrent: '1200pts';
-                        displayBenchmark: '1000pts';
+                        displayBenchmark: '1000pts',
                         displayDifference: '+200pts (+20.0%')'
                     },
                     accuracy: {
-                        performance: 'below_average';
+                        performance: 'below_average' },
                         displayCurrent: '75%';
-                        displayBenchmark: '85%';
+                        displayBenchmark: '85%',
                         displayDifference: '-10% (-11.8%')'
                     }
                 },
                 ranking: {
-                    score: { percentile: 80 };
+                    score: { percentile: 80 },
                     accuracy: { percentile: 20 }
                 }
             };
@@ -310,10 +310,10 @@ describe('ComparisonEngine - Performance and Scalability Tests', () => {
             // 現在のデータのみ設定（ベンチマーク期間外）
             const currentSessions = [
                 {
-                    sessionId: 'current1';
+                    sessionId: 'current1',
                     startTime: Date.now() - 1 * 24 * 60 * 60 * 1000;
                     endTime: Date.now(') - 1 * 24 * 60 * 60 * 1000 + 300000,'
-                    finalScore: 1200;
+                    finalScore: 1200,
                     completed: true;
                     playerId: 'current_player'
                 }
@@ -365,6 +365,6 @@ describe('ComparisonEngine - Performance and Scalability Tests', () => {
             expect(positiveFormatted').toBe('+100pts (+10.0%')'),
 
             const negativeFormatted = comparisonEngine.formatBenchmarkDifference(-50, -5, metric);
-            expect(negativeFormatted').toBe('-50pts (-5.0%')') };
+            expect(negativeFormatted').toBe('-50pts (-5.0%')') }
     };
 }');'

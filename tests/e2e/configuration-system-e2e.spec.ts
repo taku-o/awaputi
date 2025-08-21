@@ -151,7 +151,7 @@ test.describe('Configuration System E2E Tests', () => {
                        typeof window.gameEngine.particleManager.maxParticles === 'number' };
             
             expect(particleManagerExists).toBeTruthy();
-        };
+        }
     }');'
 
     test.describe('設定変更がゲーム体験に与える影響のテスト', (') => {'
@@ -266,7 +266,7 @@ test.describe('Configuration System E2E Tests', () => {
             expect(settingsApplied.baseScore).toBe(20);
             expect(settingsApplied.maxBubbles).toBe(15);
             expect(settingsApplied.maxParticles).toBe(200);
-        };
+        }
     }');'
 
     test.describe('エラー状況でのゲーム継続性テスト', (') => {'
@@ -297,7 +297,7 @@ test.describe('Configuration System E2E Tests', () => {
                         masterVolume: configManager.get('audio', 'volumes.master');
                         maxParticles: configManager.get('effects', 'particles.maxCount');
                         gameRunning: window.gameEngine.isRunning
-                    };
+                    }
                 } catch (error) {
                     return { error: error.message },
                 }
@@ -346,7 +346,7 @@ test.describe('Configuration System E2E Tests', () => {
                         errorCaught,
                         gameRunning: window.gameEngine.isRunning,
                         configRestored: typeof window.gameEngine.configManager.get === 'function'
-                    };
+                    }
                 } catch (error) {
                     return { testError: error.message },
                 }
@@ -389,7 +389,7 @@ test.describe('Configuration System E2E Tests', () => {
                         errorCaught,
                         gameRunning: window.gameEngine.isRunning,
                         calculationRestored: typeof window.gameEngine.calculationEngine.calculate === 'function'
-                    };
+                    }
                 } catch (error) {
                     return { testError: error.message },
                 }
@@ -423,14 +423,14 @@ test.describe('Configuration System E2E Tests', () => {
                             value: i,
                             data: new, Array(10).fill(i, // サイズを減らして安定性を向上);
                             timestamp: Date.now(},
-                        };
+                        }
                     }
                     
                     return {
                         dataCreated: true,
                         gameRunning: window.gameEngine.isRunning,
                         configManagerExists: !!window.gameEngine.configManager
-                    };
+                    }
                 } catch (error) {
                     return { error: error.message },
                 }
@@ -457,7 +457,7 @@ test.describe('Configuration System E2E Tests', () => {
                         settingChanged: window.gameEngine.configManager.get('audio', 'volumes.master') === 0.5,
                         localStorageExists: !!settingsData,
                         gameRunning: window.gameEngine.isRunning
-                    };
+                    }
                 } catch (error) {
                     return { error: error.message },
                 }
@@ -475,7 +475,7 @@ test.describe('Configuration System E2E Tests', () => {
                 return window.gameEngine && window.gameEngine.isRunning };
             
             expect(isGameRunning).toBeTruthy();
-        };
+        }
     }');'
 
     test.describe('長時間プレイでの設定システム安定性', (') => {'
@@ -515,12 +515,12 @@ test.describe('Configuration System E2E Tests', () => {
                                 operationCount,
                                 gameRunning: window.gameEngine.isRunning,
                                 configManagerExists: !!window.gameEngine.configManager
-                            };
+                            }
                         }, 2000);
                     } catch (error) {
                         resolve({ error: error.message },
                     }
-                };
+                }
             };
             
             // システムが安定していることを確認
@@ -567,7 +567,7 @@ test.describe('Configuration System E2E Tests', () => {
                         historyLength,
                         hasRecentChanges,
                         gameRunning: window.gameEngine.isRunning
-                    };
+                    }
                 } catch (error) {
                     return { error: error.message },
                 }
@@ -580,6 +580,6 @@ test.describe('Configuration System E2E Tests', () => {
             if (historyTestResult.hasHistoryMethod) {
                 expect(historyTestResult.historyLength).toBeGreaterThan(0);
                 expect(historyTestResult.hasRecentChanges).toBe(true) }
-        };
+        }
     };
 }');'

@@ -10,20 +10,19 @@ declare namespace jest { interface Matchers<R> {
         toMatchInlineSnapshot(propertyMatchers?: any, snapshot?: string): R;
     
     interface Expect { <T = any>(actual: T): Matchers<T>;
-        any(classType: any): any;
-        anything(): any;
-        arrayContaining(array: any[]): any;
-        assertions(numberOfAssertions: number): void;
-        hasAssertions(): void;
-        not: InverseAsymmetricMatchers;
-        objectContaining(object: any): any;
-        stringContaining(string: string): any;
-        stringMatching(regexp: string | RegExp): any;
-    
+    any(classType: any): any;
+    anything(): any;
+    arrayContaining(array: any[]): any;
+    assertions(numberOfAssertions: number): void;
+    hasAssertions(): void;
+    not: InverseAsymmetricMatchers;
+    objectContaining(object: any): any;
+    stringContaining(string: string): any;
+    stringMatching(regexp: string | RegExp): any;
     interface InverseAsymmetricMatchers { arrayContaining(array: any[]): any;
-        objectContaining(object: any): any;
-        stringContaining(string: string): any;
-        stringMatching(regexp: string | RegExp): any;
+    objectContaining(object: any): any;
+    stringContaining(string: string): any;
+    stringMatching(regexp: string | RegExp): any;
 }
 
 // モック関数の型
@@ -47,28 +46,25 @@ export interface TestHelpers { createMockCanvas(width?: number, height?: number)
 // テストフィクスチャの型
 export interface TestFixture<T> { setup(): Promise<T> | T,
     teardown(): Promise<void> | void;
-    reset(): Promise<void> | void }
-
+    reset(): Promise<void> | void };
 // 共通のテストデータ型
-export interface TestData { validData: any;
-    invalidData: any;
-    edgeCases: any[];
-   , mockResponses: any[];
+export interface TestData { validData: any,
+    invalidData: any,
+    edgeCases: any[],
+            mockResponses: any[];
 
 // 非同期テストユーティリティ
 export interface AsyncTestUtils { waitFor(condition: () => boolean, timeout?: number): Promise<void>,
     delay(ms: number): Promise<void>;
     timeout(promise: Promise<any>, ms: number): Promise<any>;
     retry<T>(fn: () => Promise<T>, retries?: number, delay?: number): Promise<T>;
-}
-
+};
 // パフォーマンステスト用の型
-export interface PerformanceTestResult { name: string;
+export interface PerformanceTestResult { name: string,
     duration: number;
     memoryUsage?: number;
     operations?: number;
-    operationsPerSecond?: number,  }
-
+    operationsPerSecond?: number };
 export interface PerformanceTestOptions { iterations?: number,
     warmupIterations?: number;
     timeout?: number;
@@ -80,9 +76,9 @@ export interface SnapshotTestOptions { name?: string,
     hint?: string;
 
 // エラーテスト用の型
-export interface ErrorTestCase { name: string;
-    input: any;
-   , expectedError: string | RegExp | Error;
+export interface ErrorTestCase { name: string,
+    input: any,
+            expectedError: string | RegExp | Error;
     expectedErrorType?: any;
 
 // モックストレージ実装
@@ -108,9 +104,9 @@ export interface EventTestUtils { simulateClick(element: Element, options?: Mous
 
 // デバッグユーティリティ
 export interface DebugUtils { logTestState(state: any): void;
-    captureConsoleOutput(): { logs: string[], errors: string[],, warnings: string[];
+    captureConsoleOutput(): { logs: string[], errors: string[], warnings: string[];
     suppressConsoleOutput(): () => void;
-    measureExecutionTime<T>(fn: () => T): { result: T,, time: number;
+    measureExecutionTime<T>(fn: () => T): { result: T, time: number;
 
 // テストデータビルダー
 export interface TestDataBuilder<T> { with(key: keyof T, value: any): this;

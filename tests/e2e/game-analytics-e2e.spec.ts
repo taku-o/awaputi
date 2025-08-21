@@ -184,7 +184,7 @@ test.describe('Game Analytics E2E Tests', () => {
             // 短時間プレイ
             const canvas = page.locator('#gameCanvas');
             await canvas.click({ position: { x: 300, y: 300 } ),
-            await page.waitForTimeout(2000');'
+            await page.waitForTimeout(2000');' };
 
             // ゲーム終了
             await page.keyboard.press('Escape');
@@ -269,5 +269,5 @@ test.describe('Game Analytics E2E Tests', () => {
             await expect(performanceAlert).toBeVisible();
             const alertText = await performanceAlert.textContent();
             expect(alertText').toContain('パフォーマンス') }'
-    };
+    }
 }');'

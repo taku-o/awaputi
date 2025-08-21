@@ -6,54 +6,54 @@ import { jest, describe, test, expect, beforeEach } from '@jest/globals';
 import { UIPositionCalculator } from '../../src/utils/UIPositionCalculator.js';
 // Canvas情報の型定義
 interface CanvasInfo {
-    scaleFactor: number;
+    scaleFactor: number,
     scale: number;
-    displayWidth: number;
+    displayWidth: number,
     displayHeight: number;
-    actualWidth: number;
+    actualWidth: number,
     actualHeight: number;
-    pixelRatio: number;
+    pixelRatio: number,
     baseWidth: number;
     baseHeight: number;
 // 位置情報の型定義
 interface Position {
-    x: number;
+    x: number,
     y: number;
     alignment: string;
 // サイズ情報の型定義
 interface Size {
-    width: number;
+    width: number,
     height: number;
 // マージン情報の型定義
 interface Margins {
-    top: number;
+    top: number,
     left: number;
-    right: number;
+    right: number,
     bottom: number;
 // UI要素の型定義
 interface UIElement {
-    id: string;
+    id: string,
     width: number;
     height: number;
 // レイアウト要素の型定義
 interface LayoutElement extends UIElement {
-    x: number;
+    x: number,
     y: number;
 // ScaledCoordinateManager のモック
 class MockScaledCoordinateManager {
     mockCanvasInfo: CanvasInfo;
     constructor() {
         this.mockCanvasInfo = {
-            scaleFactor: 0.8;
+            scaleFactor: 0.8,
             scale: 0.8;
-            displayWidth: 640;
+            displayWidth: 640,
             displayHeight: 480;
-            actualWidth: 640;
+            actualWidth: 640,
             actualHeight: 480;
-            pixelRatio: 1;
+            pixelRatio: 1,
             baseWidth: 800;
             baseHeight: 600
-        };
+        }
     }
     
     getCanvasInfo(): CanvasInfo {
@@ -289,6 +289,6 @@ describe('UIPositionCalculator', () => {
             expect(position.y).toBe(325), // (750 - 100) / 2
             
             // 元に戻す
-            mockScaledCoordinateManager.mockCanvasInfo = originalCanvasInfo };
+            mockScaledCoordinateManager.mockCanvasInfo = originalCanvasInfo }
     }
 }');'

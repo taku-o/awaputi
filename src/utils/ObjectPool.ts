@@ -4,61 +4,61 @@
  */
 
 // 型定義
-interface PoolStats { created: number;
-    reused: number;
-    returned: number;
-    poolSize: number;
-    activeCount: number;
+interface PoolStats { created: number,
+    reused: number,
+    returned: number,
+    poolSize: number,
+    activeCount: number,
     efficiency: number;
-interface Particle { x: number;
-    y: number;
-    vx: number;
-    vy: number;
-    life: number;
-    maxLife: number;
-    size: number;
-    color: string;
-    type: string;
+    interface Particle { x: number,
+    y: number,
+    vx: number,
+    vy: number,
+    life: number,
+    maxLife: number,
+    size: number,
+    color: string,
+    type: string,
     isActive: boolean;
-interface BubblePoolObject { type: string;
-    position: { x: number,, y: number,,
-    velocity: { x: number,, y: number,,
+    interface BubblePoolObject { type: string,
+    position: { x: number, y: number,
+    velocity: { x: number, y: number,
     size: number;
-    health: number;
-    maxHealth: number;
-    age: number;
-    maxAge: number;
-    isAlive: boolean;
-    effects: any[];
-    clickCount: number;
-    isEscaping: boolean;
-    escapeSpeed: number;
+    },
+    health: number,
+    maxHealth: number,
+    age: number,
+    maxAge: number,
+    isAlive: boolean,
+    effects: any[],
+    clickCount: number,
+    isEscaping: boolean,
+    escapeSpeed: number,
     lastMouseDistance: number;
 }
-interface FloatingText { x: number;
-    y: number;
-    vx: number;
-    vy: number;
-    text: string;
-    color: string;
-    fontSize: number;
-    fontWeight: string;
-    life: number;
-    maxLife: number;
-    scale: number;
-    opacity: number;
+interface FloatingText { x: number,
+    y: number,
+    vx: number,
+    vy: number,
+    text: string,
+    color: string,
+    fontSize: number,
+    fontWeight: string,
+    life: number,
+    maxLife: number,
+    scale: number,
+    opacity: number,
     isActive: boolean;
-type CreateFunction<T> = () => T;
-type ResetFunction<T> = (obj: T) => void;
-
-export class ObjectPool<T = any> { private createFunction: CreateFunction<T>
+    type CreateFunction<T> = () => T;
+    type ResetFunction<T> = (obj: T) => void;
+    export class ObjectPool<T = any> { private createFunction: CreateFunction<T>
     private resetFunction: ResetFunction<T> | null;
     private pool: T[];
     private activeObjects: Set<T>;
-    private stats: {
-        created: number;
-        reused: number;
-    returned: number;
+    private stats: { created: number;
+    },
+        reused: number,
+    returned: number,
     returned: number;
         };
     constructor(createFunction: CreateFunction<T>, resetFunction: ResetFunction<T> | null = null, initialSize: number = 10) {
@@ -68,7 +68,7 @@ export class ObjectPool<T = any> { private createFunction: CreateFunction<T>
         this.pool = [];
         this.activeObjects = new Set<T>();
         this.stats = {
-            created: 0;
+            created: 0,
     reused: 0
 }
             returned: 0 ;
@@ -76,7 +76,7 @@ export class ObjectPool<T = any> { private createFunction: CreateFunction<T>
         
         // 初期プールサイズを作成
         for(let, i = 0; i < initialSize; i++) {
-            this.pool.push(this.createFunction() }
+            this.pool.push(this.createFunction();
             this.stats.created++; }
     }
     
@@ -89,7 +89,7 @@ export class ObjectPool<T = any> { private createFunction: CreateFunction<T>
             obj = this.pool.pop()!
         }
             this.stats.reused++; }
-        } else {  obj = this.createFunction() }
+        } else {  obj = this.createFunction();
             this.stats.created++; }
         this.activeObjects.add(obj);
         return obj;
@@ -104,7 +104,7 @@ export class ObjectPool<T = any> { private createFunction: CreateFunction<T>
         this.activeObjects.delete(obj);
         
         // リセット関数でオブジェクトを初期状態に戻す
-        if (this.resetFunction) { this.resetFunction(obj) }
+        if (this.resetFunction) { this.resetFunction(obj);
         this.pool.push(obj);
         this.stats.returned++;
     }
@@ -113,7 +113,7 @@ export class ObjectPool<T = any> { private createFunction: CreateFunction<T>
      * アクティブなオブジェクトをすべてプールに戻す
      */
     returnAll(): void { const activeArray = Array.from(this.activeObjects);
-        activeArray.forEach(obj => this.return(obj) }
+        activeArray.forEach(obj => this.return(obj);
     /**
      * プールサイズを動的に調整
      * @param {number} targetSize - 目標サイズ
@@ -121,7 +121,7 @@ export class ObjectPool<T = any> { private createFunction: CreateFunction<T>
     resize(targetSize: number): void { while (this.pool.length < targetSize) {
             this.pool.push(this.createFunction();
             this.stats.created++ }
-        while (this.pool.length > targetSize) { this.pool.pop() }
+        while (this.pool.length > targetSize) { this.pool.pop();
     }
     
     /**
@@ -130,9 +130,8 @@ export class ObjectPool<T = any> { private createFunction: CreateFunction<T>
      */
     getStats(): PoolStats { return { ...this.stats,
             poolSize: this.pool.length,
-    activeCount: this.activeObjects.size },
-            efficiency: this.stats.reused / (this.stats.reused + this.stats.created) * 100 ,
-    } }
+    activeCount: this.activeObjects.size ,
+            efficiency: this.stats.reused / (this.stats.reused + this.stats.created) * 100  } }
     
     /**
      * プールをクリア
@@ -143,7 +142,7 @@ export class ObjectPool<T = any> { private createFunction: CreateFunction<T>
             created: 0,
             reused: 0,
     returned: 0 
-};
+}
 }
 /**
  * パーティクル用オブジェクトプール
@@ -151,11 +150,10 @@ export class ObjectPool<T = any> { private createFunction: CreateFunction<T>
 export class ParticlePool extends ObjectPool<Particle> { constructor(initialSize: number = 500) {
         super(
             (): Particle => ({
-                x: 0, y: 0, vx: 0, vy: 0;
-                life: 1.0, maxLife: 1.0;
+                x: 0, y: 0, vx: 0, vy: 0,
+                life: 1.0, maxLife: 1.0,
     size: 1, color: '#FFFFFF'
-            }
-
+            };
                 type: 'default', isActive: false;',''
             (particle: Particle'): void => {  particle.x = 0,'
                 particle.y = 0,
@@ -165,7 +163,7 @@ export class ParticlePool extends ObjectPool<Particle> { constructor(initialSize
                 particle.maxLife = 1.0,
 
                 particle.size = 1,
-                particle.color = '#FFFFFF',
+                particle.color = '#FFFFFF,
                 particle.type = 'default' }
                 particle.isActive = false; }
             },
@@ -177,26 +175,25 @@ export class ParticlePool extends ObjectPool<Particle> { constructor(initialSize
  */
 export class BubblePool extends ObjectPool<BubblePoolObject> { constructor(initialSize: number = 50) {
         super()','
-            (): BubblePoolObject => ({ }
-
+            (): BubblePoolObject => ({ };
                 type: 'normal';
 }
-                position: { x: 0, y: 0  };
-                velocity: { x: 0, y: 0  };
-                size: 50;
-                health: 1;
-                maxHealth: 1;
-                age: 0;
-                maxAge: 10000;
-                isAlive: true;
-                effects: [];
-                clickCount: 0;
-                isEscaping: false;
+                position: { x: 0, y: 0  ,
+                velocity: { x: 0, y: 0  ,
+                size: 50,
+                health: 1,
+                maxHealth: 1,
+                age: 0,
+                maxAge: 10000,
+                isAlive: true,
+                effects: [],
+                clickCount: 0,
+                isEscaping: false,
                 escapeSpeed: 0';'
     lastMouseDistance: Infinity';'
             }',''
             (bubble: BubblePoolObject'): void => {  ''
-                bubble.type = 'normal',
+                bubble.type = 'normal,
                 bubble.position.x = 0,
                 bubble.position.y = 0,
                 bubble.velocity.x = 0,
@@ -222,12 +219,12 @@ export class BubblePool extends ObjectPool<BubblePoolObject> { constructor(initi
 export class FloatingTextPool extends ObjectPool<FloatingText> { constructor(initialSize: number = 100) {
         super()','
             (): FloatingText => ({'
-                x: 0, y: 0, vx: 0, vy: 0;
+                x: 0, y: 0, vx: 0, vy: 0,
                 text: ', color: '#FFFFFF','
-                fontSize: 16, fontWeight: 'normal';
-                life: 1.0, maxLife: 1000;
+                fontSize: 16, fontWeight: 'normal,
+                life: 1.0, maxLife: 1000,
                 scale: 1.0, opacity: 1.0)
-     }
+     };
                 isActive: false;',''
             (text: FloatingText'): void => {  text.x = 0,'
                 text.y = 0,
@@ -235,10 +232,10 @@ export class FloatingTextPool extends ObjectPool<FloatingText> { constructor(ini
 
                 text.vy = 0,
                 text.text = ','
-                text.color = '#FFFFFF',
+                text.color = '#FFFFFF,
 
                 text.fontSize = 16,
-                text.fontWeight = 'normal',
+                text.fontWeight = 'normal,
                 text.life = 1.0,
                 text.maxLife = 1000,
                 text.scale = 1.0,
@@ -256,7 +253,7 @@ export class PoolManager {
 
     constructor() {
 
-        this.pools = new Map<string, ObjectPool>() }
+        this.pools = new Map<string, ObjectPool>() };
         this.initializePools(); }
     /**
      * 標準プールを初期化'
@@ -272,13 +269,13 @@ export class PoolManager {
      * @param {string} poolName - プール名
      * @returns {ObjectPool | undefined} プール
      */
-    getPool(poolName: string): ObjectPool | undefined { return this.pools.get(poolName) }
+    getPool(poolName: string): ObjectPool | undefined { return this.pools.get(poolName);
     /**
      * 新しいプールを追加
      * @param {string} poolName - プール名
      * @param {ObjectPool} pool - プール
      */
-    addPool(poolName: string, pool: ObjectPool): void { this.pools.set(poolName, pool) }
+    addPool(poolName: string, pool: ObjectPool): void { this.pools.set(poolName, pool);
     /**
      * オブジェクトを取得
      * @param {string} poolName - プール名
@@ -311,7 +308,7 @@ export class PoolManager {
     /**
      * すべてのプールをクリア
      */
-    clearAll(): void { this.pools.forEach(pool => pool.clear() }
+    clearAll(): void { this.pools.forEach(pool => pool.clear();
     /**
      * メモリ使用量を最適化
      */
@@ -324,10 +321,9 @@ export class PoolManager {
             }
             
             // 効率が高い（再利用率90%以上）かつプールが空になることが多い場合は拡張
-            if (stats.efficiency > 90 && stats.poolSize < 100) { pool.resize(Math.min(100, Math.floor(stats.poolSize * 1.2)) }
+            if (stats.efficiency > 90 && stats.poolSize < 100) { pool.resize(Math.min(100, Math.floor(stats.poolSize * 1.2));
                 console.log(`Optimized, pool ${name}: increased, size to ${(pool, as, any}.pool.length}`);
-            }
-        };
+                }
 }
 // グローバルインスタンス（遅延初期化）
 let _poolManager: PoolManager | null = null,

@@ -21,7 +21,7 @@ export class AnalyticsComparisonEngine {
         this.metrics = this.dataComparator.metrics;
         
         // キャッシュ設定
-        this.cache = new Map() }
+        this.cache = new Map() };
         this.cacheExpiry = 5 * 60 * 1000; // 5分 }
     }
 
@@ -79,7 +79,7 @@ export class AnalyticsComparisonEngine {
      * @param {Object} options - オプション
      * @returns {Object} 改善提案
      */
-    generateImprovementSuggestions(comparisonResult, options: any = {} {
+    generateImprovementSuggestions(comparisonResult, options: any = {}) {
         try {
     }
 
@@ -114,7 +114,7 @@ export class AnalyticsComparisonEngine {
      * @param {Object} options - レンダリングオプション
      * @returns {Object} レンダリング済み結果
      */
-    renderResults(comparisonResult, options: any = {} {
+    renderResults(comparisonResult, options: any = {}) {
         try {
     }
 
@@ -133,7 +133,7 @@ export class AnalyticsComparisonEngine {
      * @param {Object} options - オプション
      * @returns {Object} サマリーレポート
      */
-    generateSummaryReport(comparisonResult, options: any = {} {
+    generateSummaryReport(comparisonResult, options: any = {}) {
         try {
     }
 
@@ -152,7 +152,7 @@ export class AnalyticsComparisonEngine {
      * @param {Object} options - オプション
      * @returns {Object} 詳細レポート
      */
-    generateDetailedReport(comparisonResult, options: any = {} {
+    generateDetailedReport(comparisonResult, options: any = {}) {
         try {
     }
 
@@ -185,9 +185,9 @@ export class AnalyticsComparisonEngine {
      */
     setCachedData(key, data) {
         this.cache.set(key, {
-                data: data) }
+                data: data),
             timestamp: Date.now(); 
-    };
+    }
     }
 
     /**
@@ -196,7 +196,7 @@ export class AnalyticsComparisonEngine {
     clearCache() {
         this.cache.clear();
         this.dataComparator.clearCache?.(),
-        this.algorithms.clearCache?.() }
+        this.algorithms.clearCache?.();
         this.renderer.clearCache?.(); }
     }
 

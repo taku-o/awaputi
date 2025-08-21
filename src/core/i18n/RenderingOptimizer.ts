@@ -10,131 +10,108 @@ export interface OptimizationOptions { batchMode?: boolean,
     animateTransition?: boolean;
     preloadFonts?: boolean;
     cacheResults?: boolean;
-
-export interface BatchedUpdateOptions { animateTransition: boolean;
+    export interface BatchedUpdateOptions { animateTransition: boolean,
     cacheResults: boolean;
-
-export interface ElementMeasurement { rect: DOMRect;
-    fontSize: string;
-    fontFamily: string;
-    width: number;
+    export interface ElementMeasurement { rect: DOMRect,
+    fontSize: string,
+    fontFamily: string,
+    width: number,
     height: number;
-
-export interface ElementUpdate { textContent: string;
-    originalSize: ElementMeasurement;
+    export interface ElementUpdate { textContent: string,
+    originalSize: ElementMeasurement,
     needsReflow: boolean;
-
-export interface BatchProcessor { enabled: boolean;
-    debounceTime: number;
-    maxWaitTime: number;
-    currentBatch: HTMLElement[];
-    batchTimer: number | null;
-    maxWaitTimer: number | null }
-
-export interface FontOptimizer { preloadedFonts: Set<string>;
+    export interface BatchProcessor { enabled: boolean,
+    debounceTime: number,
+    maxWaitTime: number,
+    currentBatch: HTMLElement[],
+    batchTimer: number | null,
+    maxWaitTimer: number | null };
+export interface FontOptimizer { preloadedFonts: Set<string>,
     fontLoadPromises: Map<string, Promise<boolean>>;
     fallbackFonts: Map<string, string[]>;
     fontSwapEnabled: boolean;
     enabled?: boolean;
-
-export interface AnimationOptimizer { enabled: boolean;
-    reducedMotion: boolean;
-    animationQueue: AnimationQueueItem[];
-    activeAnimations: Set<string>;
-    frameScheduler: number | null }
-
-export interface AnimationQueueItem { element: HTMLElement;
-    initialState: AnimationState;
+    export interface AnimationOptimizer { enabled: boolean,
+    reducedMotion: boolean,
+    animationQueue: AnimationQueueItem[],
+    activeAnimations: Set<string>,
+    frameScheduler: number | null };
+export interface AnimationQueueItem { element: HTMLElement,
+    initialState: AnimationState,
     startTime: number;
-
-export interface AnimationState { opacity: string;
+    export interface AnimationState { opacity: string,
     transform: string;
-
-export interface PerformanceMetrics { renderTimes: number[];
-    batchSizes: number[];
-    fontLoadTimes: number[];
-    animationFrameTimes: number[];
-    cacheHitRate: number;
-    totalRenders: number;
+    export interface PerformanceMetrics { renderTimes: number[],
+    batchSizes: number[],
+    fontLoadTimes: number[],
+    animationFrameTimes: number[],
+    cacheHitRate: number,
+    totalRenders: number,
     optimizedRenders: number;
-
-export interface RenderingStats { totalUpdates: number;
-    batchedUpdates: number;
-    cacheHits: number;
-    cacheMisses: number;
-    fontLoads: number;
-    animationsOptimized: number;
-    renderTime: number;
+    export interface RenderingStats { totalUpdates: number,
+    batchedUpdates: number,
+    cacheHits: number,
+    cacheMisses: number,
+    fontLoads: number,
+    animationsOptimized: number,
+    renderTime: number,
     lastOptimizationTime: number;
-
-export interface OptimizationResult { success: boolean;
+    export interface OptimizationResult { success: boolean,
     renderTime: number;
     elementsProcessed?: number;
     batchMode?: boolean;
     stats?: OptimizationStatsResult;
     error?: string;
-
-export interface OptimizationStatsResult { totalUpdates: number;
-    batchedUpdates: number;
-    cacheHits: number;
-    cacheMisses: number;
-    fontLoads: number;
-    animationsOptimized: number;
-    renderTime: number;
-    lastOptimizationTime: number;
-    averageRenderTime: number;
-    averageBatchSize: number;
-    cacheHitRate: number;
-    optimizationLevel: OptimizationLevel;
-    totalRenders: number;
-    optimizedRenders: number;
-    cacheSize: number;
-    measurementCacheSize: number;
+    export interface OptimizationStatsResult { totalUpdates: number,
+    batchedUpdates: number,
+    cacheHits: number,
+    cacheMisses: number,
+    fontLoads: number,
+    animationsOptimized: number,
+    renderTime: number,
+    lastOptimizationTime: number,
+    averageRenderTime: number,
+    averageBatchSize: number,
+    cacheHitRate: number,
+    optimizationLevel: OptimizationLevel,
+    totalRenders: number,
+    optimizedRenders: number,
+    cacheSize: number,
+    measurementCacheSize: number,
     textContentCacheSize: number;
-
-export interface CacheEntry { element: HTMLElement;
-    update: ElementUpdate;
+    export interface CacheEntry { element: HTMLElement,
+    update: ElementUpdate,
     timestamp: number;
-
-export interface ElementUpdatePair { element: HTMLElement;
+    export interface ElementUpdatePair { element: HTMLElement,
     update: ElementUpdate;
-
-export interface RenderTimeDistribution { min: number;
-    max: number;
-    median: number;
+    export interface RenderTimeDistribution { min: number,
+    max: number,
+    median: number,
     p95: number;
-
-export interface FontLoadStats { totalLoads: number;
-    preloadedFonts: number;
+    export interface FontLoadStats { totalLoads: number,
+    preloadedFonts: number,
     averageLoadTime: number;
-
-export interface AnimationStats { optimizedAnimations: number;
-    reducedMotionEnabled: boolean;
+    export interface AnimationStats { optimizedAnimations: number,
+    reducedMotionEnabled: boolean,
     averageFrameTime: number;
-
-export interface DetailedPerformanceStats extends OptimizationStatsResult { renderTimeDistribution: RenderTimeDistribution;
-    fontLoadStats: FontLoadStats;
+    export interface DetailedPerformanceStats extends OptimizationStatsResult { renderTimeDistribution: RenderTimeDistribution,
+    fontLoadStats: FontLoadStats,
     animationStats: AnimationStats;
-
-export interface ConfigurationUpdate { optimizationLevel?: OptimizationLevel,
+    export interface ConfigurationUpdate { optimizationLevel?: OptimizationLevel,
     batchUpdateThreshold?: number;
     maxBatchSize?: number;
     fontOptimization?: boolean;
     animationOptimization?: boolean;
-
-export type OptimizationLevel = 'performance' | 'balanced' | 'quality';
+    export type OptimizationLevel = 'performance' | 'balanced' | 'quality';
 
 // FontFace API型定義（補完）
 declare global { interface Document {
         fonts?: FontFaceSet;
-    
     interface FontFaceSet extends EventTarget { load(font: string): Promise<FontFace[]>;
-        addEventListener(type: string, listener: EventListener): void;
-    
-    interface FontFace { family: string;
+    addEventListener(type: string, listener: EventListener): void;
+    interface FontFace { family: string,
         status: string;
-}
-
+};
 export class RenderingOptimizer {
     // 基本設定
     private optimizationLevel: OptimizationLevel;
@@ -163,7 +140,7 @@ export class RenderingOptimizer {
     // 統計情報
     private, stats: RenderingStats;
 
-    constructor('',
+    constructor(',
         this.optimizationLevel = 'balanced'; // 'performance', 'balanced', 'quality'
         this.batchUpdateThreshold = 16; // 16ms以内でバッチ処理
         this.maxBatchSize = 50; // 最大バッチサイズ
@@ -183,11 +160,11 @@ export class RenderingOptimizer {
         
         // バッチ処理設定
         this.batchProcessor = {
-            enabled: true;
+            enabled: true,
     debounceTime: 8, // 8ms;
             maxWaitTime: 32, // 32ms;
-            currentBatch: [];
-            batchTimer: null;
+            currentBatch: [],
+            batchTimer: null,
     maxWaitTimer: null;
         // フォント最適化
         this.fontOptimizer = { preloadedFonts: new Set<string>(
@@ -195,27 +172,27 @@ export class RenderingOptimizer {
             fallbackFonts: new Map<string, string[]>();
             fontSwapEnabled: true;
         // アニメーション最適化
-        this.animationOptimizer = { enabled: true;
-            reducedMotion: false;
-            animationQueue: [];
-            activeAnimations: new Set<string>();
+        this.animationOptimizer = { enabled: true,
+            reducedMotion: false,
+            animationQueue: [],
+            activeAnimations: new Set<string>(),
             frameScheduler: null;
         // パフォーマンス監視
-        this.performanceMetrics = { renderTimes: [];
-            batchSizes: [];
-            fontLoadTimes: [];
-            animationFrameTimes: [];
-            cacheHitRate: 0;
-            totalRenders: 0;
+        this.performanceMetrics = { renderTimes: [],
+            batchSizes: [],
+            fontLoadTimes: [],
+            animationFrameTimes: [],
+            cacheHitRate: 0,
+            totalRenders: 0,
     optimizedRenders: 0  };
         // 統計情報
-        this.stats = { totalUpdates: 0;
-            batchedUpdates: 0;
-            cacheHits: 0;
-            cacheMisses: 0;
-            fontLoads: 0;
-            animationsOptimized: 0;
-            renderTime: 0;
+        this.stats = { totalUpdates: 0,
+            batchedUpdates: 0,
+            cacheHits: 0,
+            cacheMisses: 0,
+            fontLoads: 0,
+            animationsOptimized: 0,
+            renderTime: 0,
     lastOptimizationTime: 0  };
         ;
         // 初期化
@@ -233,7 +210,7 @@ export class RenderingOptimizer {
         // フォント読み込み監視
         this.setupFontLoadMonitoring();
         // レスポンシブ設定
-        this.setupResponsiveOptimization() }
+        this.setupResponsiveOptimization();
     
     /**
      * 言語切り替え時の最適化処理
@@ -249,7 +226,7 @@ export class RenderingOptimizer {
             this.stats.totalUpdates++;
             
             // フォントプリロード
-            if (preloadFonts) { await this.preloadLanguageFonts(language) }
+            if (preloadFonts) { await this.preloadLanguageFonts(language);
             
             // レンダリング最適化モード開始
             this.startOptimizedRendering();
@@ -257,10 +234,10 @@ export class RenderingOptimizer {
             // 要素更新の最適化
             if (batchMode && elements.length > this.maxBatchSize) {
                 await this.processBatchedUpdates(elements, language, {)
-                    animateTransition) }
+                    animateTransition);
                     cacheResults }
             } else {  await this.processImmediateUpdates(elements, language, {)
-                    animateTransition) }
+                    animateTransition);
                     cacheResults }
             }
             
@@ -285,7 +262,7 @@ export class RenderingOptimizer {
                 language),
                 elementCount: elements.length  };
             
-            return { success: false;
+            return { success: false,
                 error: (error, as Error).message };
                 renderTime: performance.now() - startTime 
     }
@@ -314,10 +291,8 @@ export class RenderingOptimizer {
             // フレーム間で処理を分割
             if (i < batches.length - 1) {
         }
-                await this.waitForNextFrame(); }
+                await this.waitForNextFrame();     }
 }
-    }
-    
     /**
      * 即座の要素更新
      */
@@ -325,7 +300,7 @@ export class RenderingOptimizer {
         const { animateTransition, cacheResults } = options;
         
         // アニメーション準備
-        if (animateTransition) { this.prepareTransitionAnimation(elements) }
+        if (animateTransition) { this.prepareTransitionAnimation(elements);
         
         // 要素の測定
         const measurements = this.batchMeasureElements(elements);
@@ -334,7 +309,7 @@ export class RenderingOptimizer {
         await this.batchUpdateElements(elements, language, measurements, options);
         
         // アニメーション実行
-        if (animateTransition) { await this.executeTransitionAnimation(elements) }
+        if (animateTransition) { await this.executeTransitionAnimation(elements);
     }
     
     /**
@@ -345,10 +320,10 @@ export class RenderingOptimizer {
         // 要素を優先度でソート
         const sortedElements = elements.sort((a, b) => { 
             const priorityA = this.getElementPriority(a);
-            const priorityB = this.getElementPriority(b) }
+            const priorityB = this.getElementPriority(b);
             return priorityB - priorityA;);
         
-        for (let, i = 0; i < sortedElements.length; i += batchSize) { batches.push(sortedElements.slice(i, i + batchSize) }
+        for (let, i = 0; i < sortedElements.length; i += batchSize) { batches.push(sortedElements.slice(i, i + batchSize);
         
         return batches;
     }
@@ -390,7 +365,7 @@ export class RenderingOptimizer {
         for (const element of elements) {
             const cacheKey = this.getElementCacheKey(element);
             if (this.measurementCache.has(cacheKey) {
-                measurements.set(element, this.measurementCache.get(cacheKey)!) }
+                measurements.set(element, this.measurementCache.get(cacheKey)!);
                 this.stats.cacheHits++; }
             } else {  const rect = element.getBoundingClientRect();
                 const computedStyle = window.getComputedStyle(element);
@@ -427,13 +402,13 @@ export class RenderingOptimizer {
                 if (update) {
     
 }
-                    updates.push({ element, update ) }
+                    updates.push({ element, update );
 }
         
         // 一括DOM書き込み
         requestAnimationFrame(() => {  }
-            for (const { element, update } of updates) { this.applyElementUpdate(element, update, cacheResults) }
-        };
+            for (const { element, update } of updates) { this.applyElementUpdate(element, update, cacheResults);
+        }
     }
     
     /**
@@ -487,7 +462,7 @@ export class RenderingOptimizer {
             }
             
             // リフローが必要な場合の最適化
-            if (update.needsReflow) { this.optimizeReflow(element, update) }
+            if (update.needsReflow) { this.optimizeReflow(element, update);
             
             // 結果をキャッシュ
             if (cacheResults) {
@@ -504,14 +479,12 @@ export class RenderingOptimizer {
      */''
     private optimizeReflow(element: HTMLElement, update: ElementUpdate): void { // contain: layout を一時的に適用
         const originalContain = element.style.contain,
-        element.style.contain = 'layout',
+        element.style.contain = 'layout,
         
         // 更新完了後に元に戻す
         requestAnimationFrame(() => {  }
-            element.style.contain = originalContain; }
-        };
-    }
-    
+            element.style.contain = originalContain;     }
+}
     /**
      * フォント最適化
      */
@@ -525,13 +498,13 @@ export class RenderingOptimizer {
             
                 if (!this.fontOptimizer.preloadedFonts.has(fontFamily) {
                     const promise = this.loadFont(fontFamily);
-                    loadPromises.push(promise) }
+                    loadPromises.push(promise);
                     this.fontOptimizer.fontLoadPromises.set(fontFamily, promise); }
 }
             
             if (loadPromises.length > 0) {
             
-                await Promise.allSettled(loadPromises) }
+                await Promise.allSettled(loadPromises);
                 this.stats.fontLoads += loadPromises.length; }
             }
             
@@ -576,12 +549,12 @@ export class RenderingOptimizer {
             document.head.appendChild(link);
             
             return new Promise<boolean>((resolve, reject) => {  link.onload = () => {
-                    this.fontOptimizer.preloadedFonts.add(fontFamily) }
+                    this.fontOptimizer.preloadedFonts.add(fontFamily);
                     resolve(true); }
                 };
                 link.onerror = () => reject(new, Error(`Failed, to load, font: ${fontFamily}`);
                 // タイムアウト
-                setTimeout(() => reject(new Error(`Font load timeout: ${ fontFamily}` }, 5000};
+                setTimeout(() => reject(new Error(`Font load timeout: ${ fontFamily}` }, 5000}
             };
             
         } catch (error) {
@@ -592,7 +565,7 @@ export class RenderingOptimizer {
      * フォントURLを取得
      */
     private getFontURL(fontFamily: string): string { // Google Fonts URLの生成（実際の実装では適切なURLを使用）
-        const encodedFamily = encodeURIComponent(fontFamily) }
+        const encodedFamily = encodeURIComponent(fontFamily);
         return `https://fonts.googleapis.com/css2?family=${encodedFamily}:wght@400;500;700&display=swap`;
     }
     
@@ -617,10 +590,8 @@ export class RenderingOptimizer {
             this.animationOptimizer.animationQueue.push({
                 element
                 initialState,
-                startTime: performance.now( };
-        }
-    }
-    
+                startTime: performance.now(     }
+}
     /**
      * トランジションアニメーション実行
      */
@@ -646,7 +617,7 @@ export class RenderingOptimizer {
                     this.stats.animationsOptimized++;
                     resolve();
                 }, 200);
-            };
+            }
         };
     }
     
@@ -656,7 +627,7 @@ export class RenderingOptimizer {
     private detectReducedMotionPreference(): void { ''
         if (window.matchMedia) {
 
-            const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)',
+            const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce),
             this.animationOptimizer.reducedMotion = mediaQuery.matches,
 
             mediaQuery.addEventListener('change', (e) => { 
@@ -758,7 +729,7 @@ export class RenderingOptimizer {
      * 次のフレームまで待機
      */
     private waitForNextFrame(): Promise<void>;
-        return new Promise<void>(resolve => { requestAnimationFrame(() => resolve()) }
+        return new Promise<void>(resolve => { requestAnimationFrame(() => resolve());
     
     /**
      * 要素キャッシュキーを生成
@@ -797,13 +768,13 @@ export class RenderingOptimizer {
         
         return { ...this.stats,
             averageRenderTime: Math.round(avgRenderTime * 100) / 100,
-            averageBatchSize: Math.round(avgBatchSize);
+            averageBatchSize: Math.round(avgBatchSize),
             cacheHitRate: Math.round(this.performanceMetrics.cacheHitRate * 100) / 100,
             optimizationLevel: this.optimizationLevel,
             totalRenders: this.performanceMetrics.totalRenders,
             optimizedRenders: this.performanceMetrics.optimizedRenders,
             cacheSize: this.elementCache.size,
-    measurementCacheSize: this.measurementCache.size },
+    measurementCacheSize: this.measurementCache.size ,
             textContentCacheSize: this.textContentCache.size 
     }
     
@@ -813,16 +784,16 @@ export class RenderingOptimizer {
     getDetailedPerformanceStats(): DetailedPerformanceStats { const stats = this.getOptimizationStats();
         return { ...stats,
             renderTimeDistribution: {
-                min: Math.min(...this.performanceMetrics.renderTimes) || 0,
+                min: Math.min(...this.performanceMetrics.renderTimes) || 0 ,
                 max: Math.max(...this.performanceMetrics.renderTimes) || 0,
-    median: this.calculateMedian(this.performanceMetrics.renderTimes) },
+    median: this.calculateMedian(this.performanceMetrics.renderTimes) ,
                 p95: this.calculatePercentile(this.performanceMetrics.renderTimes, 0.95); }
             },
             fontLoadStats: { totalLoads: this.stats.fontLoads,
-                preloadedFonts: this.fontOptimizer.preloadedFonts.size,
+                preloadedFonts: this.fontOptimizer.preloadedFonts.size ,
     averageLoadTime: this.calculateAverage(this.performanceMetrics.fontLoadTimes }
             animationStats: { optimizedAnimations: this.stats.animationsOptimized,
-                reducedMotionEnabled: this.animationOptimizer.reducedMotion,
+                reducedMotionEnabled: this.animationOptimizer.reducedMotion ,
     averageFrameTime: this.calculateAverage(this.performanceMetrics.animationFrameTimes 
     }
     
@@ -890,9 +861,9 @@ export class RenderingOptimizer {
         }
         
         // バッチタイマーをクリア
-        if (this.batchProcessor.batchTimer) { clearTimeout(this.batchProcessor.batchTimer) }
+        if (this.batchProcessor.batchTimer) { clearTimeout(this.batchProcessor.batchTimer);
         
-        if (this.batchProcessor.maxWaitTimer) { clearTimeout(this.batchProcessor.maxWaitTimer) }
+        if (this.batchProcessor.maxWaitTimer) { clearTimeout(this.batchProcessor.maxWaitTimer);
         ;
         // キャッシュをクリア
         this.clearCache('';

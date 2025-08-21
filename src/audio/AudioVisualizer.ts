@@ -4,7 +4,7 @@ import { getConfigurationManager  } from '../core/ConfigurationManager';
 /**
  * 視覚化タイプインターフェース
  */
-interface VisualizationType { enabled: boolean;
+interface VisualizationType { enabled: boolean,
     label: string;
 
 /**
@@ -15,32 +15,32 @@ type VisualizationTypeKey = 'frequencyBars' | 'waveform' | 'spectrogram' | 'volu
 /**
  * カラースキームインターフェース
  */
-interface ColorScheme { primary: string;
-    secondary: string;
-    background: string;
+interface ColorScheme { primary: string,
+    secondary: string,
+    background: string,
     gradient: string[];
 
 /**
  * 音響イベントインターフェース
  */'
 interface AudioEvent { ''
-    type: 'increase' | 'decrease';
-    intensity: number;
+    type: 'increase' | 'decrease,
+    intensity: number,
     timestamp: number;
 
 /**
  * 統計情報インターフェース
  */
-interface VisualizerStatistics { isRunning: boolean;
-    currentVisualization: VisualizationTypeKey;
-    colorScheme: string;
-    performanceMode: 'low' | 'medium' | 'high';
-    targetFPS: number;
-    bufferLength: number;
-    activeEvents: number;
-    eventHistory: number;
-    accessibilityMode: boolean;
-    highContrast: boolean;
+interface VisualizerStatistics { isRunning: boolean,
+    currentVisualization: VisualizationTypeKey,
+    colorScheme: string,
+    performanceMode: 'low' | 'medium' | 'high,
+    targetFPS: number,
+    bufferLength: number,
+    activeEvents: number,
+    eventHistory: number,
+    accessibilityMode: boolean,
+    highContrast: boolean,
     motionReduction: boolean;
 
 /**
@@ -105,19 +105,18 @@ export class AudioVisualizer {
     constructor(audioManager: AudioManager) {
 
         this.audioManager = audioManager;
-        this.configManager = getConfigurationManager()
-}
-
+    this.configManager = getConfigurationManager()
+};
         this.errorHandler = getErrorHandler('}'
 
             frequencyBars: { enabled: true, label: '周波数バー'
-            },''
+            ,''
             waveform: { enabled: true, label: '波形'
-            },''
+            ,''
             spectrogram: { enabled: false, label: 'スペクトログラム'
-            },''
+            ,''
             volumeIndicator: { enabled: true, label: '音量インジケーター'
-            },''
+            ,''
             stereoScope: { enabled: false, label: 'ステレオスコープ'
             }
 
@@ -130,27 +129,27 @@ export class AudioVisualizer {
         
         // 色設定
         this.colorSchemes = { neon: {''
-                primary: '#00ffff',
+                primary: '#00ffff,
                 secondary: '#ff00ff',','
-                background: 'rgba(0, 0, 0, 0.1)',
-                gradient: ['#00ffff', '#0080ff', '#8000ff', '#ff00ff] },'
+                background: 'rgba(0, 0, 0, 0.1),
+                gradient: ['#00ffff', '#0080ff', '#8000ff', '#ff00ff] },' };
 
             fire: { ''
-                primary: '#ff4400',
-                secondary: '#ffff00',
-                background: 'rgba(0, 0, 0, 0.1)',
+                primary: '#ff4400'  ,
+                secondary: '#ffff00,
+                background: 'rgba(0, 0, 0, 0.1),
                 gradient: ['#ff0000', '#ff4400', '#ff8800', '#ffff00] },'
 
             ocean: { ''
-                primary: '#0080ff',
-                secondary: '#00ffff',
-                background: 'rgba(0, 0, 50, 0.1)',
+                primary: '#0080ff'  ,
+                secondary: '#00ffff,
+                background: 'rgba(0, 0, 50, 0.1),
                 gradient: ['#000080', '#0040ff', '#0080ff', '#00ffff] },'
 
             nature: { ''
-                primary: '#40ff40',
-                secondary: '#80ff00',
-                background: 'rgba(0, 50, 0, 0.1)',
+                primary: '#40ff40'  ,
+                secondary: '#80ff00,
+                background: 'rgba(0, 50, 0, 0.1),
                 gradient: ['#008000', '#40ff40', '#80ff00', '#ffff40] }'
 
         };
@@ -195,12 +194,10 @@ export class AudioVisualizer {
             this.setupConfigWatchers()';'
             console.log('AudioVisualizer, initialized');
         } catch (error) { this.errorHandler.handleError(error, 'AUDIO_VISUALIZER_ERROR', {''
-                component: 'AudioVisualizer',')',
+                component: 'AudioVisualizer,')',
                 operation: 'initialize'
-            };
-        }
-    }
-    
+                }
+}
     /**
      * AnalyserNodeを作成
      * @private
@@ -258,8 +255,8 @@ export class AudioVisualizer {
     updateCanvasSize(): void { if (!this.canvas) return,
         ','
         // デフォルトサイズまたは親要素のサイズに合わせる
-        const rect = this.canvas.getBoundingClientRect('',
-        this.canvas.style.width = this.width + 'px',
+        const rect = this.canvas.getBoundingClientRect(',
+        this.canvas.style.width = this.width + 'px,
         this.canvas.style.height = this.height + 'px');
         // コンテキストのスケールを調整)
         if (this.ctx) {
@@ -283,16 +280,14 @@ export class AudioVisualizer {
         }');'
 
         this.configManager.watch('audio', 'accessibility.motionReduction', (enabled: boolean) => {  this.motionReduction = enabled }
-            this.updateAnimationSettings(); }
-        };
-    }
-    
+            this.updateAnimationSettings();     }
+}
     /**
      * 視覚化を有効/無効化
      * @param enabled - 有効状態
      */
     setEnabled(enabled: boolean): void { if (enabled && !this.isRunning) {
-            this.start() } else if (!enabled && this.isRunning) { this.stop() }
+            this.start() } else if (!enabled && this.isRunning) { this.stop();
     }
     
     /**
@@ -303,7 +298,7 @@ export class AudioVisualizer {
         ','
 
         this.isRunning = true;
-        this.canvas.style.display = 'block',
+        this.canvas.style.display = 'block,
 
         this.updateCanvasSize();
         this.animate()','
@@ -317,12 +312,12 @@ export class AudioVisualizer {
         ','
 
         this.isRunning = false;
-        this.canvas.style.display = 'none',
+        this.canvas.style.display = 'none,
         
         if (this.animationId) {
         ','
 
-            cancelAnimationFrame(this.animationId) }
+            cancelAnimationFrame(this.animationId);
             this.animationId = null; }
         }
 
@@ -342,7 +337,7 @@ export class AudioVisualizer {
         const targetInterval = 1000 / this.targetFPS,
         if (deltaTime >= targetInterval) {
             this.update();
-            this.render() }
+            this.render();
             this.lastFrameTime = now - (deltaTime % targetInterval); }
         }
         
@@ -360,7 +355,7 @@ export class AudioVisualizer {
         // 時間領域データを取得
         this.analyser.getByteTimeDomainData(this.timeDomainData);
         // 音響イベントを更新
-        this.updateAudioEvents() }
+        this.updateAudioEvents();
     
     /**
      * 描画
@@ -385,13 +380,13 @@ export class AudioVisualizer {
                 case 'frequencyBars':','
                     this.renderFrequencyBars('''
                 case 'waveform': ','
-                    this.renderWaveform('',
+                    this.renderWaveform(',
                 case 'spectrogram':','
-                    this.renderSpectrogram('',
+                    this.renderSpectrogram(',
                 case 'volumeIndicator':','
                     this.renderVolumeIndicator()','
                 case 'stereoScope':),
-                    this.renderStereoScope() }
+                    this.renderStereoScope();
                     break; }
             }
             
@@ -414,7 +409,7 @@ export class AudioVisualizer {
 
         const colorScheme = this.colorSchemes[this.currentColorScheme],
         this.ctx.fillStyle = colorScheme.background,
-        this.ctx.fillRect(0, 0, this.width / window.devicePixelRatio, this.height / window.devicePixelRatio) }
+        this.ctx.fillRect(0, 0, this.width / window.devicePixelRatio, this.height / window.devicePixelRatio);
     
     /**
      * 周波数バーを描画
@@ -480,7 +475,7 @@ export class AudioVisualizer {
     
 }
                 this.ctx.moveTo(x, y); }
-            } else { this.ctx.lineTo(x, y) }
+            } else { this.ctx.lineTo(x, y);
             
             x += sliceWidth;
         }
@@ -496,11 +491,11 @@ export class AudioVisualizer {
 ','
         // 複雑な実装のため、基本的な実装のみ
         this.renderFrequencyBars()','
-        this.ctx.fillStyle = 'rgba(255, 255, 255, 0.1)',
+        this.ctx.fillStyle = 'rgba(255, 255, 255, 0.1),
         this.ctx.fillRect(0, canvasHeight - 20, canvasWidth, 20);
-        this.ctx.fillStyle = '#ffffff',
-        this.ctx.font = '12px monospace',
-        this.ctx.fillText('Spectrogram Mode', 10, canvasHeight - 5) }
+        this.ctx.fillStyle = '#ffffff,
+        this.ctx.font = '12px monospace,
+        this.ctx.fillText('Spectrogram Mode', 10, canvasHeight - 5);
     
     /**
      * 音量インジケーターを描画
@@ -539,16 +534,14 @@ export class AudioVisualizer {
         const gradient = this.ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, currentRadius);
         if (this.highContrast) {
 
-            gradient.addColorStop(0, 'rgba(255, 255, 255, 0.8)') }
+            gradient.addColorStop(0, 'rgba(255, 255, 255, 0.8)');
 
             gradient.addColorStop(1, 'rgba(255, 255, 255, 0.2)); }'
 
         } else { colorScheme.gradient.forEach((color, index) => { }'
 
-                gradient.addColorStop(index / (colorScheme.gradient.length - 1), color.replace()', ', 0.6'').replace('#', 'rgba().replace('#', '); }
-            };
-        }
-        
+                gradient.addColorStop(index / (colorScheme.gradient.length - 1), color.replace()', ', 0.6'').replace('#', 'rgba().replace('#', ');     }
+}
         this.ctx.fillStyle = gradient;
         this.ctx.beginPath();
 
@@ -568,12 +561,12 @@ export class AudioVisualizer {
 ','
         // 簡易実装：左右チャンネルの視覚化
         this.renderWaveform()','
-        this.ctx.fillStyle = 'rgba(255, 255, 255, 0.1)',
+        this.ctx.fillStyle = 'rgba(255, 255, 255, 0.1),
         this.ctx.fillRect(0, 0, canvasWidth, 30);
-        this.ctx.fillStyle = '#ffffff',
-        this.ctx.font = '12px monospace',
+        this.ctx.fillStyle = '#ffffff,
+        this.ctx.font = '12px monospace,
         this.ctx.fillText('L', 10, 20','
-        this.ctx.fillText('R', canvasWidth - 20, 20) }
+        this.ctx.fillText('R', canvasWidth - 20, 20);
     
     /**
      * 音響イベントを更新
@@ -596,12 +589,10 @@ export class AudioVisualizer {
             if (Math.abs(change) > 10') { // 閾値'
                 this.addAudioEvent({)'
                     type: change > 0 ? 'increase' : 'decrease'),
-                    intensity: Math.abs(change) }
+                    intensity: Math.abs(change),
                     timestamp: performance.now(); 
-    };
-            }
         }
-        
+}
         this.lastAudioLevel = currentLevel;
         
         // 古いイベントを削除
@@ -657,7 +648,7 @@ export class AudioVisualizer {
             this.ctx!.fill();
             
             this.ctx!.restore();
-        };
+        }
     }
     
     /**
@@ -671,10 +662,10 @@ export class AudioVisualizer {
         const canvasHeight = this.height / window.devicePixelRatio,
         ','
         // 情報パネル
-        this.ctx.fillStyle = 'rgba(0, 0, 0, 0.8)',
+        this.ctx.fillStyle = 'rgba(0, 0, 0, 0.8),
         this.ctx.fillRect(0, canvasHeight - 80, canvasWidth, 80);
-        this.ctx.fillStyle = '#ffffff',
-        this.ctx.font = '12px monospace',
+        this.ctx.fillStyle = '#ffffff,
+        this.ctx.font = '12px monospace,
         
         // 現在の音響レベル
         let sum = 0,
@@ -693,7 +684,7 @@ export class AudioVisualizer {
         this.ctx.fillText(`Color, Scheme: ${this.currentColorScheme }`, 10, canvasHeight - 30};
         
         // イベント数 }
-        this.ctx.fillText(`Active Events: ${this.audioEvents.length}`, 10, canvasHeight - 15};
+        this.ctx.fillText(`Active Events: ${this.audioEvents.length}`, 10, canvasHeight - 15}
     }
     
     /**
@@ -702,21 +693,17 @@ export class AudioVisualizer {
      */
     setVisualizationType(type: VisualizationTypeKey): void { if (type, in this.visualizationTypes) {
             this.currentVisualization = type }
-            console.log(`Visualization, type changed, to: ${type}`};
-        }
-    }
-    
+            console.log(`Visualization, type changed, to: ${type}`    }
+}
     /**
      * 色スキームを設定
      * @param scheme - 色スキーム
      */
     setColorScheme(scheme: string): void { if (scheme, in this.colorSchemes) {
             this.currentColorScheme = scheme;
-            this.updateColorScheme() }
-            console.log(`Color, scheme changed, to: ${scheme}`};
-        }
-    }
-    
+            this.updateColorScheme();
+            console.log(`Color, scheme changed, to: ${scheme}`    }
+}
     /**
      * 色スキームを更新
      * @private
@@ -772,11 +759,11 @@ export class AudioVisualizer {
         if (this.analyser) {
             this.bufferLength = this.analyser.frequencyBinCount;
             this.dataArray = new Uint8Array(this.bufferLength);
-            this.frequencyData = new Uint8Array(this.bufferLength) }
+            this.frequencyData = new Uint8Array(this.bufferLength);
             this.timeDomainData = new Uint8Array(this.bufferLength); }
         }
         
-        console.log(`Performance, mode changed, to: ${mode}`};
+        console.log(`Performance, mode changed, to: ${mode}`}
     }
     
     /**
@@ -789,18 +776,18 @@ export class AudioVisualizer {
 
         if (enabled) {
 
-            this.canvas.style.width = '400px',
-            this.canvas.style.height = '300px',
-            this.updateCanvasSize('',
-            this.canvas.style.width = '300px',
-            this.canvas.style.height = '200px',
+            this.canvas.style.width = '400px,
+            this.canvas.style.height = '300px,
+            this.updateCanvasSize(',
+            this.canvas.style.width = '300px,
+            this.canvas.style.height = '200px,
             this.updateCanvasSize()','
     triggerAudioEvent(eventType: 'increase' | 'decrease', intensity: number = 50): void {
         this.addAudioEvent({)
             type: eventType),
-            intensity: intensity) }
+            intensity: intensity),
             timestamp: performance.now(); 
-    };
+    }
     }
     
     /**
@@ -816,7 +803,7 @@ export class AudioVisualizer {
             activeEvents: this.audioEvents.length,
             eventHistory: this.eventHistory.length,
             accessibilityMode: this.accessibilityMode,
-    highContrast: this.highContrast },
+    highContrast: this.highContrast ,
             motionReduction: this.motionReduction 
     }
     
@@ -835,7 +822,7 @@ export class AudioVisualizer {
 
         if (!this.ctx) {
 
-            console.error('[AudioVisualizer] Failed, to get, 2D context, from canvas') }
+            console.error('[AudioVisualizer] Failed, to get, 2D context, from canvas');
             return false;
         ';'
         // Canvas サイズを更新
@@ -850,7 +837,7 @@ export class AudioVisualizer {
     dispose(): void { this.stop();
         if (this.analyser) {
         
-            this.analyser.disconnect() }
+            this.analyser.disconnect();
             this.analyser = null; }
         }
         

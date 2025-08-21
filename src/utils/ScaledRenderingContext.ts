@@ -4,12 +4,11 @@
  */
 
 // 型定義
-interface StateInfo { timestamp: number;
+interface StateInfo { timestamp: number,
     scaleFactor: number;
-
-interface ScaledCoordinateManager {
-    getScaledPosition(baseX: number, baseY: number): { ,x: number,, y: number;
-    getScaledSize(baseWidth: number, baseHeight: number): { width: number,, height: number;
+    interface ScaledCoordinateManager {
+    getScaledPosition(baseX: number, baseY: number): { ,x: number, y: number;
+    getScaledSize(baseWidth: number, baseHeight: number): { width: number, height: number;
     getScaleFactor(): number;
     getDebugInfo(): any;
 }
@@ -25,7 +24,7 @@ export class ScaledRenderingContext {
         
         // 元のコンテキストの状態を保存するスタック
 
-     }
+     };
         this.stateStack = []; }
     }
     
@@ -38,7 +37,7 @@ export class ScaledRenderingContext {
     fillText(text: string, baseX: number, baseY: number): void { try {
             const scaledPosition = this.scaledCoordinateManager.getScaledPosition(baseX, baseY);
             this.context.fillText(text, scaledPosition.x, scaledPosition.y) } catch (error) { console.warn('ScaledRenderingContext: fillText failed, using fallback', error);
-            this.context.fillText(text, baseX, baseY) }
+            this.context.fillText(text, baseX, baseY);
     }
     
     /**
@@ -55,7 +54,7 @@ export class ScaledRenderingContext {
 
         } catch (error) {
             console.warn('ScaledRenderingContext: fillRect failed, using fallback', error);
-            this.context.fillRect(baseX, baseY, baseWidth, baseHeight) }
+            this.context.fillRect(baseX, baseY, baseWidth, baseHeight);
     }
     
     /**
@@ -72,7 +71,7 @@ export class ScaledRenderingContext {
 
         } catch (error) {
             console.warn('ScaledRenderingContext: strokeRect failed, using fallback', error);
-            this.context.strokeRect(baseX, baseY, baseWidth, baseHeight) }
+            this.context.strokeRect(baseX, baseY, baseWidth, baseHeight);
     }
     
     /**
@@ -87,7 +86,7 @@ export class ScaledRenderingContext {
             const scaledPosition = this.scaledCoordinateManager.getScaledPosition(baseX, baseY);
             if (baseWidth !== null && baseHeight !== null) {
             
-                const scaledSize = this.scaledCoordinateManager.getScaledSize(baseWidth, baseHeight) }
+                const scaledSize = this.scaledCoordinateManager.getScaledSize(baseWidth, baseHeight);
                 this.context.drawImage(image, scaledPosition.x, scaledPosition.y, scaledSize.width, scaledSize.height); }
 
             } else { this.context.drawImage(image, scaledPosition.x, scaledPosition.y),' }'
@@ -117,7 +116,7 @@ export class ScaledRenderingContext {
             // フォントの最小・最大サイズを制限
             const minFontSize = 8,
             const maxFontSize = 72,
-            const clampedFontSize = Math.max(minFontSize, Math.min(maxFontSize, scaledFontSize) }
+            const clampedFontSize = Math.max(minFontSize, Math.min(maxFontSize, scaledFontSize);
             this.context.font = `${clampedFontSize}px ${fontFamily}`;'} catch (error) { console.warn('ScaledRenderingContext: setScaledFont failed, using fallback', error }'
             this.context.font = `${baseFontSize}px ${fontFamily}`;
         }
@@ -217,7 +216,7 @@ export class ScaledRenderingContext {
 
         } catch (error) {
             console.warn('ScaledRenderingContext: moveTo failed, using fallback', error);
-            this.context.moveTo(baseX, baseY) }
+            this.context.moveTo(baseX, baseY);
     }
     
     /**
@@ -231,7 +230,7 @@ export class ScaledRenderingContext {
 
         } catch (error) {
             console.warn('ScaledRenderingContext: lineTo failed, using fallback', error);
-            this.context.lineTo(baseX, baseY) }
+            this.context.lineTo(baseX, baseY);
     }
     
     /**
@@ -250,14 +249,14 @@ export class ScaledRenderingContext {
 
         } catch (error) {
             console.warn('ScaledRenderingContext: arc failed, using fallback', error);
-            this.context.arc(baseX, baseY, baseRadius, startAngle, endAngle, counterclockwise) }
+            this.context.arc(baseX, baseY, baseRadius, startAngle, endAngle, counterclockwise);
     }
     
     // パスメソッドの代理
-    beginPath(): void { this.context.beginPath() }
-    closePath(): void { this.context.closePath() }
-    fill(): void { this.context.fill() }
-    stroke(): void { this.context.stroke() }
+    beginPath(): void { this.context.beginPath();
+    closePath(): void { this.context.closePath();
+    fill(): void { this.context.fill();
+    stroke(): void { this.context.stroke();
     
     /**
      * 現在のスケール情報を取得（デバッグ用）

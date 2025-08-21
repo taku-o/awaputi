@@ -51,11 +51,11 @@ class MockGameEngine {
         this.sceneManager = {
             switchScene: global.jest.fn()' };'
         this.playerData = {
-            username: 'TestUser';
+            username: 'TestUser',
             totalAP: 1000;
-            currentAP: 500;
+            currentAP: 500,
             getData: global.jest.fn((') => ({'
-                username: 'TestUser';
+                username: 'TestUser',
                 totalAP: 1000;
                 currentAP: 500
     }),
@@ -64,11 +64,11 @@ class MockGameEngine {
         this.statisticsManager = {
             getDetailedStatistics: global.jest.fn((') => Promise.resolve({'
                 basic: {
-                    totalGamesPlayed: 10;
+                    totalGamesPlayed: 10 },
                     totalPlayTime: '2時間30分';
-                    totalScore: 50000;
+                    totalScore: 50000,
                     highestScore: 10000;
-                    averageScore: 5000;
+                    averageScore: 5000,
         completionRate: 75)
             ))
         ),
@@ -168,7 +168,7 @@ describe('UserInfoScene Backward Compatibility Tests', () => {
             userInfoScene.enter();
             // タブエリアのクリック
             const event = {
-                clientX: 200;
+                clientX: 200,
                 clientY: userInfoScene.headerHeight - userInfoScene.tabHeight / 2
             };
             
@@ -179,7 +179,7 @@ describe('UserInfoScene Backward Compatibility Tests', () => {
         test('should handle back button click', () => {
             userInfoScene.enter();
             const event = {
-                clientX: 110;
+                clientX: 110,
                 clientY: gameEngine.canvas.height - 45
             };
             
@@ -189,7 +189,7 @@ describe('UserInfoScene Backward Compatibility Tests', () => {
         test('should delegate content area clicks', () => {
             userInfoScene.enter();
             const event = {
-                clientX: 400;
+                clientX: 400,
                 clientY: 300
             };
             
@@ -202,7 +202,7 @@ describe('UserInfoScene Backward Compatibility Tests', () => {
         test('should handle Tab key navigation', () => {
             userInfoScene.enter('),'
             const event = {
-                key: 'Tab';
+                key: 'Tab',
                 shiftKey: false;
         preventDefault: global.jest.fn( };
             
@@ -215,7 +215,7 @@ describe('UserInfoScene Backward Compatibility Tests', () => {
             userInfoScene.focusedElement = 1, // 実績タブ
             
             const event = {
-                key: 'Enter';
+                key: 'Enter',
         preventDefault: global.jest.fn( };
             
             userInfoScene.handleKeyPress(event);
@@ -224,7 +224,7 @@ describe('UserInfoScene Backward Compatibility Tests', () => {
         test('should handle Escape key', () => {
             userInfoScene.enter('),'
             const event = {
-                key: 'Escape';
+                key: 'Escape',
         preventDefault: global.jest.fn( };
             
             userInfoScene.handleKeyPress(event);

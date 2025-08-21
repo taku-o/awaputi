@@ -2,8 +2,8 @@ import { GameEngine  } from '../../core/GameEngine';
 import { ComponentEventBus  } from './ComponentEventBus';
 import { SceneState  } from './SceneState';
 
-interface SectionChangeData { oldSection: string;
-    newSection: string;
+interface SectionChangeData { oldSection: string,
+    newSection: string,
     buttonIndex: number;
 
 /**
@@ -36,9 +36,9 @@ export class HelpSectionSelector {
     constructor(gameEngine: GameEngine, eventBus: ComponentEventBus, state: SceneState) {
     
         this.gameEngine = gameEngine;
-        this.eventBus = eventBus;
-        this.state = state
-}
+    this.eventBus = eventBus;
+    this.state = state
+};
         // アクセシビリティ設定 }
         this.accessibilitySettings = state.accessibilitySettings || {}
     
@@ -68,7 +68,7 @@ export class HelpSectionSelector {
                 buttonWidth,
                 this.buttonHeight);
                 this.sections[i]),
-                this.sectionLabels[i]) }
+                this.sectionLabels[i]);
                 i }
         }
         
@@ -84,16 +84,16 @@ export class HelpSectionSelector {
      * @param height - 高さ
      */''
     private renderBackground(context: CanvasRenderingContext2D, x: number, y: number, width: number, height: number): void { ''
-        context.fillStyle = this.accessibilitySettings.highContrast ? '#FFFFFF' : '#F8F9FA',
+        context.fillStyle = this.accessibilitySettings.highContrast ? '#FFFFFF' : '#F8F9FA,
         context.fillRect(x, y, width, height);
         ','
         // 下部の境界線
-        context.strokeStyle = this.accessibilitySettings.highContrast ? '#000000' : '#DEE2E6',
+        context.strokeStyle = this.accessibilitySettings.highContrast ? '#000000' : '#DEE2E6,
         context.lineWidth = 1,
         context.beginPath();
         context.moveTo(x, y + height - 1);
         context.lineTo(x + width, y + height - 1);
-        context.stroke() }
+        context.stroke();
     
     /**
      * セクションボタンを描画
@@ -112,7 +112,7 @@ export class HelpSectionSelector {
         y: number, ;
         width: number, ;
         height: number, ;
-        section: string );
+        section: string ),
         label: string,
     index: number,
     ): void { const isActive = this.currentSection === section;
@@ -141,12 +141,12 @@ export class HelpSectionSelector {
             borderColor = '#1565C0'; }
 
         } else if (isHovered || isFocused) { ''
-            backgroundColor = '#E9ECEF',
-            textColor = '#495057',
+            backgroundColor = '#E9ECEF,
+            textColor = '#495057,
             borderColor = '#ADB5BD' }
 
         } else {
-            backgroundColor = '#FFFFFF',
+            backgroundColor = '#FFFFFF,
             textColor = '#6C757D',' }'
 
             borderColor = '#DEE2E6'; }
@@ -155,7 +155,7 @@ export class HelpSectionSelector {
         // 高コントラストモードの調整
         if (this.accessibilitySettings.highContrast) {
 
-            backgroundColor = isActive ? '#000000' : '#FFFFFF',
+            backgroundColor = isActive ? '#000000' : '#FFFFFF,
             textColor = isActive ? '#FFFFFF' : '#000000' }
 
             borderColor = '#000000'; }
@@ -174,11 +174,11 @@ export class HelpSectionSelector {
         // フォーカス時の追加視覚効果
         if (isFocused && !isActive) {
 
-            context.strokeStyle = '#007BFF',
+            context.strokeStyle = '#007BFF,
             context.lineWidth = 2,
             context.setLineDash([2, 2]);
             this.roundRect(context, x - 1, y - 1, width + 2, height + 2, this.cornerRadius + 1);
-            context.stroke() }
+            context.stroke();
 
             context.setLineDash([]); }
         }
@@ -192,7 +192,7 @@ export class HelpSectionSelector {
         // テキストのシャドウ効果（アクティブ時）
         if (isActive && !this.accessibilitySettings.highContrast) {
 
-            context.shadowColor = 'rgba(0, 0, 0, 0.3)',
+            context.shadowColor = 'rgba(0, 0, 0, 0.3),
             context.shadowBlur = 2,
             context.shadowOffsetX = 1 }
             context.shadowOffsetY = 1; }
@@ -207,7 +207,7 @@ export class HelpSectionSelector {
         context.shadowOffsetY = 0;
         
         // アクティブボタンのインジケーター
-        if (isActive) { this.renderActiveIndicator(context, x, y + height - 3, width, 3) }
+        if (isActive) { this.renderActiveIndicator(context, x, y + height - 3, width, 3);
     }
     
     /**
@@ -226,7 +226,7 @@ export class HelpSectionSelector {
         
         context.fillStyle = gradient,
         this.roundRect(context, x + 5, y, width - 10, height, height / 2);
-        context.fill() }
+        context.fill();
     
     /**
      * クリック処理
@@ -250,7 +250,7 @@ export class HelpSectionSelector {
         // クリックされたボタンを特定
         const buttonIndex = this.getButtonIndex(relativeX, containerWidth);
         if (buttonIndex !== -1) {
-            this.selectSection(this.sections[buttonIndex], buttonIndex) }
+            this.selectSection(this.sections[buttonIndex], buttonIndex);
             return true;
         
         return false;
@@ -310,7 +310,7 @@ export class HelpSectionSelector {
         const number = parseInt(event.key);
         if (number >= 1 && number <= this.sections.length) {
             event.preventDefault();
-            this.selectSection(this.sections[number - 1], number - 1) }
+            this.selectSection(this.sections[number - 1], number - 1);
             return true;
         
         return false;
@@ -356,17 +356,15 @@ export class HelpSectionSelector {
                 buttonIndex  };
             this.eventBus.emit('help-section-changed', eventData);
             
-            console.log(`Help, section changed, to: ${section}`};
-        }
-    }
-    
+            console.log(`Help, section changed, to: ${section}`    }
+}
     /**
      * セクション変更アニメーションを開始
      * @param section - アニメーション対象セクション
      */
     private startSectionAnimation(section: string): void { if (!this.accessibilitySettings.reducedMotion) {
             this.animatingSection = section;
-            this.animationStartTime = performance.now() }
+            this.animationStartTime = performance.now();
     }
     
     /**
@@ -383,7 +381,7 @@ export class HelpSectionSelector {
         
         const r = Math.round(c1.r + (c2.r - c1.r) * progress),
         const g = Math.round(c1.g + (c2.g - c1.g) * progress),
-        const b = Math.round(c1.b + (c2.b - c1.b) * progress) }
+        const b = Math.round(c1.b + (c2.b - c1.b) * progress);
         return `rgb(${r}, ${g}, ${b}}`;
     }
     
@@ -392,14 +390,14 @@ export class HelpSectionSelector {
      * @param hex - HEX色文字列
      * @returns RGB値オブジェクト
      */
-    private hexToRgb(hex: string): { r: number, g: number,, b: number; | null {
+    private hexToRgb(hex: string): { r: number, g: number, b: number; | null {
         const result = /^#? ([a-f\d]{2}([a-f\d]{2}([a-f\d]{2}$/i.exec(hex);
         return result ? { : undefined
             r: parseInt(result[1], 16);
             g: parseInt(result[2], 16);
             b: parseInt(result[3], 16 } : null;
-    }
-    
+    } };
+
     /**
      * 角丸矩形を描画
      * @param context - Canvas描画コンテキスト
@@ -419,7 +417,7 @@ export class HelpSectionSelector {
         context.quadraticCurveTo(x, y + height, x, y + height - radius);
         context.lineTo(x, y + radius);
         context.quadraticCurveTo(x, y, x + radius, y);
-        context.closePath() }
+        context.closePath();
     
     /**
      * 現在のセクションを設定
@@ -427,7 +425,7 @@ export class HelpSectionSelector {
      */
     setCurrentSection(section: string): void { if (this.sections.includes(section) {
             const buttonIndex = this.sections.indexOf(section);
-            this.selectSection(section, buttonIndex) }
+            this.selectSection(section, buttonIndex);
     }
     
     /**
@@ -440,13 +438,11 @@ export class HelpSectionSelector {
      * 利用可能なセクション一覧を取得
      * @returns セクション情報の配列
      */
-    getAvailableSections(): Array<{ id: string, label: string,, active: boolean,> { return this.sections.map((section, index) => ({
+    getAvailableSections(): Array<{ id: string, label: string, active: boolean,> { return this.sections.map((section, index) => ({
             id: section,
             label: this.sectionLabels[index],
-    active: section === this.currentSection  }
-        };
-    }
-    
+    active: section === this.currentSection      }
+}
     /**
      * クリーンアップ
      */''

@@ -225,7 +225,7 @@ test.describe('Visual Effects E2E Tests', () => {  }', ' }'
                 }'
                     setTimeout((') => { }'
                         const restoreEvent = new Event('contextrestored'); }
-                        canvas.dispatchEvent(restoreEvent};
+                        canvas.dispatchEvent(restoreEvent}
                     }, 100);
                 }
             };
@@ -273,7 +273,7 @@ test.describe('Visual Effects E2E Tests', () => {  }', ' }'
                     const gameEngine = (window as WindowWithGameEngine).gameEngine;' }'
                     if (gameEngine?.seasonalEffectManager') { }'
                         gameEngine.seasonalEffectManager.setTheme('spring'};)
-                    };
+                    }
                 };
                 await page.waitForTimeout(500);
                 // テーマが適用されていることを確認 : undefined'

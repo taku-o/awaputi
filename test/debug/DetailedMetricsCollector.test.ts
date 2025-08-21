@@ -10,7 +10,7 @@ const dom = new JSDOM('<!DOCTYPE html><html><body></body></html>');
 (global: any).window = dom.window,
 (global: any).performance = { now: jest.fn(() => Date.now(
     memory: {
-        usedJSHeapSize: 50 * 1024 * 1024,
+        usedJSHeapSize: 50 * 1024 * 1024 },
         totalJSHeapSize: 100 * 1024 * 1024,
         jsHeapSizeLimit: 200 * 1024 * 1024 }
     }'
@@ -24,7 +24,7 @@ const dom = new JSDOM('<!DOCTYPE html><html><body></body></html>');
     deviceMemory: 8,
     maxTouchPoints: 10,','
     connection: {''
-        effectiveType: '4g',
+        effectiveType: '4g' },
         downlink: 10,
         rtt: 50,
         saveData: false,
@@ -39,7 +39,7 @@ const mockMonitor = { gameEngine: {'
                     return { mock: '2d-context' }
                 }
                 return null;
-    };
+    }
         },
         bubbleManager: { getActiveBubbleCount: jest.fn(() => 25) }
     ),
@@ -128,7 +128,7 @@ describe('DetailedMetricsCollector', () => {  let collector: any,
         }');'
         test('should handle missing WebGL context', () => {  mockMonitor.gameEngine.canvas.getContext.mockReturnValue(null) }
             expect(() => { }
-                collector.collectRenderingDetails(};
+                collector.collectRenderingDetails(}
             }.not.toThrow();'
         }'}');
     describe('Memory Metrics Collection', (') => {  ''
@@ -197,7 +197,7 @@ describe('DetailedMetricsCollector', () => {  let collector: any,
         test('should handle missing audio manager', () => {  const originalAudioManager = mockMonitor.gameEngine.audioManager,
             mockMonitor.gameEngine.audioManager = null }
             expect(() => { }
-                collector.collectAudioDetails(};
+                collector.collectAudioDetails(}
             }.not.toThrow();'
             mockMonitor.gameEngine.audioManager = originalAudioManager;'}');'
     }''
@@ -214,7 +214,7 @@ describe('DetailedMetricsCollector', () => {  let collector: any,
         test('should handle missing connection info', () => {  const originalConnection = navigator.connection,
             delete navigator.connection }
             expect(() => { }
-                collector.collectNetworkDetails(};
+                collector.collectNetworkDetails(}
             }.not.toThrow();'
             navigator.connection = originalConnection;'}');'
     }''
@@ -334,7 +334,7 @@ describe('DetailedMetricsCollector', () => {  let collector: any,
         test('should setup audio profiler', () => { expect(() => { }'
                 collector.setupAudioProfiler(};'}.not.toThrow(')'
         test('should setup network monitor', () => { expect(() => { }
-                collector.setupNetworkMonitor(};
+                collector.setupNetworkMonitor(}
             }.not.toThrow();'
         }'}');
     describe('Cleanup', (') => {  ''

@@ -7,166 +7,156 @@
 import { Season  } from './SeasonDetector.js';
 
 // テーマ関連の型定義
-export interface ThemeColors { primary: string[];
-    secondary: string[];
+export interface ThemeColors { primary: string[],
+    secondary: string[],
     accent: string[];
-
-export interface ThemeParticles { types: string[];
-    density: number;
-    movement: string;
+    export interface ThemeParticles { types: string[],
+    density: number,
+    movement: string,
     spawnRate: number;
-
-export interface ThemeEffects { bubbleDestruction: string;
-    comboEffect: string;
+    export interface ThemeEffects { bubbleDestruction: string,
+    comboEffect: string,
     backgroundPattern: string;
-
-export interface ThemeAudio { ambientSounds: string[];
+    export interface ThemeAudio { ambientSounds: string[],
     destructionSounds: string[];
-
-export interface SeasonalTheme { name: string;
-    colors: ThemeColors;
-    particles: ThemeParticles;
-    effects: ThemeEffects;
+    export interface SeasonalTheme { name: string,
+    colors: ThemeColors,
+    particles: ThemeParticles,
+    effects: ThemeEffects,
     audio: ThemeAudio;
-
-export interface EventTheme { name: string;
-    duration: {
-        start: string, // MM-DD形式;
+    export interface EventTheme { name: string,
+    duration: { start: string, // MM-DD形式  },
         end: string,   // MM-DD形式 },
-    colors: ThemeColors;
-    particles: ThemeParticles;
+    colors: ThemeColors,
+    particles: ThemeParticles,
     effects: ThemeEffects;
     }
 
-export interface SeasonalThemes { [key: string]: SeasonalTheme;
-    spring: SeasonalTheme;
-    summer: SeasonalTheme;
-    autumn: SeasonalTheme;
+export interface SeasonalThemes { [key: string]: SeasonalTheme,
+    spring: SeasonalTheme,
+    summer: SeasonalTheme,
+    autumn: SeasonalTheme,
     winter: SeasonalTheme;
-
-export interface EventThemes { [key: string]: EventTheme;
-    new_year: EventTheme;
-    valentine: EventTheme;
-    halloween: EventTheme;
+    export interface EventThemes { [key: string]: EventTheme,
+    new_year: EventTheme,
+    valentine: EventTheme,
+    halloween: EventTheme,
     christmas: EventTheme;
-
-export interface ThemeStatistics { seasonalThemes: number;
-    eventThemes: number;
-    totalParticleTypes: number;
+    export interface ThemeStatistics { seasonalThemes: number,
+    eventThemes: number,
+    totalParticleTypes: number,
     totalColors: number;
-
-export class ThemeManager {
+    export class ThemeManager {
     public readonly seasonalThemes: SeasonalThemes;
     public readonly, eventThemes: EventThemes;
-
     constructor('''
-                name: '春';
-                colors: {''
-                    primary: ['#FFB6C1', '#98FB98', '#87CEEB];'
+                name: '春,
+    colors: { ''
+                    primary: ['#FFB6C1', '#98FB98', '#87CEEB];'  },
                     secondary: ['#F0E68C', '#DDA0DD', '#20B2AA];'
                     accent: ['#FF69B4', '#32CD32', '#4169E1] };'
 
                 particles: { ''
-                    types: ['cherry_blossom', 'flower_petal', 'butterfly', 'pollen'];
-                    density: 0.3;
-                    movement: 'gentle_sway';
+                    types: ['cherry_blossom', 'flower_petal', 'butterfly', 'pollen']  },
+                    density: 0.3,
+                    movement: 'gentle_sway,
     spawnRate: 0.8  };
                 effects: { ''
-                    bubbleDestruction: 'flower_burst';
-                    comboEffect: 'spring_shower';
+                    bubbleDestruction: 'flower_burst'  ,
+                    comboEffect: 'spring_shower,
                     backgroundPattern: 'sakura_drift'
             };
                 audio: { ''
-                    ambientSounds: ['birds_chirping', 'gentle_breeze'];
+                    ambientSounds: ['birds_chirping', 'gentle_breeze']  },
                     destructionSounds: ['flower_pop', 'wind_chime] }'
             },
 
             summer: { ''
-                name: '夏',
-                colors: {''
-                    primary: ['#FFD700', '#FF6347', '#00CED1],'
+                name: '夏'  ,
+                colors: { ''
+                    primary: ['#FFD700', '#FF6347', '#00CED1],'  },
                     secondary: ['#FFA500', '#FF4500', '#1E90FF],'
                     accent: ['#FFFF00', '#FF0000', '#00BFFF] },'
 
                 particles: { ''
-                    types: ['sunshine_ray', 'beach_bubble', 'firefly', 'water_drop'],
+                    types: ['sunshine_ray', 'beach_bubble', 'firefly', 'water_drop']  },
                     density: 0.4,
-                    movement: 'energetic_bounce',
-    spawnRate: 1.2  },
+                    movement: 'energetic_bounce,
+    spawnRate: 1.2  };
                 effects: { ''
-                    bubbleDestruction: 'splash_burst',
-                    comboEffect: 'summer_fireworks',
+                    bubbleDestruction: 'splash_burst'  ,
+                    comboEffect: 'summer_fireworks,
                     backgroundPattern: 'heat_wave'
             };
                 audio: { ''
-                    ambientSounds: ['ocean_waves', 'cicada_song'],
+                    ambientSounds: ['ocean_waves', 'cicada_song']  },
                     destructionSounds: ['splash', 'sizzle] }'
             },
 
             autumn: { ''
-                name: '秋',
-                colors: {''
-                    primary: ['#FF4500', '#DAA520', '#8B4513],'
+                name: '秋' ,
+                colors: { ''
+                    primary: ['#FF4500', '#DAA520', '#8B4513],'  },
                     secondary: ['#DC143C', '#B8860B', '#A0522D],'
                     accent: ['#FF8C00', '#CD853F', '#D2691E] },'
 
                 particles: { ''
-                    types: ['maple_leaf', 'acorn', 'autumn_wind', 'harvest_grain'],
+                    types: ['maple_leaf', 'acorn', 'autumn_wind', 'harvest_grain']  },
                     density: 0.35,
-                    movement: 'spiral_fall',
-    spawnRate: 1.0  },
+                    movement: 'spiral_fall,
+    spawnRate: 1.0  ,
                 effects: { ''
-                    bubbleDestruction: 'leaf_scatter',
-                    comboEffect: 'autumn_whirlwind',
+                    bubbleDestruction: 'leaf_scatter' ,
+                    comboEffect: 'autumn_whirlwind,
                     backgroundPattern: 'falling_leaves'
             };
                 audio: { ''
-                    ambientSounds: ['rustling_leaves', 'autumn_breeze'],
+                    ambientSounds: ['rustling_leaves', 'autumn_breeze']  },
                     destructionSounds: ['leaf_crackle', 'wind_gust] }'
             },
 
             winter: { ''
-                name: '冬',
-                colors: {''
-                    primary: ['#E0E0E0', '#87CEEB', '#B0C4DE],'
+                name: '冬' ,
+                colors: { ''
+                    primary: ['#E0E0E0', '#87CEEB', '#B0C4DE],'  },
                     secondary: ['#F0F8FF', '#ADD8E6', '#4682B4],'
                     accent: ['#FFFFFF', '#00BFFF', '#1E90FF] },'
 
                 particles: { ''
-                    types: ['snowflake', 'ice_crystal', 'frost_sparkle', 'winter_breath'],
+                    types: ['snowflake', 'ice_crystal', 'frost_sparkle', 'winter_breath']  },
                     density: 0.25,
-                    movement: 'gentle_drift',
-    spawnRate: 0.6  },
+                    movement: 'gentle_drift,
+    spawnRate: 0.6  ,
                 effects: { ''
-                    bubbleDestruction: 'ice_shatter',
-                    comboEffect: 'blizzard_burst',
+                    bubbleDestruction: 'ice_shatter' ,
+                    comboEffect: 'blizzard_burst,
                     backgroundPattern: 'snow_fall'
             };
                 audio: { ''
-                    ambientSounds: ['wind_howl', 'snow_crunch'],
+                    ambientSounds: ['wind_howl', 'snow_crunch']  },
                     destructionSounds: ['ice_crack', 'crystal_chime] }'
 };
         
         // 特別イベントテーマ
         this.eventThemes = { new_year: {''
-                name: '新年',' }'
+                name: '新年',' }' };
 
                 duration: { start: '01-01', end: '01-07'
-            },
+            ,
 
                 colors: { ''
-                    primary: ['#FFD700', '#FF0000', '#FFFFFF],'
+                    primary: ['#FFD700', '#FF0000', '#FFFFFF],'  },
                     secondary: ['#FFA500', '#DC143C', '#F0F8FF],'
                     accent: ['#FFFF00', '#FF69B4', '#00BFFF] },'
 
-                particles: {,
-                    types: ['firework', 'confetti', 'gold_coin', 'blessing_light'],
+                particles: { ,
+                    types: ['firework', 'confetti', 'gold_coin', 'blessing_light']  },
                     density: 0.5,
-                    movement: 'celebration_burst',
-    spawnRate: 1.5  },
+                    movement: 'celebration_burst,
+    spawnRate: 1.5  ,
                 effects: { ''
-                    bubbleDestruction: 'firework_burst',
-                    comboEffect: 'new_year_celebration',
+                    bubbleDestruction: 'firework_burst' ,
+                    comboEffect: 'new_year_celebration,
                     backgroundPattern: 'firework_sky'
             }
             };
@@ -174,21 +164,21 @@ export class ThemeManager {
                 name: 'バレンタイン',' }'
 
                 duration: { start: '02-10', end: '02-20'
-            },
+            ,
 
                 colors: { ''
-                    primary: ['#FF69B4', '#FF1493', '#FFB6C1],'
+                    primary: ['#FF69B4', '#FF1493', '#FFB6C1],'  },
                     secondary: ['#DC143C', '#C71585', '#DB7093],'
                     accent: ['#FF6347', '#FF0000', '#FF8C69] },'
 
                 particles: { ''
-                    types: ['heart', 'rose_petal', 'chocolate_chip', 'love_sparkle'],
+                    types: ['heart', 'rose_petal', 'chocolate_chip', 'love_sparkle']  },
                     density: 0.4,
-                    movement: 'romantic_float',
-    spawnRate: 1.1  },
+                    movement: 'romantic_float,
+    spawnRate: 1.1  ,
                 effects: { ''
-                    bubbleDestruction: 'heart_burst',
-                    comboEffect: 'love_cascade',
+                    bubbleDestruction: 'heart_burst' ,
+                    comboEffect: 'love_cascade,
                     backgroundPattern: 'heart_rain'
             }
             };
@@ -196,21 +186,21 @@ export class ThemeManager {
                 name: 'ハロウィン',' }'
 
                 duration: { start: '10-25', end: '11-01'
-            },
+            ,
 
                 colors: { ''
-                    primary: ['#FF8C00', '#800080', '#000000],'
+                    primary: ['#FF8C00', '#800080', '#000000],'  },
                     secondary: ['#FF4500', '#9932CC', '#2F2F2F],'
                     accent: ['#FFD700', '#8A2BE2', '#FF6347] },'
 
                 particles: { ''
-                    types: ['pumpkin', 'bat', 'ghost', 'witch_spark'],
+                    types: ['pumpkin', 'bat', 'ghost', 'witch_spark']  },
                     density: 0.35,
-                    movement: 'spooky_dance',
-    spawnRate: 0.9  },
+                    movement: 'spooky_dance,
+    spawnRate: 0.9  ,
                 effects: { ''
-                    bubbleDestruction: 'spooky_burst',
-                    comboEffect: 'halloween_magic',
+                    bubbleDestruction: 'spooky_burst' ,
+                    comboEffect: 'halloween_magic,
                     backgroundPattern: 'haunted_mist'
             }
             };
@@ -218,25 +208,24 @@ export class ThemeManager {
                 name: 'クリスマス',' }'
 
                 duration: { start: '12-20', end: '12-26'
-            },
+            ,
 
                 colors: { ''
-                    primary: ['#FF0000', '#228B22', '#FFD700],'
+                    primary: ['#FF0000', '#228B22', '#FFD700],'  },
                     secondary: ['#DC143C', '#006400', '#FFA500],'
                     accent: ['#FFFFFF', '#32CD32', '#FFFF00] },'
 
                 particles: { ''
-                    types: ['snowflake', 'christmas_star', 'present_box', 'holly_leaf'],
+                    types: ['snowflake', 'christmas_star', 'present_box', 'holly_leaf']  },
                     density: 0.45,
-                    movement: 'christmas_twinkle',
-    spawnRate: 1.3  },
+                    movement: 'christmas_twinkle,
+    spawnRate: 1.3  ,
                 effects: { ''
-                    bubbleDestruction: 'christmas_burst',
-                    comboEffect: 'christmas_miracle',
+                    bubbleDestruction: 'christmas_burst' ,
+                    comboEffect: 'christmas_miracle,
                     backgroundPattern: 'christmas_lights'
             }
-            })
-    }
+            });
     
     /**
      * 季節テーマを取得
@@ -262,7 +251,7 @@ export class ThemeManager {
      * 利用可能なイベント一覧を取得
      * @returns イベント名配列
      */
-    getAvailableEvents(): string[] { return Object.keys(this.eventThemes) }
+    getAvailableEvents(): string[] { return Object.keys(this.eventThemes);
     
     /**
      * テーマの有効性を検証
@@ -280,7 +269,7 @@ export class ThemeManager {
      */
     getThemeStats(): ThemeStatistics { return { seasonalThemes: Object.keys(this.seasonalThemes).length,
             eventThemes: Object.keys(this.eventThemes).length,
-    totalParticleTypes: this._countUniqueParticleTypes() },
+    totalParticleTypes: this._countUniqueParticleTypes() ,
             totalColors: this._countUniqueColors(); 
     }
     
@@ -291,11 +280,11 @@ export class ThemeManager {
      */
     private _countUniqueParticleTypes(): number { const allTypes = new Set<string>(),
         
-        Object.values(this.seasonalThemes).forEach(theme => { ) }
+        Object.values(this.seasonalThemes).forEach(theme => { );
             theme.particles.types.forEach(type => allTypes.add(type); }
         });
         
-        Object.values(this.eventThemes).forEach(theme => {  ) }
+        Object.values(this.eventThemes).forEach(theme => {  );
             theme.particles.types.forEach(type => allTypes.add(type); }
         });
         
@@ -316,11 +305,11 @@ export class ThemeManager {
 });
         };
         
-        Object.values(this.seasonalThemes).forEach(theme => {  ) }
+        Object.values(this.seasonalThemes).forEach(theme => {  );
             addColors(theme.colors); }
         };
         
-        Object.values(this.eventThemes).forEach(theme => {  ) }
+        Object.values(this.eventThemes).forEach(theme => {  );
 
             addColors(theme.colors);' }'
 

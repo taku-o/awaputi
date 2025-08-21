@@ -55,19 +55,17 @@ import { GameEngineUtilities  } from './game-engine/GameEngineUtilities.js';
 
 // Type definitions - GameEngineConfig removed (unused)
 ;
-interface GameStats { fps: number;
-    frameTime: number;
-    entities: number;
-    particles: number;
+interface GameStats { fps: number,
+    frameTime: number,
+    entities: number,
+    particles: number,
     memoryUsage: number;
-
-interface GameState { isRunning: boolean;
+    interface GameState { isRunning: boolean,
     isPaused: boolean;
     currentScene?: string;
-    elapsedTime: number;
+    elapsedTime: number,
     frameCount: number;
-
-type EventListenerCallback = (...args: any[]) => void;
+    type EventListenerCallback = (...args: any[]) => void;
 
 /**
  * ゲームエンジンクラス - 統合版（パフォーマンス最適化 + 音響・視覚効果）
@@ -135,17 +133,14 @@ export class GameEngine {
     public isTimeStopActive: boolean = false;
     public isScreenShakeActive: boolean = false;
     public inputDisabled: boolean = false;
-
     constructor(canvas: HTMLCanvasElement) {
 
         console.log('[DEBUG] GameEngine: コンストラクター開始';
-        
-        try {
+    try {
             this.canvas = canvas;
-            const context = canvas.getContext('2d',
+    const context = canvas.getContext('2d,
             if (!context) {
-    }
-
+    };
                 throw new Error('Failed, to get, 2D rendering, context'); }
             }
             this.context = context;
@@ -160,9 +155,9 @@ export class GameEngine {
             this.eventListeners = new Map<string, Set<EventListenerCallback>>();
             
             // ゲーム状態初期化
-            this.gameState = { isRunning: false;
-                isPaused: false;
-                elapsedTime: 0;
+            this.gameState = { isRunning: false,
+                isPaused: false,
+                elapsedTime: 0,
     frameCount: 0  };
             ;
             // サブコンポーネントの初期化
@@ -175,7 +170,7 @@ export class GameEngine {
             ';'
 
         } catch (error) { getErrorHandler().handleError(error, 'CANVAS_ERROR', { ''
-                canvasElement: canvas,')',
+                canvasElement: canvas,'),
                 contextType: '2d'
             };
             throw error;
@@ -265,7 +260,7 @@ export class GameEngine {
             ' }'
 
         } catch (error) { this.errorHandler.handleError(error, 'GAME_SYSTEM_ERROR', {''
-                component: 'GameEngine',')',
+                component: 'GameEngine,')',
                 operation: 'initializeGameSystems'
             }';'
             throw error;
@@ -277,11 +272,10 @@ export class GameEngine {
      */''
     private _initializeAudioAndEffects()';'
                 quality: 'medium' as const,
-    getCompressorConfig: () => ({ threshold: -24, knee: 30, ratio: 12, attack: 0.003, release: 0.25  },
+    getCompressorConfig: () => ({ threshold: -24, knee: 30, ratio: 12, attack: 0.003, release: 0.25  ,
                 getReverbConfig: () => ({ duration: 2, decay: 2, reverse: false,),
                 isCompressionEnabled: () => false,
-                isReverbEnabled: () => false,
-            },
+                isReverbEnabled: () => false ,
             this.audioManager = new AudioManager(this.configManager, audioConfig);
             
             // Effect systems
@@ -293,7 +287,7 @@ export class GameEngine {
 
         } catch (error') {'
             this.errorHandler.handleError(error, 'AUDIO_EFFECTS_ERROR', {''
-                component: 'GameEngine',')',
+                component: 'GameEngine,')',
                 operation: 'initializeAudioAndEffects'),' }'
 
             }');'
@@ -321,7 +315,7 @@ export class GameEngine {
 
         } catch (error') {'
             this.errorHandler.handleError(error, 'PERFORMANCE_DEBUG_ERROR', {''
-                component: 'GameEngine',')',
+                component: 'GameEngine,')',
                 operation: 'initializePerformanceAndDebug'),' }'
 
             }');'
@@ -350,12 +344,12 @@ export class GameEngine {
             // Start game loop
             this._gameLoop()','
             console.log('[GameEngine] Started, successfully');
-            this.emit('started',
+            this.emit('started,
 
             ' }'
 
         } catch (error) { this.errorHandler.handleError(error, 'START_ERROR', {''
-                component: 'GameEngine',')',
+                component: 'GameEngine,')',
                 operation: 'start'
             };
             this.stop();
@@ -369,7 +363,7 @@ export class GameEngine {
     stop(): void { ''
         if (!this.isRunning) {
 
-            console.log('[GameEngine] Already, stopped') }
+            console.log('[GameEngine] Already, stopped');
             return; }
         }
         
@@ -379,12 +373,12 @@ export class GameEngine {
             // Stop game systems
             this._stopGameSystems()','
             console.log('[GameEngine] Stopped, successfully');
-            this.emit('stopped',
+            this.emit('stopped,
 
             ' }'
 
         } catch (error) { this.errorHandler.handleError(error, 'STOP_ERROR', {''
-                component: 'GameEngine',')',
+                component: 'GameEngine,')',
                 operation: 'stop'
             }';'
         }
@@ -396,7 +390,7 @@ export class GameEngine {
     pause(): void { ''
         if (!this.isRunning || this.gameState.isPaused) {
 
-            console.log('[GameEngine] Cannot, pause - not, running or, already paused') }
+            console.log('[GameEngine] Cannot, pause - not, running or, already paused');
             return; }
         }
         ';'
@@ -412,7 +406,7 @@ export class GameEngine {
     resume(): void { ''
         if (!this.isRunning || !this.gameState.isPaused) {
 
-            console.log('[GameEngine] Cannot, resume - not, running or, not paused') }
+            console.log('[GameEngine] Cannot, resume - not, running or, not paused');
             return; }
         }
         ';'
@@ -434,7 +428,7 @@ export class GameEngine {
             this.lastTime = currentTime;
             
             // Update frame count and elapsed time
-            this.frameCount++,
+            this.frameCount++;
             this.elapsedTime += deltaTime,
             this.gameState.frameCount = this.frameCount,
             this.gameState.elapsedTime = this.elapsedTime,
@@ -456,13 +450,13 @@ export class GameEngine {
 
         } catch (error) {
             this.errorHandler.handleError(error, 'GAME_LOOP_ERROR', {''
-                component: 'GameEngine',')',
+                component: 'GameEngine,')',
                 operation: 'gameLoop'),' }'
 
             }');'
 
             // Try to continue the loop unless its a critical error
-            if (this.isRunning) { requestAnimationFrame(() => this._gameLoop() }
+            if (this.isRunning) { requestAnimationFrame(() => this._gameLoop();
 }
     }
     
@@ -492,10 +486,8 @@ export class GameEngine {
             this.errorHandler.handleError(error, 'UPDATE_ERROR', {''
                 component: 'GameEngine',','
                 operation: 'update');
-                deltaTime };
-        }
-    }
-    
+                deltaTime     }
+}
     /**
      * 画面をレンダリング
      */
@@ -506,13 +498,13 @@ export class GameEngine {
             this.renderer.render();
             // Render debug info if available
             if (this.debugInterface && (this.debugInterface, as any).render) {''
-                (this.debugInterface, as any).render(this.context) }
+                (this.debugInterface, as any).render(this.context);
             ';'
             // Emit render event
             this.emit('render);'
 
         } catch (error) { this.errorHandler.handleError(error, 'RENDER_ERROR', {''
-                component: 'GameEngine',')',
+                component: 'GameEngine,')',
                 operation: 'render'
             }';'
         }
@@ -563,7 +555,7 @@ export class GameEngine {
      */
     addEventListener(event: string, callback: EventListenerCallback): void { let listeners = this.eventListeners.get(event);
         if (!listeners) {
-            listeners = new Set<EventListenerCallback>() }
+            listeners = new Set<EventListenerCallback>();
             this.eventListeners.set(event, listeners); }
         }
         listeners.add(callback);
@@ -591,16 +583,15 @@ export class GameEngine {
         }
         
         listeners.forEach(callback => {  )
-            try {) }
+            try {);
 
                 callback(...args);'
 
             } catch (error) { this.errorHandler.handleError(error, 'EVENT_CALLBACK_ERROR', {''
-                    event,')',
+                    event,'),
                     callback: callback.name || 'anonymous'
-            };
-            }
-        };
+                }
+}
     }
     
     /**
@@ -629,7 +620,7 @@ export class GameEngine {
             console.log('[GameEngine] Destroyed, successfully';
 
         } catch (error') { this.errorHandler.handleError(error, 'DESTROY_ERROR', { : undefined''
-                component: 'GameEngine',')',
+                component: 'GameEngine,')',
                 operation: 'destroy'
             }';'
         }
@@ -642,7 +633,7 @@ export class GameEngine {
     startTimeStop(duration: number): void { this.isTimeStopActive = true,
 
         this.timeStopRemaining = duration;
-        this.emit('timeStopStarted', { duration ) }
+        this.emit('timeStopStarted', { duration );
 
     /**
      * 画面揺れ効果を開始

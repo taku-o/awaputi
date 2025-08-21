@@ -13,8 +13,7 @@ export class PerformanceMeasurement {
     startMeasurement() {
         this.startTime = performance.now();
         this.memoryBaseline = performance.memory ? performance.memory.usedJSHeapSize: 0;
-        return this }
-
+        return this };
     endMeasurement() {
         const endTime = performance.now();
         const duration = endTime - this.startTime,
@@ -36,20 +35,20 @@ export class PerformanceMeasurement {
         const durations = this.measurements.map(m => m.duration);
         const memoryUsages = this.measurements.map(m => m.memoryUsed);
         return {
-            count: this.measurements.length;
+            count: this.measurements.length,
             duration: {
-                min: Math.min(...durations;
+                min: Math.min(...durations },
                 max: Math.max(...durations;
                 average: durations.reduce((a, b) => a + b, 0) / durations.length;
                 median: this.calculateMedian(durations);
                , p95: this.calculatePercentile(durations, 95);
                 p99: this.calculatePercentile(durations, 99) };
             memory: {
-                min: Math.min(...memoryUsages;
+                min: Math.min(...memoryUsages },
                 max: Math.max(...memoryUsages;
                 average: memoryUsages.reduce((a, b) => a + b, 0) / memoryUsages.length;
                 total: memoryUsages.reduce((a, b) => a + b, 0) }
-        };
+        }
     }
 
     calculateMedian(arr {
@@ -74,17 +73,17 @@ export class DataGenerator {
         for (let i = 0, i < count, i++') {'
             events.push({
                 type: 'bubble_popped');
-               , timestamp: Date.now() + i;
+               , timestamp: Date.now() + i,
                 data: {
-                    bubbleType: bubbleTypes[Math.floor(Math.random() * bubbleTypes.length)];
+                    bubbleType: bubbleTypes[Math.floor(Math.random() * bubbleTypes.length)] },
                     score: Math.floor(Math.random() * 1000) + 50;
-                    combo: Math.floor(Math.random() * 20) + 1;
+                    combo: Math.floor(Math.random() * 20) + 1,
                     position: {
-                        x: Math.floor(Math.random() * 800;
+                        x: Math.floor(Math.random() * 800 },
                         y: Math.floor(Math.random() * 600 };
                     sessionId: `session-${Math.floor(i / 100}}`
                 }
-            };
+            }
         }
 
         return events;
@@ -106,7 +105,7 @@ export class DataGenerator {
                 playtime: Math.floor(Math.random() * 3600000) + 600000, // 10分-60分
                 bubblesPopped: Math.floor(Math.random() * 500) + 50,
                 accuracy: Math.random() * 0.3 + 0.7 // 70%-100%
-            };
+            }
         }
 
         return data;
@@ -122,34 +121,34 @@ export class DataGenerator {
                 score: Math.floor(Math.random() * 500000,
                 accuracy: Math.random() * 0.3 + 0.7,
                 averageTime: Math.random() * 2000 + 500
-            };
+            }
         };
 
         return {
             gamePlayStats: {
-                totalGames: 10000,
+                totalGames: 10000 },
                 totalPlayTime: 36000000, // 10時間
                 averageSessionTime: 3600000, // 1時間
                 lastPlayTime: Date.now( },
             scoreStats: {
-                totalScore: 5000000,
+                totalScore: 5000000 },
                 highestScore: 50000,
                 averageScore: 500,
                 scoreHistory: Array.from({ length: 1000 ), () => Math.floor(Math.random() * 10000)) },
             bubbleStats: {
-                totalPopped: 100000,
+                totalPopped: 100000 },
                 accuracy: 0.85,
                 bubbleTypeStats
             },
             comboStats: {
-                maxCombo: 100,
+                maxCombo: 100 },
                 averageCombo: 15,
                 comboHistory: Array.from({ length: 500 ), () => Math.floor(Math.random() * 100)) },
             timeSeries: {
-                daily: this.generateTimeSeriesData(365,
+                daily: this.generateTimeSeriesData(365 },
                 weekly: this.generateTimeSeriesData(52,
                 monthly: this.generateTimeSeriesData(12 }
-        };
+        }
     }
 }
 
@@ -161,7 +160,7 @@ export const PerformanceTestHelper = {
     simulateCpuIntensiveTask(durationMs {
         const start = Date.now();
         while (Date.now() - start < durationMs) {
-            Math.random() * Math.random() }
+            Math.random() * Math.random() };
     },
 
     /**

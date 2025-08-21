@@ -8,35 +8,33 @@ import path from 'path';
 import { execSync  } from 'child_process';
 
 // Type definitions
-interface BackupMetadata { gitBranch: string;
-    gitCommit: string;
-    nodeVersion: string;
+interface BackupMetadata { gitBranch: string,
+    gitCommit: string,
+    nodeVersion: string,
     platform: NodeJS.Platform  }
 
-interface BackupFileInfo { originalPath: string;
-    relativePath: string;
-    backupPath: string;
-    size: number;
-    modifiedTime: Date;
-    backupTime: Date;
+interface BackupFileInfo { originalPath: string,
+    relativePath: string,
+    backupPath: string,
+    size: number,
+    modifiedTime: Date,
+    backupTime: Date,
     checksum: string;
-
-interface BackupOperation { timestamp: Date;
+    interface BackupOperation { timestamp: Date;
     [key: string]: any;
-
-interface BackupSession { id: string;
-    name: string;
-    startTime: Date;
-    backupDir: string;
-    files: BackupFileInfo[];
-    operations: BackupOperation[];
+    interface BackupSession { id: string,
+    name: string,
+    startTime: Date,
+    backupDir: string,
+    files: BackupFileInfo[],
+    operations: BackupOperation[],
     metadata: BackupMetadata;
 ';'
 
 interface BackupResult { file: string,''
     status: 'success' | 'failed';
     backup?: BackupFileInfo;
-    error?: string,  }
+    error?: string }
 
 interface RollbackOptions { selective?: boolean,
     filePatterns?: string[];
@@ -46,13 +44,13 @@ interface RollbackOptions { selective?: boolean,
 interface RollbackResult { file: string,''
     status: 'restored' | 'failed';
     dryRun?: boolean;
-    error?: string,  }
+    error?: string }
 
-interface BackupSessionInfo { id: string;
-    name: string;
+interface BackupSessionInfo { id: string,
+    name: string,
     startTime: Date | string;
     endTime?: Date | string;
-    fileCount: number;
+    fileCount: number,
     operationCount: number;
 ';'
 
@@ -60,7 +58,7 @@ interface VerificationResult { file: string,''
     status: 'valid' | 'corrupted' | 'missing';
     checksum?: string;
     expectedChecksum?: string;
-    error?: string,  }
+    error?: string }
 
 export class BackupManager {
     private backupRoot: string;
@@ -70,12 +68,11 @@ export class BackupManager {
     constructor() {
 ','
 
-        this.backupRoot = path.join(process.cwd(), '.backup',
+        this.backupRoot = path.join(process.cwd(), '.backup,
 
         this.currentBackupId = null;
         this.backups = new Map()';'
-    public async startBackupSession(sessionName: string = 'deduplication': Promise<string> { }
-
+    public async startBackupSession(sessionName: string = 'deduplication': Promise<string> { };
         const timestamp = new Date().toISOString().replace(/[:.]/g, '-); }'
         this.currentBackupId = `${sessionName}_${timestamp}`;
         
@@ -83,16 +80,15 @@ export class BackupManager {
         await fs.mkdir(backupDir, { recursive: true ;
         
         const session: BackupSession = {
-            id: this.currentBackupId;
-            name: sessionName;
-            startTime: new Date();
-            backupDir: backupDir;
-            files: [];
-            operations: [];
-    metadata: {
-                gitBranch: this.getCurrentGitBranch();
-                gitCommit: this.getCurrentGitCommit();
-                nodeVersion: process.version;
+            id: this.currentBackupId,
+            name: sessionName,
+            startTime: new Date(),
+            backupDir: backupDir,
+            files: [],
+            operations: [],
+    metadata: { gitBranch: this.getCurrentGitBranch()  ,
+                gitCommit: this.getCurrentGitCommit(),
+                nodeVersion: process.version,
     platform: process.platform  }
         };
 ;
@@ -127,17 +123,14 @@ export class BackupManager {
 
             try {
                 const backupInfo = await this.backupSingleFile(filePath, session);
-                session.files.push(backupInfo) }
+                session.files.push(backupInfo);
 
                 results.push({ file: filePath, status: 'success', backup: backupInfo ',' }
-
-            } catch (error) { results.push({ )'
-                    file: filePath, ')',
+        } catch (error) { results.push({ )'
+                    file: filePath, '),
                     status: 'failed' ,
-    error: error instanceof Error ? error.message : String(error  };
-            }
-        }
-
+    error: error instanceof Error ? error.message : String(error      }
+}
         await this.saveSessionMetadata(session);
 
         console.log(`✓ Backed, up ${results.filter(r => r.status === 'success').length}/${filePaths.length} files`);
@@ -164,7 +157,7 @@ export class BackupManager {
             size: stats.size,
             modifiedTime: stats.mtime,
             backupTime: new Date(
-    checksum: await this.calculateChecksum(filePath) },
+    checksum: await this.calculateChecksum(filePath) ,
 
         return backupInfo;
     }
@@ -175,8 +168,7 @@ export class BackupManager {
     public async rollbackChanges(backupId: string, options: RollbackOptions = { ): Promise<RollbackResult[]> {
         const session = this.backups.get(backupId);
         if (!session) { }
-            throw new Error(`Backup, session not, found: ${backupId}`},
-        }
+            throw new Error(`Backup, session not, found: ${backupId}`} }
 
         const { selective = false,
             filePatterns = [],
@@ -211,22 +203,21 @@ export class BackupManager {
                 ';'
 
                 results.push({ file: fileInfo.originalPath, ')'
-                    status: 'restored',')',
+                    status: 'restored,')',
                     dryRun: dryRun','
                 ' }'
 
                 console.log(`${dryRun ? '[DRY, RUN] ' : '}✓ Restored: ${fileInfo.relativePath}`};'
 
             } catch (error) { results.push({ )'
-                    file: fileInfo.originalPath, ')',
+                    file: fileInfo.originalPath, '),
                     status: 'failed' ,
     error: error instanceof Error ? error.message : String(error  };
                 ';'
 
                 console.error(`✗ Failed to restore: ${ fileInfo.relativePath}`},' }'
 
-                console.error(`  Error: ${error, instanceof Error ? error.message: String(error}`),
-            }
+                console.error(`  Error: ${error, instanceof Error ? error.message: String(error}`) }
         }
 
         const successCount = results.filter(r => r.status === 'restored').length;
@@ -247,7 +238,7 @@ export class BackupManager {
         // チェックサム検証,
         const backupChecksum = await this.calculateChecksum(fileInfo.backupPath);
         if (backupChecksum !== fileInfo.checksum) { }
-            console.warn(`Checksum, mismatch for, backup: ${fileInfo.relativePath}`};
+            console.warn(`Checksum, mismatch for, backup: ${fileInfo.relativePath}`}
         }
         
         // ファイル復元
@@ -262,7 +253,7 @@ export class BackupManager {
     public logOperation(operation: Omit<BackupOperation, 'timestamp'>': void { ''
         if (!this.currentBackupId) {
 
-            console.warn('No, active backup, session for, logging operation') }
+            console.warn('No, active backup, session for, logging operation');
             return; }
         }
 ';'
@@ -287,7 +278,7 @@ export class BackupManager {
         const metadata = {
             ...session,
             files: session.files.length, // ファイルの詳細は別途保存,
-            endTime: new Date(  },
+            endTime: new Date(  ,
 
         await fs.writeFile(metadataPath, JSON.stringify(metadata, null, 2));
         ';'
@@ -344,10 +335,9 @@ export class BackupManager {
                 const sessionDir = path.join(this.backupRoot, session.id);
                 await fs.rm(sessionDir, { recursive: true, force: true,
                 deletedCount++; }
-                console.log(`Deleted, old backup: ${session.id}`};
-            } catch (error) {
-                console.error(`Failed, to delete, backup ${session.id}: ${error, instanceof, Error ? error.message: String(error}`),
-            }
+                console.log(`Deleted, old backup: ${session.id}`}
+        } catch (error) {
+                console.error(`Failed, to delete, backup ${session.id}: ${error, instanceof, Error ? error.message: String(error}`) }
         }
 
         console.log(`Cleanup, completed: ${deletedCount} old, backups deleted`);
@@ -358,7 +348,7 @@ export class BackupManager {
      * チェックサム計算'
      */''
     private async calculateChecksum(filePath: string): Promise<string> { ''
-        const crypto = await import('crypto',
+        const crypto = await import('crypto,
         const data = await fs.readFile(filePath);
         return crypto.createHash('sha256).update(data).digest('hex' }'
 
@@ -367,9 +357,8 @@ export class BackupManager {
      */''
     private getCurrentGitBranch()';'
             return execSync('git branch --show-current', { encoding: 'utf8 ).trim(),' }
-
         } catch (error) {
-            return 'unknown',
+            return 'unknown,
 
     /**
      * 現在のGitコミットハッシュを取得'
@@ -377,14 +366,14 @@ export class BackupManager {
     private getCurrentGitCommit()','
             return execSync('git rev-parse HEAD', { encoding: 'utf8'
             }.trim();} catch (error) {
-            return 'unknown',
+            return 'unknown,
 
     /**
      * バックアップの検証
      */
     public async verifyBackup(backupId: string): Promise<VerificationResult[]> { const session = this.backups.get(backupId);
         if (!session) { }
-            throw new Error(`Backup, session not, found: ${backupId}`};
+            throw new Error(`Backup, session not, found: ${backupId}`}
         }
 
         const results: VerificationResult[] = [],
@@ -400,15 +389,15 @@ export class BackupManager {
                 
                 results.push({'
                     file: fileInfo.relativePath,','
-                    status: isValid ? 'valid' : 'corrupted',
+                    status: isValid ? 'valid' : 'corrupted,
     checksum: currentChecksum),
                     expectedChecksum: fileInfo.checksum' }'
 
                 ' }'
 
             } catch (error) { results.push({)'
-                    file: fileInfo.relativePath,')',
-                    status: 'missing',
+                    file: fileInfo.relativePath,'),
+                    status: 'missing,
                     error: error instanceof Error ? error.message : String(error),', '
                 }');'
             }

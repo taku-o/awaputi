@@ -15,7 +15,7 @@ export default async function processResults(results {
     ...results,
     timestamp: new Date().toISOString(),
     summary: {
-      total: results.numTotalTests,
+      total: results.numTotalTests },
       passed: results.numPassedTests,
       failed: results.numFailedTests,
       skipped: results.numPendingTests,

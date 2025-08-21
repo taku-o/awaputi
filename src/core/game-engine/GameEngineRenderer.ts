@@ -4,7 +4,7 @@
  */
 // import { getPerformanceOptimizer  } from '../../utils/PerformanceOptimizer.js';
 
-interface GameEngine { context: CanvasRenderingContext2D;
+interface GameEngine { context: CanvasRenderingContext2D,
     canvas: HTMLCanvasElement;
     renderOptimizer?: any;
     effectManager?: any;
@@ -16,16 +16,16 @@ interface GameEngine { context: CanvasRenderingContext2D;
     animationManager?: any;
     performanceMonitor?: any;
     debugMode?: boolean;
-    debugInterface?: any,  }
+    debugInterface?: any }
 export class GameEngineRenderer { private gameEngine: GameEngine;
-    private screenShake: { active: boolean, duration: number, intensity: number,, elapsed: number;
+    private screenShake: { active: boolean, duration: number, intensity: number, elapsed: number,
     constructor(gameEngine: GameEngine) {
-        this.gameEngine = gameEngine;
+        this.gameEngine = gameEngine,
         this.screenShake = {
-            active: false;
-            duration: 0;
+            active: false,
+            duration: 0,
     intensity: 0
-}
+ ,
             elapsed: 0 ;
     } }
     
@@ -42,24 +42,24 @@ export class GameEngineRenderer { private gameEngine: GameEngine;
         this.gameEngine.context.clearRect(0, 0 this.gameEngine.canvas.width this.gameEngine.canvas.height);
         
         // レンダリング最適化開始
-        if (this.gameEngine.renderOptimizer?.optimize) { this.gameEngine.renderOptimizer.optimize() }
+        if (this.gameEngine.renderOptimizer?.optimize) { this.gameEngine.renderOptimizer.optimize();
         // 画面揺れ効果を適用
-        if (this.isScreenShakeActive() { this.applyScreenShake() }
+        if (this.isScreenShakeActive() { this.applyScreenShake();
         // エフェクトマネージャーの前処理エフェクト
-        if (this.gameEngine.effectManager?.renderPreEffects) { this.gameEngine.effectManager.renderPreEffects(this.gameEngine.context) }
+        if (this.gameEngine.effectManager?.renderPreEffects) { this.gameEngine.effectManager.renderPreEffects(this.gameEngine.context);
         // シーンマネージャーに描画を委譲
-        if (this.gameEngine.sceneManager?.render) { this.gameEngine.sceneManager.render(this.gameEngine.context) }
+        if (this.gameEngine.sceneManager?.render) { this.gameEngine.sceneManager.render(this.gameEngine.context);
         // パーティクルエフェクトを描画
-        if (this.gameEngine.particleManager?.render) { this.gameEngine.particleManager.render(this.gameEngine.context) }
+        if (this.gameEngine.particleManager?.render) { this.gameEngine.particleManager.render(this.gameEngine.context);
         // 拡張パーティクルエフェクトを描画
-        if (this.gameEngine.enhancedParticleManager?.render) { this.gameEngine.enhancedParticleManager.render(this.gameEngine.context) }
+        if (this.gameEngine.enhancedParticleManager?.render) { this.gameEngine.enhancedParticleManager.render(this.gameEngine.context);
         // エフェクトマネージャーの後処理エフェクト
-        if (this.gameEngine.effectManager?.renderPostEffects) { this.gameEngine.effectManager.renderPostEffects(this.gameEngine.context) }
+        if (this.gameEngine.effectManager?.renderPostEffects) { this.gameEngine.effectManager.renderPostEffects(this.gameEngine.context);
         // Canvas の状態を復元
         this.gameEngine.context.restore();
         
         // パフォーマンスモニタリング
-        if (this.gameEngine.performanceMonitor?.recordRenderTime) { this.gameEngine.performanceMonitor.recordRenderTime() }
+        if (this.gameEngine.performanceMonitor?.recordRenderTime) { this.gameEngine.performanceMonitor.recordRenderTime();
         // デバッグ情報の描画
         if (this.gameEngine.debugMode && this.gameEngine.debugInterface?.render) { this.gameEngine.debugInterface.render(this.gameEngine.context') }'
     }

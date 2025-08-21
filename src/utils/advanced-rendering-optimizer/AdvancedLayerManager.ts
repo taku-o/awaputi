@@ -8,44 +8,39 @@ interface LayerConfig { cachingEnabled?: boolean,
     cacheThreshold?: number;
     invalidationThreshold?: number;
     enableBlending?: boolean;
-
-interface LayerProperties { opacity?: number,
+    interface LayerProperties { opacity?: number,
     blendMode?: string;
     static?: boolean;
     cacheable?: boolean;
-
-interface BoundingBox { x: number;
-    y: number;
-    width: number;
+    interface BoundingBox { x: number,
+    y: number,
+    width: number,
     height: number;
-
-interface Layer { name: string;
-    order: number;
-    enabled: boolean;
-    visible: boolean;
-    opacity: number;
-    blendMode: string;
-    canvas: HTMLCanvasElement | null;
-    context: CanvasRenderingContext2D | null;
-    static: boolean;
-    cacheable: boolean;
-    dirty: boolean;
-    lastModified: number;
-    objects: Set<string>;
-    boundingBox: BoundingBox;
-    renderTime: number;
-    complexity: number;
-    cacheHits: number;
+    interface Layer { name: string,
+    order: number,
+    enabled: boolean,
+    visible: boolean,
+    opacity: number,
+    blendMode: string,
+    canvas: HTMLCanvasElement | null,
+    context: CanvasRenderingContext2D | null,
+    static: boolean,
+    cacheable: boolean,
+    dirty: boolean,
+    lastModified: number,
+    objects: Set<string>,
+    boundingBox: BoundingBox,
+    renderTime: number,
+    complexity: number,
+    cacheHits: number,
     cacheMisses: number;
-
-interface LayerStats { totalLayers: number;
-    activeLayers: number;
-    cachedLayers: number;
-    renderTime: number;
-    compositionTime: number;
+    interface LayerStats { totalLayers: number,
+    activeLayers: number,
+    cachedLayers: number,
+    renderTime: number,
+    compositionTime: number,
     cacheHitRatio: number;
-
-interface Viewport { x?: number,
+    interface Viewport { x?: number,
     y?: number;
     width?: number;
     height?: number;
@@ -73,39 +68,37 @@ export class AdvancedLayerManager {
     private globalCompositeOperation: string';'
     private stats: LayerStats';'
     private config: Required<Omit<LayerConfig, 'cachingEnabled' | 'globalAlpha' | 'globalCompositeOperation'>>;
-
     constructor(mainCanvas: HTMLCanvasElement, config: LayerConfig = {) {
 
         this.errorHandler = getErrorHandler();
-        this.mainCanvas = mainCanvas;
+    this.mainCanvas = mainCanvas;
         
         // Layer management state
         this.layers = new Map();
-        this.layerOrder = [];
-        this.staticLayers = new Set();
-        this.dynamicLayers = new Set();
+    this.layerOrder = [];
+    this.staticLayers = new Set();
+    this.dynamicLayers = new Set();
         
         // Caching system
         this.cachingEnabled = config.cachingEnabled !== undefined ? config.cachingEnabled: true;
-        this.cachedLayers = new Map();
-        this.cacheInvalidation = new Set('';
-        this.globalCompositeOperation = config.globalCompositeOperation || 'source-over'
+    this.cachedLayers = new Map();
+    this.cacheInvalidation = new Set('';
+    this.globalCompositeOperation = config.globalCompositeOperation || 'source-over'
         
         // Performance tracking
         this.stats = {
-            totalLayers: 0;
-            activeLayers: 0;
-            cachedLayers: 0;
-            renderTime: 0;
-    compositionTime: 0 }
+            totalLayers: 0,
+    activeLayers: 0,
+    cachedLayers: 0,
+    renderTime: 0,
+    compositionTime: 0 };
             cacheHitRatio: 0 
     };
         // Configuration
-        this.config = { maxLayers: config.maxLayers || 16;
+        this.config = { maxLayers: config.maxLayers || 16,
             cacheThreshold: config.cacheThreshold || 100, // ms;
             invalidationThreshold: config.invalidationThreshold || 10, // frames;
-            enableBlending: config.enableBlending !== undefined ? config.enableBlending : true,))
-    }
+            enableBlending: config.enableBlending !== undefined ? config.enableBlending : true,));
     
     /**
      * Create a new rendering layer
@@ -128,26 +121,26 @@ export class AdvancedLayerManager {
             
             const layer: Layer = { name;
                 order,
-                enabled: true;
-    visible: true;
-                opacity: properties.opacity || 1.0;
+                enabled: true,
+    visible: true,
+                opacity: properties.opacity || 1.0,
                 blendMode: properties.blendMode || 'source-over';
                 // Layer canvas for caching
-                canvas: null;
+                canvas: null,
                 context: null;
                 // Properties
-                static: properties.static || false;
-                cacheable: properties.cacheable || false;
-                dirty: true;
+                static: properties.static || false,
+                cacheable: properties.cacheable || false,
+                dirty: true,
                 lastModified: Date.now();
                 // Content tracking
-               , objects: new Set() }
-                boundingBox: { x: 0, y: 0, width: 0, height: 0  };
+            objects: new Set(),
+                boundingBox: { x: 0, y: 0, width: 0, height: 0   ,
                 
                 // Performance tracking
-                renderTime: 0;
-                complexity: 0;
-                cacheHits: 0;
+                renderTime: 0,
+                complexity: 0,
+                cacheHits: 0,
     cacheMisses: 0;
             },
             ;
@@ -166,7 +159,7 @@ export class AdvancedLayerManager {
             this._updateLayerOrder(name);
             
             // Track layer type
-            if (layer.static) { this.staticLayers.add(name) } else { this.dynamicLayers.add(name) }
+            if (layer.static) { this.staticLayers.add(name) } else { this.dynamicLayers.add(name);
             
             this.stats.totalLayers = this.layers.size;
             
@@ -236,7 +229,7 @@ export class AdvancedLayerManager {
      */
     setLayerOpacity(name: string, opacity: number): void { const layer = this.layers.get(name);
         if (layer) {
-            layer.opacity = Math.max(0, Math.min(1, opacity) }
+            layer.opacity = Math.max(0, Math.min(1, opacity);
             this._markLayerDirty(name); }
 }
     
@@ -255,7 +248,7 @@ export class AdvancedLayerManager {
      * Mark layer as dirty for re-rendering
      * @param name - Layer name
      */
-    markLayerDirty(name: string): void { this._markLayerDirty(name) }
+    markLayerDirty(name: string): void { this._markLayerDirty(name);
     
     /**
      * Add object to layer
@@ -282,7 +275,7 @@ export class AdvancedLayerManager {
      */
     removeObjectFromLayer(layerName: string, objectId: string): void { const layer = this.layers.get(layerName);
         if (layer) {
-            layer.objects.delete(objectId) }
+            layer.objects.delete(objectId);
             this._markLayerDirty(layerName); }
 }
     
@@ -313,7 +306,7 @@ export class AdvancedLayerManager {
                 if (this.config.enableBlending) { mainContext.globalCompositeOperation = layer.blendMode as GlobalCompositeOperation }
                 
                 // Render layer
-                if (layer.cacheable && this._shouldUseCache(layer) { this._renderCachedLayer(mainContext, layer, viewport) } else { this._renderLayerDirect(mainContext, layer, viewport) }
+                if (layer.cacheable && this._shouldUseCache(layer) { this._renderCachedLayer(mainContext, layer, viewport) } else { this._renderLayerDirect(mainContext, layer, viewport);
                 
                 // Restore context settings
                 mainContext.globalAlpha = originalAlpha;
@@ -324,7 +317,7 @@ export class AdvancedLayerManager {
             this.stats.renderTime = performance.now() - startTime;
 
         } catch (error) {
-            this.errorHandler.logError('Failed to render layers', error as Error) }
+            this.errorHandler.logError('Failed to render layers', error as Error);
     }
     
     /**
@@ -369,7 +362,7 @@ export class AdvancedLayerManager {
                 break; }
 }
         
-        if (!inserted) { this.layerOrder.push(layerName) }
+        if (!inserted) { this.layerOrder.push(layerName);
     }
     
     /**
@@ -379,7 +372,7 @@ export class AdvancedLayerManager {
     private _markLayerDirty(name: string): void { const layer = this.layers.get(name);
         if (layer) {
             layer.dirty = true,
-            layer.lastModified = Date.now() }
+            layer.lastModified = Date.now();
             this.cachedLayers.delete(name); }
 }
     
@@ -429,7 +422,7 @@ export class AdvancedLayerManager {
             // Clear layer canvas
         
         
-            layer.context.clearRect(0, 0, layer.canvas!.width, layer.canvas!.height) }
+            layer.context.clearRect(0, 0, layer.canvas!.width, layer.canvas!.height);
         }
         
         // Custom rendering logic would go here
@@ -442,7 +435,7 @@ export class AdvancedLayerManager {
             mainContext.drawImage(layer.canvas!, 0, 0);
             // Mark as cached if render time exceeds threshold
             if (layer.renderTime > this.config.cacheThreshold) {''
-                this.cachedLayers.set(layer.name, Date.now()) }
+                this.cachedLayers.set(layer.name, Date.now());
                 layer.dirty = false; }
 }
         

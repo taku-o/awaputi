@@ -282,6 +282,6 @@ describe('Settings to Main Menu Navigation Integration Test', () => {
                 expect(gameEngine.sceneManager.getCurrentScene()').toBe('menu') }'
             // Verify no errors occurred
             expect(consoleErrorSpy.not.toHaveBeenCalled();
-        };
+        }
     }
 }');'

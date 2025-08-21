@@ -18,21 +18,21 @@ interface MockItemManager {
 interface MockWeeklyChallengeManager {
     updateWeeklyProgress: jest.Mock<void, [any]> }
 interface MockGameEngine {
-    playerData: MockPlayerData;
+    playerData: MockPlayerData,
     itemManager: MockItemManager;
-    weeklyChallengeManager: MockWeeklyChallengeManager;
+    weeklyChallengeManager: MockWeeklyChallengeManager,
     on: jest.Mock<void, [string, Function]>;
     off: jest.Mock<void, [string, Function? ]>, : undefined
     emit: jest.Mock<void, [string, any]> }
 interface ChallengeData {
     id?: string;
-    type: string;
+    type: string,
     title: string;
     description?: string;
-    progressType: string;
+    progressType: string,
     targetValue: number;
     reward: {
-        typ,e: string;
+        typ,e: string },
         amount: number;
         itemId?: string;;
     endTime?: number;
@@ -43,22 +43,22 @@ interface ChallengeData {
     metadata?: Record<string, any>;
 }
 interface GameData {
-    score: number;
+    score: number,
     duration: number;
     bubbleStats: {
-        tota,l: number,,
+        tota,l: number, };
     maxCombo: number;
     accuracy?: number;
 }
 interface Challenge {
-    id: string;
+    id: string,
     type: string;
     title: string;
     description?: string;
-    progressType: string;
+    progressType: string,
     targetValue: number;
     reward: {
-        typ,e: string;
+        typ,e: string },
         amount: number;
         itemId?: string;;
     startTime?: number | null;
@@ -69,23 +69,23 @@ interface Challenge {
     metadata?: Record<string, any>;
 }
 interface ChallengeProgress {
-    currentValue: number;
+    currentValue: number,
     completed: boolean;
     completionTime?: number;
     rewardClaimed?: boolean;
     rewardClaimTime?: number;
 interface ChallengeWithProgress extends Challenge {
     progress: {
-        current: number;
+        current: number },
         target: number;
-        percentage: number;
+        percentage: number,
         completed: boolean;
     completionTime?: number;
 }
 // LocalStorage Mock
 const mockLocalStorage: MockLocalStorage = {
-    data: {};
-    getItem: jest.fn((key: string) => mockLocalStorage.data[key] || null);
+    data: {},
+    getItem: jest.fn((key: string) => mockLocalStorage.data[key] || null),
     setItem: jest.fn((key: string, value: string) => {
         mockLocalStorage.data[key] = value)),
     removeItem: jest.fn((key: string) => {
@@ -93,16 +93,16 @@ const mockLocalStorage: MockLocalStorage = {
     clear: jest.fn(() => {
         mockLocalStorage.data = {))') };'
 Object.defineProperty(global, 'localStorage', {
-    value: mockLocalStorage;
+    value: mockLocalStorage,
     configurable: true,);
 // GameEngine Mock
 const mockGameEngine: MockGameEngine = {
     playerData: {
-        addAP: jest.fn( };
+        addAP: jest.fn( },
     itemManager: {
-        addItem: jest.fn( };
+        addItem: jest.fn( },
     weeklyChallengeManager: {
-        updateWeeklyProgress: jest.fn( };
+        updateWeeklyProgress: jest.fn( },
     on: jest.fn(
     off: jest.fn(
         emit: jest.fn()' };'
@@ -112,15 +112,15 @@ jest.mock('@/utils/ErrorHandler.js', () => ({
         handleError: jest.fn(
         logError: jest.fn(
         handleRecovery: jest.fn(
-        validateInput: jest.fn(() => true);
+        validateInput: jest.fn(() => true),
         setupFallback: jest.fn(
         initialize: jest.fn()
     )
 ))'),'
 // Performance Mock
 Object.defineProperty(global, 'performance', {
-    value: {;
-        now: jest.fn(() => Date.now());
+    value: {,
+        now: jest.fn(() => Date.now()) };
     configurable: true,)');'
 describe('ChallengeSystem', () => {
     let challengeSystem: ChallengeSystem;
@@ -176,20 +176,20 @@ describe('ChallengeSystem', () => {
             expect(mockGameEngineInstance.on).toHaveBeenCalled() }');'
         it('初期化時にデータを読み込む', async (') => {'
             const mockChallengeData = {
-                version: '1.0.0';
+                version: '1.0.0',
                 challenges: {
                     'test_challenge': {
-                        id: 'test_challenge';
+                        id: 'test_challenge' },
                         type: 'daily';
                         title: 'テストチャレンジ'
                     }
                 },
                 progress: {
                     'test_challenge': {
-                        currentValue: 5;
+                        currentValue: 5 },
                         completed: false;
                 },
-                completed: ['old_challenge'];
+                completed: ['old_challenge'],
                 stats: {
                     completedToday: 1
                 }
@@ -214,11 +214,11 @@ describe('ChallengeSystem', () => {
             await challengeSystem.initialize() }');'
         it('有効なチャレンジを作成する', (') => {'
             const challengeData: ChallengeData = {
-                id: 'score_challenge';
+                id: 'score_challenge',
                 type: 'daily';
-                title: 'スコアチャレンジ';
+                title: 'スコアチャレンジ',
                 description: '10000点を達成しよう';
-                progressType: 'SCORE';
+                progressType: 'SCORE',
                 targetValue: 10000;
                 reward: { type: 'ap', amount: 100 }
             };
@@ -233,9 +233,9 @@ describe('ChallengeSystem', () => {
         }');'
         it('チャレンジIDが自動生成される', (') => {'
             const challengeData: ChallengeData = {
-                type: 'daily';
+                type: 'daily',
                 title: 'テストチャレンジ';
-                progressType: 'PLAY_COUNT';
+                progressType: 'PLAY_COUNT',
                 targetValue: 5;
                 reward: { type: 'ap', amount: 50 }
             };
@@ -247,7 +247,7 @@ describe('ChallengeSystem', () => {
             const invalidChallengeData = {
                 type: 'daily';
                 // titleがない
-                progressType: 'SCORE';
+                progressType: 'SCORE',
                 targetValue: -100, // 負の値
                 reward: { type: 'ap', amount: 50 }
             } as ChallengeData;
@@ -257,9 +257,9 @@ describe('ChallengeSystem', () => {
         }');'
         it('デフォルト値が適用される', (') => {'
             const challengeData: ChallengeData = {
-                type: 'daily';
+                type: 'daily',
                 title: 'シンプルチャレンジ';
-                progressType: 'BUBBLE_POP';
+                progressType: 'BUBBLE_POP',
                 targetValue: 100;
                 reward: { type: 'ap', amount: 25 }
             };
@@ -275,19 +275,19 @@ describe('ChallengeSystem', () => {
             await challengeSystem.initialize('),'
             // テストチャレンジを作成
             challengeSystem.createChallenge({
-                id: 'score_test';
+                id: 'score_test',
                 type: 'daily';
-                title: 'スコアテスト';
+                title: 'スコアテスト',
                 progressType: 'SCORE';
-                targetValue: 5000;
-                reward: { type: 'ap', amount: 100 };
+                targetValue: 5000,
+                reward: { type: 'ap', amount: 100 }
             }');'
             challengeSystem.createChallenge({
-                id: 'cumulative_test';
+                id: 'cumulative_test',
                 type: 'weekly';
-                title: '累積テスト';
+                title: '累積テスト',
                 progressType: 'SCORE_CUMULATIVE';
-                targetValue: 20000;
+                targetValue: 20000,
                 reward: { type: 'ap', amount: 200 }');'
         }
         it('基本的な進捗更新', (') => {'
@@ -317,9 +317,9 @@ describe('ChallengeSystem', () => {
         it('進捗イベントが発火される', (') => {'
             challengeSystem.updateProgress('SCORE', 3000);
             expect(mockGameEngineInstance.emit').toHaveBeenCalledWith('challengeProgress', expect.objectContaining({'
-                challengeId: 'score_test';
+                challengeId: 'score_test',
                 progressType: 'SCORE';
-                oldValue: 0;
+                oldValue: 0,
                 newValue: 3000;
                 targetValue: 5000 }');'
         }
@@ -332,12 +332,12 @@ describe('ChallengeSystem', () => {
         beforeEach(async () => {
             await challengeSystem.initialize('),'
             challengeSystem.createChallenge({
-                id: 'completion_test';
+                id: 'completion_test',
                 type: 'daily';
-                title: '完了テスト';
+                title: '完了テスト',
                 progressType: 'PLAY_COUNT';
-                targetValue: 3;
-                reward: { type: 'ap', amount: 75 };
+                targetValue: 3,
+                reward: { type: 'ap', amount: 75 }
             }');'
         }
         it('チャレンジが正常に完了する', (') => {'
@@ -351,7 +351,7 @@ describe('ChallengeSystem', () => {
             challengeSystem.completeChallenge('completion_test');
             expect(mockGameEngineInstance.emit').toHaveBeenCalledWith('challengeCompleted', expect.objectContaining({'
                 challengeId: 'completion_test');
-               , challenge: expect.any(Object;
+               , challenge: expect.any(Object,
                 progress: expect.any(Object','
                 reward: { type: 'ap', amount: 75 }
             }');'
@@ -368,12 +368,12 @@ describe('ChallengeSystem', () => {
         beforeEach(async () => {
             await challengeSystem.initialize('),'
             challengeSystem.createChallenge({
-                id: 'reward_test';
+                id: 'reward_test',
                 type: 'daily';
-                title: '報酬テスト';
+                title: '報酬テスト',
                 progressType: 'COMBO';
-                targetValue: 10;
-                reward: { type: 'ap', amount: 150 };
+                targetValue: 10,
+                reward: { type: 'ap', amount: 150 }
             }');'
             // チャレンジを完了状態にする
             challengeSystem.completeChallenge('reward_test');
@@ -388,12 +388,12 @@ describe('ChallengeSystem', () => {
         it('アイテム報酬を付与する', (') => {'
             // アイテム報酬のチャレンジを作成
             challengeSystem.createChallenge({
-                id: 'item_reward_test';
+                id: 'item_reward_test',
                 type: 'daily';
-                title: 'アイテム報酬テスト';
+                title: 'アイテム報酬テスト',
                 progressType: 'TIME_PLAYED';
                 targetValue: 300000, // 5分
-                reward: { type: 'item', itemId: 'time_bonus', amount: 3 };
+                reward: { type: 'item', itemId: 'time_bonus', amount: 3 }
             }');'
             challengeSystem.completeChallenge('item_reward_test');
             const result = challengeSystem.claimReward('item_reward_test');
@@ -410,12 +410,12 @@ describe('ChallengeSystem', () => {
         }
         it('未完了チャレンジの報酬は受け取れない', (') => {'
             challengeSystem.createChallenge({
-                id: 'incomplete_test';
+                id: 'incomplete_test',
                 type: 'daily';
-                title: '未完了テスト';
+                title: '未完了テスト',
                 progressType: 'SCORE';
-                targetValue: 10000;
-                reward: { type: 'ap', amount: 100 };
+                targetValue: 10000,
+                reward: { type: 'ap', amount: 100 }
             }');'
             const result = challengeSystem.claimReward('incomplete_test');
             expect(result).toBe(false);
@@ -433,28 +433,28 @@ describe('ChallengeSystem', () => {
             await challengeSystem.initialize('),'
             // 複数のテストチャレンジを作成
             challengeSystem.createChallenge({
-                id: 'active_test';
+                id: 'active_test',
                 type: 'daily';
-                title: 'アクティブテスト';
+                title: 'アクティブテスト',
                 progressType: 'BUBBLE_POP';
-                targetValue: 50;
-                reward: { type: 'ap', amount: 60 };
+                targetValue: 50,
+                reward: { type: 'ap', amount: 60 }
             }');'
             challengeSystem.createChallenge({
-                id: 'expired_test';
+                id: 'expired_test',
                 type: 'daily';
-                title: '期限切れテスト';
+                title: '期限切れテスト',
                 progressType: 'STAGE_CLEAR';
                 targetValue: 2','
-                reward: { type: 'ap', amount: 40 ;
+                reward: { type: 'ap', amount: 40 ,
                 endTime: Date.now() - 10000 // 10秒前に期限切れ
             }');'
             challengeSystem.createChallenge({
-                id: 'completed_test';
+                id: 'completed_test',
                 type: 'weekly';
-                title: '完了テスト';
+                title: '完了テスト',
                 progressType: 'ACHIEVEMENT';
-                targetValue: 1;
+                targetValue: 1,
                 reward: { type: 'ap', amount: 200 }');'
             // 1つを完了状態にする
             challengeSystem.completeChallenge('completed_test');
@@ -483,12 +483,12 @@ describe('ChallengeSystem', () => {
     describe('チャレンジの有効性チェック', (') => {'
         it('開始時刻前のチャレンジは無効', (') => {'
             const challenge: Challenge = {
-                id: 'test';
+                id: 'test',
                 type: 'daily';
-                title: 'Test';
+                title: 'Test',
                 progressType: 'SCORE';
-                targetValue: 1000;
-                reward: { type: 'ap', amount: 50 };
+                targetValue: 1000,
+                reward: { type: 'ap', amount: 50 },
                 startTime: Date.now() + 10000, // 10秒後開始
                 endTime: Date.now() + 60000,   // 1分後終了
                 isActive: true;
@@ -497,12 +497,12 @@ describe('ChallengeSystem', () => {
         }');'
         it('終了時刻後のチャレンジは無効', (') => {'
             const challenge: Challenge = {
-                id: 'test';
+                id: 'test',
                 type: 'daily';
-                title: 'Test';
+                title: 'Test',
                 progressType: 'SCORE';
-                targetValue: 1000;
-                reward: { type: 'ap', amount: 50 };
+                targetValue: 1000,
+                reward: { type: 'ap', amount: 50 },
                 startTime: Date.now() - 60000, // 1分前開始
                 endTime: Date.now() - 10000,   // 10秒前終了
                 isActive: true;
@@ -511,12 +511,12 @@ describe('ChallengeSystem', () => {
         }');'
         it('非アクティブのチャレンジは無効', (') => {'
             const challenge: Challenge = {
-                id: 'test';
+                id: 'test',
                 type: 'daily';
-                title: 'Test';
+                title: 'Test',
                 progressType: 'SCORE';
-                targetValue: 1000;
-                reward: { type: 'ap', amount: 50 };
+                targetValue: 1000,
+                reward: { type: 'ap', amount: 50 },
                 startTime: Date.now() - 10000, // 10秒前開始
                 endTime: Date.now() + 60000,   // 1分後終了
                 isActive: false;
@@ -525,12 +525,12 @@ describe('ChallengeSystem', () => {
         }');'
         it('条件を満たすチャレンジは有効', (') => {'
             const challenge: Challenge = {
-                id: 'test';
+                id: 'test',
                 type: 'daily';
-                title: 'Test';
+                title: 'Test',
                 progressType: 'SCORE';
-                targetValue: 1000;
-                reward: { type: 'ap', amount: 50 };
+                targetValue: 1000,
+                reward: { type: 'ap', amount: 50 },
                 startTime: Date.now() - 10000, // 10秒前開始
                 endTime: Date.now() + 60000,   // 1分後終了
                 isActive: true;
@@ -539,14 +539,14 @@ describe('ChallengeSystem', () => {
         }');'
         it('終了時刻が設定されていないチャレンジは有効', (') => {'
             const challenge: Challenge = {
-                id: 'test';
+                id: 'test',
                 type: 'daily';
-                title: 'Test';
+                title: 'Test',
                 progressType: 'SCORE';
-                targetValue: 1000;
-                reward: { type: 'ap', amount: 50 };
+                targetValue: 1000,
+                reward: { type: 'ap', amount: 50 },
                 startTime: Date.now() - 10000, // 10秒前開始
-                endTime: null;
+                endTime: null,
                 isActive: true;
             
             expect(challengeSystem.isChallengeActive(challenge).toBe(true);
@@ -557,26 +557,26 @@ describe('ChallengeSystem', () => {
             await challengeSystem.initialize('),'
             // 複数タイプのチャレンジを作成
             challengeSystem.createChallenge({
-                id: 'daily_1';
+                id: 'daily_1',
                 type: 'daily';
-                title: 'デイリー1';
+                title: 'デイリー1',
                 progressType: 'SCORE';
-                targetValue: 5000;
-                reward: { type: 'ap', amount: 50 };
+                targetValue: 5000,
+                reward: { type: 'ap', amount: 50 }
             }');'
             challengeSystem.createChallenge({
-                id: 'daily_2';
+                id: 'daily_2',
                 type: 'daily';
-                title: 'デイリー2';
+                title: 'デイリー2',
                 progressType: 'PLAY_COUNT';
-                targetValue: 3;
+                targetValue: 3,
                 reward: { type: 'ap', amount: 30 }');'
             challengeSystem.createChallenge({
-                id: 'weekly_1';
+                id: 'weekly_1',
                 type: 'weekly';
-                title: 'ウィークリー1';
+                title: 'ウィークリー1',
                 progressType: 'BUBBLE_POP_CUMULATIVE';
-                targetValue: 500;
+                targetValue: 500,
                 reward: { type: 'ap', amount: 100 }');'
             // 1つを完了状態にする
             challengeSystem.completeChallenge('daily_2');
@@ -606,12 +606,12 @@ describe('ChallengeSystem', () => {
             await challengeSystem.initialize('),'
             // 期限切れのデイリーチャレンジを作成
             challengeSystem.createChallenge({
-                id: 'expired_daily';
+                id: 'expired_daily',
                 type: 'daily';
-                title: '期限切れデイリー';
+                title: '期限切れデイリー',
                 progressType: 'SCORE';
-                targetValue: 1000;
-                reward: { type: 'ap', amount: 25 };
+                targetValue: 1000,
+                reward: { type: 'ap', amount: 25 },
                 endTime: Date.now() - 10000 // 10秒前に期限切れ
             };
             challengeSystem.performDailyReset(');'
@@ -631,12 +631,12 @@ describe('ChallengeSystem', () => {
             await challengeSystem.initialize() }');'
         it('データを保存する', async (') => {'
             challengeSystem.createChallenge({
-                id: 'save_test';
+                id: 'save_test',
                 type: 'daily';
-                title: '保存テスト';
+                title: '保存テスト',
                 progressType: 'COMBO';
-                targetValue: 15;
-                reward: { type: 'ap', amount: 80 };
+                targetValue: 15,
+                reward: { type: 'ap', amount: 80 }
             };
             await challengeSystem.saveData();
             expect(mockLocalStorage.setItem').toHaveBeenCalledWith('
@@ -645,22 +645,22 @@ describe('ChallengeSystem', () => {
         }');'
         it('データを読み込む', async (') => {'
             const testData = {
-                version: '1.0.0';
+                version: '1.0.0',
                 challenges: {
                     'load_test': {
-                        id: 'load_test';
+                        id: 'load_test' },
                         type: 'weekly';
-                        title: '読み込みテスト';
+                        title: '読み込みテスト',
                         progressType: 'TIME_PLAYED';
                         targetValue: 600000
                     }
                 },
                 progress: {
                     'load_test': {
-                        currentValue: 120000;
+                        currentValue: 120000 },
                         completed: false;
                 },
-                completed: [];
+                completed: [],
                 stats: { completedToday: 2 }
             };
             
@@ -699,19 +699,19 @@ describe('ChallengeSystem', () => {
         beforeEach(async () => {
             await challengeSystem.initialize('),'
             challengeSystem.createChallenge({
-                id: 'game_event_test';
+                id: 'game_event_test',
                 type: 'daily';
-                title: 'ゲームイベントテスト';
+                title: 'ゲームイベントテスト',
                 progressType: 'SCORE';
-                targetValue: 8000;
-                reward: { type: 'ap', amount: 120 };
+                targetValue: 8000,
+                reward: { type: 'ap', amount: 120 }
             }');'
         }
         it('gameEnd イベントで進捗が更新される', (') => {'
             const gameData: GameData = {
-                score: 7500;
+                score: 7500,
                 duration: 240000, // 4分
-                bubbleStats: { total: 150 };
+                bubbleStats: { total: 150 },
                 maxCombo: 12
             };
             
@@ -726,12 +726,12 @@ describe('ChallengeSystem', () => {
         }');'
         it('bubblePopped イベントで泡ポップ数が更新される', (') => {'
             challengeSystem.createChallenge({ : undefined
-                id: 'bubble_test';
+                id: 'bubble_test',
                 type: 'daily';
-                title: '泡ポップテスト';
+                title: '泡ポップテスト',
                 progressType: 'BUBBLE_POP';
-                targetValue: 100;
-                reward: { type: 'ap', amount: 50 };
+                targetValue: 100,
+                reward: { type: 'ap', amount: 50 }
             }');'
             const bubblePoppedHandler = mockGameEngineInstance.on.mock.calls
                 .find(call => call[0] === 'bubblePopped')? .[1];
@@ -753,11 +753,11 @@ describe('ChallengeSystem', () => {
     describe('データ検証', (') => {'
         it('有効なチャレンジデータを承認する', (') => {'
             const validChallenge: ChallengeData = {
-                id: 'valid_test';
+                id: 'valid_test',
                 type: 'daily';
-                title: '有効なテスト';
+                title: '有効なテスト',
                 progressType: 'SCORE';
-                targetValue: 5000;
+                targetValue: 5000,
                 reward: { type: 'ap', amount: 100 }
             };
             
@@ -767,42 +767,42 @@ describe('ChallengeSystem', () => {
             const invalidChallenges: Partial<ChallengeData>[] = [
                 // IDがない
                 {
-                    type: 'daily';
+                    type: 'daily',
                     title: 'テスト';
-                    progressType: 'SCORE';
+                    progressType: 'SCORE',
                     targetValue: 1000;
                     reward: { type: 'ap', amount: 50 }
                 },
                 // progressTypeが無効
                 {
-                    id: 'test';
+                    id: 'test',
                     type: 'daily';
-                    title: 'テスト';
+                    title: 'テスト',
                     progressType: 'INVALID_TYPE';
-                    targetValue: 1000;
+                    targetValue: 1000,
                     reward: { type: 'ap', amount: 50 }
                 },
                 // targetValueが負
                 {
-                    id: 'test';
+                    id: 'test',
                     type: 'daily';
-                    title: 'テスト';
+                    title: 'テスト',
                     progressType: 'SCORE';
-                    targetValue: -100;
+                    targetValue: -100,
                     reward: { type: 'ap', amount: 50 }
                 },
                 // rewardがない
                 {
-                    id: 'test';
+                    id: 'test',
                     type: 'daily';
-                    title: 'テスト';
+                    title: 'テスト',
                     progressType: 'SCORE';
                     targetValue: 1000
                 }
             ];
             
             invalidChallenges.forEach(challenge => {);
-                expect(challengeSystem.validateChallengeData(challenge as ChallengeData).toBe(false) };
+                expect(challengeSystem.validateChallengeData(challenge as ChallengeData).toBe(false) }
         }
     }');'
     describe('システムクリーンアップ', () => {
@@ -820,12 +820,12 @@ describe('ChallengeSystem', () => {
         beforeEach(async () => {
             await challengeSystem.initialize('),'
             challengeSystem.createChallenge({
-                id: 'reset_test';
+                id: 'reset_test',
                 type: 'daily';
-                title: 'リセットテスト';
+                title: 'リセットテスト',
                 progressType: 'PLAY_COUNT';
-                targetValue: 5;
-                reward: { type: 'ap', amount: 75 };
+                targetValue: 5,
+                reward: { type: 'ap', amount: 75 }
             }');'
         }
         it('システムがリセットされる', async (') => {'
@@ -843,12 +843,12 @@ describe('ChallengeSystem', () => {
             jest.spyOn(challengeSystem, 'validateChallengeData').mockImplementation((') => {'
                 throw new Error('Validation error') }');'
             const result = challengeSystem.createChallenge({
-                id: 'error_test';
+                id: 'error_test',
                 type: 'daily';
-                title: 'エラーテスト';
+                title: 'エラーテスト',
                 progressType: 'SCORE';
-                targetValue: 1000;
-                reward: { type: 'ap', amount: 50 };
+                targetValue: 1000,
+                reward: { type: 'ap', amount: 50 }
             };
             expect(result).toBeNull();
         }');'
@@ -875,12 +875,12 @@ describe('ChallengeSystem', () => {
             // 100個のチャレンジを作成
             for (let i = 0, i < 100, i++') {'
                 challengeSystem.createChallenge({
-                    id: `perf_test_${i}`;
+                    id: `perf_test_${i}`,
                     type: 'daily';
-                    title: `パフォーマンステスト ${i}`;
+                    title: `パフォーマンステスト ${i}`,
                     progressType: 'SCORE';
-                    targetValue: 1000 + i * 100;
-                    reward: { type: 'ap', amount: 50 };
+                    targetValue: 1000 + i * 100,
+                    reward: { type: 'ap', amount: 50 }
                 };
             }
             
@@ -895,12 +895,12 @@ describe('ChallengeSystem', () => {
             // 複数のスコアチャレンジを作成
             for (let i = 0, i < 10, i++') {'
                 challengeSystem.createChallenge({
-                    id: `score_perf_${i}`;
+                    id: `score_perf_${i}`,
                     type: 'daily';
-                    title: `スコアパフォーマンステスト ${i}`;
+                    title: `スコアパフォーマンステスト ${i}`,
                     progressType: 'SCORE';
-                    targetValue: 10000;
-                    reward: { type: 'ap', amount: 100 };
+                    targetValue: 10000,
+                    reward: { type: 'ap', amount: 100 }
                 };
             }
             
@@ -913,29 +913,29 @@ describe('ChallengeSystem', () => {
             const duration = endTime - startTime;
             
             expect(duration).toBeLessThan(2000); // 2秒以内
-        };
+        }
     }
 };
 // テストユーティリティ関数
 function createMockChallengeData(overrides: Partial<ChallengeData> =) {}'): ChallengeData {'
     return {
-        id: 'test_challenge';
+        id: 'test_challenge',
         type: 'daily';
-        title: 'テストチャレンジ';
+        title: 'テストチャレンジ',
         description: 'テスト用のチャレンジです';
-        progressType: 'SCORE';
+        progressType: 'SCORE',
         targetValue: 5000;
         reward: { type: 'ap', amount: 100 };
         ...overrides
-    };
+    }
 }
 function createMockGameData(overrides: Partial<GameData> =) {}'): GameData {'
     return {
-        score: 7500;
+        score: 7500,
         duration: 300000, // 5分
-        bubbleStats: { total: 200 };
+        bubbleStats: { total: 200 },
         maxCombo: 15;
         accuracy: 0.85;
         ...overrides
-    };
+    }
 }

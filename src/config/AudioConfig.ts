@@ -11,102 +11,100 @@ import { getErrorHandler, ErrorHandler  } from '../utils/ErrorHandler.js';
 /**
  * 音量設定の型定義
  */
-export interface VolumeConfig { master: number;
-    sfx: number;
-    bgm: number;
+export interface VolumeConfig { master: number,
+    sfx: number,
+    bgm: number,
     muted: boolean;
 
 /**
  * 音質設定の型定義
  */
-export interface QualityConfig { sampleRate: number;
-    bufferSize: number;
-    channels: number;
+export interface QualityConfig { sampleRate: number,
+    bufferSize: number,
+    channels: number,
     bitDepth: number;
 
 /**
  * コンプレッサー設定の型定義
  */
-export interface CompressorConfig { threshold: number;
-    knee: number;
-    ratio: number;
-    attack: number;
+export interface CompressorConfig { threshold: number,
+    knee: number,
+    ratio: number,
+    attack: number,
     release: number;
 
 /**
  * リバーブ設定の型定義
  */
-export interface ReverbConfig { duration: number;
-    decay: number;
+export interface ReverbConfig { duration: number,
+    decay: number,
     wet: number;
 
 /**
  * イコライザーバンド設定の型定義
  */
-export interface EqualizerBands { bass: number;
-    lowMid: number;
-    mid: number;
-    highMid: number;
+export interface EqualizerBands { bass: number,
+    lowMid: number,
+    mid: number,
+    highMid: number,
     treble: number;
 
 /**
  * イコライザー設定の型定義
  */
-export interface EqualizerConfig { enabled: boolean;
+export interface EqualizerConfig { enabled: boolean,
     bands: EqualizerBands;
 
 /**
  * 音響効果設定の型定義
  */
-export interface EffectConfig { reverbEnabled: boolean;
-    compression: boolean;
-    compressor: CompressorConfig;
+export interface EffectConfig { reverbEnabled: boolean,
+    compression: boolean,
+    compressor: CompressorConfig,
     reverb: ReverbConfig;
 
 /**
  * 環境音設定の型定義
  */
-export interface EnvironmentalConfig { enabled: boolean;
-    volume: number;
-    currentBiome: string | null;
-    currentWeather: string | null;
-    currentTimeOfDay: string | null }
-
+export interface EnvironmentalConfig { enabled: boolean,
+    volume: number,
+    currentBiome: string | null,
+    currentWeather: string | null,
+    currentTimeOfDay: string | null };
 /**
  * アクセシビリティ設定の型定義
  */
-export interface AccessibilityConfig { visualFeedback: boolean;
-    captioning: boolean;
-    colorIndication: boolean;
-    patternRecognition: boolean;
-    highContrast: boolean;
-    largeFonts: boolean;
-    reduceMotion: boolean;
-    hapticFeedback: boolean;
+export interface AccessibilityConfig { visualFeedback: boolean,
+    captioning: boolean,
+    colorIndication: boolean,
+    patternRecognition: boolean,
+    highContrast: boolean,
+    largeFonts: boolean,
+    reduceMotion: boolean,
+    hapticFeedback: boolean,
     vibrationIntensity: number;
 
 /**
  * AudioManagerステータスの型定義
  */
-export interface AudioManagerStatus { masterVolume: number;
-    sfxVolume: number;
-    bgmVolume: number;
+export interface AudioManagerStatus { masterVolume: number,
+    sfxVolume: number,
+    bgmVolume: number,
     isMuted: boolean;
 
 /**
  * AudioManagerインターフェースの型定義
  */
-export interface AudioManager { setVolume(type: string, volume: number): void;
+export interface AudioManager { setVolume(type: string, volume: number): void,
     isMuted: boolean;
     toggleMute(): void;
     getStatus(): AudioManagerStatus;
-     }
-
+     };
 export class AudioConfig {
     private configManager: ConfigurationManager;
     constructor() {
 
-        this.configManager = getConfigurationManager() }
+        this.configManager = getConfigurationManager() };
         this._initialize(); }
     }
 
@@ -209,19 +207,19 @@ export class AudioConfig {
     private _setupValidationRules('';
         this.configManager.setValidationRule('audio', 'volumes.master', { ')'
             type: 'number')','
-    min: 0,')',
+    min: 0,'),
             max: 1','
             max: 1','
         };
         this.configManager.setValidationRule('audio', 'volumes.sfx', {''
             type: 'number')','
-    min: 0,')',
+    min: 0,'),
             max: 1','
             max: 1','
         };
         this.configManager.setValidationRule('audio', 'volumes.bgm', {''
             type: 'number')','
-    min: 0,')',
+    min: 0,'),
             max: 1','
             max: 1','
         };
@@ -230,13 +228,13 @@ export class AudioConfig {
         ','
         // 音質設定の検証ルール
         this.configManager.setValidationRule('audio', 'quality.sampleRate', {''
-            type: 'number',
+            type: 'number,
             validator: (value: any) => [8000, 11025, 22050, 44100, 48000, 96000].includes(value),' }'
 
         }');'
 
         this.configManager.setValidationRule('audio', 'quality.bufferSize', { ')'
-            type: 'number',
+            type: 'number,
             validator: (value: any) => [256, 512, 1024, 2048, 4096, 8192, 16384].includes(value),' }'
 
         }');'
@@ -244,19 +242,19 @@ export class AudioConfig {
         // 音響効果設定の検証ルール
         this.configManager.setValidationRule('audio', 'effects.compressor.threshold', { ')'
             type: 'number')','
-    min: -100,')',
+    min: -100,'),
             max: 0','
             max: 0','
         };
         this.configManager.setValidationRule('audio', 'effects.compressor.knee', {''
             type: 'number')','
-    min: 0,')',
+    min: 0,'),
             max: 40','
             max: 40','
         };
         this.configManager.setValidationRule('audio', 'effects.compressor.ratio', {''
             type: 'number')','
-    min: 1,')',
+    min: 1,'),
             max: 20'),'
         ','
         // イコライザー設定の検証ルール
@@ -266,7 +264,7 @@ export class AudioConfig {
         const bandValidation = {''
             type: 'number' as const,
             min: -20,
-    max: 20  },
+    max: 20  };
         this.configManager.setValidationRule('audio', 'effects.equalizer.bands.bass', bandValidation';'
         this.configManager.setValidationRule('audio', 'effects.equalizer.bands.lowMid', bandValidation';'
         this.configManager.setValidationRule('audio', 'effects.equalizer.bands.mid', bandValidation';'
@@ -279,7 +277,7 @@ export class AudioConfig {
             type: 'boolean')','
         };
         this.configManager.setValidationRule('audio', 'environmental.volume', {''
-            type: 'number',
+            type: 'number,
     min: 0,','
             max: 1  }
 
@@ -332,7 +330,7 @@ export class AudioConfig {
      * @returns {boolean} 設定成功フラグ'
      */''
     setMasterVolume(volume: number): boolean { ''
-        return this.configManager.set('audio', 'volumes.master', volume) }
+        return this.configManager.set('audio', 'volumes.master', volume);
 
     /**
      * SFX音量を設定
@@ -340,7 +338,7 @@ export class AudioConfig {
      * @returns {boolean} 設定成功フラグ'
      */''
     setSfxVolume(volume: number): boolean { ''
-        return this.configManager.set('audio', 'volumes.sfx', volume) }
+        return this.configManager.set('audio', 'volumes.sfx', volume);
 
     /**
      * BGM音量を設定
@@ -356,7 +354,7 @@ export class AudioConfig {
      * @returns {boolean} 設定成功フラグ'
      */''
     setMuted(muted: boolean): boolean { ''
-        return this.configManager.set('audio', 'volumes.muted', muted) }
+        return this.configManager.set('audio', 'volumes.muted', muted);
 
     /**
      * ミュート状態を切り替え
@@ -417,14 +415,14 @@ export class AudioConfig {
             reverbEnabled: this.configManager.get('audio', 'effects.reverb', true','
             compression: this.configManager.get('audio', 'effects.compression', true','
             compressor: { ''
-                threshold: this.configManager.get('audio', 'effects.compressor.threshold', -20','
+                threshold: this.configManager.get('audio', 'effects.compressor.threshold', -20','  },
                 knee: this.configManager.get('audio', 'effects.compressor.knee', 40','
                 ratio: this.configManager.get('audio', 'effects.compressor.ratio', 12','
                 attack: this.configManager.get('audio', 'effects.compressor.attack', 0.003','
                 release: this.configManager.get('audio', 'effects.compressor.release', 0.25 },
 
             reverb: { ''
-                duration: this.configManager.get('audio', 'effects.reverb.duration', 2.0','
+                duration: this.configManager.get('audio', 'effects.reverb.duration', 2.0','  },
                 decay: this.configManager.get('audio', 'effects.reverb.decay', 0.5','
                 wet: this.configManager.get('audio', 'effects.reverb.wet', 0.3 }
         }
@@ -503,7 +501,7 @@ export class AudioConfig {
             // ミュート状態の適用
             if (volumeConfig.muted !== audioManager.isMuted) {
 
-                audioManager.toggleMute() }
+                audioManager.toggleMute();
 
             console.log('[AudioConfig] AudioManagerに設定を適用しました'); }'
 
@@ -534,8 +532,7 @@ export class AudioConfig {
             console.log('[AudioConfig] AudioManagerから設定を同期しました);'
 
         } catch (error) { getErrorHandler()','
-                context: 'AudioConfig.syncFromAudioManager' },
-        }
+                context: 'AudioConfig.syncFromAudioManager' , }
 }
 
 // シングルトンインスタンス

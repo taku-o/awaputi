@@ -409,7 +409,7 @@ describe('Canvas Scale UI Positioning Performance Tests', () => {
                 
                 performanceMonitor.mark(`frame-${frame)-end`};
                 const frameTime = performanceMonitor.measure(`frame-${frame}`, `frame-${frame}-start`, `frame-${frame)-end`),
-                frameimes.push(frameTime};
+                frameimes.push(frameTime}
             }
             
             // フレーム時間の分析
@@ -421,7 +421,7 @@ describe('Canvas Scale UI Positioning Performance Tests', () => {
             expect(averageFrameTime.toBeLessThan(frameBudget * 0.5); // 平均は予算の50%以下
             expect(maxFrameTime.toBeLessThan(frameBudget * 1.5); // 最大でも予算の150%以下
             expect(framesWithinBudget / frameCount).toBeGreaterThan(0.9); // 90%以上のフレームが予算内
-        };
+        }
     }
     // ヘルパー関数
     function simulateCanvasResize(width, height') {'

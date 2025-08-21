@@ -11,30 +11,28 @@
  */
 
 // Type definitions
-interface SupportedFeatures { canvas: boolean;
-    indexedDB: boolean;
-    localStorage: boolean;
+interface SupportedFeatures { canvas: boolean,
+    indexedDB: boolean,
+    localStorage: boolean,
     serviceWorker: boolean;
-
-interface BrowserInfo { name: string;
-    version: string;
+    interface BrowserInfo { name: string,
+    version: string,
     engine: string;
-
-interface ExecutionContext { protocol: 'file:' | 'http:' | 'http,s: ' | string;
-    isLocal: boolean;
-    canUseModules: boolean;
-    supportedFeatures: SupportedFeatures;
+    interface ExecutionContext { protocol: 'file:' | 'http:' | 'http,s: ' | string,
+    isLocal: boolean,
+    canUseModules: boolean,
+    supportedFeatures: SupportedFeatures,
     browserInfo: BrowserInfo;
-
-interface DebugInfo { executionContext: ExecutionContext;
-    isLocalExecution: boolean;
-    shouldShowWarning: boolean;
-    userAgent: string;
+    interface DebugInfo { executionContext: ExecutionContext,
+    isLocalExecution: boolean,
+    shouldShowWarning: boolean,
+    userAgent: string,
     location: {
         hre,f: string;
-        protocol: string;
-        host: string;
-    pathname: string;
+    },
+        protocol: string,
+        host: string,
+    pathname: string,
     timestamp: string;
 }
 
@@ -51,7 +49,7 @@ class LocalExecutionDetector { /**
      */'
     static getExecutionContext(): ExecutionContext { ''
         const protocol = this._getProtocol('''
-        const isLocal = protocol === 'file: ',
+        const isLocal = protocol === 'file: ,
         
         return { protocol,
             isLocal,
@@ -133,14 +131,14 @@ class LocalExecutionDetector { /**
     /**
      * IndexedDB のサポートを確認'
      */''
-    private static _supportsIndexedDB('',
+    private static _supportsIndexedDB(',
             return 'indexedDB' in, window && window.indexedDB !== null)
         } catch (error) { return false,
 
     /**
      * localStorage のサポートを確認'
      */''
-    private static _supportsLocalStorage('',
+    private static _supportsLocalStorage(',
             const, test = '__localStorage_test__')
             localStorage.setItem(test, test);
             localStorage.removeItem(test);
@@ -161,7 +159,7 @@ class LocalExecutionDetector { /**
             return browserInfo,' }'
 
         } catch (error) { return { ''
-                name: 'unknown',
+                name: 'unknown,
                 version: 'unknown',' };'
 
                 engine: 'unknown' 
@@ -172,36 +170,36 @@ class LocalExecutionDetector { /**
      * User Agent からブラウザ情報を解析'
      */''
     private static _parseBrowserInfo(userAgent: string): BrowserInfo { ''
-        let name = 'unknown',
-        let version = 'unknown',
-        let engine = 'unknown',
+        let name = 'unknown,
+        let version = 'unknown,
+        let engine = 'unknown,
 ','
         // Chrome
         if (userAgent.indexOf('Chrome' > -1') {''
-            name = 'Chrome',
+            name = 'Chrome,
             const match = userAgent.match(/Chrome\/(\d+\.\d+)/'),'
-            version = match ? match[1] : 'unknown',
+            version = match ? match[1] : 'unknown,
             engine = 'Blink' }
 
         // Firefox
         else if (userAgent.indexOf('Firefox' > -1') { ''
-            name = 'Firefox',
+            name = 'Firefox,
             const match = userAgent.match(/Firefox\/(\d+\.\d+)/'),'
-            version = match ? match[1] : 'unknown',
+            version = match ? match[1] : 'unknown,
             engine = 'Gecko' }
 
         // Safari
         else if (userAgent.indexOf('Safari') > -1 && userAgent.indexOf('Chrome' === -1') { ''
-            name = 'Safari',
+            name = 'Safari,
             const match = userAgent.match(/Version\/(\d+\.\d+)/'),'
-            version = match ? match[1] : 'unknown',
+            version = match ? match[1] : 'unknown,
             engine = 'WebKit' }
 
         // Edge
         else if (userAgent.indexOf('Edg' > -1') { ''
-            name = 'Edge',
+            name = 'Edge,
             const match = userAgent.match(/Edg\/(\d+\.\d+)/'),'
-            version = match ? match[1] : 'unknown',
+            version = match ? match[1] : 'unknown,
             engine = 'Blink' }
 
         return { name, version, engine }
@@ -215,9 +213,9 @@ class LocalExecutionDetector { /**
             shouldShowWarning: this.shouldShowWarning(
             userAgent: navigator.userAgent,
     location: {
-                href: window.location.href),
+                href: window.location.href) ,
                 protocol: window.location.protocol,
-    host: window.location.host },
+    host: window.location.host ,
                 pathname: window.location.pathname 
-    },')'
+    ,')'
             timestamp: new Date().toISOString();

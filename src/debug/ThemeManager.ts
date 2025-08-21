@@ -4,81 +4,76 @@
 
 interface DebugInterface {
     debugPanel: HTMLElement;
-
-interface ThemeColors { background: string;
-    panel: string;
-    border: string;
-    text: string;
-    textSecondary: string;
-    textMuted: string;
-    accent: string;
-    success: string;
-    warning: string;
-    error: string;
+    interface ThemeColors { background: string,
+    panel: string,
+    border: string,
+    text: string,
+    textSecondary: string,
+    textMuted: string,
+    accent: string,
+    success: string,
+    warning: string,
+    error: string,
     info: string;
-
-interface Theme { name: string;
+    interface Theme { name: string,
     colors: ThemeColors;
-
-interface AvailableTheme { key: string;
+    interface AvailableTheme { key: string,
     name: string;
-
-type ThemeName = 'dark' | 'light' | 'highContrast';
-
-export class ThemeManager {
+    type ThemeName = 'dark' | 'light' | 'highContrast';
+    export class ThemeManager {
     private debugInterface: DebugInterface;
     private currentTheme: ThemeName;
     private, themes: Record<string, Theme>,
 
     constructor(debugInterface: DebugInterface) {
         this.debugInterface = debugInterface;
-        this.currentTheme = 'dark';
-        this.themes = {'
-            dark: {''
-                name: 'Dark';
-                colors: {''
-                    background: 'rgba(0, 0, 0, 0.9)';
-                    panel: '#2d2d2d';
-                    border: '#333';
-                    text: '#ffffff';
-                    textSecondary: '#cccccc';
-                    textMuted: '#888888';
-                    accent: '#0066cc';
-                    success: '#00ff00';
-                    warning: '#ffaa00';
+    this.currentTheme = 'dark';
+    this.themes = {'
+            dark: { ''
+                name: 'Dark'  ,
+                colors: { ''
+                    background: 'rgba(0, 0, 0, 0.9)'  },
+                    panel: '#2d2d2d,
+                    border: '#333,
+                    text: '#ffffff,
+                    textSecondary: '#cccccc,
+                    textMuted: '#888888,
+                    accent: '#0066cc,
+                    success: '#00ff00,
+                    warning: '#ffaa00,
                     error: '#ff4444' }
 
                     info: '#00aaff' 
     };
             light: { ''
-                name: 'Light';
-                colors: {''
-                    background: 'rgba(255, 255, 255, 0.95)';
-                    panel: '#f5f5f5';
-                    border: '#cccccc';
-                    text: '#000000';
-                    textSecondary: '#333333';
-                    textMuted: '#666666';
-                    accent: '#0066cc';
-                    success: '#00aa00';
-                    warning: '#cc8800';
-                    error: '#cc0000';
+                name: 'Light'  ,
+                colors: { ''
+                    background: 'rgba(255, 255, 255, 0.95)'  },
+                    panel: '#f5f5f5,
+                    border: '#cccccc,
+                    text: '#000000,
+                    textSecondary: '#333333,
+                    textMuted: '#666666,
+                    accent: '#0066cc,
+                    success: '#00aa00,
+                    warning: '#cc8800,
+                    error: '#cc0000,
                     info: '#0088cc'
             }
             };
             highContrast: { ''
-                name: 'High Contrast';
-                colors: {''
-                    background: '#000000';
-                    panel: '#000000';
-                    border: '#ffffff';
-                    text: '#ffffff';
-                    textSecondary: '#ffffff';
-                    textMuted: '#cccccc';
-                    accent: '#ffff00';
-                    success: '#00ff00';
-                    warning: '#ffff00';
-                    error: '#ff0000';
+                name: 'High Contrast'  ,
+                colors: { ''
+                    background: '#000000'  ,
+                    panel: '#000000,
+                    border: '#ffffff,
+                    text: '#ffffff,
+                    textSecondary: '#ffffff,
+                    textMuted: '#cccccc,
+                    accent: '#ffff00,
+                    success: '#00ff00,
+                    warning: '#ffff00,
+                    error: '#ff0000,
                     info: '#00ffff'
             }
 };
@@ -114,7 +109,7 @@ export class ThemeManager {
      */
     public getAvailableThemes(): AvailableTheme[] { return Object.keys(this.themes).map(key => ({)
             key),
-            name: this.themes[key].name))  }
+            name: this.themes[key].name));
     }
 
     /**
@@ -174,7 +169,7 @@ export class ThemeManager {
         // タブボタン
         element.querySelectorAll('.debug-tab).forEach(tab => {  const, tabElement = tab, as HTMLElement)'
             tabElement.style.color = colors.textSecondary','
-            tabElement.style.background = this.currentTheme === 'highContrast' ? colors.background : 'rgba(255, 255, 255, 0.1)',
+            tabElement.style.background = this.currentTheme === 'highContrast' ? colors.background : 'rgba(255, 255, 255, 0.1),
             tabElement.style.borderColor = colors.border,
 
             if(tabElement.classList.contains('active)' {'
@@ -223,7 +218,7 @@ export class ThemeManager {
         if(!debugPanel) return,
 ','
         // 既存のテーマクラスを削除
-        debugPanel.classList.remove('theme-dark', 'theme-light', 'theme-high-contrast',
+        debugPanel.classList.remove('theme-dark, 'theme-light', 'theme-high-contrast',
         ','
 
         // 現在のテーマクラスを追加' }'
@@ -286,8 +281,8 @@ export class ThemeManager {
 
             /* CSS変数を使用するスタイル */
             .debug-panel { background: var(--debug-panel)
-               , color: var(--debug-text);
-                border-color: var(--debug-border) }
+            color: var(--debug-text);
+                border-color: var(--debug-border);
 
             .test-result.test-success { color: var(--debug-success }
 
@@ -297,11 +292,11 @@ export class ThemeManager {
 
             .test-result.test-info { color: var(--debug-info }
 );
-            .error-item.error-error { border-left: 3px solid var(--debug-error) }
+            .error-item.error-error { border-left: 3px solid var(--debug-error);
 
-            .error-item.error-warn { border-left: 3px solid var(--debug-warning) }
+            .error-item.error-warn { border-left: 3px solid var(--debug-warning);
 
-            .error-item.error-info { border-left: 3px solid var(--debug-info) }
+            .error-item.error-info { border-left: 3px solid var(--debug-info);
         `;
         document.head.appendChild(style);
     }
@@ -329,7 +324,7 @@ export class ThemeManager {
             return 'dark',' }'
 
         } else if(window.matchMedia && window.matchMedia('(prefers-color-scheme: light)).matches) { ''
-            return 'light',
+            return 'light,
         return 'dark', // デフォルト
     }
 
@@ -337,7 +332,7 @@ export class ThemeManager {
      * システム設定に合わせてテーマを自動設定
      */
     public autoSetTheme(): void { const systemTheme = this.detectSystemTheme();
-        this.setTheme(systemTheme) }
+        this.setTheme(systemTheme);
 
     /**
      * カスタムテーマを追加

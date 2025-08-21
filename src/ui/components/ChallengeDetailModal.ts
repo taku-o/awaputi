@@ -7,23 +7,23 @@
 /**
  * Challenge reward interface
  */
-interface ChallengeReward { type: string;
-    amount: number;
+interface ChallengeReward { type: string,
+    amount: number,
     description: string;
 
 /**
  * Challenge data interface
  */
-interface ChallengeData { id: string;
-    title: string;
-    description: string;
-    type: 'daily' | 'weekly' | 'special' | 'event';
-    difficulty: 'easy' | 'medium' | 'hard' | 'expert';
-    progress: number;
-    target: number;
+interface ChallengeData { id: string,
+    title: string,
+    description: string,
+    type: 'daily' | 'weekly' | 'special' | 'event,
+    difficulty: 'easy' | 'medium' | 'hard' | 'expert,
+    progress: number,
+    target: number,
     reward: ChallengeReward;
     deadline?: Date;
-    priority?: number,  }
+    priority?: number }
 
 /**
  * Challenge system interface
@@ -39,8 +39,8 @@ interface LocalizationManager { translate(key: string): string | null }
 /**
  * Bound event handlers
  */
-interface BoundHandlers { close: () => void;
-    backdropClick: (event: Event) => void;
+interface BoundHandlers { close: () => void,
+    backdropClick: (event: Event) => void,
     keyDown: (event: KeyboardEvent) => void  }
 }
 
@@ -68,9 +68,8 @@ export class ChallengeDetailModal {
         
         // イベントハンドラー
         this.boundHandlers = {
-            close: this.close.bind(this;
-    backdropClick: this.onBackdropClick.bind(this) }
-
+            close: this.close.bind(this,
+    backdropClick: this.onBackdropClick.bind(this) };
             keyDown: this.onKeyDown.bind(this); 
     };
 
@@ -142,7 +141,7 @@ export class ChallengeDetailModal {
             const title = document.createElement('h2');
             title.className = 'challenge-detail-modal-title';
             title.style.cssText = `;
-               , margin: 0,
+            margin: 0,
                 font-size: 24px,
                 font-weight: bold,
                 color: #2c3e50,
@@ -279,7 +278,7 @@ export class ChallengeDetailModal {
             console.log('[ChallengeDetailModal] モーダル閉じる';
 
         } catch (error') {'
-            console.error('[ChallengeDetailModal] 閉じるエラー:', error) }
+            console.error('[ChallengeDetailModal] 閉じるエラー:', error);
     }
     
     /**
@@ -299,14 +298,13 @@ export class ChallengeDetailModal {
             if (this.challengeData) {
             ','
 
-                this.renderChallengeDetails() }
+                this.renderChallengeDetails();
 
                 throw new Error('チャレンジデータが見つかりません'; }
-
-            } catch (error) {
+        } catch (error) {
             console.error('[ChallengeDetailModal] データ読み込みエラー:', error);
             this.error = (error, as Error).message,
-            this.renderError() }
+            this.renderError();
     }
     
     /**
@@ -316,19 +314,18 @@ export class ChallengeDetailModal {
             id: challengeId,
 
             title: `チャレンジ ${challengeId}`,''
-            description: 'このチャレンジの詳細説明です。目標を達成して報酬を獲得しましょう。',
-            type: 'daily',
-            difficulty: 'medium',
+            description: 'このチャレンジの詳細説明です。目標を達成して報酬を獲得しましょう。,
+            type: 'daily,
+            difficulty: 'medium,
             progress: 50,
     target: 100,
             reward: { ''
-                type: 'ap',
+                type: 'ap' ,
                 amount: 100,
                 description: '100 AP'
             };
             deadline: new Date(Date.now() + 24 * 60 * 60 * 1000), // 24時間後;
-            priority: 5,
-        } }
+            priority: 5 } }
     
     /**
      * ローディング状態の描画
@@ -344,7 +341,7 @@ export class ChallengeDetailModal {
             </div>,
             <style>,
                 @keyframes spin { }
-                    0% { transform: rotate(0deg) }
+                    0% { transform: rotate(0deg);
                     100% { transform: rotate(360deg }
             </style>;
         `;
@@ -358,42 +355,42 @@ export class ChallengeDetailModal {
         const challenge = this.challengeData,""
         const progressPercentage = Math.round((challenge.progress / challenge.target) * 100"),"
         ","
-        this.contentArea.innerHTML = `"",
-            <div class="challenge-detail-content">"",
+        this.contentArea.innerHTML = `",
+            <div class="challenge-detail-content">",
                 <div style="margin-bottom: 24px,">" }"
                     <h3 style="margin: 0 0 8px 0; font-size: 20px;, color: #2c3e50;">${challenge.title}</h3>""
                     <p style="margin: 0;, color: #7f8c8d; line-height: 1.5;">${challenge.description}</p>
                 </div>";"
 
                 <div style="margin-bottom: 24px;">""
-                    <h4 style="margin: 0 0 12px 0; color: #2c3e50;">進捗状況</h4>""
-                    <div style="background: #ecf0f1; border-radius: 12px; height: 24px; position: relative; overflow: hidden;">""
-                        <div style="background: linear-gradient(90deg, #3498db, #2ecc71); height: 100%;, width: ${progressPercentage}%; border-radius: 12px; transition: width 0.3s ease;"></div>""
-                        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #2c3e50; font-weight: bold; font-size: 14px;">""
+                    <h4 style="margin: 0 0 12px 0, color: #2c3e50;">進捗状況</h4>""
+                    <div style="background: #ecf0f1; border-radius: 12px, height: 24px, position: relative, overflow: hidden;">""
+                        <div style="background: linear-gradient(90deg, #3498db, #2ecc71); height: 100%;, width: ${progressPercentage}%; border-radius: 12px, transition: width 0.3s ease;"></div>""
+                        <div style="position: absolute, top: 50%, left: 50%, transform: translate(-50%, -50%); color: #2c3e50; font-weight: bold; font-size: 14px;">""
                             ${challenge.progress} / ${challenge.target} (${progressPercentage}%")"
                         </div>;
                     </div>;
                 </div>";"
 
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px;">"
+                <div style="display: grid; grid-template-columns: 1fr 1fr, gap: 16px; margin-bottom: 24px;">"
                     <div>"";
-                        <h4 style="margin: 0 0 8px 0; color: #2c3e50;">タイプ</h4>""
-                        <div style="padding: 8px 12px; background: #e8f4f8; border-radius: 6px; color: #2c3e50;">""
+                        <h4 style="margin: 0 0 8px 0, color: #2c3e50;">タイプ</h4>""
+                        <div style="padding: 8px 12px, background: #e8f4f8; border-radius: 6px, color: #2c3e50;">""
                             ${this.getTypeDisplayName(challenge.type"}""
                         </div>;
                     </div>";"
                     <div>"";
-                        <h4 style="margin: 0 0 8px 0; color: #2c3e50;">難易度</h4>""
-                        <div style="padding: 8px 12px; background: ${this.getDifficultyColor(challenge.difficulty"}"; border-radius: 6px;, color: #2c3e50;">""
+                        <h4 style="margin: 0 0 8px 0, color: #2c3e50;">難易度</h4>""
+                        <div style="padding: 8px 12px, background: ${this.getDifficultyColor(challenge.difficulty"}"; border-radius: 6px;, color: #2c3e50;">""
                             ${this.getDifficultyDisplayName(challenge.difficulty"}""
                         </div>;
                     </div>;
                 </div>";"
 
                 <div style="margin-bottom: 24px;">""
-                    <h4 style="margin: 0 0 12px 0; color: #2c3e50;">報酬</h4>""
-                    <div style="padding: 16px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #f39c12;">""
-                        <div style="font-weight: bold; color: #f39c12; margin-bottom: 4px;">
+                    <h4 style="margin: 0 0 12px 0, color: #2c3e50;">報酬</h4>""
+                    <div style="padding: 16px, background: #f8f9fa; border-radius: 8px; border-left: 4px solid #f39c12;">""
+                        <div style="font-weight: bold, color: #f39c12; margin-bottom: 4px;">
                             ${challenge.reward.description}"
                         </div>"";
                         <div style="color: #7f8c8d; font-size: 14px;">
@@ -406,7 +403,7 @@ export class ChallengeDetailModal {
                     <div, style="margin-bottom: 24px,">""
                         <h4, style="margin: 0, 0 8px, 0, color: #2c3e50,">期限</h4>""
                         <div, style="color: #e74c3c, font-weight: bold,">"
-            }"
+            }
                             ${this.formatDeadline(challenge.deadline"}""
                         </div>";"
                     </div>"";
@@ -423,11 +420,11 @@ export class ChallengeDetailModal {
         ','
 
         this.contentArea.innerHTML = `','
-            <div style="text-align: center, padding: 40px,, color: #e74c3c,">""
+            <div style="text-align: center, padding: 40px, color: #e74c3c,">""
                 <div style="font-size: 18px, margin-bottom: 16px,">エラーが発生しました</div>" }"
                 <div style="color: #7f8c8d; margin-bottom: 24px;">${this.error || '不明なエラー'}</div>''
                 <button onclick="this.closest('.challenge-detail-modal-container').querySelector('.challenge-detail-modal-close'.click()""";
-                        style="padding: 8px 16px; background: #e74c3c; color: white; border: none; border-radius: 4px;, cursor: pointer;">
+                        style="padding: 8px 16px, background: #e74c3c, color: white, border: none; border-radius: 4px;, cursor: pointer;">
                     閉じる;
                 </button>;
             </div>;
@@ -438,7 +435,7 @@ export class ChallengeDetailModal {
      * バックドロップクリック処理
      */
     private onBackdropClick(event: Event): void { if (event.target === this.backdrop) {
-            this.close() }
+            this.close();
     }
     
     /**
@@ -446,7 +443,7 @@ export class ChallengeDetailModal {
      */""
     private onKeyDown(event: KeyboardEvent): void { ""
         if(event.key === 'Escape' {'
-            event.preventDefault() }
+            event.preventDefault();
             this.close(); }
 }
     
@@ -454,27 +451,27 @@ export class ChallengeDetailModal {
      * ユーティリティメソッド'
      */''
     private getTypeDisplayName(type: string): string { const types: Record<string, string> = {''
-            daily: 'デイリー',
-            weekly: 'ウィークリー',
-            special: 'スペシャル',
+            daily: 'デイリー,
+            weekly: 'ウィークリー,
+            special: 'スペシャル,
             event: 'イベント'
             };
         return types[type] || type;
     }
 
     private getDifficultyDisplayName(difficulty: string): string { const difficulties: Record<string, string> = {''
-            easy: '易しい',
-            medium: '普通',
-            hard: '難しい',
+            easy: '易しい,
+            medium: '普通,
+            hard: '難しい,
             expert: 'エキスパート'
             };
         return difficulties[difficulty] || difficulty;
     }
 
     private getDifficultyColor(difficulty: string): string { const colors: Record<string, string> = {''
-            easy: '#d5f4e6',
-            medium: '#fff3cd',
-            hard: '#f8d7da',
+            easy: '#d5f4e6,
+            medium: '#fff3cd,
+            hard: '#f8d7da,
             expert: '#d1ecf1'
             }
 
@@ -491,7 +488,7 @@ export class ChallengeDetailModal {
         const hours = Math.floor(diff / (1000 * 60 * 60);
         const minutes = Math.floor((diff % (1000 * 60 * 60) / (1000 * 60));
         
-        if (hours > 24) { const days = Math.floor(hours / 24) }
+        if (hours > 24) { const days = Math.floor(hours / 24);
             return `${days}日後`;
         } else if (hours > 0) {
             return `${hours}時間後`;

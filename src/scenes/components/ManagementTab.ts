@@ -4,39 +4,39 @@
  */
 import { TabComponent  } from './TabComponent.js';
 
-interface UserData { username: string;
-    ap: number;
-    tap: number;
-    highScore: number;
-    unlockedStages: any[];
-    ownedItems: any[];
-    registrationDate: Date;
-    lastPlayDate: Date;
-    totalPlayTime: number;
+interface UserData { username: string,
+    ap: number,
+    tap: number,
+    highScore: number,
+    unlockedStages: any[],
+    ownedItems: any[],
+    registrationDate: Date,
+    lastPlayDate: Date,
+    totalPlayTime: number,
     gamesPlayed: number;
-interface GameEngine { playerData?: {
+    interface GameEngine { playerData?: {
         getUsername(): string;
-        getAP(): number;
-        getTotalAP(): number;
-        getHighScore(): number;
-        getUnlockedStages(): any[];
-        getOwnedItems(): any[];
-        getRegistrationDate(): Date;
-        getLastPlayDate(): Date;
-        getTotalPlayTime(): number;
-        getGamesPlayed(): number;
-        resetAll(): void;;
+    getAP(): number;
+    getTotalAP(): number;
+    getHighScore(): number;
+    getUnlockedStages(): any[];
+    getOwnedItems(): any[];
+    getRegistrationDate(): Date;
+    getLastPlayDate(): Date;
+    getTotalPlayTime(): number;
+    getGamesPlayed(): number;
+    resetAll(): void;;
     statisticsManager?: { reset(): void;;
     achievementManager?: { reset(): void;
-
-interface EventBus { on(event: string, callback: Function): void;
+    interface EventBus { on(event: string, callback: Function): void;
     off(event: string): void;
     emit(event: string, data?: any): void;
-interface AccessibilitySettings { highContrast: boolean;
-    largeText: boolean;
+    interface AccessibilitySettings { highContrast: boolean,
+    largeText: boolean,
     reducedMotion: boolean;
-interface TabState {
+    interface TabState {
     accessibilitySettings: AccessibilitySettings;
+}
 export class ManagementTab extends TabComponent { // サブコンポーネント
     private userInfoRenderer: UserInfoRenderer | null = null;
     private dataManagementRenderer: DataManagementRenderer | null = null;
@@ -53,7 +53,7 @@ export class ManagementTab extends TabComponent { // サブコンポーネント
     private, lastDataUpdate: number = 0;
     constructor(gameEngine: GameEngine, eventBus: EventBus, state: TabState) {
     
-}
+};
         super(gameEngine, eventBus, state); }
     /**
      * コンポーネントの初期化
@@ -65,7 +65,7 @@ export class ManagementTab extends TabComponent { // サブコンポーネント
         this.userInfoRenderer.initialize();
         this.dataManagementRenderer.initialize();
         // ユーザーデータを読み込み
-        this.loadUserData() }
+        this.loadUserData();
     /**
      * ユーザーデータを読み込み
      */
@@ -105,7 +105,7 @@ export class ManagementTab extends TabComponent { // サブコンポーネント
             
             // ユーザー情報セクション
             const userInfoHeight = this.userInfoRenderer!.render(
-                context, ,
+                context,
                 x + this.contentPadding );
                 currentY,
                 width - this.contentPadding * 2),
@@ -122,18 +122,18 @@ export class ManagementTab extends TabComponent { // サブコンポーネント
             
             // スクロールバーを描画
             this.updateScrollLimits(currentY + this.scrollPosition, y + height);
-            this.renderScrollbar(context, x + width - 16, y, 16, height) } catch (error) { this.renderErrorFallback(context, x, y, width, height, error) }
+            this.renderScrollbar(context, x + width - 16, y, 16, height) } catch (error) { this.renderErrorFallback(context, x, y, width, height, error);
     }
     
     /**
      * 背景を描画
      */''
     private renderBackground(context: CanvasRenderingContext2D, x: number, y: number, width: number, height: number): void { ''
-        context.fillStyle = this.accessibilitySettings.highContrast ? '#FFFFFF' : '#F8F9FA',
+        context.fillStyle = this.accessibilitySettings.highContrast ? '#FFFFFF' : '#F8F9FA,
         context.fillRect(x, y, width, height);
-        context.strokeStyle = this.accessibilitySettings.highContrast ? '#000000' : '#DEE2E6',
+        context.strokeStyle = this.accessibilitySettings.highContrast ? '#000000' : '#DEE2E6,
         context.lineWidth = 1,
-        context.strokeRect(x, y, width, height) }
+        context.strokeRect(x, y, width, height);
     /**
      * データの定期更新
      */
@@ -148,7 +148,7 @@ export class ManagementTab extends TabComponent { // サブコンポーネント
      * スクロール制限を更新
      */
     private updateScrollLimits(contentHeight: number, viewHeight: number): void { this.maxScrollPosition = Math.max(0, contentHeight - viewHeight + this.contentPadding);
-        this.scrollPosition = Math.max(0, Math.min(this.maxScrollPosition, this.scrollPosition) }
+        this.scrollPosition = Math.max(0, Math.min(this.maxScrollPosition, this.scrollPosition);
     /**
      * スクロールバーを描画
      */
@@ -156,19 +156,19 @@ export class ManagementTab extends TabComponent { // サブコンポーネント
         if(this.maxScrollPosition <= 0) return,
         ','
         // スクロールバー背景
-        context.fillStyle = '#E9ECEF',
+        context.fillStyle = '#E9ECEF,
         context.fillRect(x, y, width, height);
         // スクロールバートラック
         const trackHeight = height * (height / (height + this.maxScrollPosition)),
         const trackY = y + (this.scrollPosition / this.maxScrollPosition) * (height - trackHeight'),'
 
-        context.fillStyle = '#6C757D',
+        context.fillStyle = '#6C757D,
         context.fillRect(x + 2, trackY, width - 4, trackHeight);
         ','
         // スクロールバー枠線
-        context.strokeStyle = '#CED4DA',
+        context.strokeStyle = '#CED4DA,
         context.lineWidth = 1,
-        context.strokeRect(x, y, width, height) }
+        context.strokeRect(x, y, width, height);
     /**
      * クリック処理
      */
@@ -220,7 +220,7 @@ export class ManagementTab extends TabComponent { // サブコンポーネント
                 case 'Home':','
                     event.preventDefault('''
                 case 'End': ' }''
-                    event.preventDefault() }
+                    event.preventDefault();
 
         } else if (event.type === 'wheel) { const wheelEvent = event as WheelEvent,'
             event.preventDefault();
@@ -232,12 +232,12 @@ export class ManagementTab extends TabComponent { // サブコンポーネント
     /**
      * スクロール処理
      */
-    private scroll(delta: number): void { this.scrollPosition = Math.max(0, Math.min(this.maxScrollPosition, this.scrollPosition + delta) }
+    private scroll(delta: number): void { this.scrollPosition = Math.max(0, Math.min(this.maxScrollPosition, this.scrollPosition + delta);
     /**
      * ユーザー情報セクションの高さを推定
      */
     private estimateUserInfoHeight(): number { // 基本的な高さ + データ行数 * 行高
-        return 120 + (this.userData ? Object.keys(this.userData).length * 25 : 0) }
+        return 120 + (this.userData ? Object.keys(this.userData).length * 25 : 0);
     /**
      * フレーム更新処理
      */
@@ -249,7 +249,7 @@ export class ManagementTab extends TabComponent { // サブコンポーネント
     
 }
                 this.userInfoRenderer.update(deltaTime); }
-            if (this.dataManagementRenderer) { this.dataManagementRenderer.update(deltaTime) }
+            if (this.dataManagementRenderer) { this.dataManagementRenderer.update(deltaTime);
         }
     /**
      * クリーンアップ
@@ -259,7 +259,7 @@ export class ManagementTab extends TabComponent { // サブコンポーネント
     
 }
             this.userInfoRenderer.cleanup(); }
-        if (this.dataManagementRenderer) { this.dataManagementRenderer.cleanup() }
+        if (this.dataManagementRenderer) { this.dataManagementRenderer.cleanup();
         this.userData = null;
         this.scrollPosition = 0;
         this.maxScrollPosition = 0;
@@ -271,13 +271,13 @@ export class ManagementTab extends TabComponent { // サブコンポーネント
 class UserInfoRenderer { private gameEngine: GameEngine
     private eventBus: EventBus;
     private state: TabState;
-    private, textSettings: {
-        titleFont: string;
-        labelFont: string;
-        valueFont: string;
-        titleColor: string;
-        labelColor: string;
-    valueColor: string;
+    private, textSettings: { titleFont: string;
+    },
+        labelFont: string,
+        valueFont: string,
+        titleColor: string,
+        labelColor: string,
+    valueColor: string,
     valueColor: string;
         };
     private isInitialized: boolean = false;
@@ -289,10 +289,10 @@ class UserInfoRenderer { private gameEngine: GameEngine
         ','
 
         this.textSettings = {''
-            titleFont: '18px bold sans-serif';
-            labelFont: '14px sans-serif';
-            valueFont: '14px bold sans-serif';
-            titleColor: '#212529';
+            titleFont: '18px bold sans-serif,
+            labelFont: '14px sans-serif,
+            valueFont: '14px bold sans-serif,
+            titleColor: '#212529,
             labelColor: '#6C757D' }
 
             valueColor: '#495057' ;
@@ -311,7 +311,7 @@ class UserInfoRenderer { private gameEngine: GameEngine
 
         if (settings.largeText) {
 
-            this.textSettings.titleFont = '22px bold sans-serif',
+            this.textSettings.titleFont = '22px bold sans-serif,
             this.textSettings.labelFont = '16px sans-serif' }
 
             this.textSettings.valueFont = '16px bold sans-serif'; }
@@ -319,7 +319,7 @@ class UserInfoRenderer { private gameEngine: GameEngine
 
         if (settings.highContrast) {
 
-            this.textSettings.titleColor = '#000000',
+            this.textSettings.titleColor = '#000000,
             this.textSettings.labelColor = '#000000' }
 
             this.textSettings.valueColor = '#000000'; }
@@ -339,8 +339,8 @@ class UserInfoRenderer { private gameEngine: GameEngine
         // セクションタイトル
         context.font = this.textSettings.titleFont,
         context.fillStyle = this.textSettings.titleColor,
-        context.textAlign = 'left',
-        context.textBaseline = 'top',
+        context.textAlign = 'left,
+        context.textBaseline = 'top,
         context.fillText('現在のユーザー情報', x, currentY);
         currentY += 35,
 
@@ -353,19 +353,19 @@ class UserInfoRenderer { private gameEngine: GameEngine
         // ユーザー情報項目
         const infoItems = [';'
             { label: 'ユーザー名', value: userData.username || '(未設定')', key: 'username'
-            },''
+            ,''
             { label: 'AP(Awaputi, Points)', value: userData.ap?.toLocaleString() || '0', key: 'ap'
-            },''
+            ,''
             { label: 'TAP(Total, AP)', value: userData.tap?.toLocaleString() || '0', key: 'tap'
-            },''
+            ,''
             { label: 'ハイスコア', value: userData.highScore?.toLocaleString() || '0', key: 'highScore'
-            },''
+            ,''
             { label: 'アンロック済みステージ', value: userData.unlockedStages?.length || '0', key: 'stages'
-            },''
+            ,''
             { label: '所有アイテム数', value: userData.ownedItems?.length || '0', key: 'items'
-            },''
+            ,''
             { label: '総プレイ時間', value: this.formatPlayTime(userData.totalPlayTime), key: 'playTime'
-            },]'
+            ,]'
             { label: 'プレイ回数', value: userData.gamesPlayed?.toLocaleString() || '0', key: 'gamesPlayed'
             }]
         ];
@@ -377,16 +377,16 @@ class UserInfoRenderer { private gameEngine: GameEngine
             // ラベル
             context.font = this.textSettings.labelFont,
             context.fillStyle = this.textSettings.labelColor,
-            context.textAlign = 'left',
+            context.textAlign = 'left,
             context.fillText(item.label + ':', x + 10, currentY','
             
             // 値
             context.font = this.textSettings.valueFont,
             context.fillStyle = this.textSettings.valueColor,
-            context.textAlign = 'right',
+            context.textAlign = 'right,
 
             const valueText = this.truncateText(context, item.value, maxWidth / 2);
-            context.fillText(valueText, x + width - 10, currentY) }
+            context.fillText(valueText, x + width - 10, currentY);
             currentY += itemHeight; }
         // 境界線
         currentY += 10;
@@ -406,7 +406,7 @@ class UserInfoRenderer { private gameEngine: GameEngine
      * @returns フォーマットされた時間
      */'
     private formatPlayTime(milliseconds: number): string { ''
-        if(!milliseconds || milliseconds <= 0) return '0分',
+        if(!milliseconds || milliseconds <= 0) return '0分,
         
         const minutes = Math.floor(milliseconds / 60000);
         const hours = Math.floor(minutes / 60);
@@ -433,7 +433,7 @@ class UserInfoRenderer { private gameEngine: GameEngine
 
         let truncated = text;
         while(context.measureText(truncated + '...).width > maxWidth && truncated.length > 0' { ''
-            truncated = truncated.slice(0, -1) }
+            truncated = truncated.slice(0, -1);
 
         return truncated + '...';
     
@@ -450,20 +450,22 @@ class UserInfoRenderer { private gameEngine: GameEngine
  * データ管理レンダラー
  * データのエクスポート・インポート・管理機能
  */
-interface Button { id: string;
-    label: string;
-    color: string;
+interface Button { id: string,
+    label: string,
+    color: string,
     description: string;
+}
 class DataManagementRenderer { private gameEngine: GameEngine
     private eventBus: EventBus;
     private state: TabState;
     private, textSettings: {
         titleFont: string;
-        labelFont: string;
-        buttonFont: string;
-        titleColor: string;
-        labelColor: string;
-    buttonTextColor: string;
+    },
+        labelFont: string,
+        buttonFont: string,
+        titleColor: string,
+        labelColor: string,
+    buttonTextColor: string,
     buttonTextColor: string;
         };
     // ボタン設定
@@ -480,10 +482,10 @@ class DataManagementRenderer { private gameEngine: GameEngine
         ','
 
         this.textSettings = {''
-            titleFont: '18px bold sans-serif';
-            labelFont: '14px sans-serif';
-            buttonFont: '14px bold sans-serif';
-            titleColor: '#212529';
+            titleFont: '18px bold sans-serif,
+            labelFont: '14px sans-serif,
+            buttonFont: '14px bold sans-serif,
+            titleColor: '#212529,
             labelColor: '#6C757D' }
 
             buttonTextColor: '#FFFFFF' ;
@@ -491,33 +493,33 @@ class DataManagementRenderer { private gameEngine: GameEngine
         
         // ボタン設定
         this.buttons = [{;
-                id: 'username';
-                label: 'ユーザー名変更';
-                color: '#007BFF';
+                id: 'username,
+                label: 'ユーザー名変更,
+                color: '#007BFF,
                 description: 'ユーザー名を変更します'
             };
             { ''
-                id: 'export';
-                label: 'データエクスポート';
-                color: '#28A745';
+                id: 'export,
+                label: 'データエクスポート,
+                color: '#28A745,
                 description: 'ゲームデータをエクスポートします'
             };
             { ''
-                id: 'import';
-                label: 'データインポート';
-                color: '#FD7E14';
+                id: 'import,
+                label: 'データインポート,
+                color: '#FD7E14,
                 description: 'ゲームデータをインポートします'
             };
             { ''
-                id: 'statsExport';
-                label: '統計エクスポート';
-                color: '#6F42C1';
+                id: 'statsExport,
+                label: '統計エクスポート,
+                color: '#6F42C1,
                 description: '統計データをエクスポートします'
             };
             { ''
-                id: 'reset';
-                label: 'データリセット';
-                color: '#DC3545';
+                id: 'reset,
+                label: 'データリセット,
+                color: '#DC3545,
                 description: '全データをリセットします（要注意）'
             }]
             }]
@@ -537,7 +539,7 @@ class DataManagementRenderer { private gameEngine: GameEngine
 
         if (settings.largeText) {
 
-            this.textSettings.titleFont = '22px bold sans-serif',
+            this.textSettings.titleFont = '22px bold sans-serif,
             this.textSettings.labelFont = '16px sans-serif' }
 
             this.textSettings.buttonFont = '16px bold sans-serif'; }
@@ -545,7 +547,7 @@ class DataManagementRenderer { private gameEngine: GameEngine
 
         if (settings.highContrast) {
 
-            this.textSettings.titleColor = '#000000',
+            this.textSettings.titleColor = '#000000,
             this.textSettings.labelColor = '#000000' }
 
             this.textSettings.buttonTextColor = '#FFFFFF'; }
@@ -564,8 +566,8 @@ class DataManagementRenderer { private gameEngine: GameEngine
         // セクションタイトル
         context.font = this.textSettings.titleFont,
         context.fillStyle = this.textSettings.titleColor,
-        context.textAlign = 'left',
-        context.textBaseline = 'top',
+        context.textAlign = 'left,
+        context.textBaseline = 'top,
         context.fillText('データ管理', x, currentY','
         currentY += 35,
         
@@ -583,7 +585,7 @@ class DataManagementRenderer { private gameEngine: GameEngine
             const buttonX = x + 20,
             const buttonY = currentY,
             
-            this.renderButton(context, buttonX, buttonY, buttonWidth, this.buttonHeight, button, i) }
+            this.renderButton(context, buttonX, buttonY, buttonWidth, this.buttonHeight, button, i);
             currentY += this.buttonHeight + this.buttonSpacing; }
         return currentY - y;
     }
@@ -628,16 +630,16 @@ class DataManagementRenderer { private gameEngine: GameEngine
             context.strokeStyle = this.darkenColor(button.color, 0.3);
             context.lineWidth = 2,
             this.roundRect(context, x, y, width, height, cornerRadius);
-            context.stroke('',
-        context.textAlign = 'center',
+            context.stroke(',
+        context.textAlign = 'center,
         context.textBaseline = 'middle')
         context.fillText(button.label, x + width / 2, y + height / 2);
         ','
         // 説明テキストを描画
         if (button.description) {
             context.fillStyle = this.textSettings.labelColor,
-            context.font = '12px sans-serif',
-            context.textAlign = 'left',
+            context.font = '12px sans-serif,
+            context.textAlign = 'left,
             context.textBaseline = 'top' }
             context.fillText(button.description, x + width + 15, y + height / 2 - 6); }
     }
@@ -659,7 +661,7 @@ class DataManagementRenderer { private gameEngine: GameEngine
             if (x >= buttonX && x <= buttonX + buttonWidth && ,
                 y >= buttonY && y <= buttonY + this.buttonHeight) {
                 
-                this.handleButtonClick(button.id) }
+                this.handleButtonClick(button.id);
                 return true;
             buttonY += this.buttonHeight + this.buttonSpacing;
         }
@@ -676,14 +678,14 @@ class DataManagementRenderer { private gameEngine: GameEngine
 
                 case 'username':','
                     await (this.gameEngine, as any).userInfoScene?.showUsernameChangeDialog()','
-                case 'export':')',
+                case 'export':'),
                     await (this.gameEngine, as any).userInfoScene?.showDataExportDialog()','
-                case 'import':')',
+                case 'import':'),
                     await (this.gameEngine, as any).userInfoScene?.showDataImportDialog()','
-                case 'statsExport':')',
-                    await (this.gameEngine, as any).userInfoScene?.showStatisticsExportDialog('',
+                case 'statsExport':'),
+                    await (this.gameEngine, as any).userInfoScene?.showStatisticsExportDialog(',
                 case 'reset':','
-                    await this.handleDataReset() }
+                    await this.handleDataReset();
 
                     console.warn('Unknown button clicked:', buttonId'; }'
 
@@ -707,13 +709,13 @@ class DataManagementRenderer { private gameEngine: GameEngine
     
 }
                     this.gameEngine.playerData.resetAll(); }
-                if (this.gameEngine.statisticsManager) { this.gameEngine.statisticsManager.reset() }
+                if (this.gameEngine.statisticsManager) { this.gameEngine.statisticsManager.reset();
                 if (this.gameEngine.achievementManager) {
                 ','
 
                     ' }'
 
-                    this.gameEngine.achievementManager.reset() }
+                    this.gameEngine.achievementManager.reset();
 
                 this.eventBus.emit('data-reset', { timestamp: Date.now( };
                 alert('データがリセットされました。';} catch (error) {
@@ -746,7 +748,7 @@ class DataManagementRenderer { private gameEngine: GameEngine
      * @returns 明るくした色'
      */''
     private lightenColor(color: string, amount: number): string { ''
-        const usePound = color[0] === '#',
+        const usePound = color[0] === '#,
         const col = usePound ? color.slice(1) : color,
         const num = parseInt(col, 16);
         let r = (num >> 16) + amount * 255,
@@ -758,7 +760,7 @@ class DataManagementRenderer { private gameEngine: GameEngine
         g = g > 255 ? 255 : g,
         b = b > 255 ? 255 : b,
 
-        return (usePound ? '#' : ') + (r << 16 | g << 8 | b).toString(16).padStart(6, '0) }
+        return (usePound ? '#' : ') + (r << 16 | g << 8 | b).toString(16).padStart(6, '0);
     /**
      * 色を暗くする
      * @param color - 元の色
@@ -766,7 +768,7 @@ class DataManagementRenderer { private gameEngine: GameEngine
      * @returns 暗くした色'
      */''
     private darkenColor(color: string, amount: number): string { ''
-        const usePound = color[0] === '#',
+        const usePound = color[0] === '#,
         const col = usePound ? color.slice(1) : color,
         const num = parseInt(col, 16);
         let r = (num >> 16) * (1 - amount),
@@ -774,7 +776,7 @@ class DataManagementRenderer { private gameEngine: GameEngine
         let g = (num >> 8 & 0x00FF) * (1 - amount),
         let b = (num & 0x0000FF) * (1 - amount'),'
 
-        return (usePound ? '#' : ') + (Math.round(r) << 16 | Math.round(g) << 8 | Math.round(b).toString(16).padStart(6, '0) }
+        return (usePound ? '#' : ') + (Math.round(r) << 16 | Math.round(g) << 8 | Math.round(b).toString(16).padStart(6, '0);
     /**
      * 角丸矩形を描画
      * @param context - Canvas描画コンテキスト
@@ -794,7 +796,7 @@ class DataManagementRenderer { private gameEngine: GameEngine
         context.quadraticCurveTo(x, y + height, x, y + height - radius);
         context.lineTo(x, y + radius);
         context.quadraticCurveTo(x, y, x + radius, y);
-        context.closePath() }
+        context.closePath();
     /**
      * フレーム更新処理
      */

@@ -25,7 +25,7 @@ interface EnhancedParticleManager { setMaxParticles?: (count: number) => void;
     setParticleMultiplier?: (multiplier: number) => void;
     enableObjectPooling?: (enabled: boolean) => void;
     setLowPriorityReduction?: (enabled: boolean) => void;
-    clearUnusedParticles?: () => void,  }
+    clearUnusedParticles?: () => void }
 }
 ';'
 
@@ -33,94 +33,82 @@ interface AnimationManager { setDurationMultiplier?: (multiplier: number) => voi
     setFrameSkipping?: (frames: number') => void  }'
 }
 
-interface DeviceInfo { isMobile: boolean;
-    isTablet: boolean;
-    supportsTouch: boolean;
-    supportsVibration: boolean;
-    pixelRatio: number;
-    screenSize: { width: number,, height: number,,
+interface DeviceInfo { isMobile: boolean,
+    isTablet: boolean,
+    supportsTouch: boolean,
+    supportsVibration: boolean,
+    pixelRatio: number,
+    screenSize: { width: number, height: number,
     batteryAPI: boolean;
-    performanceMemory: PerformanceMemory | null;
+    },
+    performanceMemory: PerformanceMemory | null,
     hardwareConcurrency: number;
     profile?: DeviceProfile;
     optimizationLevel?: OptimizationLevel;
     }
 
-interface PerformanceMemory { totalJSHeapSize: number;
-    usedJSHeapSize: number;
+interface PerformanceMemory { totalJSHeapSize: number,
+    usedJSHeapSize: number,
     jsHeapSizeLimit: number;
-
-type DeviceProfile = 'high-end' | 'mid-range' | 'low-end' | 'ultra-low';
-
-interface DeviceProfileConfig { particleMultiplier: number;
-    effectQuality: EffectQuality;
-    maxParticles: number;
-    animationDuration: number;
-    enableAdvancedEffects: boolean;
+    type DeviceProfile = 'high-end' | 'mid-range' | 'low-end' | 'ultra-low';
+    interface DeviceProfileConfig { particleMultiplier: number,
+    effectQuality: EffectQuality,
+    maxParticles: number,
+    animationDuration: number,
+    enableAdvancedEffects: boolean,
     enablePostProcessing: boolean;
-
-type EffectQuality = 'minimal' | 'low' | 'medium' | 'high';
-
-interface Optimizations { enableBatching: boolean;
-    enableCulling: boolean;
-    enableObjectPooling: boolean;
-    reduceLowPriorityEffects: boolean;
-    adaptiveQuality: boolean;
-    batteryAware: boolean;
+    type EffectQuality = 'minimal' | 'low' | 'medium' | 'high';
+    interface Optimizations { enableBatching: boolean,
+    enableCulling: boolean,
+    enableObjectPooling: boolean,
+    reduceLowPriorityEffects: boolean,
+    adaptiveQuality: boolean,
+    batteryAware: boolean,
     thermalThrottling: boolean;
-
-interface PerformanceMetrics { fps: number;
-    averageFPS: number;
-    frameDrops: number;
-    memoryUsage: number;
-    batteryLevel: number;
+    interface PerformanceMetrics { fps: number,
+    averageFPS: number,
+    frameDrops: number,
+    memoryUsage: number,
+    batteryLevel: number,
     thermalState: ThermalState;
-
-type ThermalState = 'normal' | 'warning' | 'critical';
-
-interface TouchOptimizations { enableTouchEffects: boolean;
-    touchFeedbackIntensity: number;
-    gestureSensitivity: number;
+    type ThermalState = 'normal' | 'warning' | 'critical';
+    interface TouchOptimizations { enableTouchEffects: boolean,
+    touchFeedbackIntensity: number,
+    gestureSensitivity: number,
     preventAccidentalTouches: boolean;
-
-interface OptimizerState { initialized: boolean;
-    enabled: boolean;
-    deviceProfile: DeviceProfile | null;
+    interface OptimizerState { initialized: boolean,
+    enabled: boolean,
+    deviceProfile: DeviceProfile | null,
     optimizationLevel: OptimizationLevel;
-
-type OptimizationLevel = 'auto' | 'aggressive' | 'balanced' | 'minimal';
-
-interface BatteryOptimizationConfig { particleMultiplier: number;
-    effectQuality: EffectQuality;
+    type OptimizationLevel = 'auto' | 'aggressive' | 'balanced' | 'minimal';
+    interface BatteryOptimizationConfig { particleMultiplier: number,
+    effectQuality: EffectQuality,
     targetFPS: number;
-
-interface OptimizationStatus { enabled: boolean;
-    deviceProfile: DeviceProfile | null;
-    optimizationLevel: OptimizationLevel;
-    optimizations: Optimizations;
+    interface OptimizationStatus { enabled: boolean,
+    deviceProfile: DeviceProfile | null,
+    optimizationLevel: OptimizationLevel,
+    optimizations: Optimizations,
     touchOptimizations: TouchOptimizations;
-
-interface OptimizerReport { component: string;
-    state: OptimizerState;
-    deviceInfo: DeviceInfo;
-    performanceMetrics: PerformanceMetrics;
-    optimizationStatus: OptimizationStatus;
+    interface OptimizerReport { component: string,
+    state: OptimizerState,
+    deviceInfo: DeviceInfo,
+    performanceMetrics: PerformanceMetrics,
+    optimizationStatus: OptimizationStatus,
     profiles: DeviceProfile[];
 ';'
 
 interface NetworkConnection { ''
-    effectiveType: '4g' | '3g' | '2g' | 'slow-2g';
+    effectiveType: '4g' | '3g' | '2g' | 'slow-2g,
     downlink: number;
 ';'
 
 declare global { interface Navigator {''
         getBattery?: () => Promise<Battery>,
         connection?: NetworkConnection;
-    
-    interface Battery extends EventTarget { level: number;
+    interface Battery extends EventTarget { level: number,
 
         charging: boolean;
-        addEventListener(type: 'levelchange' | 'chargingchange', listener: EventListener': void;'
+    addEventListener(type: 'levelchange' | 'chargingchange', listener: EventListener': void;'
     
     interface Performance { memory?: PerformanceMemory;
     ';'
@@ -136,46 +124,46 @@ declare global { interface Navigator {''
 export class MobileEffectOptimizer {
     private readonly effectManager: EffectManager;
     private readonly state: OptimizerState = {
-        initialized: false;
-    enabled: false;
-        deviceProfile: null;
+        initialized: false,
+    enabled: false,
+        deviceProfile: null,
         optimizationLevel: 'auto'
             };
     private deviceInfo: DeviceInfo = { isMobile: false
-        isTablet: false;
-        supportsTouch: false;
-        supportsVibration: false;
+        isTablet: false,
+        supportsTouch: false,
+        supportsVibration: false,
     pixelRatio: 1 }
-        screenSize: { width: 0, height: 0  };
-        batteryAPI: false;
-        performanceMemory: null;
+        screenSize: { width: 0, height: 0  ,
+        batteryAPI: false,
+        performanceMemory: null,
     hardwareConcurrency: 0;
     },
 
     private readonly deviceProfiles = new Map<DeviceProfile, DeviceProfileConfig>([''
         ['high-end', { particleMultiplier: 1.0,''
-            effectQuality: 'high',
+            effectQuality: 'high,
             maxParticles: 1000,
             animationDuration: 1.0,
             enableAdvancedEffects: true],
     enablePostProcessing: true,]'
         }],''
         ['mid-range', { particleMultiplier: 0.7,''
-            effectQuality: 'medium',
+            effectQuality: 'medium,
             maxParticles: 500,
             animationDuration: 0.8,
             enableAdvancedEffects: true],
     enablePostProcessing: false,]'
         }],''
         ['low-end', { particleMultiplier: 0.4,''
-            effectQuality: 'low',
+            effectQuality: 'low,
             maxParticles: 200,
             animationDuration: 0.6,
             enableAdvancedEffects: false],
     enablePostProcessing: false,]'
         }],''
         ['ultra-low', { particleMultiplier: 0.2,''
-            effectQuality: 'minimal',
+            effectQuality: 'minimal,
             maxParticles: 50,
             animationDuration: 0.4,
             enableAdvancedEffects: false'],'
@@ -187,7 +175,7 @@ export class MobileEffectOptimizer {
         reduceLowPriorityEffects: true,
         adaptiveQuality: true,
         batteryAware: true,
-    thermalThrottling: true,
+    thermalThrottling: true;
     private performanceMetrics: PerformanceMetrics = { fps: 60
         averageFPS: 60,
         frameDrops: 0,
@@ -198,7 +186,7 @@ export class MobileEffectOptimizer {
     private touchOptimizations: TouchOptimizations = { enableTouchEffects: true
         touchFeedbackIntensity: 1.0,
         gestureSensitivity: 1.0,
-    preventAccidentalTouches: true,
+    preventAccidentalTouches: true;
     constructor(effectManager: EffectManager) {
         this.effectManager = effectManager }
 
@@ -234,7 +222,7 @@ export class MobileEffectOptimizer {
             return true;
 
         } catch (error) { getErrorHandler().handleError(error as Error, 'MOBILE_OPTIMIZATION_ERROR', {''
-                operation: 'initialize',')',
+                operation: 'initialize,')',
                 component: 'MobileEffectOptimizer'
             }';'
             return false;
@@ -254,7 +242,7 @@ export class MobileEffectOptimizer {
         // 画面情報
         this.deviceInfo.pixelRatio = window.devicePixelRatio || 1;
         this.deviceInfo.screenSize = { width: window.screen.width,
-            height: window.screen.height  },
+            height: window.screen.height  };
         // パフォーマンス関連情報
         this.deviceInfo.hardwareConcurrency = navigator.hardwareConcurrency || 2;
         // Performance Memory API（Chrome）
@@ -276,7 +264,7 @@ export class MobileEffectOptimizer {
 
                 }');'
 
-                battery.addEventListener('chargingchange', () => { this.adaptToChargingState(battery.charging) }
+                battery.addEventListener('chargingchange', () => { this.adaptToChargingState(battery.charging);
 
                 };'} catch (error) { console.warn('Battery API not supported:', error }'
         }
@@ -330,7 +318,7 @@ export class MobileEffectOptimizer {
         else profile = 'ultra-low';
         
         this.state.deviceProfile = profile;
-        console.log(`Device performance score: ${performanceScore}, Profile: ${profile}`};
+        console.log(`Device performance score: ${performanceScore}, Profile: ${profile}`}
     }
     
     /**
@@ -366,16 +354,16 @@ export class MobileEffectOptimizer {
         }
         
         // 高度なエフェクトの有効/無効
-        if (this.effectManager.setAdvancedEffectsEnabled) { this.effectManager.setAdvancedEffectsEnabled(profile.enableAdvancedEffects) }
+        if (this.effectManager.setAdvancedEffectsEnabled) { this.effectManager.setAdvancedEffectsEnabled(profile.enableAdvancedEffects);
         
         // ポストプロセシングの有効/無効
-        if (this.effectManager.setPostProcessingEnabled) { this.effectManager.setPostProcessingEnabled(profile.enablePostProcessing) }
+        if (this.effectManager.setPostProcessingEnabled) { this.effectManager.setPostProcessingEnabled(profile.enablePostProcessing);
         
         // バッチング有効化
-        if (this.optimizations.enableBatching && this.effectManager.enableBatching) { this.effectManager.enableBatching(true) }
+        if (this.optimizations.enableBatching && this.effectManager.enableBatching) { this.effectManager.enableBatching(true);
         
         // カリングの有効化
-        if (this.optimizations.enableCulling && this.effectManager.enableCulling) { this.effectManager.enableCulling(true) }
+        if (this.optimizations.enableCulling && this.effectManager.enableCulling) { this.effectManager.enableCulling(true);
     }
     
     /**
@@ -392,13 +380,13 @@ export class MobileEffectOptimizer {
         }
         
         // パーティクル乗数の設定
-        if (particleManager.setParticleMultiplier) { particleManager.setParticleMultiplier(profile.particleMultiplier) }
+        if (particleManager.setParticleMultiplier) { particleManager.setParticleMultiplier(profile.particleMultiplier);
         
         // オブジェクトプーリングの有効化
-        if (this.optimizations.enableObjectPooling && particleManager.enableObjectPooling) { particleManager.enableObjectPooling(true) }
+        if (this.optimizations.enableObjectPooling && particleManager.enableObjectPooling) { particleManager.enableObjectPooling(true);
         
         // 低優先度パーティクルの削減
-        if (this.optimizations.reduceLowPriorityEffects && particleManager.setLowPriorityReduction) { particleManager.setLowPriorityReduction(true) }
+        if (this.optimizations.reduceLowPriorityEffects && particleManager.setLowPriorityReduction) { particleManager.setLowPriorityReduction(true);
     }
     
     /**
@@ -430,7 +418,7 @@ export class MobileEffectOptimizer {
         // 描画頻度の調整
         this.optimizeRenderingFrequency(profile);
         // テクスチャの最適化
-        this.optimizeTextures(profile) }
+        this.optimizeTextures(profile);
     
     /**
      * Canvas設定の最適化
@@ -441,7 +429,7 @@ export class MobileEffectOptimizer {
         // 低解像度モードの設定（必要に応じて）
         if (this.state.deviceProfile === 'ultra-low') {
 
-            const ctx = canvas.getContext('2d',
+            const ctx = canvas.getContext('2d,
             if (ctx) {
                 // 描画品質を速度優先に設定
         }
@@ -477,7 +465,7 @@ export class MobileEffectOptimizer {
         }
         
         // フレームレート制限の設定
-        if (this.effectManager.setTargetFPS) { this.effectManager.setTargetFPS(targetFPS) }
+        if (this.effectManager.setTargetFPS) { this.effectManager.setTargetFPS(targetFPS);
     }
     
     /**
@@ -505,7 +493,7 @@ export class MobileEffectOptimizer {
                 break; }
         }
         
-        if (this.effectManager.setTextureScale) { this.effectManager.setTextureScale(textureScale) }
+        if (this.effectManager.setTextureScale) { this.effectManager.setTextureScale(textureScale);
     }
     
     /**
@@ -518,7 +506,7 @@ export class MobileEffectOptimizer {
         // メモリ監視
         this.startMemoryMonitoring();
         // 熱制御監視
-        this.startThermalMonitoring() }
+        this.startThermalMonitoring();
     
     /**
      * FPS監視の開始
@@ -528,7 +516,7 @@ export class MobileEffectOptimizer {
         let fpsHistory: number[] = [],
         
         const measureFPS = (): void => { 
-            frameCount++,
+            frameCount++;
             const currentTime = performance.now();
             const elapsed = currentTime - lastTime,
             
@@ -594,8 +582,8 @@ export class MobileEffectOptimizer {
                 this.handleThermalThrottling();' }'
 
             } else if (avgFPS < 30 && memoryUsage > 0.7) { ''
-                this.performanceMetrics.thermalState = 'warning',
-                this.handleThermalWarning('',
+                this.performanceMetrics.thermalState = 'warning,
+                this.handleThermalWarning(',
                 this.performanceMetrics.thermalState = 'normal' })
         }, 10000); // 10秒ごと
     }
@@ -610,7 +598,7 @@ export class MobileEffectOptimizer {
         // ジェスチャーの最適化
         this.optimizeGestures();
         // 誤タッチ防止
-        this.preventAccidentalTouches() }
+        this.preventAccidentalTouches();
     
     /**
      * タッチ遅延の最小化
@@ -624,7 +612,7 @@ export class MobileEffectOptimizer {
             const passiveEvents = ['touchstart', 'touchmove', 'touchend'] }
             passiveEvents.forEach(eventType => {  }
                 // 既存のリスナーは置き換えできないため、新規追加時の推奨事項として記録); }
-                console.log(`Recommend, using passive, listeners for ${eventType}`};
+                console.log(`Recommend, using passive, listeners for ${eventType}`}
             };
         }
     }
@@ -651,7 +639,7 @@ export class MobileEffectOptimizer {
     /**
      * 低パフォーマンス時の処理
      */
-    private handleLowPerformance(fps: number): void { console.warn(`Low, performance detected: ${fps) FPS`,
+    private handleLowPerformance(fps: number): void { console.warn(`Low, performance detected: ${fps) FPS,
         
         if (!this.optimizations.adaptiveQuality) return,
         
@@ -665,7 +653,7 @@ export class MobileEffectOptimizer {
         
         const, particleManager = this.effectManager.enhancedParticleManager;
         if (particleManager?.setMaxParticles} { }
-            particleManager.setMaxParticles(newMaxParticles};
+            particleManager.setMaxParticles(newMaxParticles}
         }
         ;
         // エフェクト品質の一時的低下
@@ -681,7 +669,7 @@ export class MobileEffectOptimizer {
         console.warn('High memory usage detected);'
         
         // 未使用リソースのクリーンアップ
-        if (this.effectManager.cleanupResources) { this.effectManager.cleanupResources() }
+        if (this.effectManager.cleanupResources) { this.effectManager.cleanupResources();
         
         // パーティクルプールのクリアー
         const particleManager = this.effectManager.enhancedParticleManager;
@@ -692,7 +680,7 @@ export class MobileEffectOptimizer {
             try {
         }
                 window.gc(); }
-            } catch (error) { // 無視（本番環境では利用不可） }
+        } catch (error) { // 無視（本番環境では利用不可） }
 }
     
     /**
@@ -708,10 +696,10 @@ export class MobileEffectOptimizer {
         }
         
         // 重いエフェクトの無効化
-        if (this.effectManager.disableHeavyEffects) { this.effectManager.disableHeavyEffects() }
+        if (this.effectManager.disableHeavyEffects) { this.effectManager.disableHeavyEffects();
         
         // フレームレートの制限
-        if (this.effectManager.setTargetFPS) { this.effectManager.setTargetFPS(20) }
+        if (this.effectManager.setTargetFPS) { this.effectManager.setTargetFPS(20);
     }
     
     /**
@@ -735,13 +723,13 @@ export class MobileEffectOptimizer {
 
         if (batteryLevel < 0.2) {
             // 20%以下
-            console.log('Low battery detected, reducing effects') }
+            console.log('Low battery detected, reducing effects');
 
             this.applyBatteryOptimizations('low'; }
 
         } else if (batteryLevel < 0.5) { // 50%以下
             console.log('Medium battery level, moderate optimization');
-            this.applyBatteryOptimizations('medium') }
+            this.applyBatteryOptimizations('medium');
 
         } else { }'
 
@@ -754,7 +742,7 @@ export class MobileEffectOptimizer {
     private adaptToChargingState(isCharging: boolean): void { ''
         if (isCharging) {
 
-            console.log('Device charging, allowing higher performance') }
+            console.log('Device charging, allowing higher performance');
             // 充電中は通常品質を維持 }
         } else {
             console.log('Device not charging, enabling battery conservation');
@@ -762,16 +750,16 @@ export class MobileEffectOptimizer {
     private applyBatteryOptimizations(level: 'low' | 'medium' | 'high'): void {
         const optimizations: Record<string, BatteryOptimizationConfig> = {
             low: {'
-                particleMultiplier: 0.3,
+                particleMultiplier: 0.3 ,
                 effectQuality: 'minimal'
             }
                 targetFPS: 20 
     };
             medium: { particleMultiplier: 0.6,''
-                effectQuality: 'low',
-    targetFPS: 30  },
+                effectQuality: 'low' ,
+    targetFPS: 30  ,
             high: { particleMultiplier: 1.0,''
-                effectQuality: this.deviceProfiles.get(this.state.deviceProfile!)?.effectQuality || 'medium', : undefined
+                effectQuality: this.deviceProfiles.get(this.state.deviceProfile!)?.effectQuality || 'medium', : undefined  },
                 targetFPS: 60 
          };
         const config = optimizations[level];
@@ -779,11 +767,11 @@ export class MobileEffectOptimizer {
         
         // 設定を適用
         const particleManager = this.effectManager.enhancedParticleManager;
-        if (particleManager?.setParticleMultiplier) { particleManager.setParticleMultiplier(config.particleMultiplier) }
+        if (particleManager?.setParticleMultiplier) { particleManager.setParticleMultiplier(config.particleMultiplier);
         
-        if (this.effectManager.setQualityLevel) { this.effectManager.setQualityLevel(config.effectQuality) }
+        if (this.effectManager.setQualityLevel) { this.effectManager.setQualityLevel(config.effectQuality);
         
-        if (this.effectManager.setTargetFPS) { this.effectManager.setTargetFPS(config.targetFPS) }
+        if (this.effectManager.setTargetFPS) { this.effectManager.setTargetFPS(config.targetFPS);
     }
     
     /**
@@ -816,7 +804,7 @@ export class MobileEffectOptimizer {
         console.log('Orientation, changed);'
         
         // キャンバスサイズの再調整
-        if (this.effectManager.handleResize) { this.effectManager.handleResize() }
+        if (this.effectManager.handleResize) { this.effectManager.handleResize();
         
         // 一時的な品質低下（方向変更時の負荷軽減）
         this.temporaryQualityReduction(1000');'
@@ -829,9 +817,9 @@ export class MobileEffectOptimizer {
         console.log('Screen, resized);'
         
         // デバイス情報の更新
-        this.deviceInfo.screenSize = { width: window.screen.width height: window.screen.height  },
+        this.deviceInfo.screenSize = { width: window.screen.width height: window.screen.height  ,
         // キャンバスサイズの調整
-        if (this.effectManager.handleResize) { this.effectManager.handleResize() }
+        if (this.effectManager.handleResize) { this.effectManager.handleResize();
     }
     
     /**
@@ -858,7 +846,7 @@ export class MobileEffectOptimizer {
      * 一時的な品質低下
      */'
     private temporaryQualityReduction(duration: number): void { ''
-        const originalQuality = this.effectManager.getQualityLevel?.() || 'medium',
+        const originalQuality = this.effectManager.getQualityLevel?.() || 'medium,
         ','
         // 品質を一時的に下げる
         if (this.effectManager.setQualityLevel) {', ' }
@@ -876,14 +864,14 @@ export class MobileEffectOptimizer {
      * エフェクトの一時停止
      */ : undefined
     private pauseEffects(): void { if (this.effectManager.pauseAllEffects) {
-            this.effectManager.pauseAllEffects() }
+            this.effectManager.pauseAllEffects();
     }
     
     /**
      * エフェクトの再開
      */
     private resumeEffects(): void { if (this.effectManager.resumeAllEffects) {
-            this.effectManager.resumeAllEffects() }
+            this.effectManager.resumeAllEffects();
     }
     
     /**
@@ -898,9 +886,9 @@ export class MobileEffectOptimizer {
                     enableBatching: true,
                     enableCulling: true,
                     enableObjectPooling: true,
-                    reduceLowPriorityEffects: true);
+                    reduceLowPriorityEffects: true),
                     adaptiveQuality: true)','
-    batteryAware: true,')',
+    batteryAware: true,'),
                     thermalThrottling: true'),'
                 break,
 
@@ -909,9 +897,9 @@ export class MobileEffectOptimizer {
                     enableBatching: true,
                     enableCulling: true,
                     enableObjectPooling: true,
-                    reduceLowPriorityEffects: false);
+                    reduceLowPriorityEffects: false),
                     adaptiveQuality: true)','
-    batteryAware: true,')',
+    batteryAware: true,'),
                     thermalThrottling: false'),'
                 break,
 
@@ -920,21 +908,21 @@ export class MobileEffectOptimizer {
                     enableBatching: false,
                     enableCulling: false,
                     enableObjectPooling: false,
-                    reduceLowPriorityEffects: false);
+                    reduceLowPriorityEffects: false),
                     adaptiveQuality: false,
     batteryAware: false),
-                    thermalThrottling: false) }
+                    thermalThrottling: false);
                 break; }
         }
         
-        console.log(`Optimization, level set, to: ${level}`};
+        console.log(`Optimization, level set, to: ${level}`}
     }
     
     /**
      * デバイス情報の取得
      */
     getDeviceInfo(): DeviceInfo { return { ...this.deviceInfo,
-            profile: this.state.deviceProfile! },
+            profile: this.state.deviceProfile! ,
             optimizationLevel: this.state.optimizationLevel 
     }
     
@@ -948,7 +936,7 @@ export class MobileEffectOptimizer {
      * 最適化状態の取得
      */
     getOptimizationStatus(): OptimizationStatus { return { enabled: this.state.enabled,
-            deviceProfile: this.state.deviceProfile },
+            deviceProfile: this.state.deviceProfile ,
             optimizationLevel: this.state.optimizationLevel }
             optimizations: { ...this.optimizations,
             touchOptimizations: { ...this.touchOptimizations }
@@ -959,10 +947,10 @@ export class MobileEffectOptimizer {
     generateReport('''
             component: 'MobileEffectOptimizer,'
     state: { ...this.state)
-            deviceInfo: this.getDeviceInfo(),
+            deviceInfo: this.getDeviceInfo() ,
             performanceMetrics: this.getPerformanceMetrics(),
             optimizationStatus: this.getOptimizationStatus(
-    profiles: Array.from(this.deviceProfiles.keys() }
+    profiles: Array.from(this.deviceProfiles.keys()));
     
     /**
      * クリーンアップ'

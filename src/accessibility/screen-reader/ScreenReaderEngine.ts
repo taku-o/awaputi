@@ -4,15 +4,13 @@
  */
 
 // Interfaces for screen reader engine
-interface EngineConfig { enabled: boolean;
-    defaultReader: ReaderType;
-    simulateDelay: boolean;
-    verbosityLevel: 'off' | 'some' | 'most' | 'all' | 'standard';
+interface EngineConfig { enabled: boolean,
+    defaultReader: ReaderType,
+    simulateDelay: boolean,
+    verbosityLevel: 'off' | 'some' | 'most' | 'all' | 'standard,
     supportedReaders: ReaderType[];
-
-type ReaderType = 'nvda' | 'jaws' | 'voiceover';
-
-interface ScreenReaderFeatures { browseMode?: boolean,
+    type ReaderType = 'nvda' | 'jaws' | 'voiceover';
+    interface ScreenReaderFeatures { browseMode?: boolean,
     focusMode?: boolean;
     objectNavigation?: boolean;
     speechViewer?: boolean;
@@ -25,133 +23,122 @@ interface ScreenReaderFeatures { browseMode?: boolean,
     quickNav?: boolean;
     webRotor?: boolean;
     trackpadCommander?: boolean;
-
-interface ScreenReaderDefinition { name: string;
-    version: string;
-    speechRate: number;
-    verbosityOptions: string[];
-    supportedLanguages: string[];
-    platform: 'windows' | 'macos' | 'linux';
+    interface ScreenReaderDefinition { name: string,
+    version: string,
+    speechRate: number,
+    verbosityOptions: string[],
+    supportedLanguages: string[],
+    platform: 'windows' | 'macos' | 'linux,
     features: ScreenReaderFeatures;
-
-interface SimulationState { running: boolean;
-    currentReader: ReaderType;
-    currentElement: Element | null;
-    focusHistory: FocusHistoryEntry[];
+    interface SimulationState { running: boolean,
+    currentReader: ReaderType,
+    currentElement: Element | null,
+    focusHistory: FocusHistoryEntry[],
     readingPosition: number;
-
-interface FocusHistoryEntry { element: Element;
-    timestamp: number;
+    interface FocusHistoryEntry { element: Element,
+    timestamp: number,
     readerType: ReaderType;
-
-interface PerformanceMetrics { simulationTime: number[];
-    averageElementProcessingTime: number;
+    interface PerformanceMetrics { simulationTime: number[],
+    averageElementProcessingTime: number,
     totalElementsProcessed: number;
-
-interface CompatibilityResult { compatible: boolean;
-    issues: any[];
+    interface CompatibilityResult { compatible: boolean,
+    issues: any[],
     features: ScreenReaderFeatures;
-
-interface Announcement { readerType: ReaderType;
+    interface Announcement { readerType: ReaderType;
     type?: string;
     element?: string;
     elementType?: string;
     level?: number;
     role?: string;
-    announcement: string;
+    announcement: string,
     timestamp: number;
-
-interface SimulationResults { compatibility: Map<ReaderType, CompatibilityResult>,
-    issues: any[];
-    announcements: Announcement[];
+    interface SimulationResults { compatibility: Map<ReaderType, CompatibilityResult>,
+    issues: any[],
+    announcements: Announcement[],
     navigationTests: Map<string, any> }
 
-interface SimulationResult { simulationTime: number;
-    results: SimulationResults;
+interface SimulationResult { simulationTime: number,
+    results: SimulationResults,
     performance: PerformanceMetrics;
-
-interface RoleAnnouncements { nvda: Record<string, string>,
+    interface RoleAnnouncements { nvda: Record<string, string>,
     jaws: Record<string, string>;
     voiceover: Record<string, string> }
 
-interface NavigationElements { links: NodeListOf<Element>;
-    buttons: NodeListOf<Element>;
-    formFields: NodeListOf<Element>;
+interface NavigationElements { links: NodeListOf<Element>,
+    buttons: NodeListOf<Element>,
+    formFields: NodeListOf<Element>,
     graphics: NodeListOf<Element>;
-
-export class ScreenReaderEngine {
+    export class ScreenReaderEngine {
     private config: EngineConfig;
     private, screenReaders: Record<ReaderType, ScreenReaderDefinition>,
     private simulationState: SimulationState;
     private performance: PerformanceMetrics;
     private, results: SimulationResults','
 
-    constructor(config: Partial<EngineConfig> = {)) {
+    constructor(config: Partial<EngineConfig> = {) {
         this.config = {'
-            enabled: true;
-            defaultReader: 'nvda';
-            simulateDelay: true;
-            verbosityLevel: 'standard';
-            supportedReaders: ['nvda', 'jaws', 'voiceover'];
+            enabled: true,
+    defaultReader: 'nvda,
+    simulateDelay: true,
+    verbosityLevel: 'standard,
+    supportedReaders: ['nvda', 'jaws', 'voiceover'];
             ...config,
 
         // Screen reader configurations
-        this.screenReaders = { nvda: {''
-                name: 'NVDA';
-                version: '2023.1';
-                speechRate: 250;
-                verbosityOptions: ['off', 'some', 'most', 'all'];
-                supportedLanguages: ['en', 'ja', 'es', 'fr', 'de'];
-                platform: 'windows';
+        this.screenReaders = { nvda: { ''
+                name: 'NVDA,
+                version: '2023.1,
+                speechRate: 250,
+                verbosityOptions: ['off', 'some', 'most', 'all'],
+                supportedLanguages: ['en', 'ja', 'es', 'fr', 'de'],
+                platform: 'windows,
     features: {
-                    browseMode: true;
-                    focusMode: true;
-                    objectNavigation: true;
-                    speechViewer: true;
+                    browseMode: true  ,
+                    focusMode: true,
+    objectNavigation: true,
+    speechViewer: true,
     brailleSupport: true;
             };
             jaws: { ''
-                name: 'JAWS';
-                version: '2023';
-                speechRate: 300;
+                name: 'JAWS'  ,
+                version: '2023,
+                speechRate: 300,
                 verbosityOptions: ['beginner', 'intermediate', 'advanced'];
                 supportedLanguages: ['en', 'ja', 'es', 'fr', 'de'];
-                platform: 'windows';
-    features: {
-                    virtualMode: true;
-                    formsMode: true;
-                    quickNavigation: true;
-                    virtualBufferControls: true;
+                platform: 'windows,
+    features: { virtualMode: true  ,
+                    formsMode: true,
+                    quickNavigation: true,
+                    virtualBufferControls: true,
     brailleSupport: true;
             };
             voiceover: { ''
-                name: 'VoiceOver';
-                version: '10.0';
-                speechRate: 280;
+                name: 'VoiceOver'  ,
+                version: '10.0,
+                speechRate: 280,
                 verbosityOptions: ['low', 'medium', 'high'];
                 supportedLanguages: ['en', 'ja', 'es', 'fr', 'de'];
-                platform: 'macos';
-    features: {
-                    webSpots: true;
-                    quickNav: true;
-                    webRotor: true;
-                    trackpadCommander: true;
+                platform: 'macos,
+    features: { webSpots: true  ,
+                    quickNav: true,
+                    webRotor: true,
+                    trackpadCommander: true,
     brailleSupport: true;
 };
         // Simulation state
-        this.simulationState = { running: false;
-            currentReader: this.config.defaultReader;
-            currentElement: null;
-            focusHistory: [];
+        this.simulationState = { running: false,
+            currentReader: this.config.defaultReader,
+            currentElement: null,
+            focusHistory: [],
     readingPosition: 0  };
         // Performance metrics
-        this.performance = { simulationTime: [];
-            averageElementProcessingTime: 0;
+        this.performance = { simulationTime: [],
+            averageElementProcessingTime: 0,
     totalElementsProcessed: 0  };
         // Results storage
         this.results = { compatibility: new Map(
-            issues: [];
-    announcements: [];
+            issues: [],
+    announcements: [],
             navigationTests: new Map()','
     async runFullSimulation(readerType: ReaderType | 'all' = 'all': Promise<SimulationResult | null> {''
         if (this.simulationState.running) {
@@ -165,7 +152,7 @@ export class ScreenReaderEngine {
                 Object.keys(this.screenReaders) as ReaderType[] : [readerType];
 
             // Run simulation for each screen reader
-            for (const reader of readers) { await this.runReaderSimulation(reader) }
+            for (const reader of readers) { await this.runReaderSimulation(reader);
 
             // Calculate performance metrics
             const endTime = performance.now();
@@ -198,12 +185,12 @@ export class ScreenReaderEngine {
         // Simulate, focus navigation, await this.simulateFocusNavigation(readerType};
 
         // Test, browse/focus, mode switching, if (reader.features.browseMode || reader.features.virtualMode} { }
-            await, this.simulateBrowseModeNavigation(readerType};
+            await, this.simulateBrowseModeNavigation(readerType}
         }
 
         // Store compatibility results
         this.results.compatibility.set(readerType, { compatible: true)
-           , issues: []);
+            issues: []),
             features: reader.features  }
 
     /**
@@ -223,7 +210,7 @@ export class ScreenReaderEngine {
     };
 
                 // Simulate reading delay
-                if (this.config.simulateDelay) { await this.simulateReadingDelay(announcement, reader.speechRate) }
+                if (this.config.simulateDelay) { await this.simulateReadingDelay(announcement, reader.speechRate);
 }
     }
 
@@ -240,9 +227,9 @@ export class ScreenReaderEngine {
             if (focusAnnouncement) {
                 this.results.announcements.push({'
                     readerType,','
-                    type: 'focus';
-    element: element.tagName);
-                    announcement: focusAnnouncement) }
+                    type: 'focus,
+    element: element.tagName),
+                    announcement: focusAnnouncement),
                     timestamp: Date.now(); 
     };
 
@@ -253,7 +240,7 @@ export class ScreenReaderEngine {
                     readerType,
 
                 // Simulate focus delay
-                if (this.config.simulateDelay) { await this.simulateReadingDelay(focusAnnouncement, reader.speechRate) }
+                if (this.config.simulateDelay) { await this.simulateReadingDelay(focusAnnouncement, reader.speechRate);
 }
     }
 
@@ -285,15 +272,13 @@ export class ScreenReaderEngine {
 
             const announcement = this.generateHeadingAnnouncement(heading, readerType);
             this.results.announcements.push({)'
-                readerType,')',
-                type: 'heading';
+                readerType,'),
+                type: 'heading,
     level: this.getHeadingLevel(heading);
                 announcement }
                 timestamp: Date.now(); 
-    };
         }
-    }
-
+}
     /**
      * Simulate landmark navigation'
      */''
@@ -305,21 +290,19 @@ export class ScreenReaderEngine {
 
             const announcement = this.generateLandmarkAnnouncement(landmark, readerType);
             this.results.announcements.push({)'
-                readerType,')',
-                type: 'landmark';
+                readerType,'),
+                type: 'landmark,
                 role: landmark.getAttribute('role) || landmark.tagName.toLowerCase(),'
                 announcement }
                 timestamp: Date.now(); 
-    };
         }
-    }
-
+}
     /**
      * Simulate quick navigation'
      */''
     private async simulateQuickNavigation(readerType: ReaderType): Promise<void> { const navigationElements: NavigationElements = {''
-            links: document.querySelectorAll('a[href]';
-            buttons: document.querySelectorAll('button';
+            links: document.querySelectorAll('a[href],
+            buttons: document.querySelectorAll('button,
             formFields: document.querySelectorAll('input, textarea, select');
             graphics: document.querySelectorAll('img, svg, canvas };'
 
@@ -330,14 +313,12 @@ export class ScreenReaderEngine {
                 const announcement = this.generateQuickNavAnnouncement(element, type, readerType);
                 this.results.announcements.push({'
                     readerType,','
-                    type: 'quicknav';
+                    type: 'quicknav,
     elementType: type);
                     announcement }
                     timestamp: Date.now(); 
-    };
-            }
+        }
 }
-
     /**
      * Get readable elements from page'
      */''
@@ -350,10 +331,8 @@ export class ScreenReaderEngine {
             const styles = window.getComputedStyle(element);
             return styles.display !== 'none' && ','
                    styles.visibility !== 'hidden' &&  }
-                   (element.textContent?.trim().length ?? 0) > 0; }
-        };
-    }
-
+                   (element.textContent?.trim().length ?? 0) > 0;     }
+}
     /**
      * Get focusable elements'
      */ : undefined''
@@ -366,10 +345,8 @@ export class ScreenReaderEngine {
             const styles = window.getComputedStyle(element);
             return styles.display !== 'none' && ','
                    styles.visibility !== 'hidden' && }
-                   !(element, as HTMLInputElement).disabled; }
-        };
-    }
-
+                   !(element, as HTMLInputElement).disabled;     }
+}
     /**
      * Generate announcement for element'
      */''
@@ -431,7 +408,7 @@ export class ScreenReaderEngine {
      */ : undefined''
     private generateLandmarkAnnouncement(landmark: Element, readerType: ReaderType): string { ''
         const role = landmark.getAttribute('role) || this.getImplicitRole(landmark),'
-        const label = this.getAccessibleName(landmark) }
+        const label = this.getAccessibleName(landmark);
         let announcement = `${role} landmark`;
         if (label) {
     
@@ -445,7 +422,7 @@ export class ScreenReaderEngine {
     /**
      * Generate quick navigation announcement
      */
-    private generateQuickNavAnnouncement(element: Element, type: string, readerType: ReaderType): string { const announcement = this.generateAnnouncement(element, readerType) }
+    private generateQuickNavAnnouncement(element: Element, type: string, readerType: ReaderType): string { const announcement = this.generateAnnouncement(element, readerType);
         return `${type}: ${announcement}`;
     }
 
@@ -496,18 +473,18 @@ export class ScreenReaderEngine {
     private getImplicitRole(element: Element): string | null { const tagRoleMap: Record<string, string | null> = {', 'button': 'button','
             'a': element.hasAttribute('href') ? 'link' : null,
             'input': this.getInputRole(element, as HTMLInputElement);
-            'textarea': 'textbox',
-            'select': 'combobox',
-            'nav': 'navigation',
-            'main': 'main',
-            'header': 'banner',
-            'footer': 'contentinfo',
-            'aside': 'complementary',
-            'h1': 'heading',
-            'h2': 'heading',
-            'h3': 'heading',
-            'h4': 'heading',
-            'h5': 'heading',
+            'textarea': 'textbox,
+            'select': 'combobox,
+            'nav': 'navigation,
+            'main': 'main,
+            'header': 'banner,
+            'footer': 'contentinfo,
+            'aside': 'complementary,
+            'h1': 'heading,
+            'h2': 'heading,
+            'h3': 'heading,
+            'h4': 'heading,
+            'h5': 'heading,
             'h6': 'heading' };
 
         return tagRoleMap[element.tagName.toLowerCase()] || null;
@@ -518,17 +495,17 @@ export class ScreenReaderEngine {
      */'
     private getInputRole(input: HTMLInputElement): string { ''
         const type = input.type.toLowerCase('''
-            'button': 'button',
-            'submit': 'button',
-            'reset': 'button',
-            'checkbox': 'checkbox',
-            'radio': 'radio',
-            'range': 'slider',
-            'text': 'textbox',
-            'email': 'textbox',
-            'password': 'textbox',
-            'search': 'searchbox',
-            'tel': 'textbox',
+            'button': 'button,
+            'submit': 'button,
+            'reset': 'button,
+            'checkbox': 'checkbox,
+            'radio': 'radio,
+            'range': 'slider,
+            'text': 'textbox,
+            'email': 'textbox,
+            'password': 'textbox,
+            'search': 'searchbox,
+            'tel': 'textbox,
             'url': 'textbox' };
 
         return roleMap[type] || 'textbox';
@@ -540,21 +517,21 @@ export class ScreenReaderEngine {
     private getElementStates(element: Element): string[] { const states: string[] = [],
 
         if(element.hasAttribute('aria-expanded)' {''
-            const expanded = element.getAttribute('aria-expanded') === 'true',
-            states.push(expanded ? 'expanded' : 'collapsed') }
+            const expanded = element.getAttribute('aria-expanded') === 'true,
+            states.push(expanded ? 'expanded' : 'collapsed');
 
         if(element.hasAttribute('aria-checked)' { ''
             const checked = element.getAttribute('aria-checked');
             if (checked === 'true') states.push('checked');
             else if (checked === 'false') states.push('not, checked');
-            else if (checked === 'mixed') states.push('partially, checked') }
+            else if (checked === 'mixed') states.push('partially, checked');
 
         if(element.hasAttribute('aria-selected)' { ''
-            const selected = element.getAttribute('aria-selected') === 'true',
+            const selected = element.getAttribute('aria-selected') === 'true,
             states.push(selected ? 'selected' : 'not, selected) }'
 
         if ((element, as HTMLInputElement).disabled) { ''
-            states.push('disabled') }
+            states.push('disabled');
 
         if (element.hasAttribute('aria-invalid') && element.getAttribute('aria-invalid') !== 'false') { ''
             states.push('invalid' }'
@@ -567,29 +544,29 @@ export class ScreenReaderEngine {
      */''
     private getRoleAnnouncement(role: string, readerType: ReaderType): string { const roleAnnouncements: RoleAnnouncements = {'
             nvda: {', 'button': 'button','
-                'link': 'link',
-                'textbox': 'edit',
-                'checkbox': 'check box',
-                'radio': 'radio button',
-                'combobox': 'combo box',
+                'link': 'link,
+                'textbox': 'edit,
+                'checkbox': 'check box,
+                'radio': 'radio button,
+                'combobox': 'combo box,
                 'heading': 'heading' },
 
             jaws: { ', 'button': 'button','
-                'link': 'link',
-                'textbox': 'edit',
-                'checkbox': 'check box',
-                'radio': 'radio button',
-                'combobox': 'combo box',
+                'link': 'link,
+                'textbox': 'edit,
+                'checkbox': 'check box,
+                'radio': 'radio button,
+                'combobox': 'combo box,
                 'heading': 'heading' },
 
             voiceover: { ', 'button': 'button','
-                'link': 'link',
-                'textbox': 'text field',
-                'checkbox': 'checkbox',
-                'radio': 'radio button',
-                'combobox': 'pop up button',
+                'link': 'link,
+                'textbox': 'text field,
+                'checkbox': 'checkbox,
+                'radio': 'radio button,
+                'combobox': 'pop up button,
                 'heading': 'heading' 
-    };
+     },
 
         return roleAnnouncements[readerType]?.[role] || role;
     }
@@ -603,7 +580,7 @@ export class ScreenReaderEngine {
             return parseInt(heading.tagName.charAt(1));
 
         if(heading.hasAttribute('aria-level)' { ''
-            return parseInt(heading.getAttribute('aria-level') || '1') }
+            return parseInt(heading.getAttribute('aria-level') || '1');
 
         return 1; // Default level
     }
@@ -657,9 +634,9 @@ export class ScreenReaderEngine {
      * Get simulation results
      */
     getSimulationResults(): { results: SimulationResults,
-        performance: PerformanceMetrics,
+        performance: PerformanceMetrics ,
     state: SimulationState, { return { results: this.results,
-    performance: this.performance },
+    performance: this.performance ,
             state: this.simulationState 
     }
 
@@ -673,7 +650,7 @@ export class ScreenReaderEngine {
     navigationTests: new Map( }
         this.performance = { simulationTime: [],
             averageElementProcessingTime: 0,
-    totalElementsProcessed: 0  },
+    totalElementsProcessed: 0  ,
         this.simulationState.focusHistory = [];
     }
 

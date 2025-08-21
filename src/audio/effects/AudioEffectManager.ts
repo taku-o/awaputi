@@ -50,15 +50,15 @@ interface EffectParameters { reverb?: number,
 /**
  * エフェクトタイプ設定インターフェース
  */
-interface EffectTypeConfig { enabled: boolean;
+interface EffectTypeConfig { enabled: boolean,
     intensity: number;
 
 /**
  * エフェクト設定インターフェース
  */
-interface EffectConfig { enabled: boolean;
-    quality: EffectQuality;
-    maxConcurrentEffects: number;
+interface EffectConfig { enabled: boolean,
+    quality: EffectQuality,
+    maxConcurrentEffects: number,
     effectTypes: Record<EffectType, EffectTypeConfig> }
 
 /**
@@ -71,63 +71,63 @@ interface EffectVariations { bubble: Record<BubbleType, EffectParameters>,
 /**
  * リバーブエフェクトノードインターフェース
  */
-interface ReverbEffectNode { input: GainNode;
-    convolver: ConvolverNode;
-    wetGain: GainNode;
-    dryGain: GainNode;
-    output: GainNode;
+interface ReverbEffectNode { input: GainNode,
+    convolver: ConvolverNode,
+    wetGain: GainNode,
+    dryGain: GainNode,
+    output: GainNode,
     type: 'reverb';
     disabled?: boolean;
 
 /**
  * ディレイエフェクトノードインターフェース
  */
-interface DelayEffectNode { input: GainNode;
-    delay: DelayNode;
-    feedback: GainNode;
-    wetGain: GainNode;
-    dryGain: GainNode;
-    output: GainNode;
+interface DelayEffectNode { input: GainNode,
+    delay: DelayNode,
+    feedback: GainNode,
+    wetGain: GainNode,
+    dryGain: GainNode,
+    output: GainNode,
     type: 'delay'
             }
 
 /**
  * フィルターエフェクトノードインターフェース
  */
-interface FilterEffectNode { input: BiquadFilterNode;
-    filter: BiquadFilterNode;
-    output: BiquadFilterNode;
+interface FilterEffectNode { input: BiquadFilterNode,
+    filter: BiquadFilterNode,
+    output: BiquadFilterNode,
     type: 'filter'
             }
 
 /**
  * ディストーションエフェクトノードインターフェース
  */
-interface DistortionEffectNode { input: WaveShaperNode;
-    waveshaper: WaveShaperNode;
-    output: WaveShaperNode;
+interface DistortionEffectNode { input: WaveShaperNode,
+    waveshaper: WaveShaperNode,
+    output: WaveShaperNode,
     type: 'distortion'
             }
 
 /**
  * コーラスエフェクトノードインターフェース
  */
-interface ChorusEffectNode { input: GainNode;
-    delay: DelayNode;
-    lfo: OscillatorNode;
-    lfoGain: GainNode;
-    wetGain: GainNode;
-    dryGain: GainNode;
-    output: GainNode;
+interface ChorusEffectNode { input: GainNode,
+    delay: DelayNode,
+    lfo: OscillatorNode,
+    lfoGain: GainNode,
+    wetGain: GainNode,
+    dryGain: GainNode,
+    output: GainNode,
     type: 'chorus'
             }
 
 /**
  * コンプレッサーエフェクトノードインターフェース
  */
-interface CompressorEffectNode { input: DynamicsCompressorNode;
-    compressor: DynamicsCompressorNode;
-    output: DynamicsCompressorNode;
+interface CompressorEffectNode { input: DynamicsCompressorNode,
+    compressor: DynamicsCompressorNode,
+    output: DynamicsCompressorNode,
     type: 'compressor'
             }
 
@@ -140,18 +140,18 @@ type EffectNode = ReverbEffectNode | DelayEffectNode | FilterEffectNode | ;
 /**
  * アクティブエフェクトインスタンスインターフェース
  */
-interface ActiveEffectInstance { id: number;
-    nodes: EffectNode[];
-    type: string;
+interface ActiveEffectInstance { id: number,
+    nodes: EffectNode[],
+    type: string,
     startTime: number;
 
 /**
  * エフェクト統計情報インターフェース
  */
-interface EffectStatistics { activeEffects: number;
-    maxConcurrentEffects: number;
-    quality: EffectQuality;
-    enabledEffects: string[];
+interface EffectStatistics { activeEffects: number,
+    maxConcurrentEffects: number,
+    quality: EffectQuality,
+    enabledEffects: string[],
     effectTypes: number;
 
 /**
@@ -163,8 +163,7 @@ interface ConfigurationManager { get(category: string): any;
  * ErrorHandler インターフェース（型定義用）
  */
 interface ErrorHandler { handleError(error: any, context: string, details?: any): void;
-
-export class AudioEffectManager {
+    export class AudioEffectManager {
     private audioContext: AudioContext;
     private sfxGainNode: GainNode;
     private configManager: ConfigurationManager;
@@ -183,12 +182,12 @@ export class AudioEffectManager {
     constructor(audioContext: AudioContext, sfxGainNode: GainNode) {
 
         this.audioContext = audioContext;
-        this.sfxGainNode = sfxGainNode;
-        this.disabled = false;
+    this.sfxGainNode = sfxGainNode;
+    this.disabled = false;
         // AudioContextが利用できない場合は無効化
         if (!this.audioContext) {''
             console.warn('[AudioEffectManager] AudioContext, not available - effects disabled),'
-            this.disabled = true }
+            this.disabled = true };
             return; }
         }
         this.configManager = getConfigurationManager();
@@ -201,28 +200,27 @@ export class AudioEffectManager {
             quality: 'high', // 'low', 'medium', 'high';
             maxConcurrentEffects: 32,
     effectTypes: {
-                reverb: { enabled: true, intensity: 0.3  },
-                delay: { enabled: true, intensity: 0.2  },
-                filter: { enabled: true, intensity: 0.5  },
-                distortion: { enabled: true, intensity: 0.1  },
-                chorus: { enabled: true, intensity: 0.2  },
+                reverb: { enabled: true, intensity: 0.3  ,
+                delay: { enabled: true, intensity: 0.2  ,
+                filter: { enabled: true, intensity: 0.5  ,
+                distortion: { enabled: true, intensity: 0.1  ,
+                chorus: { enabled: true, intensity: 0.2  ,
                 compressor: { enabled: true, intensity: 0.3  }
         };
         
         // エフェクトバリエーション
         this.effectVariations = { bubble: { }
-                normal: { reverb: 0.1, filter: 200  },
-                stone: { distortion: 0.2, filter: 150  },
-                electric: { delay: 0.3, filter: 400  },
-                rainbow: { chorus: 0.4, reverb: 0.3  },
+                normal: { reverb: 0.1, filter: 200  ,
+                stone: { distortion: 0.2, filter: 150  ,
+                electric: { delay: 0.3, filter: 400  ,
+                rainbow: { chorus: 0.4, reverb: 0.3  ,
             ui: {
-                click: { filter: 800, compression: 0.2  },
-                hover: { reverb: 0.1, filter: 600  },
-                success: { delay: 0.2, chorus: 0.3  },
-                error: { distortion: 0.3, filter: 100  },
-            combo: {
-                level1: { reverb: 0.1 },
-                level2: { reverb: 0.2, delay: 0.1  },
+                click: { filter: 800, compression: 0.2  ,
+                hover: { reverb: 0.1, filter: 600  ,
+                success: { delay: 0.2, chorus: 0.3  ,
+                error: { distortion: 0.3, filter: 100  ,
+            combo: { level1: { reverb: 0.1  ,
+                level2: { reverb: 0.2, delay: 0.1  ,
                 level3: { reverb: 0.3, delay: 0.2, chorus: 0.1  }
                 level4: { reverb: 0.4, delay: 0.3, chorus: 0.2  }
                 level5: { reverb: 0.5, delay: 0.4, chorus: 0.3, distortion: 0.1  }
@@ -257,7 +255,7 @@ export class AudioEffectManager {
         // コーラスエフェクト
         this.createChorusEffect();
         // コンプレッサーエフェクト
-        this.createCompressorEffect() }
+        this.createCompressorEffect();
     
     /**
      * リバーブエフェクトを作成
@@ -293,10 +291,10 @@ export class AudioEffectManager {
 
         } catch (error) { console.error('[AudioEffectManager] Failed to create reverb effect:', error','
             this.errorHandler.handleError(error, 'AUDIO_ERROR', {''
-                operation: 'createReverbEffect',
+                operation: 'createReverbEffect,
                 component: 'AudioEffectManager',','
-                context: 'ConvolverNode buffer creation');
-                sampleRate: this.audioContext.sampleRate  },
+                context: 'ConvolverNode buffer creation'),
+                sampleRate: this.audioContext.sampleRate  };
             
             // Create a fallback bypass effect
             const inputGain = this.audioContext.createGain();
@@ -304,7 +302,7 @@ export class AudioEffectManager {
             inputGain.connect(outputGain);
 
             this.effectNodes.set('reverb', { input: inputGain', output: outputGain,'
-                type: 'reverb');
+                type: 'reverb'),
                 disabled: true) as ReverbEffectNode  }
     }
     
@@ -315,7 +313,7 @@ export class AudioEffectManager {
             // Ensure valid parameters
             const validSampleRate = Math.max(sampleRate, 8000), // Minimum sample rate
             const validDuration = Math.max(Math.min(duration, 60), 0.1), // Between 0.1 and 60 seconds
-            const length = Math.floor(validSampleRate * validDuration) }
+            const length = Math.floor(validSampleRate * validDuration);
             console.log(`[AudioEffectManager] Creating impulse response: sampleRate=${validSampleRate}, duration=${validDuration}, length=${ length)`),
             
             const, impulse = this.audioContext.createBuffer(2, length, validSampleRate);
@@ -325,9 +323,8 @@ export class AudioEffectManager {
                 for (let, i = 0; i < length i++} {
     
 }
-                    const, n = reverse ? length - i: i, channelData[i] = (Math.random() * 2 - 1) * Math.pow(1 - n / length, 2};
-                }
-            }
+                    const, n = reverse ? length - i: i, channelData[i] = (Math.random() * 2 - 1) * Math.pow(1 - n / length, 2    }
+}
             ';'
 
             return impulse;} catch (error) {
@@ -379,15 +376,15 @@ export class AudioEffectManager {
      * フィルターエフェクトを作成
      */'
     private createFilterEffect(): void { ''
-        const filter = this.audioContext.createBiquadFilter('',
-        filter.type = 'lowpass',
+        const filter = this.audioContext.createBiquadFilter(',
+        filter.type = 'lowpass,
         filter.frequency.value = 1000,
         filter.Q.value = 1
 
         this.effectNodes.set('filter', {
             input: filter);
             filter','
-           , output: filter,')',
+           , output: filter,'),
             type: 'filter'
             }
     
@@ -396,12 +393,12 @@ export class AudioEffectManager {
      */'
     private createDistortionEffect(): void { const waveshaper = this.audioContext.createWaveShaper();
         waveshaper.curve = this.createDistortionCurve(400);
-        waveshaper.oversample = '4x',
+        waveshaper.oversample = '4x,
 
         this.effectNodes.set('distortion', {
             input: waveshaper);
             waveshaper','
-           , output: waveshaper,')',
+           , output: waveshaper,'),
             type: 'distortion'
             }
     
@@ -463,7 +460,7 @@ export class AudioEffectManager {
         this.effectNodes.set('compressor', {
             input: compressor);
             compressor','
-           , output: compressor,')',
+           , output: compressor,'),
             type: 'compressor'
             }
     
@@ -514,7 +511,7 @@ export class AudioEffectManager {
             const effectInstance: ActiveEffectInstance = { id: Date.now() + Math.random(
                 nodes: appliedNodes,
                 type: effectType,
-    startTime: this.audioContext.currentTime  },
+    startTime: this.audioContext.currentTime  ,
             this.activeEffects.add(effectInstance);
             
             return effectInstance;
@@ -570,7 +567,7 @@ export class AudioEffectManager {
                 break;
 
             case 'compressor':';'
-                if ('compressor' in, effect && variation.compression !== undefined) { effect.compressor.ratio.value = 1 + (variation.compression * intensity * 20) }
+                if ('compressor' in, effect && variation.compression !== undefined) { effect.compressor.ratio.value = 1 + (variation.compression * intensity * 20);
                 break;
         }
     }
@@ -595,7 +592,7 @@ export class AudioEffectManager {
                     if (node.input && node.input.disconnect) { }
                         node.input.disconnect(); }
                     }
-                    if (node.output && node.output.disconnect) { node.output.disconnect() }
+                    if (node.output && node.output.disconnect) { node.output.disconnect();
                 };
                 ';'
 
@@ -615,11 +612,9 @@ export class AudioEffectManager {
                 expiredEffects.push(effect); }
 };
         
-        expiredEffects.forEach(effect => {  ) }
-            this.stopEffect(effect); }
-        };
-    }
-    
+        expiredEffects.forEach(effect => {  );
+            this.stopEffect(effect);     }
+}
     /**
      * エフェクト品質を設定
      */
@@ -641,8 +636,7 @@ export class AudioEffectManager {
 
             case 'high':,
                 this.effectConfig.maxConcurrentEffects = 32,
-                Object.keys(this.effectConfig.effectTypes).forEach(key => { )
-        }
+                Object.keys(this.effectConfig.effectTypes).forEach(key => { );
                     this.effectConfig.effectTypes[key as EffectType].enabled = true); }
                 break; }
         }
@@ -672,7 +666,7 @@ export class AudioEffectManager {
             quality: this.effectConfig.quality,
     enabledEffects: Object.keys(this.effectConfig.effectTypes);
                 .filter(key = > this.effectConfig.effectTypes[key as EffectType].enabled  }
-            effectTypes: Object.keys(this.effectNodes).length 
+            effectTypes: Object.keys(this.effectNodes).length; 
     }
     
     /**
@@ -680,7 +674,7 @@ export class AudioEffectManager {
      */
     dispose(): void { try {
             // アクティブエフェクトを停止
-            this.activeEffects.forEach(effect => { ) }
+            this.activeEffects.forEach(effect => { );
                 this.stopEffect(effect); }
             };
             
@@ -689,7 +683,7 @@ export class AudioEffectManager {
                 if (effect.input && effect.input.disconnect) { }
                     effect.input.disconnect(); }
                 }
-                if (effect.output && effect.output.disconnect) { effect.output.disconnect() }
+                if (effect.output && effect.output.disconnect) { effect.output.disconnect();
             };
             
             // クリーンアップ
@@ -698,6 +692,6 @@ export class AudioEffectManager {
             this.effectChains.clear()';'
             console.log('[AudioEffectManager] Audio, effect manager, disposed');
         } catch (error) {
-            this.errorHandler.handleError(error, 'AudioEffectManager.dispose') }
+            this.errorHandler.handleError(error, 'AudioEffectManager.dispose');
 
     }'}'

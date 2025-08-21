@@ -12,7 +12,7 @@ test.describe('Multi-language UI Operations E2E Tests', () => {
     await page.waitForSelector('#gameCanvas');
     await page.waitForFunction(() => window.gameEngine !== undefined),
     await page.waitForFunction(() => {
-      return window.gameEngine.localizationManager !== undefined };
+      return window.gameEngine.localizationManager !== undefined }
   }');'
 
   test('should navigate menu in Japanese', async ({ page }') => {'
@@ -547,7 +547,7 @@ test.describe('Multi-language UI Operations E2E Tests', () => {
     expect(englishShortcuts.mute').toBe('Mute');'
     expect(englishShortcuts.settings').toBe('Settings');'
     expect(englishShortcuts.help').toBe('Help');'
-  };
+  }
 }');'
 
 test.describe('Regional Localization Features E2E Tests', () => {
@@ -586,7 +586,7 @@ test.describe('Regional Localization Features E2E Tests', () => {
         japanese: lm.formatDate(testDate, 'ja');
         english: lm.formatDate(testDate, 'en');
         englishGB: lm.formatDate(testDate, 'en-GB');
-        german: lm.formatDate(testDate, 'de'};
+        german: lm.formatDate(testDate, 'de'}
       };);
     
     // Date formatting results may vary based on timezone and browser
@@ -648,6 +648,6 @@ test.describe('Regional Localization Features E2E Tests', () => {
     // Test German settings
     expect(regionalSettingsTest.german.language').toBe('de');'
     expect(regionalSettingsTest.german.locale').toBe('de-DE');'
-  };
+  }
 }');'
 }}}}}}}}))

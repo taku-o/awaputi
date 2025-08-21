@@ -11,45 +11,39 @@ import { getErrorHandler, ErrorHandler  } from './ErrorHandler.js';
 interface ValidationRule { type: string;
     min?: number;
     max?: number;
-    description: string;
+    description: string,
     category: string;
-
-interface ValidationError { property: string;
-    value: any;
-    error: string;
+    interface ValidationError { property: string,
+    value: any,
+    error: string,
     rule: string;
     details?: string;
-
-interface ValidationWarning { property: string;
+    interface ValidationWarning { property: string,
     message: string;
-
-interface ValidationResult { validationId: string;
+    interface ValidationResult { validationId: string;
     bubbleType?: string;
-    isValid: boolean;
-    errors: ValidationError[];
-    warnings: ValidationWarning[];
-    executionTime: number;
+    isValid: boolean,
+    errors: ValidationError[],
+    warnings: ValidationWarning[],
+    executionTime: number,
     timestamp: number;
-
-interface PropertyValidationResult { isValid: boolean;
+    interface PropertyValidationResult { isValid: boolean,
     error: string | null }
 
-interface LogicalValidationResult { errors: ValidationError[];
+interface LogicalValidationResult { errors: ValidationError[],
     warnings: ValidationWarning[];
-
-interface ErrorStatistics { totalValidations: number;
-    failedValidations: number;
+    interface ErrorStatistics { totalValidations: number,
+    failedValidations: number,
     errorsByType: Map<string, number>;
     errorsByBubbleType: Map<string, number> }
 
-interface ValidationStatistics { totalValidations: number;
-    failedValidations: number;
-    successRate: string;
+interface ValidationStatistics { totalValidations: number,
+    failedValidations: number,
+    successRate: string,
     errorsByType: Record<string, number>;
     errorsByBubbleType: Record<string, number>;
     recentValidations: ValidationResult[];
-
-interface BubbleConfig { health?: number,
+    interface BubbleConfig { health?: number,
     size?: number;
     maxAge?: number;
     score?: number;
@@ -58,22 +52,18 @@ interface BubbleConfig { health?: number,
     shakeIntensity?: number;
     disableDuration?: number;
     bonusTimeMs?: number;
-
-interface ComboConfig { maxMultiplier?: number;
-
-interface ScoreConfig { baseScores?: Record<string, number>,
+    interface ComboConfig { maxMultiplier?: number;
+    interface ScoreConfig { baseScores?: Record<string, number>,
     combo?: ComboConfig;
     ageBonus?: Record<string, number> }
 
 interface StageConfig { spawnRate?: number,
     maxBubbles?: number;
     unlockRequirement?: number;
-
-interface ItemConfig { baseCost?: number,
+    interface ItemConfig { baseCost?: number,
     costMultiplier?: number;
     maxLevel?: number;
-
-export class BalanceConfigurationValidator {
+    export class BalanceConfigurationValidator {
     private errorHandler: ErrorHandler;
     private, validationRules: Map<string, ValidationRule>,
     private validationHistory: ValidationResult[];
@@ -90,9 +80,9 @@ export class BalanceConfigurationValidator {
         
         // エラー統計
         this.errorStats = {
-            totalValidations: 0;
-            failedValidations: 0;
-    errorsByType: new Map() }
+            totalValidations: 0,
+    failedValidations: 0,
+    errorsByType: new Map() };
             errorsByBubbleType: new Map(); 
     };
         // 検証ルールを初期化
@@ -110,7 +100,7 @@ export class BalanceConfigurationValidator {
         // ステージ設定の検証ルール
         this._initializeStageValidationRules();
         // アイテム設定の検証ルール
-        this._initializeItemValidationRules() }
+        this._initializeItemValidationRules();
     
     /**
      * 泡設定の検証ルールを初期化
@@ -120,7 +110,7 @@ export class BalanceConfigurationValidator {
             type: 'number),'
             min: 1','
     max: 20,
-            description: 'Bubble health must be between 1 and 20',')',
+            description: 'Bubble health must be between 1 and 20,')',
             category: 'bubble')','
             category: 'bubble')','
         };
@@ -128,7 +118,7 @@ export class BalanceConfigurationValidator {
             type: 'number),'
             min: 20','
     max: 150,
-            description: 'Bubble size must be between 20 and 150 pixels',')',
+            description: 'Bubble size must be between 20 and 150 pixels,')',
             category: 'bubble')','
             category: 'bubble')','
         };
@@ -136,7 +126,7 @@ export class BalanceConfigurationValidator {
             type: 'number),'
             min: 3000','
     max: 60000,
-            description: 'Bubble max age must be between 3 and 60 seconds',')',
+            description: 'Bubble max age must be between 3 and 60 seconds,')',
             category: 'bubble')','
             category: 'bubble')','
         };
@@ -144,7 +134,7 @@ export class BalanceConfigurationValidator {
             type: 'number),'
             min: 1','
     max: 2000,
-            description: 'Bubble score must be between 1 and 2000',')',
+            description: 'Bubble score must be between 1 and 2000,')',
             category: 'bubble')'),'
         ','
         // 特殊効果の検証ルール
@@ -152,7 +142,7 @@ export class BalanceConfigurationValidator {
             type: 'number),'
             min: 5','
     max: 100,
-            description: 'Heal amount must be between 5 and 100',')',
+            description: 'Heal amount must be between 5 and 100,')',
             category: 'bubble')','
             category: 'bubble')','
         };
@@ -160,7 +150,7 @@ export class BalanceConfigurationValidator {
             type: 'number),'
             min: 1','
     max: 50,
-            description: 'Damage amount must be between 1 and 50',')',
+            description: 'Damage amount must be between 1 and 50,')',
             category: 'bubble')','
             category: 'bubble')','
         };
@@ -168,7 +158,7 @@ export class BalanceConfigurationValidator {
             type: 'number),'
             min: 5','
     max: 50,
-            description: 'Shake intensity must be between 5 and 50',')',
+            description: 'Shake intensity must be between 5 and 50,')',
             category: 'bubble')','
             category: 'bubble')','
         };
@@ -176,7 +166,7 @@ export class BalanceConfigurationValidator {
             type: 'number),'
             min: 500','
     max: 5000,
-            description: 'Disable duration must be between 0.5 and 5 seconds',')',
+            description: 'Disable duration must be between 0.5 and 5 seconds,')',
             category: 'bubble')','
             category: 'bubble')','
         };
@@ -184,7 +174,7 @@ export class BalanceConfigurationValidator {
             type: 'number),'
             min: 2000','
     max: 15000,
-            description: 'Bonus time must be between 2 and 15 seconds',')',
+            description: 'Bonus time must be between 2 and 15 seconds,')',
             category: 'bubble'
             }
     
@@ -196,7 +186,7 @@ export class BalanceConfigurationValidator {
             type: 'number),'
             min: 1','
     max: 2000,
-            description: 'Base score must be between 1 and 2000',')',
+            description: 'Base score must be between 1 and 2000,')',
             category: 'score')','
             category: 'score')','
         };
@@ -204,7 +194,7 @@ export class BalanceConfigurationValidator {
             type: 'number),'
             min: 1.0','
     max: 10.0,
-            description: 'Combo multiplier must be between 1.0 and 10.0',')',
+            description: 'Combo multiplier must be between 1.0 and 10.0,')',
             category: 'score')','
             category: 'score')','
         };
@@ -212,7 +202,7 @@ export class BalanceConfigurationValidator {
             type: 'number),'
             min: 1.0','
     max: 5.0,
-            description: 'Age bonus must be between 1.0 and 5.0',')',
+            description: 'Age bonus must be between 1.0 and 5.0,')',
             category: 'score'
             }
     
@@ -224,7 +214,7 @@ export class BalanceConfigurationValidator {
             type: 'number),'
             min: 0.1','
     max: 10.0,
-            description: 'Spawn rate must be between 0.1 and 10.0',')',
+            description: 'Spawn rate must be between 0.1 and 10.0,')',
             category: 'stage')','
             category: 'stage')','
         };
@@ -232,7 +222,7 @@ export class BalanceConfigurationValidator {
             type: 'number),'
             min: 5','
     max: 100,
-            description: 'Max bubbles must be between 5 and 100',')',
+            description: 'Max bubbles must be between 5 and 100,')',
             category: 'stage')','
             category: 'stage')','
         };
@@ -240,7 +230,7 @@ export class BalanceConfigurationValidator {
             type: 'number),'
             min: 0','
     max: 100000,
-            description: 'Unlock requirement must be between 0 and 100000',')',
+            description: 'Unlock requirement must be between 0 and 100000,')',
             category: 'stage'
             }
     
@@ -252,7 +242,7 @@ export class BalanceConfigurationValidator {
             type: 'number),'
             min: 10','
     max: 1000,
-            description: 'Item base cost must be between 10 and 1000',')',
+            description: 'Item base cost must be between 10 and 1000,')',
             category: 'item')','
             category: 'item')','
         };
@@ -260,7 +250,7 @@ export class BalanceConfigurationValidator {
             type: 'number),'
             min: 1.0','
     max: 3.0,
-            description: 'Cost multiplier must be between 1.0 and 3.0',')',
+            description: 'Cost multiplier must be between 1.0 and 3.0,')',
             category: 'item')','
             category: 'item')','
         };
@@ -268,7 +258,7 @@ export class BalanceConfigurationValidator {
             type: 'number),'
             min: 1','
     max: 10,
-            description: 'Max level must be between 1 and 10',')',
+            description: 'Max level must be between 1 and 10,')',
             category: 'item'
             }
     
@@ -276,9 +266,9 @@ export class BalanceConfigurationValidator {
      * 泡設定を検証
      */
     public validateBubbleConfig(bubbleType: string, config: BubbleConfig): ValidationResult {
-        const validationId = `bubble_${bubbleType}_${Date.now())`,
+        const validationId = `bubble_${bubbleType}_${Date.now()),
         const startTime = Date.now();
-        try { this.errorStats.totalValidations++,
+        try { this.errorStats.totalValidations++;
             
             const errors: ValidationError[] = [],
             const warnings: ValidationWarning[] = [],
@@ -343,11 +333,11 @@ export class BalanceConfigurationValidator {
             // 結果を記録
             const result: ValidationResult = { validationId,
                 bubbleType,
-                isValid: errors.length === 0,
+                isValid: errors.length === 0;
                 errors,
                 warnings,
                 executionTime: Date.now() - startTime,
-    timestamp: Date.now(  },
+    timestamp: Date.now(  };
             
             // 統計を更新
             if (!result.isValid) {
@@ -373,9 +363,9 @@ export class BalanceConfigurationValidator {
                 bubbleType,
                 isValid: false,
                 errors: [{ ''
-                    property: 'system',
+                    property: 'system,
                     value: null,
-                    error: 'Validation failed due to internal error',
+                    error: 'Validation failed due to internal error,
                     rule: 'system'
             };]
                     details: error instanceof Error ? error.message : String(error) }]
@@ -389,9 +379,9 @@ export class BalanceConfigurationValidator {
      * スコア設定を検証
      */
     public validateScoreConfig(scoreConfig: ScoreConfig): ValidationResult {
-        const validationId = `score_${Date.now())`,
+        const validationId = `score_${Date.now()),
         const startTime = Date.now();
-        try { this.errorStats.totalValidations++,
+        try { this.errorStats.totalValidations++;
             
             const errors: ValidationError[] = [],
             const warnings: ValidationWarning[] = [],
@@ -443,11 +433,11 @@ export class BalanceConfigurationValidator {
             warnings.push(...logicalValidation.warnings);
             
             const result: ValidationResult = { validationId,
-                isValid: errors.length === 0,
+                isValid: errors.length === 0;
                 errors,
                 warnings,
                 executionTime: Date.now() - startTime,
-    timestamp: Date.now(  },
+    timestamp: Date.now(  };
             
             if (!result.isValid) { this.errorStats.failedValidations++ }
             
@@ -466,7 +456,7 @@ export class BalanceConfigurationValidator {
             return { validationId,
                 isValid: false,
                 errors: [{ ''
-                    property: 'system',
+                    property: 'system,
                     value: null,
                     error: 'Validation failed due to internal error',' };]'
                     rule: 'system' }]
@@ -480,9 +470,9 @@ export class BalanceConfigurationValidator {
      * ステージ設定を検証
      */
     public validateStageConfig(stageConfig: StageConfig): ValidationResult {
-        const validationId = `stage_${Date.now())`,
+        const validationId = `stage_${Date.now()),
         const startTime = Date.now();
-        try { this.errorStats.totalValidations++,
+        try { this.errorStats.totalValidations++;
             
             const errors: ValidationError[] = [],
             const warnings: ValidationWarning[] = [],
@@ -526,11 +516,11 @@ export class BalanceConfigurationValidator {
 }
             
             const result: ValidationResult = { validationId,
-                isValid: errors.length === 0,
+                isValid: errors.length === 0;
                 errors,
                 warnings,
                 executionTime: Date.now() - startTime,
-    timestamp: Date.now(  },
+    timestamp: Date.now(  };
             
             if (!result.isValid) { this.errorStats.failedValidations++ }
             
@@ -549,7 +539,7 @@ export class BalanceConfigurationValidator {
             return { validationId,
                 isValid: false,
                 errors: [{ ''
-                    property: 'system',
+                    property: 'system,
                     value: null,
                     error: 'Validation failed due to internal error',' };]'
                     rule: 'system' }]
@@ -563,9 +553,9 @@ export class BalanceConfigurationValidator {
      * アイテム設定を検証
      */
     public validateItemConfig(itemConfig: ItemConfig): ValidationResult {
-        const validationId = `item_${Date.now())`,
+        const validationId = `item_${Date.now()),
         const startTime = Date.now();
-        try { this.errorStats.totalValidations++,
+        try { this.errorStats.totalValidations++;
             
             const errors: ValidationError[] = [],
             const warnings: ValidationWarning[] = [],
@@ -609,11 +599,11 @@ export class BalanceConfigurationValidator {
 }
             
             const result: ValidationResult = { validationId,
-                isValid: errors.length === 0,
+                isValid: errors.length === 0;
                 errors,
                 warnings,
                 executionTime: Date.now() - startTime,
-    timestamp: Date.now(  },
+    timestamp: Date.now(  };
             
             if (!result.isValid) { this.errorStats.failedValidations++ }
             
@@ -632,7 +622,7 @@ export class BalanceConfigurationValidator {
             return { validationId,
                 isValid: false,
                 errors: [{ ''
-                    property: 'system',
+                    property: 'system,
                     value: null,
                     error: 'Validation failed due to internal error',' };]'
                     rule: 'system' }]
@@ -758,20 +748,18 @@ export class BalanceConfigurationValidator {
 
             if(config.health !== undefined && config.health <= 1) {
                 warnings.push({)'
-                    property: 'health') }
+                    property: 'health'),
 
                     message: 'Boss bubble health should be greater than normal bubble health(1)' 
     }';'
             }''
             if (config.score !== undefined && config.score <= 15) {
                 warnings.push({)'
-                    property: 'score') }
+                    property: 'score'),
 
                     message: 'Boss bubble score should be significantly higher than normal bubble score(15)' 
-    };
-            }
         }
-        
+}
         // 硬い泡（stone, iron, diamond）は健康値が段階的に増加すべき
         const hardBubbleHealthOrder: Record<string, number> = { stone: 2, iron: 3, diamond: 4  }
         if (bubbleType, in hardBubbleHealthOrder) {
@@ -861,7 +849,7 @@ export class BalanceConfigurationValidator {
         // エラータイプ別統計
         for (const error of errors) {
 
-            const errorType = error.rule || 'unknown',
+            const errorType = error.rule || 'unknown,
             const currentCount = this.errorStats.errorsByType.get(errorType) || 0 }
             this.errorStats.errorsByType.set(errorType, currentCount + 1); }
 }
@@ -880,10 +868,10 @@ export class BalanceConfigurationValidator {
             ? ((this.errorStats.totalValidations - this.errorStats.failedValidations) / this.errorStats.totalValidations) * 100 ,
             : 0,
         
-        return { totalValidations: this.errorStats.totalValidations  },
+        return { totalValidations: this.errorStats.totalValidations  ,
             failedValidations: this.errorStats.failedValidations }
-            successRate: `${successRate.toFixed(2}%`,
-            errorsByType: Object.fromEntries(this.errorStats.errorsByType);
+            successRate: `${successRate.toFixed(2}%`;
+            errorsByType: Object.fromEntries(this.errorStats.errorsByType),
             errorsByBubbleType: Object.fromEntries(this.errorStats.errorsByBubbleType,
     recentValidations: this.validationHistory.slice(-10);
         }
@@ -896,8 +884,8 @@ export class BalanceConfigurationValidator {
     /**
      * カスタム検証ルールを追加
      */
-    public addValidationRule(ruleKey: string, rule: ValidationRule): void { this.validationRules.set(ruleKey, rule) }
-        console.log(`[BalanceConfigurationValidator] カスタムルール追加: ${ruleKey}`};
+    public addValidationRule(ruleKey: string, rule: ValidationRule): void { this.validationRules.set(ruleKey, rule);
+        console.log(`[BalanceConfigurationValidator] カスタムルール追加: ${ruleKey}`}
     }
     
     /**

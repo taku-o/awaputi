@@ -10,21 +10,20 @@
  */
 
 // 型定義
-export interface Notification { id: string;
-    type: NotificationType;
-    achievement: Achievement;
-    timestamp: number;
-    displayTime: number;
-    expiryTime: number;
-    priority: number;
+export interface Notification { id: string,
+    type: NotificationType,
+    achievement: Achievement,
+    timestamp: number,
+    displayTime: number,
+    expiryTime: number,
+    priority: number,
     title: string;
     message?: string;
     icon?: string;
     visible: boolean;
     startTime?: number;
     options: NotificationOptions;
-
-export interface Achievement { id?: string,
+    export interface Achievement { id?: string,
     name: string;
     title?: string;
     description: string;
@@ -32,63 +31,52 @@ export interface Achievement { id?: string,
     category?: string;
     rarity?: RarityLevel;
     reward: AchievementReward;
-
-export interface AchievementReward { ap: number;
+    export interface AchievementReward { ap: number;
     items?: RewardItem[];
     unlocks?: string[];
-
-export interface RewardItem { type: string;
-    id: string;
+    export interface RewardItem { type: string,
+    id: string,
     quantity: number;
-
-export interface NotificationOptions { duration?: number,
+    export interface NotificationOptions { duration?: number,
     sound?: boolean;
     vibration?: boolean;
     [key: string]: any;
-
-export interface NotificationTypeConfig { icon: string;
-    color: string;
-    priority: number;
+    export interface NotificationTypeConfig { icon: string,
+    color: string,
+    priority: number,
     sound: string;
-
-export interface NotificationConfig { maxActiveNotifications: number;
-    notificationDuration: number;
-    animationDuration: number;
-    queueProcessingInterval: number;
-    maxQueueSize: number;
-    position: NotificationPosition;
-    fadeIn: boolean;
-    slideIn: boolean;
-    sound: boolean;
+    export interface NotificationConfig { maxActiveNotifications: number,
+    notificationDuration: number,
+    animationDuration: number,
+    queueProcessingInterval: number,
+    maxQueueSize: number,
+    position: NotificationPosition,
+    fadeIn: boolean,
+    slideIn: boolean,
+    sound: boolean,
     vibration: boolean;
-
-export interface NotificationData { title?: string,
+    export interface NotificationData { title?: string,
     message?: string;
     type?: string;
     icon?: string;
     duration?: number;
     sound?: boolean;
     vibration?: boolean;
-
-export interface NotificationHistoryEntry { id: string;
-    achievement: Achievement;
-    timestamp: number;
+    export interface NotificationHistoryEntry { id: string,
+    achievement: Achievement,
+    timestamp: number,
     type: NotificationType;
-
-export interface NotificationSettings { displayDuration?: number,
+    export interface NotificationSettings { displayDuration?: number,
     animationDuration?: number;
     maxVisibleNotifications?: number;
     [key: string]: any;
-
-export interface AudioManager { playedSounds?: PlayedSound[],
+    export interface AudioManager { playedSounds?: PlayedSound[],
     playSound?(soundId: string, options?: any): void;
     [key: string]: any;
-
-export interface PlayedSound { soundId: string;
+    export interface PlayedSound { soundId: string;
     achievement?: Achievement;
     [key: string]: any;
-
-export interface GameEngine { audioManager?: AudioManager,
+    export interface GameEngine { audioManager?: AudioManager,
     [key: string]: any;
 
 // 列挙型
@@ -110,10 +98,8 @@ export type NotificationPosition = ';'
     | 'top-left'';'
     | 'bottom-right'';'
     | 'bottom-left';
-
-export type RarityLevel = 'common' | 'rare' | 'epic' | 'legendary';
-
-export class AchievementNotificationSystem {
+    export type RarityLevel = 'common' | 'rare' | 'epic' | 'legendary';
+    export class AchievementNotificationSystem {
     private notifications: Notification[];
     private notificationQueue: Notification[];
     private activeNotifications: Set<string>;
@@ -130,14 +116,14 @@ export class AchievementNotificationSystem {
 
         // 通知管理
         this.notifications = [];
-        this.notificationQueue = [];
-        this.activeNotifications = new Set<string>();
+    this.notificationQueue = [];
+    this.activeNotifications = new Set<string>();
         
         // AudioManager初期化（テスト互換性用）
         // 第一引数がaudioManagerっぽい場合（playedSoundsプロパティがある、またはplaySound メソッドがある）
         if (gameEngineOrAudioManager && (
             (gameEngineOrAudioManager, as AudioManager).playedSounds !== undefined || ,
-            (gameEngineOrAudioManager, as AudioManager).playSound) { }
+            (gameEngineOrAudioManager, as AudioManager).playSound) { };
             this._audioManager = gameEngineOrAudioManager as AudioManager; }
         } else {  // gameEngineオブジェクトの場合' }'
 
@@ -153,69 +139,69 @@ export class AchievementNotificationSystem {
             maxQueueSize: 10,
             ,
             // 表示設定
-           , position: 'top-right', // 'top-right', 'top-left', 'bottom-right', 'bottom-left',
+           , position: 'top-right, // 'top-right', 'top-left', 'bottom-right', 'bottom-left',
             fadeIn: true,
             slideIn: true,
             sound: true,
-    vibration: true // モバイル端末での振動  },
+    vibration: true // モバイル端末での振動  };
         // 通知タイプ別設定
         this.notificationTypes = { achievement: {''
-                icon: '🏆',
-                color: '#FFD700',
+                icon: '🏆,
+                color: '#FFD700,
                 priority: 2,
                 sound: 'achievement.mp3'
-            };
+        }
             rare: { ''
-                icon: '💎',
-                color: '#9C27B0',
+                icon: '💎'  ,
+                color: '#9C27B0,
                 priority: 3,
                 sound: 'rare_achievement.mp3'
             };
             milestone: { ''
-                icon: '🌟',
-                color: '#FF6B6B',
+                icon: '🌟'  ,
+                color: '#FF6B6B,
                 priority: 4,
                 sound: 'milestone.mp3'
             };
             collection: { ''
-                icon: '🗂️',
-                color: '#4ECDC4',
+                icon: '🗂️'  ,
+                color: '#4ECDC4,
                 priority: 3,
                 sound: 'collection.mp3'
             };
             unlock: { ''
-                icon: '🔓',
-                color: '#4CAF50',
+                icon: '🔓'  ,
+                color: '#4CAF50,
                 priority: 3,
                 sound: 'unlock.mp3'
             };
             error: { ''
-                icon: '❌',
-                color: '#F44336',
+                icon: '❌'  ,
+                color: '#F44336,
                 priority: 5,
                 sound: 'error.mp3'
             };
             warning: { ''
-                icon: '⚠️',
-                color: '#FF9800',
+                icon: '⚠️'  ,
+                color: '#FF9800,
                 priority: 4,
                 sound: 'warning.mp3'
             };
             success: { ''
-                icon: '✅',
-                color: '#4CAF50',
+                icon: '✅'  ,
+                color: '#4CAF50,
                 priority: 3,
                 sound: 'success.mp3'
             };
             info: { ''
-                icon: 'ℹ️',
-                color: '#2196F3',
+                icon: 'ℹ️'  ,
+                color: '#2196F3,
                 priority: 2,
                 sound: 'info.mp3'
             };
             ranking: { ''
-                icon: '🏅',
-                color: '#FF5722',
+                icon: '🏅'  ,
+                color: '#FF5722,
                 priority: 3,
                 sound: 'ranking.mp3'
             }
@@ -236,7 +222,7 @@ export class AchievementNotificationSystem {
      */
     private initializeNotificationSystem(): void { this.createNotificationContainer();
         this.startQueueProcessor();
-        this.setupEventListeners() }
+        this.setupEventListeners();
 
     /**
      * 通知コンテナを作成
@@ -246,7 +232,7 @@ export class AchievementNotificationSystem {
         if (existing) {
 
             existing.remove()','
-        this.container = document.createElement('div') }
+        this.container = document.createElement('div');
 
         this.container.id = 'achievement-notifications'; }
         this.container.className = `achievement-notifications achievement-notifications-${this.config.position}`;
@@ -265,10 +251,10 @@ export class AchievementNotificationSystem {
 ','
 
         const styles: Partial<CSSStyleDeclaration> = {''
-            position: 'fixed',
-            zIndex: '10000',
-            pointerEvents: 'none',
-            maxWidth: '400px',
+            position: 'fixed,
+            zIndex: '10000,
+            pointerEvents: 'none,
+            maxWidth: '400px,
             width: '100%'
             };
 ';'
@@ -299,7 +285,7 @@ export class AchievementNotificationSystem {
      * キュープロセッサーを開始
      */
     private startQueueProcessor(): void { if (this.queueProcessor) {
-            clearInterval(this.queueProcessor) }
+            clearInterval(this.queueProcessor);
 
         this.queueProcessor = window.setInterval(() => { this.processNotificationQueue() }; this.config.queueProcessingInterval);
     }
@@ -310,8 +296,8 @@ export class AchievementNotificationSystem {
     private setupEventListeners()';'
         document.addEventListener('visibilitychange', () => {  if (document.hidden) { }
                 this.pauseNotifications(); }
-            } else { this.resumeNotifications() }
-        };
+            } else { this.resumeNotifications();
+        }
     }
 
     /**
@@ -322,17 +308,17 @@ export class AchievementNotificationSystem {
     createAchievementNotification(achievement: Achievement, options: Partial<NotificationOptions> = { ): Notification {
         const now = Date.now();
         const notification: Notification = {  }
-            id: `achievement_${achievement.id || achievement.name}_${now}`,
+            id: `achievement_${achievement.id || achievement.name}_${now},
             type: this.determineNotificationType(achievement),
             achievement,
             timestamp: now,
     displayTime: now, // テスト用;
             expiryTime: now + (options.duration || this.config.notificationDuration),
             priority: options.priority || this.getNotificationPriority(achievement),
-            title: `Achievement, Unlocked: ${achievement.title || achievement.name}`,
+            title: `Achievement, Unlocked: ${achievement.title || achievement.name},
             visible: false, // 初期は非表示;
             options: { duration: options.duration || this.config.notificationDuration,
-                sound: options.sound !== false,
+                sound: options.sound !== false ,
     vibration: options.vibration !== false,
                 ...options
         };
@@ -387,22 +373,22 @@ export class AchievementNotificationSystem {
     displayTime: now,
                 expiryTime: now + (notificationData.duration || this.config.notificationDuration,
                 priority: this.getTypePriority(notificationData.type,
-                title: notificationData.title || 'Notification',
+                title: notificationData.title || 'Notification,
                 message: notificationData.message || ','
                 icon: notificationData.icon || this.getTypeIcon(notificationData.type,
     visible: false,
                 achievement: { ''
-                    name: notificationData.title || 'Notification',
+                    name: notificationData.title || 'Notification' ,
                     description: notificationData.message || ','
-    icon: notificationData.icon || this.getTypeIcon(notificationData.type) }
+    icon: notificationData.icon || this.getTypeIcon(notificationData.type),
                     reward: { ap: 0 } // デフォルト報酬
                 };
                 options: { duration: notificationData.duration || this.config.notificationDuration,
-                    sound: notificationData.sound !== false,
+                    sound: notificationData.sound !== false ,
     vibration: notificationData.vibration !== false 
     };
             this.addNotificationToQueue(notification);
-            console.log(`[AchievementNotificationSystem] Queued, notification: ${notification.title}`};
+            console.log(`[AchievementNotificationSystem] Queued, notification: ${notification.title}`}
         } catch (error) { console.error('[AchievementNotificationSystem] Error queueing notification:', error }
     }
 
@@ -427,10 +413,10 @@ export class AchievementNotificationSystem {
      * @returns アイコン'
      */''
     private getTypeIcon(type?: string): string { const icons: Record<string, string> = {', 'error': '❌','
-            'warning': '⚠️',
-            'success': '✅',
-            'info': 'ℹ️',
-            'achievement': '🏆',
+            'warning': '⚠️,
+            'success': '✅,
+            'info': 'ℹ️,
+            'achievement': '🏆,
             'ranking': '🏅' 
     };
         return icons[type || 'info] || 'ℹ️';'
@@ -455,7 +441,7 @@ export class AchievementNotificationSystem {
         // キューサイズ制限チェック
         if (this.notificationQueue.length >= this.config.maxQueueSize) {
             // 最も優先度の低い通知を削除
-            this.notificationQueue.sort((a, b) => b.priority - a.priority) }
+            this.notificationQueue.sort((a, b) => b.priority - a.priority);
             this.notificationQueue.pop(); }
         }
 
@@ -495,10 +481,10 @@ export class AchievementNotificationSystem {
         }
         
         // サウンド再生
-        if (notification.options.sound && this.config.sound) { this.playNotificationSound(notification) }
+        if (notification.options.sound && this.config.sound) { this.playNotificationSound(notification);
         
         // 振動
-        if (notification.options.vibration && this.config.vibration) { this.triggerVibration(notification) }
+        if (notification.options.vibration && this.config.vibration) { this.triggerVibration(notification);
         
         // 自動削除タイマー
         setTimeout(() => { this.hideNotification(notification.id) }, notification.options.duration || this.config.notificationDuration);
@@ -514,7 +500,7 @@ export class AchievementNotificationSystem {
      */''
     private createNotificationElement(notification: Notification): HTMLElement { ''
         const element = document.createElement('div');
-        element.className = 'achievement-notification',
+        element.className = 'achievement-notification,
         element.setAttribute('data-notification-id', notification.id','
         
         const typeConfig = this.notificationTypes[notification.type],
@@ -543,10 +529,8 @@ export class AchievementNotificationSystem {
         if (closeBtn) {', ' }
 
             closeBtn.addEventListener('click', () => {  }
-                this.hideNotification(notification.id); }
-            };
-        }
-        
+                this.hideNotification(notification.id);     }
+}
         return element;
     }
 
@@ -560,16 +544,15 @@ export class AchievementNotificationSystem {
             }
 
             border: `2px solid ${typeConfig.color}`,''
-            borderRadius: '8px',
-            padding: '12px',
-            marginBottom: '10px',
-            boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
-            opacity: '0',
-            transform: this.config.slideIn ? 'translateX(100%)' : 'scale(0.8)',
+            borderRadius: '8px,
+            padding: '12px,
+            marginBottom: '10px,
+            boxShadow: '0 4px 12px rgba(0,0,0,0.15),
+            opacity: '0,
+            transform: this.config.slideIn ? 'translateX(100%)' : 'scale(0.8),
             transition: `all ${this.config.animationDuration}ms ease-out`,''
-            pointerEvents: 'auto',
-            cursor: 'pointer',
-        },
+            pointerEvents: 'auto,
+            cursor: 'pointer' ,
 
         Object.assign(element.style, styles);
         ';'
@@ -603,7 +586,7 @@ export class AchievementNotificationSystem {
         const title = element.querySelector('.achievement-notification-title' as HTMLElement;
         if (title) {
             Object.assign(title.style, {''
-                fontWeight: 'bold',
+                fontWeight: 'bold,
                 fontSize: '14px',','
                 color: '#333',' }'
 
@@ -633,9 +616,9 @@ export class AchievementNotificationSystem {
         const closeBtn = element.querySelector('.achievement-notification-close' as HTMLElement;
         if (closeBtn) {
             Object.assign(closeBtn.style, {''
-                fontSize: '18px',
-                color: '#999',
-                cursor: 'pointer',
+                fontSize: '18px,
+                color: '#999,
+                cursor: 'pointer,
                 flexShrink: '0',','
                 width: '20px',' }'
 
@@ -649,7 +632,7 @@ export class AchievementNotificationSystem {
     private animateNotificationIn(element: HTMLElement): void { // トリガーリフロー
         element.offsetHeight,
         // アニメーション実行
-        element.style.opacity = '1',
+        element.style.opacity = '1,
         element.style.transform = 'translateX(0) scale(1)' }
 
     /**
@@ -663,12 +646,12 @@ export class AchievementNotificationSystem {
         if (!element") return,"
 ","
         // アウトアニメーション""
-        element.style.opacity = '0',
+        element.style.opacity = '0,
         element.style.transform = this.config.slideIn ? 'translateX(100%)' : 'scale(0.8}';
         
         setTimeout((} => {  }
             if (element.parentNode) { }
-                element.parentNode.removeChild(element};
+                element.parentNode.removeChild(element}
             }
             this.activeNotifications.delete(notificationId);
         }, this.config.animationDuration);
@@ -684,8 +667,8 @@ export class AchievementNotificationSystem {
                 // ここで実際のサウンド再生を実装
             }
                 // 例: AudioContextやHTML5 Audioを使用 }
-                console.log(`Playing, sound: ${typeConfig.sound}`};
-            } catch (error) { console.warn('Failed to play notification sound:', error }
+                console.log(`Playing, sound: ${typeConfig.sound}`}
+        } catch (error) { console.warn('Failed to play notification sound:', error }
     }
 
     /**
@@ -704,7 +687,7 @@ export class AchievementNotificationSystem {
      * @param notification 通知オブジェクト
      */
     private addToHistory(notification: Notification): void { this.history.unshift({
-            id: notification.id);
+            id: notification.id),
             achievement: notification.achievement,
     timestamp: notification.timestamp),
             type: notification.type),
@@ -727,14 +710,14 @@ export class AchievementNotificationSystem {
      * 通知を再開
      */
     resumeNotifications(): void { if (!this.queueProcessor) {
-            this.startQueueProcessor() }
+            this.startQueueProcessor();
     }
 
     /**
      * 全通知をクリア
      */
     clearAllNotifications(): void { // アクティブ通知をクリア
-        this.activeNotifications.forEach(id => { ) }
+        this.activeNotifications.forEach(id => { );
             this.hideNotification(id); }
         };
         
@@ -745,14 +728,14 @@ export class AchievementNotificationSystem {
     /**
      * 通知のクリア（テスト互換性のため）
      */
-    clearNotifications(): void { this.clearAllNotifications() }
+    clearNotifications(): void { this.clearAllNotifications();
 
     /**
      * 通知履歴を取得
      * @param limit 取得件数制限
      * @returns 通知履歴
      */
-    getNotificationHistory(limit: number = 10): NotificationHistoryEntry[] { return this.history.slice(0, limit) }
+    getNotificationHistory(limit: number = 10): NotificationHistoryEntry[] { return this.history.slice(0, limit);
 
     /**
      * 設定を更新
@@ -813,7 +796,7 @@ export class AchievementNotificationSystem {
                     // 通知背景の描画
                     if (notification.achievement && notification.achievement.rarity) {
                         const gradient = context.createLinearGradient(x, y, x + 300, y + 60);
-                        gradient.addColorStop(0, this.getRarityColor(notification.achievement.rarity)) }
+                        gradient.addColorStop(0, this.getRarityColor(notification.achievement.rarity));
 
                         gradient.addColorStop(1, 'rgba(0, 0, 0, 0.3)'); }
                         context.fillStyle = gradient; }
@@ -846,8 +829,8 @@ export class AchievementNotificationSystem {
      * @returns 色'
      */''
     private getRarityColor(rarity: RarityLevel): string { const colors: Record<RarityLevel, string> = {', 'common': '#808080','
-            'rare': '#0066cc',
-            'epic': '#9933cc',
+            'rare': '#0066cc,
+            'epic': '#9933cc,
             'legendary': '#ff6600' };
         return colors[rarity] || colors.common;
     }
@@ -908,7 +891,7 @@ export class AchievementNotificationSystem {
         this.clearAllNotifications();
         
         // コンテナを削除
-        if (this.container && this.container.parentNode) { this.container.parentNode.removeChild(this.container) }
+        if (this.container && this.container.parentNode) { this.container.parentNode.removeChild(this.container);
         
         // データをクリア
         this.notifications = [];
@@ -968,15 +951,14 @@ export class AchievementNotificationSystem {
     
 }
                 if (this.config.hasOwnProperty(key) { }
-                    (this.config, as any)[key] = value; }
+                    (this.config, as any)[key] = value;     }
 }
-        };
     }
     
     /**
      * 通知キューをクリア（テスト互換性用）
      */
-    clearQueue(): void { this.clearAllNotifications() }
+    clearQueue(): void { this.clearAllNotifications();
     
     // ========================================
     // テスト用のプロパティアクセサー（Issue #106）

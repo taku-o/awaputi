@@ -3,19 +3,19 @@ import { getErrorHandler  } from '../../utils/ErrorHandler.js';
 /**
  * Shadow object interface
  */
-interface ShadowObject { x: number;
+interface ShadowObject { x: number,
     y: number;
     width?: number;
     height?: number;
-    radius?: number,  }
+    radius?: number }
 
 /**
  * Light source base interface
  */
-interface LightSourceBase { x: number;
-    y: number;
-    intensity: number;
-    color: string;
+interface LightSourceBase { x: number,
+    y: number,
+    intensity: number,
+    color: string,
     radius: number;
 
 /**
@@ -26,29 +26,29 @@ type LightSourceType = 'point' | 'directional' | 'spot';
 /**
  * Light source interface
  */
-interface LightSource extends LightSourceBase { id: number;
-    type: LightSourceType;
-    animated: boolean;
-    animation: any | null;
+interface LightSource extends LightSourceBase { id: number,
+    type: LightSourceType,
+    animated: boolean,
+    animation: any | null,
     created: number;
 
 /**
  * Shadow effect interface
  */'
 interface ShadowEffect { id: number,''
-    type: 'shadow';
-    shadowObject: ShadowObject;
-    lightSource: LightSourceBase;
-    opacity: number;
-    blur: number;
-    direction: number;
-    distance: number;
+    type: 'shadow,
+    shadowObject: ShadowObject,
+    lightSource: LightSourceBase,
+    opacity: number,
+    blur: number,
+    direction: number,
+    distance: number,
     created: number;
 
 /**
  * Reflection object interface
  */
-interface ReflectionObject { x: number;
+interface ReflectionObject { x: number,
     y: number;
     width?: number;
     height?: number;
@@ -57,24 +57,24 @@ interface ReflectionObject { x: number;
 /**
  * Water ripple interface
  */
-interface WaterRipple { x: number;
-    y: number;
-    radius: number;
-    maxRadius: number;
-    speed: number;
-    intensity: number;
+interface WaterRipple { x: number,
+    y: number,
+    radius: number,
+    maxRadius: number,
+    speed: number,
+    intensity: number,
     lifetime: number;
 
 /**
  * Reflection effect interface
  */'
 interface ReflectionEffect { id: number,''
-    type: 'reflection';
-    reflectionObject: ReflectionObject;
-    surfaceY: number;
-    intensity: number;
-    distortion: number;
-    ripples: WaterRipple[];
+    type: 'reflection,
+    reflectionObject: ReflectionObject,
+    surfaceY: number,
+    intensity: number,
+    distortion: number,
+    ripples: WaterRipple[],
     created: number;
 
 /**
@@ -95,26 +95,26 @@ interface BackgroundEffectOptions { density?: number,
 /**
  * Background effect interface
  */
-interface BackgroundEffect { id: number;
-    type: BackgroundEffectType;
-    options: BackgroundEffectOptions;
-    particles: any[];
-    active: boolean;
+interface BackgroundEffect { id: number,
+    type: BackgroundEffectType,
+    options: BackgroundEffectOptions,
+    particles: any[],
+    active: boolean,
     created: number;
 
 /**
  * Transition effect interface
  */
-interface TransitionEffect { id: number;
+interface TransitionEffect { id: number,
     type: string;
     [key: string]: any;
 
 /**
  * Performance metrics interface
  */
-interface PerformanceMetrics { effectCount: number;
-    renderTime: number;
-    memoryUsage: number;
+interface PerformanceMetrics { effectCount: number,
+    renderTime: number,
+    memoryUsage: number,
     lastFrameTime: number;
 
 /**
@@ -140,7 +140,7 @@ export class EnhancedEffectController {
 ','
 
         this.canvas = canvas;
-        this.errorHandler = getErrorHandler(' }''
+    this.errorHandler = getErrorHandler(' }''
         console.log('[EnhancedEffectController] 拡張効果コントローラーを初期化しました'); }'
     }
     
@@ -150,14 +150,14 @@ export class EnhancedEffectController {
     addShadowEffect(shadowObject: ShadowObject, lightSource: LightSourceBase): number { try {
             const shadowEffect: ShadowEffect = {'
                 id: this.effectId++,
-                type: 'shadow',
+                type: 'shadow,
                 shadowObject: shadowObject,
                 lightSource: lightSource,
                 opacity: 0.6,
                 blur: 2,
     direction: this._calculateShadowDirection(shadowObject, lightSource);
                 distance: this._calculateShadowDistance(shadowObject, lightSource);
-                created: Date.now(  },
+                created: Date.now(  };
             
             this.shadowCasters.push(shadowEffect);
             console.log(`[EnhancedEffectController] 影効果を追加: ID ${shadowEffect.id}`};
@@ -173,13 +173,13 @@ export class EnhancedEffectController {
     addReflectionEffect(reflectionObject: ReflectionObject, surfaceY: number, intensity: number = 0.8, distortion: number = 0.1): number { try {
             const reflectionEffect: ReflectionEffect = {'
                 id: this.effectId++,
-                type: 'reflection',
+                type: 'reflection,
                 reflectionObject: reflectionObject,
                 surfaceY: surfaceY,
                 intensity: intensity,
                 distortion: distortion,
                 ripples: [],
-    created: Date.now(  },
+    created: Date.now(  };
             
             this.reflectionSurfaces.push(reflectionEffect);
             console.log(`[EnhancedEffectController] 反射効果を追加: ID ${reflectionEffect.id}`};
@@ -198,17 +198,17 @@ export class EnhancedEffectController {
                 if (Math.abs(surface.surfaceY - y) < 10) {
                     surface.ripples.push({
                         x, y,
-                        radius: 0,
+                        radius: 0;
                         maxRadius,
                         speed,
-                        intensity) }
+                        intensity);
                         lifetime: 0); 
-    };
+    }
                 }
             };
             ';'
 
-            console.log(`[EnhancedEffectController] 水面リップル効果を追加: (${x}, ${y}`};
+            console.log(`[EnhancedEffectController] 水面リップル効果を追加: (${x}, ${y}`}
         } catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'EnhancedEffectController.addWaterRipple',' }'
 
@@ -221,15 +221,15 @@ export class EnhancedEffectController {
      */''
     addLightSource(x: number, y: number, intensity: number, color: string, radius: number, type: LightSourceType = 'point'): number { try {
             const lightSource: LightSource = {
-                id: this.effectId++,
+                id: this.effectId++;
                 x, y,
                 intensity,
-                color: color,
+                color: color;
                 radius,
-                type, // 'point', 'directional', 'spot',
+                type, // 'point, 'directional', 'spot',
                 animated: false,
                 animation: null,
-    created: Date.now(  },
+    created: Date.now(  };
             
             this.lightSources.push(lightSource);
             console.log(`[EnhancedEffectController] 光源を追加: ${type} at (${x}, ${y}`};
@@ -246,17 +246,16 @@ export class EnhancedEffectController {
         try {
             const backgroundEffect: BackgroundEffect = {'
                 id: this.effectId++,
-                type: type, // 'particles', 'weather', 'environment',
-                options: {
-                    density: options.density || 1.0,
+                type: type, // 'particles, 'weather', 'environment',
+                options: { density: options.density || 1.0  ,
                     speed: options.speed || 1.0,
-                    color: options.color || '#ffffff',
+                    color: options.color || '#ffffff,
                     size: options.size || 1.0,
-    opacity: options.opacity || 0.5,
+    opacity: options.opacity || 0.5;
                     ...options,
                 particles: [],
                 active: true,
-    created: Date.now() },
+    created: Date.now() };
             
             this.backgroundEffects.push(backgroundEffect);
             console.log(`[EnhancedEffectController] 背景効果を追加: ${type}`};
@@ -275,8 +274,8 @@ export class EnhancedEffectController {
             this.lightSources = this.lightSources.filter(light => light.id !== effectId);
             this.backgroundEffects = this.backgroundEffects.filter(bg => bg.id !== effectId);
             this.shadowCasters = this.shadowCasters.filter(shadow => shadow.id !== effectId);
-            this.reflectionSurfaces = this.reflectionSurfaces.filter(reflection => reflection.id !== effectId) }
-            console.log(`[EnhancedEffectController] 効果を削除: ID ${effectId}`};
+            this.reflectionSurfaces = this.reflectionSurfaces.filter(reflection => reflection.id !== effectId);
+            console.log(`[EnhancedEffectController] 効果を削除: ID ${effectId}`}
         } catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'EnhancedEffectController.removeEffect'
             }';'
@@ -290,10 +289,8 @@ export class EnhancedEffectController {
             console.log('[EnhancedEffectController] すべての効果をクリアしました');
         } catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'EnhancedEffectController.clearAllEffects'
-            };
-        }
-    }
-    
+                }
+}
     /**
      * パフォーマンスメトリクスを更新
      */
@@ -313,16 +310,14 @@ export class EnhancedEffectController {
 
         } catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'EnhancedEffectController.updatePerformanceMetrics'
-            };
-        }
-    }
-    
+                }
+}
     /**
      * 影の方向を計算
      */
     private _calculateShadowDirection(shadowObject: ShadowObject, lightSource: LightSourceBase): number { const dx = shadowObject.x - lightSource.x,
         const dy = shadowObject.y - lightSource.y,
-        return Math.atan2(dy, dx) }
+        return Math.atan2(dy, dx);
     
     /**
      * 影の距離を計算

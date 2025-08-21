@@ -19,7 +19,7 @@ const mockGameEngine = {
        , getCurrentScene: jest.fn((') => ({ constructor: { name: 'MenuScene' ) )),'
        , getScene: jest.fn(
     localizationManager: {
-        t: jest.fn((key, fallback) => fallback || key),
+        t: jest.fn((key, fallback) => fallback || key) };
         getCurrentLanguage: (') => 'ja'
     }),
         accessibilityManager: {
@@ -127,7 +127,7 @@ describe('Unified Help Screen Access Integration Tests', () => {
                 // Assert
                 expect(success.toBe(true);
                 expect(mockGameEngine.sceneManager.switchScene').toHaveBeenCalledWith('help');'
-            };
+            }
         }
     }');'
     describe('Navigation Context Management', (') => {'

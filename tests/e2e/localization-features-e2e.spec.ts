@@ -12,7 +12,7 @@ test.describe('Localization Features E2E Tests', () => {
     await page.waitForSelector('#gameCanvas');
     await page.waitForFunction(() => window.gameEngine !== undefined),
     await page.waitForFunction(() => {
-      return window.gameEngine.localizationManager !== undefined };
+      return window.gameEngine.localizationManager !== undefined }
   }');'
 
   test('should handle RTL language detection and setup', async ({ page } => {
@@ -25,22 +25,22 @@ test.describe('Localization Features E2E Tests', () => {
       const japaneseCultural = lm.getCulturalAdaptation('ja');
       const englishCultural = lm.getCulturalAdaptation('en');
       return { arabic: { }
-          isRTL: arabicCultural.isRTL,
+          isRTL: arabicCultural.isRTL },
           textDirection: arabicCultural.textDirection
         },
         hebrew: {
-          isRTL: hebrewCultural.isRTL,
+          isRTL: hebrewCultural.isRTL },
           textDirection: hebrewCultural.textDirection
         },
         japanese: {
-          isRTL: japaneseCultural.isRTL,
+          isRTL: japaneseCultural.isRTL },
           textDirection: japaneseCultural.textDirection
         },
         english: {
-          isRTL: englishCultural.isRTL,
+          isRTL: englishCultural.isRTL },
           textDirection: englishCultural.textDirection
         }
-      };
+      }
     };
     
     expect(rtlTest.arabic.isRTL).toBe(true);
@@ -226,17 +226,17 @@ test.describe('Localization Features E2E Tests', () => {
       const testCurrency = 999.99,
       
       return { japanese: { }
-          number: lm.formatCulturalText(testNumber, 'number', 'ja');
+          number: lm.formatCulturalText(testNumber, 'number', 'ja') };
           date: lm.formatCulturalText(testDate, 'date', 'ja');
           currency: lm.formatCulturalText(testCurrency, 'currency', 'ja'}
         '),'
         english: {
-          number: lm.formatCulturalText(testNumber, 'number', 'en');
+          number: lm.formatCulturalText(testNumber, 'number', 'en') };
           date: lm.formatCulturalText(testDate, 'date', 'en');
           currency: lm.formatCulturalText(testCurrency, 'currency', 'en') },
         unknown: {
           text: lm.formatCulturalText('unchanged', 'unknown', 'ja') }
-      };
+      }
     };
     
     // Verify formatting functions are called
@@ -311,7 +311,7 @@ test.describe('Localization Features E2E Tests', () => {
         nonExistentTranslation,
         hasAccessibilityStats: typeof stats.accessibilityTranslations === 'object',
         hasCulturalSupport: typeof stats.culturalSupport === 'object'
-      };
+      }
     };
     
     expect(accessibilityTest.addResult).toBe(true);
@@ -349,7 +349,7 @@ test.describe('Localization Features E2E Tests', () => {
         japaneseA11y,
         englishA11y,
         withParams
-      };
+      }
     };
     
     // Test Japanese accessibility translations
@@ -386,7 +386,7 @@ test.describe('Localization Features E2E Tests', () => {
         accessibilityStats,
         hasAccessibilityTranslations: typeof accessibilityStats.accessibilityTranslations === 'object',
         hasCulturalSupport: typeof accessibilityStats.culturalSupport === 'object'
-      };
+      }
     };
     
     // Test regular stats
@@ -432,12 +432,12 @@ test.describe('Localization Features E2E Tests', () => {
           secondaryFontStack,
           fontStatus: typeof fontStatus === 'object',
           preloadResult: typeof preloadResult === 'boolean'
-        };
+        }
       } catch (error) {
         return {
           success: false,
           error: error.message
-        };
+        }
       }
     };
     
@@ -459,11 +459,11 @@ test.describe('Localization Features E2E Tests', () => {
       
       // Add test listeners
       const listener1 = (newLang, oldLang) => {
-        eventsFired.push({ listener: 1, newLang, oldLang };
+        eventsFired.push({ listener: 1, newLang, oldLang }
       };
       
       const listener2 = (newLang, oldLang) => {
-        eventsFired.push({ listener: 2, newLang, oldLang };
+        eventsFired.push({ listener: 2, newLang, oldLang }
       };
       
       const addResult1 = lm.addLanguageChangeListener(listener1);
@@ -488,7 +488,7 @@ test.describe('Localization Features E2E Tests', () => {
         removeResult2,
         eventsFired,
         totalEvents: eventsFired.length
-      };
+      }
     };
     
     expect(listenerTest.addResult1).toBe(true);
@@ -534,13 +534,13 @@ test.describe('Localization Features E2E Tests', () => {
       return {
         beforeCleanup,
         afterCleanup
-      };
+      }
     };
     
     expect(cleanupTest.beforeCleanup.hasAccessibilityTranslations).toBe(true);
     expect(cleanupTest.afterCleanup.hasAccessibilityTranslations).toBe(false);
     expect(typeof cleanupTest.beforeCleanup.fontStats').toBe('object');'
     expect(typeof cleanupTest.afterCleanup.fontStatsAfterCleanup').toBe('object');'
-  };
+  }
 }');'
 }}}}}}}}

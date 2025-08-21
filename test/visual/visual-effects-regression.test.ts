@@ -230,7 +230,7 @@ test.describe('Visual Effects Regression Tests', () => {
             // 高コントラストスタイルを適用
             await page.addStyleTag({ )
                 content: `) },
-                    body { filter: contrast(150%) brightness(120%}; }
+                    body { filter: contrast(150%) brightness(120%} }
                     canvas { border: 2px solid #ffffff }'
                 `)';'
             )');'

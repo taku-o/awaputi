@@ -5,94 +5,87 @@
  */
 
 // Type definitions
-interface GameState { isInitialized: boolean;
-    isGameStarted: boolean;
-    gameStartTime: number;
+interface GameState { isInitialized: boolean,
+    isGameStarted: boolean,
+    gameStartTime: number,
     lastUpdateTime: number;
     lastScore?: number;
-
-interface PlayerData { currentHP: number;
-    maxHP: number;
+    interface PlayerData { currentHP: number,
+    maxHP: number,
     currentScore: number;
     reset(): void;
-
-interface ScoreManager { resetCombo(): void,
+    interface ScoreManager { resetCombo(): void,
     addScore(points: number): void;
     addScoreMultiplier(multiplier: number): void;
     getCombo(): number;
-
-interface BubbleManager { clearAllBubbles(): void,
+    interface BubbleManager { clearAllBubbles(): void,
     getBubbleCount(): number;
-
-interface ItemManager { ownedItems: string[];
+    interface ItemManager { ownedItems: string[];
     getItem(itemId: string): Item | null }
 
-interface Item { id: string;
+interface Item { id: string,
     effect: {
         typ,e: string;
-    value: number;
+    },
+    value: number,
     value: number;
         };
 interface StageManager { startStage(stageName: string): boolean;
-
-interface GameStats { isGameStarted: boolean;
-    isPaused: boolean;
-    isGameOver: boolean;
-    gameTime: number;
-    timeRemaining: number;
-    score: number;
-    hp: number;
-    maxHP: number;
-    bubbleCount: number;
-    comboCount: number;
+    interface GameStats { isGameStarted: boolean,
+    isPaused: boolean,
+    isGameOver: boolean,
+    gameTime: number,
+    timeRemaining: number,
+    score: number,
+    hp: number,
+    maxHP: number,
+    bubbleCount: number,
+    comboCount: number,
     comboCount: number;
         };
-interface TimeWarnings { timeWarning: boolean;
-    urgentWarning: boolean;
+interface TimeWarnings { timeWarning: boolean,
+    urgentWarning: boolean,
     message: string | null }
 
-interface DebugInfo { gameState: GameState;
-    isPaused: boolean;
-    isGameOver: boolean;
+interface DebugInfo { gameState: GameState,
+    isPaused: boolean,
+    isGameOver: boolean,
     gameStats: GameStats;
-
-interface Bubble { type: string;
-    x: number;
+    interface Bubble { type: string,
+    x: number,
     y: number;
 
 // Minimal GameEngine interface
-interface GameEngine { playerData: PlayerData;
-    scoreManager: ScoreManager;
-    bubbleManager: BubbleManager;
+interface GameEngine { playerData: PlayerData,
+    scoreManager: ScoreManager,
+    bubbleManager: BubbleManager,
     itemManager: ItemManager;
     stageManager?: StageManager;
-    isGameOver: boolean;
-    timeRemaining: number;
-    bonusTimeRemaining: number;
-    timeStopRemaining: number;
-    scoreMultiplier: number;
-    screenShakeRemaining: number;
-    screenShakeIntensity: number;
+    isGameOver: boolean,
+    timeRemaining: number,
+    bonusTimeRemaining: number,
+    timeStopRemaining: number,
+    scoreMultiplier: number,
+    screenShakeRemaining: number,
+    screenShakeIntensity: number,
     inputDisabled: boolean;
     isTimeStopActive(): boolean;
     startBonusTime(): void;
     startTimeStop(): void;
-
-export class GameStateManager {
+    export class GameStateManager {
     private gameEngine: GameEngine;
     private gameState: GameState;
     public, isPaused: boolean;
-
     constructor(gameEngine: GameEngine) {
 
         this.gameEngine = gameEngine;
-        this.isPaused = false;
+    this.isPaused = false;
         
         // 状態管理
         this.gameState = {
-            isInitialized: false;
-            isGameStarted: false;
-    gameStartTime: 0 }
+            isInitialized: false,
+    isGameStarted: false,
+    gameStartTime: 0 };
             lastUpdateTime: 0 
     }
     
@@ -112,7 +105,7 @@ export class GameStateManager {
         this.resetSpecialEffects();
         // デフォルトステージを開始（バブル生成に必要）
         if (this.gameEngine.stageManager) {
-            const stageStarted = this.gameEngine.stageManager.startStage('normal',
+            const stageStarted = this.gameEngine.stageManager.startStage('normal,
             if (stageStarted) {
         }
 
@@ -141,7 +134,7 @@ export class GameStateManager {
      * ゲームリセット処理
      */
     public resetGame(): void { this.endGame();
-        this.startGame() }
+        this.startGame();
     
     /**
      * ポーズ状態の切り替え'
@@ -166,9 +159,8 @@ export class GameStateManager {
             const item = itemManager.getItem(itemId);
             if(item && item.effect.type === 'scoreMultiplier' { }'
                 this.gameEngine.scoreManager.addScoreMultiplier(item.effect.value); }
-                console.log(`Score, multiplier applied: ${item.effect.value}x`};
-            }
-        };
+                console.log(`Score, multiplier applied: ${item.effect.value}x`    }
+}
     }
     
     /**
@@ -194,12 +186,12 @@ export class GameStateManager {
             
             if (this.gameEngine.timeRemaining <= 0) {
                 this.gameEngine.timeRemaining = 0,
-                this.triggerGameOver() }
+                this.triggerGameOver();
                 return; }
 }
         
         // ゲームオーバー判定
-        if (this.gameEngine.playerData.currentHP <= 0) { this.triggerGameOver() }
+        if (this.gameEngine.playerData.currentHP <= 0) { this.triggerGameOver();
         
         this.gameState.lastUpdateTime = Date.now();
     }
@@ -222,7 +214,7 @@ export class GameStateManager {
         // 特殊効果の判定
         if(bubble.type === 'rainbow' {', ' }
 
-            this.gameEngine.startBonusTime() }
+            this.gameEngine.startBonusTime();
 
         } else if (bubble.type === 'clock) { this.gameEngine.startTimeStop() }'
     }
@@ -232,16 +224,14 @@ export class GameStateManager {
      * @param damage - ダメージ量
      */
     public onPlayerDamaged(damage: number): void { const playerData = this.gameEngine.playerData,
-        playerData.currentHP = Math.max(0, playerData.currentHP - damage) }
+        playerData.currentHP = Math.max(0, playerData.currentHP - damage);
         console.log(`Player, took ${damage} damage. HP: ${playerData.currentHP}/${ playerData.maxHP)`},
         ';'
         // 低HP警告
         if(playerData.currentHP <= playerData.maxHP * 0.25 && playerData.currentHP > 0} { }'
 
-            console.log('Low, HP warning!'};
-        }
-    }
-    
+            console.log('Low, HP warning!'    }
+}
     /**
      * 回復時の処理
      * @param heal - 回復量
@@ -268,7 +258,7 @@ export class GameStateManager {
             case 'rainbow':','
                 this.gameEngine.startBonusTime('''
             case 'clock': ','
-                this.gameEngine.startTimeStop('',
+                this.gameEngine.startTimeStop(',
             case 'electric':,
                 // 電気効果の処理
                 break,
@@ -279,7 +269,7 @@ export class GameStateManager {
                 // 毒効果の処理
                 break,
             case 'pink': };
-                // 回復効果の処理) }
+                // 回復効果の処理);
                 this.onPlayerHealed(10};
                 break;
         }
@@ -335,7 +325,7 @@ export class GameStateManager {
             score: this.gameEngine.playerData.currentScore,
             hp: this.gameEngine.playerData.currentHP,
             maxHP: this.gameEngine.playerData.maxHP,
-    bubbleCount: this.gameEngine.bubbleManager.getBubbleCount() },
+    bubbleCount: this.gameEngine.bubbleManager.getBubbleCount() ,
             comboCount: this.gameEngine.scoreManager.getCombo(); 
     }
     
@@ -349,14 +339,14 @@ export class GameStateManager {
         if (playerData.currentHP < 0) {
 
             console.warn('Invalid HP detected, triggering game over),'
-            this.triggerGameOver() }
+            this.triggerGameOver();
             return false;
 
         if (this.gameEngine.timeRemaining < 0') {'
 
-            console.warn('Invalid time remaining detected',
+            console.warn('Invalid time remaining detected,
             this.gameEngine.timeRemaining = 0,
-            this.triggerGameOver() }
+            this.triggerGameOver();
             return false;
         
         return true;

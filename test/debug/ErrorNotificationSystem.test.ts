@@ -18,7 +18,7 @@ const setupDOMEnvironment = () => {  (global: any).document = {
                , id: ',')','
                 className: ',')','
                 style: { cssText: ', '),''
-                innerHTML: ','
+                innerHTML: ',' };
                 appendChild: jest.fn(
                 remove: jest.fn() }
         addEventListener: jest.fn(); }
@@ -200,7 +200,7 @@ describe('ErrorNotificationSystem', () => {  let notificationSystem: any,
             }'
                     timestamp: Date.now('}'
                     error: { fingerprint: 'threshold_fingerprint'
-            };
+            }
                 } }
             
             // 5回目で通知される'
@@ -428,6 +428,6 @@ describe('ErrorNotificationSystem', () => {  let notificationSystem: any,
         test('destroyメソッドでリソースがクリーンアップされる', () => {'
             notificationSystem.destroy();
             expect(localStorage.setItem').toHaveBeenCalledWith(' }', 'error_notification_settings') }'
-                expect.any(String};
+                expect.any(String}
         };'
     }'}');

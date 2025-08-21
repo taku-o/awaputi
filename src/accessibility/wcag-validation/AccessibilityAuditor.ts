@@ -4,140 +4,125 @@
  */
 
 // Interfaces for accessibility auditor
-interface AuditorConfig { enabled: boolean;
-    auditCategories: string[];
-    quickAuditTests: string[];
-    autoAudit: boolean;
-    auditInterval: number;
+interface AuditorConfig { enabled: boolean,
+    auditCategories: string[],
+    quickAuditTests: string[],
+    autoAudit: boolean,
+    auditInterval: number,
     issueThreshold: IssueThreshold;
-
-interface IssueThreshold { critical: number;
-    high: number;
-    medium: number;
+    interface IssueThreshold { critical: number,
+    high: number,
+    medium: number,
     low: number;
-
-interface AuditState { running: boolean;
-    lastAudit: number | null;
-    currentCategory: string | null;
+    interface AuditState { running: boolean,
+    lastAudit: number | null,
+    currentCategory: string | null,
     results: Map<number, AuditResults>;
     history: AuditResults[];
-
-interface GuidelineDefinition { name: string;
+    interface GuidelineDefinition { name: string,
     tests: string[];
-
-interface CategoryDefinition { name: string;
-    description: string;
+    interface CategoryDefinition { name: string,
+    description: string,
     guidelines: Record<string, GuidelineDefinition> }
 
-interface AuditSummary { totalIssues: number;
-    criticalIssues: number;
-    highIssues: number;
-    mediumIssues: number;
-    lowIssues: number;
+interface AuditSummary { totalIssues: number,
+    criticalIssues: number,
+    highIssues: number,
+    mediumIssues: number,
+    lowIssues: number,
     overallScore: number;
-
-interface AuditRecommendation { priority: 'critical' | 'high' | 'medium' | 'low';
-    message: string;
+    interface AuditRecommendation { priority: 'critical' | 'high' | 'medium' | 'low',
+    message: string,
     action: string;
-
-interface AuditResults { timestamp: number;
+    interface AuditResults { timestamp: number,
     categories: Record<string, CategoryResult>;
-    summary: AuditSummary;
+    summary: AuditSummary,
     recommendations: AuditRecommendation[];
-
-interface CategoryResult { id: string;
-    name: string;
-    description: string;
+    interface CategoryResult { id: string,
+    name: string,
+    description: string,
     guidelines: Record<string, GuidelineResult>;
-    issues: ClassifiedIssue[];
-    warnings: any[];
-    score: number;
-    passed: number;
+    issues: ClassifiedIssue[],
+    warnings: any[],
+    score: number,
+    passed: number,
     failed: number;
-
-interface GuidelineResult { id: string;
-    name: string;
+    interface GuidelineResult { id: string,
+    name: string,
     tests: Record<string, TestResult>;
-    issues: ClassifiedIssue[];
-    warnings: any[];
-    passed: number;
+    issues: ClassifiedIssue[],
+    warnings: any[],
+    passed: number,
     failed: number;
-
-interface TestResult { passed: boolean;
+    interface TestResult { passed: boolean;
     issues?: Issue[];
     warnings?: any[];
-
-interface Issue { element?: Element,
+    interface Issue { element?: Element,
     guideline?: string;
-
     issue: string;
     severity?: 'critical' | 'high' | 'medium' | 'low' }
 ';'
 
 interface ClassifiedIssue extends Issue { ''
-    severity: 'critical' | 'high' | 'medium' | 'low';
+    severity: 'critical' | 'high' | 'medium' | 'low,
     classification: IssueClassification;
 
-interface IssueClassification { category: string;
-    impact: string;
+interface IssueClassification { category: string,
+    impact: string,
     effort: string;
-
-interface QuickAuditResult { timestamp: number;
-    issues: ClassifiedIssue[];
-    warnings: any[];
-    passed: number;
-    failed: number;
+    interface QuickAuditResult { timestamp: number,
+    issues: ClassifiedIssue[],
+    warnings: any[],
+    passed: number,
+    failed: number,
     tests: Record<string, TestResult> }
 
 // Minimal interface for WCAGRuleEngine
 interface WCAGRuleEngine { runTest(testName: string, options?: any): Promise<TestResult>;
-
-export class AccessibilityAuditor {
+    export class AccessibilityAuditor {
     private config: AuditorConfig;
     private auditState: AuditState;
     private, categories: Record<string, CategoryDefinition>,
     private issueClassifier: Record<string, string[]>;
     private auditTimer: number | null;
     private, ruleEngine: WCAGRuleEngine | null;
-
-    constructor(config: Partial<AuditorConfig> = {)) {
+    constructor(config: Partial<AuditorConfig> = {) {
         this.config = {'
-            enabled: true;
-            auditCategories: ['perceivable', 'operable', 'understandable', 'robust'];
-            quickAuditTests: ['altText', 'colorContrast', 'keyboardNavigation', 'nameRoleValue'];
-            autoAudit: false;
+            enabled: true,
+    auditCategories: ['perceivable', 'operable', 'understandable', 'robust'];
+    quickAuditTests: ['altText', 'colorContrast', 'keyboardNavigation', 'nameRoleValue'];
+    autoAudit: false,
     auditInterval: 300000, // 5 minutes;
-            issueThreshold: {
-                critical: 0;
-                high: 5;
-                medium: 10;
+    issueThreshold: { critical: 0  ,
+                high: 5,
+    medium: 10,
     low: 20  };
             ...config;
 
         // Audit state management
-        this.auditState = { running: false;
-            lastAudit: null;
-    currentCategory: null;
-            results: new Map('';
-    name: 'Perceivable';
-                description: 'Information must be presentable in ways users can perceive';
-                guidelines: { }', '1.1': { name: 'Text Alternatives', tests: ['altText', 'imageLabels', 'decorativeImages] },', '1.2': { name: 'Time-based Media', tests: ['audioControl]  },', '1.3': { name: 'Adaptable', tests: ['headingStructure', 'meaningfulSequence', 'sensoryCues] },', '1.4': { name: 'Distinguishable', tests: ['colorContrast', 'textResize] }
+        this.auditState = { running: false,
+            lastAudit: null,
+    currentCategory: null,
+            results: new Map(',
+    name: 'Perceivable,
+                description: 'Information must be presentable in ways users can perceive,
+                guidelines: { }', '1.1': { name: 'Text Alternatives', tests: ['altText', 'imageLabels', 'decorativeImages] },', '1.2': { name: 'Time-based Media', tests: ['audioControl]  ,', '1.3': { name: 'Adaptable', tests: ['headingStructure', 'meaningfulSequence', 'sensoryCues] },', '1.4': { name: 'Distinguishable', tests: ['colorContrast', 'textResize] }
             },
 
             operable: { ''
-                name: 'Operable';
-                description: 'User interface components must be operable';
-                guidelines: { }', '2.1': { name: 'Keyboard Accessible', tests: ['keyboardNavigation', 'noKeyboardTrap] },', '2.2': { name: 'Enough Time', tests: []  },', '2.3': { name: 'Seizures', tests: []  },', '2.4': { name: 'Navigable', tests: ['bypassBlocks', 'pageTitle', 'focusOrder', 'linkPurpose] },', '2.5': { name: 'Input Modalities', tests: []  }'
+                name: 'Operable'  ,
+                description: 'User interface components must be operable,
+                guidelines: { }', '2.1': { name: 'Keyboard Accessible', tests: ['keyboardNavigation', 'noKeyboardTrap] },', '2.2': { name: 'Enough Time', tests: []  ,', '2.3': { name: 'Seizures', tests: []  ,', '2.4': { name: 'Navigable', tests: ['bypassBlocks', 'pageTitle', 'focusOrder', 'linkPurpose] },', '2.5': { name: 'Input Modalities', tests: []  }'
             },
 
             understandable: { ''
-                name: 'Understandable';
-                description: 'Information and UI operation must be understandable';
-                guidelines: { }', '3.1': { name: 'Readable', tests: ['languageOfPage]  },', '3.2': { name: 'Predictable', tests: ['onFocus', 'onInput', 'consistentNavigation] },', '3.3': { name: 'Input Assistance', tests: ['errorIdentification', 'labelsInstructions] }
+                name: 'Understandable'  ,
+                description: 'Information and UI operation must be understandable,
+                guidelines: { }', '3.1': { name: 'Readable', tests: ['languageOfPage]  ,', '3.2': { name: 'Predictable', tests: ['onFocus', 'onInput', 'consistentNavigation] },', '3.3': { name: 'Input Assistance', tests: ['errorIdentification', 'labelsInstructions] }
             },
 
             robust: { ''
-                name: 'Robust',';'
+                name: 'Robust',';'  },
                 description: 'Content must be robust enough for various assistive technologies')','
     guidelines: { }', '4.1': { name: 'Compatible', tests: ['parsing', 'nameRoleValue', 'statusMessages] }
 };
@@ -178,12 +163,12 @@ export class AccessibilityAuditor {
         this.auditState.lastAudit = Date.now();
 
         const auditResults: AuditResults = { timestamp: Date.now( }
-            categories: {};
-            summary: { totalIssues: 0;
-                criticalIssues: 0;
-                highIssues: 0;
-                mediumIssues: 0;
-                lowIssues: 0;
+            categories: {  },
+            summary: { totalIssues: 0,
+                criticalIssues: 0  ,
+                highIssues: 0,
+                mediumIssues: 0,
+                lowIssues: 0,
     overallScore: 0 };
             recommendations: [];
         },
@@ -210,7 +195,7 @@ export class AccessibilityAuditor {
             this.auditState.history.push(auditResults);
             
             // Limit history size
-            if (this.auditState.history.length > 100) { this.auditState.history.shift() }
+            if (this.auditState.history.length > 100) { this.auditState.history.shift();
 
             return auditResults;
         } finally { this.auditState.running = false,
@@ -221,12 +206,12 @@ export class AccessibilityAuditor {
      * Run quick audit with essential tests
      */
     async runQuickAudit(): Promise<QuickAuditResult> { const quickResults: QuickAuditResult = {
-            timestamp: Date.now();
-            issues: [];
-            warnings: [];
-            passed: 0;
+            timestamp: Date.now(),
+            issues: [],
+            warnings: [],
+            passed: 0,
     failed: 0 }
-            tests: {};
+            tests: {  },
         for (const testName of this.config.quickAuditTests) {
 ','
 
@@ -239,8 +224,8 @@ export class AccessibilityAuditor {
                 const testResult = await this.ruleEngine.runTest(testName);
                 quickResults.tests[testName] = testResult;
 
-                if (testResult.passed) { quickResults.passed++ } else {  quickResults.failed++,
-                    const classifiedIssues = this.classifyIssues(testResult.issues || []) }
+                if (testResult.passed) { quickResults.passed++ } else {  quickResults.failed++;
+                    const classifiedIssues = this.classifyIssues(testResult.issues || []);
                     quickResults.issues.push(...classifiedIssues);
                 }
 
@@ -267,12 +252,12 @@ export class AccessibilityAuditor {
         const categoryResult: CategoryResult = { id: categoryId,
             name: category.name,
     description: category.description }
-            guidelines: {},
+            guidelines: {  },
             issues: [],
             warnings: [],
             score: 0,
             passed: 0,
-    failed: 0,
+    failed: 0;
         },
 
         // Audit each guideline in the category
@@ -301,11 +286,11 @@ export class AccessibilityAuditor {
         const guidelineResult: GuidelineResult = {
             id: guidelineId,
     name: guideline.name }
-            tests: {},
+            tests: {  },
             issues: [],
             warnings: [],
             passed: 0,
-    failed: 0,
+    failed: 0;
         },
 
         // Run each test in the guideline
@@ -319,9 +304,9 @@ export class AccessibilityAuditor {
                 const testResult = await this.ruleEngine.runTest(testName, options);
                 guidelineResult.tests[testName] = testResult;
 
-                if (testResult.passed) { guidelineResult.passed++ } else {  guidelineResult.failed++,
+                if (testResult.passed) { guidelineResult.passed++ } else {  guidelineResult.failed++;
                     // Classify and add issues
-                    const classifiedIssues = this.classifyIssues(testResult.issues || []) }
+                    const classifiedIssues = this.classifyIssues(testResult.issues || []);
                     guidelineResult.issues.push(...classifiedIssues);
                 }
 
@@ -342,7 +327,7 @@ export class AccessibilityAuditor {
                 ...issue),
                 severity: issue.severity || this.determineSeverity(issue,
     classification: {
-                    category: this.getIssueCategory(issue) impact: this.assessImpact(issue) }
+                    category: this.getIssueCategory(issue) impact: this.assessImpact(issue),
                     effort: this.estimateFixEffort(issue'), '
     };
 
@@ -371,14 +356,14 @@ export class AccessibilityAuditor {
      */
     private getIssueType(issue: Issue): string { ''
         const issueText = issue.issue.toLowerCase()','
-        if(issueText.includes('missing, alt)' return 'missing-alt',
-        if(issueText.includes('keyboard, trap)' return 'keyboard-trap',
-        if(issueText.includes('no, accessible name)' return 'no-accessible-name',
-        if(issueText.includes('insufficient, color contrast)' return 'low-contrast',
-        if(issueText.includes('missing, keyboard)' return 'missing-keyboard-handler',
-        if(issueText.includes('invalid, aria)' return 'invalid-aria',
-        if(issueText.includes('missing, label)' return 'missing-label',
-        if(issueText.includes('positive, tabindex)' return 'positive-tabindex',
+        if(issueText.includes('missing, alt)' return 'missing-alt,
+        if(issueText.includes('keyboard, trap)' return 'keyboard-trap,
+        if(issueText.includes('no, accessible name)' return 'no-accessible-name,
+        if(issueText.includes('insufficient, color contrast)' return 'low-contrast,
+        if(issueText.includes('missing, keyboard)' return 'missing-keyboard-handler,
+        if(issueText.includes('invalid, aria)' return 'invalid-aria,
+        if(issueText.includes('missing, label)' return 'missing-label,
+        if(issueText.includes('positive, tabindex)' return 'positive-tabindex,
 
         return 'general-issue' }
 
@@ -388,10 +373,10 @@ export class AccessibilityAuditor {
     private getIssueCategory(issue: Issue): string { ''
         const guideline = issue.guideline || ','
 
-        if(guideline.startsWith('1.)' return 'perceivable',
-        if(guideline.startsWith('2.)' return 'operable',
-        if(guideline.startsWith('3.)' return 'understandable',
-        if(guideline.startsWith('4.)' return 'robust',
+        if(guideline.startsWith('1.)' return 'perceivable,
+        if(guideline.startsWith('2.)' return 'operable,
+        if(guideline.startsWith('3.)' return 'understandable,
+        if(guideline.startsWith('4.)' return 'robust,
 
         return 'general' }
 
@@ -399,12 +384,12 @@ export class AccessibilityAuditor {
      * Assess issue impact'
      */''
     private assessImpact(issue: Issue): string { ''
-        const severity = issue.severity || 'medium',
+        const severity = issue.severity || 'medium,
 
         const impacts: Record<string, string> = {''
-            critical: 'blocks-functionality',
-            high: 'significant-barrier',
-            medium: 'moderate-barrier',
+            critical: 'blocks-functionality,
+            high: 'significant-barrier,
+            medium: 'moderate-barrier,
             low: 'minor-inconvenience'
             }
         };
@@ -417,12 +402,12 @@ export class AccessibilityAuditor {
     private estimateFixEffort(issue: Issue): string { ''
         const issueType = this.getIssueType(issue);
         const effortMap: Record<string, string> = {', 'missing-alt': 'low','
-            'keyboard-trap': 'high',
-            'no-accessible-name': 'medium',
-            'low-contrast': 'medium',
-            'missing-keyboard-handler': 'high',
-            'invalid-aria': 'low',
-            'missing-label': 'low',
+            'keyboard-trap': 'high,
+            'no-accessible-name': 'medium,
+            'low-contrast': 'medium,
+            'missing-keyboard-handler': 'high,
+            'invalid-aria': 'low,
+            'missing-label': 'low,
             'positive-tabindex': 'low' };
 
         return effortMap[issueType] || 'medium';
@@ -438,23 +423,21 @@ export class AccessibilityAuditor {
             switch(issue.severity) {
 
                 case 'critical':,
-                    summary.criticalIssues++,
+                    summary.criticalIssues++;
 
                     break,
                 case 'high':,
-                    summary.highIssues++,
+                    summary.highIssues++;
 
                     break,
                 case 'medium':,
-                    summary.mediumIssues++,
+                    summary.mediumIssues++;
 
                     break,
                 case 'low': }
                     summary.lowIssues++; }
-                    break; }
-};
-    }
-
+                    break;     }
+}
     /**
      * Calculate overall accessibility score
      */
@@ -487,12 +470,11 @@ export class AccessibilityAuditor {
                 recommendations.push({ }
 
                     priority: 'high'
-            }'
-                    message: `Improve ${category.name} accessibility (current, score: ${category.score.toFixed(1}%)`,
-                    action: `Focus on ${categoryId} guidelines to enhance user experience`
-                };
             }
-        }
+                    message: `Improve ${category.name} accessibility (current, score: ${category.score.toFixed(1}%),
+                    action: `Focus on ${categoryId} guidelines to enhance user experience`
+                    }
+}
         ';'
         // General recommendations
         if (auditResults.summary.overallScore < 90) {
@@ -510,7 +492,7 @@ export class AccessibilityAuditor {
      * Start automatic auditing
      */
     startAutoAudit(): void { if (this.auditTimer) {
-            clearInterval(this.auditTimer) }
+            clearInterval(this.auditTimer);
         
         this.auditTimer = window.setInterval(async () => {  if (!this.auditState.running) { }
                 await this.runQuickAudit(); }
@@ -528,7 +510,7 @@ export class AccessibilityAuditor {
     /**
      * Get audit history
      */
-    getAuditHistory(limit: number = 10): AuditResults[] { return this.auditState.history.slice(-limit) }
+    getAuditHistory(limit: number = 10): AuditResults[] { return this.auditState.history.slice(-limit);
 
     /**
      * Get latest audit results
@@ -549,7 +531,7 @@ export class AccessibilityAuditor {
             summary.criticalIssues > this.config.issueThreshold.critical ||,
             summary.highIssues > this.config.issueThreshold.high ||,
             summary.mediumIssues > this.config.issueThreshold.medium ||,
-            summary.lowIssues > this.config.issueThreshold.low) }
+            summary.lowIssues > this.config.issueThreshold.low);
 
     /**
      * Update configuration
@@ -559,7 +541,7 @@ export class AccessibilityAuditor {
             ...newConfig,
         
         // Restart auto audit if interval changed
-        if (newConfig.auditInterval && this.config.autoAudit) { this.startAutoAudit() }
+        if (newConfig.auditInterval && this.config.autoAudit) { this.startAutoAudit();
     }
 
     /**

@@ -60,7 +60,7 @@ const sampleGameplayEvent = {
     type: 'bubble_popped',
     timestamp: Date.now(','
     data: {
-        bubbleType: 'normal',
+        bubbleType: 'normal' },
         score: 100,
         combo: 5,
         position: { x: 400, y: 300 },
@@ -69,19 +69,19 @@ const sampleGameplayEvent = {
 };
 const sampleStatisticsData = {
     gamePlayStats: {
-        totalGames: 25,
+        totalGames: 25 },
         totalPlayTime: 1800000, // 30分
         averageSessionTime: 360000, // 6分
         lastPlayTime: Date.now(') - 3600000 // 1時間前'
     },
     scoreStats: {
-        totalScore: 75000,
+        totalScore: 75000 },
         highestScore: 5500,
         averageScore: 3000,
         scoreHistory: [2500, 3200, 4100, 5500, 4800]
     },
     bubbleStats: {
-        totalPopped: 1250,
+        totalPopped: 1250 },
         accuracy: 0.85,
         bubbleTypeStats: new Map([
             ['normal', { count: 800, score: 40000 }],
@@ -93,7 +93,7 @@ const sampleStatisticsData = {
         )');'
     },
     comboStats: {
-        maxCombo: 25,
+        maxCombo: 25 },
         averageCombo: 8.5,
         comboHistory: [5, 8, 12, 15, 25, 20, 18]
     },
@@ -124,7 +124,7 @@ describe('統計システム統合テスト', () => {
         // LocalStorageのモック
         Object.defineProperty(window, 'localStorage', {
             value: {,
-                getItem: jest.fn(
+                getItem: jest.fn( },
                 setItem: jest.fn(
                 removeItem: jest.fn(
         clear: jest.fn( },
@@ -132,9 +132,9 @@ describe('統計システム統合テスト', () => {
         // パフォーマンスAPIのモック
         Object.defineProperty(window, 'performance', {
             value: {,
-                now: jest.fn(() => Date.now(),
+                now: jest.fn(() => Date.now() },
                 memory: {
-                    usedJSHeapSize: 1024 * 1024 * 50,
+                    usedJSHeapSize: 1024 * 1024 * 50 },
                     totalJSHeapSize: 1024 * 1024 * 100,
         jsHeapSizeLimit: 1024 * 1024 * 200
             };
@@ -222,7 +222,7 @@ describe('統計システム統合テスト', () => {
                 type: 'game_ended',
                 timestamp: Date.now(
                 data: {
-                    finalScore: 4500,
+                    finalScore: 4500 },
                     playtime: 180000,
                     bubblesPopped: 85
                 }
@@ -381,7 +381,7 @@ describe('統計システム統合テスト', () => {
             const invalidEvent = {
                 type: 'bubble_popped',
                 data: {
-                    score: 'invalid_score',
+                    score: 'invalid_score' },
                     combo: -1
                 }
             };
@@ -398,7 +398,7 @@ describe('統計システム統合テスト', () => {
                 ...sampleGameplayEvent,
                 timestamp: Date.now() + i,
                 data: {
-                    ...sampleGameplayEvent.data,
+                    ...sampleGameplayEvent.data };
                     score: Math.floor(Math.random() * 1000 }
             };
             // バッチで処理
@@ -419,7 +419,7 @@ describe('統計システム統合テスト', () => {
                 await statisticsCollector.collectEvent({
                     ...sampleGameplayEvent);
                     timestamp: Date.now() + i
-                };
+                }
             }
             
             await statisticsCollector.processBatch();
@@ -511,7 +511,7 @@ describe('統計システム統合テスト', () => {
                 await statisticsCollector.collectEvent({
                     ...sampleGameplayEvent);
                     timestamp: Date.now() + i
-                };
+                }
             }
             
             await statisticsCollector.processBatch();
@@ -569,7 +569,7 @@ describe('統計システム統合テスト', () => {
             const finalStats = statisticsManager.getStatistics();
             expect(finalStats.bubbleStats.totalPopped).toBeGreaterThan(1250);
             expect(finalStats.gamePlayStats.totalGames).toBeGreaterThanOrEqual(25);
-        };
+        }
     }
 };
 // テスト用ヘルパー関数
@@ -581,7 +581,7 @@ const TestHelper = {
         return {
             ...sampleStatisticsData,
             ...overrides
-        };
+        }
     },
     /**
      * テスト用のイベントを生成
@@ -591,12 +591,12 @@ const TestHelper = {
             type,
             timestamp: Date.now(','
             data: {
-                bubbleType: 'normal',
+                bubbleType: 'normal' },
                 score: 100,
                 combo: 1,
                 ...overrides
             }
-        };
+        }
     },
     /**
      * 非同期処理の完了を待機
@@ -616,9 +616,9 @@ const TestHelper = {
                 return {
                     increased: increase,
                     percentage: (increase / initialMemory') * 100'
-                };
+                }
             }
-        };
+        }
     }
 };
 export { TestHelper };

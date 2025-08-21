@@ -4,25 +4,22 @@
  */
 
 // Interfaces for color analysis
-interface AnalysisEngineConfig { enableDetailedAnalysis: boolean;
-    includeImages: boolean;
-    autoGenerateRecommendations: boolean;
-    analysisDepth: 'quick' | 'standard' | 'comprehensive';
+interface AnalysisEngineConfig { enableDetailedAnalysis: boolean,
+    includeImages: boolean,
+    autoGenerateRecommendations: boolean,
+    analysisDepth: 'quick' | 'standard' | 'comprehensive,
     saveAnalysisHistory: boolean;
-
-interface AnalysisStatistics { totalElements: number;
-    analyzedElements: number;
-    contrastIssues: number;
-    colorBlindnessIssues: number;
-    averageContrast: number;
+    interface AnalysisStatistics { totalElements: number,
+    analyzedElements: number,
+    contrastIssues: number,
+    colorBlindnessIssues: number,
+    averageContrast: number,
     wcagComplianceRate: number;
-
-interface PerformanceMetrics { analysisTimes: number[];
-    elementProcessingRate: number;
+    interface PerformanceMetrics { analysisTimes: number[],
+    elementProcessingRate: number,
     cacheHitRate: number;
-
-interface RGB { r: number;
-    g: number;
+    interface RGB { r: number,
+    g: number,
     b: number;
 ';'
 
@@ -30,132 +27,121 @@ interface ColorPalette { ''
     colors: (RGB | null')[];'
     colorUsage: Record<string, number>;
     colorCombinations: Record<string, number>;
-    dominantColors: DominantColor[];
-    colorHarmony: ColorHarmony;
-    diversity: ColorDiversity;
+    dominantColors: DominantColor[],
+    colorHarmony: ColorHarmony,
+    diversity: ColorDiversity,
     timestamp: number;
-
-interface DominantColor { color: string;
+    interface DominantColor { color: string,
     count: number;
-
-interface ColorHarmony { harmonyType: string;
-    harmonyScore: number;
+    interface ColorHarmony { harmonyType: string,
+    harmonyScore: number,
     suggestions: string[];
-
-interface ColorDiversity { uniqueColors: number;
-    diversityScore: number;
+    interface ColorDiversity { uniqueColors: number,
+    diversityScore: number,
     complexity: 'low' | 'medium' | 'high'
             }
 
-interface AccessibilityResults { compliantElements: ElementAnalysis[];
-    nonCompliantElements: ElementAnalysis[];
-    warnings: Warning[];
-    statistics: AccessibilityStatistics;
+interface AccessibilityResults { compliantElements: ElementAnalysis[],
+    nonCompliantElements: ElementAnalysis[],
+    warnings: Warning[],
+    statistics: AccessibilityStatistics,
     recommendations: Recommendation[];
-
-interface ElementAnalysis { element: HTMLElement;
-    textContent: string;
-    foregroundColor: RGB | null;
-    backgroundColor: RGB | null;
-    contrastRatio: number;
-    wcagCompliant: boolean;
-    wcagLevel: string;
-    isLargeText: boolean;
+    interface ElementAnalysis { element: HTMLElement,
+    textContent: string,
+    foregroundColor: RGB | null,
+    backgroundColor: RGB | null,
+    contrastRatio: number,
+    wcagCompliant: boolean,
+    wcagLevel: string,
+    isLargeText: boolean,
     warnings: Warning[];
     recommendations?: string[];
     timestamp: number;
-
-interface Warning { type: string;
-    message: string;
+    interface Warning { type: string,
+    message: string,
     severity: 'info' | 'warning' | 'error' | 'critical'
             }
 
-interface AccessibilityStatistics { totalElements: number;
-    compliantElements: number;
-    nonCompliantElements: number;
-    complianceRate: number;
-    averageContrast: number;
+interface AccessibilityStatistics { totalElements: number,
+    compliantElements: number,
+    nonCompliantElements: number,
+    complianceRate: number,
+    averageContrast: number,
     warningCount: number;
 ';'
 
 interface Recommendation { category: string,''
-    priority: 'low' | 'medium' | 'high';
-    title: string;
-    description: string;
+    priority: 'low' | 'medium' | 'high,
+    title: string,
+    description: string,
     actions: string[];
-
-interface UsageAnalysis { patterns: any[];
+    interface UsageAnalysis { patterns: any[],
     contexts: Map<string, Set<string>>;
     semanticUsage: Map<string, any>;
-    inconsistencies: any[];
+    inconsistencies: any[],
     recommendations: any[];
-
-interface AnalysisHistoryEntry { type: string;
-    results: any;
-    timestamp: number;
+    interface AnalysisHistoryEntry { type: string,
+    results: any,
+    timestamp: number,
     duration: number;
-
-interface ColorAnalysisOptions { groupSimilarColors?: boolean,
+    interface ColorAnalysisOptions { groupSimilarColors?: boolean,
     includeRareColors?: boolean;
     calculateDominance?: boolean;
-
-interface UsageOptions { detectPatterns?: boolean,
+    interface UsageOptions { detectPatterns?: boolean,
     analyzeContext?: boolean;
     includeSemantics?: boolean;
-
-interface ContrastResult { contrastRatio: number;
+    interface ContrastResult { contrastRatio: number,
     wcagValidation: {
         passe,s: boolean;
-    level: string;
+    },
+    level: string,
     textProperties: { isLargeText: boolean;
     recommendations?: string[];
 }
 
 // Type for contrast calculator
 interface ContrastCalculator { analyzeColorPair: (
-        foreground: RGB;
-        background: RGB;
-        fontSize: number;
+        foreground: RGB,
+    background: RGB,
+    fontSize: number,
     fontWeight: number) => ContrastResult }
 }
 
 // Type for color suggestion
 interface ColorSuggestion { foreground?: string,
     background?: string;
-    contrastRatio: number;
+    contrastRatio: number,
     improvement: number;
-
-export class ColorAnalysisEngine {
+    export class ColorAnalysisEngine {
     private config: AnalysisEngineConfig;
     private, analysisResults: Map<string, any>,
     private analysisHistory: AnalysisHistoryEntry[];
     private statistics: AnalysisStatistics;
     private performanceMetrics: PerformanceMetrics;
     private, initialized: boolean;
-
-    constructor(config: Partial<AnalysisEngineConfig> = {)) {
+    constructor(config: Partial<AnalysisEngineConfig> = {) {
         this.config = {
-            enableDetailedAnalysis: true;
-    includeImages: false;
-            autoGenerateRecommendations: true;
-            analysisDepth: 'comprehensive';
+            enableDetailedAnalysis: true,
+    includeImages: false,
+    autoGenerateRecommendations: true,
+    analysisDepth: 'comprehensive,
     saveAnalysisHistory: true;
             ...config,
 
         // 分析結果の保存
         this.analysisResults = new Map();
-        this.analysisHistory = [];
+    this.analysisHistory = [];
         
         // 統計データ
-        this.statistics = { totalElements: 0;
-            analyzedElements: 0;
-            contrastIssues: 0;
-            colorBlindnessIssues: 0;
-            averageContrast: 0;
+        this.statistics = { totalElements: 0,
+            analyzedElements: 0,
+    contrastIssues: 0,
+    colorBlindnessIssues: 0,
+    averageContrast: 0,
     wcagComplianceRate: 0  };
         // パフォーマンスメトリクス
-        this.performanceMetrics = { analysisTimes: [];
-            elementProcessingRate: 0;
+        this.performanceMetrics = { analysisTimes: [],
+            elementProcessingRate: 0,
     cacheHitRate: 0  };
         this.initialized = false;
     }
@@ -187,8 +173,8 @@ export class ColorAnalysisEngine {
         }
 
         const analysisStartTime = performance.now();
-        const paletteOptions: Required<ColorAnalysisOptions> = { groupSimilarColors: true;
-            includeRareColors: false;
+        const paletteOptions: Required<ColorAnalysisOptions> = { groupSimilarColors: true,
+            includeRareColors: false,
     calculateDominance: true;
             ...options,
 
@@ -203,24 +189,24 @@ export class ColorAnalysisEngine {
                 // 色の使用頻度を記録
                 colors.forEach(color => { );
                     if (color) {
-                        const colorKey = this.normalizeColorKey(color) }
+                        const colorKey = this.normalizeColorKey(color);
                         colorUsage.set(colorKey, (colorUsage.get(colorKey) || 0) + 1); }
                         colorMap.set(colorKey, color); }
 };
 
                 // 色の組み合わせを記録
                 if (colors.length >= 2) {
-                    const combo = this.createColorCombinationKey(colors) }
+                    const combo = this.createColorCombinationKey(colors);
                     colorCombinations.set(combo, (colorCombinations.get(combo) || 0) + 1); }
 }
 
             // パレット分析結果を生成
             const palette: ColorPalette = { colors: Array.from(colorMap.values(
-                colorUsage: Object.fromEntries(colorUsage);
-                colorCombinations: Object.fromEntries(colorCombinations;
+                colorUsage: Object.fromEntries())colorUsage),
+                colorCombinations: Object.fromEntries(colorCombinations,
     dominantColors: this.findDominantColors(colorUsage, 10);
-                colorHarmony: this.analyzeColorHarmony(Array.from(colorMap.values());
-                diversity: this.calculateColorDiversity(colorMap;
+                colorHarmony: this.analyzeColorHarmony(Array.from(colorMap.values()),
+                diversity: this.calculateColorDiversity(colorMap,
     timestamp: Date.now(  };
 
             // 分析時間を記録
@@ -242,14 +228,13 @@ export class ColorAnalysisEngine {
             compliantElements: [],
             nonCompliantElements: [],
             warnings: [],
-    statistics: {
-                totalElements: 0,
+    statistics: { totalElements: 0  ,
                 compliantElements: 0,
                 nonCompliantElements: 0,
                 complianceRate: 0,
                 averageContrast: 0,
-    warningCount: 0 },
-            recommendations: [],
+    warningCount: 0 };
+            recommendations: [];
         },
 
         try { let totalContrast = 0,
@@ -268,7 +253,7 @@ export class ColorAnalysisEngine {
     
 }
                         accessibilityResults.compliantElements.push(analysis); }
-                    } else { accessibilityResults.nonCompliantElements.push(analysis) }
+                    } else { accessibilityResults.nonCompliantElements.push(analysis);
 
                     if (analysis.contrastRatio) {
 
@@ -277,7 +262,7 @@ export class ColorAnalysisEngine {
                     }
 
                     // 警告の収集
-                    if (analysis.warnings && analysis.warnings.length > 0) { accessibilityResults.warnings.push(...analysis.warnings) }
+                    if (analysis.warnings && analysis.warnings.length > 0) { accessibilityResults.warnings.push(...analysis.warnings);
             }
 
             // 統計の計算
@@ -285,25 +270,25 @@ export class ColorAnalysisEngine {
                 totalElements: elements.length,
                 compliantElements: accessibilityResults.compliantElements.length,
                 nonCompliantElements: accessibilityResults.nonCompliantElements.length,
-    complianceRate: elements.length > 0 ,
+    complianceRate: elements.length > 0 ;
                     ? (accessibilityResults.compliantElements.length / elements.length) * 100 ,
                     : 0,
                 averageContrast: contrastCount > 0 ? totalContrast / contrastCount : 0,
-                warningCount: accessibilityResults.warnings.length  },
+                warningCount: accessibilityResults.warnings.length  };
             // 推奨事項の生成
             if (this.config.autoGenerateRecommendations) {
-                accessibilityResults.recommendations = this.generateAccessibilityRecommendations() }
+                accessibilityResults.recommendations = this.generateAccessibilityRecommendations();
                     accessibilityResults }
             }
 ;
             // 分析履歴に保存
             if (this.config.saveAnalysisHistory) {
                 this.analysisHistory.push({)'
-                    type: 'accessibility_evaluation',
+                    type: 'accessibility_evaluation,
     results: accessibilityResults),
-                    timestamp: evaluationStartTime) }
+                    timestamp: evaluationStartTime),
                     duration: performance.now() - evaluationStartTime 
-    };
+    }
             }
 
             return accessibilityResults;
@@ -319,14 +304,14 @@ export class ColorAnalysisEngine {
     assessColorUsage(elements: HTMLElement[], options: UsageOptions = {}: UsageAnalysis { const usageOptions: Required<UsageOptions> = {
             detectPatterns: true,
             analyzeContext: true,
-            includeSemantics: true,
+            includeSemantics: true;
             ...options,
 
         const, usageAnalysis: UsageAnalysis = { patterns: [],
             contexts: new Map(),
             semanticUsage: new Map(),
             inconsistencies: [],
-    recommendations: []  },
+    recommendations: []  };
         try { const colorContextMap = new Map<string, Set<string>>(),
 
             // 要素ごとの色使用パターンを分析
@@ -335,23 +320,23 @@ export class ColorAnalysisEngine {
                 const colors = this.extractElementColors(element, window.getComputedStyle(element);
                 colors.forEach(color => {);
                     if (color) {
-                        const colorKey = this.normalizeColorKey(color) }
+                        const colorKey = this.normalizeColorKey(color);
                         if (!colorContextMap.has(colorKey) { }
                             colorContextMap.set(colorKey, new Set(); }
                         }
                         colorContextMap.get(colorKey)!.add(context);
                     }
-                };
+                }
             };
 
             // パターンの検出
-            if (usageOptions.detectPatterns) { usageAnalysis.patterns = this.detectUsagePatterns(colorContextMap) }
+            if (usageOptions.detectPatterns) { usageAnalysis.patterns = this.detectUsagePatterns(colorContextMap);
 
             // コンテキスト分析
-            if (usageOptions.analyzeContext) { usageAnalysis.contexts = this.analyzeColorContexts(colorContextMap) }
+            if (usageOptions.analyzeContext) { usageAnalysis.contexts = this.analyzeColorContexts(colorContextMap);
 
             // セマンティック使用の分析
-            if (usageOptions.includeSemantics) { usageAnalysis.semanticUsage = this.analyzeSemanticColorUsage(elements) }
+            if (usageOptions.includeSemantics) { usageAnalysis.semanticUsage = this.analyzeSemanticColorUsage(elements);
 
             // 一貫性チェック
             usageAnalysis.inconsistencies = this.detectColorInconsistencies(colorContextMap);
@@ -372,9 +357,9 @@ export class ColorAnalysisEngine {
     suggestColors(foreground: string, background: string, requiredRatio: number): ColorSuggestion | undefined { try {'
             // Simple color suggestion logic(placeholder);
             return { ''
-                foreground: '#000000',
-                background: '#FFFFFF',
-    contrastRatio: 21 },
+                foreground: '#000000,
+                background: '#FFFFFF,
+    contrastRatio: 21 };
                 improvement: 100 
     };'} catch (error) {'
             console.error('ColorAnalysisEngine: Color suggestion, error:', error);
@@ -399,7 +384,7 @@ export class ColorAnalysisEngine {
             // 背景色
             const bgColor = styles.backgroundColor;
             if(bgColor && bgColor !== 'transparent' && bgColor !== 'rgba(0, 0, 0, 0)) { ''
-                colors.push(this.parseColor(bgColor)) }
+                colors.push(this.parseColor(bgColor));
 
             // ボーダー色
             const borderColor = styles.borderColor;
@@ -411,8 +396,7 @@ export class ColorAnalysisEngine {
             // その他の装飾色（アウトライン、シャドウなど）
             const outlineColor = styles.outlineColor;
             if (outlineColor && outlineColor !== 'transparent) { colors.push(this.parseColor(outlineColor),' }
-
-            } catch (error) { console.warn('Color extraction failed for element:', error }
+        } catch (error) { console.warn('Color extraction failed for element:', error }
 
         return colors.filter(color => color !== null);
     }
@@ -443,7 +427,7 @@ export class ColorAnalysisEngine {
                 wcagLevel: contrastResult.wcagValidation.level,
                 isLargeText: contrastResult.textProperties.isLargeText,
                 warnings: this.generateElementWarnings(contrastResult,
-    recommendations: contrastResult.recommendations },
+    recommendations: contrastResult.recommendations };
                 timestamp: Date.now(); 
     } catch (error) {
             console.warn('Element color analysis failed:', error','
@@ -460,17 +444,15 @@ export class ColorAnalysisEngine {
             if(colorStr.startsWith('#)' {''
                 const hex = colorStr.replace('#', '),'
                 if (hex.length === 6) {
-                    return { r: parseInt(hex.substr(0, 2), 16) }
+                    return { r: parseInt(hex.substr(0, 2), 16);
                         g: parseInt(hex.substr(2, 2), 16) };
-                        b: parseInt(hex.substr(4, 2), 16); }
-                    }
-            }
-
+                        b: parseInt(hex.substr(4, 2), 16);     }
+}
             // rgb(r,g,b)形式
             const rgbMatch = colorStr.match(/rgb\((\d+),\s*(\d+),\s*(\d+)\)/);
             if (rgbMatch) {
                 return { r: parseInt(rgbMatch[1] }
-                    g: parseInt(rgbMatch[2]) },
+                    g: parseInt(rgbMatch[2]) };
                     b: parseInt(rgbMatch[3]); 
     }
 ';'
@@ -507,9 +489,9 @@ export class ColorAnalysisEngine {
     /**
      * Find dominant colors in usage map
      */
-    private findDominantColors(colorUsage: Map<string, number>, limit: number = 10): DominantColor[] { return Array.from(colorUsage.entries()
+    private findDominantColors(colorUsage: Map<string, number>, limit: number = 10): DominantColor[] { return Array.from(colorUsage.entries()))
             .sort(([,a], [,b]) => b - a),
-            .slice(0, limit) }
+            .slice(0, limit);
             .map(([color, count]) => ({ color, count });
     }
 
@@ -518,7 +500,7 @@ export class ColorAnalysisEngine {
      */''
     private analyzeColorHarmony(colors: (RGB | null)[]'): ColorHarmony { // 色調和の基本分析（簡略版）'
         return { ''
-            harmonyType: 'mixed',
+            harmonyType: 'mixed,
             harmonyScore: 0.75,' };'
 
             suggestions: ['More consistent color temperature', 'Better saturation balance] }'
@@ -539,15 +521,15 @@ export class ColorAnalysisEngine {
      * Determine element context
      */'
     private determineElementContext(element: HTMLElement): string { ''
-        const tagName = element.tagName.toLowerCase('',
+        const tagName = element.tagName.toLowerCase(',
         const, className = element.className || ','
         ','
         // 基本的なコンテキスト判定')'
         if(['h1', 'h2', 'h3', 'h4', 'h5', 'h6].includes(tagName)) return 'heading','
-        if(tagName === 'button' || className.includes('button)' return 'button',
-        if(tagName === 'a' || className.includes('link)' return 'link',
-        if(className.includes('nav)' return 'navigation',
-        if(className.includes('menu)' return 'menu',
+        if(tagName === 'button' || className.includes('button)' return 'button,
+        if(tagName === 'a' || className.includes('link)' return 'link,
+        if(className.includes('nav)' return 'navigation,
+        if(className.includes('menu)' return 'menu,
 
         return 'content' }
 
@@ -562,7 +544,7 @@ export class ColorAnalysisEngine {
                 type: 'contrast_failure'
             }''
                 message: `WCAG ${contrastResult.wcagValidation.level} compliance failed`,')'
-                severity: 'error'),
+                severity: 'error');
         }
 
         if (contrastResult.contrastRatio < 3.0) {
@@ -588,25 +570,25 @@ export class ColorAnalysisEngine {
 
                 title: 'Improve overall color contrast'),' }'
 
-                description: `Only ${results.statistics.complianceRate.toFixed(1'}'% of elements meet WCAG standards`,
+                description: `Only ${results.statistics.complianceRate.toFixed(1'}'% of elements meet WCAG standards,
                 actions: [';'
-                    'Review color palette for better contrast ratios',
+                    'Review color palette for better contrast ratios,
                     'Consider darker text colors or lighter backgrounds',]';'
                     'Test with automated accessibility tools'];
                 ];
-            };
+            }
         }
 
         if (results.warnings.length > 10) {
             recommendations.push({''
-                category: 'Warnings',
+                category: 'Warnings,
                 priority: 'medium' }
 
                 title: 'Address color accessibility warnings'
             };
                 description: `${results.warnings.length} warnings found`''
                 actions: [';'
-                    'Review specific element warnings',
+                    'Review specific element warnings,
                     'Implement consistent color standards',]';'
                     'Create accessibility guidelines for design team')];
                 ]);
@@ -625,7 +607,7 @@ export class ColorAnalysisEngine {
             contrastIssues: 0,
             colorBlindnessIssues: 0,
             averageContrast: 0,
-    wcagComplianceRate: 0 },
+    wcagComplianceRate: 0 ,
         this.performanceMetrics = { analysisTimes: [],
             elementProcessingRate: 0,
     cacheHitRate: 0  }
@@ -635,14 +617,14 @@ export class ColorAnalysisEngine {
      */
     getAnalysisStatistics(): Record<string, any> { return { ...this.statistics,
             performanceMetrics: this.performanceMetrics,
-    historyCount: this.analysisHistory.length },
+    historyCount: this.analysisHistory.length ,
             cacheSize: this.analysisResults.size 
     }
 
     // Placeholder methods for complex analysis features
     private detectUsagePatterns(colorContextMap: Map<string, Set<string>>): any[] { return [] }
-    private analyzeColorContexts(colorContextMap: Map<string, Set<string>>): Map<string, Set<string>> { return new Map() }
-    private analyzeSemanticColorUsage(elements: HTMLElement[]): Map<string, any> { return new Map() }
+    private analyzeColorContexts(colorContextMap: Map<string, Set<string>>): Map<string, Set<string>> { return new Map();
+    private analyzeSemanticColorUsage(elements: HTMLElement[]): Map<string, any> { return new Map();
     private detectColorInconsistencies(colorContextMap: Map<string, Set<string>>): any[] { return [] }
     private generateUsageRecommendations(usageAnalysis: UsageAnalysis): any[] { return [] }
 
@@ -654,13 +636,13 @@ export class ColorAnalysisEngine {
             ...newConfig
 
         };
-        console.log('ColorAnalysisEngine: Configuration, updated') }
+        console.log('ColorAnalysisEngine: Configuration, updated');
 
     /**
      * Destroy and cleanup
      */'
     destroy(): void { ''
         this.resetAnalysisData()','
-        console.log('ColorAnalysisEngine: Destroyed') }
+        console.log('ColorAnalysisEngine: Destroyed');
 
     }'}'

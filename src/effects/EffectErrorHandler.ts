@@ -18,17 +18,13 @@ interface GameEngine { canvas?: HTMLCanvasElement,
     particleManager?: ParticleManager;
     effectManager?: EffectManager;
     effectDebugInterface?: EffectDebugInterface;
-
-interface ErrorHandler { handleError(error: Error, context: string | ErrorContext): void;
+    interface ErrorHandler { handleError(error: Error, context: string | ErrorContext): void;
     logError(error: Error, context: ErrorContext): void;
-
-interface ErrorContext { component?: string,
+    interface ErrorContext { component?: string,
     source?: string;
     context?: string;
-
-interface PerformanceOptimizer { getCurrentFPS(): number;
-
-interface EnhancedParticleManager { getActiveParticleCount(): number,
+    interface PerformanceOptimizer { getCurrentFPS(): number;
+    interface EnhancedParticleManager { getActiveParticleCount(): number,
     forceCleanup(): void;
     clearAllParticles(): void;
     resetSystem(): void;
@@ -36,8 +32,7 @@ interface EnhancedParticleManager { getActiveParticleCount(): number,
     pause(): void;
     resume(): void;
     reinitialize(): void;
-
-interface EnhancedEffectManager { getActiveEffectCount(): number,
+    interface EnhancedEffectManager { getActiveEffectCount(): number,
     clearCache(): void;
     clearAllEffects(): void;
     setEnabled(enabled: boolean): void;
@@ -45,51 +40,39 @@ interface EnhancedEffectManager { getActiveEffectCount(): number,
     resume(): void;
     reinitialize(): void;
     resetRenderingState(): void;
-
-interface EffectQualityController { getCurrentQualityLevel(): string,
+    interface EffectQualityController { getCurrentQualityLevel(): string,
     setQualityLevel(level: string): void;
-
-interface EffectPerformanceOptimizer { updateSettings(settings: any): void;
+    interface EffectPerformanceOptimizer { updateSettings(settings: any): void;
     manualOptimization(): void;
     emergencyOptimization(): void;
-
-interface SeasonalEffectManager { setEnabled(enabled: boolean): void;
-
-interface AnimationManager { setEnabled(enabled: boolean): void;
+    interface SeasonalEffectManager { setEnabled(enabled: boolean): void;
+    interface AnimationManager { setEnabled(enabled: boolean): void;
     clearAllAnimations(): void;
-
-interface PoolManager { cleanup(): void;
-
-interface ParticleManager { setEnabled(enabled: boolean): void;
+    interface PoolManager { cleanup(): void;
+    interface ParticleManager { setEnabled(enabled: boolean): void;
     setMaxParticles(max: number): void;
-
-interface EffectManager { setEnabled(enabled: boolean): void;
+    interface EffectManager { setEnabled(enabled: boolean): void;
     setSimpleMode(enabled: boolean): void;
 ';'
 
 interface EffectDebugInterface { ''
     showWarning(message: string): void;
-
-interface ErrorInfo { error: Error;
-    source: string;
-    timestamp: number;
+    interface ErrorInfo { error: Error,
+    source: string,
+    timestamp: number,
     context: ErrorContextInfo;
-
-interface ErrorContextInfo { fallbackMode: boolean;
-    fps: number;
-    particleCount: number;
-    effectCount: number;
-    memoryUsage: number;
+    interface ErrorContextInfo { fallbackMode: boolean,
+    fps: number,
+    particleCount: number,
+    effectCount: number,
+    memoryUsage: number,
     qualityLevel: string;
-
-interface ErrorStats { totalErrors: number;
-    fallbackMode: boolean;
-    recentErrors: ErrorInfo[];
+    interface ErrorStats { totalErrors: number,
+    fallbackMode: boolean,
+    recentErrors: ErrorInfo[],
     healthStatus: HealthStatus;
-
-type HealthStatus = 'healthy' | 'caution' | 'warning' | 'fallback';
-
-export class EffectErrorHandler {
+    type HealthStatus = 'healthy' | 'caution' | 'warning' | 'fallback';
+    export class EffectErrorHandler {
     private gameEngine: GameEngine;
     private errorHandler: ErrorHandler;
     private fallbackMode: boolean;
@@ -99,11 +82,11 @@ export class EffectErrorHandler {
     constructor(gameEngine: GameEngine) {
 
         this.gameEngine = gameEngine;
-        this.errorHandler = getErrorHandler();
-        this.fallbackMode = false;
-        this.errorCount = 0;
-        this.maxErrors = 10; // 最大エラー数
-        this.errorHistory = [] }
+    this.errorHandler = getErrorHandler();
+    this.fallbackMode = false;
+    this.errorCount = 0;
+    this.maxErrors = 10; // 最大エラー数
+        this.errorHistory = [] };
         this.initialize(); }
     }
 
@@ -112,7 +95,7 @@ export class EffectErrorHandler {
         // Canvas コンテキストロスハンドリング
         this.setupCanvasErrorHandling();
         // パフォーマンスエラーハンドリング
-        this.setupPerformanceErrorHandling() }
+        this.setupPerformanceErrorHandling();
 
     private setupGlobalErrorHandling()';'
         window.addEventListener('error', (event) => {  ''
@@ -126,9 +109,8 @@ export class EffectErrorHandler {
         window.addEventListener('unhandledrejection', (event) => {  ''
             if(this.isEffectRelatedError(event.reason)) {''
                 this.handleEffectError(event.reason, 'promise' }'
-                event.preventDefault(); }
-};
-    }
+                event.preventDefault();     }
+}
 ';'
 
     private setupCanvasErrorHandling(): void { const canvas = this.gameEngine.canvas,
@@ -137,7 +119,7 @@ export class EffectErrorHandler {
         // Context lost イベント
         canvas.addEventListener('webglcontextlost', (event) => { ''
             console.warn('Canvas, context lost),'
-            event.preventDefault() }
+            event.preventDefault();
 
             this.handleContextLoss();' }'
 
@@ -146,10 +128,8 @@ export class EffectErrorHandler {
         // Context restored イベント
         canvas.addEventListener('webglcontextrestored', () => {  ''
             console.log('Canvas, context restored') }'
-            this.handleContextRestore(); }
-        };
-    }
-
+            this.handleContextRestore();     }
+}
     private setupPerformanceErrorHandling(): void { // パフォーマンス監視と自動フォールバック
         setInterval(() => {  }
             this.checkPerformanceHealth(); }
@@ -158,34 +138,34 @@ export class EffectErrorHandler {
 
     private isEffectRelatedError(error: any): boolean { if (!error) return false,
 
-        const errorMessage = error.message || error.toString('',
-            'particle', 'effect', 'rendering', 'canvas', 'context',
-            'WebGL', 'animation', 'shader', 'texture',
+        const errorMessage = error.message || error.toString(',
+            'particle, 'effect', 'rendering', 'canvas', 'context',
+            'WebGL, 'animation', 'shader', 'texture',
         ])
         ),
         return effectKeywords.some(keyword => );
-            errorMessage.toLowerCase().includes(keyword.toLowerCase()) }
+            errorMessage.toLowerCase().includes(keyword.toLowerCase());
     }
 
-    private handleEffectError(error: Error, source: string): void { this.errorCount++,
+    private handleEffectError(error: Error, source: string): void { this.errorCount++;
         
         const errorInfo: ErrorInfo = {
             error: error,
             source: source,
             timestamp: Date.now(
-    context: this.getErrorContext( },
+    context: this.getErrorContext( };
         
         this.errorHistory.push(errorInfo);
         
         // エラー履歴のサイズ制限
-        if (this.errorHistory.length > 50) { this.errorHistory.shift() }
+        if (this.errorHistory.length > 50) { this.errorHistory.shift();
         
         console.error(`Effect, error (${ source):`, error};
         
         // エラー数が閾値を超えた場合、フォールバックモードに移行
         if (this.errorCount >= this.maxErrors} { }
-            this.enableFallbackMode(};
-        } else { this.attemptRecovery(errorInfo) }
+            this.enableFallbackMode(}
+        } else { this.attemptRecovery(errorInfo);
         
         // エラーレポート
         this.reportError(errorInfo);
@@ -217,7 +197,7 @@ export class EffectErrorHandler {
 
         } catch (recoveryError) {
             console.error('Recovery failed:', recoveryError);
-            this.enableFallbackMode() }
+            this.enableFallbackMode();
     }
 ';'
 
@@ -243,10 +223,10 @@ export class EffectErrorHandler {
             this.gameEngine.enhancedParticleManager.forceCleanup(); }
         }
         
-        if (this.gameEngine.enhancedEffectManager) { this.gameEngine.enhancedEffectManager.clearCache() }
+        if (this.gameEngine.enhancedEffectManager) { this.gameEngine.enhancedEffectManager.clearCache();
         
         // ガベージコレクション要求
-        if ((window, as any).gc) { (window, as any).gc() }
+        if ((window, as any).gc) { (window, as any).gc();
         
         // 品質レベルを下げる
         if (this.gameEngine.effectQualityController) {
@@ -256,10 +236,8 @@ export class EffectErrorHandler {
             const currentIndex = qualityLevels.indexOf(currentQuality);
             if (currentIndex > 0) {
         }
-                this.gameEngine.effectQualityController.setQualityLevel(qualityLevels[currentIndex - 1]); }
+                this.gameEngine.effectQualityController.setQualityLevel(qualityLevels[currentIndex - 1]);     }
 }
-    }
-
     private recoverFromRenderingError(): void { // レンダリングコンテキストの再初期化試行
         try {
             const canvas = this.gameEngine.canvas,
@@ -271,17 +249,17 @@ export class EffectErrorHandler {
                     // コンテキストのリセット
                     context.save();
                     context.setTransform(1, 0, 0, 1, 0, 0);
-                    context.clearRect(0, 0, canvas.width, canvas.height) }
+                    context.clearRect(0, 0, canvas.width, canvas.height);
                     context.restore(); }
                 }'} catch (contextError) { console.error('Context recovery failed:', contextError }'
         
         // エフェクト設定をリセット
-        if (this.gameEngine.enhancedEffectManager) { this.gameEngine.enhancedEffectManager.resetRenderingState() }
+        if (this.gameEngine.enhancedEffectManager) { this.gameEngine.enhancedEffectManager.resetRenderingState();
     }
 
     private recoverFromParticleError(): void { // パーティクルシステムのリセット
         if (this.gameEngine.enhancedParticleManager) {
-            this.gameEngine.enhancedParticleManager.clearAllParticles() }
+            this.gameEngine.enhancedParticleManager.clearAllParticles();
             this.gameEngine.enhancedParticleManager.resetSystem(); }
         }
         
@@ -302,7 +280,7 @@ export class EffectErrorHandler {
         }
         
         // パフォーマンス最適化を強制実行
-        if (this.gameEngine.effectPerformanceOptimizer) { this.gameEngine.effectPerformanceOptimizer.manualOptimization() }
+        if (this.gameEngine.effectPerformanceOptimizer) { this.gameEngine.effectPerformanceOptimizer.manualOptimization();
     }
 ';'
 
@@ -317,7 +295,7 @@ export class EffectErrorHandler {
         // 基本的な機能のみ維持
         this.enableBasicFallback();
         // ユーザーへの通知
-        this.notifyFallbackMode() }
+        this.notifyFallbackMode();
 
     private disableAllEffects(): void { try {
             if (this.gameEngine.enhancedParticleManager) {
@@ -339,13 +317,13 @@ export class EffectErrorHandler {
     private enableBasicFallback(): void { // 最小限のエフェクトのみ有効化
         try {
             if (this.gameEngine.particleManager) {
-                this.gameEngine.particleManager.setEnabled(true) }
+                this.gameEngine.particleManager.setEnabled(true);
                 this.gameEngine.particleManager.setMaxParticles(50); // 最小限のパーティクル }
             }
             
             if (this.gameEngine.effectManager) {
             
-                this.gameEngine.effectManager.setEnabled(true) }
+                this.gameEngine.effectManager.setEnabled(true);
                 this.gameEngine.effectManager.setSimpleMode(true);' }'
 
             } catch (fallbackError) { console.error('Error enabling fallback mode:', fallbackError }
@@ -354,7 +332,7 @@ export class EffectErrorHandler {
     private notifyFallbackMode(): void { // デバッグインターフェースが利用可能な場合、警告を表示
         if (this.gameEngine.effectDebugInterface) {
             try {
-                this.gameEngine.effectDebugInterface.showWarning() }
+                this.gameEngine.effectDebugInterface.showWarning();
 
                     'エフェクトシステムがフォールバックモードで動作しています。');' }'
 
@@ -408,7 +386,7 @@ export class EffectErrorHandler {
     }
 
     private releaseResources(): void { // リソースの解放
-        this.clearAllEffects() }
+        this.clearAllEffects();
 
     private reinitializeEffects(): void { // エフェクトシステムの再初期化
         try {
@@ -431,7 +409,7 @@ export class EffectErrorHandler {
                 this.gameEngine.enhancedParticleManager.clearAllParticles(); }
             }
             
-            if (this.gameEngine.enhancedEffectManager) { this.gameEngine.enhancedEffectManager.clearAllEffects() }
+            if (this.gameEngine.enhancedEffectManager) { this.gameEngine.enhancedEffectManager.clearAllEffects();
             ';'
 
             if (this.gameEngine.animationManager) { this.gameEngine.animationManager.clearAllAnimations(),' }'
@@ -456,14 +434,14 @@ export class EffectErrorHandler {
             this.gameEngine.effectQualityController.setQualityLevel('low'; }'
         }
         
-        if (this.gameEngine.effectPerformanceOptimizer) { this.gameEngine.effectPerformanceOptimizer.emergencyOptimization() }
+        if (this.gameEngine.effectPerformanceOptimizer) { this.gameEngine.effectPerformanceOptimizer.emergencyOptimization();
     }
 
     private reportError(errorInfo: ErrorInfo): void { // エラーの統計とレポート
         this.errorHandler.logError(errorInfo.error, {)'
             component: 'EffectSystem'),
             source: errorInfo.source,
-    context: JSON.stringify(errorInfo.context  };
+    context: JSON.stringify(errorInfo.context  }
     }
 
     // API メソッド
@@ -475,9 +453,9 @@ export class EffectErrorHandler {
 ';'
 
     private getHealthStatus(): HealthStatus { ''
-        if(this.fallbackMode) return 'fallback',
-        if(this.errorCount > this.maxErrors * 0.7) return 'warning',
-        if(this.errorCount > 0) return 'caution',
+        if(this.fallbackMode) return 'fallback,
+        if(this.errorCount > this.maxErrors * 0.7) return 'warning,
+        if(this.errorCount > 0) return 'caution,
         return 'healthy' }
 
     public resetErrorCount()';'
@@ -502,17 +480,15 @@ export class EffectErrorHandler {
     }
 
     private enableBasicEffects(): void { if (this.gameEngine.enhancedParticleManager) {
-            this.gameEngine.enhancedParticleManager.setEnabled(true) }
+            this.gameEngine.enhancedParticleManager.setEnabled(true);
         
         if (this.gameEngine.enhancedEffectManager) {
         ';'
 
             ' }'
 
-            this.gameEngine.enhancedEffectManager.setEnabled(true); }
+            this.gameEngine.enhancedEffectManager.setEnabled(true);     }
 }
-}
-
 // グローバルアクセス用
 declare global { interface Window {
         EffectErrorHandler: typeof EffectErrorHandler 

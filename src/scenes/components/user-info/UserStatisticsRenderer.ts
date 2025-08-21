@@ -22,24 +22,22 @@ interface StatisticsData { totalPlayTime?: number,
     bubblesPopped?: number;
     itemsUsed?: number;
     apEarned?: number;
-    scoreHistory?: Array<{ date: string,, score: number;>;
-    playtimeByDay?: Array<{ day: string,, time: number;>;
+    scoreHistory?: Array<{ date: string, score: number;>;
+    playtimeByDay?: Array<{ day: string, time: number;>;
     [key: string]: any;
-
-interface StatisticsDisplaySettings { showDashboard: boolean;
-    showCharts: boolean;
-    showDetailedStats: boolean;
-    enableAnimations: boolean;
+    interface StatisticsDisplaySettings { showDashboard: boolean,
+    showCharts: boolean,
+    showDetailedStats: boolean,
+    enableAnimations: boolean,
     compactMode: boolean;
 ';'
 
 interface ResponsiveLayout { ''
-    layout: 'mobile' | 'tablet' | 'desktop';
-    columnCount: number;
-    compactMode: boolean;
+    layout: 'mobile' | 'tablet' | 'desktop,
+    columnCount: number,
+    compactMode: boolean,
     showCharts: boolean;
-
-interface StatItem { label: string;
+    interface StatItem { label: string,
     value: string;
 
 // シーン状態のインターフェース
@@ -53,9 +51,9 @@ interface StatisticsTabComponent { isActive: boolean;
 // 統計マネージャーのインターフェース
 interface StatisticsManager { ''
     getDetailedStatistics('';
-type, StatisticsViewMode = 'dashboard' | 'charts' | 'details';
-type, PeriodFilter = 'all' | 'last7days' | 'last30days' | 'thisMonth' | 'thisYear';
-type, ExportFormat = 'json' | 'csv' | 'pdf'
+    type, StatisticsViewMode = 'dashboard' | 'charts' | 'details';
+    type, PeriodFilter = 'all' | 'last7days' | 'last30days' | 'thisMonth' | 'thisYear';
+    type, ExportFormat = 'json' | 'csv' | 'pdf'
 
 export, class UserStatisticsRenderer {
     private, gameEngine: ExtendedGameEngine;
@@ -72,27 +70,26 @@ export, class UserStatisticsRenderer {
     private, statisticsViewMode: StatisticsViewMode = 'dashboard'';'
     private, currentPeriodFilter: PeriodFilter = 'last7days';
     private, statisticsDisplaySettings: StatisticsDisplaySettings = {
-        showDashboar,d: true;
-        showCharts: true;
-        showDetailedStats: true;
-        enableAnimations: true;
+        showDashboar,d: true,
+        showCharts: true,
+    showDetailedStats: true,
+    enableAnimations: true,
     compactMode: false;
     );
     private readonly contentPadding: number = 20);
     constructor(gameEngine: ExtendedGameEngine, eventBus: EventBus | null, sceneState: SceneState) {
         this.gameEngine = gameEngine;
-        this.eventBus = eventBus;
-        this.sceneState = sceneState;
-        
-        this.initialize() }
-        this.setupEventListeners(); }
+    this.eventBus = eventBus;
+    this.sceneState = sceneState;
+    this.initialize();
+    this.setupEventListeners(); }
     }
     
     /**
      * 統計システムの初期化
      */
     private initialize(): void { this.initializeExtendedStatistics();
-        this.loadStatisticsData() }
+        this.loadStatisticsData();
     
     /**
      * イベントリスナーをセットアップ
@@ -110,10 +107,8 @@ export, class UserStatisticsRenderer {
     }');'
 
         this.eventBus.on('statisticsPeriodChanged', (period: PeriodFilter) => {  this.currentPeriodFilter = period }
-            this.loadStatisticsData(); }
-        };
-    }
-    
+            this.loadStatisticsData();     }
+}
     /**
      * 拡張統計システムの初期化
      */
@@ -144,7 +139,7 @@ export, class UserStatisticsRenderer {
         } catch (error') {'
             console.error('Failed to initialize extended statistics:', error);
             // フォールバック: 基本的な初期化のみ
-            this.chartRenderer = new CoreChartRenderer() }
+            this.chartRenderer = new CoreChartRenderer();
     }
     
     /**
@@ -156,7 +151,7 @@ export, class UserStatisticsRenderer {
                 this.statisticsData = this.gameEngine.statisticsManager.getDetailedStatistics()';'
                 if(this.statisticsFilterManager && this.currentPeriodFilter !== 'all' {'
                     this.statisticsData = this.statisticsFilterManager.filterByPeriod(
-                        this.statisticsData ) }
+                        this.statisticsData );
                         this.currentPeriodFilter); }
                 }
                 ';'
@@ -185,17 +180,17 @@ export, class UserStatisticsRenderer {
 
             } catch (error) {
             console.error('Statistics tab rendering failed:', error);
-            this.renderStatisticsFallback(context, y, height) }
+            this.renderStatisticsFallback(context, y, height);
     }
     
     /**
      * 統計データのフォールバック描画'
      */''
     private renderStatisticsFallback(context: CanvasRenderingContext2D, y: number, height: number): void { const canvas = this.gameEngine.canvas,
-        context.fillStyle = '#cccccc',
-        context.font = '20px Arial',
-        context.textAlign = 'center',
-        context.textBaseline = 'middle',
+        context.fillStyle = '#cccccc,
+        context.font = '20px Arial,
+        context.textAlign = 'center,
+        context.textBaseline = 'middle,
         context.fillText('統計データを読み込み中...', canvas.width / 2, y + height / 2' }'
     
     /**
@@ -204,13 +199,13 @@ export, class UserStatisticsRenderer {
     public async renderStatisticsDashboard(context: CanvasRenderingContext2D, y: number, height: number): Promise<void> { ''
         if (!this.statisticsDashboard) {
 
-            this.renderNoDataMessage(context, y, height, 'ダッシュボードを初期化できませんでした') }
+            this.renderNoDataMessage(context, y, height, 'ダッシュボードを初期化できませんでした');
             return; }
         }
         
         try { // ダッシュボード用のサブキャンバス作成
             const canvas = this.gameEngine.canvas,
-            const dashboardCanvas = document.createElement('canvas',
+            const dashboardCanvas = document.createElement('canvas,
             dashboardCanvas.width = canvas.width - (this.contentPadding * 2'),'
 
             dashboardCanvas.height = height,
@@ -255,7 +250,7 @@ export, class UserStatisticsRenderer {
                 chartWidth,
                 chartHeight,
                 this.statisticsData.scoreHistory || [],
-                'スコア推移',')',
+                'スコア推移,')',
                 '#4A90E2')','
 
             '),'
@@ -317,32 +312,32 @@ export, class UserStatisticsRenderer {
     private renderBasicStatistics(;
         context: CanvasRenderingContext2D,
     x: number, ;
-        y: number );
+        y: number ),
         width: number,
     data: StatisticsData';'
     '): void { // セクション背景'
-        context.fillStyle = '#1a1a2e',
+        context.fillStyle = '#1a1a2e,
         context.fillRect(x, y, width, 160);
         ','
         // セクション枠線
-        context.strokeStyle = '#4a4a6a',
+        context.strokeStyle = '#4a4a6a,
 
         context.lineWidth = 1,
         context.strokeRect(x, y, width, 160);
         ','
         // セクション見出し
-        context.fillStyle = '#ffffff',
-        context.font = 'bold 16px Arial',
-        context.textAlign = 'left',
+        context.fillStyle = '#ffffff,
+        context.font = 'bold 16px Arial,
+        context.textAlign = 'left,
         context.fillText('基本統計', x + 15, y + 25','
         ','
         // 統計項目
-        context.font = '14px Arial',
+        context.font = '14px Arial,
 
         const stats: StatItem[] = ['
-            }'
+            }
 
-            { label: '総プレイ時間', value: this.formatPlayTime(data.totalPlayTime || 0  },''
+            { label: '総プレイ時間', value: this.formatPlayTime(data.totalPlayTime || 0  ,''
             { label: 'ゲーム回数', value: (data.gamesPlayed || 0).toLocaleString()'
             { label: '最高スコア', value: (data.highestScore || 0).toLocaleString()'
             { label: '平均スコア', value: (data.averageScore || 0).toLocaleString('}]'
@@ -351,43 +346,41 @@ export, class UserStatisticsRenderer {
         ';'
         stats.forEach((stat, index) => {  ''
             const itemY = y + 50 + (index * 20'),'
-            context.fillStyle = '#cccccc',
+            context.fillStyle = '#cccccc,
             context.fillText(stat.label + ':', x + 15, itemY','
             context.fillStyle = '#88ccff' }
-            context.fillText(stat.value, x + 130, itemY); }
-        };
-    }
-    
+            context.fillText(stat.value, x + 130, itemY);     }
+}
     /**
      * 詳細統計の描画
      */
     private renderAdvancedStatistics(;
         context: CanvasRenderingContext2D,
     x: number, ;
-        y: number );
+        y: number ),
         width: number)','
     data: StatisticsData';'
     '): void { // セクション背景'
-        context.fillStyle = '#1a1a2e',
+        context.fillStyle = '#1a1a2e,
         context.fillRect(x, y, width, 160);
         ','
         // セクション枠線
-        context.strokeStyle = '#4a4a6a',
+        context.strokeStyle = '#4a4a6a,
 
         context.lineWidth = 1,
         context.strokeRect(x, y, width, 160);
         ','
         // セクション見出し
-        context.fillStyle = '#ffffff',
-        context.font = 'bold 16px Arial',
-        context.textAlign = 'left',
+        context.fillStyle = '#ffffff,
+        context.font = 'bold 16px Arial,
+        context.textAlign = 'left,
         context.fillText('詳細統計', x + 15, y + 25','
         ','
         // 詳細統計項目
-        context.font = '14px Arial',
+        context.font = '14px Arial,
 
         const advancedStats: StatItem[] = ['
-            }'
+            }
 
             { label: '連続記録', value: `${data.longestStreak || 0 }回` },''
             { label: 'コンボ記録', value: `${data.highestCombo || 0 }コンボ` },''
@@ -399,21 +392,19 @@ export, class UserStatisticsRenderer {
 
         advancedStats.forEach((stat, index) => {  ''
             const itemY = y + 50 + (index * 20'),'
-            context.fillStyle = '#cccccc',
+            context.fillStyle = '#cccccc,
             context.fillText(stat.label + ':', x + 15, itemY','
             context.fillStyle = '#88ccff' }
-            context.fillText(stat.value, x + 130, itemY); }
-        };
-    }
-    
+            context.fillText(stat.value, x + 130, itemY);     }
+}
     /**
      * データなしメッセージの描画'
      */''
     private renderNoDataMessage(context: CanvasRenderingContext2D, y: number, height: number, message: string): void { ''
-        context.fillStyle = '#9CA3AF',
-        context.font = '16px system-ui, -apple-system, sans-serif',
-        context.textAlign = 'center',
-        context.fillText(message, this.gameEngine.canvas.width / 2, y + height / 2) }
+        context.fillStyle = '#9CA3AF,
+        context.font = '16px system-ui, -apple-system, sans-serif,
+        context.textAlign = 'center,
+        context.fillText(message, this.gameEngine.canvas.width / 2, y + height / 2);
     
     /**
      * プレイ時間のフォーマット
@@ -452,19 +443,18 @@ export, class UserStatisticsRenderer {
     public getResponsiveLayout(screenWidth: number): ResponsiveLayout { ''
         if (screenWidth < 600) {
             return { ''
-                layout: 'mobile',
+                layout: 'mobile,
     columnCount: 1 }
                 compactMode: true;;
                 showCharts: false,'} else if (screenWidth < 1024) { return { ''
-                layout: 'tablet',
+                layout: 'tablet,
                 columnCount: 1,
     compactMode: false,
                 showCharts: true, else {  return { ''
-                layout: 'desktop',
+                layout: 'desktop,
     columnCount: 2 }
                 compactMode: false;;
-                showCharts: true,
-    }
+                showCharts: true }
     
     /**
      * コンポーネントのクリーンアップ
@@ -473,7 +463,7 @@ export, class UserStatisticsRenderer {
         if (this.eventBus) {
 
             this.eventBus.off('statisticsDataReload');
-            this.eventBus.off('statisticsViewModeChanged') }
+            this.eventBus.off('statisticsViewModeChanged');
 
             this.eventBus.off('statisticsPeriodChanged'); }
         }

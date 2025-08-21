@@ -16,7 +16,7 @@ const createFunctionalGameEngine = () => ({
        , currentScene: { constructor: { name: 'MenuScene' ) }
     },
     localizationManager: {
-        t: jest.fn((key, fallback) => fallback || key),
+        t: jest.fn((key, fallback) => fallback || key) };
         getCurrentLanguage: (') => 'ja'
     }),
         accessibilityManager: {
@@ -177,6 +177,6 @@ describe('KeyboardShortcutRouter Functional Tests', () => {
             expect(gameEngine.sceneManager.switchScene').toHaveBeenCalledWith('help'),'
             // Verify context was pushed
             const stackDepth = shortcutRouter.navigationContext.getStackDepth();
-            expect(stackDepth).toBe(1) };
+            expect(stackDepth).toBe(1) }
     }
 }');'

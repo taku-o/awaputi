@@ -4,17 +4,16 @@
  */
 
 // Type definitions for error analyzer system
-interface ErrorInfo { id: string;
-    name: string;
+interface ErrorInfo { id: string,
+    name: string,
     message: string;
     stack?: string;
-    timestamp: string;
-    context: string;
+    timestamp: string,
+    context: string,
     metadata: Record<string, any>;
     recovered?: boolean;
-
-interface MainController { logger?: {
-        generateErrorI,d: () => string;
+    interface MainController { logger?: {
+        generateErrorI,d: () => string,
         getErrorLog: () => ErrorInfo[]  }
     };
     isBrowser?: boolean;
@@ -25,6 +24,7 @@ interface ErrorMetadata { userAgent?: string,
     url?: string;
     viewport?: {
         widt,h: number;
+    },
     height: number;
     performanceNow?: number;
     memory?: { used?: number,
@@ -45,74 +45,74 @@ interface ErrorMetadata { userAgent?: string,
     performance?: { level?: string,
         quality?: string;
         optimizationsActive?: string[];;
-    [key: string]: any;
+    [key: string]: any };
 
 interface PatternAnalysis { recurring: Record<string, number>,
     byContext: Record<string, number>;
     bySeverity: Record<string, number>;
     timeline: Array<{
-        timestam,p: string;
-        context: string;
+        timestam,p: string,
+        context: string,
     severity: string;>;
-    correlations: Array<{ type: string;
-        description: string;
+    correlations: Array<{ type: string,
+    description: string,
     contexts: string[];>;
 }
 
-interface AnalysisReport { errorId: string;
-    severity: string;
-    context: string;
+interface AnalysisReport { errorId: string,
+    severity: string,
+    context: string,
     analysis: {
         isRecurrin,g: boolean;
-        similarCount: number;
-        riskLevel: string;
-        impactAssessment: ImpactAssessment;
-    recommendedActions: string[];
-    technical: { classification: ErrorClassification;
+    },
+        similarCount: number,
+        riskLevel: string,
+        impactAssessment: ImpactAssessment,
+    recommendedActions: string[],
+    technical: { classification: ErrorClassification,
         rootCause: string;
-    affectedSystems: string[];
+    },
+    affectedSystems: string[],
     timestamp: string;
 }
 
 interface ImpactAssessment { userExperience: 'minimal' | 'moderate' | 'severe',''
-    systemStability: 'stable' | 'unstable';
+    systemStability: 'stable' | 'unstable,
     dataIntegrity: 'secure' | 'at_risk' | 'compromised'
             }
 
-interface ErrorClassification { category: string;
-    type: string;
-    source: string;
+interface ErrorClassification { category: string,
+    type: string,
+    source: string,
     recoverable: boolean;
-
-interface AnalyzerConfig { severityRules?: Record<string, string>,
+    interface AnalyzerConfig { severityRules?: Record<string, string>,
     contextPatterns?: Record<string, string> }
 
-interface AnalyzerStats { severityRulesCount: number;
-    contextPatternsCount: number;
-    criticalPatternsCount: number;
+interface AnalyzerStats { severityRulesCount: number,
+    contextPatternsCount: number,
+    criticalPatternsCount: number,
     highSeverityPatternsCount: number;
-
-type SeverityLevel = 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW';
+    type SeverityLevel = 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW';
 
 // Global type extensions
 declare global { interface Window {
         gameEngine?: {
             currentScene?: {
-                constructor: {
-                    nam,e: string;
-            performanceOptimizer?: { getCurrentFPS: () => number;
+                constructor: { nam,e: string,
+            performanceOptimizer?: { getCurrentFPS: () => number,
                 currentLevel: string;
-                currentQuality: string;
+    },
+                currentQuality: string,
                 activeOptimizations: string[];
             memoryManager?: { getUsage: () => any 
-    };
+    }
     }
 
     interface Performance { memory?: {
-            usedJSHeapSiz,e: number;
-            totalJSHeapSize: number;
+            usedJSHeapSiz,e: number,
+            totalJSHeapSize: number,
     jsHeapSizeLimit: number;
-}
+} };
 
 export class UtilsErrorAnalyzer {
     private mainController: MainController;
@@ -147,7 +147,7 @@ export class UtilsErrorAnalyzer {
             ['QuotaExceededError', 'MEDIUM'],
             ['NetworkError', 'MEDIUM'],
             ['AbortError', 'LOW'],
-            ['TimeoutError', 'MEDIUM]',
+            ['TimeoutError, 'MEDIUM]',
         ]'),'
         
         // Critical message patterns
@@ -175,8 +175,8 @@ export class UtilsErrorAnalyzer {
      * @param error - Raw error
      * @returns Normalized error information
      */
-    normalizeError(error: Error | Record<string, any> | string): ErrorInfo { const timestamp = new Date().toISOString() }
-        const errorId = this.mainController.logger?.generateErrorId() || `err_${Date.now())`,
+    normalizeError(error: Error | Record<string, any> | string): ErrorInfo { const timestamp = new Date().toISOString();
+        const errorId = this.mainController.logger?.generateErrorId() || `err_${Date.now()),
         
         // Handle different error types
         if (error, instanceof Error) {
@@ -184,7 +184,7 @@ export class UtilsErrorAnalyzer {
                 id: errorId,
                 name: error.name,
                 message: error.message,
-    stack: error.stack,
+    stack: error.stack;
                 timestamp }
                 context: this.determineContext(error),' };'
 
@@ -193,8 +193,8 @@ export class UtilsErrorAnalyzer {
 
         if(typeof, error === 'object' && error !== null' {'
             return { id: errorId,''
-                name: error.name || 'UnknownError',
-                message: error.message || 'Unknown error occurred',
+                name: error.name || 'UnknownError,
+                message: error.message || 'Unknown error occurred,
                 stack: error.stack || ','
                 timestamp }
 
@@ -205,27 +205,27 @@ export class UtilsErrorAnalyzer {
 
         if (typeof, error === 'string') {
             return { id: errorId,''
-                name: 'StringError',
+                name: 'StringError,
                 message: error,
                 stack: ' }'
 
                 timestamp,' };'
 
-                context: this.determineContext({ message: error )) }
+                context: this.determineContext({ message: error )),
                 metadata: {}
         
         // Fallback for unknown error types
         return { id: errorId,''
-            name: 'UnknownError',
-            message: 'An unknown error occurred',
+            name: 'UnknownError,
+            message: 'An unknown error occurred,
             stack: ','
             timestamp,' };'
 
             context: 'UNKNOWN'
             }
             metadata: { originalError: error,
-            metadata: { originalError: error,
-        };
+            metadata: { originalError: error;
+         },
     /**
      * Determine error context from error information
      * @param error - Error object
@@ -293,21 +293,21 @@ export class UtilsErrorAnalyzer {
             case 'CANVAS_ERROR':','
             case 'WEBGL_ERROR':','
             case 'SECURITY_ERROR':','
-                return 'CRITICAL',
+                return 'CRITICAL,
 
             case 'AUDIO_ERROR':','
             case 'STORAGE_ERROR':','
             case 'NETWORK_ERROR':','
-                return 'HIGH',
+                return 'HIGH,
 
             case 'MEMORY_WARNING':','
             case 'PERFORMANCE_WARNING':','
             case 'BROWSER_COMPATIBILITY':','
-                return 'MEDIUM',
+                return 'MEDIUM,
 
             ' }'
 
-            default: return 'LOW',
+            default: return 'LOW';
     
     /**
      * Extract metadata from error
@@ -326,7 +326,7 @@ export class UtilsErrorAnalyzer {
                 height: window.innerHeight 
     };
             // Performance information
-            if (performance && performance.now) { metadata.performanceNow = performance.now() }
+            if (performance && performance.now) { metadata.performanceNow = performance.now();
             ;
             // Memory information (if, available);
             if (performance && performance.memory) {
@@ -355,7 +355,7 @@ export class UtilsErrorAnalyzer {
                 fps: gameEngine.performanceOptimizer?.getCurrentFPS(), : undefined
                 fps: gameEngine.performanceOptimizer?.getCurrentFPS(), : undefined
         };
-                memoryUsage: gameEngine.memoryManager?.getUsage() }
+                memoryUsage: gameEngine.memoryManager?.getUsage();
             };
             
             // Performance metrics
@@ -384,9 +384,9 @@ export class UtilsErrorAnalyzer {
     analyzeErrorPatterns(errors: ErrorInfo[]): PatternAnalysis { const patterns = {
             recurring: new Map<string, number>(),
             byContext: new Map<string, number>(),
-            bySeverity: new Map<string, number>() }
-            timeline: [] as Array<{ timestamp: string, context: string,, severity: string;>,
-            correlations: [] as Array<{ type: string, description: string,, contexts: string[];>
+            bySeverity: new Map<string, number>();
+            timeline: [] as Array<{ timestamp: string, context: string, severity: string;>,
+            correlations: [] as Array<{ type: string, description: string, contexts: string[];>
         };
         
         // Analyze recurring patterns
@@ -401,7 +401,7 @@ export class UtilsErrorAnalyzer {
             patterns.byContext.set(error.context, (patterns.byContext.get(error.context) || 0) + 1);
             
             patterns.timeline.push({ timestamp: error.timestamp)
-               , context: error.context),
+            context: error.context),
                 severity }
         
         // Find correlations (simplified);
@@ -413,15 +413,14 @@ export class UtilsErrorAnalyzer {
             if (uniqueContexts.length < contexts.length) {
                 patterns.correlations.push({''
                     type: 'context_clustering',','
-                    description: 'Multiple errors in same context within short timeframe')
-        }
+                    description: 'Multiple errors in same context within short timeframe'),
                     contexts: uniqueContexts); 
     }
         
         return { recurring: Object.fromEntries(patterns.recurring,
-            byContext: Object.fromEntries(patterns.byContext);
+            byContext: Object.fromEntries(patterns.byContext),
             bySeverity: Object.fromEntries(patterns.bySeverity,
-    timeline: patterns.timeline },
+    timeline: patterns.timeline };
             correlations: patterns.correlations 
     }
     
@@ -435,15 +434,14 @@ export class UtilsErrorAnalyzer {
         return { errorId: errorInfo.id,
             severity,
             context: errorInfo.context,
-    analysis: {
-                isRecurring: similar.length > 0,
+    analysis: { isRecurring: similar.length > 0  ,
                 similarCount: similar.length,
                 riskLevel: this.calculateRiskLevel(errorInfo, severity);
                 impactAssessment: this.assessImpact(errorInfo, severity) };
                 recommendedActions: this.generateRecommendations(errorInfo, severity); }
             },
             technical: { classification: this.classifyError(errorInfo),
-                rootCause: this.identifyRootCause(errorInfo,
+                rootCause: this.identifyRootCause(errorInfo  ,
     affectedSystems: this.identifyAffectedSystems(errorInfo }
             timestamp: new, Date().toISOString();
         }
@@ -459,7 +457,7 @@ export class UtilsErrorAnalyzer {
             logError.id !== errorInfo.id &&);
             (logError.name === errorInfo.name ||),
              logError.context === errorInfo.context ||),
-             this.calculateSimilarity(logError.message, errorInfo.message) > 0.7)) }
+             this.calculateSimilarity(logError.message, errorInfo.message) > 0.7));
     }
     
     /**
@@ -485,14 +483,14 @@ export class UtilsErrorAnalyzer {
 
         if (severity === 'CRITICAL') factors.push('critical_severity');
         if (errorInfo.context === 'CANVAS_ERROR') factors.push('rendering_failure');
-        if (errorInfo.context === 'SECURITY_ERROR') factors.push('security_issue',
+        if (errorInfo.context === 'SECURITY_ERROR') factors.push('security_issue,
         ','
 
         const similar = this.findSimilarErrors(errorInfo);
         if(similar.length > 5) factors.push('recurring_issue),'
 
-        if(factors.length >= 3) return 'HIGH',
-        if(factors.length >= 2) return 'MEDIUM',
+        if(factors.length >= 3) return 'HIGH,
+        if(factors.length >= 2) return 'MEDIUM,
         return 'LOW' }
     
     /**
@@ -502,29 +500,29 @@ export class UtilsErrorAnalyzer {
      * @returns Impact assessment'
      */''
     private assessImpact(errorInfo: ErrorInfo, severity: string): ImpactAssessment { const impact: ImpactAssessment = {''
-            userExperience: 'minimal',
-            systemStability: 'stable',
+            userExperience: 'minimal,
+            systemStability: 'stable,
             dataIntegrity: 'secure'
             };
         switch(errorInfo.context) {
 
             case 'CANVAS_ERROR':','
             case 'WEBGL_ERROR':','
-                impact.userExperience = 'severe',
-                impact.systemStability = 'unstable',
+                impact.userExperience = 'severe,
+                impact.systemStability = 'unstable,
 
                 break,
             case 'AUDIO_ERROR':','
-                impact.userExperience = 'moderate',
+                impact.userExperience = 'moderate,
 
                 break,
             case 'STORAGE_ERROR':','
-                impact.dataIntegrity = 'at_risk',
-                impact.userExperience = 'moderate',
+                impact.dataIntegrity = 'at_risk,
+                impact.userExperience = 'moderate,
 
                 break,
             case 'SECURITY_ERROR':','
-                impact.dataIntegrity = 'compromised',
+                impact.dataIntegrity = 'compromised,
                 impact.systemStability = 'unstable' }
                 break; }
         }
@@ -542,7 +540,7 @@ export class UtilsErrorAnalyzer {
 
         if (severity === 'CRITICAL') {
 
-            recommendations.push('immediate_attention_required') }
+            recommendations.push('immediate_attention_required');
 
             recommendations.push('consider_emergency_fallback'; }'
         }
@@ -573,7 +571,7 @@ export class UtilsErrorAnalyzer {
         const similar = this.findSimilarErrors(errorInfo);
         if (similar.length > 3) {
 
-            recommendations.push('investigate_root_cause') }
+            recommendations.push('investigate_root_cause');
 
             recommendations.push('implement_preventive_measures'; }'
         }
@@ -588,7 +586,7 @@ export class UtilsErrorAnalyzer {
      */
     private classifyError(errorInfo: ErrorInfo): ErrorClassification { return { category: this.getCategoryFromContext(errorInfo.context,
             type: errorInfo.name,
-    source: this.identifyErrorSource(errorInfo) },
+    source: this.identifyErrorSource(errorInfo) ,
             recoverable: this.isRecoverable(errorInfo); 
     }
     
@@ -598,13 +596,13 @@ export class UtilsErrorAnalyzer {
      * @returns Error category'
      */''
     private getCategoryFromContext(context: string): string { const categoryMap: Record<string, string> = {', 'CANVAS_ERROR': 'rendering','
-            'WEBGL_ERROR': 'rendering',
-            'AUDIO_ERROR': 'media',
-            'STORAGE_ERROR': 'data',
-            'MEMORY_WARNING': 'system',
-            'PERFORMANCE_WARNING': 'system',
-            'NETWORK_ERROR': 'network',
-            'SECURITY_ERROR': 'security',
+            'WEBGL_ERROR': 'rendering,
+            'AUDIO_ERROR': 'media,
+            'STORAGE_ERROR': 'data,
+            'MEMORY_WARNING': 'system,
+            'PERFORMANCE_WARNING': 'system,
+            'NETWORK_ERROR': 'network,
+            'SECURITY_ERROR': 'security,
             'BROWSER_COMPATIBILITY': 'compatibility' };
 
         return categoryMap[context] || 'general';
@@ -618,11 +616,11 @@ export class UtilsErrorAnalyzer {
     private identifyErrorSource(errorInfo: ErrorInfo): string { ''
         const stack = errorInfo.stack || ','
 
-        if(stack.includes('gameEngine)' return 'game_engine',
-        if(stack.includes('particleManager)' return 'particle_system',
-        if(stack.includes('audioManager)' return 'audio_system',
-        if(stack.includes('effectManager)' return 'effect_system',
-        if(stack.includes('performanceOptimizer)' return 'performance_system',
+        if(stack.includes('gameEngine)' return 'game_engine,
+        if(stack.includes('particleManager)' return 'particle_system,
+        if(stack.includes('audioManager)' return 'audio_system,
+        if(stack.includes('effectManager)' return 'effect_system,
+        if(stack.includes('performanceOptimizer)' return 'performance_system,
 
         return 'unknown' }
     
@@ -680,16 +678,16 @@ export class UtilsErrorAnalyzer {
         const context = errorInfo.context,
         const message = errorInfo.message.toLowerCase()','
         if(context === 'CANVAS_ERROR' || message.includes('canvas)' {''
-            systems.push('rendering_system') }
+            systems.push('rendering_system');
 
         if(context === 'AUDIO_ERROR' || message.includes('audio)' { ''
-            systems.push('audio_system') }
+            systems.push('audio_system');
 
         if(context === 'STORAGE_ERROR' || message.includes('storage)' { ''
-            systems.push('data_persistence') }
+            systems.push('data_persistence');
 
         if(context === 'PERFORMANCE_WARNING' || message.includes('fps)' { ''
-            systems.push('performance_system') }
+            systems.push('performance_system');
 
         if(context === 'NETWORK_ERROR' || message.includes('network)' { ''
             systems.push('network_communication' }'
@@ -726,8 +724,8 @@ export class UtilsErrorAnalyzer {
      * @param errorName - Error name to match
      * @param severity - Severity level
      */
-    addSeverityRule(errorName: string, severity: string): void { this.severityRules.set(errorName, severity) }
-        console.log(`[ErrorAnalyzer] Added, severity rule: ${errorName} -> ${severity}`};
+    addSeverityRule(errorName: string, severity: string): void { this.severityRules.set(errorName, severity);
+        console.log(`[ErrorAnalyzer] Added, severity rule: ${errorName} -> ${severity}`}
     }
     
     /**
@@ -735,7 +733,7 @@ export class UtilsErrorAnalyzer {
      * @param context - Context name
      * @param pattern - Pattern to match
      */
-    addContextPattern(context: string, pattern: RegExp): void { this.contextPatterns.set(context pattern) }
+    addContextPattern(context: string, pattern: RegExp): void { this.contextPatterns.set(context pattern);
         console.log(`[ErrorAnalyzer] Added context pattern: ${context}`}');'
     }
     
@@ -745,8 +743,8 @@ export class UtilsErrorAnalyzer {
      */
     getAnalyzerStats(): AnalyzerStats { return { severityRulesCount: this.severityRules.size,
             contextPatternsCount: this.contextPatterns.size,
-    criticalPatternsCount: this.criticalPatterns.length },
-            highSeverityPatternsCount: this.highSeverityPatterns.length 
+    criticalPatternsCount: this.criticalPatterns.length ,
+            highSeverityPatternsCount: this.highSeverityPatterns.length; 
     }
     
     /**
@@ -754,6 +752,6 @@ export class UtilsErrorAnalyzer {
      */'
     destroy(): void { this.contextPatterns.clear();
         this.severityRules.clear()','
-        console.log('[ErrorAnalyzer] Analyzer, destroyed') }
+        console.log('[ErrorAnalyzer] Analyzer, destroyed');
 
     }'}'

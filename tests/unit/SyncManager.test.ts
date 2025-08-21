@@ -30,15 +30,15 @@ interface SyncResult {
 interface SyncOptions {
     direction?: 'up' | 'down' | 'bidirectional' }
 interface ConflictResult {
-    action: string;
+    action: string,
     message: string;
 interface SyncStatus {
-    isInProgress: boolean;
+    isInProgress: boolean,
     lastSyncTime: number | null;
-    cloudAuthenticated: boolean;
+    cloudAuthenticated: boolean,
     isOnline: boolean;
 interface SavedSyncState {
-    lastSyncTime: number;
+    lastSyncTime: number,
     conflicts: Array<{ ke,y: string;>;
     syncErrors: any[];
 describe('SyncManager', () => {
@@ -57,13 +57,13 @@ describe('SyncManager', () => {
         
         // CloudStorageのモック
         mockCloudStorage = {
-            isAuthenticated: jest.fn(() => true);
+            isAuthenticated: jest.fn(() => true),
             keys: jest.fn<any, any[]>(),
             get: jest.fn<any, any[]>(),
             set: jest.fn<any, any[]>() }');'
         // navigator.onLineのモック
         Object.defineProperty(navigator, 'onLine', {
-            writable: true;
+            writable: true,
             value: true));
         // setInterval/clearIntervalのモック
         jest.useFakeTimers();
@@ -94,15 +94,15 @@ describe('SyncManager', () => {
             mockLocalStorage.keys.mockResolvedValue(['key1', 'key2']'),'
             mockCloudStorage.keys.mockResolvedValue(['key2', 'key3']'),'
             mockLocalStorage.get
-                .mockResolvedValueOnce({ data: 'local1';
+                .mockResolvedValueOnce({ data: 'local1',
         _metadata: { timestamp: 1000 } }')'
-                .mockResolvedValueOnce({ data: 'local2';
+                .mockResolvedValueOnce({ data: 'local2',
         _metadata: { timestamp: 2000 }
             };
                 .mockResolvedValueOnce(null);
             mockCloudStorage.get
                 .mockResolvedValueOnce(null')'
-                .mockResolvedValueOnce({ data: 'cloud2';
+                .mockResolvedValueOnce({ data: 'cloud2',
         _cloudMetadata: { uploadedAt: 1500 } }')'
                 .mockResolvedValueOnce({ data: 'cloud3', _cloudMetadata: { uploadedAt: 3000 } );
             mockCloudStorage.set.mockResolvedValue(true);
@@ -206,9 +206,9 @@ describe('SyncManager', () => {
         test('メタデータが除外される', (') => {'
             const cleanData = { name: 'test', value: 123 };
             const dataWithMeta = {
-                name: 'test';
+                name: 'test',
                 value: 123;
-                _metadata: { timestamp: 1000 };
+                _metadata: { timestamp: 1000 },
                 _cloudMetadata: { uploadedAt: 2000 }
             };
             
@@ -243,13 +243,13 @@ describe('SyncManager', () => {
             
             await syncManager.saveSyncState();
             expect(mockLocalStorage.save').toHaveBeenCalledWith('_syncState', expect.objectContaining({),'
-                lastSyncTime: expect.any(Number;
+                lastSyncTime: expect.any(Number,
         conflicts: expect.any(Array) }');'
         }
         test('同期状態が正しく復元される', async (') => {'
             const savedState: SavedSyncState = {
-                lastSyncTime: 123456789;
-                conflicts: [{ key: 'test' }];
+                lastSyncTime: 123456789,
+                conflicts: [{ key: 'test' }],
                 syncErrors: []
             };
             
@@ -261,7 +261,7 @@ describe('SyncManager', () => {
     describe('設定管理', (') => {'
         test('設定が正しく更新される', (') => {'
             const newConfig = {
-                autoSyncInterval: 10 * 60 * 1000;
+                autoSyncInterval: 10 * 60 * 1000,
                 conflictResolutionStrategy: 'cloud' as const
             };
             
@@ -322,6 +322,6 @@ describe('SyncManager', () => {
             syncManager.startAutoSync();
             syncManager.destroy();
             expect(syncManager.autoSyncTimer).toBeNull();
-            expect(syncManager.eventListeners.size).toBe(0) };
+            expect(syncManager.eventListeners.size).toBe(0) }
     }
 }');'

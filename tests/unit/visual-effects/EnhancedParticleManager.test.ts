@@ -27,13 +27,13 @@ interface MockCanvasContext {
     rotate: jest.Mock<void, [number]>;
     measureText: jest.Mock<TextMetrics, [string]>;
     canvas: {
-        widt,h: number;
+        widt,h: number },
         height: number;
 }
 interface Particle {
-    x: number;
+    x: number,
     y: number;
-    size: number;
+    size: number,
     color: string;
     type?: string;
     lifetime?: number;
@@ -50,7 +50,7 @@ interface QualityController {
     getParticleCountMultiplier: jest.Mock<number, []>;
     shouldRenderEffect: jest.Mock<boolean, []> }
 interface PerformanceMetrics {
-    fps: number;
+    fps: number,
     memoryUsage: number;
     frameDrops: number;
 interface ImageData {
@@ -63,7 +63,7 @@ interface TextMetrics {
     clearRect: jest.fn(
     getImageData: jest.fn(() => ({ data: new Array(4).fill(0));
    , putImageData: jest.fn(
-    createImageData: jest.fn(() => ({ data: new Array(4).fill(0));
+    createImageData: jest.fn(() => ({ data: new Array(4).fill(0)),
     setTransform: jest.fn(
     drawImage: jest.fn(
     save: jest.fn(
@@ -79,9 +79,9 @@ interface TextMetrics {
     translate: jest.fn(
     scale: jest.fn(
     rotate: jest.fn(
-    measureText: jest.fn(() => ({ width: 0 ));
+    measureText: jest.fn(() => ({ width: 0 )),
     canvas: {
-        width: 800;
+        width: 800 },
         height: 600
             };
 ))');'
@@ -117,7 +117,7 @@ describe('EnhancedParticleManager', () => {
     describe('Advanced Bubble Effects', (') => {'
         test('should create advanced bubble effect with correct parameters', (') => {'
             const effectId = particleManager.createAdvancedBubbleEffect?.(100, 200, 'normal', 20, { : undefined
-                particleCount: 15;
+                particleCount: 15,
                 color: '#FF0000'
             };
             if (effectId) {
@@ -221,7 +221,7 @@ describe('EnhancedParticleManager', () => {
                 const effectId = particleManager.createSeasonalEffect?.(250, 250, 'winter', eventType),
                 if (effectId) {
                     expect(typeof effectId').toBe('number') }'
-            };
+            }
         }
     }');'
     describe('Background Particle System', (') => {'
@@ -303,17 +303,17 @@ describe('EnhancedParticleManager', () => {
                 expect(particleManager.particles.length).toBeLessThanOrEqual(maxParticles);
                 // Clear for next test
                 particleManager.clearParticles?.();
-            };
+            }
         }
     }');'
     describe('Advanced Particle Rendering', (') => {'
         test('should render trail particles with fade effects', (') => { : undefined'
             const particle: Particle = {
-                x: 100;
+                x: 100,
                 y: 100;
-                size: 5;
+                size: 5,
                 color: '#FF0000';
-                type: 'trail';
+                type: 'trail',
                 trailLength: 10;
                 opacity: 1.0
             };
@@ -325,11 +325,11 @@ describe('EnhancedParticleManager', () => {
         }');'
         test('should render glow particles with bloom effect', (') => { : undefined'
             const particle: Particle = {
-                x: 200;
+                x: 200,
                 y: 200;
-                size: 8;
+                size: 8,
                 color: '#00FF00';
-                type: 'glow';
+                type: 'glow',
                 glowIntensity: 2.0;
                 opacity: 0.8
             };
@@ -344,11 +344,11 @@ describe('EnhancedParticleManager', () => {
             
             shapes.forEach(shape => { : undefined
                 const particle: Particle = {
-                    x: 150;
+                    x: 150,
                     y: 150;
-                    size: 6;
+                    size: 6,
                     color: '#0000FF';
-                    type: 'custom';
+                    type: 'custom',
                     shape: shape;
                     opacity: 1.0
                 };
@@ -357,7 +357,7 @@ describe('EnhancedParticleManager', () => {
                 if (particleManager.renderAdvancedParticle) {
                     expect(mockContext.save).toHaveBeenCalled();
                     expect(mockContext.restore).toHaveBeenCalled() }
-            };
+            }
         }
     }');'
     describe('Performance Optimization', (') => {'
@@ -379,10 +379,10 @@ describe('EnhancedParticleManager', () => {
             // Create particles with short lifetimes
             for (let i = 0, i < 20, i++) {
                 const particle = particleManager.createParticle?.({ : undefined
-                    x: i * 10;
+                    x: i * 10,
                     y: i * 10;
                     lifetime: 10 // Very short lifetime
-                };
+                }
             }
             
             const initialCount = particleManager.particles.length;
@@ -402,10 +402,10 @@ describe('EnhancedParticleManager', () => {
             
             for (let i = 0, i < maxParticles * 0.9, i++) {
                 particleManager.createParticle?.({ : undefined
-                    x: Math.random() * 800;
+                    x: Math.random() * 800,
                     y: Math.random() * 600;
                     lifetime: 10000 // Long lifetime
-                };
+                }
             }
             
             const nearCapacityCount = particleManager.particles.length;
@@ -420,7 +420,7 @@ describe('EnhancedParticleManager', () => {
         test('should respond to quality changes from external systems', () => { : undefined
             const qualityController: QualityController = {
                 getQualityLevel: jest.fn((') => 'medium'),'
-                getParticleCountMultiplier: jest.fn(() => 0.7);
+                getParticleCountMultiplier: jest.fn(() => 0.7),
                 shouldRenderEffect: jest.fn(() => true));
             particleManager.setQualityController? .(qualityController');'
             const effectId = particleManager.createAdvancedBubbleEffect?.(100, 100, 'normal', 15);
@@ -482,7 +482,7 @@ describe('EnhancedParticleManager', () => {
             if (!particleManager.particles) {
                 particleManager.particles = [] }
             for (let i = 0; i < 10; i++') { : undefined'
-                particleManager.particles.push({ x: i * 20, y: i * 20, size: 5, color: '#ff0000' };
+                particleManager.particles.push({ x: i * 20, y: i * 20, size: 5, color: '#ff0000' }
             }
             
             expect(particleManager.particles.length).toBeGreaterThan(0);
@@ -501,6 +501,6 @@ describe('EnhancedParticleManager', () => {
             
             if (particleManager.getTotalPooledResources) {
                 expect(finalPooledCount).toBeLessThanOrEqual(pooledCount) }
-        };
+        }
     }
 }'); : undefined'

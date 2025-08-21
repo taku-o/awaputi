@@ -6,158 +6,142 @@
 import { getErrorHandler  } from '../utils/ErrorHandler.js';
 
 // Interfaces for user testing
-interface UserTestingConfig { enabled: boolean;
-    autoCollectFeedback: boolean;
-    anonymousMode: boolean;
+interface UserTestingConfig { enabled: boolean,
+    autoCollectFeedback: boolean,
+    anonymousMode: boolean,
     dataRetention: number, // days
     minSessionDuration: number, // seconds
-    maxFeedbackLength: number;
-    enableScreenRecording: boolean;
+    maxFeedbackLength: number,
+    enableScreenRecording: boolean,
     enableUsageAnalytics: boolean;
-
-interface UserCategory { name: string;
-    description: string;
-    testScenarios: string[];
+    interface UserCategory { name: string,
+    description: string,
+    testScenarios: string[],
     requiredFeatures: string[];
-
-interface UserCategories { visualImpairment: UserCategory;
-    hearingImpairment: UserCategory;
-    motorImpairment: UserCategory;
-    cognitiveImpairment: UserCategory;
-    elderlyUsers: UserCategory;
+    interface UserCategories { visualImpairment: UserCategory,
+    hearingImpairment: UserCategory,
+    motorImpairment: UserCategory,
+    cognitiveImpairment: UserCategory,
+    elderlyUsers: UserCategory,
     assistiveTechUsers: UserCategory;
-
-interface TestSession { id: string;
-    userId: string;
-    userCategory: keyof UserCategories;
+    interface TestSession { id: string,
+    userId: string,
+    userCategory: keyof UserCategories,
     startTime: number;
     endTime?: number;
     duration?: number;
-    completedScenarios: string[];
-    failedScenarios: string[];
-    feedback: UserFeedback[];
-    metrics: SessionMetrics;
-    issues: TestIssue[];
+    completedScenarios: string[],
+    failedScenarios: string[],
+    feedback: UserFeedback[],
+    metrics: SessionMetrics,
+    issues: TestIssue[],
     recommendations: string[];
-
-interface UserFeedback { id: string;
-    timestamp: number;
-    type: 'positive' | 'negative' | 'suggestion' | 'bug';
-    category: string;
+    interface UserFeedback { id: string,
+    timestamp: number,
+    type: 'positive' | 'negative' | 'suggestion' | 'bug,
+    category: string,
     message: string;
     severity?: 'low' | 'medium' | 'high' | 'critical';
     context?: FeedbackContext;
     attachments?: string[];
-
-interface FeedbackContext { scenario?: string,
+    interface FeedbackContext { scenario?: string,
     feature?: string;
     action?: string;
     error?: string;
     screenshot?: string;
-
-interface SessionMetrics { taskCompletionRate: number;
-    errorCount: number;
-    averageTaskTime: number;
-    frustrationIndex: number;
-    satisfactionScore: number;
+    interface SessionMetrics { taskCompletionRate: number,
+    errorCount: number,
+    averageTaskTime: number,
+    frustrationIndex: number,
+    satisfactionScore: number,
     accessibilityScore: number;
 ';'
 
 interface TestIssue { id: string,''
-    type: 'accessibility' | 'usability' | 'bug' | 'performance';
-    severity: 'low' | 'medium' | 'high' | 'critical';
-    description: string;
-    affectedFeatures: string[];
-    userCategories: string[];
-    frequency: number;
-    impact: number;
+    type: 'accessibility' | 'usability' | 'bug' | 'performance,
+    severity: 'low' | 'medium' | 'high' | 'critical,
+    description: string,
+    affectedFeatures: string[],
+    userCategories: string[],
+    frequency: number,
+    impact: number,
     reproducible: boolean;
-
-interface TestScenario { id: string;
-    name: string;
-    description: string;
-    steps: ScenarioStep[];
+    interface TestScenario { id: string,
+    name: string,
+    description: string,
+    steps: ScenarioStep[],
     successCriteria: string[];
     timeLimit?: number;
     requiredFeatures: string[];
-
-interface ScenarioStep { id: string;
-    instruction: string;
-    expectedResult: string;
-    alternativeMethods: string[];
+    interface ScenarioStep { id: string,
+    instruction: string,
+    expectedResult: string,
+    alternativeMethods: string[],
     successIndicators: string[];
-
-interface AnalyticsData { totalSessions: number;
+    interface AnalyticsData { totalSessions: number,
     userCategoryDistribution: Map<string, number>;
     featureUsage: Map<string, number>;
     issueFrequency: Map<string, number> }
-    satisfactionTrends: Array<{ date: number,, score: number;>,
+    satisfactionTrends: Array<{ date: number, score: number;>,
     completionRates: Map<string, number>;
 }
 ';'
 
 interface ImprovementRecommendation { id: string,''
-    priority: 'low' | 'medium' | 'high' | 'critical';
-    category: string;
-    title: string;
-    description: string;
-    affectedUsers: string[];
-    estimatedImpact: number;
-    implementationEffort: 'low' | 'medium' | 'high';
+    priority: 'low' | 'medium' | 'high' | 'critical,
+    category: string,
+    title: string,
+    description: string,
+    affectedUsers: string[],
+    estimatedImpact: number,
+    implementationEffort: 'low' | 'medium' | 'high,
     relatedIssues: string[];
-
-interface TestReport { generatedAt: number;
-    period: { start: number,, end: number,,
-    summary: ReportSummary;
-    detailedFindings: DetailedFindings;
-    recommendations: ImprovementRecommendation[];
+    interface TestReport { generatedAt: number,
+    period: { start: number, end: number,
+    summary: ReportSummary  ,
+    detailedFindings: DetailedFindings,
+    recommendations: ImprovementRecommendation[],
     roadmap: DevelopmentRoadmap;
     }
 
-interface ReportSummary { totalParticipants: number;
-    totalSessions: number;
-    averageSatisfaction: number;
-    topIssues: TestIssue[];
+interface ReportSummary { totalParticipants: number,
+    totalSessions: number,
+    averageSatisfaction: number,
+    topIssues: TestIssue[],
     keyImprovements: string[];
-
-interface DetailedFindings { byUserCategory: Map<string, CategoryFindings>,
+    interface DetailedFindings { byUserCategory: Map<string, CategoryFindings>,
     byFeature: Map<string, FeatureFindings>;
     commonPatterns: Pattern[];
-
-interface CategoryFindings { participantCount: number;
-    averageSatisfaction: number;
-    completionRate: number;
-    topIssues: TestIssue[];
+    interface CategoryFindings { participantCount: number,
+    averageSatisfaction: number,
+    completionRate: number,
+    topIssues: TestIssue[],
     specificNeeds: string[];
-
-interface FeatureFindings { usageCount: number;
-    successRate: number;
-    issues: TestIssue[];
+    interface FeatureFindings { usageCount: number,
+    successRate: number,
+    issues: TestIssue[],
     userFeedback: UserFeedback[];
 ';'
 
 interface Pattern { ''
-    type: 'success' | 'failure' | 'workflow';
-    description: string;
-    frequency: number;
+    type: 'success' | 'failure' | 'workflow,
+    description: string,
+    frequency: number,
     affectedUsers: string[];
-
-interface DevelopmentRoadmap { shortTerm: RoadmapItem[];
-    mediumTerm: RoadmapItem[];
+    interface DevelopmentRoadmap { shortTerm: RoadmapItem[],
+    mediumTerm: RoadmapItem[],
     longTerm: RoadmapItem[];
-
-interface RoadmapItem { id: string;
-    title: string;
-    description: string;
-    priority: number;
-    estimatedEffort: string;
-    expectedImpact: string;
+    interface RoadmapItem { id: string,
+    title: string,
+    description: string,
+    priority: number,
+    estimatedEffort: string,
+    expectedImpact: string,
     dependencies: string[];
 
 // AccessibilityManager interface (minimal, definition);
-interface AccessibilityManager { gameEngine?: any;
-
-export class AccessibilityUserTesting {
+    interface AccessibilityManager { gameEngine?: any;
+    export class AccessibilityUserTesting {
     private accessibilityManager: AccessibilityManager | null;
     private gameEngine: any;
     private config: UserTestingConfig;
@@ -174,81 +158,81 @@ export class AccessibilityUserTesting {
 
     constructor(accessibilityManager: AccessibilityManager | null) {
         this.accessibilityManager = accessibilityManager;
-        this.gameEngine = accessibilityManager?.gameEngine;
+    this.gameEngine = accessibilityManager?.gameEngine;
         
         // ユーザーテスト設定
         this.config = { : undefined
-            enabled: true;
-            autoCollectFeedback: true;
-            anonymousMode: true;
+            enabled: true,
+    autoCollectFeedback: true,
+    anonymousMode: true,
     dataRetention: 90, // 90日間;
-            minSessionDuration: 300, // 5分;
-            maxFeedbackLength: 1000;
+    minSessionDuration: 300, // 5分;
+    maxFeedbackLength: 1000,
     enableScreenRecording: false;
-    }
+    };
             enableUsageAnalytics: true;;
         // テストユーザーカテゴリ
         this.userCategories = { visualImpairment: {''
-                name: '視覚障害ユーザー';
-                description: 'スクリーンリーダー、拡大鏡、点字ディスプレイ使用者';
+                name: '視覚障害ユーザー,
+                description: 'スクリーンリーダー、拡大鏡、点字ディスプレイ使用者,
                 testScenarios: [','
-                    'screenReaderNavigation',
-                    'keyboardOnlyGameplay',
+                    'screenReaderNavigation,
+                    'keyboardOnlyGameplay,
                     'highContrastVisibility',]','
                     'audioFeedbackQuality']','
                 ],
-                requiredFeatures: ['screenReader', 'keyboardNavigation', 'audioFeedback] },'
+                requiredFeatures: ['screenReader', 'keyboardNavigation', 'audioFeedback] },' };
 
             hearingImpairment: { ''
-                name: '聴覚障害ユーザー';
-                description: '聴覚障害、難聴の方';
+                name: '聴覚障害ユーザー'  ,
+                description: '聴覚障害、難聴の方,
                 testScenarios: [','
-                    'visualAudioFeedback',
-                    'captionAccuracy',
+                    'visualAudioFeedback,
+                    'captionAccuracy,
                     'vibrationFeedback',]','
                     'flashingAlerts']','
                 ],
                 requiredFeatures: ['captions', 'visualFeedback', 'vibration] },'
 
             motorImpairment: { ''
-                name: '運動機能障害ユーザー';
-                description: '手足の運動機能に制限のある方';
+                name: '運動機能障害ユーザー'  ,
+                description: '手足の運動機能に制限のある方,
                 testScenarios: [','
-                    'alternativeInputMethods',
-                    'timingAdjustments',
+                    'alternativeInputMethods,
+                    'timingAdjustments,
                     'oneHandedGameplay',]','
                     'gestureSimplification']','
                 ],
                 requiredFeatures: ['alternativeInput', 'timing', 'gestures] },'
 
             cognitiveImpairment: { ''
-                name: '認知障害ユーザー';
-                description: '認知機能のサポートが必要な方';
+                name: '認知障害ユーザー'  ,
+                description: '認知機能のサポートが必要な方,
                 testScenarios: [','
-                    'uiSimplification',
-                    'contextualHelp',
+                    'uiSimplification,
+                    'contextualHelp,
                     'errorRecovery',]','
                     'memorySupport']','
                 ],
                 requiredFeatures: ['simplification', 'help', 'errorRecovery] },'
 
             elderlyUsers: { ''
-                name: '高齢者ユーザー';
-                description: '高齢者の方';
+                name: '高齢者ユーザー'  ,
+                description: '高齢者の方,
                 testScenarios: [','
-                    'largeTextReadability',
-                    'slowAnimationPreference',
+                    'largeTextReadability,
+                    'slowAnimationPreference,
                     'simpleNavigation',]','
                     'clearInstructions']','
                 ],
                 requiredFeatures: ['textScaling', 'motionReduction', 'simplification] },'
 
             assistiveTechUsers: { ''
-                name: '支援技術ユーザー';
-                description: '各種支援技術使用者';
+                name: '支援技術ユーザー'  ,
+                description: '各種支援技術使用者,
                 testScenarios: [','
-                    'switchInputCompatibility',
-                    'eyeTrackingSupport',
+                    'switchInputCompatibility,
+                    'eyeTrackingSupport,
                     'voiceControlAccuracy',]','
                     'customControllerSupport']','
                 ],
@@ -267,11 +251,11 @@ export class AccessibilityUserTesting {
         this.testScenarios = new Map();
         
         // 分析データ
-        this.analyticsData = { totalSessions: 0;
-            userCategoryDistribution: new Map();
-            featureUsage: new Map();
+        this.analyticsData = { totalSessions: 0,
+            userCategoryDistribution: new Map(),
+            featureUsage: new Map(),
             issueFrequency: new Map(
-    satisfactionTrends: [];
+    satisfactionTrends: [],
             completionRates: new Map()','
         console.log('AccessibilityUserTesting, initialized');
         this.initialize() }'
@@ -294,7 +278,7 @@ export class AccessibilityUserTesting {
             // 自動フィードバック収集の設定
             if (this.config.autoCollectFeedback) {
 
-                this.setupFeedbackCollection() }
+                this.setupFeedbackCollection();
 
             console.log('UserTesting, initialization completed');' }'
 
@@ -307,27 +291,26 @@ export class AccessibilityUserTesting {
     startSession(userId: string, userCategory: keyof UserCategories): TestSession { const sessionId = this.generateSessionId();
         const session: TestSession = {
             id: sessionId,
-    userId: this.config.anonymousMode ? this.anonymizeUserId(userId) : userId,
+    userId: this.config.anonymousMode ? this.anonymizeUserId(userId) : userId;
             userCategory,
             startTime: Date.now(),
             completedScenarios: [],
             failedScenarios: [],
             feedback: [],
-    metrics: {
-                taskCompletionRate: 0,
+    metrics: { taskCompletionRate: 0  ,
                 errorCount: 0,
                 averageTaskTime: 0,
                 frustrationIndex: 0,
                 satisfactionScore: 0,
-    accessibilityScore: 0  },
+    accessibilityScore: 0  };
             issues: [],
-    recommendations: [],
+    recommendations: [];
         },
         
         this.activeSessions.set(sessionId, session);
         
         // 録画の開始
-        if (this.config.enableScreenRecording && this.sessionRecorder) { this.sessionRecorder.startRecording(sessionId) }
+        if (this.config.enableScreenRecording && this.sessionRecorder) { this.sessionRecorder.startRecording(sessionId);
         
         // カテゴリ統計の更新
         const categoryCount = this.analyticsData.userCategoryDistribution.get(userCategory) || 0;
@@ -354,14 +337,14 @@ export class AccessibilityUserTesting {
         if (session.duration < this.config.minSessionDuration * 1000) {
     
 }
-            console.warn(`Session, too short: ${session.duration}ms`};
+            console.warn(`Session, too short: ${session.duration}ms`}
         }
         
         // メトリクスの計算
         this.calculateSessionMetrics(session);
         
         // 録画の停止
-        if (this.config.enableScreenRecording && this.sessionRecorder) { this.sessionRecorder.stopRecording(sessionId) }
+        if (this.config.enableScreenRecording && this.sessionRecorder) { this.sessionRecorder.stopRecording(sessionId);
         
         // セッションの保存
         this.completedSessions.push(session);
@@ -392,12 +375,12 @@ export class AccessibilityUserTesting {
         }
         
         // メッセージ長のチェック
-        if (message.length > this.config.maxFeedbackLength) { message = message.substring(0, this.config.maxFeedbackLength) }
+        if (message.length > this.config.maxFeedbackLength) { message = message.substring(0, this.config.maxFeedbackLength);
         
         const feedback: UserFeedback = { id: this.generateFeedbackId(
-            timestamp: Date.now(),
+            timestamp: Date.now();
             type,
-            category: session.userCategory,
+            category: session.userCategory;
             message,
             context };
         
@@ -411,7 +394,7 @@ export class AccessibilityUserTesting {
         // 問題の自動検出
         if (type === 'bug' || type === 'negative) { this.detectAndRecordIssue(feedback, session) }'
         
-        console.log(`Feedback, collected: ${feedback.type} - ${feedback.severity}`};
+        console.log(`Feedback, collected: ${feedback.type} - ${feedback.severity}`}
     }
     
     /**
@@ -424,7 +407,7 @@ export class AccessibilityUserTesting {
     
 }
             session.completedScenarios.push(scenarioId); }
-        } else { session.failedScenarios.push(scenarioId) }
+        } else { session.failedScenarios.push(scenarioId);
         
         // 完了率の更新
         const totalScenarios = session.completedScenarios.length + session.failedScenarios.length;
@@ -442,7 +425,7 @@ export class AccessibilityUserTesting {
     recordError(sessionId: string, error: string, context?: any): void { const session = this.activeSessions.get(sessionId);
         if(!session) return,
         
-        session.metrics.errorCount++,
+        session.metrics.errorCount++;
         ','
         // エラーフィードバックとして記録
         this.collectFeedback(sessionId, 'bug', error, {)
@@ -460,10 +443,8 @@ export class AccessibilityUserTesting {
         // トレンドデータの更新
         this.analyticsData.satisfactionTrends.push({);
             date: Date.now(
-    score: session.metrics.satisfactionScore  }
-        };
-    }
-    
+    score: session.metrics.satisfactionScore      }
+}
     /**
      * テストレポートの生成
      */
@@ -528,8 +509,8 @@ export class AccessibilityUserTesting {
             category.requiredFeatures.includes(f).length;
         
         session.metrics.accessibilityScore = (completedCount / requiredCount) * 100;
-    }
-    
+    } };
+
     /**
      * フィードバック重要度の判定
      */''
@@ -571,21 +552,21 @@ export class AccessibilityUserTesting {
         if (existingIssue) {
         
             // 既存問題の更新
-            existingIssue.frequency++,
+            existingIssue.frequency++;
             if (!existingIssue.userCategories.includes(session.userCategory) {
     
 }
                 existingIssue.userCategories.push(session.userCategory); }
 } else {  // 新規問題の作成
             const newIssue: TestIssue = {''
-                id: this.generateIssueId('',
-    type: feedback.type === 'bug' ? 'bug' : 'usability',
-                severity: feedback.severity || 'medium',
+                id: this.generateIssueId(',
+    type: feedback.type === 'bug' ? 'bug' : 'usability,
+                severity: feedback.severity || 'medium,
                 description: feedback.message,
                 affectedFeatures: feedback.context?.feature ? [feedback.context.feature] : []),
                 userCategories: [session.userCategory],
     frequency: 1),
-                impact: this.calculateIssueImpact(feedback) }
+                impact: this.calculateIssueImpact(feedback),
                 reproducible: true;;
             this.issueDatabase.set(newIssue.id, newIssue);
             session.issues.push(newIssue);
@@ -615,33 +596,30 @@ export class AccessibilityUserTesting {
             critical: 1.0,
             high: 0.7,
             medium: 0.4,
-    low: 0.1  },
+    low: 0.1  ,
         return severityScores[feedback.severity || 'medium'];
     }
     
     /**
      * 分析データの更新
      */
-    private updateAnalytics(session: TestSession): void { this.analyticsData.totalSessions++,
+    private updateAnalytics(session: TestSession): void { this.analyticsData.totalSessions++;
         
         // 機能使用状況の更新
         session.completedScenarios.forEach(scenarioId => { );
             const scenario = this.testScenarios.get(scenarioId);
             if (scenario) {
-                scenario.requiredFeatures.forEach(feature => {) }
+                scenario.requiredFeatures.forEach(feature => {);
                     const usage = this.analyticsData.featureUsage.get(feature) || 0; }
-                    this.analyticsData.featureUsage.set(feature, usage + 1); }
-                };
-            }
+                    this.analyticsData.featureUsage.set(feature, usage + 1);     }
+}
         };
         
         // 問題頻度の更新
         session.issues.forEach(issue => {  );
             const frequency = this.analyticsData.issueFrequency.get(issue.id) || 0 }
-            this.analyticsData.issueFrequency.set(issue.id, frequency + 1); }
-        };
-    }
-    
+            this.analyticsData.issueFrequency.set(issue.id, frequency + 1);     }
+}
     /**
      * レポートサマリーの生成
      */
@@ -661,10 +639,10 @@ export class AccessibilityUserTesting {
             session.issues.forEach(issue => {);
                 const count = issueFrequencyMap.get(issue.id) || 0 }
                 issueFrequencyMap.set(issue.id, count + 1); }
-            };
+            }
         };
         
-        const topIssues = Array.from(this.issueDatabase.values();
+        const topIssues = Array.from(this.issueDatabase.values()));
             .sort((a, b) => (issueFrequencyMap.get(b.id) || 0) - (issueFrequencyMap.get(a.id) || 0));
             .slice(0, 5);
         
@@ -719,10 +697,10 @@ export class AccessibilityUserTesting {
             session.issues.forEach(issue => {);
                 const count = categoryIssues.get(issue.id) || 0 }
                 categoryIssues.set(issue.id, count + 1); }
-            };
+            }
         };
         
-        const topIssues = Array.from(this.issueDatabase.values();
+        const topIssues = Array.from(this.issueDatabase.values()));
             .filter(issue => issue.userCategories.includes(category);
             .sort((a, b) => (categoryIssues.get(b.id) || 0) - (categoryIssues.get(a.id) || 0);
             .slice(0, 3);
@@ -763,28 +741,27 @@ export class AccessibilityUserTesting {
             session.issues.forEach(issue => {  );
                 if (issue.affectedFeatures.includes(feature) { }
                     issues.push(issue); }
-};
+}
         };
          : undefined
         const successRate = usageCount > 0 ? successCount / usageCount: 0,
         
         return { usageCount,
             successRate,
-            issues: Array.from(new, Set(issues) };
+            issues: Array.from(new, Set())issues) };
             userFeedback: feedback,
     
     /**
      * 共通パターンの検出
      */
     private detectCommonPatterns(sessions: TestSession[]): Pattern[] { const patterns: Pattern[] = [],
-        ,
         // 成功パターンの検出
         const successfulWorkflows = this.findSuccessfulWorkflows(sessions);
         successfulWorkflows.forEach(workflow => { '
             patterns.push({''
                 type: 'success),'
                 description: workflow.description,
-    frequency: workflow.frequency) }
+    frequency: workflow.frequency),
                 affectedUsers: workflow.userCategories); 
     }';'
         ';'
@@ -813,13 +790,13 @@ export class AccessibilityUserTesting {
         
         // パフォーマンスベースの推奨事項
         const lowPerformanceFeatures = this.identifyLowPerformanceFeatures(sessions);
-        lowPerformanceFeatures.forEach(feature => {  ) }
+        lowPerformanceFeatures.forEach(feature => {  );
             recommendations.push(this.createRecommendationForFeature(feature); }
         };
         
         // カテゴリ別推奨事項
         Object.keys(this.userCategories).forEach(category => {  );
-            const categoryRecommendations = this.createCategoryRecommendations(sessions, category) }
+            const categoryRecommendations = this.createCategoryRecommendations(sessions, category);
             recommendations.push(...categoryRecommendations);
         };
         
@@ -838,12 +815,12 @@ export class AccessibilityUserTesting {
     private generateDevelopmentRoadmap(recommendations: ImprovementRecommendation[]): DevelopmentRoadmap { const roadmap: DevelopmentRoadmap = {
             shortTerm: [],
             mediumTerm: [],
-    longTerm: [] },
+    longTerm: [] ,
         recommendations.forEach(rec => {  const, item: RoadmapItem = {)
                 id: rec.id,
     title: rec.title),
                 description: rec.description,
-    priority: this.calculateRoadmapPriority(rec) }
+    priority: this.calculateRoadmapPriority(rec),
                 estimatedEffort: rec.implementationEffort }
                 expectedImpact: `${rec.estimatedImpact}% improvement`,''
                 dependencies: this.identifyDependencies(rec);
@@ -856,7 +833,7 @@ export class AccessibilityUserTesting {
                 roadmap.shortTerm.push(item);' }'
 
             } else if(rec.priority === 'high' || ')'
-                      (rec.priority === 'medium' && rec.implementationEffort !== 'high') { roadmap.mediumTerm.push(item) } else { roadmap.longTerm.push(item) }
+                      (rec.priority === 'medium' && rec.implementationEffort !== 'high') { roadmap.mediumTerm.push(item) } else { roadmap.longTerm.push(item);
         };
         
         return roadmap;
@@ -870,7 +847,7 @@ export class AccessibilityUserTesting {
     private async loadHistoricalData()';'
             const saved = localStorage.getItem('accessibilityTestingData);'
             if (saved) {
-                const data = JSON.parse(saved) }
+                const data = JSON.parse(saved);
 
                 // データの復元' }'
 
@@ -927,8 +904,8 @@ export class AccessibilityUserTesting {
         
         // 最も問題の多い機能を特定
         const problemFeatures = this.identifyProblemFeatures(sessions);
-        problemFeatures.forEach(feature => {) }
-            improvements.push(`${feature}の改善`};
+        problemFeatures.forEach(feature => {);
+            improvements.push(`${feature}の改善`}
         };
         
         return improvements.slice(0, 5);
@@ -972,11 +949,11 @@ export class AccessibilityUserTesting {
                 issue.affectedFeatures.forEach(feature => {);
                     const count = problemCounts.get(feature) || 0 }
                     problemCounts.set(feature, count + 1); }
-                };
+                }
             };
         };
         
-        return Array.from(problemCounts.entries();
+        return Array.from(problemCounts.entries()));
             .sort((a, b) => b[1] - a[1]);
             .map(entry => entry[0]);
             .slice(0, 5);
@@ -986,33 +963,31 @@ export class AccessibilityUserTesting {
         // 簡易実装
         return feedback,
             .map(f => f.message);
-            .slice(0, 3) }
+            .slice(0, 3);
     }
     
     private createRecommendationFromIssue(issue: TestIssue): ImprovementRecommendation { return { }
-            id: `rec_${issue.id}`,
+            id: `rec_${issue.id},
             priority: issue.severity,
     category: issue.type,
-            title: `${issue.type}の修正: ${issue.description.substring(0, 50'}'...`,
+            title: `${issue.type}の修正: ${issue.description.substring(0, 50'}'...,
             description: issue.description,
     affectedUsers: issue.userCategories,
             estimatedImpact: issue.impact * 100,
-            implementationEffort: 'medium',
-    relatedIssues: [issue.id],
-        } }
+            implementationEffort: 'medium,
+    relatedIssues: [issue.id] } }
 
     private createRecommendationForFeature(feature: string): ImprovementRecommendation { return { }
 
             id: `rec_feature_${feature}`,''
-            priority: 'medium',
-            category: 'improvement',
-    title: `${feature}の改善`,
+            priority: 'medium,
+            category: 'improvement,
+    title: `${feature}の改善,
             description: `${feature}の成功率が低いため、改善が必要です`,''
             affectedUsers: ['all'],
             estimatedImpact: 30,
-            implementationEffort: 'medium',
-    relatedIssues: [],
-        } }
+            implementationEffort: 'medium,
+    relatedIssues: [] } }
     
     private createCategoryRecommendations(sessions: TestSession[], category: string): ImprovementRecommendation[] { // カテゴリ別推奨事項の作成
         return [] }
@@ -1034,7 +1009,7 @@ export class AccessibilityUserTesting {
     /**
      * アクティブセッションの取得
      */
-    getActiveSession(sessionId: string): TestSession | undefined { return this.activeSessions.get(sessionId) }
+    getActiveSession(sessionId: string): TestSession | undefined { return this.activeSessions.get(sessionId);
     
     /**
      * 完了セッションの取得
@@ -1045,7 +1020,7 @@ export class AccessibilityUserTesting {
     
 }
             sessions = sessions.filter(s => s.userCategory === filter.userCategory); }
-        }
+        } };
         
         if (filter?.dateRange) {
         
@@ -1064,7 +1039,7 @@ export class AccessibilityUserTesting {
      * フィードバックの取得'
      */ : undefined''
     getFeedback(filter?: { type?: UserFeedback['type'], severity?: UserFeedback['severity] ): UserFeedback[] {'
-        let feedback = Array.from(this.feedbackDatabase.values();
+        let feedback = Array.from(this.feedbackDatabase.values()));
         if (filter?.type) {
     
 }
@@ -1086,14 +1061,14 @@ export class AccessibilityUserTesting {
      * 問題の取得'
      */ : undefined''
     getIssues(filter?: { severity?: TestIssue['severity'], type?: TestIssue['type] ): TestIssue[] {'
-        let issues = Array.from(this.issueDatabase.values();
+        let issues = Array.from(this.issueDatabase.values()));
         if (filter?.severity) {
     
 }
             issues = issues.filter(i => i.severity === filter.severity); }
         }
         
-        if (filter?.type) { issues = issues.filter(i => i.type === filter.type) }
+        if (filter?.type) { issues = issues.filter(i => i.type === filter.type);
         }
         
         return issues;
@@ -1103,16 +1078,16 @@ export class AccessibilityUserTesting {
      * 分析データの取得
      */ : undefined
     getAnalytics(): AnalyticsData { return { ...this.analyticsData,
-            userCategoryDistribution: new Map(this.analyticsData.userCategoryDistribution);
+            userCategoryDistribution: new Map(this.analyticsData.userCategoryDistribution),
             featureUsage: new Map(this.analyticsData.featureUsage,
-    issueFrequency: new Map(this.analyticsData.issueFrequency) },
+    issueFrequency: new Map(this.analyticsData.issueFrequency) ,
             completionRates: new Map(this.analyticsData.completionRates); 
     }
     
     /**
      * テストシナリオの追加
      */
-    addTestScenario(scenario: TestScenario): void { this.testScenarios.set(scenario.id, scenario) }
+    addTestScenario(scenario: TestScenario): void { this.testScenarios.set(scenario.id, scenario);
     
     /**
      * 設定の適用
@@ -1150,14 +1125,14 @@ export class AccessibilityUserTesting {
     private saveAllData(): void { try {
             const data = {
                 completedSessions: this.completedSessions,
-                feedbackDatabase: Array.from(this.feedbackDatabase.entries(),
-                issueDatabase: Array.from(this.issueDatabase.entries() analyticsData: {
-                    totalSessions: this.analyticsData.totalSessions,
-                    userCategoryDistribution: Array.from(this.analyticsData.userCategoryDistribution.entries(),
+                feedbackDatabase: Array.from(this.feedbackDatabase.entries())),
+                issueDatabase: Array.from(this.issueDatabase.entries())) analyticsData: {
+                    totalSessions: this.analyticsData.totalSessions ,
+                    userCategoryDistribution: Array.from(this.analyticsData.userCategoryDistribution.entries())),
                     featureUsage: Array.from(this.analyticsData.featureUsage.entries(
     issueFrequency: Array.from(this.analyticsData.issueFrequency.entries(
                     satisfactionTrends: this.analyticsData.satisfactionTrends,
-                    completionRates: Array.from(this.analyticsData.completionRates.entries()  }
+                    completionRates: Array.from(this.analyticsData.completionRates.entries()));
             };
 
             localStorage.setItem('accessibilityTestingData', JSON.stringify(data);'} catch (error) { console.error('Failed to save testing data:', error }'

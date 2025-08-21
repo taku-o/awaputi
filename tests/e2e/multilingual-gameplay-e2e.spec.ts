@@ -287,7 +287,7 @@ test.describe('多言語ゲームプレイE2Eテスト', () => {
         for (let i = 0, i < 10, i++') {'
             await page.click('canvas', { 
                 position: { ,
-                    x: 200 + Math.random() * 400, 
+                    x: 200 + Math.random() * 400 },
                     y: 200 + Math.random() * 200 
                 } 
             };
@@ -313,7 +313,7 @@ test.describe('多言語ゲームプレイE2Eテスト', () => {
         // 数値フォーマットが適用されていることを確認
         Object.values(scoreFormats.forEach(score => {);
             expect(score).toMatch(/\d{1,3}(\d{3}*/);
-        };
+        }
     }');'
 
     test('コンボメッセージが多言語で表示される', async ({ page } => {
@@ -353,7 +353,7 @@ test.describe('多言語ゲームプレイE2Eテスト', () => {
             // Canvas APIを一時的に無効化
             window._originalCanvas = HTMLCanvasElement.prototype.getContext,
             HTMLCanvasElement.prototype.getContext = function() {
-                return null };
+                return null }
         };
         
         // ページをリロードしてエラーを発生させる
@@ -392,7 +392,7 @@ test.describe('多言語ゲームプレイE2Eテスト', () => {
         await page.evaluate(() => {
             if (window._originalCanvas) {
                 HTMLCanvasElement.prototype.getContext = window._originalCanvas }
-        };
+        }
     }');'
 
     test('ゲーム内通知が適切な言語で表示される', async ({ page } => {
@@ -484,5 +484,5 @@ test.describe('多言語ゲームプレイE2Eテスト', () => {
             await page.keyboard.press('Escape');
             await page.waitForTimeout(500);
         }
-    };
+    }
 }');'

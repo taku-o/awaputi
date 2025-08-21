@@ -7,29 +7,28 @@ export interface AnalysisOptions {
     timeRange?: { start: Date, end: Date;
     filters?: Record<string, any>;
     metrics?: string[];
-}
-
+};
 export interface AnalysisResult { success: boolean;
     data?: any;
     insights?: string[];
     recommendations?: string[];
     timestamp: number;
+};
 export class PlayerBehaviorAnalyzer {
     constructor() {
         // プレイヤー行動分析
         this.playerBehavior = {
-            sessionData: null;
-            interactionPatterns: [];
-    skillProgression: {
-                accuracyHistory: [];
+            sessionData: null,
+            interactionPatterns: [],
+    skillProgression: { accuracyHistory: []  ,
     reactionTimeHistory: []
 }
                 comboHistory: [] ;
     },
-            playStyle: { aggressive: 0;
-                defensive: 0;
+            playStyle: { aggressive: 0,
+                defensive: 0  ,
     strategic: 0 
-    },
+    ,
         
         this.sessionStats = null;
         this.longSessionMarked = false;
@@ -42,12 +41,12 @@ export class PlayerBehaviorAnalyzer {
      */
     initializePlayerBehaviorTracking(sessionInfo, sessionId) {
         this.playerBehavior.sessionData = {
-            startTime: Date.now();
-            stageId: sessionInfo.stageId;
-            difficulty: sessionInfo.difficulty;
-            initialSkillLevel: this.getPlayerSkillLevel();
-            previousBestScore: sessionInfo.previousBestScore || 0;
-            sessionId: sessionId;
+            startTime: Date.now(),
+            stageId: sessionInfo.stageId,
+            difficulty: sessionInfo.difficulty,
+            initialSkillLevel: this.getPlayerSkillLevel(),
+            previousBestScore: sessionInfo.previousBestScore || 0,
+            sessionId: sessionId,
     playerSettings: {
                 soundEnabled: sessionInfo.soundEnabled
 }
@@ -55,18 +54,18 @@ export class PlayerBehaviorAnalyzer {
     },
         
         this.playerBehavior.interactionPatterns = [];
-        this.sessionStats = { clickCount: 0;
-            successfulClicks: 0;
-            missedClicks: 0;
-            averageReactionTime: 0;
-            totalReactionTime: 0;
-            validReactionTimes: 0;
-            maxCombo: 0;
-            currentCombo: 0;
-            itemsUsed: 0;
-            bubblesPopped: 0;
-            bubblesMissed: 0;
-            scoreProgression: [];
+        this.sessionStats = { clickCount: 0,
+            successfulClicks: 0,
+            missedClicks: 0,
+            averageReactionTime: 0,
+            totalReactionTime: 0,
+            validReactionTimes: 0,
+            maxCombo: 0,
+            currentCombo: 0,
+            itemsUsed: 0,
+            bubblesPopped: 0,
+            bubblesMissed: 0,
+            scoreProgression: [],
     exitEvents: [] 
  }
     
@@ -76,14 +75,14 @@ export class PlayerBehaviorAnalyzer {
      */
     recordPlayerInteractionPattern(bubbleData) {
         const pattern = {
-            timestamp: Date.now();
-            bubbleType: bubbleData.bubbleType;
-            action: bubbleData.action;
-            reactionTime: bubbleData.reactionTime || null;
+            timestamp: Date.now(),
+            bubbleType: bubbleData.bubbleType,
+            action: bubbleData.action,
+            reactionTime: bubbleData.reactionTime || null,
             accuracy: bubbleData.action === 'popped' ? 1 : 0
             accuracy: bubbleData.action === 'popped' ? 1 : 0
         };
-           , position: bubbleData.position || null  };
+            position: bubbleData.position || null  };
         
         this.playerBehavior.interactionPatterns.push(pattern);
         
@@ -92,7 +91,7 @@ export class PlayerBehaviorAnalyzer {
         
         // スキル進行の記録
         if (pattern.reactionTime) {
-            this.playerBehavior.skillProgression.reactionTimeHistory.push(pattern.reactionTime) }
+            this.playerBehavior.skillProgression.reactionTimeHistory.push(pattern.reactionTime);
             this.playerBehavior.skillProgression.accuracyHistory.push(pattern.accuracy); }
     }
     
@@ -124,10 +123,10 @@ export class PlayerBehaviorAnalyzer {
 
         switch(behaviorData.type) {''
             case 'interaction':','
-                stats.clickCount++,
+                stats.clickCount++;
                 if(behaviorData.action === 'popped' {'
-                    stats.successfulClicks++,
-                    stats.bubblesPopped++,
+                    stats.successfulClicks++;
+                    stats.bubblesPopped++;
                     
                     // コンボ追跡
                     stats.currentCombo = (behaviorData.comboCount || 0);
@@ -136,7 +135,7 @@ export class PlayerBehaviorAnalyzer {
                         stats.maxCombo = stats.currentCombo; }
 
                     }'} else if (behaviorData.action === 'missed' stats.missedClicks++,'
-                    stats.bubblesMissed++,
+                    stats.bubblesMissed++;
                     stats.currentCombo = 0 }
                 ';'
                 // 反応時間の追跡
@@ -153,7 +152,7 @@ export class PlayerBehaviorAnalyzer {
             case 'score_update':';'
                 stats.scoreProgression.push({ );
                     timestamp: Date.now()','
-    source: behaviorData.source || 'unknown' },
+    source: behaviorData.source || 'unknown' ,
                 break;
         }
     /**
@@ -164,26 +163,25 @@ export class PlayerBehaviorAnalyzer {
     trackExitBehavior(exitData, sessionDuration) {
         const exitInfo = {''
             timestamp: Date.now('''
-            exitReason: exitData.reason || 'unknown',
+            exitReason: exitData.reason || 'unknown,
     exitPoint: {
-                stageProgress: exitData.stageProgress || 0,
+                stageProgress: exitData.stageProgress || 0 ,
                 timeRemaining: exitData.timeRemaining || 0,
     playerHP: exitData.playerHP || 0
 }
-                currentScore: exitData.currentScore || 0 ,
-    },
+                currentScore: exitData.currentScore || 0  ,
             playerSituation: { isInCombat: exitData.isInCombat || false)
-                recentFailures: exitData.recentFailures || 0,
+                recentFailures: exitData.recentFailures || 0 ,
     comboBroken: exitData.comboBroken || false),
                 lowHP: (exitData.playerHP || 100) < 30 
  };
             gameState: { activeBubbles: exitData.activeBubbles || 0,
-                nextBubbleTypes: exitData.nextBubbleTypes || [],
+                nextBubbleTypes: exitData.nextBubbleTypes || [] ,
     activeItems: exitData.activeItems || [] 
-    },
+    ,
         
         // セッション統計に追加
-        if (this.sessionStats) { this.sessionStats.exitEvents.push(exitInfo) }
+        if (this.sessionStats) { this.sessionStats.exitEvents.push(exitInfo);
         // 離脱パターン分析
         return this.analyzeExitPattern(exitInfo);
     }
@@ -202,8 +200,7 @@ export class PlayerBehaviorAnalyzer {
             lowHPExit: exitInfo.playerSituation.lowHP,
             comboBrokenExit: exitInfo.playerSituation.comboBroken
 }
-            difficultySpike: exitInfo.playerSituation.recentFailures > 3 ,
-    },
+            difficultySpike: exitInfo.playerSituation.recentFailures > 3  ,
         
         // パターンの分類
         const dominantPattern = Object.entries(exitPatterns);
@@ -216,8 +213,7 @@ export class PlayerBehaviorAnalyzer {
         }
         
         return { patterns: dominantPattern,
-            exitInfo: exitInfo ,
-    } }
+            exitInfo: exitInfo  } }
     
     /**
      * プレイヤースキルレベルの取得
@@ -226,10 +222,10 @@ export class PlayerBehaviorAnalyzer {
     getPlayerSkillLevel() {
         const accuracy = this.getAverageAccuracy();
         const reactionTime = this.getAverageReactionTime();
-        if(accuracy > 0.9 && reactionTime < 400) return 'expert',
-        if(accuracy > 0.8 && reactionTime < 500) return 'advanced',
-        if(accuracy > 0.7 && reactionTime < 600) return 'intermediate',
-        if(accuracy > 0.5 && reactionTime < 800) return 'beginner',
+        if(accuracy > 0.9 && reactionTime < 400) return 'expert,
+        if(accuracy > 0.8 && reactionTime < 500) return 'advanced,
+        if(accuracy > 0.7 && reactionTime < 600) return 'intermediate,
+        if(accuracy > 0.5 && reactionTime < 800) return 'beginner,
 
         ' }'
 
@@ -256,12 +252,11 @@ export class PlayerBehaviorAnalyzer {
      */
     getPlayStyleDistribution() {
         const total = Object.values(this.playerBehavior.playStyle);
-            .reduce((sum, count) => sum + count, 0) }
+            .reduce((sum, count) => sum + count, 0);
         if (total === 0) return { aggressive: 0, defensive: 0, strategic: 0  }
         return { aggressive: this.playerBehavior.playStyle.aggressive / total,
-            defensive: this.playerBehavior.playStyle.defensive / total },
-            strategic: this.playerBehavior.playStyle.strategic / total ,
-    } }
+            defensive: this.playerBehavior.playStyle.defensive / total ,
+            strategic: this.playerBehavior.playStyle.strategic / total  } }
     
     /**
      * 最近のパフォーマンス指標取得
@@ -273,9 +268,8 @@ export class PlayerBehaviorAnalyzer {
         return { accuracy: stats.clickCount > 0 ? stats.successfulClicks / stats.clickCount : 0,
             averageReactionTime: stats.averageReactionTime,
             maxCombo: stats.maxCombo,
-    bubblesPopped: stats.bubblesPopped },
-            itemsUsed: stats.itemsUsed ,
-    } }
+    bubblesPopped: stats.bubblesPopped ,
+            itemsUsed: stats.itemsUsed  } }
     
     /**
      * セッションパフォーマンス要約取得
@@ -296,7 +290,7 @@ export class PlayerBehaviorAnalyzer {
             bubblesPopped: stats.bubblesPopped,
             itemsUsed: stats.itemsUsed,
             exitEvents: stats.exitEvents.length,
-            skillImprovement: this.calculateSkillImprovement() },
+            skillImprovement: this.calculateSkillImprovement() ,
             playStyle: this.getPlayStyleDistribution(); 
     }
     
@@ -315,9 +309,8 @@ export class PlayerBehaviorAnalyzer {
         // 過去の平均との比較
         const historicalAccuracy = this.getAverageAccuracy();
         const historicalReactionTime = this.getAverageReactionTime()';'
-                accuracy: accuracyImprovement ? 'improved' : (currentAccuracy < historicalAccuracy - 0.05 ? 'declined' : 'stable',
-                speed: reactionTimeImprovement ? 'improved' : (currentReactionTime > historicalReactionTime + 50 ? 'declined' : 'stable'),
-    }
+                accuracy: accuracyImprovement ? 'improved' : (currentAccuracy < historicalAccuracy - 0.05 ? 'declined' : 'stable,
+                speed: reactionTimeImprovement ? 'improved' : (currentReactionTime > historicalReactionTime + 50 ? 'declined' : 'stable');
     
     /**
      * 学習曲線の分析
@@ -336,8 +329,8 @@ export class PlayerBehaviorAnalyzer {
             const accuracy = segment.reduce((sum, p) => sum + p.accuracy, 0) / segment.length,
             const avgReactionTime = segment,
                 .filter(p => p.reactionTime);
-                .reduce((sum, p, _, arr) => sum + p.reactionTime / arr.length, 0) }
-            segments.push({ accuracy, avgReactionTime ) }
+                .reduce((sum, p, _, arr) => sum + p.reactionTime / arr.length, 0);
+            segments.push({ accuracy, avgReactionTime );
         // トレンドの計算
         const accuracyTrend = this.calculateTrend(segments.map(s => s.accuracy);
         const speedTrend = this.calculateTrend(segments.map(s => s.avgReactionTime), true');'
@@ -345,11 +338,10 @@ export class PlayerBehaviorAnalyzer {
 
         return { ''
             trend: accuracyTrend > 0.05 || speedTrend > 0.05 ? 'improving' : ','
-                   (accuracyTrend < -0.05 || speedTrend < -0.05 ? 'declining' : 'stable',
+                   (accuracyTrend < -0.05 || speedTrend < -0.05 ? 'declining' : 'stable,
             accuracyTrend: accuracyTrend,
     speedTrend: speedTrend,
-            segments: segments.length ,
-    } }
+            segments: segments.length  } }
     
     /**
      * 一貫性スコアの計算
@@ -421,7 +413,7 @@ export class PlayerBehaviorAnalyzer {
             manyMisses: stats.bubblesMissed > stats.bubblesPopped * 0.3,
             comboBroken: stats.maxCombo > 5 && stats.currentCombo === 0,
             rapidClicking: this.detectRapidClickingPattern(patterns,
-            earlyExit: stats.exitEvents.some(e => e.exitReason === 'quit' && e.sessionDuration < 2 * 60 * 1000)  }
+            earlyExit: stats.exitEvents.some(e => e.exitReason === 'quit' && e.sessionDuration < 2 * 60 * 1000);
         };
 
         const indicatorCount = Object.values(indicators).filter(Boolean).length;
@@ -453,8 +445,7 @@ export class PlayerBehaviorAnalyzer {
 
             indicators: indicators,' };'
 
-            intensity: indicatorCount >= 4 ? 'high' : (indicatorCount >= 3 ? 'medium' : 'low'), 
-    }
+            intensity: indicatorCount >= 4 ? 'high' : (indicatorCount >= 3 ? 'medium' : 'low');
     
     /**
      * 急速クリックパターンの検出

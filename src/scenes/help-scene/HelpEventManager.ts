@@ -10,33 +10,33 @@ import { HelpAnimationManager  } from './HelpAnimationManager';
 import { HelpRenderer  } from './HelpRenderer';
 
 // コールバックインターフェース
-interface HelpEventCallbacks { onGoBack: (() => void) | null;
-    onFeedbackRequest: ((data: FeedbackRequestData) => void) | null;
-    onEffectivenessReport: ((report: any) => void) | null;
+interface HelpEventCallbacks { onGoBack: (() => void) | null,
+    onFeedbackRequest: ((data: FeedbackRequestData) => void) | null,
+    onEffectivenessReport: ((report: any) => void) | null,
     onSearchFocus: (() => void) | null  }
 }
 
 // フィードバックリクエストデータ
-interface FeedbackRequestData { topic: any;
-    content: any;
+interface FeedbackRequestData { topic: any,
+    content: any,
     category: string;
-    position?: { x: number,, y: number;
+    position?: { x: number, y: number;
     quickMode?: boolean;
 }
 
 // イベント状態インターフェース
-interface EventState { searchFocused: boolean;
-    lastInputTime: number;
+interface EventState { searchFocused: boolean,
+    lastInputTime: number,
     hasActiveListeners: boolean;
 
 // レイアウト情報インターフェース
 interface HelpLayout {
-    searchBar: { ,x: number, y: number, width: number,, height: number;
-    sidebar: { x: number, y: number, width: number,, height: number;
-    content: { x: number, y: number, width: number,, height: number;
-    backButton: { x: number, y: number, width: number,, height: number;
-    backButton: { x: number, y: number, width: number,, height: number;
-        };
+    searchBar: { ,x: number, y: number, width: number, height: number,
+    sidebar: { x: number, y: number, width: number, height: number,
+    content: { x: number, y: number, width: number, height: number,
+    backButton: { x: number, y: number, width: number, height: number,
+    backButton: { x: number, y: number, width: number, height: number;
+         },
 // キーボードハンドラータイプ
 type KeyboardHandler = (event: KeyboardEvent) => void;
 
@@ -77,10 +77,10 @@ export class HelpEventManager {
     private searchTimeout: number | null = null;
     private isComposing: boolean = false;
     constructor(
-        gameEngine: GameEngine;
+        gameEngine: GameEngine,
         contentManager: HelpContentManager)
-    );
-        accessibilityManager: HelpAccessibilityManager;
+    ),
+        accessibilityManager: HelpAccessibilityManager,
     animationManager: HelpAnimationManager';'
     ') {'
         this.gameEngine = gameEngine;
@@ -89,24 +89,23 @@ export class HelpEventManager {
         this.animationManager = animationManager;
 
         // キーボードショートカット
-        this.keyboardHandlers = {', 'ArrowUp': () => this.navigateUp()',
+        this.keyboardHandlers = {, 'ArrowUp': () => this.navigateUp()',
             'ArrowDown': () => this.navigateDown()';'
             'ArrowLeft': () => this.navigateLeft()';'
             'ArrowRight': () => this.navigateRight()';'
             'Enter': () => this.selectCurrentItem()';'
             'Escape': () => this.goBack()';'
             'Tab': (event: KeyboardEvent) => this.handleTabNavigation(event;
-            '/': (event: KeyboardEvent) => {  event.preventDefault(), this.focusSearchBar()  }
-
+            '/': (event: KeyboardEvent) => {  event.preventDefault(), this.focusSearchBar()  };
             'F': (event: KeyboardEvent) => { if (event.ctrlKey) { event.preventDefault(), this.showFeedbackDialog(
             };
             'E': (event: KeyboardEvent) => { if (event.ctrlKey && event.shiftKey) { event.preventDefault(), this.showEffectivenessReport() };
         
         // コールバック
-        this.callbacks = { onGoBack: null;
-            onFeedbackRequest: null;
-            onEffectivenessReport: null;
-    onSearchFocus: null;
+        this.callbacks = { onGoBack: null,
+            onFeedbackRequest: null,
+            onEffectivenessReport: null,
+    onSearchFocus: null,
     onSearchFocus: null;
         };
     /**
@@ -180,7 +179,7 @@ export class HelpEventManager {
         const style = document.createElement('style';
         style.textContent = `;
             .help-search-input: :placeholder { color: #999;
-                font-style: italic;
+                font-style: italic,
                 opacity: 0.8  }
 
         `;
@@ -250,7 +249,7 @@ export class HelpEventManager {
         let searchBarLayout;
         if (this.gameEngine.helpRenderer) {
 
-            const layout = this.gameEngine.helpRenderer.getLayout() }
+            const layout = this.gameEngine.helpRenderer.getLayout();
 
         // console.log('HelpEventManager: Input position updated', { left, top, width: searchBarLayout.width, height: searchBarLayout.height  }
     
@@ -285,37 +284,37 @@ export class HelpEventManager {
 
         if (this.boundKeyHandler) {
 
-            document.removeEventListener('keydown', this.boundKeyHandler) }
+            document.removeEventListener('keydown', this.boundKeyHandler);
             this.boundKeyHandler = null; }
         }
 
         if (this.boundClickHandler) {
 
-            document.removeEventListener('click', this.boundClickHandler) }
+            document.removeEventListener('click', this.boundClickHandler);
             this.boundClickHandler = null; }
         }
 
         if (this.boundContextMenuHandler) {
 
-            document.removeEventListener('contextmenu', this.boundContextMenuHandler) }
+            document.removeEventListener('contextmenu', this.boundContextMenuHandler);
             this.boundContextMenuHandler = null; }
         }
 
         if (this.boundResizeHandler) {
 
-            window.removeEventListener('resize', this.boundResizeHandler) }
+            window.removeEventListener('resize', this.boundResizeHandler);
             this.boundResizeHandler = null; }
         }
 
         if (this.boundWheelHandler) {
 
-            document.removeEventListener('wheel', this.boundWheelHandler) }
+            document.removeEventListener('wheel', this.boundWheelHandler);
             this.boundWheelHandler = null; }
         }
 
         if (this.boundMouseMoveHandler) {
 
-            document.removeEventListener('mousemove', this.boundMouseMoveHandler) }
+            document.removeEventListener('mousemove', this.boundMouseMoveHandler);
             this.boundMouseMoveHandler = null; }
         }
 
@@ -331,11 +330,11 @@ export class HelpEventManager {
             console.log('HelpEventManager: cleaning, up hidden, input','
 
             if (this.boundInputHandler') {''
-                this.hiddenInput.removeEventListener('input', this.boundInputHandler) }
+                this.hiddenInput.removeEventListener('input', this.boundInputHandler);
                 this.boundInputHandler = null; }
             }
             
-            if (this.hiddenInput.parentNode) { this.hiddenInput.parentNode.removeChild(this.hiddenInput) }
+            if (this.hiddenInput.parentNode) { this.hiddenInput.parentNode.removeChild(this.hiddenInput);
             this.hiddenInput = null;
         }
     }
@@ -365,7 +364,7 @@ export class HelpEventManager {
                 this.executeSearch()','
             if(event.key === 'Escape' {'
                 event.preventDefault();
-                this.goBack() }
+                this.goBack();
                 return; }
             }
             
@@ -380,7 +379,7 @@ export class HelpEventManager {
         // `/` キーで検索フォーカス（特別処理）
         if (event.key === '/' && !this.searchFocused) {
             event.preventDefault();
-            this.focusSearchBar() }
+            this.focusSearchBar();
             return; }
         }
 
@@ -403,7 +402,7 @@ export class HelpEventManager {
      * 検索のデバウンス処理
      */)
     private debounceSearch(query: string): void { if (this.searchTimeout) {
-            clearTimeout(this.searchTimeout) }
+            clearTimeout(this.searchTimeout);
         
         this.searchTimeout = window.setTimeout(() => { this.handleSearchInput(query) }, 300); // 300ms のデバウンス
     }
@@ -416,7 +415,7 @@ export class HelpEventManager {
             console.log('HelpEventManager: executing search, for:', this.hiddenInput.value);
             // 検索結果にフォーカスを移動
             this.searchFocused = false;
-            this.hiddenInput.blur() }
+            this.hiddenInput.blur();
     }
 
     /**
@@ -424,12 +423,12 @@ export class HelpEventManager {
      */
     private announceNavigationChange(key: string): void { const state = this.contentManager.getState();
         this.accessibilityManager.announceNavigationChange(
-            key, ,
+            key,
             state.categories, )
             state.selectedCategory ),
             state.selectedTopicIndex),
             state.isSearching),
-            state.searchResults) }
+            state.searchResults);
 
     /**
      * ナビゲーション処理
@@ -438,13 +437,13 @@ export class HelpEventManager {
         // フォーカス遷移アニメーション
         if (this.animationManager) {
             this.animationManager.startFocusTransition();
-                this.accessibilityManager.getCurrentFocusIndex() }
+                this.accessibilityManager.getCurrentFocusIndex();
                 this.accessibilityManager.getCurrentFocusIndex(); }
         }
         
         // 選択項目にスクロール
         if (this.gameEngine.helpRenderer) {
-            const state = this.contentManager.getState() }
+            const state = this.contentManager.getState();
             this.gameEngine.helpRenderer.scrollToSelectedItem(state); }
 }
 
@@ -452,13 +451,13 @@ export class HelpEventManager {
         // フォーカス遷移アニメーション
         if (this.animationManager) {
             this.animationManager.startFocusTransition();
-                this.accessibilityManager.getCurrentFocusIndex() }
+                this.accessibilityManager.getCurrentFocusIndex();
                 this.accessibilityManager.getCurrentFocusIndex(); }
         }
         
         // 選択項目にスクロール
         if (this.gameEngine.helpRenderer) {
-            const state = this.contentManager.getState() }
+            const state = this.contentManager.getState();
             this.gameEngine.helpRenderer.scrollToSelectedItem(state); }
 }
 
@@ -475,7 +474,7 @@ export class HelpEventManager {
         }
         
         // 選択項目にスクロール
-        if (this.gameEngine.helpRenderer) { this.gameEngine.helpRenderer.scrollToSelectedItem(newState) }
+        if (this.gameEngine.helpRenderer) { this.gameEngine.helpRenderer.scrollToSelectedItem(newState);
     }
 
     private async navigateRight(): Promise<void> { const state = this.contentManager.getState();
@@ -491,7 +490,7 @@ export class HelpEventManager {
         }
         
         // 選択項目にスクロール
-        if (this.gameEngine.helpRenderer) { this.gameEngine.helpRenderer.scrollToSelectedItem(newState) }
+        if (this.gameEngine.helpRenderer) { this.gameEngine.helpRenderer.scrollToSelectedItem(newState);
     }
 
     /**
@@ -545,10 +544,8 @@ export class HelpEventManager {
                 this.animationManager.startSearchTransition(false); }
 } else {  // メインメニューに戻る
             if (this.callbacks.onGoBack) { }
-                this.callbacks.onGoBack(); }
+                this.callbacks.onGoBack();     }
 }
-    }
-
     /**
      * 検索バーフォーカス
      */''
@@ -577,7 +574,7 @@ export class HelpEventManager {
         if (this.callbacks.onSearchFocus) { this.callbacks.onSearchFocus() }'
         
         // 検索遷移アニメーション
-        if (this.animationManager) { this.animationManager.startSearchTransition(true) }
+        if (this.animationManager) { this.animationManager.startSearchTransition(true);
     }
 
     /**
@@ -587,7 +584,7 @@ export class HelpEventManager {
         // フォーカス遷移アニメーション
         if (this.animationManager) {
             this.animationManager.startFocusTransition();
-                this.accessibilityManager.getCurrentFocusIndex() }
+                this.accessibilityManager.getCurrentFocusIndex();
                 this.accessibilityManager.getCurrentFocusIndex(); }
 }
 
@@ -671,19 +668,19 @@ export class HelpEventManager {
 
         // サイドバークリック処理
         if (this.isPointInSidebar(x, y) {
-            this.handleSidebarClick(x, y) }
+            this.handleSidebarClick(x, y);
             return; }
         }
 
         // コンテンツエリアクリック処理（検索結果選択など）
         if (this.isPointInContent(x, y) {
-            this.handleContentClick(x, y) }
+            this.handleContentClick(x, y);
             return; }
         }
 
         // 戻るボタンクリック処理
         if (this.isPointInBackButton(x, y) {
-            this.goBack() }
+            this.goBack();
             return; }
 }
 
@@ -701,7 +698,7 @@ export class HelpEventManager {
         if (this.isPointInSidebar(x, y) && this.gameEngine.helpRenderer) {
             event.preventDefault();
             const deltaY = event.deltaY * 0.5, // スクロール感度を調整
-            this.gameEngine.helpRenderer.scrollSidebar(deltaY) }
+            this.gameEngine.helpRenderer.scrollSidebar(deltaY);
     }
 
     /**
@@ -717,7 +714,7 @@ export class HelpEventManager {
         // スクロールバードラッグ中の処理
         if (this.gameEngine.helpRenderer.isScrollbarDragging() {
             event.preventDefault();
-            this.gameEngine.helpRenderer.updateScrollbarDrag(y) }
+            this.gameEngine.helpRenderer.updateScrollbarDrag(y);
             return; }
         }
 
@@ -751,10 +748,8 @@ export class HelpEventManager {
             // カーソルをリセット
             if (this.gameEngine.canvas) {', ' }
 
-                this.gameEngine.canvas.style.cursor = 'default'; }
+                this.gameEngine.canvas.style.cursor = 'default';     }
 }
-    }
-
     /**
      * サイドバークリック処理
      */
@@ -786,7 +781,7 @@ export class HelpEventManager {
                 
                 // 選択項目にスクロール
                 if (this.gameEngine.helpRenderer) {
-                    const newState = this.contentManager.getState() }
+                    const newState = this.contentManager.getState();
                     this.gameEngine.helpRenderer.scrollToSelectedItem(newState); }
                 }
                 return;
@@ -809,16 +804,14 @@ export class HelpEventManager {
                         
                         // 選択項目にスクロール
                         if (this.gameEngine.helpRenderer) {
-                            const newState = this.contentManager.getState() }
+                            const newState = this.contentManager.getState();
                             this.gameEngine.helpRenderer.scrollToSelectedItem(newState); }
                         }
                         return;
                     }
                     currentY += topicHeight;
-                }
+                    }
 }
-    }
-
     /**
      * コンテンツエリアクリック処理
      */
@@ -876,12 +869,11 @@ export class HelpEventManager {
 
         const currentTopic = this.contentManager.getCurrentTopic();
         if (currentTopic && this.callbacks.onFeedbackRequest) {
-            this.callbacks.onFeedbackRequest({ topic: currentTopic) }
+            this.callbacks.onFeedbackRequest({ topic: currentTopic),
                 content: state.currentContent }
                 category: state.selectedCategory }
                 position: { x, y }
-                quickMode: true),
-    }
+                quickMode: true) }
 
     /**
      * 検索入力処理
@@ -897,16 +889,16 @@ export class HelpEventManager {
      * 座標判定ヘルパー
      */
     private isPointInSearchBar(x: number, y: number): boolean { const layout = this.getLayout();
-        return this.isPointInRect(x, y, layout.searchBar) }
+        return this.isPointInRect(x, y, layout.searchBar);
 
     private isPointInSidebar(x: number, y: number): boolean { const layout = this.getLayout();
-        return this.isPointInRect(x, y, layout.sidebar) }
+        return this.isPointInRect(x, y, layout.sidebar);
 
     private isPointInContent(x: number, y: number): boolean { const layout = this.getLayout();
-        return this.isPointInRect(x, y, layout.content) }
+        return this.isPointInRect(x, y, layout.content);
 
     private isPointInBackButton(x: number, y: number): boolean { const layout = this.getLayout();
-        return this.isPointInRect(x, y, layout.backButton) }
+        return this.isPointInRect(x, y, layout.backButton);
 
     private isPointInRect(x: number, y: number, rect: { x: number, y: number, width: number,  height: number ): boolean {
         return x >= rect.x && x <= rect.x + rect.width && }
@@ -920,9 +912,9 @@ export class HelpEventManager {
         
         // フォールバック: 固定レイアウト
         return {  };
-            searchBar: { x: 50, y: 60, width: 720, height: 40  },  // タイトルの下に配置
-            sidebar: { x: 50, y: 110, width: 250, height: 370  },  // 検索バーの下に配置
-            content: { x: 320, y: 110, width: 450, height: 370  },
+            searchBar: { x: 50, y: 60, width: 720, height: 40  ,  // タイトルの下に配置
+            sidebar: { x: 50, y: 110, width: 250, height: 370  ,  // 検索バーの下に配置
+            content: { x: 320, y: 110, width: 450, height: 370  ,
             backButton: { x: 50, y: 500, width: 100, height: 40  }
 
     /**
@@ -934,7 +926,7 @@ export class HelpEventManager {
      * 状態取得
      */
     public getEventState(): EventState { return { searchFocused: this.searchFocused,
-            lastInputTime: this.lastInputTime },
+            lastInputTime: this.lastInputTime ,
             hasActiveListeners: Boolean(this.boundKeyHandler); 
     }
 
@@ -976,7 +968,7 @@ export class HelpInputValidator { private maxSearchLength: number = 100' }'
         if (query.length > this.maxSearchLength) { return { valid: false,
                 error: `Search query too long (max ${this.maxSearchLength} characters}`
             }
-                sanitized: query.substring(0, this.maxSearchLength};
+                sanitized: query.substring(0, this.maxSearchLength}
             }
 ';'
 
@@ -1012,7 +1004,7 @@ export class HelpInputValidator { private maxSearchLength: number = 100' }'
                 error: 'Index out of range'
             };
                 sanitized: Math.max(0, maxValue - 1) ; }
-            }
+            } };
 
         return { valid: true, sanitized: numIndex,
 
@@ -1038,6 +1030,4 @@ export class HelpInputValidator { private maxSearchLength: number = 100' }'
                 sanitized: validCategories[0] || 'gameplay' 
     }
 
-        return { valid: true, sanitized: trimmedId,
-
-    }'}'
+        return { valid: true, sanitized: trimmedId }'}'

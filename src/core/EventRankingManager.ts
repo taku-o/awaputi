@@ -12,7 +12,7 @@ export class EventRankingManager {
         this.gameEngine = gameEngine
         
 
-    }
+    };
         // ランキングデータ }
         this.eventRankings = {}; // eventId -> ranking data
         this.playerRankings = {}; // playerId -> player ranking data
@@ -36,7 +36,7 @@ export class EventRankingManager {
      */
     initialize() {
         this.load();
-        this.startPeriodicUpdates() }
+        this.startPeriodicUpdates();
         console.log('EventRankingManager, initialized'); }'
     }
     
@@ -44,45 +44,45 @@ export class EventRankingManager {
      * ランキングティア（階級）を初期化'
      */''
     initializeRankingTiers('''
-                name: 'Legend',
+                name: 'Legend,
     minRank: 1,
                 maxRank: 3,
-                icon: '👑',
-                color: '#FFD700',
+                icon: '👑,
+                color: '#FFD700,
                 rewards: { ap: 1000, items: ['legend_crown', 'golden_trophy] },'
 
             { ''
-                name: 'Master',
+                name: 'Master,
     minRank: 4,
                 maxRank: 10,
-                icon: '💎',
+                icon: '💎,
                 color: '#C0C0C0',' }'
 
                 rewards: { ap: 500, items: ['master_medal', 'silver_trophy] },'
 
             { ''
-                name: 'Expert',
+                name: 'Expert,
     minRank: 11,
                 maxRank: 25,
-                icon: '🥇',
+                icon: '🥇,
                 color: '#CD7F32',' }'
 
                 rewards: { ap: 300, items: ['expert_badge', 'bronze_trophy] },'
 
             { ''
-                name: 'Advanced',
+                name: 'Advanced,
     minRank: 26,
                 maxRank: 50,
-                icon: '🥈',
+                icon: '🥈,
                 color: '#4682B4',' }'
 
-                rewards: { ap: 150, items: ['advanced_certificate]  },'
+                rewards: { ap: 150, items: ['advanced_certificate]  ,'
 
             { ''
                 name: 'Intermediate),'
                 minRank: 51','
     maxRank: 100,
-                icon: '🥉',
+                icon: '🥉,
                 color: '#228B22',' }'
 
                 rewards: { ap: 75, items: ['participation_badge]  }'
@@ -104,11 +104,10 @@ export class EventRankingManager {
         }
                 eventId }
                 players: {},
-                lastUpdate: Date.now();
+                lastUpdate: Date.now(),
                 totalParticipants: 0,
                 averageScore: 0,
-    topScore: 0,
-            } }
+    topScore: 0 } }
         
         const ranking = this.eventRankings[eventId];
         const previousScore = ranking.players[playerId]?.score || 0;
@@ -118,12 +117,12 @@ export class EventRankingManager {
         if (!ranking.players[playerId] || score > previousScore) {
             ranking.players[playerId] = {
                 playerId, : undefined
-                playerName: this.getPlayerName(playerId) }
+                playerName: this.getPlayerName(playerId);
                 score }
                 stats: { ...stats,
-                timestamp: Date.now(
+                timestamp: Date.now( ,
     rank: 0, // 後で計算,
-                improved: score > previousScore },
+                improved: score > previousScore ,
             
             // 新規参加者の場合
             if (isNewPlayer) { ranking.totalParticipants++ }
@@ -197,7 +196,7 @@ export class EventRankingManager {
                 players: [],
                 totalParticipants: 0,
     averageScore: 0 }
-                topScore: 0 },
+                topScore: 0 ,
                 lastUpdate: Date.now(); 
     }
         
@@ -216,7 +215,7 @@ export class EventRankingManager {
             totalParticipants: ranking.totalParticipants,
             averageScore: ranking.averageScore,
             topScore: ranking.topScore,
-    lastUpdate: ranking.lastUpdate  },
+    lastUpdate: ranking.lastUpdate  ,
         // キャッシュに保存
         this.leaderboardCache.set(cacheKey, {
                 data: leaderboard,
@@ -237,7 +236,7 @@ export class EventRankingManager {
         
         const playerData = ranking.players[playerId];
         return { ...playerData,
-            tierInfo: this.getTierForRank(playerData.rank) },
+            tierInfo: this.getTierForRank(playerData.rank) ,
             percentile: this.calculatePercentile(playerData.rank, ranking.totalParticipants); }
         }
     
@@ -270,7 +269,7 @@ export class EventRankingManager {
                     playerName: player.playerName),
                     rank: player.rank,
     tier: tier.name),
-                    rewards: rewards) }
+                    rewards: rewards);
                 // 通知を送信 }
                 this.sendRankingRewardNotification(player.playerId, eventId, tier, player.rank, rewards); }
 };
@@ -302,11 +301,11 @@ export class EventRankingManager {
             this.gameEngine.playerData.tap += rewards.ap; }
         }
         
-        rewards.items.forEach(item => {  ) }
+        rewards.items.forEach(item => {  );
             this.gameEngine.playerData.addItem(item); }
         };
         
-        rewards.special.forEach(special => {  ) }
+        rewards.special.forEach(special => {  );
             this.gameEngine.playerData.addSpecialReward(special); }
         };
         
@@ -328,12 +327,11 @@ export class EventRankingManager {
 
         this.gameEngine.achievementNotificationSystem.queueNotification({)'
             type: 'ranking','}';
-            title: 'ランキング報酬！'},' }'
+            title: 'ランキング報酬！',' }'
 
             message: `${message'}\n${rewardText.join('、'}を獲得`;'
             icon: tier.icon,
-    duration: 6000,
-        } }
+    duration: 6000 } }
     
     /**
      * イベント統計を更新
@@ -360,8 +358,7 @@ export class EventRankingManager {
                 eventHistory: {},
                 totalEvents: 0,
     bestRanks: {},
-                averageRank: 0,
-            } }
+                averageRank: 0 } }
         
         const playerRanking = this.playerRankings[playerId];
         
@@ -387,7 +384,7 @@ export class EventRankingManager {
             Object.keys(this.eventRankings).forEach(eventId => {);
                 if (this.gameEngine.eventStageManager?.isEventAvailable(eventId) { }
                     this.recalculateRanking(eventId); }
-};
+}
         }, this.rankingUpdateInterval);
     }
     
@@ -396,7 +393,7 @@ export class EventRankingManager {
      */
     stopPeriodicUpdates() {
         if (this.updateTimer) {
-            clearInterval(this.updateTimer) }
+            clearInterval(this.updateTimer);
             this.updateTimer = null; }
 }
     
@@ -450,7 +447,7 @@ export class EventRankingManager {
      */''
     load()';'
             const data = localStorage.getItem('eventRankingData);'
-            if (data) { const parsed = JSON.parse(data) }
+            if (data) { const parsed = JSON.parse(data);
                 this.eventRankings = parsed.eventRankings || {};
                 this.playerRankings = parsed.playerRankings || {};
 
@@ -480,6 +477,6 @@ export class EventRankingManager {
      */
     cleanup() {
         this.stopPeriodicUpdates();
-        this.clearLeaderboardCache() }
+        this.clearLeaderboardCache();
 
         this.save() }')'

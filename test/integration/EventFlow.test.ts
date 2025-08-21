@@ -8,8 +8,8 @@ import { EventStageManager  } from '../../src/core/EventStageManager.js';
 import { EventRankingManager  } from '../../src/core/EventRankingManager.js';
 import { StageSelectScene  } from '../../src/scenes/StageSelectScene.js';
 // Mock function type
-interface MockFunction<T = any> extends Function { mockReturnValue: (value: T) => MockFunction<T>;
-    mockImplementation: (impl: Function) => MockFunction<T>;
+interface MockFunction<T = any> extends Function { mockReturnValue: (value: T) => MockFunction<T>,
+    mockImplementation: (impl: Function) => MockFunction<T>,
     toHaveBeenCalledWith: (...args: any[]) => void }
 }
 // Canvas and rendering interfaces
@@ -17,66 +17,66 @@ interface MockCanvas { width: number,'
     height: number,';'
     getContext: (typ,e: string') => MockCanvasContext }'
 }
-interface MockCanvasContext { fillStyle: string;
+interface MockCanvasContext { fillStyle: string,
     strokeStyle: string;
-    font: string;
+    font: string,
     textAlign: string;
-    textBaseline: string;
+    textBaseline: string,
     globalAlpha: number;
-    save: MockFunction<void>;
+    save: MockFunction<void>,
     restore: MockFunction<void>;
-    fillText: MockFunction<void>;
+    fillText: MockFunction<void>,
     fillRect: MockFunction<void>;
-    strokeRect: MockFunction<void>;
+    strokeRect: MockFunction<void>,
     beginPath: MockFunction<void>;
-    arc: MockFunction<void>;
+    arc: MockFunction<void>,
     fill: MockFunction<void>;
-    stroke: MockFunction<void>;
+    stroke: MockFunction<void>,
     measureText: MockFunction<{ width: number;>,
-    clearRect: MockFunction<void>;
+    clearRect: MockFunction<void>,
     createLinearGradient: MockFunction<MockGradient>;
 interface MockGradient { addColorStop: MockFunction<void>;
 }
 // Input interfaces
-interface MousePosition { x: number;
+interface MousePosition { x: number,
     y: number;
 }
-interface MockInputManager { getMousePosition: MockFunction<MousePosition>;
+interface MockInputManager { getMousePosition: MockFunction<MousePosition>,
     isPressed: MockFunction<boolean>;
     wasClicked: MockFunction<boolean>;
 }
 // Player and game data interfaces
-interface PlayerData { ap: number;
+interface PlayerData { ap: number,
     tap: number;
-    level: number;
+    level: number,
     clearedStages: string[];
     eventParticipationHistory: Record<string, any>;
-    addItem: MockFunction<void>;
+    addItem: MockFunction<void>,
     addSpecialReward: MockFunction<void>;
-    getPlayerName: MockFunction<string>;
+    getPlayerName: MockFunction<string>,
     save: MockFunction<void>;
 }
-interface GameStatistics { totalEvents: number;
+interface GameStatistics { totalEvents: number,
     completionRate: number;
     averageScore: number;
 }
-interface StatisticsManager { recordEventParticipation: MockFunction<void>;
+interface StatisticsManager { recordEventParticipation: MockFunction<void>,
     getEventStatistics: MockFunction<GameStatistics>;
     updateEventStats: MockFunction<void>;
 }
-interface AchievementNotificationSystem { queueNotification: MockFunction<void>;
+interface AchievementNotificationSystem { queueNotification: MockFunction<void>,
     createEventNotification: MockFunction<void>;
     hasNotifications: MockFunction<boolean>;
 }
-interface SceneManager { switchScene: MockFunction<void>;
+interface SceneManager { switchScene: MockFunction<void>,
     getCurrentScene: MockFunction<string>;
 }
 // Game engine interface
-interface GameEngine { canvas: MockCanvas;
+interface GameEngine { canvas: MockCanvas,
     ctx: MockCanvasContext;
-    inputManager: MockInputManager;
+    inputManager: MockInputManager,
     playerData: PlayerData;
-    statisticsManager: StatisticsManager;
+    statisticsManager: StatisticsManager,
     achievementNotificationSystem: AchievementNotificationSystem;
     sceneManager: SceneManager;
     eventStageManager?: EventStageManager;
@@ -86,7 +86,7 @@ interface GameEngine { canvas: MockCanvas;
 interface EventSpecialRules { cherryBlossomEffect?: boolean,
     [key: string]: any;
 }
-interface Event { id: string;
+interface Event { id: string,
     isActive: boolean;
     specialRules: EventSpecialRules;
     endTime?: number;
@@ -102,7 +102,7 @@ interface EventRanking { score: number;
     rank?: number;
     tierInfo?: {
         nam,e: string;
-    };
+    }
 }
 interface Leaderboard { players: EventRanking[];
 }
@@ -329,9 +329,9 @@ describe('Event Flow Integration Tests', () => {  let mockGameEngine: GameEngine
                 { id: 'player5', score: 28000 }]
             ];)
             players.forEach(player => {  ) }
-                eventRankingManager.updateEventRanking(eventId, player.id, player.score, {) }
+                eventRankingManager.updateEventRanking(eventId, player.id, player.score, {) } };
                     bubblesPopped: player.score / 100 },
-                    maxChain: Math.floor(player.score / 1000 };
+                    maxChain: Math.floor(player.score / 1000 }
             }
             // 3. Verify leaderboard ordering'
             const leaderboard: Leaderboard = eventRankingManager.getEventLeaderboard(eventId, 10);
@@ -423,7 +423,7 @@ describe('Event Flow Integration Tests', () => {  let mockGameEngine: GameEngine
                     onStart: true),
                    , onEnd: true) }
                     reminderInterval: 1800000 // 30 minutes); }
-    };
+    }
             }'
             // 2. Verify start notification was sent''
             expect(mockAchievementNotificationSystem.queueNotification').toHaveBeenCalledWith(';
@@ -538,7 +538,7 @@ describe('Event Flow Integration Tests', () => {  let mockGameEngine: GameEngine
                 eventStageManager.completeEvent(eventId, 'test-player', 15000, {)
                     bubblesPopped: 150) }
                     maxChain: 10); }
-                };
+                }
             }.not.toThrow();
             // 3. Restore localStorage and verify recovery
             localStorage.setItem = originalSetItem;

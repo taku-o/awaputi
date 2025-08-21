@@ -11,105 +11,91 @@
 // Type definitions for Particle Performance Optimizer
 interface ErrorHandler { logError(message: string, error: any): void;
     handleError(error: any, context?: any): void;
-
-interface ConfigurationManager { // Configuration management methods will be defined when actual file is converted
+    interface ConfigurationManager { // Configuration management methods will be defined when actual file is converted
     [key: string]: any;
-
-interface PerformanceThresholds { criticalFPS: number;
-    warningFPS: number;
-    optimalFPS: number;
+    interface PerformanceThresholds { criticalFPS: number,
+    warningFPS: number,
+    optimalFPS: number,
     excellentFPS: number;
-
-interface ParticleConfiguration { enabled: boolean;
-    targetFPS: number;
-    maxParticles: number;
-    maxParticlesPerEffect: number;
-    qualityLevel: 'low' | 'medium' | 'high' | 'ultra';
-    adaptiveQuality: boolean;
+    interface ParticleConfiguration { enabled: boolean,
+    targetFPS: number,
+    maxParticles: number,
+    maxParticlesPerEffect: number,
+    qualityLevel: 'low' | 'medium' | 'high' | 'ultra,
+    adaptiveQuality: boolean,
     performanceThresholds: PerformanceThresholds;
-
-interface ParticlePool { available: any[];
-    inUse: Set<any>;
-    maxSize: number;
+    interface ParticlePool { available: any[],
+    inUse: Set<any>,
+    maxSize: number,
     type: string;
-
-interface ParticleManager { activeParticles: Set<any>;
+    interface ParticleManager { activeParticles: Set<any>,
     particlePool: Map<string, ParticlePool>;
     particleSystems: Map<string, any>;
-    totalParticleCount: number;
-    activeEffectCount: number;
-    frameParticleCount: number;
-    averageParticleCount: number;
+    totalParticleCount: number,
+    activeEffectCount: number,
+    frameParticleCount: number,
+    averageParticleCount: number,
     peakParticleCount: number;
-
-interface ParticleSize { min: number;
+    interface ParticleSize { min: number,
     max: number;
-
-interface ParticleVelocity { min: number;
+    interface ParticleVelocity { min: number,
     max: number;
 ';'
 
 interface ParticleTypeConfig { ''
-    category: 'critical' | 'important' | 'normal' | 'background';
-    maxParticles: number;
-    lifetime: number;
-    size: ParticleSize;
-    velocity: ParticleVelocity;
+    category: 'critical' | 'important' | 'normal' | 'background,
+    maxParticles: number,
+    lifetime: number,
+    size: ParticleSize,
+    velocity: ParticleVelocity,
     properties: string[];
-
-interface RegisteredEffect extends ParticleTypeConfig { createdCount: number;
-    activeCount: number;
-    culledCount: number;
-    averageLifetime: number;
+    interface RegisteredEffect extends ParticleTypeConfig { createdCount: number,
+    activeCount: number,
+    culledCount: number,
+    averageLifetime: number,
     performanceImpact: number;
-
-interface EffectSystem { registeredEffects: Map<string, RegisteredEffect>,
-    activeEffects: Set<any>;
+    interface EffectSystem { registeredEffects: Map<string, RegisteredEffect>,
+    activeEffects: Set<any>,
     effectPool: Map<string, any>;
-    maxActiveEffects: number;
+    maxActiveEffects: number,
     effectPriorities: Map<string, number> }
 
-interface FrameMetrics { frameNumber: number;
-    optimizationTime: number;
-    originalParticles: number;
-    finalParticles: number;
+interface FrameMetrics { frameNumber: number,
+    optimizationTime: number,
+    originalParticles: number,
+    finalParticles: number,
     timestamp: number;
-
-interface PerformanceMonitor { enabled: boolean;
-    frameStart: number;
-    cullingTime: number;
-    batchingTime: number;
-    renderingTime: number;
-    totalTime: number;
-    averageTime: number;
-    frameMetrics: FrameMetrics[];
-    maxHistory: number;
+    interface PerformanceMonitor { enabled: boolean,
+    frameStart: number,
+    cullingTime: number,
+    batchingTime: number,
+    renderingTime: number,
+    totalTime: number,
+    averageTime: number,
+    frameMetrics: FrameMetrics[],
+    maxHistory: number,
     currentFrame: number;
-
-interface CullingSystemConfig { distanceCulling: boolean;
-    frustumCulling: boolean;
-    occlusionCulling: boolean;
-    importanceCulling: boolean;
-    ageCulling: boolean;
-    maxCullingDistance: number;
-    nearCullingDistance: number;
+    interface CullingSystemConfig { distanceCulling: boolean,
+    frustumCulling: boolean,
+    occlusionCulling: boolean,
+    importanceCulling: boolean,
+    ageCulling: boolean,
+    maxCullingDistance: number,
+    nearCullingDistance: number,
     maxAge: number;
-
-interface BatchRendererConfig { enabled: boolean;
-    maxBatchSize: number;
-    maxInstances: number;
-    sortByTexture: boolean;
-    sortByBlendMode: boolean;
+    interface BatchRendererConfig { enabled: boolean,
+    maxBatchSize: number,
+    maxInstances: number,
+    sortByTexture: boolean,
+    sortByBlendMode: boolean,
     atlasOptimization: boolean;
-
-interface QualityManagerConfig { enabled: boolean;
-    adaptiveQuality: boolean;
-    initialLevel: string;
-    targetFPS: number;
-    downgradeThreshold: number;
+    interface QualityManagerConfig { enabled: boolean,
+    adaptiveQuality: boolean,
+    initialLevel: string,
+    targetFPS: number,
+    downgradeThreshold: number,
     upgradeThreshold: number;
-
-interface OptimizationResult { success: boolean;
+    interface OptimizationResult { success: boolean,
     originalCount: number;
     visibleCount?: number;
     finalCount?: number;
@@ -119,26 +105,25 @@ interface OptimizationResult { success: boolean;
     performanceGain?: number;
     error?: string;
     fallbackCount?: number;
-
-interface PerformanceStats { overall: PerformanceMonitor & {
-        averageOptimizationTim,e: number;
+    interface PerformanceStats { overall: PerformanceMonitor & {
+        averageOptimizationTim,e: number,
     averageFPS: number;;
-    culling: any;
-    batching: any;
-    quality: any;
-    particles: { total: number;
+    culling: any,
+    batching: any,
+    quality: any,
+    particles: { total: number,
         average: number;
-    peak: number;
+    },
+    peak: number,
     peak: number;
         };
 interface OptimizerConfig { particles?: Partial<ParticleConfiguration>,
     culling?: any;
     quality?: any;
     batching?: any;
-
-interface Camera {
-    position?: { ,x: number,, y: number, z?: number;
-    rotation?: { x: number,, y: number, z?: number;
+    interface Camera {
+    position?: { ,x: number, y: number, z?: number;
+    rotation?: { x: number, y: number, z?: number;
     fov?: number;
     near?: number;
     far?: number;
@@ -162,10 +147,10 @@ interface ParticleQualityManager { applyQualityScaling(particles: any[]): any[];
     configure?(config: any): void;
     resetStats?(): void 
 // Dummy implementations for missing dependencies (will, be replaced, when actual, files are, converted);
-class DummyParticleCullingSystem implements ParticleCullingSystem { performParticleCulling(particles: any[], camera?: Camera | null): any[] {
+    class DummyParticleCullingSystem implements ParticleCullingSystem { performParticleCulling(particles: any[], camera?: Camera | null): any[] {
         console.log(`[ParticleCullingSystem] Culling ${particles.length} particles`}
         // Simple culling: remove 20% of particles as dummy implementation }
-        return particles.slice(0, Math.floor(particles.length * 0.8)};
+        return particles.slice(0, Math.floor(particles.length * 0.8);
     }
     
     getStats(): { cullingEfficiency: number, [key: string]: any; {
@@ -189,8 +174,8 @@ class DummyParticleBatchRenderer implements ParticleBatchRenderer { createRender
             batches.push({'),' }'
 
                 particles: particles.slice(i, i + 100'}',''
-                texture: 'default',
-                blendMode: 'normal',
+                texture: 'default,
+                blendMode: 'normal';
             } }
         return batches;
     }
@@ -213,7 +198,7 @@ class DummyParticleQualityManager implements ParticleQualityManager { ''
         console.log(`[ParticleQualityManager] Applying, quality scaling, to ${particles.length) particles`};
         // Simple quality scaling based on current quality level
         const scaleFactor = this.getQualityScaleFactor(}
-        return particles.slice(0, Math.floor(particles.length * scaleFactor)};
+        return particles.slice(0, Math.floor(particles.length * scaleFactor);
     }
     ;
     updatePerformanceMetrics(fps: number): void { // Automatically adjust quality based on FPS
@@ -230,7 +215,7 @@ class DummyParticleQualityManager implements ParticleQualityManager { ''
 }
     
     setQualityLevel(level: string): void { this.currentQuality = level }
-        console.log(`[ParticleQualityManager] Quality, level set, to: ${level}`};
+        console.log(`[ParticleQualityManager] Quality, level set, to: ${level}`}
     }
     
     getStats(): any { return { qualityLevel: this.currentQuality, adjustmentCount: 0, lastAdjustment: Date.now(  }
@@ -250,7 +235,7 @@ class DummyParticleQualityManager implements ParticleQualityManager { ''
             case 'medium': return 0.6,
             case 'high': return 0.9,
             case 'ultra': return 1.0 }
-            default: return 0.6,
+            default: return 0.6;
 }
 
 // Dummy dependency functions
@@ -277,12 +262,11 @@ export class ParticlePerformanceOptimizer {
 
         this.errorHandler = getErrorHandler();
         this.configManager = getConfigurationManager('''
-            qualityLevel: 'high';
+            qualityLevel: 'high,
     adaptiveQuality: true;
             // Performance, thresholds
-            performanceThresholds: {
-                criticalFPS: 30;
-                warningFPS: 45;
+            performanceThresholds: { criticalFPS: 30  ,
+                warningFPS: 45,
     optimalFPS: 55 }
                 excellentFPS: 60 
     })
@@ -293,31 +277,31 @@ export class ParticlePerformanceOptimizer {
         
         // Particle management
         this.particleManager = { activeParticles: new Set()
-           , particlePool: new Map<string, ParticlePool>(),
+            particlePool: new Map<string, ParticlePool>(),
             particleSystems: new Map(
-            totalParticleCount: 0;
-            activeEffectCount: 0;
-            frameParticleCount: 0;
-            averageParticleCount: 0;
+            totalParticleCount: 0,
+            activeEffectCount: 0,
+            frameParticleCount: 0,
+            averageParticleCount: 0,
     peakParticleCount: 0  })
         // Effect system
         this.effectSystem = { registeredEffects: new Map<string, RegisteredEffect>(),
             activeEffects: new Set(
     effectPool: new, Map();
-            maxActiveEffects: 20;
+            maxActiveEffects: 20,
     effectPriorities: new Map(  }
         
         // Performance monitoring
-        this.performanceMonitor = { enabled: true;
-            frameStart: 0;
-            cullingTime: 0;
-            batchingTime: 0;
-            renderingTime: 0;
-            totalTime: 0;
+        this.performanceMonitor = { enabled: true,
+            frameStart: 0,
+            cullingTime: 0,
+            batchingTime: 0,
+            renderingTime: 0,
+            totalTime: 0,
             averageTime: 0;
             // Frame metrics
-            frameMetrics: [];
-            maxHistory: 60;
+            frameMetrics: [],
+            maxHistory: 60,
     currentFrame: 0  };
         // Start monitoring
         this.monitoringInterval = null;
@@ -331,7 +315,7 @@ export class ParticlePerformanceOptimizer {
     initializeParticleOptimizer(): void { this.initializeParticlePools();
         this.startPerformanceMonitoring();
         this.setupEventListeners();
-        this.registerDefaultParticleTypes() }
+        this.registerDefaultParticleTypes();
     
     /**
      * Initialize particle pools'
@@ -340,7 +324,7 @@ export class ParticlePerformanceOptimizer {
         const poolTypes = ['explosion', 'smoke', 'fire', 'spark', 'magic', 'trail', 'glow'];
         );
         for (const type of poolTypes) { this.particleManager.particlePool.set(type, {
-                available: []);
+                available: []),
                 inUse: new Set(
     maxSize: 200  }
 
@@ -358,7 +342,7 @@ export class ParticlePerformanceOptimizer {
     startPerformanceMonitoring(): void { if (!this.performanceMonitor.enabled) return,
         
         this.monitoringInterval = setInterval(() => { 
-            this.updatePerformanceMetrics() }
+            this.updatePerformanceMetrics();
 
             this.performAdaptiveOptimization();' }'
 
@@ -372,48 +356,48 @@ export class ParticlePerformanceOptimizer {
      */''
     registerDefaultParticleTypes('''
             'explosion': { ''
-                category: 'important',
+                category: 'important' };
                 maxParticles: 200,
     lifetime: 2.0 }
-                size: { min: 4, max: 16  },
+                size: { min: 4, max: 16  ,
 
-                velocity: { min: 50, max: 200  },''
+                velocity: { min: 50, max: 200  ,''
                 properties: ['physics', 'fade', 'scale]';
             },', 'smoke': { ''
-                category: 'background',
+                category: 'background,
                 maxParticles: 100,
     lifetime: 5.0 }
-                size: { min: 8, max: 24  },
+                size: { min: 8, max: 24  ,
 
-                velocity: { min: 10, max: 50  },''
+                velocity: { min: 10, max: 50  ,''
                 properties: ['physics', 'fade', 'drift]';
             },', 'fire': { ''
-                category: 'important',
+                category: 'important,
                 maxParticles: 150,
     lifetime: 1.5 }
-                size: { min: 6, max: 20  },
+                size: { min: 6, max: 20  ,
 
-                velocity: { min: 20, max: 100  },''
+                velocity: { min: 20, max: 100  ,''
                 properties: ['physics', 'fade', 'flicker]';
             },', 'spark': { ''
-                category: 'normal',
+                category: 'normal,
                 maxParticles: 50,
     lifetime: 1.0 }
-                size: { min: 2, max: 6  },
+                size: { min: 2, max: 6  ,
 
-                velocity: { min: 100, max: 300  },''
+                velocity: { min: 100, max: 300  ,''
                 properties: ['physics', 'fade', 'trail]';
             },', 'magic': { ''
-                category: 'critical',
+                category: 'critical,
                 maxParticles: 300,
     lifetime: 3.0 };
                 size: { min: 8, max: 32  }''
-                velocity: { min: 30, max: 150  },''
+                velocity: { min: 30, max: 150  ,''
                 properties: ['physics', 'fade', 'glow', 'swirl'];
             }
         };
         
-        for(const [type, config] of Object.entries(defaultTypes) { this.registerParticleType(type, config) }
+        for(const [type, config] of Object.entries(defaultTypes) { this.registerParticleType(type, config);
     }
     
     /**
@@ -424,11 +408,11 @@ export class ParticlePerformanceOptimizer {
     registerParticleType(type: string, config: ParticleTypeConfig): void { this.effectSystem.registeredEffects.set(type, {
             ...config,
             createdCount: 0,
-            activeCount: 0);
+            activeCount: 0),
             culledCount: 0,
     averageLifetime: config.lifetime),
-            performanceImpact: 0) }
-        console.log(`[ParticlePerformanceOptimizer] Registered, particle type: ${type}`};
+            performanceImpact: 0);
+        console.log(`[ParticlePerformanceOptimizer] Registered, particle type: ${type}`}
     }
     
     /**
@@ -464,19 +448,17 @@ export class ParticlePerformanceOptimizer {
                 finalCount: scaledParticles.length,
                 renderBatches: renderBatches,
                 optimizationTime: totalTime,
-    cullingEfficiency: this.cullingSystem.getStats().cullingEfficiency },
+    cullingEfficiency: this.cullingSystem.getStats().cullingEfficiency ,
                 performanceGain: this.calculatePerformanceGain(particles.length, scaledParticles.length); }
-            } catch (error) { this.errorHandler.handleError(error, {)'
+        } catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'ParticlePerformanceOptimizer.optimizeParticles'
             };
             
             return { success: false,
                 error: (error, as Error).message,
-                originalCount: particles.length },
-                fallbackCount: Math.min(particles.length, this.particleConfig.maxParticles); }
-            }
-    }
-    
+                originalCount: particles.length ,
+                fallbackCount: Math.min(particles.length, this.particleConfig.maxParticles);     }
+}
     /**
      * Update particle tracking
      * @param particles - All particles
@@ -493,7 +475,7 @@ export class ParticlePerformanceOptimizer {
         // Update peak particle count
         this.particleManager.peakParticleCount = Math.max(
             this.particleManager.peakParticleCount );
-            particles.length) }
+            particles.length);
     
     /**
      * Update frame performance metrics
@@ -510,11 +492,11 @@ export class ParticlePerformanceOptimizer {
             optimizationTime: totalTime,
             originalParticles: originalCount,
             finalParticles: finalCount,
-    timestamp: this.performanceMonitor.frameStart },
+    timestamp: this.performanceMonitor.frameStart ,
         this.performanceMonitor.frameMetrics.push(metrics);
         
         // Maintain history size
-        if (this.performanceMonitor.frameMetrics.length > this.performanceMonitor.maxHistory) { this.performanceMonitor.frameMetrics.shift() }
+        if (this.performanceMonitor.frameMetrics.length > this.performanceMonitor.maxHistory) { this.performanceMonitor.frameMetrics.shift();
     }
     
     /**
@@ -563,11 +545,9 @@ export class ParticlePerformanceOptimizer {
                 if (document.hidden) { }'
 
                     this.qualityManager.setQualityLevel('low'; }'
-                } else { this.qualityManager.setQualityLevel(this.particleConfig.qualityLevel) }
-            };
-        }
-    }
-    
+                } else { this.qualityManager.setQualityLevel(this.particleConfig.qualityLevel);
+                }
+}
     /**
      * Get comprehensive performance statistics
      * @returns Performance statistics
@@ -583,12 +563,12 @@ export class ParticlePerformanceOptimizer {
                 ...this.performanceMonitor,
                 averageOptimizationTime: avgOptimizationTime,
                 averageFPS: avgFrameTime > 0 ? Math.round(1000 / avgFrameTime) : 60 
-            };
-            culling: this.cullingSystem.getStats();
-            batching: this.batchRenderer.getStats();
+        }
+            culling: this.cullingSystem.getStats(),
+            batching: this.batchRenderer.getStats(),
             quality: this.qualityManager.getStats(
     particles: { total: this.particleManager.totalParticleCount,
-                average: this.particleManager.averageParticleCount,
+                average: this.particleManager.averageParticleCount ,
     peak: this.particleManager.peakParticleCount 
     }
     
@@ -597,11 +577,11 @@ export class ParticlePerformanceOptimizer {
      * @param config - Configuration options
      */
     configure(config: OptimizerConfig): void { if (config.particles) {
-            Object.assign(this.particleConfig, config.particles) }
+            Object.assign(this.particleConfig, config.particles);
         
-        if (config.culling) { this.cullingSystem.configure && this.cullingSystem.configure(config.culling) }
+        if (config.culling) { this.cullingSystem.configure && this.cullingSystem.configure(config.culling);
         
-        if (config.quality) { this.qualityManager.configure && this.qualityManager.configure(config.quality) }
+        if (config.quality) { this.qualityManager.configure && this.qualityManager.configure(config.quality);
         
         if (config.batching) {
         ','
@@ -619,7 +599,7 @@ export class ParticlePerformanceOptimizer {
      */
     destroy(): void { // Clear intervals
         if (this.monitoringInterval) {
-            clearInterval(this.monitoringInterval) }
+            clearInterval(this.monitoringInterval);
             this.monitoringInterval = null; }
         }
         
@@ -648,7 +628,7 @@ export function getParticlePerformanceOptimizer(): ParticlePerformanceOptimizer 
         } catch (error) {
             console.error('[ParticlePerformanceOptimizer] インスタンス作成エラー:', error);
             // フォールバック: 基本的なインスタンスを作成
-            _particlePerformanceOptimizer = new ParticlePerformanceOptimizer() }
+            _particlePerformanceOptimizer = new ParticlePerformanceOptimizer();
     }
     return _particlePerformanceOptimizer;
 }
@@ -659,7 +639,7 @@ export function getParticlePerformanceOptimizer(): ParticlePerformanceOptimizer 
 export function reinitializeParticlePerformanceOptimizer(): void { try {
         if (_particlePerformanceOptimizer) {
     
-}
+};
             _particlePerformanceOptimizer.destroy(); }
         }''
         _particlePerformanceOptimizer = new ParticlePerformanceOptimizer()';'

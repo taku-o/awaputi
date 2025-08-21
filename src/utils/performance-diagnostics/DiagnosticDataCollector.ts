@@ -6,68 +6,56 @@
 // Type definitions
 interface DiagnosticDataCollectorConfig { collectionInterval?: number,
     maxSamples?: number;
-
-interface CollectionOptions { duration?: number,
+    interface CollectionOptions { duration?: number,
     interval?: number;
-
-interface DataSample { timestamp: number;
-    complete: boolean;
-    frameRate: number;
-    memoryUsage: number;
-    renderTime: number;
-    networkLatency: number;
+    interface DataSample { timestamp: number,
+    complete: boolean,
+    frameRate: number,
+    memoryUsage: number,
+    renderTime: number,
+    networkLatency: number,
     inputLag: number;
-
-interface MetricData { values: number[];
-    min: number;
-    max: number;
-    sum: number;
-    count: number;
+    interface MetricData { values: number[],
+    min: number,
+    max: number,
+    sum: number,
+    count: number,
     average: number;
-
-interface CollectionMetrics { [key: string]: MetricData;
-
-interface CollectedData { samples: DataSample[];
-    metrics: CollectionMetrics;
-    startTime: number;
-    endTime: number;
+    interface CollectionMetrics { [key: string]: MetricData;
+    interface CollectedData { samples: DataSample[],
+    metrics: CollectionMetrics,
+    startTime: number,
+    endTime: number,
     collectionDuration: number;
-
-interface DataSummary { duration: number;
-    sampleCount: number;
-    metricsCollected: number;
-    timeRange: {
-        start: number;
-    end: number;
+    interface DataSummary { duration: number,
+    sampleCount: number,
+    metricsCollected: number,
+    timeRange: { start: number;
+    },
+    end: number,
     dataQuality: DataQuality;
     }
 
-interface DataQuality { completeness: number;
-    consistency: number;
-    overall: number;
+interface DataQuality { completeness: number,
+    consistency: number,
+    overall: number,
     issues: DataQualityIssue[];
-
-interface DataQualityIssue { type: string;
-    severity: 'low' | 'medium' | 'high';
-    description: string;
+    interface DataQualityIssue { type: string,
+    severity: 'low' | 'medium' | 'high,
+    description: string,
     impact: string;
-
-interface TimeGap { start: number;
-    end: number;
+    interface TimeGap { start: number,
+    end: number,
     duration: number;
-
-interface CollectionStatus { collecting: boolean;
-    sampleCount: number;
-    collectionDuration: number;
+    interface CollectionStatus { collecting: boolean,
+    sampleCount: number,
+    collectionDuration: number,
     metricsCount: number;
-
-interface DiagnosticDataResult { rawData: CollectedData;
+    interface DiagnosticDataResult { rawData: CollectedData,
     summary: DataSummary;
-
-interface MainController { // Define expected interface for main controller
+    interface MainController { // Define expected interface for main controller
     [key: string]: any;
-
-export class DiagnosticDataCollector {
+    export class DiagnosticDataCollector {
     private mainController: MainController;
     private collecting: boolean;
     private samples: DataSample[];
@@ -82,7 +70,7 @@ export class DiagnosticDataCollector {
         this.mainController = mainController;
         
         // Data collection state
-        this.collecting = false }
+        this.collecting = false };
         this.samples = []; }
         this.metrics = {};
         this.startTime = null;
@@ -117,7 +105,7 @@ export class DiagnosticDataCollector {
 
         if (this.collectionInterval) {
 
-            clearInterval(this.collectionInterval) }
+            clearInterval(this.collectionInterval);
             this.collectionInterval = null; }
         }
 
@@ -126,7 +114,7 @@ export class DiagnosticDataCollector {
         return { samples: this.samples,
             metrics: this.metrics,
             startTime: this.startTime!,
-    endTime: this.endTime },
+    endTime: this.endTime };
             collectionDuration: this.endTime - this.startTime! 
     }
 
@@ -142,7 +130,7 @@ export class DiagnosticDataCollector {
             frameRate: this.getCurrentFrameRate(),
             memoryUsage: this.getCurrentMemoryUsage(),
             renderTime: this.getCurrentRenderTime(),
-            networkLatency: this.getCurrentNetworkLatency() inputLag: this.getCurrentInputLag(  },
+            networkLatency: this.getCurrentNetworkLatency() inputLag: this.getCurrentInputLag(  };
 
         this.samples.push(sample);
 
@@ -156,7 +144,7 @@ export class DiagnosticDataCollector {
     getCurrentFrameRate(): number { // 現在のフレームレートを取得（簡易実装）
         if (this.lastFrameTime) {
             const frameTime = performance.now() - this.lastFrameTime,
-            this.lastFrameTime = performance.now() }
+            this.lastFrameTime = performance.now();
             return frameTime > 0 ? 1000 / frameTime: 0,
         this.lastFrameTime = performance.now();
         return 60; // デフォルト値
@@ -215,7 +203,7 @@ export class DiagnosticDataCollector {
             metric.average = metric.sum / metric.count;
 
             // 最新100値のみ保持
-            if (metric.values.length > 100) { metric.values.shift() }
+            if (metric.values.length > 100) { metric.values.shift();
 }
 
     /**
@@ -238,8 +226,7 @@ export class DiagnosticDataCollector {
     summarizeCollectedData(data: CollectedData): DataSummary { return { duration: data.collectionDuration,
             sampleCount: data.samples.length,
             metricsCollected: Object.keys(data.metrics).length,
-    timeRange: {
-                start: data.startTime },
+    timeRange: { start: data.startTime  ,
                 end: data.endTime 
     };
             dataQuality: this.assessDataQuality(data);
@@ -252,7 +239,7 @@ export class DiagnosticDataCollector {
         const consistency = this.calculateDataConsistency(data.samples);
         return { completeness: completeness,
             consistency: consistency,
-    overall: (completeness + consistency) / 2 },
+    overall: (completeness + consistency) / 2 };
             issues: this.identifyDataQualityIssues(data); 
     }
 
@@ -289,7 +276,7 @@ export class DiagnosticDataCollector {
                 severity: 'medium'
             }''
                 description: `${incompleteSamples.length} incomplete samples detected`,')'
-                impact: 'May affect analysis accuracy'),
+                impact: 'May affect analysis accuracy');
         }
         
         // 異常な時間間隔の検出
@@ -301,7 +288,7 @@ export class DiagnosticDataCollector {
                 severity: 'low'
             }''
                 description: `${timeGaps.length} time gaps detected`,')'
-                impact: 'May indicate system overload during collection'),
+                impact: 'May indicate system overload during collection');
         }
         
         return issues;
@@ -332,8 +319,8 @@ export class DiagnosticDataCollector {
     getCollectionStatus(): CollectionStatus { return { collecting: this.collecting,
             sampleCount: this.samples.length,
     collectionDuration: this.collecting && this.startTime ? undefined : undefined
-                performance.now() - this.startTime: 0 },
-            metricsCount: Object.keys(this.metrics).length 
+                performance.now() - this.startTime: 0 ,
+            metricsCount: Object.keys(this.metrics).length; 
     }
 
     /**
@@ -348,7 +335,7 @@ export class DiagnosticDataCollector {
      */
     configure(config: DiagnosticDataCollectorConfig): void { if (config.collectionInterval !== undefined) {
             // Collection interval will be applied on next start }
-            console.log(`[DiagnosticDataCollector] Collection interval updated: ${config.collectionInterval}ms`};
+            console.log(`[DiagnosticDataCollector] Collection interval updated: ${config.collectionInterval}ms`}
         }
         
         if (config.maxSamples !== undefined) {
@@ -357,15 +344,13 @@ export class DiagnosticDataCollector {
         
         }
             this.maxSamples = config.maxSamples; }
-            console.log(`[DiagnosticDataCollector] Max samples updated: ${config.maxSamples}`};
-        }
-    }
-
+            console.log(`[DiagnosticDataCollector] Max samples updated: ${config.maxSamples}`    }
+}
     /**
      * Cleanup data collector resources
      */
     destroy(): void { if (this.collecting) {
-            this.stop() }
+            this.stop();
 
         this.clearData()';'
         console.log('[DiagnosticDataCollector] Data, collector destroyed');

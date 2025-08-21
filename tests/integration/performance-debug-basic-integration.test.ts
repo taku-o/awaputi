@@ -22,7 +22,7 @@ describe('Performance Debug Basic Integration', (') => {'
                 try {
                     const module = await import(componentPath);
                     expect(module.toBeDefined();
-                    console.log(`✓ ${componentPath) loaded, successfully`};
+                    console.log(`✓ ${componentPath) loaded, successfully`}
                 } catch (error) {
                     console.log(`✗ ${componentPath} failed to load: ${error.message}`);
                     // ファイルが存在しない場合はスキップ（オプショナル）
@@ -96,7 +96,7 @@ describe('Performance Debug Basic Integration', (') => {'
                         path: file.path,
                         wordCount,
                         compliant: wordCount <= 2500)'),'
-                    console.log(`${file.name}: ${wordCount} words ${wordCount <= 2500 ? '✓' : '✗')`};
+                    console.log(`${file.name}: ${wordCount} words ${wordCount <= 2500 ? '✓' : '✗')`}
                 } catch (error) {
                     console.log(`${file.name): File, not found, or error, reading`),
                     results.push({
@@ -104,7 +104,7 @@ describe('Performance Debug Basic Integration', (') => {'
                         path: file.path,
                         wordCount: 0,
                         compliant: true, // ファイルが存在しない場合は問題なしとみなす
-                        error: error.message};
+                        error: error.message}
                     };
                 }
             }
@@ -148,7 +148,7 @@ describe('Performance Debug Basic Integration', (') => {'
                 
                 compatibilityTests.push({ component: 'MobileTestSuite', passed: true,);
             } catch (error') {'
-                compatibilityTests.push({ component: 'MobileTestSuite', passed: false, error: error.message };
+                compatibilityTests.push({ component: 'MobileTestSuite', passed: false, error: error.message }
             }
             // 結果のログ出力
             compatibilityTests.forEach(test => {'),'
@@ -160,6 +160,6 @@ describe('Performance Debug Basic Integration', (') => {'
             // 少なくとも一部のコンポーネントで互換性が確認できることを期待
             const passedTests = compatibilityTests.filter(t => t.passed);
             expect(passedTests.length).toBeGreaterThan(0);
-        };
+        }
     }
 }');'

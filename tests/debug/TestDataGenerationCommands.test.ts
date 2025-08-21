@@ -9,13 +9,13 @@ import { DeveloperConsole } from '../../src/debug/DeveloperConsole';
 const mockGameEngine = {
     currentScene: {
         bubbleManager: {
-            addTestBubble: jest.fn().mockReturnValue(true,
+            addTestBubble: jest.fn().mockReturnValue(true },
             bubbles: []
         },
         playerData: {
-            currentHP: 3,
+            currentHP: 3 },
         scoreManager: {
-            setScore: jest.fn(
+            setScore: jest.fn( },
         setCombo: jest.fn( }
     },
     playerData: {
@@ -258,7 +258,7 @@ describe('TestDataGenerationCommands', () => {
                 expect(result').not.toContain('Available Test Scenarios: ','
                 expect(result').toContain('bubbles');'
                 expect(result').toContain('playerData');'
-            };
+            }
         }
     }');'
     describe('Utility Methods', (') => {'
@@ -275,7 +275,7 @@ describe('TestDataGenerationCommands', () => {
                 expect(props').toHaveProperty('special', 'shock'),'
                 expect(props').toHaveProperty('intensity', 15');
                 const normalProps = testDataCommands.getBubbleProperties('normal');
-                expect(Object.keys(normalProps).toHaveLength(0) };
+                expect(Object.keys(normalProps).toHaveLength(0) }
         }
     }');'
     describe('Error Handling', (') => {'
@@ -314,6 +314,6 @@ describe('TestDataGenerationCommands', () => {
             testDataCommands.destroy();
             expect(testDataCommands.mockDataGenerators.size).toBe(0);
             expect(testDataCommands.testScenarios.size).toBe(0);
-            expect(testDataCommands.generatedData.size).toBe(0) };
+            expect(testDataCommands.generatedData.size).toBe(0) }
     }
 }');'

@@ -6,8 +6,7 @@
 
 // Type definitions
 interface ErrorHandler { handleError(error: any, type: string, context?: any): void;
-
-interface PerformanceConfig { getOptimizationConfig(): OptimizationConfig | null,
+    interface PerformanceConfig { getOptimizationConfig(): OptimizationConfig | null,
     getQualityConfig(): QualityConfig;
     setPerformanceLevel(level: string): void;
     setTargetFPS(fps: number): void;
@@ -20,37 +19,33 @@ interface PerformanceConfig { getOptimizationConfig(): OptimizationConfig | null
     setShadowsEnabled(enabled: boolean): void;
     setBlurEnabled(enabled: boolean): void;
     setAntiAliasingEnabled(enabled: boolean): void;
-
-interface FrameStabilizer { getStabilizationStatus(): StabilizationStatus | null }
+    interface FrameStabilizer { getStabilizationStatus(): StabilizationStatus | null }
 
 interface OptimizationConfig { targetFPS?: number,
     maxHistorySize?: number;
     performanceLevel?: string;
     adaptiveMode?: boolean;
     optimizationInterval?: number;
-    maxBubbles: number;
+    maxBubbles: number,
     maxParticles: number;
-
-interface QualityConfig { renderQuality: number;
-    particleQuality: number;
-    effectQuality: number;
-    audioQuality: number;
-    enableShadows: boolean;
-    enableBlur: boolean;
+    interface QualityConfig { renderQuality: number,
+    particleQuality: number,
+    effectQuality: number,
+    audioQuality: number,
+    enableShadows: boolean,
+    enableBlur: boolean,
     enableAntiAliasing: boolean;
     shadowsEnabled?: boolean;
     antialiasing?: boolean;
     backgroundEffects?: boolean;
     audioProcessing?: boolean;
-
-interface StabilizationStatus { currentZone?: string;
+    interface StabilizationStatus { currentZone?: string;
 
 // Component interfaces (will, be replaced, when actual, files are, converted);
-interface PerformanceAnalyzer { recordFrameTime(frameTime: number): void;
+    interface PerformanceAnalyzer { recordFrameTime(frameTime: number): void;
     getStats?(): any;
     getAnalysis?(): any;
-
-interface PerformanceAdaptiveController { setPerformanceLevel(level: string): void;
+    interface PerformanceAdaptiveController { setPerformanceLevel(level: string): void;
     setAdaptiveMode(enabled: boolean): void;
     calculateAdjustments?(analysis: any): any;
     getStats?(): any 
@@ -58,7 +53,7 @@ interface PerformanceStabilizerIntegrator { integrateWithStabilizer?(stabilizer:
     getStats?(): any 
 // Dummy implementations for missing dependencies
 class DummyPerformanceAnalyzer implements PerformanceAnalyzer { recordFrameTime(frameTime: number): void {  }
-        console.log(`[PerformanceAnalyzer] Frame, time recorded: ${frameTime}ms`};
+        console.log(`[PerformanceAnalyzer] Frame, time recorded: ${frameTime}ms`}
     }
     
     getStats(): any {
@@ -69,7 +64,7 @@ class DummyPerformanceAnalyzer implements PerformanceAnalyzer { recordFrameTime(
 }
 
 class DummyPerformanceAdaptiveController implements PerformanceAdaptiveController { setPerformanceLevel(level: string): void { }
-        console.log(`[PerformanceAdaptiveController] Performance, level set, to: ${level}`};
+        console.log(`[PerformanceAdaptiveController] Performance, level set, to: ${level}`}
     }
 
     setAdaptiveMode(enabled: boolean): void { }'
@@ -96,39 +91,38 @@ class DummyPerformanceStabilizerIntegrator implements PerformanceStabilizerInteg
     }
 
 // Type definitions
-interface PerformanceStats { currentFPS: number;
-    averageFPS: number;
-    frameTime: number;
-    droppedFrames: number;
-    optimizationCount: number;
+interface PerformanceStats { currentFPS: number,
+    averageFPS: number,
+    frameTime: number,
+    droppedFrames: number,
+    optimizationCount: number,
     lastOptimization: Date | null;
     // サブコンポーネントから取得する項目
-    frameTimeVariance: number;
-    stabilityScore: number;
-    performanceHealthScore: number;
+    frameTimeVariance: number,
+    stabilityScore: number,
+    performanceHealthScore: number,
     predictionAccuracy: number;
     // 処理時間内訳
-    renderTime: number;
-    updateTime: number;
-    totalProcessingTime: number;
+    renderTime: number,
+    updateTime: number,
+    totalProcessingTime: number,
     memoryPressureLevel: number;
     ;
     // トレンド
-   , performanceTrend: 'improving' | 'stable' | 'degrading';
-    stabilityTrend: 'improving' | 'stable' | 'degrading';
-    issuesPredicted: number;
+   , performanceTrend: 'improving' | 'stable' | 'degrading,
+    stabilityTrend: 'improving' | 'stable' | 'degrading,
+    issuesPredicted: number,
     issuesActual: number;
-
-interface PerformanceSettings { maxBubbles: number;
-    maxParticles: number;
-    renderQuality: number;
-    particleQuality: number;
-    shadowsEnabled: boolean;
-    antialiasing: boolean;
-    backgroundEffects: boolean;
+    interface PerformanceSettings { maxBubbles: number,
+    maxParticles: number,
+    renderQuality: number,
+    particleQuality: number,
+    shadowsEnabled: boolean,
+    antialiasing: boolean,
+    backgroundEffects: boolean,
     audioProcessing: boolean;
 );
-interface ComponentConfig { maxHistorySize: number', targetFPS: number,'
+    interface ComponentConfig { maxHistorySize: number', targetFPS: number,'
     performanceLevel: 'low' | 'medium' | 'high'
             }
 
@@ -222,7 +216,7 @@ export class PerformanceOptimizer {
             const componentConfig: ComponentConfig = {
                 maxHistorySize: this.maxHistorySize,
                 targetFPS: this.targetFPS,
-    performanceLevel: this.performanceLevel },
+    performanceLevel: this.performanceLevel };
             // フレーム解析コンポーネント
             this.analyzer = new PerformanceAnalyzer(componentConfig);
             
@@ -236,7 +230,7 @@ export class PerformanceOptimizer {
             console.log('[PerformanceOptimizer] All sub-components initialized successfully');
 
         } catch (error') { this.errorHandler.handleError(error, 'PERFORMANCE_ERROR', {''
-                component: 'PerformanceOptimizer',')',
+                component: 'PerformanceOptimizer,')',
                 operation: 'initializeSubComponents'
             }';'
             throw error;
@@ -247,8 +241,8 @@ export class PerformanceOptimizer {
      * 統計オブジェクトを初期化'
      */''
     private _initializeStats('''
-            performanceTrend: 'stable',
-            stabilityTrend: 'stable',
+            performanceTrend: 'stable,
+            stabilityTrend: 'stable,
             issuesPredicted: 0,
     issuesActual: 0);
             };
@@ -274,10 +268,10 @@ export class PerformanceOptimizer {
                 shadowsEnabled: qualityConfig.shadowsEnabled || false,
                 antialiasing: qualityConfig.antialiasing || false,
                 backgroundEffects: qualityConfig.backgroundEffects || true,
-    audioProcessing: qualityConfig.audioProcessing || true  },"
+    audioProcessing: qualityConfig.audioProcessing || true  ,"
 
         } catch (error") { this.errorHandler.handleError(error, 'PERFORMANCE_ERROR', {''"
-                component: 'PerformanceOptimizer',')',
+                component: 'PerformanceOptimizer,')',
                 operation: 'initializeFromConfig'
             };
             this._setFallbackSettings();
@@ -304,7 +298,7 @@ export class PerformanceOptimizer {
             antialiasing: false,
             backgroundEffects: true,
     audioProcessing: true,
-    audioProcessing: true,
+    audioProcessing: true;
         };
     /**
      * 設定変更の監視を設定"
@@ -329,7 +323,7 @@ export class PerformanceOptimizer {
             
             const currentTime = performance.now();
             if (currentTime - this.lastOptimizationTime > this.optimizationInterval) {
-                this.optimize() }
+                this.optimize();
                 this.lastOptimizationTime = currentTime; }
             }
             ';'
@@ -338,10 +332,8 @@ export class PerformanceOptimizer {
             this.errorHandler.handleError(error, 'PERFORMANCE_ERROR', {''
                 component: 'PerformanceOptimizer',','
                 operation: 'recordFrameTime');
-                frameTime };
-        }
-    }
-    
+                frameTime     }
+}
     /**
      * パフォーマンス最適化を実行
      */
@@ -356,7 +348,7 @@ export class PerformanceOptimizer {
             this._applyAdjustments(adjustments);
             
             // Frame Stabilizer統合
-            if ((this.stabilizerIntegrator, as any).integrateWithStabilizer) { (this.stabilizerIntegrator, as any).integrateWithStabilizer(this.frameStabilizer, analysis) }
+            if ((this.stabilizerIntegrator, as any).integrateWithStabilizer) { (this.stabilizerIntegrator, as any).integrateWithStabilizer(this.frameStabilizer, analysis);
             
             // 統計更新
             this.stats.optimizationCount++;
@@ -364,17 +356,15 @@ export class PerformanceOptimizer {
             console.log('[PerformanceOptimizer] Optimization completed', adjustments);
 
         } catch (error) { this.errorHandler.handleError(error, 'PERFORMANCE_ERROR', {''
-                component: 'PerformanceOptimizer',')',
+                component: 'PerformanceOptimizer,')',
                 operation: 'optimize'
-            };
-        }
-    }
-    
+                }
+}
     /**
      * 最適化調整を適用
      */
     private _applyAdjustments(adjustments: any): void { if (adjustments.settings) {
-            Object.assign(this.settings, adjustments.settings) }
+            Object.assign(this.settings, adjustments.settings);
         
         if (adjustments.performanceLevel) { this.performanceLevel = adjustments.performanceLevel }
     }

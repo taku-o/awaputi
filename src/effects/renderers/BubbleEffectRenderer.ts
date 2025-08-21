@@ -3,9 +3,9 @@ import { getErrorHandler  } from '../../utils/ErrorHandler.js';
 /**
  * Bubble effect configuration interface
  */
-interface BubbleEffectConfig { baseParticleCount: number;
-    colors: string[];
-    specialEffects: string[];
+interface BubbleEffectConfig { baseParticleCount: number,
+    colors: string[],
+    specialEffects: string[],
     priority: number;
 
 /**
@@ -23,16 +23,16 @@ interface BubbleEffectOptions { intensity?: number,
 /**
  * Particle interface
  */
-interface Particle { x: number;
-    y: number;
-    vx: number;
-    vy: number;
-    size: number;
-    color: string;
-    life: number;
-    maxLife: number;
-    alpha: number;
-    gravity: number;
+interface Particle { x: number,
+    y: number,
+    vx: number,
+    vy: number,
+    size: number,
+    color: string,
+    life: number,
+    maxLife: number,
+    alpha: number,
+    gravity: number,
     friction: number;
     bounce?: number;
     type: string;
@@ -40,8 +40,8 @@ interface Particle { x: number;
     rotationSpeed?: number;
     scale?: number;
     scaleSpeed?: number;
-    maxTrailLength?: number,  }
-    trail?: Array<{ x: number,, y: number;>;
+    maxTrailLength?: number }
+    trail?: Array<{ x: number, y: number;>;
     pulseSpeed?: number;
 }
 
@@ -74,34 +74,33 @@ export class BubbleEffectRenderer {
         
         // バブルタイプ別の基本設定
         this.bubbleEffectConfigs = {
-            normal: {
-                baseParticleCount: 15;
+            normal: { baseParticleCount: 15  ,
                 colors: ['#4A90E2', '#7ED321', '#50E3C2', '#A8E6CF', '#C7CEEA];'
                 specialEffects: ['sparkle', 'ripple'] }
                 priority: 5 
     };
             stone: { baseParticleCount: 20,''
-                colors: ['#8E8E93', '#C7C7CC', '#EFEFF4', '#D3D3D3];'
+                colors: ['#8E8E93', '#C7C7CC', '#EFEFF4', '#D3D3D3];'  },
                 specialEffects: ['debris', 'dust'];
                 priority: 6  };
             iron: { baseParticleCount: 25,''
-                colors: ['#8B4513', '#A0522D', '#CD853F', '#D2691E];'
+                colors: ['#8B4513', '#A0522D', '#CD853F', '#D2691E];'  },
                 specialEffects: ['sparks', 'metal_shards'];
                 priority: 7  };
             diamond: { baseParticleCount: 30,''
-                colors: ['#E6E6FA', '#F8F8FF', '#FFFFFF', '#E0E0E0', '#C0C0C0];'
+                colors: ['#E6E6FA', '#F8F8FF', '#FFFFFF', '#E0E0E0', '#C0C0C0];'  },
                 specialEffects: ['prismatic', 'brilliance', 'reflection'];
                 priority: 8  };
             rainbow: { baseParticleCount: 40,''
-                colors: ['#FF0000', '#FF7F00', '#FFFF00', '#00FF00', '#0000FF', '#4B0082', '#9400D3];'
+                colors: ['#FF0000', '#FF7F00', '#FFFF00', '#00FF00', '#0000FF', '#4B0082', '#9400D3];'  },
                 specialEffects: ['color_burst', 'magical_sparkles', 'rainbow_trail'];
                 priority: 9  };
             electric: { baseParticleCount: 35,''
-                colors: ['#FFFF00', '#00FFFF', '#FFFFFF', '#E6E6FA];'
+                colors: ['#FFFF00', '#00FFFF', '#FFFFFF', '#E6E6FA];'  },
                 specialEffects: ['lightning', 'electric_arcs', 'static_discharge'];
                 priority: 8  };
             boss: { baseParticleCount: 50,''
-                colors: ['#8B0000', '#DC143C', '#FF0000', '#FF4500];'
+                colors: ['#8B0000', '#DC143C', '#FF0000', '#FF4500];'  },
                 specialEffects: ['massive_explosion', 'shockwave', 'fire_burst'];
                 priority: 10  }
         };
@@ -123,7 +122,7 @@ export class BubbleEffectRenderer {
             // 品質に応じて効果を調整
             if (!this.particleManager.shouldRenderEffect(bubbleType, config.priority) {
                 // 低品質の場合は簡略化されたエフェクトのみ
-                this.createSimplifiedBubbleEffect(x, y, bubbleType, bubbleSize) }
+                this.createSimplifiedBubbleEffect(x, y, bubbleType, bubbleSize);
                 return; }
             }
             
@@ -131,7 +130,7 @@ export class BubbleEffectRenderer {
             this.createMainBubbleParticles(x, y, config, bubbleSize, options);
             
             // 特殊効果の追加
-            config.specialEffects.forEach(effectType => {  ) }
+            config.specialEffects.forEach(effectType => {  );
                 this.createSpecialBubbleEffect(x, y, effectType bubbleSize config); }
             }');'
             
@@ -141,10 +140,8 @@ export class BubbleEffectRenderer {
 
         } catch (error) { getErrorHandler().handleError(error, 'BUBBLE_EFFECT_ERROR', {''
                 context: 'BubbleEffectRenderer.createAdvancedBubbleEffect'
-            };
-        }
-    }
-    
+                }
+}
     /**
      * メインパーティクル効果を作成
      * @param {number} x - X座標
@@ -193,7 +190,7 @@ export class BubbleEffectRenderer {
             particle.scaleSpeed = -0.5 / (particle.life / 1000),
             
             // エフェクトタイプ
-            particle.type = this.selectParticleType(config, i, adjustedCount) }
+            particle.type = this.selectParticleType(config, i, adjustedCount);
             this.particleManager.particles.push(particle); }
 }
     
@@ -209,12 +206,12 @@ export class BubbleEffectRenderer {
         if (qualitySettings.complexityLevel >= 3) {
         ,
             // 高品質: 多様なタイプを使用
-            if(ratio < 0.3) return 'glow_circle',
-            if(ratio < 0.6) return 'advanced_circle',
+            if(ratio < 0.3) return 'glow_circle,
+            if(ratio < 0.6) return 'advanced_circle,
             if(ratio < 0.8) return 'trail_particle' }
 
             return 'star'; else if (qualitySettings.complexityLevel >= 2) { // 中品質: 基本的な拡張タイプ
-            if(ratio < 0.5) return 'advanced_circle',
+            if(ratio < 0.5) return 'advanced_circle,
             return 'circle', else {  // 低品質: 基本タイプのみ' }'
 
             return 'circle';
@@ -270,7 +267,7 @@ export class BubbleEffectRenderer {
                 this.createMassiveExplosionEffect(x, y, bubbleSize, config);
                 break,
             case 'shockwave':,
-                this.createShockwaveEffect(x, y, bubbleSize, config) }
+                this.createShockwaveEffect(x, y, bubbleSize, config);
                 break; }
 }
     
@@ -315,10 +312,10 @@ export class BubbleEffectRenderer {
         for(let, i = 0, i < rippleCount, i++) {
         ','
 
-            const particle = this.particleManager.getParticleFromPool('',
-            particle.type = 'ripple',
+            const particle = this.particleManager.getParticleFromPool(',
+            particle.type = 'ripple,
             particle.scaleSpeed = 3)
-            ) }
+            );
             this.particleManager.particles.push(particle); }
 }
     
@@ -423,12 +420,12 @@ export class BubbleEffectRenderer {
             particle.vx = Math.cos(angle) * 150,
             particle.vy = Math.sin(angle) * 150,
             particle.size = 2,
-            particle.color = Math.random() > 0.5 ? '#FFFF00' : '#00FFFF',
-            particle.life = 300 + Math.random('',
-            particle.type = 'lightning',
+            particle.color = Math.random() > 0.5 ? '#FFFF00' : '#00FFFF,
+            particle.life = 300 + Math.random(',
+            particle.type = 'lightning,
             particle.maxTrailLength = 8,
             particle.trail = [])
-            ) }
+            );
             this.particleManager.particles.push(particle); }
 }
     
@@ -454,12 +451,12 @@ export class BubbleEffectRenderer {
             particle.size = 3 + Math.random() * 8,
 
             particle.color = config.colors[Math.floor(Math.random() * config.colors.length)],
-            particle.life = 1500 + Math.random('',
-            particle.type = 'explosion',
+            particle.life = 1500 + Math.random(',
+            particle.type = 'explosion,
             particle.maxTrailLength = 5,
             particle.trail = [],
             particle.pulseSpeed = 3)
-            ) }
+            );
             this.particleManager.particles.push(particle); }
 }
     
@@ -484,7 +481,7 @@ export class BubbleEffectRenderer {
                 this.createElectricPulse(x, y, bubbleSize);
                 break,
             case 'boss':,
-                this.createBossDeathEffect(x, y, bubbleSize) }
+                this.createBossDeathEffect(x, y, bubbleSize);
                 break; }
 }
     
@@ -512,7 +509,7 @@ export class BubbleEffectRenderer {
             particle.gravity = 10,
 
             particle.friction = 0.99,
-            particle.type = 'diamond',
+            particle.type = 'diamond,
             particle.rotationSpeed = 15 }
             this.particleManager.particles.push(particle); }
 }
@@ -537,10 +534,10 @@ export class BubbleEffectRenderer {
             particle.y = y + Math.sin(angle) * radius,
             particle.vx = Math.cos(angle + Math.PI / 2) * 60,
             particle.vy = Math.sin(angle + Math.PI / 2) * 60,
-            particle.size = 2 + Math.random('',
-            particle.type = 'star',
+            particle.size = 2 + Math.random(',
+            particle.type = 'star,
             particle.pulseSpeed = 6)
-            ) }
+            );
             this.particleManager.particles.push(particle); }
 }
     
@@ -577,8 +574,8 @@ export class BubbleEffectRenderer {
             particle.vy = Math.sin(angle) * speed,
             particle.size = 2 + Math.random() * 2,
             particle.color = config.colors[Math.floor(Math.random() * config.colors.length)],
-            particle.life = 600 + Math.random('',
-            particle.type = 'circle',', ') }
+            particle.life = 600 + Math.random(',
+            particle.type = 'circle',', ');
 
             this.particleManager.particles.push(particle); }
 }'}'

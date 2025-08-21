@@ -14,90 +14,73 @@ export interface TranslationOptions { language?: string,
     fallback?: boolean;
     cache?: boolean;
     format?: boolean;
-
-export interface PluralTranslationOptions extends TranslationOptions { pluralKey?: string,
+    export interface PluralTranslationOptions extends TranslationOptions { pluralKey?: string,
     context?: string;
-
-export interface ConditionalTranslationOptions extends TranslationOptions { condition?: any,
+    export interface ConditionalTranslationOptions extends TranslationOptions { condition?: any,
     inverse?: boolean;
-
-export interface TranslationParams { [key: string]: any;
-
-export interface MultipleTranslationResult { [key: string]: string;
-
-export interface LanguageChangeListener { (newLanguage: string, oldLanguage: string): void;
-
-export interface PerformanceMetrics { translationCalls: number;
-    cacheHits: number;
-    cacheMisses: number;
-    loadTimes: number[];
+    export interface TranslationParams { [key: string]: any;
+    export interface MultipleTranslationResult { [key: string]: string;
+    export interface LanguageChangeListener { (newLanguage: string, oldLanguage: string): void;
+    export interface PerformanceMetrics { translationCalls: number,
+    cacheHits: number,
+    cacheMisses: number,
+    loadTimes: number[],
     averageLoadTime: number;
-
-export interface DetailedPerformanceMetrics extends PerformanceMetrics { cacheHitRate: number;
-    totalCacheRequests: number;
-    averageTranslationTime: number;
-    peakLoadTime: number;
+    export interface DetailedPerformanceMetrics extends PerformanceMetrics { cacheHitRate: number,
+    totalCacheRequests: number,
+    averageTranslationTime: number,
+    peakLoadTime: number,
     loadTimeDistribution: LoadTimeDistribution;
-
-export interface LoadTimeDistribution { min: number;
-    max: number;
-    median: number;
+    export interface LoadTimeDistribution { min: number,
+    max: number,
+    median: number,
     percentile95: number;
-
-export interface EnhancedStats { performance: PerformanceMetrics;
-    cache: any;
-    loader: any;
-    detector: any;
-    isInitialized: boolean;
-    changeListeners: number;
-    translationsLoaded: number;
-    supportedLanguages: string[];
-    currentLanguage: string;
+    export interface EnhancedStats { performance: PerformanceMetrics,
+    cache: any,
+    loader: any,
+    detector: any,
+    isInitialized: boolean,
+    changeListeners: number,
+    translationsLoaded: number,
+    supportedLanguages: string[],
+    currentLanguage: string,
     fallbackLanguage: string;
-
-export interface HealthCheckResult { healthy: boolean;
-    issues: string[];
+    export interface HealthCheckResult { healthy: boolean,
+    issues: string[],
     timestamp: string;
     score?: number;
     details?: HealthCheckDetails;
-
-export interface HealthCheckDetails { basicTranslation: boolean;
-    cachePerformance: boolean;
-    languageSupport: boolean;
+    export interface HealthCheckDetails { basicTranslation: boolean,
+    cachePerformance: boolean,
+    languageSupport: boolean,
     dataIntegrity: boolean;
     memoryUsage?: number;
-    responseTime?: number,  }
-
-export interface LoadingPromise { promise: Promise<boolean>;
-    startTime: number;
+    responseTime?: number };
+export interface LoadingPromise { promise: Promise<boolean>,
+    startTime: number,
     language: string;
-
-export interface TranslationRequest { key: string;
-    params: TranslationParams;
-    options: TranslationOptions;
-    timestamp: number;
+    export interface TranslationRequest { key: string,
+    params: TranslationParams,
+    options: TranslationOptions,
+    timestamp: number,
     language: string;
-
-export interface LanguageSupportOptions { autoLoad?: boolean,
+    export interface LanguageSupportOptions { autoLoad?: boolean,
     fallbackToDefault?: boolean;
     validateData?: boolean;
     cachePreload?: boolean;
-
-export interface TranslationValidation { isValid: boolean;
-    errors: string[];
-    warnings: string[];
+    export interface TranslationValidation { isValid: boolean,
+    errors: string[],
+    warnings: string[],
     coverage: number;
-
-export interface LanguageMetadata { code: string;
-    name: string;
-    nativeName: string;
-    isRTL: boolean;
+    export interface LanguageMetadata { code: string,
+    name: string,
+    nativeName: string,
+    isRTL: boolean,
     isLoaded: boolean;
     loadTime?: number;
     translationCount: number;
     lastUpdated?: Date;
-
-export interface BulkTranslationOptions extends TranslationOptions { parallel?: boolean,
+    export interface BulkTranslationOptions extends TranslationOptions { parallel?: boolean,
     batchSize?: number;
     onProgress?: (completed: number, total: number') => void  }'
 }
@@ -137,10 +120,10 @@ export class EnhancedLocalizationManager extends LocalizationManager { // 新し
         
         // パフォーマンス監視
         this.performanceMetrics = {
-            translationCalls: 0;
-            cacheHits: 0;
-            cacheMisses: 0;
-    loadTimes: [] }
+            translationCalls: 0,
+            cacheHits: 0,
+            cacheMisses: 0,
+    loadTimes: [] };
             averageLoadTime: 0 
     };
         ;
@@ -173,10 +156,8 @@ export class EnhancedLocalizationManager extends LocalizationManager { // 新し
 
         } catch (error') { getErrorHandler().handleError(error as Error, 'LOCALIZATION_INIT_ERROR', {''
                 operation: 'initialize'
-            };
-        }
-    }
-    
+                }
+}
     /**
      * 言語を設定（非同期版）
      */
@@ -205,13 +186,13 @@ export class EnhancedLocalizationManager extends LocalizationManager { // 新し
                 // 言語設定を保存
                 this.languageDetector.saveLanguagePreference(normalized);
                 // 変更イベントを発火
-                this.notifyLanguageChange(normalized, oldLanguage) }
-                console.log(`Language, changed from ${oldLanguage} to ${normalized} (${loadTime}ms}`};
+                this.notifyLanguageChange(normalized, oldLanguage);
+                console.log(`Language, changed from ${oldLanguage} to ${normalized} (${loadTime}ms}`}
             }
             
             return success;
         } catch (error) { getErrorHandler().handleError(error as Error, 'LOCALIZATION_ERROR', {''
-                operation: 'setLanguage');
+                operation: 'setLanguage'),
                 language: language,);
             return false;
     
@@ -221,7 +202,7 @@ export class EnhancedLocalizationManager extends LocalizationManager { // 新し
     t(key: string, params: TranslationParams = {}, options: TranslationOptions = { ): string {
         const startTime = performance.now();
         try {
-            this.performanceMetrics.translationCalls++,
+            this.performanceMetrics.translationCalls++;
             
             const { language = this.currentLanguage,
                 fallback = true,
@@ -232,11 +213,11 @@ export class EnhancedLocalizationManager extends LocalizationManager { // 新し
             if (cache) {
                 const cached = this.translationCache.get(key, language);
                 if (cached !== null) {
-                    this.performanceMetrics.cacheHits++,
+                    this.performanceMetrics.cacheHits++;
                     const formatted = format ? undefined : undefined
                         this.formatterEngine.format(cached, params, language) : ,
                         this.interpolate(cached, params);
-                    this.recordTranslationTime(performance.now() - startTime) }
+                    this.recordTranslationTime(performance.now() - startTime);
                     return formatted;
                 this.performanceMetrics.cacheMisses++;
             }
@@ -245,7 +226,7 @@ export class EnhancedLocalizationManager extends LocalizationManager { // 新し
             let translation = this.getTranslation(key, language);
             
             // フォールバック処理
-            if (translation === null && fallback && language !== this.fallbackLanguage) { translation = this.getTranslation(key, this.fallbackLanguage) }
+            if (translation === null && fallback && language !== this.fallbackLanguage) { translation = this.getTranslation(key, this.fallbackLanguage);
             
             // 見つからない場合の処理
             if (translation === null) {
@@ -263,7 +244,7 @@ export class EnhancedLocalizationManager extends LocalizationManager { // 新し
                 this.interpolate(translation, params);
             
             // キャッシュに保存
-            if (cache) { this.translationCache.set(key, translation, language) }
+            if (cache) { this.translationCache.set(key, translation, language);
             
             this.recordTranslationTime(performance.now() - startTime);
             return formatted;
@@ -281,15 +262,15 @@ export class EnhancedLocalizationManager extends LocalizationManager { // 新し
     tMultiple(keys: string[], params: TranslationParams = {}, options: TranslationOptions = { ): MultipleTranslationResult {
         try { }
             const result: MultipleTranslationResult = {}
-            for (const key of keys) { result[key] = this.t(key, params, options) }
+            for (const key of keys) { result[key] = this.t(key, params, options);
             
             return result;
 
         } catch (error) { getErrorHandler().handleError(error as Error, 'LOCALIZATION_ERROR', {''
-                operation: 'translateMultiple');
+                operation: 'translateMultiple'),
                 keys: keys,);
             return {};
-    
+
     /**
      * 一括翻訳（高度版）
      */
@@ -319,18 +300,16 @@ export class EnhancedLocalizationManager extends LocalizationManager { // 新し
 }
             } else {  // シーケンシャル処理
                 for(let, i = 0, i < keys.length, i++) {
-                    result[keys[i]] = this.t(keys[i], params, options) }
+                    result[keys[i]] = this.t(keys[i], params, options);
                     if (onProgress) { }
-                        onProgress(i + 1, keys.length); }
+                        onProgress(i + 1, keys.length);     }
 }
-            }
-            
             return result;
         } catch (error) { getErrorHandler().handleError(error as Error, 'LOCALIZATION_ERROR', {''
-                operation: 'translateBulk');
+                operation: 'translateBulk'),
                 keys: keys,);
             return {};
-    
+
     /**
      * 条件付き翻訳
      */
@@ -351,8 +330,8 @@ export class EnhancedLocalizationManager extends LocalizationManager { // 新し
                 language),
             
             return formatted, catch (error) { getErrorHandler().handleError(error as Error, 'LOCALIZATION_ERROR', {''
-                operation: 'translatePlural',
-    key: key);
+                operation: 'translatePlural,
+    key: key),
                 count: count,);
             return this.t(key, { ...params, count ), options),
     
@@ -369,10 +348,10 @@ export class EnhancedLocalizationManager extends LocalizationManager { // 新し
             this.loadingPromises.set(language, promise);
             
             try { const result = await promise,
-                return result } finally { this.loadingPromises.delete(language) }
+                return result } finally { this.loadingPromises.delete(language);
 
             } catch (error) { getErrorHandler().handleError(error as Error, 'LOCALIZATION_ERROR', {''
-                operation: 'loadLanguageData');
+                operation: 'loadLanguageData'),
                 language: language,);
             return false;
     
@@ -392,7 +371,7 @@ export class EnhancedLocalizationManager extends LocalizationManager { // 新し
             if (translations && Object.keys(translations).length > 0) { // 既存の翻訳データと統合
                 this.addTranslations(language, translations);
                 // キャッシュをクリア（新しいデータに更新）
-                this.translationCache.clearLanguage(language) }
+                this.translationCache.clearLanguage(language);
                 console.log(`Loaded ${Object.keys(translations}.length} translations for ${language}`);
                 return true;
             }
@@ -407,8 +386,7 @@ export class EnhancedLocalizationManager extends LocalizationManager { // 新し
      */''
     handleMissingTranslation(key: string, language: string): string { // 開発モードでは詳細情報を表示
         if(process.env.NODE_ENV === 'development' { }'
-            return `[Missing: ${key}@${language}]`,
-        }
+            return `[Missing: ${key}@${language}]` }
         
         // 本番モードではキーをそのまま返す
         return key;
@@ -419,7 +397,7 @@ export class EnhancedLocalizationManager extends LocalizationManager { // 新し
      */''
     addChangeListener(listener: LanguageChangeListener): boolean { ''
         if(typeof, listener === 'function' {'
-            this.changeListeners.add(listener) }
+            this.changeListeners.add(listener);
             return true;
         return false;
     }
@@ -427,7 +405,7 @@ export class EnhancedLocalizationManager extends LocalizationManager { // 新し
     /**
      * 言語変更リスナーを削除
      */
-    removeChangeListener(listener: LanguageChangeListener): boolean { return this.changeListeners.delete(listener) }
+    removeChangeListener(listener: LanguageChangeListener): boolean { return this.changeListeners.delete(listener);
     
     /**
      * 言語変更をリスナーに通知
@@ -479,7 +457,7 @@ export class EnhancedLocalizationManager extends LocalizationManager { // 新し
                 
                 this.addTranslations(normalized, translationData);
                 // キャッシュに事前読み込み
-                if (cachePreload) { this._preloadTranslationsToCache(normalized, translationData) }
+                if (cachePreload) { this._preloadTranslationsToCache(normalized, translationData);
             } else if (autoLoad) { // 外部ファイルから読み込み
                 const success = await this.loadLanguageData(normalized);
                 if (!success) {
@@ -502,7 +480,7 @@ export class EnhancedLocalizationManager extends LocalizationManager { // 新し
             isValid: true,
             errors: [],
             warnings: [],
-    coverage: 0 },
+    coverage: 0 };
         ';'
 
         try {'
@@ -526,20 +504,16 @@ export class EnhancedLocalizationManager extends LocalizationManager { // 新し
                     if(typeof, translationData[key] === 'string' { }
                         validKeys++; }
                     } else {  }
-                        validation.warnings.push(`Invalid, value type, for key: ${key}`},
-                    }
+                        validation.warnings.push(`Invalid, value type, for key: ${key}`} }
                 } else {  }
-                    validation.errors.push(`Invalid, key: ${key}`};
-                }
-            }
-            
+                    validation.errors.push(`Invalid, key: ${key}`    }
+}
             validation.coverage = keys.length > 0 ? (validKeys / keys.length) * 100 : 0;
             
             if (validation.coverage < 50) {
     
 }
-                validation.warnings.push(`Low, translation coverage: ${validation.coverage.toFixed(1}%`),
-            } catch (error) { validation.isValid = false }
+                validation.warnings.push(`Low, translation coverage: ${validation.coverage.toFixed(1}%`) } catch (error) { validation.isValid = false }
             validation.errors.push(`Validation, error: ${(error, as, Error}.message}`);
         }
         
@@ -574,8 +548,8 @@ export class EnhancedLocalizationManager extends LocalizationManager { // 新し
             this.languageDetector.removeSupportedLanguage(normalized);
             
             // 翻訳データを削除
-            if (this.translations) { this.translations.delete(normalized) }
-            if (this.loadedLanguages) { this.loadedLanguages.delete(normalized) }
+            if (this.translations) { this.translations.delete(normalized);
+            if (this.loadedLanguages) { this.loadedLanguages.delete(normalized);
             
             // キャッシュをクリア
             this.translationCache.clearLanguage(normalized);
@@ -586,7 +560,7 @@ export class EnhancedLocalizationManager extends LocalizationManager { // 新し
             console.log(`Removed, language support: ${normalized}`};
             return true;
         } catch (error) { getErrorHandler().handleError(error as Error, 'LOCALIZATION_ERROR', {''
-                operation: 'removeLanguageSupport');
+                operation: 'removeLanguageSupport'),
                 language: language,);
             return false;
     
@@ -604,7 +578,7 @@ export class EnhancedLocalizationManager extends LocalizationManager { // 新し
             const translationCount = this.getTranslationCount(normalized);
             
             return { code: normalized,
-                name: this._getLanguageDisplayName(normalized);
+                name: this._getLanguageDisplayName(normalized),
                 nativeName: this._getLanguageNativeName(normalized,
     isRTL: this._isRTLLanguage(normalized);
                 isLoaded,
@@ -618,9 +592,9 @@ export class EnhancedLocalizationManager extends LocalizationManager { // 新し
      * 言語の表示名を取得'
      */''
     private _getLanguageDisplayName(language: string): string { const displayNames: Record<string, string> = {', 'en': 'English','
-            'ja': 'Japanese',
-            'ko': 'Korean',
-            'zh-CN': 'Chinese(Simplified)',
+            'ja': 'Japanese,
+            'ko': 'Korean,
+            'zh-CN': 'Chinese(Simplified),
             'zh-TW': 'Chinese(Traditional)' };
         return displayNames[language] || language;
     }
@@ -629,9 +603,9 @@ export class EnhancedLocalizationManager extends LocalizationManager { // 新し
      * 言語のネイティブ名を取得'
      */''
     private _getLanguageNativeName(language: string): string { const nativeNames: Record<string, string> = {', 'en': 'English','
-            'ja': '日本語',
-            'ko': '한국어',
-            'zh-CN': '简体中文',
+            'ja': '日本語,
+            'ko': '한국어,
+            'zh-CN': '简体中文,
             'zh-TW': '繁體中文' };
         return nativeNames[language] || language;
     }
@@ -641,7 +615,7 @@ export class EnhancedLocalizationManager extends LocalizationManager { // 新し
      */''
     private _isRTLLanguage(language: string): boolean { ''
         const rtlLanguages = ['ar', 'he', 'fa', 'ur'],
-        return rtlLanguages.includes(language) }
+        return rtlLanguages.includes(language);
     
     /**
      * 言語の最終更新日時を取得
@@ -679,16 +653,15 @@ export class EnhancedLocalizationManager extends LocalizationManager { // 新し
         const sortedTimes = [...loadTimes].sort((a, b) => a - b);
         
         return { ...this.performanceMetrics,
-            cacheHitRate: this.performanceMetrics.translationCalls > 0 ,
+            cacheHitRate: this.performanceMetrics.translationCalls > 0 ;
                 ? (this.performanceMetrics.cacheHits / this.performanceMetrics.translationCalls) * 100 ,
                 : 0,
             totalCacheRequests: this.performanceMetrics.cacheHits + this.performanceMetrics.cacheMisses,
     averageTranslationTime: 0, // 実装必要,
             peakLoadTime: Math.max(...loadTimes, 0);
-            loadTimeDistribution: {
-                min: Math.min(...sortedTimes, 0);
+            loadTimeDistribution: { min: Math.min(...sortedTimes, 0)  },
                 max: Math.max(...sortedTimes, 0);
-                median: sortedTimes[Math.floor(sortedTimes.length / 2)] || 0 },
+                median: sortedTimes[Math.floor(sortedTimes.length / 2)] || 0 };
                 percentile95: sortedTimes[Math.floor(sortedTimes.length * 0.95)] || 0 
     }
     
@@ -708,7 +681,7 @@ export class EnhancedLocalizationManager extends LocalizationManager { // 新し
             changeListeners: this.changeListeners.size,
             translationsLoaded: this.getLoadedLanguages().length,
             supportedLanguages: this.languageDetector.getSupportedLanguages(
-    currentLanguage: this.currentLanguage },
+    currentLanguage: this.currentLanguage };
             fallbackLanguage: this.fallbackLanguage 
     }
     
@@ -723,7 +696,7 @@ export class EnhancedLocalizationManager extends LocalizationManager { // 新し
             if (!details.basicTranslation) {
     
 }
-                issues.push(`Basic, translation test, failed: ${testKey}`};
+                issues.push(`Basic, translation test, failed: ${testKey}`}
             }
             
             // キャッシュ健全性
@@ -733,7 +706,7 @@ export class EnhancedLocalizationManager extends LocalizationManager { // 新し
             if (!details.cachePerformance && cacheStats.totalRequests > 100) {
     
 }
-                issues.push(`Low, cache hit, rate: ${cacheStats.hitRate}%`};
+                issues.push(`Low, cache hit, rate: ${cacheStats.hitRate}%`}
             }
             
             // ロード済み言語チェック
@@ -751,8 +724,8 @@ export class EnhancedLocalizationManager extends LocalizationManager { // 新し
             if (!details.dataIntegrity) {
     
 }
-                issues.push(`Current, language not, supported: ${this.currentLanguage}`};
-            } catch (error) {
+                issues.push(`Current, language not, supported: ${this.currentLanguage}`}
+        } catch (error) {
             issues.push(`Health, check error: ${(error, as, Error}.message}`);
         }
         
@@ -760,8 +733,8 @@ export class EnhancedLocalizationManager extends LocalizationManager { // 新し
         
         return { healthy: issues.length === 0,
             issues: issues,
-            timestamp: new Date().toISOString();
-    score: Math.round(score) },
+            timestamp: new Date().toISOString(),
+    score: Math.round(score) };
             details }
         }
     
@@ -781,7 +754,7 @@ export class EnhancedLocalizationManager extends LocalizationManager { // 新し
             }
             if (config.loadingStrategy) { this.loadingStrategy = config.loadingStrategy }
             if (config.cacheSize && config.cacheSize > 0) { this.translationCache.setMaxSize(config.cacheSize) }''
-            if (config.fallbackLanguage) { this.fallbackLanguage = config.fallbackLanguage }
+            if (config.fallbackLanguage) { this.fallbackLanguage = config.fallbackLanguage } };
 
             console.log('Enhanced LocalizationManager configuration updated:', config';} catch (error) { console.error('Failed to update configuration:', error }'
     }
@@ -794,6 +767,6 @@ export class EnhancedLocalizationManager extends LocalizationManager { // 新し
         this.translationLoader.cleanup();
         this.changeListeners.clear();
         this.loadingPromises.clear()','
-        console.log('Enhanced, LocalizationManager cleaned, up') }
+        console.log('Enhanced, LocalizationManager cleaned, up');
 
     }'}'

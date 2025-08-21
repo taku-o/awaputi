@@ -1,16 +1,14 @@
 import { BaseComponent  } from '../BaseComponent.js';
 
 // Type definitions
-interface FailurePattern { name: string;
-    keywords: string[];
-    category: string;
-    severity: 'low' | 'medium' | 'high' | 'critical';
+interface FailurePattern { name: string,
+    keywords: string[],
+    category: string,
+    severity: 'low' | 'medium' | 'high' | 'critical,
     description: string;
-
-interface IdentifiedPattern extends FailurePattern { id: string;
+    interface IdentifiedPattern extends FailurePattern { id: string,
     confidence: number;
-
-interface PatternStatistics { totalPatterns: number;
+    interface PatternStatistics { totalPatterns: number,
     patternsByCategory: Record<string, number>;
     patternsBySeverity: Record<string, number> }
 
@@ -27,74 +25,74 @@ export class FailurePatternAnalyzer extends BaseComponent { private failurePatte
         this.failurePatterns = new Map<string, FailurePattern>(); }
     }
 
-    async _doInitialize(): Promise<void> { this.setupFailurePatterns() }
+    async _doInitialize(): Promise<void> { this.setupFailurePatterns();
 
     /**
      * 失敗パターンの定義を設定'
      */''
     setupFailurePatterns('''
         this.failurePatterns.set('null_reference', { ''
-            name: 'Null Reference Error',
+            name: 'Null Reference Error,
             keywords: ['null', 'undefined', 'cannot read property', 'is not defined],'
             category: 'runtime_error',','
-            severity: 'high',')',
+            severity: 'high,')',
             description: 'オブジェクトまたはプロパティがnullまたはundefinedです')','
             description: 'オブジェクトまたはプロパティがnullまたはundefinedです')','
         };
         this.failurePatterns.set('type_error', {''
-            name: 'Type Error',
+            name: 'Type Error,
             keywords: ['is not a function', 'is not a constructor', 'type error],'
             category: 'type_error',','
-            severity: 'high',')',
+            severity: 'high,')',
             description: '型の不一致またはメソッドの呼び出しエラーです')','
             description: '型の不一致またはメソッドの呼び出しエラーです')','
         };
         this.failurePatterns.set('assertion_failure', {''
-            name: 'Assertion Failure',
+            name: 'Assertion Failure,
             keywords: ['expected', 'to equal', 'to be', 'assertion failed],'
             category: 'assertion',','
-            severity: 'medium',')',
+            severity: 'medium,')',
             description: 'テストの期待値と実際の値が一致しません'),' }'
 
         }');'
 
         this.failurePatterns.set('timeout_error', { ''
-            name: 'Timeout Error',
+            name: 'Timeout Error,
             keywords: ['timeout', 'exceeded', 'timed out],'
             category: 'performance',','
-            severity: 'medium',')',
+            severity: 'medium,')',
             description: 'テストの実行時間が制限を超えました')','
             description: 'テストの実行時間が制限を超えました')','
         };
         this.failurePatterns.set('async_error', {''
-            name: 'Async Operation Error',
+            name: 'Async Operation Error,
             keywords: ['promise', 'async', 'await', 'callback'],
             category: 'async',','
-            severity: 'medium',')',
+            severity: 'medium,')',
             description: '非同期処理に関連するエラーです')','
             description: '非同期処理に関連するエラーです')','
         };
         this.failurePatterns.set('memory_error', {''
-            name: 'Memory Error',
+            name: 'Memory Error,
             keywords: ['out of memory', 'heap', 'stack overflow],'
             category: 'memory',','
-            severity: 'high',')',
+            severity: 'high,')',
             description: 'メモリ関連のエラーです')','
             description: 'メモリ関連のエラーです')','
         };
         this.failurePatterns.set('network_error', {''
-            name: 'Network Error',
+            name: 'Network Error,
             keywords: ['network', 'fetch', 'xhr', 'cors', 'connection'],
             category: 'network',','
-            severity: 'medium',')',
+            severity: 'medium,')',
             description: 'ネットワーク通信に関連するエラーです')','
             description: 'ネットワーク通信に関連するエラーです')','
         };
         this.failurePatterns.set('configuration_error', {''
-            name: 'Configuration Error',
+            name: 'Configuration Error,
             keywords: ['config', 'configuration', 'settings', 'invalid parameter],'
             category: 'configuration',','
-            severity: 'medium',')',
+            severity: 'medium,')',
             description: '設定またはパラメータに関連するエラーです'
             }
 
@@ -143,7 +141,7 @@ export class FailurePatternAnalyzer extends BaseComponent { private failurePatte
      * 登録済みの失敗パターンを取得
      * @returns 失敗パターンのマップ
      */
-    getFailurePatterns(): Map<string, FailurePattern> { return new Map(this.failurePatterns) }
+    getFailurePatterns(): Map<string, FailurePattern> { return new Map(this.failurePatterns);
 
     /**
      * 特定のパターンを取得

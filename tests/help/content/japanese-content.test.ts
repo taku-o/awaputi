@@ -90,7 +90,7 @@ describe('Japanese Help Content', (') => {'
         data.topics.forEach((topic, index) => {
           for (const field of REQUIRED_TOPIC_FIELDS) {
             expect(topic).toHaveProperty(field) }
-        };
+        }
       }
     }');'
     it('should have valid difficulty levels', (') => {'
@@ -98,7 +98,7 @@ describe('Japanese Help Content', (') => {'
       
       for (const [category, data] of Object.entries(contentData) {
         data.topics.forEach(topic => {);
-          expect(validDifficulties).toContain(topic.difficulty) };
+          expect(validDifficulties).toContain(topic.difficulty) }
       }
     }');'
     it('should have reasonable estimated reading times', () => {
@@ -107,21 +107,21 @@ describe('Japanese Help Content', (') => {'
           expect(typeof topic.estimatedReadTime').toBe('number'),'
           expect(topic.estimatedReadTime).toBeGreaterThan(30), // At least 30 seconds
           expect(topic.estimatedReadTime).toBeLessThan(1800), // Less than 30 minutes
-        };
+        }
       }
     }');'
     it('should have non-empty content objects', () => {
       for (const [category, data] of Object.entries(contentData) {
         data.topics.forEach(topic => {);
           expect(typeof topic.content').toBe('object'),'
-          expect(Object.keys(topic.content).length).toBeGreaterThan(0) };
+          expect(Object.keys(topic.content).length).toBeGreaterThan(0) }
       }
     }');'
     it('should have tags array for each topic', () => {
       for (const [category, data] of Object.entries(contentData) {
         data.topics.forEach(topic => {);
           expect(Array.isArray(topic.tags).toBe(true);
-          expect(topic.tags.length).toBeGreaterThan(0) };
+          expect(topic.tags.length).toBeGreaterThan(0) }
       }
     }');'
   }
@@ -192,7 +192,7 @@ describe('Japanese Help Content', (') => {'
           // Content should have substance
           const contentString = JSON.stringify(topic.content);
           expect(contentString.length).toBeGreaterThan(50);
-        };
+        }
       }
     }');'
     it('should have appropriate tags in Japanese', () => {
@@ -203,7 +203,7 @@ describe('Japanese Help Content', (') => {'
         data.topics.forEach(topic => {
           // At least some tags should be in Japanese);
           const hasJapaneseTags = topic.tags.some(tag => japaneseRegex.test(tag);
-          expect(hasJapaneseTags).toBe(true) };
+          expect(hasJapaneseTags).toBe(true) }
       }
     }');'
   }
@@ -266,6 +266,6 @@ describe('Japanese Help Content', (') => {'
         const enTopicIds = enContent.topics.map(t => t.id);
         const jaTopicIds = jaContent.topics.map(t => t.id);
         expect(jaTopicIds).toEqual(enTopicIds) }
-    };
+    }
   }
 }');'

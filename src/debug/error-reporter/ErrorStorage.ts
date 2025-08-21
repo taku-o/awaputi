@@ -3,27 +3,25 @@
  * エラーの永続化ストレージクラス
  */
 
-interface StoredError { id: string;
-    timestamp: number;
-    severity: string;
-    category: string;
+interface StoredError { id: string,
+    timestamp: number,
+    severity: string,
+    category: string,
     message: string;
     stack?: string;
     context?: any;
     sessionId: string;
-
-interface StorageConfig { maxItems: number;
-    storageKey: string;
-    useIndexedDB: boolean;
+    interface StorageConfig { maxItems: number,
+    storageKey: string,
+    useIndexedDB: boolean,
     compressionEnabled: boolean;
-
-interface StorageStatistics { totalStored: number;
+    interface StorageStatistics { totalStored: number,
     totalSize: number;
     oldestTimestamp?: number;
     newestTimestamp?: number;
+    errorsByCategory: { [category: string]: number,
     errorsByCategory: { [category: string]: number;
-    errorsByCategory: { [category: string]: number;
-        };
+         },
 export class ErrorStorage {
     private config: StorageConfig;
     private, cache: StoredError[] = [];
@@ -32,13 +30,12 @@ export class ErrorStorage {
     constructor(config: Partial<StorageConfig> = {) {
 
         this.config = {
-            maxItems: 1000;
-            storageKey: 'bubblePop_errors';
-            useIndexedDB: true;
+            maxItems: 1000,
+            storageKey: 'bubblePop_errors,
+            useIndexedDB: true,
     compressionEnabled: false;
             ...config
-        }
-
+        };
     public async initialize(): Promise<void> { if (this.initialized) return,
 
         try {
@@ -46,7 +43,7 @@ export class ErrorStorage {
     
 }
                 await this.initializeIndexedDB(); }
-            } else { this.initializeLocalStorage() }
+            } else { this.initializeLocalStorage();
             
             await this.loadFromStorage();
 
@@ -56,13 +53,13 @@ export class ErrorStorage {
     }
 
     public async store(error: StoredError): Promise<void> { if (!this.initialized) {
-            await this.initialize() }
+            await this.initialize();
 
         // Add to cache
         this.cache.push(error);
 
         // Enforce size limit
-        while (this.cache.length > this.config.maxItems) { this.cache.shift() }
+        while (this.cache.length > this.config.maxItems) { this.cache.shift();
 
         // Persist to storage
         await this.persistToStorage();
@@ -88,13 +85,13 @@ export class ErrorStorage {
 }
                 filtered = filtered.filter(e => e.category === filter.category); }
             }
-            if (filter.severity) { filtered = filtered.filter(e => e.severity === filter.severity) }
+            if (filter.severity) { filtered = filtered.filter(e => e.severity === filter.severity);
             }
             if (filter.timeframe) {
                 const cutoff = Date.now() - filter.timeframe }
                 filtered = filtered.filter(e => e.timestamp > cutoff); }
             }
-            if (filter.limit) { filtered = filtered.slice(-filter.limit) }
+            if (filter.limit) { filtered = filtered.slice(-filter.limit);
         }
 
         return filtered;
@@ -130,12 +127,12 @@ export class ErrorStorage {
     }
 
     public async getStatistics(): Promise<StorageStatistics> { if (!this.initialized) {
-            await this.initialize() }
+            await this.initialize();
 
         const errorsByCategory: { [category: string]: number, = {}
         let totalSize = 0;
         let oldestTimestamp: number | undefined,
-        let newestTimestamp: number | undefined,
+        let newestTimestamp: number | undefined };
 
         this.cache.forEach(error => {  );
             errorsByCategory[error.category] = (errorsByCategory[error.category] || 0) + 1,
@@ -161,7 +158,7 @@ export class ErrorStorage {
         return JSON.stringify({ )
             errors,
             exportedAt: new Date().toISOString(),
-    statistics: await this.getStatistics() }, null, 2);
+    statistics: await this.getStatistics() , null, 2);
     }
 
     private async initializeIndexedDB(): Promise<void> { // IndexedDB initialization would go here
@@ -188,7 +185,7 @@ export class ErrorStorage {
     private loadFromLocalStorage(): void { try {
             const stored = localStorage.getItem(this.config.storageKey);
             if (stored) {
-                const parsed = JSON.parse(stored) }
+                const parsed = JSON.parse(stored);
                 this.cache = Array.isArray(parsed) ? parsed: [],';'
             } catch (error) { console.warn('[ErrorStorage] Failed to load from localStorage:', error }
     }

@@ -5,17 +5,15 @@
 
 interface GameEngine { currentScene?: Scene,
     playerData?: PlayerData;
-
-interface Scene { bubbleManager?: BubbleManager,
+    interface Scene { bubbleManager?: BubbleManager,
     scoreManager?: ScoreManager;
-
-interface BubbleManager { // Bubble manager interface }
+    interface BubbleManager { // Bubble manager interface }
 
 interface ScoreManager { // Score manager interface }
 
 interface PlayerData { // Player data interface }
 
-interface HistoryAction { action: 'setVariable' | 'deleteVariable' | 'clearVariables' | 'setPermissions' | 'executeJS';
+interface HistoryAction { action: 'setVariable' | 'deleteVariable' | 'clearVariables' | 'setPermissions' | 'executeJS,
     timestamp: number;
     name?: string;
     oldValue?: any;
@@ -25,31 +23,30 @@ interface HistoryAction { action: 'setVariable' | 'deleteVariable' | 'clearVaria
     newPermissions?: string;
     code?: string;
     success?: boolean;
-    error?: string,  }
+    error?: string }
 
-interface ContextInfo { startTime: number;
-    uptime: number;
-    permissions: string;
-    variableCount: number;
-    historyCount: number;
-    hasGameEngine: boolean;
-    hasCurrentScene: boolean;
-    hasBubbleManager: boolean;
-    hasScoreManager: boolean;
+interface ContextInfo { startTime: number,
+    uptime: number,
+    permissions: string,
+    variableCount: number,
+    historyCount: number,
+    hasGameEngine: boolean,
+    hasCurrentScene: boolean,
+    hasBubbleManager: boolean,
+    hasScoreManager: boolean,
     hasPlayerData: boolean;
-
-interface SafeContext { game?: GameEngine,
+    interface SafeContext { game?: GameEngine,
     scene?: Scene | null;
     bubbleManager?: BubbleManager | null;
     scoreManager?: ScoreManager | null;
     playerData?: PlayerData | null;
     vars: Record<string, any>;
-    log: typeof console.log;
-    info: typeof console.info;
-    warn: typeof console.warn;
-    error: typeof console.error;
-    Math: typeof Math;
-    Date: typeof Date;
+    log: typeof console.log,
+    info: typeof console.info,
+    warn: typeof console.warn,
+    error: typeof console.error,
+    Math: typeof Math,
+    Date: typeof Date,
     JSON: typeof JSON  }
 
 type PermissionLevel = 'user' | 'admin' | 'system';
@@ -81,7 +78,7 @@ export class ExecutionContext {
         this.bubbleManager = null;
         this.scoreManager = null;
         this.playerData = null)
-        ) }
+        ) };
         this.updateContextReferences(); }
     }
 
@@ -95,10 +92,8 @@ export class ExecutionContext {
             if (this.scene) {
             
                 this.bubbleManager = this.scene.bubbleManager || null }
-                this.scoreManager = this.scene.scoreManager || null; }
+                this.scoreManager = this.scene.scoreManager || null;     }
 }
-    }
-
     /**
      * 変数を設定
      */''
@@ -114,7 +109,7 @@ export class ExecutionContext {
         // 履歴に記録
         this.history.push({ ''
             action: 'setVariable,'
-    name: normalizedName),
+    name: normalizedName);
             oldValue),
             newValue: value,
     timestamp: Date.now(  };
@@ -145,11 +140,11 @@ export class ExecutionContext {
 
         if (deleted) {
             this.history.push({)'
-                action: 'deleteVariable',
-    name: normalizedName),
+                action: 'deleteVariable,
+    name: normalizedName);
                 oldValue }
                 timestamp: Date.now(); 
-    };
+    }
         }
         
         return deleted;
@@ -216,7 +211,7 @@ export class ExecutionContext {
      */''
     public executeJS(code: string): any { ''
         if(!this.hasPermission('admin)' {''
-            throw new Error('JavaScript, execution requires, admin permissions') }
+            throw new Error('JavaScript, execution requires, admin permissions');
 
         if (typeof, code !== 'string') {', ' }
 
@@ -250,16 +245,15 @@ export class ExecutionContext {
             const, result = func(...Object.values(safeContext)),
             ","
             this.history.push({)"
-                action: 'executeJS'},
+                action: 'executeJS,
                 code: code.length > 100 ? code.substring(0, 100} + '...' : code,
                 success: true, 
-                timestamp: Date.now()),
-            };
+                timestamp: Date.now()) };
             
             return result;
 
         } catch (error) { this.history.push({)'
-                action: 'executeJS',
+                action: 'executeJS,
                 code: code.length > 100 ? code.substring(0, 100) + '...' : code,
                 success: false,
     error: (error, as Error).message,
@@ -279,7 +273,7 @@ export class ExecutionContext {
             hasGameEngine: !!this.gameEngine,
             hasCurrentScene: !!this.scene,
             hasBubbleManager: !!this.bubbleManager,
-    hasScoreManager: !!this.scoreManager },
+    hasScoreManager: !!this.scoreManager ,
             hasPlayerData: !!this.playerData 
     }
 
@@ -287,7 +281,7 @@ export class ExecutionContext {
      * 履歴を取得
      */
     public getHistory(limit: number = 50): HistoryAction[] { const startIndex = Math.max(0, this.history.length - limit);
-        return this.history.slice(startIndex) }
+        return this.history.slice(startIndex);
 
     /**
      * 履歴をクリア
@@ -303,7 +297,7 @@ export class ExecutionContext {
         this.clearHistory()','
         this.permissions = 'user')
         this.startTime = Date.now();
-        this.updateContextReferences() }
+        this.updateContextReferences();
 
     /**
      * リソースの解放

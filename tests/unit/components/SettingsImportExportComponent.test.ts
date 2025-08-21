@@ -10,31 +10,31 @@ import { SettingsImportExportComponent  } from '../../../src/components/Settings
  */
 // Type definitions
 interface MockGameEngine {
-    version: string;
+    version: string,
     settingsManager: {
-        get: jest.Mock<(ke,y: string) => any>;
+        get: jest.Mock<(ke,y: string) => any> },
         set: jest.Mock<(ke,y: string, value => void>) } | null;
     sceneManager: {
         currentScene: {
             accessibilitySettingsManager: {
                 getExtendedAccessibilitySettings: jest.Mock<() => Array<{key: string,, label: string;>>;
-                currentProfile: string;
+                currentProfile: string,
                 getStats: jest.Mock<() => {exportCount: number,, importCount: number;>;
                 importSettings: jest.Mock<(') => Promise<void>>;'
-            };
+            }
         };
-    };
+    }
 }
 interface ComponentStats {
-    exportCount: number;
+    exportCount: number,
     importCount: number;
-    errorsCount: number;
+    errorsCount: number,
     sessionStart: number;
     sessionDuration?: number;
 interface ExportData {
-    timestamp: string;
+    timestamp: string,
     version: string;
-    gameVersion: string;
+    gameVersion: string,
     source: string;
     settings: Record<string, any>;
     accessibility: Record<string, any>;
@@ -47,29 +47,29 @@ interface ApplyResult {
     errors?: string[];
 // Mock setup
 const mockGameEngine: MockGameEngine = {
-    version: '1.0.0';
+    version: '1.0.0',
     settingsManager: {
-        get: jest.fn(
+        get: jest.fn( },
         set: jest.fn( };
     sceneManager: {
         currentScene: {
             accessibilitySettingsManager: {
                 getExtendedAccessibilitySettings: jest.fn((') => ['
                     { key: 'accessibility.highContrast', label: 'ハイコントラスト', '),'
-                    { key: 'accessibility.largeText';
+                    { key: 'accessibility.largeText',
         label: '大きな文字'
             };
                 ]'),'
-                currentProfile: 'default';
-                getStats: jest.fn(() => ({ exportCount: 1, importCount: 0 ));
+                currentProfile: 'default',
+                getStats: jest.fn(() => ({ exportCount: 1, importCount: 0 )),
                 importSettings: jest.fn(() => Promise.resolve());
             });
         }');'
 // Jest globals already have ErrorHandler and LocalizationManager mocked
 // DOM mocks
 Object.defineProperty(window, 'URL', {
-    value: {;
-        createObjectURL: jest.fn((') => 'mock-url'),'
+    value: {,
+        createObjectURL: jest.fn((') => 'mock-url'),' };
         revokeObjectURL: jest.fn();
 )');'
 describe('SettingsImportExportComponent', () => {
@@ -162,7 +162,7 @@ describe('SettingsImportExportComponent', () => {
                         'audio.masterVolume': 0.8,
                         'accessibility.highContrast': false;;
                     return mockSettings[key];
-                };
+                }
             }
         }');'
         test('エクスポート処理が正常に実行される', async (') => {'
@@ -206,7 +206,7 @@ describe('SettingsImportExportComponent', () => {
                         'audio.masterVolume': 0.8
                     };
                     return mockSettings[key];
-                };
+                }
             }
         }');'
         test('エクスポートデータが正しく準備される', async () => {
@@ -273,7 +273,7 @@ describe('SettingsImportExportComponent', () => {
         test('有効なデータが受け入れられる', async () => {
             const validData = {
                 timestamp: new Date().toISOString(','
-                version: '1.0.0';
+                version: '1.0.0',
                 settings: { 'ui.language': 'ja' }
             };
             
@@ -283,7 +283,7 @@ describe('SettingsImportExportComponent', () => {
         }');'
         test('タイムスタンプがないデータが拒否される', async (') => {'
             const invalidData = {
-                version: '1.0.0';
+                version: '1.0.0',
                 settings: {}
             };
             
@@ -294,7 +294,7 @@ describe('SettingsImportExportComponent', () => {
         }');'
         test('バージョン情報がないデータが拒否される', async () => {
             const invalidData = {
-                timestamp: new Date().toISOString();
+                timestamp: new Date().toISOString(),
                 settings: {}
             };
             
@@ -337,7 +337,7 @@ describe('SettingsImportExportComponent', () => {
         test('アクセシビリティ設定が適用される', async (') => {'
             const importData = {
                 accessibility: {
-                    'accessibility.highContrast': true,
+                    'accessibility.highContrast': true };
                     currentProfile: 'highContrast'
                 }
             };
@@ -466,7 +466,7 @@ describe('SettingsImportExportComponent', () => {
             
             const exportData = await component.prepareExportData() as ExportData,
             
-            expect(exportData.accessibility).toEqual({};
+            expect(exportData.accessibility).toEqual({}
         }
     }');'
     describe('Requirements満足確認', () => {
@@ -491,11 +491,11 @@ describe('SettingsImportExportComponent', () => {
             // Data validation
             const validData = {
                 timestamp: new Date().toISOString(','
-                version: '1.0.0';
+                version: '1.0.0',
                 settings: {}
             };
             const dataResult = await component.validateImportData(validData) as ValidationResult;
             expect(dataResult.valid).toBe(true);
-        };
+        }
     }
 }');'

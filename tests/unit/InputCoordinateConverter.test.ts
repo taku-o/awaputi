@@ -6,68 +6,68 @@ import { describe, test, expect, beforeEach, jest  } from '@jest/globals';
 import { InputCoordinateConverter  } from '../../src/utils/InputCoordinateConverter.js';
 // 型定義
 interface CanvasInfo {
-    scaleFactor: number;
+    scaleFactor: number,
     scale: number;
-    displayWidth: number;
+    displayWidth: number,
     displayHeight: number;
-    actualWidth: number;
+    actualWidth: number,
     actualHeight: number;
-    pixelRatio: number;
+    pixelRatio: number,
     baseWidth: number;
     baseHeight: number;
 interface Coordinates {
-    x: number;
+    x: number,
     y: number;
 interface ConvertedMouseEvent {
-    baseX: number;
+    baseX: number,
     baseY: number;
-    scaledX: number;
+    scaledX: number,
     scaledY: number;
     originalEvent: MouseEvent;
 interface ConvertedTouchEvent {
-    baseX: number;
+    baseX: number,
     baseY: number;
-    scaledX: number;
+    scaledX: number,
     scaledY: number;
-    identifier: number;
+    identifier: number,
     originalEvent: TouchEvent;
 interface Rectangle {
-    x: number;
+    x: number,
     y: number;
-    width: number;
+    width: number,
     height: number;
 interface Circle {
-    x: number;
+    x: number,
     y: number;
     radius: number;
 interface MockCanvas {
     getBoundingClientRect: jest.Mock<() => DOMRect> }
 interface MockMouseEvent {
-    clientX: number;
+    clientX: number,
     clientY: number;
     type: string;
 interface MockTouch {
-    clientX: number;
+    clientX: number,
     clientY: number;
     identifier: number;
 interface MockTouchEvent {
-    touches: (MockTouch | null)[];
+    touches: (MockTouch | null)[],
     type: string;
 // ScaledCoordinateManager のモック
 class MockScaledCoordinateManager {
     mockCanvasInfo: CanvasInfo;
     constructor() {
         this.mockCanvasInfo = {
-            scaleFactor: 0.8;
+            scaleFactor: 0.8,
             scale: 0.8;
-            displayWidth: 640;
+            displayWidth: 640,
             displayHeight: 480;
-            actualWidth: 640;
+            actualWidth: 640,
             actualHeight: 480;
-            pixelRatio: 1;
+            pixelRatio: 1,
             baseWidth: 800;
             baseHeight: 600
-        };
+        }
     }
     
     getCanvasInfo(): CanvasInfo {
@@ -78,30 +78,30 @@ class MockScaledCoordinateManager {
 }
 // ResponsiveCanvasManager のモック
 class MockResponsiveCanvasManager {
-    mockCanvasInfo: CanvasInfo;
+    mockCanvasInfo: CanvasInfo,
     canvas: MockCanvas;
     constructor() {
         this.mockCanvasInfo = {
-            scaleFactor: 0.8;
+            scaleFactor: 0.8,
             scale: 0.8;
-            displayWidth: 640;
+            displayWidth: 640,
             displayHeight: 480;
-            actualWidth: 640;
+            actualWidth: 640,
             actualHeight: 480;
-            pixelRatio: 1;
+            pixelRatio: 1,
             baseWidth: 800;
             baseHeight: 600
         };
         
         this.canvas = {
             getBoundingClientRect: jest.fn(() => ({
-                left: 0;
+                left: 0,
                 top: 0;
-                width: 640;
+                width: 640,
                 height: 480;
-                right: 640;
+                right: 640,
                 bottom: 480;
-                x: 0;
+                x: 0,
                 y: 0;
                 toJSON: () => ({)) }) as DOMRect)
         );
@@ -109,9 +109,9 @@ class MockResponsiveCanvasManager {
     
     screenToCanvas(x: number, y: number): Coordinates {
         return {
-            x: x / this.mockCanvasInfo.scale;
+            x: x / this.mockCanvasInfo.scale,
             y: y / this.mockCanvasInfo.scale
-        };
+        }
     }
     
     getCanvasInfo('): CanvasInfo {'
@@ -137,7 +137,7 @@ describe('InputCoordinateConverter', () => {
     describe('convertMouseEvent', (') => {'
         test('should convert mouse event coordinates', (') => {'
             const mockEvent: MockMouseEvent = {
-                clientX: 100;
+                clientX: 100,
                 clientY: 50;
                 type: 'click'
             };
@@ -150,7 +150,7 @@ describe('InputCoordinateConverter', () => {
         }');'
         test('should handle edge case coordinates', (') => {'
             const mockEvent: MockMouseEvent = {
-                clientX: 0;
+                clientX: 0,
                 clientY: 0;
                 type: 'click'
             };
@@ -181,7 +181,7 @@ describe('InputCoordinateConverter', () => {
         test('should convert single touch event', (') => {'
             const mockTouchEvent: MockTouchEvent = {
                 touches: [{
-                    clientX: 200;
+                    clientX: 200,
                     clientY: 100;
                     identifier: 0
                 }],
@@ -213,7 +213,7 @@ describe('InputCoordinateConverter', () => {
         }');'
         test('should handle empty touches array', (') => {'
             const mockTouchEvent: MockTouchEvent = {
-                touches: [];
+                touches: [],
                 type: 'touchstart'
             };
             const result = (inputCoordinateConverter.convertTouchEvent(mockTouchEvent);
@@ -332,7 +332,7 @@ describe('InputCoordinateConverter', () => {
     describe('integration scenarios', (') => {'
         test('should handle complete input processing workflow', (') => {'
             const mockMouseEvent: MockMouseEvent = {
-                clientX: 160;
+                clientX: 160,
                 clientY: 120;
                 type: 'click'
             };
@@ -371,19 +371,19 @@ describe('InputCoordinateConverter', () => {
             ];
             testCases.forEach(testCase => {
                 const mockEvent: MockMouseEvent = {
-                    clientX: testCase.x;
+                    clientX: testCase.x,
                     clientY: testCase.y;
                     type: 'click');
                 const converted = (inputCoordinateConverter.convertMouseEvent(mockEvent) as ConvertedMouseEvent),
                 // 逆変換で元の値に戻ることを確認
                 const, backToScaled: Coordinates = {
-                    x: converted.baseX * 0.8;
+                    x: converted.baseX * 0.8,
                     y: converted.baseY * 0.8
                 };
                 
                 expect(Math.abs(backToScaled.x - testCase.x).toBeLessThan(0.001);
                 expect(Math.abs(backToScaled.y - testCase.y).toBeLessThan(0.001);
-            };
+            }
         }
     }');'
 }

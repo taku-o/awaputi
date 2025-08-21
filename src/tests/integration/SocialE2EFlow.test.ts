@@ -3,19 +3,19 @@
  * Issue #37 Task 21.4: エンドツーエンド共有フローテスト
  */
 import { jest  } from '@jest/globals';
-interface GameStats { totalScore: number;
-    highScore: number;
-    gamesPlayed: number;
-    totalPlayTime: number;
-    averageScore: number;
-    bestCombo: number;
-    accuracy: number;
-    bubblesPopped: number;
-    perfectRounds: number;
+interface GameStats { totalScore: number,
+    highScore: number,
+    gamesPlayed: number,
+    totalPlayTime: number,
+    averageScore: number,
+    bestCombo: number,
+    accuracy: number,
+    bubblesPopped: number,
+    perfectRounds: number,
     highestStreak: number;
-interface Achievement { id: string;
-    name: string;
-    description: string;
+    interface Achievement { id: string,
+    name: string,
+    description: string,
     unlocked: boolean;
     unlockedAt?: number;
     rare: boolean;
@@ -23,47 +23,47 @@ interface Achievement { id: string;
     category: string;
     progress?: number;
     target?: number;
-interface GameResult { score: number;
-    stage: string;
-    playTime: number;
-    combo: number;
+    interface GameResult { score: number,
+    stage: string,
+    playTime: number,
+    combo: number,
     accuracy: number;
     isHighScore?: boolean;
     bubblesPopped?: number;
     perfectStreak?: number;
-    timestamp?: number,  }
-interface ShareSettings { autoShare: boolean;
-    shareHighScores: boolean;
-    shareAchievements: boolean;
-    shareProgress: boolean;
+    timestamp?: number }
+interface ShareSettings { autoShare: boolean,
+    shareHighScores: boolean,
+    shareAchievements: boolean,
+    shareProgress: boolean,
     privacy: string;
-interface PlayerSettings {
+    interface PlayerSettings {
     shareSettings: ShareSettings;
-interface ShareSuggestion { shouldSuggestShare: boolean;
+    interface ShareSuggestion { shouldSuggestShare: boolean;
     reasons?: string[];
     reason?: string;
     shareData?: any;
-interface ChallengeData { id: string;
-    name: string;
-    description: string;
-    type: string;
+    interface ChallengeData { id: string,
+    name: string,
+    description: string,
+    type: string,
     completed: boolean;
     completedAt?: number;
     progress?: number;
     target: number;
     reward?: {
         a,p?: number;
-        items?: string[],  }
+    items?: string[] }
 interface ShareResult { success: boolean;
     fallbackUsed?: boolean;
     retriesUsed?: number;
-interface CleanupResult { cleaned: boolean;
+    interface CleanupResult { cleaned: boolean,
     itemsRemoved: number;
-interface AchievementProgress { total: number;
-    unlocked: number;
-    percentage: number;
+    interface AchievementProgress { total: number,
+    unlocked: number,
+    percentage: number,
     rare: number;
-interface GameEngine { canvas: HTMLCanvasElement;
+    interface GameEngine { canvas: HTMLCanvasElement;
     getCanvas(): HTMLCanvasElement;
     getCurrentScene(): { name: string, isGameEnd?: boolean;
     isRunning(): boolean;
@@ -78,12 +78,12 @@ interface StatisticsManager { recordGameSession(session: GameResult): void;
     getBestCombo(): number;
     getAccuracy(): number;
     getSessions(): GameResult[];
-interface AchievementManager { getAchievements(): Achievement[],
+    interface AchievementManager { getAchievements(): Achievement[],
     getUnlockedAchievements(): Achievement[];
     getRareAchievements(): Achievement[];
     unlockAchievement(id: string): Achievement | null;
     checkAndUnlockAchievements(gameData: GameResult): Achievement[];
-interface PlayerData { getPlayerName(): string,
+    interface PlayerData { getPlayerName(): string,
     getTotalAP(): number;
     getHighScore(stage: string): number;
     getAllHighScores(): Record<string, number>;
@@ -91,15 +91,15 @@ interface PlayerData { getPlayerName(): string,
     getSettings(): PlayerSettings;
     updateSettings(newSettings: Partial<PlayerSettings>): void;
     save(): void;
-interface SettingsManager { get(key: string): any;
+    interface SettingsManager { get(key: string): any;
     set(key: string, value: any): void;
-interface SocialSharingManager { gameEngine: GameEngine;
-    statisticsManager: StatisticsManager;
-    achievementManager: AchievementManager;
-    isInitialized: boolean;
-    shareContentGenerator: any;
-    screenshotCapture: any;
-    leaderboardManager: any;
+    interface SocialSharingManager { gameEngine: GameEngine,
+    statisticsManager: StatisticsManager,
+    achievementManager: AchievementManager,
+    isInitialized: boolean,
+    shareContentGenerator: any,
+    screenshotCapture: any,
+    leaderboardManager: any,
     challengeSystem: any;
     initialize(): Promise<void>;
     checkShareSuggestion(gameResult: GameResult): Promise<ShareSuggestion>;
@@ -116,16 +116,16 @@ interface SocialSharingManager { gameEngine: GameEngine;
     cleanup(): Promise<void>;
     getAchievementProgress(): Promise<AchievementProgress>;
 // E2Eテスト用のフルシステムモック
-class FullSystemMock { gameEngine: GameEngine;
-    statisticsManager: StatisticsManager;
-    achievementManager: AchievementManager;
-    playerData: PlayerData;
+class FullSystemMock { gameEngine: GameEngine,
+    statisticsManager: StatisticsManager,
+    achievementManager: AchievementManager,
+    playerData: PlayerData,
     settingsManager: SettingsManager;
     constructor() {
         this.gameEngine = this.createGameEngine();
-        this.statisticsManager = this.createStatisticsManager();
-        this.achievementManager = this.createAchievementManager();
-        this.playerData = this.createPlayerData();
+    this.statisticsManager = this.createStatisticsManager();
+    this.achievementManager = this.createAchievementManager();
+    this.playerData = this.createPlayerData();
      }
         this.settingsManager = this.createSettingsManager(); }
     }''
@@ -167,10 +167,9 @@ class FullSystemMock { gameEngine: GameEngine;
                         Math.random() * 600,
                         Math.random() * 30 + 10,
                         0,
-                        Math.PI * 2) }
-                    ctx.fill(); }
+                        Math.PI * 2);
+                    ctx.fill();     }
 }
-        }
     createStatisticsManager(): StatisticsManager { const sessions: GameResult[] = [],
         let totalScore = 750000,
         let totalGames = 150,
@@ -197,35 +196,35 @@ class FullSystemMock { gameEngine: GameEngine;
             },
             getTotalScore: () => totalScore,
             getTotalGames: () => totalGames,
-            getAverageScore: () => Math.floor(totalScore / totalGames);
+            getAverageScore: () => Math.floor(totalScore / totalGames),
             getBestCombo: () => 35,
             getAccuracy: () => 0.82,
             getSessions: () => [...sessions]; }''
     createAchievementManager('''
             ['first_win', { ''
-                id: 'first_win',
-                name: '初勝利',
-                description: '初めてゲームをクリア',
+                id: 'first_win,
+                name: '初勝利,
+                description: '初めてゲームをクリア,
                 unlocked: true,
-                unlockedAt: Date.now(']',
+                unlockedAt: Date.now('],
     category: 'progress'
             }]'
             }],''
             ['high_scorer', { ''
-                id: 'high_scorer',
-                name: 'ハイスコアラー',
-                description: '50000点を達成',
+                id: 'high_scorer,
+                name: 'ハイスコアラー,
+                description: '50000点を達成,
                 unlocked: true,
-                unlockedAt: Date.now(']',
+                unlockedAt: Date.now('],
     category: 'score'
             }]'
             }],''
             ['combo_master', { ''
-                id: 'combo_master',
-                name: 'コンボマスター',
-                description: '30コンボを達成',
+                id: 'combo_master,
+                name: 'コンボマスター,
+                description: '30コンボを達成,
                 unlocked: false,
-                progress: 25);
+                progress: 25),
                 target: 30','
     rare: true,]','
                 category: 'skill'
@@ -233,8 +232,8 @@ class FullSystemMock { gameEngine: GameEngine;
             }])
         ]);
         return { getAchievements: () => Array.from(achievements.values(
-            getUnlockedAchievements: () => Array.from(achievements.values().filter(a => a.unlocked);
-            getRareAchievements: () => Array.from(achievements.values().filter(a => a.rare);
+            getUnlockedAchievements: ())) => Array.from(achievements.values())).filter(a => a.unlocked),
+            getRareAchievements: () => Array.from(achievements.values())).filter(a => a.rare),
             unlockAchievement: (id: string) => { 
                 if (achievements.has(id) {
                     const achievement = achievements.get(id)!  }
@@ -248,7 +247,7 @@ class FullSystemMock { gameEngine: GameEngine;
                 if(gameData.combo >= 30 && !achievements.get('combo_master)!.unlocked' {''
                     const achievement = achievements.get('combo_master)!,'
                     achievement.unlocked = true,
-                    achievement.unlockedAt = Date.now() }
+                    achievement.unlockedAt = Date.now();
                     newlyUnlocked.push(achievement); }
                 }
                 
@@ -256,10 +255,10 @@ class FullSystemMock { gameEngine: GameEngine;
 
     }''
     createPlayerData('''
-            playerName: 'TestPlayer',
+            playerName: 'TestPlayer,
             totalAP: 8500,
             totalTAP: 25000,
-    highScores: { normal: 65000, hard: 48000, expert: 32000  },
+    highScores: { normal: 65000, hard: 48000, expert: 32000  ,
             settings: { shareSettings: {
                     autoShare: true,
                     shareHighScores: true,
@@ -269,7 +268,7 @@ class FullSystemMock { gameEngine: GameEngine;
             }
             })
         return { getPlayerName: () => data.playerName,
-            getTotalAP: () => data.totalAP },
+            getTotalAP: () => data.totalAP };
             getHighScore: (stage: string) => data.highScores[stage] || 0 }
             getAllHighScores: () => ({ ...data.highScores)
             updateHighScore: (stage: string, score: number) => {  if (score > (data.highScores[stage] || 0) {
@@ -278,7 +277,7 @@ class FullSystemMock { gameEngine: GameEngine;
                 return false;
             },
             getSettings: () => data.settings,
-            updateSettings: (newSettings: Partial<PlayerSettings>) => { Object.assign(data.settings, newSettings) }
+            updateSettings: (newSettings: Partial<PlayerSettings>) => { Object.assign(data.settings, newSettings);
 
             },''
             save: () => localStorage.setItem('playerData', JSON.stringify(data);
@@ -314,7 +313,7 @@ describe('SocialE2EFlow', () => {  let systemMock: FullSystemMock,
         global.localStorage = {
             getItem: jest.fn(),
             setItem: jest.fn(
-    removeItem: jest.fn()  }
+    removeItem: jest.fn(),
         clear: jest.fn(); 
     } as any;
         // Web Share API のモック
@@ -324,26 +323,25 @@ describe('SocialE2EFlow', () => {  let systemMock: FullSystemMock,
             } as any;
         // Performance API のモック
         global.performance = { now: jest.fn(() => Date.now(
-            memory: {
-                usedJSHeapSize: 10000000,
+            memory: { usedJSHeapSize: 10000000   ,
     totalJSHeapSize: 50000000  }
-    };
+    }
         } as any;
     };
     beforeEach(async () => {  // DOM環境をセットアップ
         document.body.innerHTML = `','
-            <div id="gameContainer">"",
-                <canvas id="gameCanvas" width="800" height="600"></canvas>"",
+            <div id="gameContainer">,
+                <canvas id="gameCanvas" width="800" height="600"></canvas>,
                 <div id="gameEndScreen" style="display: none,">""
-                    <div class="score-display">"",
-                        <h2 id="finalScore">0</h2>"",
+                    <div class="score-display">,
+                        <h2 id="finalScore">0</h2>,
                         <p id="scoreMessage">ゲーム終了</p>","
-                    </div>"",
+                    </div>,
                     <div id="actionButtons" class="action-buttons"></div>,
                 </div>","
-            </div>"",
-            <div id="achievementNotifications"></div>"",
-            <div id="challengeNotifications"></div>"",
+            </div>,
+            <div id="achievementNotifications"></div>,
+            <div id="challengeNotifications"></div>,
             <div id="modalContainer"></div>,
         `,"
         domElements = {""
@@ -378,7 +376,7 @@ describe('SocialE2EFlow', () => {  let systemMock: FullSystemMock,
         test('ハイスコア達成時の完全フロー', async () => {
             const gameResult: GameResult = {'
                 score: 78000,
-                stage: 'normal',
+                stage: 'normal,
                 playTime: 425000,
                 combo: 32,
                 accuracy: 0.89,
@@ -414,10 +412,10 @@ describe('SocialE2EFlow', () => {  let systemMock: FullSystemMock,
             // 5. スクリーンショット生成
             const screenshot = await socialManager.captureGameScreen({ includeOverlay: true,
                 overlayData: {
-                    score: gameResult.score,
+                    score: gameResult.score ,
                     stage: gameResult.stage),
                     isHighScore: true,
-    combo: gameResult.combo  },
+    combo: gameResult.combo  ,
             expect(screenshot).toBeTruthy()';'
             expect(screenshot!.startsWith('data: image/).toBe(true,'
             // 6. 共有ボタンクリックとダイアログ表示
@@ -451,7 +449,7 @@ describe('SocialE2EFlow', () => {  let systemMock: FullSystemMock,
             // Web Share API が呼ばれることを確認
             expect(navigator.share).toHaveBeenCalledWith({ ''
                 title: 'BubblePop - New High Score!',','
-                text: 'BubblePopで新記録78000点！コンボマスターも解除したよ！ #BubblePop #NewRecord',')',
+                text: 'BubblePopで新記録78000点！コンボマスターも解除したよ！ #BubblePop #NewRecord,'),
         url: expect.stringContaining('bubblePop  }'
 
             // 10. 共有成功のフィードバック
@@ -461,12 +459,12 @@ describe('SocialE2EFlow', () => {  let systemMock: FullSystemMock,
             expect(successMessage).toBeTruthy();
             expect(successMessage.textContent).toContain('共有完了';}');'
         test('実績解除時の即座共有フロー', async () => {  const rareAchievement: Achievement = {''
-                id: 'perfect_master',
-                name: 'パーフェクトマスター',
-                description: '10回連続でパーフェクトラウンド',
+                id: 'perfect_master,
+                name: 'パーフェクトマスター,
+                description: '10回連続でパーフェクトラウンド,
                 rare: true,
-                rarity: 'legendary',
-                unlockedAt: Date.now('',
+                rarity: 'legendary,
+                unlockedAt: Date.now(,
     category: 'skill'
             }
                 unlocked: true;);
@@ -509,15 +507,15 @@ describe('SocialE2EFlow', () => {  let systemMock: FullSystemMock,
             expect(achievementImage.src).toContain('data: image/'
             }');'
         test('チャレンジ完了時の共有フロー', async () => {  const completedChallenge: ChallengeData = {''
-                id: 'weekly_high_scorer',
-                name: '週間ハイスコアチャレンジ',
-                description: '1週間で500000点を獲得',
-                type: 'weekly',
+                id: 'weekly_high_scorer,
+                name: '週間ハイスコアチャレンジ,
+                description: '1週間で500000点を獲得,
+                type: 'weekly,
                 completed: true,' }'
 
                 completedAt: Date.now('}'
 
-                reward: { ap: 1000, items: ['golden_bubble]  };'
+                reward: { ap: 1000, items: ['golden_bubble]   ,'
             // 1. チャレンジ完了処理)
             await socialManager.challengeSystem.completeChallenge(completedChallenge.id);
             // 2. 完了通知の表示
@@ -544,9 +542,9 @@ describe('SocialE2EFlow', () => {  let systemMock: FullSystemMock,
     describe('複数プラットフォーム共有フロー', () => {  ''
         test('Twitter共有の完全フロー', async () => {'
             const shareData = {''
-                type: 'score',
+                type: 'score,
                 score: 85000,
-                stage: 'expert',
+                stage: 'expert,
                 combo: 28,' }'
 
                 screenshot: 'data:image/png;base64,iVBORw0KGgoAAAANS...'
@@ -558,7 +556,7 @@ describe('SocialE2EFlow', () => {  let systemMock: FullSystemMock,
             // Twitter共有URLが正しく生成されることを確認
             expect(window.open).toHaveBeenCalledWith()';'
                 expect.stringContaining('twitter.com/intent/tweet');
-                'twitter-share',
+                'twitter-share,
                 expect.stringContaining('width=550,height=420);'
 
             const callArgs = (window.open, as jest.Mock).mock.calls[0][0];
@@ -568,12 +566,12 @@ describe('SocialE2EFlow', () => {  let systemMock: FullSystemMock,
 
             window.open = originalOpen;'}');
         test('Facebook共有のOGタグ連携', async () => {  const shareData = {''
-                type: 'achievement',
+                type: 'achievement,
                 achievement: {''
                     name: 'スピードデーモン',' }'
 
                     description: '30秒以内でクリア' 
-    },''
+    ,''
                 screenshot: 'data:image/png;base64,test...';
 
             // OGタグの動的更新をテスト
@@ -592,7 +590,7 @@ describe('SocialE2EFlow', () => {  let systemMock: FullSystemMock,
             global.navigator.share = undefined as any,
 
             const shareData = {''
-                type: 'score',
+                type: 'score,
                 score: 62000,' }'
 
                 stage: 'normal' 
@@ -613,11 +611,11 @@ describe('SocialE2EFlow', () => {  let systemMock: FullSystemMock,
             const scores = [' }'
 
                 { score: 95000, playerName: 'Player1', stage: 'expert'
-            },''
+            ,''
                 { score: 87000, playerName: 'Player2', stage: 'expert'
-            },''
+            ,''
                 { score: 82000, playerName: 'TestPlayer', stage: 'expert'
-            }, // 現在のプレイヤー]'
+            , // 現在のプレイヤー]'
                 { score: 79000, playerName: 'Player4', stage: 'expert'
             }]
             ];
@@ -630,8 +628,8 @@ describe('SocialE2EFlow', () => {  let systemMock: FullSystemMock,
             }
             // 新しい高得点で3位から1位に上昇
             const newScore = { score: 98000,''
-                playerName: 'TestPlayer',
-                stage: 'expert',
+                playerName: 'TestPlayer,
+                stage: 'expert,
     timestamp: Date.now( }
                 metadata: { combo: 35, accuracy: 0.92, playTime: 480000  }'
             };')'
@@ -653,9 +651,9 @@ describe('SocialE2EFlow', () => {  let systemMock: FullSystemMock,
             // 共有メッセージの生成
             const shareMessage = await socialManager.shareContentGenerator','
 
-                .generateRankingMessage(rankShareData, 'twitter',
-            expect(shareMessage).toContain('1位',
-            expect(shareMessage).toContain('98000',
+                .generateRankingMessage(rankShareData, 'twitter,
+            expect(shareMessage).toContain('1位,
+            expect(shareMessage).toContain('98000,
             expect(shareMessage).toContain('expert',' }'
 
         }');'
@@ -666,11 +664,11 @@ describe('SocialE2EFlow', () => {  let systemMock: FullSystemMock,
             // Canvas.toDataURL を失敗させる
             const originalToDataURL = HTMLCanvasElement.prototype.toDataURL,
             HTMLCanvasElement.prototype.toDataURL = jest.fn(() => {''
-                throw new Error('Canvas, tainted',
+                throw new Error('Canvas, tainted,
             '),'
 
             const shareData = {''
-                type: 'score',
+                type: 'score,
                 score: 45000,' }'
 
                 stage: 'normal' 
@@ -688,7 +686,7 @@ describe('SocialE2EFlow', () => {  let systemMock: FullSystemMock,
                 .mockRejectedValueOnce(new, Error('Network, error'','
                 .mockResolvedValueOnce(undefined);
             const shareData = {''
-                type: 'achievement',
+                type: 'achievement,
                 achievement: {''
                     name: 'ネットワークテスト',' }'
 
@@ -707,10 +705,10 @@ describe('SocialE2EFlow', () => {  let systemMock: FullSystemMock,
                 throw new Error('QuotaExceededError'; }'
             };
             // 大量のリーダーボードデータを生成してストレージ不足を引き起こす
-            const largeDataSet = Array.from({ length: 1000 }, (_, i) => ({ score: Math.floor(Math.random() * 100000 }
-                playerName: `Player${i}`,
+            const largeDataSet = Array.from({ length: 1000 , ())_, i) => ({ score: Math.floor(Math.random() * 100000 }
+                playerName: `Player${i},
                 timestamp: Date.now() - (i * 1000,
-    metadata: { combo: i, accuracy: Math.random(), playTime: 300000  },
+    metadata: { combo: i, accuracy: Math.random(), playTime: 300000  ,
             // 自動クリーンアップが実行されることを確認
             const cleanupResult = await socialManager.leaderboardManager;
                 .handleStorageCleanup(largeDataSet);
@@ -755,7 +753,7 @@ describe('SocialE2EFlow', () => {  let systemMock: FullSystemMock,
             
             // 複雑な描画を実行
             for(let, i = 0, i < 1000, i++) {
-                ctx.fillStyle = `hsl(${i % 360), 70%, 50%)`,
+                ctx.fillStyle = `hsl(${i % 360), 70%, 50%),
                 ctx.beginPath();
                 ctx.arc();
                     Math.random() * 3840,
@@ -764,7 +762,7 @@ describe('SocialE2EFlow', () => {  let systemMock: FullSystemMock,
                     0 }
                     Math.PI * 2 }
                 ); }
-                ctx.fill(};
+                ctx.fill(}
             }
             // 大画面スクリーンショットの処理時間を測定
             const startTime = performance.now();

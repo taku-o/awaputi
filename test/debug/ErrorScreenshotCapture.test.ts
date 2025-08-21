@@ -149,7 +149,7 @@ describe('ErrorScreenshotCapture', () => {  let screenshotCapture: any,
                 id: 'large_screenshot',','
                 timestamp: Date.now(' }'
                 data: 'large_data'
-            };
+            }
             };
             )';'
             screenshotCapture.storeScreenshot(largeScreenshot);

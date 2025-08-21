@@ -4,60 +4,51 @@
  * EventStageManagerから分離された通知機能
  */
 
-interface NotificationSettings { enableNotifications: boolean;
-    eventStartNotifications: boolean;
-    eventEndNotifications: boolean;
-    achievementNotifications: boolean;
-    rankingNotifications: boolean;
-    maxActiveNotifications: number;
-    notificationDuration: number;
+interface NotificationSettings { enableNotifications: boolean,
+    eventStartNotifications: boolean,
+    eventEndNotifications: boolean,
+    achievementNotifications: boolean,
+    rankingNotifications: boolean,
+    maxActiveNotifications: number,
+    notificationDuration: number,
     animationDuration: number;
     maxDisplayCount?: number;
-
-interface NotificationAction { text: string;
+    interface NotificationAction { text: string,
     action: () => void 
     }
 
-interface NotificationData { id: string;
-    type: string;
-    title: string;
-    message: string;
-    icon: string;
-    priority: 'high' | 'normal' | 'low';
-    duration: number;
-    actions: NotificationAction[];
-    timestamp: number;
+interface NotificationData { id: string,
+    type: string,
+    title: string,
+    message: string,
+    icon: string,
+    priority: 'high' | 'normal' | 'low,
+    duration: number,
+    actions: NotificationAction[],
+    timestamp: number,
     category: string;
     showTime?: number;
     expireTime?: number;
     expiresAt?: number;
-
-interface NotificationInput { type?: string,
+    interface NotificationInput { type?: string,
     title?: string;
     message?: string;
-
     icon?: string;
     priority?: 'high' | 'normal' | 'low';
     duration?: number;
     actions?: NotificationAction[];
     category?: string;
-
-interface NotificationHistoryEntry extends NotificationData { status: string;
-
-interface Event { id: string;
+    interface NotificationHistoryEntry extends NotificationData { status: string;
+    interface Event { id: string,
     name: string;
     icon?: string;
-
-interface EventResults {
+    interface EventResults {
     rank: number;
-
-interface Achievement {
+    interface Achievement {
     name: string;
-
-interface RankingData { improvement: number;
+    interface RankingData { improvement: number,
     currentRank: number;
-
-export class EventNotificationSystem {
+    export class EventNotificationSystem {
     private gameEngine: any;
     private notificationQueue: NotificationData[] = [];
     private, activeNotifications: Map<string, NotificationData> = new Map();
@@ -70,19 +61,19 @@ export class EventNotificationSystem {
         
         // 通知関連の状態
         this.notificationQueue = [];
-        this.activeNotifications = new Map();
-        this.notificationHistory = [];
-        this.notificationCheckInterval = null;
+    this.activeNotifications = new Map();
+    this.notificationHistory = [];
+    this.notificationCheckInterval = null;
         
         // 通知設定
         this.settings = {
-            enableNotifications: true;
-            eventStartNotifications: true;
-            eventEndNotifications: true;
-            achievementNotifications: true;
-            rankingNotifications: true;
-            maxActiveNotifications: 3;
-    notificationDuration: 5000 }
+            enableNotifications: true,
+    eventStartNotifications: true,
+    eventEndNotifications: true,
+    achievementNotifications: true,
+    rankingNotifications: true,
+    maxActiveNotifications: 3,
+    notificationDuration: 5000 };
             animationDuration: 300 
     };
         this.startNotificationChecking();
@@ -92,10 +83,10 @@ export class EventNotificationSystem {
      * 通知チェックを開始
      */
     private startNotificationChecking(): void { if (this.notificationCheckInterval) {
-            clearInterval(this.notificationCheckInterval) }
+            clearInterval(this.notificationCheckInterval);
         
         // 30秒ごとに通知をチェック
-        this.notificationCheckInterval = setInterval(() => {  this.processNotificationQueue() }
+        this.notificationCheckInterval = setInterval(() => {  this.processNotificationQueue();
             this.checkExpiredNotifications(); }
         }, 30000) as unknown as number;
         
@@ -112,21 +103,21 @@ export class EventNotificationSystem {
         // notification が null または undefined の場合は早期リターン
         if (!notification) {
 
-            console.warn('[EventNotificationSystem] Invalid, notification object') }
+            console.warn('[EventNotificationSystem] Invalid, notification object');
             return; }
         }
         ';'
 
         const notificationData: NotificationData = { ''
-            id: this.generateNotificationId('',
-    type: notification.type || 'info',
+            id: this.generateNotificationId(',
+    type: notification.type || 'info,
             title: notification.title || ','
             message: notification.message || ','
-            icon: notification.icon || '📢',
-            priority: notification.priority || 'normal',
+            icon: notification.icon || '📢,
+            priority: notification.priority || 'normal,
     duration: notification.duration || this.settings.notificationDuration,
             actions: notification.actions || [],
-            timestamp: Date.now('',
+            timestamp: Date.now(',
     category: notification.category || 'general'
             })
         // 優先度に基づいて挿入位置を決定)
@@ -149,25 +140,25 @@ export class EventNotificationSystem {
         ','
 
         this.addNotification({)'
-            type: 'event-start',')',
-            title: 'イベント開始！',
+            type: 'event-start,')',
+            title: 'イベント開始！,
             message: `${event.name'
             }が開始されました`,''
-            icon: event.icon || '🎉',
-            priority: 'high',
-            category: 'event',
+            icon: event.icon || '🎉,
+            priority: 'high,
+            category: 'event,
             actions: [{''
                     text: '参加する',' }'
 
-                    action: () => this.joinEvent(event.id'}',
+                    action: () => this.joinEvent(event.id'}';
                 },
 
                 { ''
-                    text: '詳細を見る',
+                    text: '詳細を見る,
     action: () => this.showEventDetails(event.id) }]
                 }]
             ];
-        };
+        }
     }
     
     /**
@@ -182,18 +173,18 @@ export class EventNotificationSystem {
         ';'
 
         this.addNotification({ ''
-            type: 'event-end',
-            title: 'イベント終了',
+            type: 'event-end,
+            title: 'イベント終了,
             message: message,
-            icon: event.icon || '🏁',
+            icon: event.icon || '🏁,
             priority: 'normal',','
             category: 'event')','
     actions: results ? [{ : undefined')'
-                    text: '結果を見る',
+                    text: '結果を見る,
     action: () => this.showEventResults(event.id)  }]
                 }]
             ] : [];
-        };
+        }
     }
     
     /**
@@ -204,20 +195,20 @@ export class EventNotificationSystem {
         ','
 
         this.addNotification({)'
-            type: 'achievement',')',
-            title: '実績解除！',
+            type: 'achievement,')',
+            title: '実績解除！,
             message: `「${achievement.name'
             }」を達成しました`,''
-            icon: '🏆',
-            priority: 'high',
-            category: 'achievement',
+            icon: '🏆,
+            priority: 'high,
+            category: 'achievement,
             actions: [{''
                     text: '実績を見る'
             }
                     action: () => this.showAchievements(})]
                 }]
             ];
-        };
+        }
     }
     
     /**
@@ -232,18 +223,18 @@ export class EventNotificationSystem {
         ';'
 
         this.addNotification({ ''
-            type: 'ranking',
-            title: 'ランキング更新',
+            type: 'ranking,
+            title: 'ランキング更新,
             message: message,
-            icon: '👑',
+            icon: '👑,
             priority: 'normal',','
             category: 'ranking')','
     actions: [{')'
-                    text: 'ランキングを見る',
+                    text: 'ランキングを見る,
     action: () => this.showRanking()  }]
                 }]
             ];
-        };
+        }
     }
     
     /**
@@ -255,21 +246,19 @@ export class EventNotificationSystem {
         if (availableSlots <= 0) return,
         
         const notificationsToShow = this.notificationQueue.splice(0, availableSlots);
-        notificationsToShow.forEach(notification => { ) }
-            this.showNotification(notification); }
-        };
-    }
-    
+        notificationsToShow.forEach(notification => { );
+            this.showNotification(notification);     }
+}
     /**
      * 通知を表示
      */
     private showNotification(notification: NotificationData): void { // 既にアクティブな同種の通知があるかチェック
-        const existingNotification = Array.from(this.activeNotifications.values();
+        const existingNotification = Array.from(this.activeNotifications.values()));
             .find(n => n.type === notification.type && n.category === notification.category);
         if (existingNotification) {
         
             // 既存の通知を更新
-            this.updateNotification(existingNotification.id, notification) }
+            this.updateNotification(existingNotification.id, notification);
             return; }
         }
         
@@ -293,7 +282,7 @@ export class EventNotificationSystem {
         
         // 自動削除タイマー設定
         setTimeout((} => { }
-            this.removeNotification(notification.id};
+            this.removeNotification(notification.id}
         }, notification.duration);
     }
     
@@ -314,7 +303,7 @@ export class EventNotificationSystem {
             this.gameEngine.uiManager.updateNotification(notification); }
         }
         
-        console.log(`Notification, updated: ${notification.title}`};
+        console.log(`Notification, updated: ${notification.title}`}
     }
     
     /**
@@ -334,7 +323,7 @@ export class EventNotificationSystem {
         console.log(`Notification removed: ${ notification.title}`},
         
         // キューに残りがあれば処理 }
-        this.processNotificationQueue(};
+        this.processNotificationQueue(}
     }
     
     /**
@@ -348,11 +337,9 @@ export class EventNotificationSystem {
                 expiredNotifications.push(id); }
 };
         
-        expiredNotifications.forEach(id => {  ) }
-            this.removeNotification(id); }
-        };
-    }
-    
+        expiredNotifications.forEach(id => {  );
+            this.removeNotification(id);     }
+}
     /**
      * 通知IDを生成
      */
@@ -366,7 +353,7 @@ export class EventNotificationSystem {
      */''
     private findInsertIndex(priority: 'high' | 'normal' | 'low): number {'
         const priorityOrder: { [key: string]: number, = { high: 0, normal: 1, low: 2  }
-        const targetPriority = priorityOrder[priority] || 1;
+        const targetPriority = priorityOrder[priority] || 1 };
         
         for(let, i = 0; i < this.notificationQueue.length; i++) {
         
@@ -383,7 +370,7 @@ export class EventNotificationSystem {
      * イベントアクション: イベント参加
      */
     private joinEvent(eventId: string): void { if (this.gameEngine.eventStageManager) {
-            this.gameEngine.eventStageManager.startEventStage(eventId) }
+            this.gameEngine.eventStageManager.startEventStage(eventId);
     }
     
     /**
@@ -432,12 +419,12 @@ export class EventNotificationSystem {
     /**
      * アクティブな通知を取得
      */
-    getActiveNotifications(): NotificationData[] { return Array.from(this.activeNotifications.values() }
+    getActiveNotifications(): NotificationData[] { return Array.from(this.activeNotifications.values()));
     
     /**
      * 通知履歴を取得
      */
-    getNotificationHistory(limit: number = 50): NotificationHistoryEntry[] { return this.notificationHistory.slice(-limit) }
+    getNotificationHistory(limit: number = 50): NotificationHistoryEntry[] { return this.notificationHistory.slice(-limit);
     
     /**
      * すべての通知をクリア
@@ -457,7 +444,7 @@ export class EventNotificationSystem {
      * 通知をチェック（EventStageManager対応）
      * アクティブな通知と期限切れ通知を確認・管理
      */
-    checkNotifications(): { activeCount: number, queueCount: number,, expiredCount: number; { try {
+    checkNotifications(): { activeCount: number, queueCount: number, expiredCount: number; { try {
             const currentTime = Date.now();
             const expiredNotifications: string[] = [] // 期限切れ通知を特定
             this.activeNotifications.forEach((notification id) => { 
@@ -466,7 +453,7 @@ export class EventNotificationSystem {
 };
             
             // 期限切れ通知を削除
-            expiredNotifications.forEach(id => {  ) }
+            expiredNotifications.forEach(id => {  );
                 this.removeNotification(id); }
             };
             
@@ -486,12 +473,12 @@ export class EventNotificationSystem {
             }
             
             return { activeCount: this.activeNotifications.size,
-                queueCount: this.notificationQueue.length },
-                expiredCount: expiredNotifications.length 
-    } catch (error') {'
+                queueCount: this.notificationQueue.length ,
+                expiredCount: expiredNotifications.length  }
+        } catch (error') {'
             console.error('[EventNotificationSystem] checkNotifications error:', error);
             return { activeCount: 0,
-                queueCount: 0 },
+                queueCount: 0 ,
                 expiredCount: 0 
     }
     }
@@ -499,7 +486,7 @@ export class EventNotificationSystem {
     /**
      * 通知を表示（EventStageManager対応）
      */
-    private displayNotification(notification: NotificationData): void { this.showNotification(notification) }
+    private displayNotification(notification: NotificationData): void { this.showNotification(notification);
     
     /**
      * リソースクリーンアップ

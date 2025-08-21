@@ -29,7 +29,7 @@ const mockDataCollector = {
         currentFPS: 60,
         averageFrameTime: 16.67,
         currentMemoryUsage: {
-            used: 10000000,
+            used: 10000000 },
             usagePercent: 10,
             total: 50000000
     },
@@ -104,9 +104,9 @@ describe('RealtimeMonitor', () => {
         test('高メモリ使用量を検出する', (done) => {
             mockDataCollector.getCurrentStats.mockReturnValue({
                 currentMemoryUsage: {
-                    usagePercent: 85, // 閾値80%超過
+                    usagePercent: 85, // 閾値80%超過 };
                     used: 85000000
-                };
+                }
             };
             monitor.startMonitoring();
             setTimeout(() => {
@@ -165,7 +165,7 @@ describe('RealtimeMonitor', () => {
                     type: 'test',
                     severity: 'info',
                     message: `Test alert ${i}`),
-                };
+                }
             }
             expect(limitedMonitor.alerts).toHaveLength(3);
             limitedMonitor.destroy();
@@ -186,7 +186,7 @@ describe('RealtimeMonitor', () => {
             const warningData = {
                 type: 'low_fps',
                 details: {
-                    currentFPS: 25,
+                    currentFPS: 25 },
                     threshold: 30
                 }
             };
@@ -247,7 +247,7 @@ describe('RealtimeMonitor', () => {
                     type: 'test',
                     severity: 'info',
                     message: `Test alert ${i}`),
-                };
+                }
             }
             const limitedAlerts = monitor.getAlertHistory(3);
             expect(limitedAlerts).toHaveLength(3);
@@ -313,6 +313,6 @@ describe('RealtimeMonitor', () => {
             expect(monitor.isMonitoring).toBe(true);
             monitor.destroy();
             expect(monitor.isMonitoring).toBe(false);
-            expect(monitor.alerts).toHaveLength(0) };
+            expect(monitor.alerts).toHaveLength(0) }
     }
 }');'

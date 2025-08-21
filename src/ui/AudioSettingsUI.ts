@@ -10,21 +10,18 @@ import { AudioSettingsUIComponentFactory  } from './audio-settings/AudioSettings
 import { AudioSettingsDataManager  } from './audio-settings/AudioSettingsDataManager.js';
 
 // Audio Settings UI types
-export interface AudioSettingsUIState { isOpen: boolean;
-    container: HTMLElement | null  }
-
-export interface AudioSettingsUIComponents { audioTestPanel: AudioTestPanel;
-    tabManager: AudioSettingsTabManager;
-    uiComponentFactory: AudioSettingsUIComponentFactory;
-    tabRenderers: AudioSettingsTabRenderers;
+export interface AudioSettingsUIState { isOpen: boolean,
+    container: HTMLElement | null  };
+export interface AudioSettingsUIComponents { audioTestPanel: AudioTestPanel,
+    tabManager: AudioSettingsTabManager,
+    uiComponentFactory: AudioSettingsUIComponentFactory,
+    tabRenderers: AudioSettingsTabRenderers,
     dataManager: AudioSettingsDataManager;
-
-export interface NotificationColors { bg: string;
-    border: string;
+    export interface NotificationColors { bg: string,
+    border: string,
     text: string;
-
-export interface NotificationColorsMap { success: NotificationColors;
-    error: NotificationColors;
+    export interface NotificationColorsMap { success: NotificationColors,
+    error: NotificationColors,
     info: NotificationColors;
 
 /**
@@ -59,17 +56,16 @@ export class AudioSettingsUI implements AudioSettingsUIState { private audioMana
     private configWatchers: Set<string>;
     // Escape key handler
     private escapeHandler: ((e: KeyboardEvent) => void) | null;
-
     constructor(audioManager: any) {
 
         this.audioManager = audioManager;
-        this.configManager = getConfigurationManager();
-        this.localizationManager = getLocalizationManager();
-        this.errorHandler = getErrorHandler();
+    this.configManager = getConfigurationManager();
+    this.localizationManager = getLocalizationManager();
+    this.errorHandler = getErrorHandler();
         
         // UI要素
         this.container = null;
-        this.isOpen = false;
+    this.isOpen = false;
         
         // 音響テストパネル
         this.audioTestPanel = new AudioTestPanel(audioManager);
@@ -87,7 +83,7 @@ export class AudioSettingsUI implements AudioSettingsUIState { private audioMana
         
         // 初期化
 
-     }
+     };
     }
         this.initialize(); }
     }
@@ -102,7 +98,7 @@ export class AudioSettingsUI implements AudioSettingsUIState { private audioMana
             this.uiComponentFactory = new AudioSettingsUIComponentFactory(this.audioManager; this.configManager);
             // タブレンダラー
             this.tabRenderers = new AudioSettingsTabRenderers(
-                this.audioManager, ,
+                this.audioManager,
                 this.configManager );
                 this.uiComponentFactory),
                 this.audioTestPanel),
@@ -120,10 +116,8 @@ export class AudioSettingsUI implements AudioSettingsUIState { private audioMana
         } catch (error) { console.error('AudioSettingsUI サブコンポーネント初期化に失敗:', error);
             this.errorHandler.handleError(error, {)'
                 context: 'AudioSettingsUI._initializeSubComponents'
-            };
-        }
-    }
-    
+                }
+}
     /**
      * 初期化
      */
@@ -135,7 +129,7 @@ export class AudioSettingsUI implements AudioSettingsUIState { private audioMana
             console.log('AudioSettingsUI, initialized'),' }'
 
         } catch (error) { this.errorHandler.handleError(error, 'UI_ERROR', {''
-                component: 'AudioSettingsUI',')',
+                component: 'AudioSettingsUI,')',
                 operation: 'initialize'
             }';'
         }
@@ -400,7 +394,7 @@ export class AudioSettingsUI implements AudioSettingsUIState { private audioMana
      * タブを表示（サブコンポーネントに委譲）
      * @param {string} tabKey - タブキー
      */
-    public showTab(tabKey: string): void { this.tabManager.showTab(tabKey) }
+    public showTab(tabKey: string): void { this.tabManager.showTab(tabKey);
     
     // タブ描画処理はAudioSettingsTabRenderersに移行済み
     
@@ -444,17 +438,17 @@ export class AudioSettingsUI implements AudioSettingsUIState { private audioMana
 
             existingNotification.remove()','
         const notification = document.createElement('div');
-        notification.className = 'audio-settings-notification',
+        notification.className = 'audio-settings-notification,
         notification.textContent = message }
 
         const colors: NotificationColorsMap = { }'
 
             success: { bg: 'rgba(0, 255, 0, 0.2)', border: '#00ff00', text: '#00ff00'
-            },''
+            ,''
             error: { bg: 'rgba(255, 0, 0, 0.2)', border: '#ff0000', text: '#ff0000'
-            },''
+            ,''
             info: { bg: 'rgba(0, 255, 255, 0.2)', border: '#00ffff', text: '#00ffff'
-            };
+             ,
         
         const color = colors[type as keyof NotificationColorsMap] || colors.info;
         
@@ -476,14 +470,14 @@ export class AudioSettingsUI implements AudioSettingsUIState { private audioMana
         // アニメーション定義
         if(!document.querySelector('#audio-notification-styles)' { ''
             const style = document.createElement('style');
-            style.id = 'audio-notification-styles',
-            style.textContent = `,
+            style.id = 'audio-notification-styles,
+            style.textContent = ,
                 @keyframes slideInFromRight { }
-                    from { transform: translateX(100%),, opacity: 0 }
-                    to { transform: translateX(0),, opacity: 1 }
+                    from { transform: translateX(100%), opacity: 0 }
+                    to { transform: translateX(0), opacity: 1 }
                 @keyframes slideOutToRight {
-                    from { transform: translateX(0),, opacity: 1 }
-                    to { transform: translateX(100%),, opacity: 0 }
+                    from { transform: translateX(0), opacity: 1 }
+                    to { transform: translateX(100%), opacity: 0 }
             `;
             document.head.appendChild(style);
         }
@@ -494,7 +488,7 @@ export class AudioSettingsUI implements AudioSettingsUIState { private audioMana
         setTimeout(() => {  ''
             if (notification.parentNode) {
 
-                notification.style.animation = 'slideOutToRight 0.3s ease-in',
+                notification.style.animation = 'slideOutToRight 0.3s ease-in,
                 setTimeout(() => {
             }
                     if (notification.parentNode) { }
@@ -509,7 +503,7 @@ export class AudioSettingsUI implements AudioSettingsUIState { private audioMana
      * @private
      */
     private setupConfigWatchers(): void { // データマネージャーに委譲
-        this.configWatchers = this.dataManager.setupConfigWatchers() }
+        this.configWatchers = this.dataManager.setupConfigWatchers();
     
     // データ管理（インポート・エクスポート・リセット）処理はAudioSettingsDataManagerに移行済み
     
@@ -520,17 +514,17 @@ export class AudioSettingsUI implements AudioSettingsUIState { private audioMana
 
         if(!this.container) return,
 
-        this.container.style.display = 'block',
+        this.container.style.display = 'block,
         this.isOpen = true;
         ','
         // 開くアニメーション
-        this.container.style.opacity = '0',
-        this.container.style.transform = 'translate(-50%, -50%) scale(0.9)',
+        this.container.style.opacity = '0,
+        this.container.style.transform = 'translate(-50%, -50%) scale(0.9),
         ','
 
         requestAnimationFrame(() => { ''
             if(!this.container) return,
-            this.container.style.transition = 'all 0.3s ease',
+            this.container.style.transition = 'all 0.3s ease,
             this.container.style.opacity = '1',' }'
 
             this.container.style.transform = 'translate(-50%, -50%) scale(1)'; }
@@ -544,7 +538,7 @@ export class AudioSettingsUI implements AudioSettingsUIState { private audioMana
             if(e.key === 'Escape' {'
                 }
 
-                this.close() }
+                this.close();
 
         document.addEventListener('keydown'; this.escapeHandler); }
     }
@@ -557,8 +551,8 @@ export class AudioSettingsUI implements AudioSettingsUIState { private audioMana
         if(!this.container) return,
         ','
         // 閉じるアニメーション
-        this.container.style.opacity = '0',
-        this.container.style.transform = 'translate(-50%, -50%) scale(0.9)',
+        this.container.style.opacity = '0,
+        this.container.style.transform = 'translate(-50%, -50%) scale(0.9),
         ','
 
         setTimeout(() => { ''
@@ -575,7 +569,7 @@ export class AudioSettingsUI implements AudioSettingsUIState { private audioMana
         // イベントリスナーを削除
         if (this.escapeHandler) {
 
-            document.removeEventListener('keydown', this.escapeHandler) }
+            document.removeEventListener('keydown', this.escapeHandler);
             this.escapeHandler = null; }
 }
     
@@ -583,7 +577,7 @@ export class AudioSettingsUI implements AudioSettingsUIState { private audioMana
      * 音響設定UIの表示を切り替え
      */
     public toggle(): void { if (this.isOpen) {
-            this.close() } else { this.open() }
+            this.close() } else { this.open();
     }
     
     /**
@@ -597,7 +591,7 @@ export class AudioSettingsUI implements AudioSettingsUIState { private audioMana
         }
         
         // 設定監視を解除
-        this.configWatchers.forEach(watchId => {  ) }
+        this.configWatchers.forEach(watchId => {  );
             this.configManager.unwatch(watchId); }
         };
         this.configWatchers.clear();
@@ -608,10 +602,10 @@ export class AudioSettingsUI implements AudioSettingsUIState { private audioMana
         }
         
         // DOM要素を削除
-        if (this.container && this.container.parentNode) { this.container.parentNode.removeChild(this.container) }
+        if (this.container && this.container.parentNode) { this.container.parentNode.removeChild(this.container);
         
         // 音響テストパネルを破棄
-        if (this.audioTestPanel) { this.audioTestPanel.dispose() }
+        if (this.audioTestPanel) { this.audioTestPanel.dispose();
         ';'
 
         this.container = null;

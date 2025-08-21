@@ -4,13 +4,12 @@
  */
 
 // Type definitions for debug interface system
-interface PerformanceMetrics { fps: number;
-    particleCount: number;
-    effectCount: number;
-    memoryUsage: number;
+interface PerformanceMetrics { fps: number,
+    particleCount: number,
+    effectCount: number,
+    memoryUsage: number,
     renderTime: number;
-
-interface QualityLevel { readonly LOW: 'low',''
+    interface QualityLevel { readonly LOW: 'low',''
     readonly MEDIUM: 'medium';
     readonly HIGH: 'high';
     readonly ULTRA: 'ultra'
@@ -42,7 +41,7 @@ type ToggleEffectType = 'particles' | 'screenEffects' | 'animations' | 'seasonal
 interface GameEngine { canvas?: HTMLCanvasElement,
     performanceOptimizer?: {
         getCurrentFPS(): number | null;
-        getAverageRenderTime(): number | null };
+    getAverageRenderTime(): number | null };
     enhancedParticleManager?: { getActiveParticleCount(): number | null,
         setParticleMultiplier(multiplier: number): void;
         createBubbleDestructionEffect(x: number, y: number, type: BubbleEffectType): void;
@@ -59,35 +58,35 @@ interface GameEngine { canvas?: HTMLCanvasElement,
         clearAllAnimations(): void;;
     seasonalEffectManager?: { setEnabled(enabled: boolean): void;
     effectQualityController?: { getCurrentQualityLevel(): QualityLevelType,
-        setQualityLevel(level: QualityLevelType): void;
+        setQualityLevel(level: QualityLevelType): void };
 
-interface BenchmarkResult { fps: number;
-    duration: number;
+interface BenchmarkResult { fps: number,
+    duration: number,
     duration: number;
         };
-interface BenchmarkResults { particleStress: BenchmarkResult;
-    effectStress: BenchmarkResult;
-    animationStress: BenchmarkResult;
+interface BenchmarkResults { particleStress: BenchmarkResult,
+    effectStress: BenchmarkResult,
+    animationStress: BenchmarkResult,
     animationStress: BenchmarkResult;
         };
-interface DebugUIElements { fpsValue: HTMLElement | null;
-    particleValue: HTMLElement | null;
-    effectValue: HTMLElement | null;
-    memoryValue: HTMLElement | null;
-    renderValue: HTMLElement | null;
-    qualitySelect: HTMLSelectElement | null;
-    particleMultiplier: HTMLInputElement | null;
-    particleMultiplierValue: HTMLElement | null;
-    effectIntensity: HTMLInputElement | null;
-    effectIntensityValue: HTMLElement | null;
-    previewEffectType: HTMLSelectElement | null;
-    triggerPreview: HTMLButtonElement | null;
-    toggleParticles: HTMLInputElement | null;
-    toggleScreenEffects: HTMLInputElement | null;
-    toggleAnimations: HTMLInputElement | null;
-    toggleSeasonal: HTMLInputElement | null;
-    clearEffects: HTMLButtonElement | null;
-    benchmarkEffects: HTMLButtonElement | null;
+interface DebugUIElements { fpsValue: HTMLElement | null,
+    particleValue: HTMLElement | null,
+    effectValue: HTMLElement | null,
+    memoryValue: HTMLElement | null,
+    renderValue: HTMLElement | null,
+    qualitySelect: HTMLSelectElement | null,
+    particleMultiplier: HTMLInputElement | null,
+    particleMultiplierValue: HTMLElement | null,
+    effectIntensity: HTMLInputElement | null,
+    effectIntensityValue: HTMLElement | null,
+    previewEffectType: HTMLSelectElement | null,
+    triggerPreview: HTMLButtonElement | null,
+    toggleParticles: HTMLInputElement | null,
+    toggleScreenEffects: HTMLInputElement | null,
+    toggleAnimations: HTMLInputElement | null,
+    toggleSeasonal: HTMLInputElement | null,
+    clearEffects: HTMLButtonElement | null,
+    benchmarkEffects: HTMLButtonElement | null,
     closeDebug: HTMLButtonElement | null }
 
 export class EffectDebugInterface {
@@ -96,10 +95,10 @@ export class EffectDebugInterface {
     private debugPanel: HTMLElement | null = null;
     private updateInterval: number | null = null;
     private, metrics: PerformanceMetrics = {
-        fps: 0;
-        particleCount: 0;
-        effectCount: 0;
-        memoryUsage: 0;
+        fps: 0,
+        particleCount: 0,
+        effectCount: 0,
+        memoryUsage: 0,
     renderTime: 0 };
     constructor(gameEngine: GameEngine) {
 
@@ -108,7 +107,7 @@ export class EffectDebugInterface {
     }
 
     private initialize(): void { this.createDebugPanel();
-        this.bindEvents() }
+        this.bindEvents();
 
     private createDebugPanel()';'
         this.debugPanel = document.createElement('div');
@@ -121,12 +120,12 @@ export class EffectDebugInterface {
             width: 300px,
             background: rgba(0, 0, 0, 0.8);
             color: white,
-    padding: 15px,
+    padding: 15px;
             border-radius: 8px,
             font-family: monospace,
             font-size: 12px,
             z-index: 10000,
-            display: none,
+            display: none;
             max-height: 80vh,
             overflow-y: auto,
         `;
@@ -134,23 +133,23 @@ export class EffectDebugInterface {
 
         this.debugPanel.innerHTML = `';'
             <div class="debug-header">"";
-                <h3 style="margin: 0 0 10px 0; color: #00ff00;">Effect Debug Interface</h3>""
+                <h3 style="margin: 0 0 10px 0, color: #00ff00;">Effect Debug Interface</h3>""
                 <button id="close-debug" style="float: right; margin-top: -25px;">×</button>
             </div>";"
 
             <div class="metrics-section">"";
-                <h4 style="color: #ffff00; margin: 5px 0;">Real-time Metrics</h4>""
-                <div id="fps-display">FPS: <span id="fps-value">--</span></div>"",
-                <div id="particle-count">Particles: <span id="particle-value">--</span></div>"",
-                <div id="effect-count">Effects: <span id="effect-value">--</span></div>"",
-                <div id="memory-usage">Memory: <span id="memory-value">-- MB</span></div>"",
+                <h4 style="color: #ffff00, margin: 5px 0;">Real-time Metrics</h4>""
+                <div id="fps-display">FPS: <span id="fps-value">--</span></div>",
+                <div id="particle-count">Particles: <span id="particle-value">--</span></div>",
+                <div id="effect-count">Effects: <span id="effect-value">--</span></div>",
+                <div id="memory-usage">Memory: <span id="memory-value">-- MB</span></div>",
                 <div id="render-time">Render Time: <span id="render-value">-- ms</span></div>,
             </div>";"
 
             <div class="quality-controls">"";
-                <h4 style="color: #ffff00; margin: 15px 0 5px 0;">Quality Controls</h4>
+                <h4 style="color: #ffff00, margin: 15px 0 5px 0;">Quality Controls</h4>
                 <div>";"
-                    <label>Quality Level: </label>"",
+                    <label>Quality Level: </label>",
                     <select id="quality-select">"";
                         <option value="low">Low</option>"";
                         <option value="medium">Medium</option>"";
@@ -159,21 +158,21 @@ export class EffectDebugInterface {
                     </select>";"
                 </div>"";
                 <div style="margin-top: 5px;">"
-                    <label>Particle Multiplier: </label>"",
+                    <label>Particle Multiplier: </label>",
                     <input type="range" id="particle-multiplier" min="0.1" max="2.0" step="0.1" value="1.0">"";
                     <span id="particle-multiplier-value">1.0</span>";"
                 </div>"";
                 <div style="margin-top: 5px;">"
-                    <label>Effect Intensity: </label>"",
+                    <label>Effect Intensity: </label>",
                     <input type="range" id="effect-intensity" min="0.1" max="2.0" step="0.1" value="1.0">"";
                     <span id="effect-intensity-value">1.0</span>;
                 </div>;
             </div>";"
 
             <div class="effect-preview">"";
-                <h4 style="color: #ffff00; margin: 15px 0 5px 0;">Effect Preview</h4>
+                <h4 style="color: #ffff00, margin: 15px 0 5px 0;">Effect Preview</h4>
                 <div>";"
-                    <label>Effect Type: </label>"",
+                    <label>Effect Type: </label>",
                     <select id="preview-effect-type">"";
                         <option value="bubble-normal">Normal Bubble</option>"";
                         <option value="bubble-rainbow">Rainbow Bubble</option>"";
@@ -187,11 +186,11 @@ export class EffectDebugInterface {
                         <option value="screen-shake">Screen Shake</option>;
                     </select>";"
                 </div>"";
-                <button id="trigger-preview" style="margin-top: 5px; width: 100%;">Trigger Effect</button>
+                <button id="trigger-preview" style="margin-top: 5px, width: 100%;">Trigger Effect</button>
             </div>";"
 
             <div class="toggle-controls">"";
-                <h4 style="color: #ffff00; margin: 15px 0 5px 0;">Effect Toggles</h4>"
+                <h4 style="color: #ffff00, margin: 15px 0 5px 0;">Effect Toggles</h4>"
                 <div>"";
                     <input type="checkbox" id="toggle-particles" checked>"";
                     <label for="toggle-particles">Particles</label>;
@@ -211,14 +210,14 @@ export class EffectDebugInterface {
             </div>";"
 
             <div class="performance-controls">"";
-                <h4 style="color: #ffff00; margin: 15px 0 5px 0;">Performance</h4>""
+                <h4 style="color: #ffff00, margin: 15px 0 5px 0;">Performance</h4>""
                 <button id="clear-effects" style="width: 100%; margin-bottom: 5px;">Clear All Effects</button>""
                 <button id="benchmark-effects" style="width: 100%;">Run Benchmark</button>
             </div>;
         `;
 
         document.body.appendChild(this.debugPanel);
-    }"
+    }
 
     private bindEvents(): void { // 閉じるボタン""
         const closeButton = document.getElementById('close-debug') as HTMLButtonElement,
@@ -313,10 +312,9 @@ export class EffectDebugInterface {
             if(e.ctrlKey && e.shiftKey && e.key === 'E' {'
                 
             
-                this.toggle() }
-                e.preventDefault(); }
-};
-    }
+                this.toggle();
+                e.preventDefault();     }
+}
 ';'
 
     public show(): void { this.isVisible = true;
@@ -338,7 +336,7 @@ export class EffectDebugInterface {
     }
 
     public toggle(): void { if (this.isVisible) {
-            this.hide() } else { this.show() }
+            this.hide() } else { this.show();
     }
 
     private startMetricsUpdate(): void { this.updateInterval = window.setInterval(() => {  }
@@ -363,21 +361,21 @@ export class EffectDebugInterface {
         // レンダリング時間取得
         this.metrics.renderTime = this.getRenderTime();
         // UI更新
-        this.updateMetricsDisplay() }
+        this.updateMetricsDisplay();
 
     private updateMetricsDisplay()';'
-            fpsValue: document.getElementById('fps-value',
-            particleValue: document.getElementById('particle-value',
-            effectValue: document.getElementById('effect-value',
-            memoryValue: document.getElementById('memory-value',
+            fpsValue: document.getElementById('fps-value,
+            particleValue: document.getElementById('particle-value,
+            effectValue: document.getElementById('effect-value,
+            memoryValue: document.getElementById('memory-value,
             renderValue: document.getElementById('render-value);'
         };
 
-        if (elements.fpsValue) { elements.fpsValue.textContent = this.metrics.fps.toFixed(1) }
-        if (elements.particleValue) { elements.particleValue.textContent = this.metrics.particleCount.toString() }
-        if (elements.effectValue) { elements.effectValue.textContent = this.metrics.effectCount.toString() }
-        if (elements.memoryValue) { elements.memoryValue.textContent = this.metrics.memoryUsage.toFixed(1) }
-        if (elements.renderValue) { elements.renderValue.textContent = this.metrics.renderTime.toFixed(2) }
+        if (elements.fpsValue) { elements.fpsValue.textContent = this.metrics.fps.toFixed(1);
+        if (elements.particleValue) { elements.particleValue.textContent = this.metrics.particleCount.toString();
+        if (elements.effectValue) { elements.effectValue.textContent = this.metrics.effectCount.toString();
+        if (elements.memoryValue) { elements.memoryValue.textContent = this.metrics.memoryUsage.toFixed(1);
+        if (elements.renderValue) { elements.renderValue.textContent = this.metrics.renderTime.toFixed(2);
     }
 
     private calculateFPS(): number { // GameEngineからFPS情報を取得
@@ -431,20 +429,19 @@ export class EffectDebugInterface {
             const qualitySelect = document.getElementById('quality-select) as HTMLSelectElement,'
             if (qualitySelect) {
         }
-                qualitySelect.value = currentQuality; }
+                qualitySelect.value = currentQuality;     }
 }
-    }
  : undefined
     private updateQualityLevel(level: QualityLevelType): void { if (this.gameEngine?.effectQualityController) {
-            this.gameEngine.effectQualityController.setQualityLevel(level) }
+            this.gameEngine.effectQualityController.setQualityLevel(level);
     }
  : undefined
     private updateParticleMultiplier(multiplier: number): void { if (this.gameEngine?.enhancedParticleManager) {
-            this.gameEngine.enhancedParticleManager.setParticleMultiplier(multiplier) }
+            this.gameEngine.enhancedParticleManager.setParticleMultiplier(multiplier);
     }
  : undefined
     private updateEffectIntensity(intensity: number): void { if (this.gameEngine?.enhancedEffectManager) {
-            this.gameEngine.enhancedEffectManager.setEffectIntensity(intensity) }
+            this.gameEngine.enhancedEffectManager.setEffectIntensity(intensity);
     }
 
  : undefined';'
@@ -460,7 +457,7 @@ export class EffectDebugInterface {
                 this.triggerComboEffect(type, as ComboEffectType);
                 break,
             case 'screen':,
-                this.triggerScreenEffect(type, as ScreenEffectType) }
+                this.triggerScreenEffect(type, as ScreenEffectType);
                 break; }
 }
 
@@ -523,15 +520,15 @@ export class EffectDebugInterface {
 
                 break; : undefined''
             case 'seasonal':
-                if (this.gameEngine?.seasonalEffectManager) { this.gameEngine.seasonalEffectManager.setEnabled(enabled) }
+                if (this.gameEngine?.seasonalEffectManager) { this.gameEngine.seasonalEffectManager.setEnabled(enabled);
                 break;
         }
     }
  : undefined
     private clearAllEffects(): void { if (this.gameEngine?.enhancedParticleManager) {
-            this.gameEngine.enhancedParticleManager.clearAllParticles() }
-        if (this.gameEngine?.enhancedEffectManager) { this.gameEngine.enhancedEffectManager.clearAllEffects() }
-        if (this.gameEngine?.animationManager) { this.gameEngine.animationManager.clearAllAnimations() }
+            this.gameEngine.enhancedParticleManager.clearAllParticles();
+        if (this.gameEngine?.enhancedEffectManager) { this.gameEngine.enhancedEffectManager.clearAllEffects();
+        if (this.gameEngine?.animationManager) { this.gameEngine.animationManager.clearAllAnimations();
     }
 
  : undefined';'
@@ -554,8 +551,7 @@ export class EffectDebugInterface {
             alert(`Benchmark, Results: );
 Particle, Stress: ${benchmarkResults.particleStress.fps.toFixed(1} FPS
 Effect Stress: ${benchmarkResults.effectStress.fps.toFixed(1} FPS
-Animation Stress: ${benchmarkResults.animationStress.fps.toFixed(1} FPS`),
-        };
+Animation Stress: ${benchmarkResults.animationStress.fps.toFixed(1} FPS`) }
     }
 
     private benchmarkParticles(): Promise<BenchmarkResult>;
@@ -570,17 +566,17 @@ Animation Stress: ${benchmarkResults.animationStress.fps.toFixed(1} FPS`),
         
         // 1秒間のFPS測定
         return new Promise((resolve) => {  const measureFrames = (): void => {
-                frameCount++,
+                frameCount++;
                 if (performance.now() - startTime < 1000) { }
                     requestAnimationFrame(measureFrames); }
                 } else { resolve({)
                         fps: frameCount,
                         duration: performance.now() - startTime 
-    };
+    }
                 }
             };
             requestAnimationFrame(measureFrames);
-        };
+        }
     }
 ;
     private benchmarkEffects(): BenchmarkResult { // スクリーンエフェクトストレステスト
@@ -600,7 +596,7 @@ Animation Stress: ${benchmarkResults.animationStress.fps.toFixed(1} FPS`),
             this.triggerComboEffect('spectacular'; }'
         }
         
-        return { fps: this.calculateFPS() },
+        return { fps: this.calculateFPS() ,
             duration: performance.now() - startTime 
     }
 
@@ -608,8 +604,7 @@ Animation Stress: ${benchmarkResults.animationStress.fps.toFixed(1} FPS`),
         if (this.debugPanel?.parentNode) {
     
 }
-            this.debugPanel.parentNode.removeChild(this.debugPanel); }
-}
+            this.debugPanel.parentNode.removeChild(this.debugPanel);     }
 }
 ';'
 // グローバルアクセス用（デバッグ目的）

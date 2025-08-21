@@ -8,7 +8,7 @@ import { TimingCalibrator  } from './timing-adjustment/TimingCalibrator.js';
 import { TimingAdjustmentAlgorithms  } from './timing-adjustment/TimingAdjustmentAlgorithms.js';
 import { TimingFeedbackSystem  } from './timing-adjustment/TimingFeedbackSystem.js';
 
-export class TimingAdjustmentManager {'
+export class TimingAdjustmentManager {
 
     constructor(gameEngine) {
         this.gameEngine = gameEngine;
@@ -17,131 +17,131 @@ export class TimingAdjustmentManager {'
         // 設定とプロファイル
         this.config = {
             // 基本設定
-            enabled: true;
-            defaultProfile: 'standard';
-            autoAdjustment: true;
+            enabled: true,
+            defaultProfile: 'standard,
+            autoAdjustment: true,
     adaptiveLearning: true;
             // 時間調整レベル
-     }
+     };
             adjustmentLevels: { }'
 
                 none: { multiplier: 1.0, name: '標準', description: '時間調整なし'
-            },''
+            ,''
                 minimal: { multiplier: 1.5, name: '軽微', description: '1.5倍の時間'
-            },''
+            ,''
                 moderate: { multiplier: 2.0, name: '中程度', description: '2倍の時間'
-            },''
+            ,''
                 significant: { multiplier: 3.0, name: '大幅', description: '3倍の時間'
-            },''
+            ,''
                 unlimited: { multiplier: Infinity, name: '無制限', description: '時間制限なし'
-            },
+            ,
             
             // プロファイル別設定
             profiles: { standard: {''
-                    name: '標準';
-                    description: '一般的な使用';
-                    adjustmentLevel: 'none';
-                    timeoutExtensions: false;
-    pauseEnabled: true;
-                    customTimeouts: {};
-                    preferences: { showTimeWarnings: true;
-                        autoExtend: false;
+                    name: '標準,
+                    description: '一般的な使用,
+                    adjustmentLevel: 'none,
+                    timeoutExtensions: false,
+    pauseEnabled: true,
+                    customTimeouts: { },
+                    preferences: { showTimeWarnings: true,
+                        autoExtend: false  ,
     gracePeriod: 5000 
     };
                 motor: { ''
-                    name: '運動機能配慮';
-                    description: '運動機能に制限がある方向け';
-                    adjustmentLevel: 'moderate';
-                    timeoutExtensions: true;
-                    pauseEnabled: true;
+                    name: '運動機能配慮' ,
+                    description: '運動機能に制限がある方向け,
+                    adjustmentLevel: 'moderate,
+                    timeoutExtensions: true,
+                    pauseEnabled: true,
     customTimeouts: {
-                        bubbleLifetime: 2.0;
-                        inputDelay: 1.5;
-    menuNavigation: 2.0  };
-                    preferences: { showTimeWarnings: true;
-                        autoExtend: true;
-                        gracePeriod: 10000;
-    confirmExtensions: false;
+                        bubbleLifetime: 2.0 ,
+                        inputDelay: 1.5,
+    menuNavigation: 2.0  ,
+                    preferences: { showTimeWarnings: true,
+                        autoExtend: true  ,
+                        gracePeriod: 10000,
+    confirmExtensions: false,
                 cognitive: { ''
-                    name: '認知機能配慮';
-                    description: '認知機能に配慮が必要な方向け';
-                    adjustmentLevel: 'significant';
-                    timeoutExtensions: true;
-                    pauseEnabled: true;
+                    name: '認知機能配慮' ,
+                    description: '認知機能に配慮が必要な方向け,
+                    adjustmentLevel: 'significant,
+                    timeoutExtensions: true,
+                    pauseEnabled: true,
     customTimeouts: {
-                        bubbleLifetime: 3.0;
-                        inputDelay: 2.0;
-                        menuNavigation: 3.0;
+                        bubbleLifetime: 3.0 ,
+                        inputDelay: 2.0,
+                        menuNavigation: 3.0,
     decisionTime: 2.5  };
-                    preferences: { showTimeWarnings: true;
-                        autoExtend: true;
-                        gracePeriod: 15000;
-                        confirmExtensions: false;
-    showProgress: true;
+                    preferences: { showTimeWarnings: true,
+                        autoExtend: true  ,
+                        gracePeriod: 15000,
+                        confirmExtensions: false,
+    showProgress: true,
                 senior: { ''
-                    name: '高齢者向け';
-                    description: '高齢者の方に配慮したタイミング';
-                    adjustmentLevel: 'moderate';
-                    timeoutExtensions: true;
-                    pauseEnabled: true;
+                    name: '高齢者向け' ,
+                    description: '高齢者の方に配慮したタイミング,
+                    adjustmentLevel: 'moderate,
+                    timeoutExtensions: true,
+                    pauseEnabled: true,
     customTimeouts: {
-                        bubbleLifetime: 2.5;
-                        inputDelay: 1.8;
-                        menuNavigation: 2.5;
+                        bubbleLifetime: 2.5 ,
+                        inputDelay: 1.8,
+                        menuNavigation: 2.5,
     readingTime: 2.0  };
-                    preferences: { showTimeWarnings: true;
-                        autoExtend: true;
-                        gracePeriod: 12000;
-                        confirmExtensions: true;
-    largeTimers: true;
+                    preferences: { showTimeWarnings: true,
+                        autoExtend: true  ,
+                        gracePeriod: 12000,
+                        confirmExtensions: true,
+    largeTimers: true,
                 custom: { ''
-                    name: 'カスタム';
-                    description: 'ユーザー定義設定';
-                    adjustmentLevel: 'moderate';
-                    timeoutExtensions: true;
-    pauseEnabled: true;
-                    customTimeouts: {};
-                    preferences: { showTimeWarnings: true;
-                        autoExtend: false;
+                    name: 'カスタム' ,
+                    description: 'ユーザー定義設定,
+                    adjustmentLevel: 'moderate,
+                    timeoutExtensions: true,
+    pauseEnabled: true,
+                    customTimeouts: {  },
+                    preferences: { showTimeWarnings: true,
+                        autoExtend: false  ,
     gracePeriod: 8000 
     }
         };
         // 状態管理
         this.state = {;
-            currentProfile: 'standard';
-            isGlobalPaused: false;
-            activeTimers: new Map();
+            currentProfile: 'standard,
+            isGlobalPaused: false,
+            activeTimers: new Map(),
             pendingExtensions: new Map(
     userInteractionData: {
-                averageResponseTime: 1000;
-                recentResponses: [];
-    adaptationNeeded: false;
+                averageResponseTime: 1000 ,
+                recentResponses: [],
+    adaptationNeeded: false,
             warningStates: new Map();
         };
         
         // タイマー管理
         this.timers = { active: new Map(
-            paused: new Map();
+            paused: new Map(),
             extensions: new Map(
     warnings: new Map(  }
         
         // 適応学習データ
-        this.adaptiveLearning = { enabled: true;
+        this.adaptiveLearning = { enabled: true,
             data: {
-                userResponseTimes: [];
-                difficultyLevels: [];
-                errorRates: [];
-                extensionRequests: 0;
-    pauseFrequency: 0  };
-            thresholds: { slowResponse: 2000;
-                fastResponse: 500;
-                adaptationTrigger: 5;
+                userResponseTimes: [] ,
+                difficultyLevels: [],
+                errorRates: [],
+                extensionRequests: 0,
+    pauseFrequency: 0  ,
+            thresholds: { slowResponse: 2000,
+                fastResponse: 500  ,
+                adaptationTrigger: 5,
     confidenceLevel: 0.8 
     };
         // イベントリスナー
-        this.boundHandlers = { keydown: this.handleKeydown.bind(this;
-            visibilitychange: this.handleVisibilityChange.bind(this);
-            focus: this.handleFocusChange.bind(this;
+        this.boundHandlers = { keydown: this.handleKeydown.bind(this,
+            visibilitychange: this.handleVisibilityChange.bind(this),
+            focus: this.handleFocusChange.bind(this,
     blur: this.handleFocusChange.bind(this  };
         
         // サブコンポーネントの初期化（依存注入）
@@ -190,7 +190,7 @@ export class TimingAdjustmentManager {'
     async loadConfiguration()';'
             const savedConfig = localStorage.getItem('timingAdjustmentConfig);'
             if (savedConfig) {
-                const parsed = JSON.parse(savedConfig) }
+                const parsed = JSON.parse(savedConfig);
 
                 this.mergeConfig(parsed); }
             }
@@ -234,7 +234,7 @@ export class TimingAdjustmentManager {'
         if (this.gameEngine.eventEmitter) {
 
             this.gameEngine.eventEmitter.on('gameStateChange', this.handleGameStateChange.bind(this)),
-            this.gameEngine.eventEmitter.on('userInteraction', this.trackUserInteraction.bind(this)) }
+            this.gameEngine.eventEmitter.on('userInteraction', this.trackUserInteraction.bind(this));
 
             this.gameEngine.eventEmitter.on('bubbleCreated', this.handleBubbleCreated.bind(this); }
 }
@@ -244,57 +244,57 @@ export class TimingAdjustmentManager {'
     /**
      * プロファイルを適用（アルゴリズムに委譲）
      */
-    applyProfile(profileName) { return this.algorithms.applyProfile(profileName) }
+    applyProfile(profileName) { return this.algorithms.applyProfile(profileName);
     
     /**
      * 現在のプロファイルを取得（アルゴリズムに委譲）
      */
-    getCurrentProfile() { return this.algorithms.getCurrentProfile() }
+    getCurrentProfile() { return this.algorithms.getCurrentProfile();
     
     /**
      * 調整倍率を取得（アルゴリズムに委譲）
      */
-    getAdjustmentMultiplier() { return this.algorithms.getAdjustmentMultiplier() }
+    getAdjustmentMultiplier() { return this.algorithms.getAdjustmentMultiplier();
     
     /**
      * タイマーを登録（アルゴリズムに委譲）
      */
-    registerTimer(timerId, config) { return this.algorithms.registerTimer(timerId, config) }
+    registerTimer(timerId, config) { return this.algorithms.registerTimer(timerId, config);
     
     /**
      * タイマーを削除（アルゴリズムに委譲）
      */
-    unregisterTimer(timerId) { return this.algorithms.unregisterTimer(timerId) }
+    unregisterTimer(timerId) { return this.algorithms.unregisterTimer(timerId);
     
     /**
      * タイマーを延長（アルゴリズムに委譲）
      */
-    extendTimer(timerId) { return this.algorithms.extendTimer(timerId) }
+    extendTimer(timerId) { return this.algorithms.extendTimer(timerId);
     
     /**
      * 時間延長をリクエスト（アルゴリズムに委譲）
      */
-    requestTimeExtension() { return this.algorithms.requestTimeExtension() }
+    requestTimeExtension() { return this.algorithms.requestTimeExtension();
     
     /**
      * 時間警告を表示（フィードバックシステムに委譲）
      */
-    showTimeWarning(timerId) { return this.feedback.showTimeWarning(timerId) }
+    showTimeWarning(timerId) { return this.feedback.showTimeWarning(timerId);
     
     /**
      * 延長フィードバックを表示（フィードバックシステムに委譲）
      */
-    showExtensionFeedback(timerId, remainingTime) { return this.feedback.showExtensionFeedback(timerId, remainingTime) }
+    showExtensionFeedback(timerId, remainingTime) { return this.feedback.showExtensionFeedback(timerId, remainingTime);
     
     /**
      * 適応提案を表示（フィードバックシステムに委譲）
      */
-    suggestAdaptation(type, averageResponseTime) { return this.feedback.suggestAdaptation(type, averageResponseTime) }
+    suggestAdaptation(type, averageResponseTime) { return this.feedback.suggestAdaptation(type, averageResponseTime);
     
     /**
      * プロファイル変更を提案（フィードバックシステムに委譲）
      */
-    suggestProfileChange(recommendedProfile) { return this.feedback.suggestProfileChange(recommendedProfile) }
+    suggestProfileChange(recommendedProfile) { return this.feedback.suggestProfileChange(recommendedProfile);
     
     /**
      * カスタムタイマーを作成（アルゴリズムに委譲）
@@ -307,7 +307,7 @@ export class TimingAdjustmentManager {'
     /**
      * タイマーの残り時間を取得（アルゴリズムに委譲）
      */
-    getRemainingTime(timerId) { return this.algorithms.getRemainingTime(timerId) }
+    getRemainingTime(timerId) { return this.algorithms.getRemainingTime(timerId);
     
     // ========== イベントハンドラー ==========
     
@@ -325,7 +325,7 @@ export class TimingAdjustmentManager {'
                 event.preventDefault();
                 this.requestTimeExtension()','
         if (event.code === 'Escape' && event.ctrlKey) {
-            event.preventDefault() }
+            event.preventDefault();
             this.feedback.openTimingSettings(); }
 }
     
@@ -376,12 +376,12 @@ export class TimingAdjustmentManager {'
     /**
      * ユーザーインタラクションを追跡（キャリブレーターに委譲）
      */
-    trackUserInteraction(interaction) { return this.calibrator.trackUserInteraction(interaction) }
+    trackUserInteraction(interaction) { return this.calibrator.trackUserInteraction(interaction);
     
     /**
      * バブル作成時の処理（アルゴリズムに委譲）
      */
-    handleBubbleCreated(bubble) { return this.algorithms.handleBubbleCreated(bubble) }
+    handleBubbleCreated(bubble) { return this.algorithms.handleBubbleCreated(bubble);
     
     /**
      * グローバル一時停止を切り替え
@@ -414,7 +414,7 @@ export class TimingAdjustmentManager {'
             activeTimers: this.timers.active.size,
             pausedTimers: this.timers.paused.size,
     totalExtensions: this.adaptiveLearning.data.extensionRequests }
-            pauseFrequency: this.adaptiveLearning.data.pauseFrequency },
+            pauseFrequency: this.adaptiveLearning.data.pauseFrequency ,
             averageResponseTime: this.state.userInteractionData.averageResponseTime }
             adaptationData: { ...this.adaptiveLearning.data }
     
@@ -425,8 +425,7 @@ export class TimingAdjustmentManager {'
         return Object.keys(this.config.profiles).map(key => ({
             id: key),
             name: this.config.profiles[key].name,
-    description: this.config.profiles[key].description)
-    }
+    description: this.config.profiles[key].description),
             current: key === this.state.currentProfile)); 
     }
     
@@ -436,7 +435,7 @@ export class TimingAdjustmentManager {'
      * イベントを発火
      */
     emitEvent(eventName, data) { if (this.gameEngine.eventEmitter) { }
-            this.gameEngine.eventEmitter.emit(`timingAdjustment:${eventName}`, data};
+            this.gameEngine.eventEmitter.emit(`timingAdjustment:${eventName}`, data}
         }
         
         // カスタムイベントも発火
@@ -483,7 +482,7 @@ export class TimingAdjustmentManager {'
             this.calibrator.destroy(); }
         }
         
-        if (this.algorithms) { this.algorithms.destroy() }
+        if (this.algorithms) { this.algorithms.destroy();
         
         if (this.feedback) {
         ','
@@ -495,7 +494,7 @@ export class TimingAdjustmentManager {'
         window.removeEventListener('blur', this.boundHandlers.blur','
         ','
         // 設定を保存
-        this.saveConfiguration() }
+        this.saveConfiguration();
 
         console.log('[TimingAdjustmentManager] Main, Controller cleaned, up successfully'); }
 

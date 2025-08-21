@@ -61,8 +61,7 @@ describe('Build Process Integration', () => {
                         this.culturalAdaptationHandler = new CulturalAdaptationHandler();
                         this.integrationController = new I18nIntegrationController();
                         this.languageChangeListeners = new Set();
-                        this.initializeAsync() }
-                    
+                        this.initializeAsync() };
                     async initializeAsync() {
                         try {
                             await this.translationDataManager.initialize();
@@ -85,7 +84,7 @@ describe('Build Process Integration', () => {
                             try {);
                                 listener(language) } catch (error') {'
                                 console.error('Language change listener error:', error) }
-                        };
+                        }
                     }
                 }
             `;
@@ -157,7 +156,7 @@ describe('Build Process Integration', () => {
             const moduleValidationResult = await moduleValidator.validateModule(`
                 export class TestModule {);
                     constructor() {
-                        this.initialized = true }
+                        this.initialized = true };
                 }
             `);
             if (!moduleValidationResult.isValid) {
@@ -177,7 +176,7 @@ describe('Build Process Integration', () => {
                             isValid: true,
                             sanitizedValue: escaped,
                             errors: []
-                        };
+                        }
                     }
                     return { isValid: true, sanitizedValue: value, errors: [] },
                 }
@@ -213,7 +212,7 @@ describe('Build Process Integration', () => {
             const jsResult = await moduleValidator.validateModule(`
                 export class BuildTest {);
                     constructor(') {'
-                        this.status = 'ready' }
+                        this.status = 'ready' };
                 }
             `);
             buildResults.push({
@@ -238,6 +237,6 @@ describe('Build Process Integration', () => {
                 errors: totalErrors),
             // すべてのステップが成功することを確認
             expect(buildResults.every(result => result.success).toBe(true);
-            expect(buildResults[buildResults.length - 1].errors).toBe(0) };
+            expect(buildResults[buildResults.length - 1].errors).toBe(0) }
     }
 }');'

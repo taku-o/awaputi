@@ -6,51 +6,51 @@ import { jest  } from '@jest/globals';
 interface MockStatisticsManager { recordSocialEvent: jest.Mock }
 interface MockAchievementManager { getAchievements: jest.Mock }
 interface MockLocalizationManager { translate: jest.Mock<string> }
-interface MockGameEngine { statisticsManager: MockStatisticsManager;
-    achievementManager: MockAchievementManager;
-    localizationManager: MockLocalizationManager;
-    on: jest.Mock;
-    off: jest.Mock;
-    emit: jest.Mock;
+interface MockGameEngine { statisticsManager: MockStatisticsManager,
+    achievementManager: MockAchievementManager,
+    localizationManager: MockLocalizationManager,
+    on: jest.Mock,
+    off: jest.Mock,
+    emit: jest.Mock,
     isDebugMode: jest.Mock<boolean>  }
-interface MockLocalStorage { getItem: jest.Mock<string | null>;
-    setItem: jest.Mock;
+interface MockLocalStorage { getItem: jest.Mock<string | null>,
+    setItem: jest.Mock,
     removeItem: jest.Mock }
-interface ShareSettings { enabled: boolean;
-    autoPrompt: boolean;
+interface ShareSettings { enabled: boolean,
+    autoPrompt: boolean,
     shareOnHighScore: boolean;
-interface PerformanceStats { shareRequests: number;
-    successfulShares: number;
+    interface PerformanceStats { shareRequests: number,
+    successfulShares: number,
     failedShares: number;
-interface GameData { score: number;
-    isHighScore: boolean;
+    interface GameData { score: number,
+    isHighScore: boolean,
     stage: string;
-interface ScoreData { score: number;
+    interface ScoreData { score: number,
     stage: string;
-interface AchievementData { id: string;
+    interface AchievementData { id: string,
     name: string;
     description?: string;
-interface ShareResult { type: string;
-    content: {
-        scor,e?: number;
+    interface ShareResult { type: string,
+    content: { scor,e?: number  },
         message: string;
         achievement?: AchievementData;;
     metadata: { platform?: string;
-        language?: string;
-        isFallback?: boolean;
-interface DebugInfo { settings: ShareSettings;
+        language?: string,
+        isFallback?: boolean,
+interface DebugInfo { settings: ShareSettings,
     performanceStats: PerformanceStats & { successRate?: number;
-    systemIntegration: { gameEngine: boolean;
-        statisticsManager: boolean;
-        achievementManager: boolean;
-    localizationManager: boolean;
-    platform: string;
+    systemIntegration: { gameEngine: boolean,
+    statisticsManager: boolean;
+    },
+        achievementManager: boolean,
+    localizationManager: boolean,
+    platform: string,
     onlineStatus: boolean;
 }
 interface MockShareContentGenerator { generateScoreMessage?: jest.Mock,
     generateAchievementMessage?: jest.Mock }
-interface SocialSharingManagerInstance { gameEngine: MockGameEngine;
-    settings: ShareSettings;
+interface SocialSharingManagerInstance { gameEngine: MockGameEngine,
+    settings: ShareSettings,
     performanceStats: PerformanceStats;
     statisticsManager?: MockStatisticsManager;
     achievementManager?: MockAchievementManager;
@@ -82,7 +82,7 @@ describe('SocialSharingManager', () => {  let gameEngine: MockGameEngine,
         // モックGameEngineの作成
         gameEngine = {
             statisticsManager: {  }
-                recordSocialEvent: jest.fn(),
+                recordSocialEvent: jest.fn();
     },
         achievementManager: { getAchievements: jest.fn( }
             localizationManager: { ''
@@ -95,8 +95,8 @@ describe('SocialSharingManager', () => {  let gameEngine: MockGameEngine,
         ';'
         // LocalStorageのモック
         Object.defineProperty(window, 'localStorage', { )
-            value: {),
-                getItem: jest.fn<string | null>(),
+            value: { ),
+                getItem: jest.fn<string | null>()   ,
                 setItem: jest.fn(),
         removeItem: jest.fn( 
     } as, MockLocalStorage'}';
@@ -107,7 +107,7 @@ describe('SocialSharingManager', () => {  let gameEngine: MockGameEngine,
         Object.defineProperty(navigator, 'userAgent', {''
             writable: true','
             value: 'Mozilla/5.0(Chrome/90.0)'
-            };
+            }
     }
     afterEach(() => {  if (socialSharingManager) { }
             socialSharingManager.cleanup(); }
@@ -162,7 +162,7 @@ describe('SocialSharingManager', () => {  let gameEngine: MockGameEngine,
             expect(socialSharingManager.settings.autoPrompt).toBe(false);'}');
         test('設定の保存', async () => {  await socialSharingManager.saveSettings();
             expect(window.localStorage.setItem).toHaveBeenCalledWith()','
-                'socialSharingSettings') }
+                'socialSharingSettings');
 
                 JSON.stringify(socialSharingManager.settings);' }'
 
@@ -194,7 +194,7 @@ describe('SocialSharingManager', () => {  let gameEngine: MockGameEngine,
             expect(gameEngine.statisticsManager.recordSocialEvent).toHaveBeenCalledWith()';'
                 'gameEnd');
                 expect.objectContaining({ score: 1000)
-                   , wasShared: false),' }'
+            wasShared: false),' }'
 
         }');'
         test('ハイスコア達成時の処理', async () => {  ''
@@ -243,7 +243,7 @@ describe('SocialSharingManager', () => {  let gameEngine: MockGameEngine,
             expect(result.metadata.platform).toBeDefined();
             expect(result.metadata.language).toBe('ja';}');'
         test('実績メッセージが正しく生成される', async () => {  const achievementData: AchievementData = { ''
-                id: 'combo_master',
+                id: 'combo_master,
                 name: 'コンボマスター',' }'
 
                 description: '10連続コンボ達成' 
@@ -282,7 +282,7 @@ describe('SocialSharingManager', () => {  let gameEngine: MockGameEngine,
             socialSharingManager = new SocialSharingManager(gameEngine);'}');
         test('Web Share API対応ブラウザの検出', () => {  ''
             Object.defineProperty(navigator, 'share', {);
-                value: jest.fn() }
+                value: jest.fn(),
                 writable: true 
     );
             const platform = socialSharingManager.detectPlatform();
@@ -312,7 +312,7 @@ describe('SocialSharingManager', () => {  let gameEngine: MockGameEngine,
             socialSharingManager = new SocialSharingManager(gameEngine);'}');
         test('エラー統計の更新', () => {  ''
             const error = new Error('テストエラー');
-            socialSharingManager.handleError('TEST_ERROR', error) }
+            socialSharingManager.handleError('TEST_ERROR', error);
 
             expect(socialSharingManager.performanceStats.failedShares).toBe(1);' }'
 
@@ -338,7 +338,7 @@ describe('SocialSharingManager', () => {  let gameEngine: MockGameEngine,
             
             const stats = socialSharingManager.getPerformanceStats();
             expect(stats.successRate).toBe(80);
-            expect(stats.shareRequests).toBe(10) }
+            expect(stats.shareRequests).toBe(10);
 
             expect(stats.successfulShares).toBe(8);' }'
 
@@ -353,9 +353,9 @@ describe('SocialSharingManager', () => {  let gameEngine: MockGameEngine,
 
             socialSharingManager = new SocialSharingManager(gameEngine);'}');
         test('デバッグ情報の取得', () => {  const debugInfo = socialSharingManager.getDebugInfo();
-            expect(debugInfo).toHaveProperty('settings',
-            expect(debugInfo).toHaveProperty('performanceStats',
-            expect(debugInfo).toHaveProperty('systemIntegration',
+            expect(debugInfo).toHaveProperty('settings,
+            expect(debugInfo).toHaveProperty('performanceStats,
+            expect(debugInfo).toHaveProperty('systemIntegration,
             expect(debugInfo).toHaveProperty('platform',' }'
 
             expect(debugInfo).toHaveProperty('onlineStatus'; }
@@ -364,7 +364,7 @@ describe('SocialSharingManager', () => {  let gameEngine: MockGameEngine,
         test('システム連携状態の確認', () => {  const debugInfo = socialSharingManager.getDebugInfo();
             expect(debugInfo.systemIntegration.gameEngine).toBe(true);
             expect(debugInfo.systemIntegration.statisticsManager).toBe(true);
-            expect(debugInfo.systemIntegration.achievementManager).toBe(true) }
+            expect(debugInfo.systemIntegration.achievementManager).toBe(true);
 
             expect(debugInfo.systemIntegration.localizationManager).toBe(true);' }'
 
@@ -383,6 +383,6 @@ describe('SocialSharingManager', () => {  let gameEngine: MockGameEngine,
             expect(gameEngine.off).toHaveBeenCalledWith('highScore', expect.any(Function),' }'
 
             expect(gameEngine.off).toHaveBeenCalledWith('achievementUnlocked', expect.any(Function); }
-        };
+        }
 
     }'}');

@@ -10,148 +10,142 @@ import { getConfigurationManager  } from '../../core/ConfigurationManager.js';
 // Type definitions
 interface ErrorHandler { ''
     handleError(error: Error, context: string): void;
-
-interface ConfigurationManager { [key: string]: any;
-
-interface MemoryLimits { maxMemoryMB: number;
-    warningThreshold: number;
-    criticalThreshold: number;
-    gcTriggerThreshold: number;
+    interface ConfigurationManager { [key: string]: any;
+    interface MemoryLimits { maxMemoryMB: number,
+    warningThreshold: number,
+    criticalThreshold: number,
+    gcTriggerThreshold: number,
     emergencyThreshold: number;
-
-interface GarbageCollectionConfig { enabled: boolean;
-    aggressiveMode: boolean;
-    intervalMs: number;
-    forceGCOnPressure: boolean;
+    interface GarbageCollectionConfig { enabled: boolean,
+    aggressiveMode: boolean,
+    intervalMs: number,
+    forceGCOnPressure: boolean,
     preventMemoryLeaks: boolean;
-
-interface PressureThresholds { moderate: number;
-    severe: number;
+    interface PressureThresholds { moderate: number,
+    severe: number,
     critical: number;
 ';'
 
 interface PressureDetectionConfig { enabled: boolean,''
-    currentPressure: 'normal' | 'moderate' | 'severe' | 'critical';
-    pressureLevels: string[];
-    thresholds: PressureThresholds;
-    warningCallbacks: Set<(pressure: string) => void>;
+    currentPressure: 'normal' | 'moderate' | 'severe' | 'critical,
+    pressureLevels: string[],
+    thresholds: PressureThresholds,
+    warningCallbacks: Set<(pressure: string) => void>,
     criticalCallbacks: Set<(pressure: string) => void>  }
 }
 
-interface ObjectPool { name: string;
-    factory: () => any;
-    available: any[];
-    inUse: Set<any>;
-    totalCreated: number;
+interface ObjectPool { name: string,
+    factory: () => any,
+    available: any[],
+    inUse: Set<any>,
+    totalCreated: number,
     totalReused: number;
-
-interface PoolManagementConfig { enabled: boolean;
+    interface PoolManagementConfig { enabled: boolean,
     objectPools: Map<string, ObjectPool>;
-    maxPoolSize: number;
-    poolReuse: boolean;
-    poolCleanupInterval: number;
+    maxPoolSize: number,
+    poolReuse: boolean,
+    poolCleanupInterval: number,
     autoCleanup: boolean;
-
-interface PlatformOptimizations { ios: {
-        memoryWarningHandlin,g: boolean;
-        backgroundAppRefresh: boolean;
-    autoreleasePoolOptimization: boolean;
-    android: { lowMemoryKiller: boolean;
+    interface PlatformOptimizations { ios: { memoryWarningHandlin,g: boolean,
+        backgroundAppRefresh: boolean,
+    autoreleasePoolOptimization: boolean,
+    android: { lowMemoryKiller: boolean,
         compactHeap: boolean;
-    trimMemoryOptimization: boolean;
-    web: { webWorkerMemoryLimit: number;
+    },
+    trimMemoryOptimization: boolean,
+    web: { webWorkerMemoryLimit: number,
         offscreenCanvasLimit: number;
+    },
+    serviceWorkerCaching: boolean,
     serviceWorkerCaching: boolean;
-    serviceWorkerCaching: boolean;
         };
-interface MemoryConfig { enabled: boolean;
-    limits: MemoryLimits;
-    garbageCollection: GarbageCollectionConfig;
-    pressureDetection: PressureDetectionConfig;
-    poolManagement: PoolManagementConfig;
+interface MemoryConfig { enabled: boolean,
+    limits: MemoryLimits,
+    garbageCollection: GarbageCollectionConfig,
+    pressureDetection: PressureDetectionConfig,
+    poolManagement: PoolManagementConfig,
+    platformOptimizations: PlatformOptimizations,
     platformOptimizations: PlatformOptimizations;
-    platformOptimizations: PlatformOptimizations;
         };
-interface MemoryUsage { jsHeapSize: number;
-    jsHeapSizeLimit: number;
-    totalJSHeapSize: number;
-    textureMemory: number;
-    bufferMemory: number;
-    domNodes: number;
+interface MemoryUsage { jsHeapSize: number,
+    jsHeapSizeLimit: number,
+    totalJSHeapSize: number,
+    textureMemory: number,
+    bufferMemory: number,
+    domNodes: number,
+    eventListeners: number,
     eventListeners: number;
-    eventListeners: number;
         };
-interface MemoryUsageHistoryEntry { timestamp: number;
-    jsHeapSize: number;
-    totalMemory: number;
+interface MemoryUsageHistoryEntry { timestamp: number,
+    jsHeapSize: number,
+    totalMemory: number,
+    domNodes: number,
     domNodes: number;
-    domNodes: number;
         };
-interface PressureHistoryEntry { timestamp: number;
-    oldPressure: string;
-    newPressure: string;
+interface PressureHistoryEntry { timestamp: number,
+    oldPressure: string,
+    newPressure: string,
+    memoryUsage: number,
     memoryUsage: number;
-    memoryUsage: number;
         };
-interface GCHistoryEntry { timestamp: number;
-    duration: number;
-    forced: boolean;
+interface GCHistoryEntry { timestamp: number,
+    duration: number,
+    forced: boolean,
+    memoryBefore: number,
     memoryBefore: number;
-    memoryBefore: number;
         };
-interface MemoryHistory { usageHistory: MemoryUsageHistoryEntry[];
-    pressureHistory: PressureHistoryEntry[];
-    gcHistory: GCHistoryEntry[];
-    maxHistorySize: number;
-    samplingInterval: number;
+interface MemoryHistory { usageHistory: MemoryUsageHistoryEntry[],
+    pressureHistory: PressureHistoryEntry[],
+    gcHistory: GCHistoryEntry[],
+    maxHistorySize: number,
+    samplingInterval: number,
     samplingInterval: number;
         };
-interface MemoryLeak { timestamp: number;
-    memoryGrowth: number;
+interface MemoryLeak { timestamp: number,
+    memoryGrowth: number,
     currentMemory: number;
     stackTrace?: string;
-
-interface LeakDetectionConfig { enabled: boolean;
-    trackingEnabled: boolean;
-    leakThreshold: number;
-    suspiciousGrowthRate: number;
-    detectedLeaks: MemoryLeak[];
-    monitoringInterval: number;
-    baselineMemory: number;
-    consistentGrowthCount: number;
+    interface LeakDetectionConfig { enabled: boolean,
+    trackingEnabled: boolean,
+    leakThreshold: number,
+    suspiciousGrowthRate: number,
+    detectedLeaks: MemoryLeak[],
+    monitoringInterval: number,
+    baselineMemory: number,
+    consistentGrowthCount: number,
     consistentGrowthCount: number;
         };
-interface PerformanceImpact { gcPauses: number[];
-    memoryAllocations: number;
-    memoryDeallocations: number;
-    averageGCTime: number;
-    lastGCTime: number;
+interface PerformanceImpact { gcPauses: number[],
+    memoryAllocations: number,
+    memoryDeallocations: number,
+    averageGCTime: number,
+    lastGCTime: number,
     lastGCTime: number;
         };
-interface MemoryMonitoring { enabled: boolean;
-    usage: MemoryUsage;
-    history: MemoryHistory;
-    leakDetection: LeakDetectionConfig;
-    performanceImpact: PerformanceImpact;
+interface MemoryMonitoring { enabled: boolean,
+    usage: MemoryUsage,
+    history: MemoryHistory,
+    leakDetection: LeakDetectionConfig,
+    performanceImpact: PerformanceImpact,
     performanceImpact: PerformanceImpact;
         };
 interface PoolStatistics { [poolName: string]: {
-        availabl,e: number;
-        inUse: number;
-        totalCreated: number;
-        totalReused: number;
-    reuseRatio: number;
+        availabl,e: number,
+        inUse: number,
+    totalCreated: number,
+    totalReused: number,
+    reuseRatio: number,
     reuseRatio: number;
         };
-interface MemoryStatistics { usage: MemoryUsage;
-    pressure: string;
-    pools: PoolStatistics;
-    leaks: MemoryLeak[];
-    performance: PerformanceImpact;
+interface MemoryStatistics { usage: MemoryUsage,
+    pressure: string,
+    pools: PoolStatistics,
+    leaks: MemoryLeak[],
+    performance: PerformanceImpact,
     history: {
-        usag,e: MemoryUsageHistoryEntry[];
-        pressure: PressureHistoryEntry[];
-    gc: GCHistoryEntry[];
+        usag,e: MemoryUsageHistoryEntry[] ,
+        pressure: PressureHistoryEntry[],
+    gc: GCHistoryEntry[],
     gc: GCHistoryEntry[];
         };
 export class MobileMemoryManager {
@@ -164,10 +158,9 @@ export class MobileMemoryManager {
 
         this.errorHandler = getErrorHandler();
         this.configManager = getConfigurationManager('''
-                currentPressure: 'normal';
+                currentPressure: 'normal,
                 pressureLevels: ['normal', 'moderate', 'severe', 'critical'];
-                thresholds: {
-                    moderate: 0.70;
+                thresholds: { moderate: 0.70  ,
     severe: 0.85 }
                     critical: 0.95 })
                 warningCallbacks: new Set(
@@ -176,53 +169,52 @@ export class MobileMemoryManager {
             
             // Object pool management
             poolManagement: { enabled: true,
-                objectPools: new Map(),
+                objectPools: new Map()  ,
                 maxPoolSize: 1000,
                 poolReuse: true,
                 poolCleanupInterval: 30000,
-    autoCleanup: true,
+    autoCleanup: true;
             // Platform-specific optimizations
             platformOptimizations: { ios: {
                     memoryWarningHandling: true,
                     backgroundAppRefresh: false,
     autoreleasePoolOptimization: true,
                 android: { lowMemoryKiller: true,
-                    compactHeap: true,
+                    compactHeap: true  ,
     trimMemoryOptimization: true,
                 web: { webWorkerMemoryLimit: 256, // MB
-                    offscreenCanvasLimit: 128,
-    serviceWorkerCaching: true,
+                    offscreenCanvasLimit: 128  ,
+    serviceWorkerCaching: true;
 };
         // Memory monitoring state
         this.memoryMonitoring = { enabled: true,
             
             // Current memory usage
-            usage: {
-                jsHeapSize: 0,
+            usage: { jsHeapSize: 0  ,
                 jsHeapSizeLimit: 0,
                 totalJSHeapSize: 0,
                 textureMemory: 0,
                 bufferMemory: 0,
                 domNodes: 0,
-    eventListeners: 0  },
+    eventListeners: 0  };
             // Memory history for trend analysis
             history: { usageHistory: [],
-                pressureHistory: [],
+                pressureHistory: []  ,
                 gcHistory: [],
                 maxHistorySize: 100,
-    samplingInterval: 5000 // 5 seconds },
+    samplingInterval: 5000 // 5 seconds };
             // Leak detection
             leakDetection: { enabled: true,
-                trackingEnabled: true,
+                trackingEnabled: true  ,
     leakThreshold: 50, // MB;
                 suspiciousGrowthRate: 10, // MB/minute;
                 detectedLeaks: [],
                 monitoringInterval: 15000,
                 baselineMemory: 0,
-    consistentGrowthCount: 0  },
+    consistentGrowthCount: 0  };
             // Performance impact tracking
             performanceImpact: { gcPauses: [],
-                memoryAllocations: 0,
+                memoryAllocations: 0  ,
                 memoryDeallocations: 0,
                 averageGCTime: 0,
     lastGCTime: 0 
@@ -257,7 +249,7 @@ export class MobileMemoryManager {
             // Set up periodic memory monitoring
             setInterval(() => { 
                 this.updateMemoryUsage();
-                this.analyzeMemoryPressure() }
+                this.analyzeMemoryPressure();
                 this.checkForMemoryLeaks();' }'
 
             }, this.memoryMonitoring.history.samplingInterval';'
@@ -327,7 +319,7 @@ export class MobileMemoryManager {
         
         if (newPressure !== config.currentPressure) {
         
-            this.handleMemoryPressureChange(config.currentPressure, newPressure) }
+            this.handleMemoryPressureChange(config.currentPressure, newPressure);
             config.currentPressure = newPressure; }
 }
     
@@ -344,7 +336,7 @@ export class MobileMemoryManager {
             timestamp: Date.now();
             oldPressure,
             newPressure }
-            memoryUsage: this.getCurrentMemoryUsage(};
+            memoryUsage: this.getCurrentMemoryUsage(}
         };
         // Execute callbacks
         switch(newPressure) {
@@ -365,7 +357,7 @@ export class MobileMemoryManager {
                 break,
 
             case 'normal':,
-                this.handleNormalMemoryPressure() }
+                this.handleNormalMemoryPressure();
                 break; }
 }
     
@@ -483,16 +475,16 @@ export class MobileMemoryManager {
             available: [],
             inUse: new Set(),
             totalCreated: 0,
-    totalReused: 0  },
+    totalReused: 0  ,
         // Pre-populate pool
         for(let, i = 0; i < initialSize; i++) {
-            pool.available.push(factory() }
+            pool.available.push(factory();
             pool.totalCreated++; }
         }
         
         poolConfig.objectPools.set(name, pool);
         
-        console.log(`[MobileMemoryManager] Object, pool created: ${name} (initial, size: ${initialSize}`};
+        console.log(`[MobileMemoryManager] Object, pool created: ${name} (initial, size: ${initialSize}`}
     }
     
     /**
@@ -507,9 +499,9 @@ export class MobileMemoryManager {
         
         let obj;
         if (pool.available.length > 0) {
-            obj = pool.available.pop() }
+            obj = pool.available.pop();
             pool.totalReused++; }
-        } else {  obj = pool.factory() }
+        } else {  obj = pool.factory();
             pool.totalCreated++; }
         }
         
@@ -565,16 +557,16 @@ export class MobileMemoryManager {
         
         poolConfig.objectPools.forEach((pool, name) => { 
             const clearCount = Math.floor(pool.available.length * ratio);
-            pool.available.splice(0, clearCount) }
+            pool.available.splice(0, clearCount);
              }
             console.log(`[MobileMemoryManager] Cleared ${clearCount} objects, from pool: ${name}`);
-        };
+        }
     }
     
     /**
      * Clear all object pools
      */
-    clearAllObjectPools(): void { this.clearObjectPools(1.0) }
+    clearAllObjectPools(): void { this.clearObjectPools(1.0);
     
     /**
      * Cleanup object pools
@@ -588,9 +580,8 @@ export class MobileMemoryManager {
                 const excess = pool.available.length - maxSize }
                 pool.available.splice(0, excess); }
                  }
-                console.log(`[MobileMemoryManager] Pool, cleanup: removed ${excess} excess, objects from ${name}`};
-            }
-        };
+                console.log(`[MobileMemoryManager] Pool, cleanup: removed ${excess} excess, objects from ${name}`    }
+}
     }
     
     /**
@@ -612,7 +603,7 @@ export class MobileMemoryManager {
         if (iosConfig.memoryWarningHandling) {
         ','
 
-            // Listen for memory warnings(if, available) }
+            // Listen for memory warnings(if, available);
 
             window.addEventListener('pagehide', () => {  }
 
@@ -695,7 +686,7 @@ export class MobileMemoryManager {
         
         // Check for significant memory growth
         if (memoryGrowth > leakConfig.leakThreshold) {
-            leakConfig.consistentGrowthCount++,
+            leakConfig.consistentGrowthCount++;
             
             if (leakConfig.consistentGrowthCount >= 3) {
                 this.reportMemoryLeak(memoryGrowth);
@@ -711,7 +702,7 @@ export class MobileMemoryManager {
             timestamp: Date.now();
             memoryGrowth,
             currentMemory: this.getCurrentMemoryUsage(
-    stackTrace: new Error().stack  },
+    stackTrace: new Error().stack  ,
         this.memoryMonitoring.leakDetection.detectedLeaks.push(leak);
         
         console.error(`[MobileMemoryManager] Memory leak detected: ${memoryGrowth.toFixed(2} MB growth`),
@@ -755,7 +746,7 @@ export class MobileMemoryManager {
             (window, as any).gc();
             const gcTime = performance.now() - startTime,
             
-            this.recordGarbageCollection(gcTime, true) } else { this.triggerGarbageCollection() }
+            this.recordGarbageCollection(gcTime, true) } else { this.triggerGarbageCollection();
     }
     
     /**
@@ -780,7 +771,7 @@ export class MobileMemoryManager {
             timestamp: Date.now();
             duration,
             forced,
-            memoryBefore: this.getCurrentMemoryUsage(  },
+            memoryBefore: this.getCurrentMemoryUsage(  ,
         
         this.memoryMonitoring.history.gcHistory.push(gcEvent);
         this.memoryMonitoring.performanceImpact.gcPauses.push(duration);
@@ -788,19 +779,19 @@ export class MobileMemoryManager {
         // Update average GC time
         const gcPauses = this.memoryMonitoring.performanceImpact.gcPauses;
         if (gcPauses.length > 0) {
-            const sum = gcPauses.reduce((a, b) => a + b, 0) }
+            const sum = gcPauses.reduce((a, b) => a + b, 0);
             this.memoryMonitoring.performanceImpact.averageGCTime = sum / gcPauses.length; }
         }
         
         // Limit history size
-        if (gcPauses.length > 50) { gcPauses.shift() }
+        if (gcPauses.length > 50) { gcPauses.shift();
     }
     
     /**
      * Monitor garbage collection
      */
     monitorGarbageCollection(): void { if (this.memoryConfig.garbageCollection.aggressiveMode) {
-            this.forceGarbageCollection() }
+            this.forceGarbageCollection();
     }
     
     /**
@@ -847,7 +838,7 @@ export class MobileMemoryManager {
 
         if(type === 'critical' { }
             config.criticalCallbacks.add(callback); }
-        } else { config.warningCallbacks.add(callback) }
+        } else { config.warningCallbacks.add(callback);
     }
     
     /**
@@ -857,7 +848,7 @@ export class MobileMemoryManager {
 
         if(type === 'critical' { }
             config.criticalCallbacks.delete(callback); }
-        } else { config.warningCallbacks.delete(callback) }
+        } else { config.warningCallbacks.delete(callback);
     }
     
     /**
@@ -865,12 +856,12 @@ export class MobileMemoryManager {
      */
     getMemoryStatistics(): MemoryStatistics { return { usage: this.memoryMonitoring.usage,
             pressure: this.memoryConfig.pressureDetection.currentPressure,
-            pools: this.getPoolStatistics();
+            pools: this.getPoolStatistics(),
             leaks: this.memoryMonitoring.leakDetection.detectedLeaks,
             performance: this.memoryMonitoring.performanceImpact,
     history: {
-                usage: this.memoryMonitoring.history.usageHistory.slice(-10,
-    pressure: this.memoryMonitoring.history.pressureHistory.slice(-10) },
+                usage: this.memoryMonitoring.history.usageHistory.slice(-10 ,
+    pressure: this.memoryMonitoring.history.pressureHistory.slice(-10) ,
                 gc: this.memoryMonitoring.history.gcHistory.slice(-10);
     }
     
@@ -909,6 +900,6 @@ export class MobileMemoryManager {
             console.log('[MobileMemoryManager] Memory, manager disposed'),' }'
 
         } catch (error) {
-            this.errorHandler.handleError(error as Error, 'MobileMemoryManager.dispose') }
+            this.errorHandler.handleError(error as Error, 'MobileMemoryManager.dispose');
 
     }'}'

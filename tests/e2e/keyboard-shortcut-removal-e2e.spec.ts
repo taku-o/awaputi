@@ -52,7 +52,7 @@ test.describe('Keyboard Shortcut Removal E2E (Issue #169')', () => {'
             for (const indicator of settingsIndicators) {
                 const element = page.locator(`text=${indicator)`).first();
                 const, isVisible = await, element.isVisible().catch(() => false),
-                expect(isVisible).toBe(false};
+                expect(isVisible).toBe(false}
             }
 
             // Verify no console errors related to settings
@@ -93,7 +93,7 @@ test.describe('Keyboard Shortcut Removal E2E (Issue #169')', () => {'
             for (const indicator of helpIndicators) {
                 const element = page.locator(`text=${indicator)`).first();
                 const, isVisible = await, element.isVisible().catch(() => false),
-                expect(isVisible).toBe(false};
+                expect(isVisible).toBe(false}
             }
 
             // Verify no console errors related to help
@@ -134,7 +134,7 @@ test.describe('Keyboard Shortcut Removal E2E (Issue #169')', () => {'
             for (const indicator of userInfoIndicators) {
                 const element = page.locator(`text=${indicator)`).first();
                 const, isVisible = await, element.isVisible().catch(() => false),
-                expect(isVisible).toBe(false};
+                expect(isVisible).toBe(false}
             }
 
             // Verify no console errors related to user info
@@ -173,7 +173,7 @@ test.describe('Keyboard Shortcut Removal E2E (Issue #169')', () => {'
 
             // Verify no console errors occurred
             expect(consoleErrors).toHaveLength(0);
-        };
+        }
     }');'
 
     test.describe('Remaining Shortcuts Still Work', (') => {'
@@ -256,7 +256,7 @@ test.describe('Keyboard Shortcut Removal E2E (Issue #169')', () => {'
 
             // Verify no errors occurred
             expect(consoleErrors).toHaveLength(0);
-        };
+        }
     }');'
 
     test.describe('Game Loading and Stability', (') => {'
@@ -335,7 +335,7 @@ test.describe('Keyboard Shortcut Removal E2E (Issue #169')', () => {'
 
             // No errors should have occurred
             expect(consoleErrors).toHaveLength(0);
-        };
+        }
     }');'
 
     test.describe('UI Accessibility After Shortcut Removal', (') => {'
@@ -393,6 +393,6 @@ test.describe('Keyboard Shortcut Removal E2E (Issue #169')', () => {'
 
             // Note: This test documents that help should be accessible via UI
             console.log(`Help UI access, found: ${foundHelpAccess}`),
-        };
+        }
     };
 }');'

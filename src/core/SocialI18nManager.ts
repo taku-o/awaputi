@@ -5,9 +5,9 @@
 
 import { ErrorHandler  } from '../utils/ErrorHandler.js';
 
-export class SocialI18nManager {'
+export class SocialI18nManager {
 
-    constructor(localizationManager, options = {)) {
+    constructor(localizationManager, options = {) {
         this.localizationManager = localizationManager;
         
         // 設定
@@ -29,84 +29,84 @@ export class SocialI18nManager {'
             // 地域別設定
             regionalSettings: {', 'ja': {''
                     platforms: ['twitter', 'line', 'facebook', 'copy'];
-                    dateFormat: 'YYYY年MM月DD日';
+                    dateFormat: 'YYYY年MM月DD日,
                     numberFormat: '99,999';
-                    currency: 'JPY';
-    rtl: false;
+                    currency: 'JPY,
+    rtl: false,
                     socialHosts: {''
-                        twitter: 'twitter.com';
+                        twitter: 'twitter.com' ,
                         facebook: 'facebook.com'
             }
 
                 },', 'en': { ''
                     platforms: ['twitter', 'facebook', 'reddit', 'copy'];
-                    dateFormat: 'MM/DD/YYYY';
+                    dateFormat: 'MM/DD/YYYY,
                     numberFormat: '99,999';
-                    currency: 'USD';
-    rtl: false;
+                    currency: 'USD,
+    rtl: false,
                     socialHosts: {''
-                        twitter: 'twitter.com';
+                        twitter: 'twitter.com' ,
                         facebook: 'facebook.com'
             }
 
                 },', 'ko': { ''
                     platforms: ['twitter', 'facebook', 'kakaotalk', 'copy'];
-                    dateFormat: 'YYYY년 MM월 DD일';
+                    dateFormat: 'YYYY년 MM월 DD일,
                     numberFormat: '99,999';
-                    currency: 'KRW';
-    rtl: false;
+                    currency: 'KRW,
+    rtl: false,
                     socialHosts: {''
-                        twitter: 'twitter.com';
+                        twitter: 'twitter.com' ,
                         facebook: 'facebook.com'
             }
 
                 },', 'zh-CN': { ''
                     platforms: ['weibo', 'wechat', 'qq', 'copy'];
-                    dateFormat: 'YYYY年MM月DD日';
+                    dateFormat: 'YYYY年MM月DD日,
                     numberFormat: '99,999';
-                    currency: 'CNY';
-    rtl: false;
+                    currency: 'CNY,
+    rtl: false,
                     socialHosts: {''
-                        weibo: 'weibo.com';
+                        weibo: 'weibo.com' ,
                         wechat: 'weixin.qq.com'
             }
 
                 },', 'zh-TW': { ''
                     platforms: ['facebook', 'line', 'twitter', 'copy'];
-                    dateFormat: 'YYYY年MM月DD日';
+                    dateFormat: 'YYYY年MM月DD日,
                     numberFormat: '99,999';
-                    currency: 'TWD';
-    rtl: false;
+                    currency: 'TWD,
+    rtl: false,
                     socialHosts: {''
-                        twitter: 'twitter.com';
+                        twitter: 'twitter.com' ,
                         facebook: 'facebook.com'
             }
 
                 },', 'ar': { ''
                     platforms: ['twitter', 'facebook', 'telegram', 'copy'];
-                    dateFormat: 'DD/MM/YYYY';
+                    dateFormat: 'DD/MM/YYYY,
                     numberFormat: '99,999';
-                    currency: 'USD';
-    rtl: true;
+                    currency: 'USD,
+    rtl: true,
                     socialHosts: {''
-                        twitter: 'twitter.com';
+                        twitter: 'twitter.com' ,
                         facebook: 'facebook.com'
             }
 };
             // キャッシュ設定
-            cache: { enabled: options.cache !== false;
-                maxSize: options.cacheSize || 1000;
+            cache: { enabled: options.cache !== false,
+                maxSize: options.cacheSize || 1000  ,
     ttl: options.cacheTtl || 3600000 // 1時間 };
             // フォールバック設定
             fallback: { ''
-                language: options.fallbackLanguage || 'en';
+                language: options.fallbackLanguage || 'en' ,
     enabled: options.fallback !== false 
     };
         // 状態管理
         this.state = {;
-            currentLanguage: 'ja';
-            loadedLanguages: new Set(['ja]';
-            loading: false;
+            currentLanguage: 'ja,
+            loadedLanguages: new Set(['ja],
+            loading: false,
     error: null;
         // メッセージテンプレート
         this.messageTemplates = { // 基本共有メッセージ
@@ -173,163 +173,163 @@ export class SocialI18nManager {'
         this.uiTexts = { // 共有ダイアログ
             shareDialog: {
                 title: {''
-                    ja: '共有';
-                    en: 'Share';
+                    ja: '共有' ,
+                    en: 'Share,
                     ko: '공유';
-                    'zh-CN': '分享',
-                    'zh-TW': '分享',
-                    es: 'Compartir';
-                    fr: 'Partager';
-                    de: 'Teilen';
-                    pt: 'Compartilhar';
+                    'zh-CN': '分享,
+                    'zh-TW': '分享,
+                    es: 'Compartir,
+                    fr: 'Partager,
+                    de: 'Teilen,
+                    pt: 'Compartilhar,
                     ru: 'Поделиться'
             };
                 cancel: { ''
-                    ja: 'キャンセル';
-                    en: 'Cancel';
+                    ja: 'キャンセル' ,
+                    en: 'Cancel,
                     ko: '취소';
-                    'zh-CN': '取消',
-                    'zh-TW': '取消',
-                    es: 'Cancelar';
-                    fr: 'Annuler';
-                    de: 'Abbrechen';
-                    pt: 'Cancelar';
+                    'zh-CN': '取消,
+                    'zh-TW': '取消,
+                    es: 'Cancelar,
+                    fr: 'Annuler,
+                    de: 'Abbrechen,
+                    pt: 'Cancelar,
                     ru: 'Отмена'
             };
                 platforms: { twitter: {''
-                        ja: 'Twitter';
-                        en: 'Twitter';
+                        ja: 'Twitter,
+                        en: 'Twitter,
                         ko: 'Twitter';
-                        'zh-CN': 'Twitter',
-                        'zh-TW': 'Twitter',
-                        es: 'Twitter';
-                        fr: 'Twitter';
-                        de: 'Twitter';
-                        pt: 'Twitter';
+                        'zh-CN': 'Twitter,
+                        'zh-TW': 'Twitter,
+                        es: 'Twitter,
+                        fr: 'Twitter,
+                        de: 'Twitter,
+                        pt: 'Twitter,
                         ru: 'Twitter'
-            };
+        }
                     facebook: { ''
-                        ja: 'Facebook';
-                        en: 'Facebook';
+                        ja: 'Facebook' ,
+                        en: 'Facebook,
                         ko: 'Facebook';
-                        'zh-CN': 'Facebook',
-                        'zh-TW': 'Facebook',
-                        es: 'Facebook';
-                        fr: 'Facebook';
-                        de: 'Facebook';
-                        pt: 'Facebook';
+                        'zh-CN': 'Facebook,
+                        'zh-TW': 'Facebook,
+                        es: 'Facebook,
+                        fr: 'Facebook,
+                        de: 'Facebook,
+                        pt: 'Facebook,
                         ru: 'Facebook'
             };
                     line: { ''
-                        ja: 'LINE';
-                        en: 'LINE';
+                        ja: 'LINE' ,
+                        en: 'LINE,
                         ko: 'LINE';
-                        'zh-CN': 'LINE',
-                        'zh-TW': 'LINE',
-                        es: 'LINE';
-                        fr: 'LINE';
-                        de: 'LINE';
-                        pt: 'LINE';
+                        'zh-CN': 'LINE,
+                        'zh-TW': 'LINE,
+                        es: 'LINE,
+                        fr: 'LINE,
+                        de: 'LINE,
+                        pt: 'LINE,
                         ru: 'LINE'
             };
                     copy: { ''
-                        ja: 'コピー';
-                        en: 'Copy';
+                        ja: 'コピー' ,
+                        en: 'Copy,
                         ko: '복사';
-                        'zh-CN': '复制',
-                        'zh-TW': '複製',
-                        es: 'Copiar';
-                        fr: 'Copier';
-                        de: 'Kopieren';
-                        pt: 'Copiar';
+                        'zh-CN': '复制,
+                        'zh-TW': '複製,
+                        es: 'Copiar,
+                        fr: 'Copier,
+                        de: 'Kopieren,
+                        pt: 'Copiar,
                         ru: 'Копировать'
             }
 };
             // チャレンジUI
             challengeUI: { title: {''
-                    ja: 'チャレンジ';
-                    en: 'Challenges';
+                    ja: 'チャレンジ,
+                    en: 'Challenges,
                     ko: '챌린지';
-                    'zh-CN': '挑战',
-                    'zh-TW': '挑戰',
-                    es: 'Desafíos';
-                    fr: 'Défis';
-                    de: 'Herausforderungen';
-                    pt: 'Desafios';
+                    'zh-CN': '挑战,
+                    'zh-TW': '挑戰,
+                    es: 'Desafíos,
+                    fr: 'Défis,
+                    de: 'Herausforderungen,
+                    pt: 'Desafios,
                     ru: 'Вызовы'
-            };
+        }
                 difficulty: { easy: {''
-                        ja: '簡単';
-                        en: 'Easy';
+                        ja: '簡単,
+                        en: 'Easy,
                         ko: '쉬움';
-                        'zh-CN': '简单',
-                        'zh-TW': '簡單',
-                        es: 'Fácil';
-                        fr: 'Facile';
-                        de: 'Einfach';
-                        pt: 'Fácil';
+                        'zh-CN': '简单,
+                        'zh-TW': '簡單,
+                        es: 'Fácil,
+                        fr: 'Facile,
+                        de: 'Einfach,
+                        pt: 'Fácil,
                         ru: 'Легко'
-            };
+        }
                     medium: { ''
-                        ja: '普通';
-                        en: 'Medium';
+                        ja: '普通' ,
+                        en: 'Medium,
                         ko: '보통';
-                        'zh-CN': '中等',
-                        'zh-TW': '中等',
-                        es: 'Medio';
-                        fr: 'Moyen';
-                        de: 'Mittel';
-                        pt: 'Médio';
+                        'zh-CN': '中等,
+                        'zh-TW': '中等,
+                        es: 'Medio,
+                        fr: 'Moyen,
+                        de: 'Mittel,
+                        pt: 'Médio,
                         ru: 'Средне'
             };
                     hard: { ''
-                        ja: '難しい';
-                        en: 'Hard';
+                        ja: '難しい' ,
+                        en: 'Hard,
                         ko: '어려움';
-                        'zh-CN': '困难',
-                        'zh-TW': '困難',
-                        es: 'Difícil';
-                        fr: 'Difficile';
-                        de: 'Schwer';
-                        pt: 'Difícil';
+                        'zh-CN': '困难,
+                        'zh-TW': '困難,
+                        es: 'Difícil,
+                        fr: 'Difficile,
+                        de: 'Schwer,
+                        pt: 'Difícil,
                         ru: 'Сложно'
             }
 };
             // リーダーボード
             leaderboard: { title: {''
-                    ja: 'リーダーボード';
-                    en: 'Leaderboard';
+                    ja: 'リーダーボード,
+                    en: 'Leaderboard,
                     ko: '리더보드';
-                    'zh-CN': '排行榜',
-                    'zh-TW': '排行榜',
-                    es: 'Tabla de líderes';
-                    fr: 'Classement';
-                    de: 'Bestenliste';
-                    pt: 'Ranking';
+                    'zh-CN': '排行榜,
+                    'zh-TW': '排行榜,
+                    es: 'Tabla de líderes,
+                    fr: 'Classement,
+                    de: 'Bestenliste,
+                    pt: 'Ranking,
                     ru: 'Таблица лидеров'
-            };
+        }
                 rank: { ''
-                    ja: '順位';
-                    en: 'Rank';
+                    ja: '順位' ,
+                    en: 'Rank,
                     ko: '순위';
-                    'zh-CN': '排名',
-                    'zh-TW': '排名',
-                    es: 'Rango';
-                    fr: 'Rang';
-                    de: 'Rang';
-                    pt: 'Posição';
+                    'zh-CN': '排名,
+                    'zh-TW': '排名,
+                    es: 'Rango,
+                    fr: 'Rang,
+                    de: 'Rang,
+                    pt: 'Posição,
                     ru: 'Место'
             };
                 score: { ''
-                    ja: 'スコア';
-                    en: 'Score';
+                    ja: 'スコア' ,
+                    en: 'Score,
                     ko: '점수';
-                    'zh-CN': '分数',
-                    'zh-TW': '分數',
-                    es: 'Puntuación';
-                    fr: 'Score';
-                    de: 'Punktzahl';
-                    pt: 'Pontuação';
+                    'zh-CN': '分数,
+                    'zh-TW': '分數,
+                    es: 'Puntuación,
+                    fr: 'Score,
+                    de: 'Punktzahl,
+                    pt: 'Pontuação,
                     ru: 'Очки'
             }
 };
@@ -337,15 +337,15 @@ export class SocialI18nManager {'
         this.cache = new Map();
         
         // フォーマッター
-        this.formatters = { number: this.createNumberFormatter.bind(this;
-            date: this.createDateFormatter.bind(this;
+        this.formatters = { number: this.createNumberFormatter.bind(this,
+            date: this.createDateFormatter.bind(this,
     currency: this.createCurrencyFormatter.bind(this  }
         
         // 統計
-        this.stats = { translationRequests: 0;
-            cacheHits: 0;
-            cacheMisses: 0;
-            languageChanges: 0;
+        this.stats = { translationRequests: 0,
+            cacheHits: 0,
+            cacheMisses: 0,
+            languageChanges: 0,
     errors: 0  };
         this.initialize()';'
         this.log('SocialI18nManager初期化完了);'
@@ -358,20 +358,18 @@ export class SocialI18nManager {'
         try {
             // LocalizationManagerの現在の言語を取得
             if (this.localizationManager) {''
-                this.state.currentLanguage = this.localizationManager.getCurrentLanguage() || 'ja',
+                this.state.currentLanguage = this.localizationManager.getCurrentLanguage() || 'ja,
                 ','
                 // 言語変更イベントのリスナー登録
                 if(typeof, this.localizationManager.addChangeListener === 'function' { }
                     this.localizationManager.addChangeListener((newLanguage, oldLanguage) => {  }
-                        this.handleLanguageChange(newLanguage, oldLanguage); }
-                    }
-            }
-            
+                        this.handleLanguageChange(newLanguage, oldLanguage);     }
+}
             // 現在の言語を読み込み済みとして設定
             this.state.loadedLanguages.add(this.state.currentLanguage);
 
         } catch (error) {
-            this.handleError('SOCIAL_I18N_INIT_FAILED', error) }
+            this.handleError('SOCIAL_I18N_INIT_FAILED', error);
     }
     
     /**
@@ -392,14 +390,14 @@ export class SocialI18nManager {'
             
             // メッセージテンプレートの取得
             const template = this.getMessageTemplate(messageKey, lang);
-            if (!template) { return this.getFallbackMessage(messageKey, params) }
+            if (!template) { return this.getFallbackMessage(messageKey, params);
             
             // パラメータの置換
             const message = this.interpolateMessage(template, params, lang);
             
             // キャッシュに保存
             if (this.config.cache.enabled) {
-                this.cache.set(cacheKey, message) }
+                this.cache.set(cacheKey, message);
                 this.cleanupCache(); }
             }
             
@@ -428,16 +426,16 @@ export class SocialI18nManager {'
             
             // UIテキストの取得
             const categoryTexts = this.uiTexts[category];
-            if (!categoryTexts) { return this.getFallbackUIText(category, key) }
+            if (!categoryTexts) { return this.getFallbackUIText(category, key);
             
             const keyTexts = categoryTexts[key];
-            if (!keyTexts) { return this.getFallbackUIText(category, key) }
+            if (!keyTexts) { return this.getFallbackUIText(category, key);
             
             const text = keyTexts[lang] || keyTexts[this.config.fallback.language] || key;
             
             // キャッシュに保存
             if (this.config.cache.enabled) {
-                this.cache.set(cacheKey, text) }
+                this.cache.set(cacheKey, text);
                 this.cleanupCache(); }
             }
             
@@ -477,10 +475,10 @@ export class SocialI18nManager {'
         
         // デフォルトホスト
         const defaultHosts = { : undefined''
-            twitter: 'twitter.com',
-            facebook: 'facebook.com',
-            line: 'line.me',
-            weibo: 'weibo.com',
+            twitter: 'twitter.com,
+            facebook: 'facebook.com,
+            line: 'line.me,
+            weibo: 'weibo.com,
             wechat: 'weixin.qq.com'
             };
         return defaultHosts[platform] || platform;
@@ -499,7 +497,7 @@ export class SocialI18nManager {'
      */
     formatNumber(number, language = null) {
         const lang = language || this.state.currentLanguage,
-        const formatter = this.formatters.number(lang) }
+        const formatter = this.formatters.number(lang);
         return formatter.format(number);
     
     /**
@@ -507,7 +505,7 @@ export class SocialI18nManager {'
      */
     formatDate(date, language = null) {
         const lang = language || this.state.currentLanguage,
-        const formatter = this.formatters.date(lang) }
+        const formatter = this.formatters.date(lang);
         return formatter.format(date);
     
     /**
@@ -515,7 +513,7 @@ export class SocialI18nManager {'
      */
     formatCurrency(amount, language = null) {
         const lang = language || this.state.currentLanguage,
-        const formatter = this.formatters.currency(lang) }
+        const formatter = this.formatters.currency(lang);
         return formatter.format(amount);
     
     /**
@@ -536,14 +534,14 @@ export class SocialI18nManager {'
         Object.keys(params).forEach(key => { 
             const, value = params[key],
             let, formattedValue = value)
-            ')',
+            '),
             // 型に応じてフォーマット'),'
             if (typeof, value === 'number') {
     }
 
                 if (key.includes('score') || key.includes('point') || key.includes('rank) { }'
                     formattedValue = this.formatNumber(value, language); }
-} else if (value, instanceof Date) { formattedValue = this.formatDate(value, language) }
+} else if (value, instanceof Date) { formattedValue = this.formatDate(value, language);
 
             message = message.replace(new, RegExp(`\\{${key}\\)`, 'g'), formattedValue';'
         };
@@ -603,16 +601,15 @@ export class SocialI18nManager {'
      */''
     createCurrencyFormatter(language) {
         const regionalSetting = this.config.regionalSettings[language],
-        const currency = regionalSetting ? regionalSetting.currency: 'USD',
+        const currency = regionalSetting ? regionalSetting.currency: 'USD,
         
         try {
             return new Intl.NumberFormat(language, {)'
                 style: 'currency', 
                 currency: currency','
-            }'
-
+            }
         } catch (error) { return new Intl.NumberFormat(this.config.fallback.language, {)'
-                style: 'currency',')',
+                style: 'currency,')',
                 currency: 'USD'
             }
     }
@@ -622,11 +619,11 @@ export class SocialI18nManager {'
      */
     handleLanguageChange(newLanguage, oldLanguage) {
         this.state.currentLanguage = newLanguage,
-        this.stats.languageChanges++,
+        this.stats.languageChanges++;
         
         // キャッシュをクリア
         if (this.config.cache.enabled) {''
-            this.cache.clear() }
+            this.cache.clear();
 
         this.log('言語変更', { from: oldLanguage, to: newLanguage,
     
@@ -636,18 +633,16 @@ export class SocialI18nManager {'
     cleanupCache() {
         if (this.cache.size > this.config.cache.maxSize) {
             // 古いエントリから削除（簡易LRU）
-            const entries = Array.from(this.cache.entries();
+            const entries = Array.from(this.cache.entries()));
             const deleteCount = Math.floor(this.config.cache.maxSize * 0.2);
             for (let, i = 0, i < deleteCount, i++) {
     }
-                this.cache.delete(entries[i][0]); }
+                this.cache.delete(entries[i][0]);     }
 }
-    }
-    
     /**
      * サポート言語の確認
      */
-    isLanguageSupported(language) { return this.config.supportedLanguages.includes(language) }
+    isLanguageSupported(language) { return this.config.supportedLanguages.includes(language);
     
     /**
      * サポート言語の一覧取得
@@ -669,9 +664,9 @@ export class SocialI18nManager {'
             cacheSize: this.cache.size,
     cacheHitRate: this.stats.translationRequests > 0 ','
                 ? (this.stats.cacheHits / this.stats.translationRequests * 100).toFixed(2) + '%'','
-                : '0%',
+                : '0%,
             supportedLanguages: this.config.supportedLanguages.length }
-            currentLanguage: this.state.currentLanguage },
+            currentLanguage: this.state.currentLanguage ,
             loadedLanguages: Array.from(this.state.loadedLanguages); 
     }
     
@@ -686,7 +681,7 @@ export class SocialI18nManager {'
         // キャッシュクリア
         if (this.config.cache.enabled) {
 
-            this.cache.clear() }
+            this.cache.clear();
 
         this.log('設定更新', newConfig); }
     }
@@ -696,7 +691,7 @@ export class SocialI18nManager {'
      */
     clearCache() {
 
-        this.cache.clear() }
+        this.cache.clear();
 
         this.log('キャッシュクリア'; }'
     }
@@ -709,8 +704,7 @@ export class SocialI18nManager {'
             type,
             error: error.message || error,
             context }
-            timestamp: Date.now(),
-    };
+            timestamp: Date.now() };
 
         if (ErrorHandler) {', ' }
 
@@ -727,7 +721,7 @@ export class SocialI18nManager {'
         const logEntry = {''
             timestamp: Date.now('''
         const, consoleMethod = level === 'error' ? 'error' : ' }''
-                            level === 'warn' ? 'warn' : 'log';) }
+                            level === 'warn' ? 'warn' : 'log';);
 
         console[consoleMethod](`[SocialI18nManager] ${message}`, data || '');
     }

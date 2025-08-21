@@ -8,51 +8,48 @@
 export type Season = 'spring' | 'summer' | 'autumn' | 'winter';
 
 // イベントテーマの型定義
-export interface EventTheme { name: string;
-    duration: {
-        start: string, // MM-DD形式;
+export interface EventTheme { name: string,
+    duration: { start: string, // MM-DD形式  },
         end: string,   // MM-DD形式 },
-    colors: { primary: string[];
-        secondary: string[];
-    accent: string[];
-    particles: { types: string[];
+    colors: { primary: string[],
+        secondary: string[]  ,
+    accent: string[],
+    particles: { types: string[],
         density: number;
-        movement: string;
-    spawnRate: number;
-    effects: { bubbleDestruction: string;
+    },
+        movement: string,
+    spawnRate: number,
+    effects: { bubbleDestruction: string,
         comboEffect: string;
-    backgroundPattern: string;
+    },
+    backgroundPattern: string,
     backgroundPattern: string;
         };
 export interface EventThemes { [eventName: string]: EventTheme;
-
-export interface SeasonalSummary { currentSeason: Season;
-    currentEvent: string | null;
-    activeEvents: string[];
-    daysUntilNextSeason: number;
-    lastCheck: Date;
-    nextCheck: Date;
+    export interface SeasonalSummary { currentSeason: Season,
+    currentEvent: string | null,
+    activeEvents: string[],
+    daysUntilNextSeason: number,
+    lastCheck: Date,
+    nextCheck: Date,
     nextCheck: Date;
         };
-export interface DetectorStatus { currentSeason: Season;
-    currentEvent: string | null;
-    lastCheck: number;
-    checkInterval: number;
-    isCheckRequired: boolean;
+export interface DetectorStatus { currentSeason: Season,
+    currentEvent: string | null,
+    lastCheck: number,
+    checkInterval: number,
+    isCheckRequired: boolean,
     isCheckRequired: boolean;
         };
 export interface DetectorSettings { seasonCheckInterval?: number;
-
-export class SeasonDetector {
+    export class SeasonDetector {
     private lastSeasonCheck: number;
     private seasonCheckInterval: number;
     private currentSeason: Season;
     private, currentEvent: string | null;
-
-    constructor('',
+    constructor(',
         this.currentSeason = 'spring';
-        this.currentEvent = null }
-    
+    this.currentEvent = null };
     /**
      * 現在の季節を検出
      * @returns 季節名
@@ -107,7 +104,7 @@ export class SeasonDetector {
     /**
      * 季節チェック時刻を更新
      */
-    updateLastSeasonCheck(): void { this.lastSeasonCheck = Date.now() }
+    updateLastSeasonCheck(): void { this.lastSeasonCheck = Date.now();
     
     /**
      * 特定の日付が季節期間内かを判定
@@ -162,7 +159,7 @@ export class SeasonDetector {
         let nextSeasonDate = seasonStartDates[nextSeason];
         
         // 次の季節が来年の場合
-        if (nextSeasonDate <= now) { nextSeasonDate.setFullYear(currentYear + 1) }
+        if (nextSeasonDate <= now) { nextSeasonDate.setFullYear(currentYear + 1);
         
         const timeDiff = nextSeasonDate.getTime() - now.getTime();
         return Math.ceil(timeDiff / (1000 * 3600 * 24);
@@ -193,7 +190,7 @@ export class SeasonDetector {
             currentEvent: this.currentEvent,
             activeEvents: activeEvents,
             daysUntilNextSeason: daysUntilNext,
-    lastCheck: new Date(this.lastSeasonCheck) },
+    lastCheck: new Date(this.lastSeasonCheck) ,
             nextCheck: new Date(this.lastSeasonCheck + this.seasonCheckInterval); 
     }
     

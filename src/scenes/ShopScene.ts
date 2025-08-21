@@ -14,7 +14,7 @@ export class ShopScene extends Scene { private selectedItemIndex: number = 0
         super(gameEngine);
         this.selectedItemIndex = 0;
         this.scrollOffset = 0;
-        this.maxVisibleItems = 6 }
+        this.maxVisibleItems = 6 };
         this.availableItems = []; }
     }
     
@@ -43,14 +43,14 @@ export class ShopScene extends Scene { private selectedItemIndex: number = 0
     render(context: CanvasRenderingContext2D): void { const canvas = this.gameEngine.canvas,
         ','
         // 背景
-        context.fillStyle = '#001122',
+        context.fillStyle = '#001122,
         context.fillRect(0, 0, canvas.width, canvas.height);
         ','
         // タイトル
-        context.save('',
-        context.fillStyle = '#FFFFFF',
-        context.font = 'bold, 32px Arial',
-        context.textAlign = 'center',
+        context.save(',
+        context.fillStyle = '#FFFFFF,
+        context.font = 'bold, 32px Arial,
+        context.textAlign = 'center,
         context.textBaseline = 'top',')'
         context.fillText('アイテムショップ', canvas.width / 2, 20);
         context.restore();
@@ -67,18 +67,18 @@ export class ShopScene extends Scene { private selectedItemIndex: number = 0
     private renderPlayerInfo(context: CanvasRenderingContext2D): void { const canvas = this.gameEngine.canvas,
         const playerData = this.gameEngine.playerData,
 
-        context.save('',
-        context.fillStyle = '#CCCCCC',
-        context.font = '18px, Arial',
-        context.textAlign = 'left',
-        context.textBaseline = 'top',
+        context.save(',
+        context.fillStyle = '#CCCCCC,
+        context.font = '18px, Arial,
+        context.textAlign = 'left,
+        context.textBaseline = 'top,
         ','
         const infoY = 70,')'
         context.fillText(`プレイヤー: ${playerData.username || '名無し)`, 20, infoY),'
         context.fillText(`所持AP: ${playerData.ap)`, 20, infoY + 25),
         context.fillText(`総TAP: ${playerData.tap }`, 20, infoY + 50}
          }
-        context.restore(};
+        context.restore(}
     }
     
     /**
@@ -150,7 +150,7 @@ export class ShopScene extends Scene { private selectedItemIndex: number = 0
         // コスト表示
         if (!itemInfo.isMaxLevel) {
 
-            context.font = 'bold 16px Arial',
+            context.font = 'bold 16px Arial,
             context.textAlign = 'right' }
 
             context.fillStyle = itemInfo.canPurchase ? '#00FF00' : '#FF6666'; }
@@ -158,8 +158,8 @@ export class ShopScene extends Scene { private selectedItemIndex: number = 0
             context.fillText(`${itemInfo.cost} AP`, x + width - 15, y + 10'}';
 
         } else {
-            context.font = 'bold 16px Arial',
-            context.textAlign = 'right',
+            context.font = 'bold 16px Arial,
+            context.textAlign = 'right,
             context.fillStyle = '#FFD700',' }'
 
             context.fillText('購入済み', x + width - 15, y + 10'; }'
@@ -168,19 +168,19 @@ export class ShopScene extends Scene { private selectedItemIndex: number = 0
         // 最大レベル表示
         if (itemInfo.maxLevel > 1) {
 
-            context.font = '12px Arial',
+            context.font = '12px Arial,
             context.textAlign = 'right' }
 
             context.fillStyle = '#AAAAAA'; }
-            context.fillText(`最大Lv.${itemInfo.maxLevel}`, x + width - 15, y + height - 20};
+            context.fillText(`最大Lv.${itemInfo.maxLevel}`, x + width - 15, y + height - 20}
         }
         ';'
         // 効果値表示（現在のレベルでの効果）
         if (itemInfo.currentLevel > 0) {
 
-            context.font = '12px Arial',
-            context.textAlign = 'left',
-            context.fillStyle = '#00CCFF',
+            context.font = '12px Arial,
+            context.textAlign = 'left,
+            context.fillStyle = '#00CCFF,
 
             let effectText = ','
             switch(itemInfo.effect.type) {''
@@ -223,11 +223,11 @@ export class ShopScene extends Scene { private selectedItemIndex: number = 0
      */
     private renderControls(context: CanvasRenderingContext2D): void { const canvas = this.gameEngine.canvas,
 
-        context.save('',
-        context.fillStyle = '#AAAAAA',
-        context.font = '14px, Arial',
-        context.textAlign = 'center',
-        context.textBaseline = 'bottom',
+        context.save(',
+        context.fillStyle = '#AAAAAA,
+        context.font = '14px, Arial,
+        context.textAlign = 'center,
+        context.textBaseline = 'bottom,
         ','
         const controlsY = canvas.height - 40,')'
         context.fillText('↑↓: 選択  Enter: 購入  H: ヘルプ , ESC: 戻る', canvas.width / 2, controlsY','
@@ -249,7 +249,7 @@ export class ShopScene extends Scene { private selectedItemIndex: number = 0
                     break,
                 case 'Enter':','
                     this.purchaseSelectedItem()','
-                case 'KeyH':')',
+                case 'KeyH':'),
                     this.gameEngine.sceneManager.switchScene('help');
                     break,
                 case 'Escape':','
@@ -279,10 +279,8 @@ export class ShopScene extends Scene { private selectedItemIndex: number = 0
             
                 this.selectedItemIndex = i;
                 this.purchaseSelectedItem() }
-                break; }
+                break;     }
 }
-    }
-    
     /**
      * 選択を移動
      */

@@ -3,15 +3,13 @@ import { getErrorHandler  } from '../utils/ErrorHandler.js';
 interface QueueOptions { maxConcurrent?: number,
     queueTimeout?: number;
     retryAttempts?: number;
-
-interface QueueStats { totalQueued: number;
-    totalCompleted: number;
-    totalFailed: number;
+    interface QueueStats { totalQueued: number,
+    totalCompleted: number,
+    totalFailed: number,
     averageExecutionTime: number;
     [key: string]: number;
-
-interface QueueOperation { id: string;
-    priority: number;
+    interface QueueOperation { id: string,
+    priority: number,
     operation: () => Promise<unknown>;
     metadata?: unknown;
     [key: string]: unknown;
@@ -50,10 +48,10 @@ export class AsyncOperationQueue {
         
         // 統計情報
         this.stats = {
-            totalQueued: 0;
-            totalCompleted: 0;
-            totalFailed: 0;
-    averageExecutionTime: 0 }
+            totalQueued: 0,
+            totalCompleted: 0,
+            totalFailed: 0,
+    averageExecutionTime: 0 };
             currentQueueSize: 0 
     };
         // イベントリスナー
@@ -71,7 +69,7 @@ export class AsyncOperationQueue {
      */
     initialize() {
         // 定期的なキュー処理開始
-        this.startProcessing() }
+        this.startProcessing();
 
         console.log('AsyncOperationQueue, initialized'); }'
     }
@@ -86,12 +84,12 @@ export class AsyncOperationQueue {
     async enqueue(operation, options = { ) {
         return new Promise((resolve, reject) => { ''
             const operationId = this.generateOperationId('''
-                priority: options.priority || 'normal', // 'high', 'normal', 'low',
+                priority: options.priority || 'normal, // 'high', 'normal', 'low',
                 timeout: options.timeout || this.queueTimeout),
                 retryCount: 0,
-    maxRetries: options.maxRetries || this.retryAttempts) }
-                timestamp: Date.now() }
-                metadata: options.metadata || {},
+    maxRetries: options.maxRetries || this.retryAttempts),
+                timestamp: Date.now(),
+                metadata: options.metadata || {};
             ';'
             // 優先度順にキューに挿入
             this.insertByPriority(queueItem);
@@ -99,10 +97,10 @@ export class AsyncOperationQueue {
             this.stats.currentQueueSize = this.queue.length;
 
             this.emit('operationQueued', { id: operationId)
-               , priority: queueItem.priority),
-                queueSize: this.queue.length),
+            priority: queueItem.priority),
+                queueSize: this.queue.length);
             // キュー処理をトリガー
-            this.processQueue(  };
+            this.processQueue(  }
     }
     
     /**
@@ -140,7 +138,7 @@ export class AsyncOperationQueue {
             let results,
             if (options.parallel !== false) {
                 // 並列実行（デフォルト）
-                const promises = operations.map(op => this.enqueue(op, batchOptions) }
+                const promises = operations.map(op => this.enqueue(op, batchOptions);
                 results = await Promise.allSettled(promises); }
             } else {  // 順次実行
                 results = [],
@@ -151,8 +149,7 @@ export class AsyncOperationQueue {
                         const result = await this.enqueue(operation, batchOptions);' }'
 
                         results.push({ status: 'fulfilled', value: result ',' }
-
-                    } catch (error) { }
+        } catch (error) { }
 
                         results.push({ status: 'rejected', reason: error,';'
                     }
@@ -185,17 +182,17 @@ export class AsyncOperationQueue {
         try { await this.executeOperation(item) } catch (error) { // エラーはexecuteOperation内で処理済み }
         
         // 次の操作を処理
-        if (this.queue.length > 0) { setTimeout(() => this.processQueue(), 0) }
+        if (this.queue.length > 0) { setTimeout(() => this.processQueue(), 0);
 }
     
     /**
      * 個別操作の実行
      */
     async executeOperation(item) { ''
-        const startTime = Date.now('',
+        const startTime = Date.now(',
             this.emit('operationStarted', {
                 id: item.id,
-    priority: item.priority);
+    priority: item.priority),
                 activeCount: this.activeOperations.size),
             // タイムアウト設定
             const timeoutPromise = new Promise((_, reject) => { })'
@@ -224,7 +221,7 @@ export class AsyncOperationQueue {
                 result,
                 executionTime),
                 activeCount: this.activeOperations.size),
-            item.resolve(result  } catch (error) { await this.handleOperationError(item, error, startTime) }
+            item.resolve(result  } catch (error) { await this.handleOperationError(item, error, startTime);
     }
     
     /**
@@ -234,10 +231,10 @@ export class AsyncOperationQueue {
         ','
         // リトライ可能かチェック
         if(item.retryCount < item.maxRetries && this.isRetryableError(error)) {
-            item.retryCount++,
+            item.retryCount++;
 
             this.emit('operationRetry', {
-                id: item.id);
+                id: item.id),
                 retryCount: item.retryCount,
     maxRetries: item.maxRetries),
                 error: error.message),
@@ -262,7 +259,7 @@ export class AsyncOperationQueue {
         this.emit('operationFailed', { id: item.id,
             error,
             executionTime,
-            retryCount: item.retryCount);
+            retryCount: item.retryCount),
             activeCount: this.activeOperations.size','
 
         getErrorHandler().handleError(error, 'ASYNC_OPERATION_ERROR', {)
@@ -313,7 +310,7 @@ export class AsyncOperationQueue {
         }
         
         this.isProcessing = true;
-        this.processingInterval = setInterval(() => {  this.processQueue() }
+        this.processingInterval = setInterval(() => {  this.processQueue();
             this.cleanupCompletedOperations(); }
         }, 100); // 100msごとにチェック
     }
@@ -323,7 +320,7 @@ export class AsyncOperationQueue {
      */
     stopProcessing() {
         if (this.processingInterval) {
-            clearInterval(this.processingInterval) }
+            clearInterval(this.processingInterval);
             this.processingInterval = null; }
         }
         this.isProcessing = false;
@@ -338,34 +335,30 @@ export class AsyncOperationQueue {
         const now = Date.now();
         // 完了操作の履歴制限
         if (this.completedOperations.size > maxHistorySize) {
-            const entries = Array.from(this.completedOperations.entries();
+            const entries = Array.from(this.completedOperations.entries()));
             entries.sort((a, b) => a[1].completedAt - b[1].completedAt),
             
-            const toRemove = entries.slice(0, entries.length - maxHistorySize) }
+            const toRemove = entries.slice(0, entries.length - maxHistorySize);
             toRemove.forEach(([id]) => {  }
-                this.completedOperations.delete(id); }
-            };
-        }
-        
+                this.completedOperations.delete(id);     }
+}
         // 古い失敗操作の削除
         for(const [id, operation] of this.failedOperations.entries() {
             if (now - operation.failedAt > maxAge) {
         }
-                this.failedOperations.delete(id); }
+                this.failedOperations.delete(id);     }
 }
-    }
-    
     /**
      * キューの状態を取得
      */
     getStatus() {
         return { queueSize: this.queue.length,
             activeOperations: this.activeOperations.size }
-            maxConcurrent: this.maxConcurrent },
+            maxConcurrent: this.maxConcurrent ,
             isProcessing: this.isProcessing }
             stats: { ...this.stats,
-            recentCompleted: Array.from(this.completedOperations.values().slice(-10,
-    recentFailed: Array.from(this.failedOperations.values().slice(-5) }
+            recentCompleted: Array.from(this.completedOperations.values())).slice(-10 ,
+    recentFailed: Array.from(this.failedOperations.values())).slice(-5);
     
     /**
      * 特定の操作をキャンセル
@@ -389,7 +382,7 @@ export class AsyncOperationQueue {
     clearQueue() {
         // キューの全操作をキャンセル
         while (this.queue.length > 0) {''
-            const item = this.queue.pop() }
+            const item = this.queue.pop();
 
             item.reject(new, Error('Queue, cleared)'; }'
         }
@@ -419,24 +412,20 @@ export class AsyncOperationQueue {
             const index = callbacks.indexOf(callback);
             if (index > -1) {
     }
-                callbacks.splice(index, 1); }
+                callbacks.splice(index, 1);     }
 }
-    }
-    
     /**
      * イベントの発火
      */
     emit(event, data) {
         if (this.listeners.has(event) {
-            this.listeners.get(event).forEach(callback => { )
-    }
-                try {) }
+            this.listeners.get(event).forEach(callback => { );
+                try {);
                     callback(data); }
-                } catch (error) {
+        } catch (error) {
                     console.error(`Error in event listener for ${event}:`, error);
-                }
-            };
-        }
+                    }
+}
     }
     
     /**
@@ -446,7 +435,7 @@ export class AsyncOperationQueue {
         this.stopProcessing();
         this.clearQueue();
         // アクティブな操作の完了を待つ
-        const activePromises = Array.from(this.activeOperations.values();
+        const activePromises = Array.from(this.activeOperations.values()));
             .map(item => new, Promise(resolve => { )
                 const originalResolve = item.resolve)
                 const originalReject = item.reject),
@@ -456,7 +445,7 @@ export class AsyncOperationQueue {
                     resolve(); }
                 };
                 
-                item.reject = (error) => {  originalReject(error) }
+                item.reject = (error) => {  originalReject(error);
                     resolve(); }
                 };
         
@@ -465,10 +454,8 @@ export class AsyncOperationQueue {
             this.failedOperations.clear( }
 
             console.log('AsyncOperationQueue, destroyed'); }'
-        };
-    }
+            }
 }
-
 // シングルトンインスタンス
 let queueInstance = null;
 

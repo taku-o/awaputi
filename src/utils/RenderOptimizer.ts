@@ -4,21 +4,21 @@
  */
 
 // 型定義
-interface Viewport { x: number;
-    y: number;
-    width: number;
+interface Viewport { x: number,
+    y: number,
+    width: number,
     height: number;
-interface Region { x: number;
-    y: number;
-    width: number;
+    interface Region { x: number,
+    y: number,
+    width: number,
     height: number;
-interface RenderStats { totalObjects: number;
-    renderedObjects: number;
-    culledObjects: number;
-    dirtyRegions: number;
+    interface RenderStats { totalObjects: number,
+    renderedObjects: number,
+    culledObjects: number,
+    dirtyRegions: number,
     renderTime: number;
-interface RenderObject { id?: string,
-    x: number;
+    interface RenderObject { id?: string,
+    x: number,
     y: number;
     width?: number;
     height?: number;
@@ -29,19 +29,20 @@ interface RenderObject { id?: string,
     opacity?: number;
     type?: string;
     render?: (ctx: CanvasRenderingContext2D) => void  }
-interface Layer { canvas: HTMLCanvasElement;
-    context: CanvasRenderingContext2D;
-    zIndex: number;
-    isDirty: boolean;
+interface Layer { canvas: HTMLCanvasElement,
+    context: CanvasRenderingContext2D,
+    zIndex: number,
+    isDirty: boolean,
     objects: RenderObject[];
-interface PerformanceStats { fps: number;
-    deltaTime: number;
-    frameCount: number;
-    avgFrameTime: number;
+    interface PerformanceStats { fps: number,
+    deltaTime: number,
+    frameCount: number,
+    avgFrameTime: number,
     memoryUsage: {
         usedJSHeapSiz,e: number;
-        totalJSHeapSize: number;
-    jsHeapSizeLimit: number;
+    },
+        totalJSHeapSize: number,
+    jsHeapSizeLimit: number,
     jsHeapSizeLimit: number;
         };
 export class RenderOptimizer {
@@ -70,8 +71,7 @@ export class RenderOptimizer {
         const context = canvas.getContext('2d';
         if (!context) {
     
-}
-
+};
             throw new Error('Failed, to get, 2D context, from canvas); }'
         this.context = context;
         this.width = canvas.width;
@@ -107,16 +107,16 @@ export class RenderOptimizer {
 
             const context = canvas.getContext('2d),'
             if (!context) { }
-                throw new Error(`Failed, to get, 2D context, for layer ${layerName}`};
+                throw new Error(`Failed, to get, 2D context, for layer ${layerName}`}
             }
             
-            this.layers.set(layerName, { canvas: canvas;
-                context: context);
-                zIndex: zIndex;
-    isDirty: false);
+            this.layers.set(layerName, { canvas: canvas,
+                context: context),
+                zIndex: zIndex,
+    isDirty: false),
                 objects: []);
             // zIndexでソート
-            this.layerOrder = Array.from(this.layers.keys().sort((a, b) => { 
+            this.layerOrder = Array.from(this.layers.keys())).sort((a, b) => { 
                 const layerA = this.layers.get(a)!,
                 const layerB = this.layers.get(b)! }
                 return layerA.zIndex - layerB.zIndex; }'
@@ -129,14 +129,14 @@ export class RenderOptimizer {
      * @param {string} layerName - レイヤー名'
      */''
     addObject(obj: RenderObject, layerName: string = 'default): void { if (!this.layers.has(layerName) {'
-            this.addLayer(layerName) }
+            this.addLayer(layerName);
         const layer = this.layers.get(layerName)!;
         layer.objects.push(obj);
         
         // 差分チェック用にオブジェクトを記録
         const objId = obj.id || `${obj.x}_${obj.y}_${obj.type}`;
         this.currentFrameObjects.set(objId, { ...obj)
-            layer: layerName),
+            layer: layerName);
         this.stats.totalObjects++ }
     /**
      * フラスタムカリング判定
@@ -151,7 +151,7 @@ export class RenderOptimizer {
             obj.x + objWidth < this.viewport.x - margin ||,
             obj.x > this.viewport.x + this.viewport.width + margin ||,
             obj.y + objHeight < this.viewport.y - margin ||,
-            obj.y > this.viewport.y + this.viewport.height + margin) }
+            obj.y > this.viewport.y + this.viewport.height + margin);
     /**
      * オブジェクトの境界を計算
      * @param {RenderObject} obj - オブジェクト
@@ -161,7 +161,7 @@ export class RenderOptimizer {
         return { x: obj.x - size / 2,
             y: obj.y - size / 2,
     width: size,
-            height: size ,
+            height: size ;
     } }
     
     /**
@@ -182,7 +182,7 @@ export class RenderOptimizer {
                 // 重複する領域をマージ
                 const merged = this.mergeRegions(region, newRegion);
                 this.dirtyRegions.splice(i, 1);
-                this.dirtyRegions.push(merged) }
+                this.dirtyRegions.push(merged);
                 return; }
         }
         
@@ -199,7 +199,7 @@ export class RenderOptimizer {
             a.x + a.width < b.x ||,
             b.x + b.width < a.x ||,
             a.y + a.height < b.y ||,
-            b.y + b.height < a.y) }
+            b.y + b.height < a.y);
     /**
      * 二つの領域をマージ
      * @param {Region} a - 領域A
@@ -212,8 +212,8 @@ export class RenderOptimizer {
         const bottom = Math.max(a.y + a.height, b.y + b.height);
         return { x: left,
             y: top,
-    width: right - left },
-            height: bottom - top ,
+    width: right - left };
+            height: bottom - top ;
     } }
     
     /**
@@ -229,10 +229,10 @@ export class RenderOptimizer {
         if (this.dirtyRegions.length > 0) {
     
 }
-            this.dirtyRegions.forEach(region => { ) }
+            this.dirtyRegions.forEach(region => { );
                 ctx.clearRect(region.x, region.y, region.width, region.height); }
-            };
-        } else { ctx.clearRect(0, 0, this.width, this.height) }
+            }
+        } else { ctx.clearRect(0, 0, this.width, this.height);
         // オブジェクトをレンダリング
         layer.objects.forEach(obj => {  );
             if (this.isInViewport(obj) {
@@ -257,8 +257,8 @@ export class RenderOptimizer {
     
 }
             ctx.translate(obj.x, obj.y); }
-        if (obj.rotation) { ctx.rotate(obj.rotation) }
-        if (obj.scale && obj.scale !== 1) { ctx.scale(obj.scale, obj.scale) }
+        if (obj.rotation) { ctx.rotate(obj.rotation);
+        if (obj.scale && obj.scale !== 1) { ctx.scale(obj.scale, obj.scale);
 
         if (obj.opacity !== undefined && obj.opacity !== 1) { ctx.globalAlpha = obj.opacity }
         ';'
@@ -273,12 +273,12 @@ export class RenderOptimizer {
      * @param {RenderObject} obj - オブジェクト'
      */''
     private renderDefault(ctx: CanvasRenderingContext2D, obj: RenderObject): void { const size = obj.size || 50,
-        const color = obj.color || '#FF6B6B',
+        const color = obj.color || '#FF6B6B,
         
         ctx.fillStyle = color,
         ctx.beginPath();
         ctx.arc(0, 0, size / 2, 0, Math.PI * 2);
-        ctx.fill() }
+        ctx.fill();
     /**
      * フレームをレンダリング
      */
@@ -295,10 +295,10 @@ export class RenderOptimizer {
         this.detectChanges();
         
         // メインキャンバスをクリア（必要な部分のみ）
-        if (this.dirtyRegions.length > 0) { this.dirtyRegions.forEach(region => { ) }
+        if (this.dirtyRegions.length > 0) { this.dirtyRegions.forEach(region => { );
                 this.context.clearRect(region.x, region.y, region.width, region.height); }
-            };
-        } else { this.context.clearRect(0, 0, this.width, this.height) }
+            }
+        } else { this.context.clearRect(0, 0, this.width, this.height);
         // レイヤーを順番にレンダリング
         this.layerOrder.forEach(layerName => {  );
             this.renderLayer(layerName);
@@ -307,11 +307,11 @@ export class RenderOptimizer {
             if (this.dirtyRegions.length > 0) {
                 this.dirtyRegions.forEach(region => {
                     this.context.drawImage();
-                        layer.canvas) }
-                        region.x, region.y, region.width, region.height) }
+                        layer.canvas);
+                        region.x, region.y, region.width, region.height);
                         region.x, region.y, region.width, region.height); }
-                };
-            } else { this.context.drawImage(layer.canvas, 0, 0) }
+                }
+            } else { this.context.drawImage(layer.canvas, 0, 0);
         };
         
         // フレーム終了処理
@@ -342,11 +342,9 @@ export class RenderOptimizer {
         
         // 削除されたオブジェクトの領域をダーティに
         this.lastFrameObjects.forEach((obj, id) => {  if (!this.currentFrameObjects.has(id) {
-                const bounds = this.getObjectBounds(obj) }
-                this.addDirtyRegion(bounds.x, bounds.y, bounds.width, bounds.height); }
-        };
-    }
-    
+                const bounds = this.getObjectBounds(obj);
+                this.addDirtyRegion(bounds.x, bounds.y, bounds.width, bounds.height);     }
+}
     /**
      * オブジェクトが変更されたかチェック
      * @param {RenderObject & { layer: string; lastObj - 前フレームのオブジェクト
@@ -397,7 +395,7 @@ export class RenderOptimizer {
     cleanup(): void { this.layers.forEach(layer => { )
             layer.objects = []),
         this.currentFrameObjects.clear();
-        this.lastFrameObjects.clear() }
+        this.lastFrameObjects.clear();
         this.dirtyRegions = []; }
 }
 
@@ -413,7 +411,8 @@ export class PerformanceMonitor {
     private maxHistorySize: number;
     private, memoryUsage: {
         usedJSHeapSize: number;
-        totalJSHeapSize: number;
+    },
+        totalJSHeapSize: number,
     jsHeapSizeLimit: number;
 
     constructor() {
@@ -426,7 +425,7 @@ export class PerformanceMonitor {
         this.maxHistorySize = 60;
         
         this.memoryUsage = {
-            usedJSHeapSize: 0;
+            usedJSHeapSize: 0,
     totalJSHeapSize: 0
 }
             jsHeapSizeLimit: 0 ;
@@ -455,18 +454,17 @@ export class PerformanceMonitor {
                 usedJSHeapSize: (performance, as any).memory.usedJSHeapSize,
                 totalJSHeapSize: (performance, as any).memory.totalJSHeapSize,
                 jsHeapSizeLimit: (performance, as any).memory.jsHeapSizeLimit 
-};
+}
 }
     /**
      * パフォーマンス統計を取得
      * @returns {PerformanceStats} 統計情報
      */
     getStats(): PerformanceStats { return { fps: Math.round(this.fps,
-            deltaTime: Math.round(this.deltaTime);
+            deltaTime: Math.round(this.deltaTime),
             frameCount: this.frameCount,
     avgFrameTime: Math.round(this.frameTimeHistory.reduce((a, b) => a + b, 0) / this.frameTimeHistory.length) };
-            memoryUsage: this.memoryUsage ,
-    } }
+            memoryUsage: this.memoryUsage  } }
     
     /**
      * パフォーマンス警告をチェック

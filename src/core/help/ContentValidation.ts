@@ -7,31 +7,28 @@
 import { LoggingSystem  } from '../LoggingSystem.js';
 
 // 型定義
-export interface ValidationResult { isValid: boolean;
-    errors: string[];
-    warnings: string[];
-    suggestions: string[];
+export interface ValidationResult { isValid: boolean,
+    errors: string[],
+    warnings: string[],
+    suggestions: string[],
     score: number;
-
-export interface ValidationConfig { minContentLength: number;
-    maxContentLength: number;
-    maxTitleLength: number;
-    requiredFields: string[];
-    supportedLanguages: string[];
-    supportedDifficulties: string[];
-    maxTagsCount: number;
+    export interface ValidationConfig { minContentLength: number,
+    maxContentLength: number,
+    maxTitleLength: number,
+    requiredFields: string[],
+    supportedLanguages: string[],
+    supportedDifficulties: string[],
+    maxTagsCount: number,
     maxRelatedTopics: number;
-
-export interface ContentSection { id: string;
-    title: string;
+    export interface ContentSection { id: string,
+    title: string,
     content: string;
     tags?: string[];
     difficulty?: 'beginner' | 'intermediate' | 'advanced';
     searchKeywords?: string[];
-
-export interface HelpContent { id: string;
-    title: string;
-    content: string;
+    export interface HelpContent { id: string,
+    title: string,
+    content: string,
     language: string;
     version?: string;
     difficulty?: 'beginner' | 'intermediate' | 'advanced';
@@ -41,36 +38,31 @@ export interface HelpContent { id: string;
     metadata?: Record<string, any>;
     lastUpdated?: number;
     [key: string]: any;
-
-export interface TutorialContent { id: string;
-    title: string;
-    description: string;
-    steps: TutorialStep[];
+    export interface TutorialContent { id: string,
+    title: string,
+    description: string,
+    steps: TutorialStep[],
     language: string;
     prerequisites?: string[];
-
     estimatedDuration?: number;
     difficulty?: 'beginner' | 'intermediate' | 'advanced';
     [key: string]: any;
-
-export interface TutorialStep { id: string;
-    title: string;
+    export interface TutorialStep { id: string,
+    title: string,
     instructions: string;
     action?: string;
     target?: string;
     validation?: string;
     [key: string]: any;
-
-export interface FAQContent { id: string;
-    question: string;
-    answer: string;
-    category: string;
+    export interface FAQContent { id: string,
+    question: string,
+    answer: string,
+    category: string,
     language: string;
     tags?: string[];
     difficulty?: 'beginner' | 'intermediate' | 'advanced';
     [key: string]: any;
-
-export type ValidationRule = (content: any, result: ValidationResult) => void;
+    export type ValidationRule = (content: any, result: ValidationResult) => void;
 
 /**
  * コンテンツバリデーションクラス
@@ -95,13 +87,13 @@ export class ContentValidation {
         
         // バリデーション設定
         this.config = {
-            minContentLength: 10;
-            maxContentLength: 10000;
-    maxTitleLength: 200;
-            requiredFields: ['id', 'title', 'content', 'language'];
-            supportedLanguages: ['ja', 'en', 'zh-CN', 'zh-TW', 'ko'];
-            supportedDifficulties: ['beginner', 'intermediate', 'advanced'];
-            maxTagsCount: 10 }
+            minContentLength: 10,
+    maxContentLength: 10000,
+    maxTitleLength: 200,
+    requiredFields: ['id', 'title', 'content', 'language'];
+    supportedLanguages: ['ja', 'en', 'zh-CN', 'zh-TW', 'ko'];
+    supportedDifficulties: ['beginner', 'intermediate', 'advanced'];
+    maxTagsCount: 10 };
             maxRelatedTopics: 5 
     };
         this.setupValidationRules();
@@ -117,7 +109,7 @@ export class ContentValidation {
             errors: [],
             warnings: [],
             suggestions: [],
-    score: 100 },
+    score: 100 };
         try { // 基本構造チェック
             this.validateBasicStructure(content, result);
             // 必須フィールドチェック
@@ -140,7 +132,7 @@ export class ContentValidation {
             result.score = this.calculateQualityScore(result);
             result.isValid = result.errors.length === 0;
 
-            this.loggingSystem.debug('ContentValidation', `Help content validation completed: ${result.isValid ? 'PASS' : 'FAIL}`}',
+            this.loggingSystem.debug('ContentValidation, `Help content validation completed: ${result.isValid ? 'PASS' : 'FAIL}`}',
             ';'
 
         } catch (error) { result.isValid = false,' }'
@@ -162,7 +154,7 @@ export class ContentValidation {
             errors: [],
             warnings: [],
             suggestions: [],
-    score: 100 },
+    score: 100 };
         try { // 基本チェック
             this.validateBasicStructure(content, result);
             // チュートリアル固有チェック
@@ -197,7 +189,7 @@ export class ContentValidation {
             errors: [],
             warnings: [],
             suggestions: [],
-    score: 100 },
+    score: 100 ,
         try { // 基本チェック
             this.validateBasicStructure(content, result);
             // FAQ固有チェック
@@ -239,10 +231,8 @@ export class ContentValidation {
             if (!content[field]) { }'
 
                 result.errors.push(`Required, field missing: ${field}`}';} else if(typeof, content[field] === 'string' && content[field].trim() === ') {
-                result.errors.push(`Required, field cannot, be empty: ${field}`};
-            }
+                result.errors.push(`Required, field cannot, be empty: ${field}`    }
 }
-
     /**
      * コンテンツ品質のバリデーション
      * @param content - コンテンツ
@@ -250,39 +240,35 @@ export class ContentValidation {
      */
     private validateContentQuality(content: any, result: ValidationResult): void { // タイトルの長さチェック
         if (content.title && content.title.length > this.config.maxTitleLength) { }
-            result.warnings.push(`Title, is too, long (${content.title.length}/${this.config.maxTitleLength} characters}`};
+            result.warnings.push(`Title, is too, long (${content.title.length}/${this.config.maxTitleLength} characters}`}
         }
 
         // コンテンツの長さチェック
         if (content.content) {
             const contentLength = content.content.length }
             if (contentLength < this.config.minContentLength) { }
-                result.warnings.push(`Content, is too, short (${contentLength}/${this.config.minContentLength} characters}`};
+                result.warnings.push(`Content, is too, short (${contentLength}/${this.config.minContentLength} characters}`}
             } else if (contentLength > this.config.maxContentLength) {
-                result.warnings.push(`Content, is too, long (${contentLength}/${this.config.maxContentLength} characters}`};
-            }
-        }
-
+                result.warnings.push(`Content, is too, long (${contentLength}/${this.config.maxContentLength} characters}`    }
+}
         // 言語チェック
         if (content.language && !this.config.supportedLanguages.includes(content.language) {
     
 }
-            result.warnings.push(`Unsupported, language: ${content.language}`};
+            result.warnings.push(`Unsupported, language: ${content.language}`}
         }
 
         // 難易度チェック
         if (content.difficulty && !this.config.supportedDifficulties.includes(content.difficulty) {
     
 }
-            result.warnings.push(`Invalid, difficulty level: ${content.difficulty}`};
+            result.warnings.push(`Invalid, difficulty level: ${content.difficulty}`}
         }
 
         // タグ数チェック
         if (content.tags && Array.isArray(content.tags) && content.tags.length > this.config.maxTagsCount) {
-            result.warnings.push(`Too, many tags (${content.tags.length}/${this.config.maxTagsCount}`};
-        }
-    }
-
+            result.warnings.push(`Too, many tags (${content.tags.length}/${this.config.maxTagsCount}`    }
+}
     /**
      * セクション構造のバリデーション
      * @param sections - セクション配列
@@ -305,10 +291,8 @@ export class ContentValidation {
     
 }
                 result.errors.push(`Section ${index} missing, content`);
-            }
-        };
-    }
-
+                }
+}
     /**
      * メタデータのバリデーション
      * @param content - コンテンツ
@@ -386,9 +370,8 @@ export class ContentValidation {
 
                 if(typeof, prereq !== 'string' || prereq.trim() === ') { }'
                     result.warnings.push(`Invalid, prerequisite at, index ${index}`);
-                }
-            };
-        }
+                    }
+}
     }
 
     /**
@@ -416,10 +399,8 @@ export class ContentValidation {
     
 }
                 result.warnings.push(`Step ${index} has, action but, no target, specified`);
-            }
-        };
-    }
-
+                }
+}
     /**
      * FAQ固有のバリデーション
      * @param content - FAQコンテンツ
@@ -456,7 +437,7 @@ export class ContentValidation {
         // 提案による軽微な減点
         score -= result.suggestions.length * 1,
         
-        return Math.max(0, Math.min(100, score) }
+        return Math.max(0, Math.min(100, score);
 
     /**
      * バリデーションルールの設定
@@ -498,7 +479,7 @@ export class ContentValidation {
                     break,
 
                 default:','
-                    this.validationRules.set(name, rule) }
+                    this.validationRules.set(name, rule);
                     break; }
             }
 
@@ -540,21 +521,20 @@ export class ContentValidation {
                         case 'faq':,
                             result = this.validateFAQContent(content);
                             break }
-                        default: result = this.validateHelpContent(content) }
+                        default: result = this.validateHelpContent(content);
                             break; }
                     }
                     
                     results.push(result);
                 } catch (error) { results.push({)
-                        isValid: false) }
+                        isValid: false),
                         errors: [`Validation failed for item ${index}: ${(error, as, Error}.message}`];
                         warnings: [],
                         suggestions: [],
-    score: 0,
-                    } }'}');
+    score: 0 } }'}');
 
             this.loggingSystem.info('ContentValidation', `Batch validation completed: ${results.length} items`}';} catch (error) {'
-            this.loggingSystem.error('ContentValidation', 'Batch validation failed', error) }
+            this.loggingSystem.error('ContentValidation', 'Batch validation failed', error);
         
         return results;
     }
@@ -569,7 +549,7 @@ export class ContentValidation {
             this.loggingSystem.info('ContentValidation', 'Content validation destroyed',' }'
 
         } catch (error) {
-            this.loggingSystem.error('ContentValidation', 'Failed to destroy content validation', error) }
+            this.loggingSystem.error('ContentValidation', 'Failed to destroy content validation', error);
 }
 
 // シングルトンインスタンス管理
@@ -580,7 +560,7 @@ let contentValidationInstance: ContentValidation | null = null,
  * @returns ContentValidationインスタンス
  */
 export function getContentValidation(): ContentValidation { if (!contentValidationInstance) {
-        contentValidationInstance = new ContentValidation() }
+        contentValidationInstance = new ContentValidation() };
     return contentValidationInstance;
 }
 

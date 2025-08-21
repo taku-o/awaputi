@@ -7,12 +7,12 @@ export class PerformanceWarningSystem {
     constructor(realtimeMonitor, options: any = { } {
         this.realtimeMonitor = realtimeMonitor;
         this.options = {
-            enableVisualWarnings: true;
-            enableAudioWarnings: false;
-            enableBrowserNotifications: true;
+            enableVisualWarnings: true,
+            enableAudioWarnings: false,
+            enableBrowserNotifications: true,
     warningDisplayDuration: 10000, // 10秒;
             criticalWarningDuration: 15000, // 15秒;
-            maxVisibleWarnings: 5;
+            maxVisibleWarnings: 5,
     autoAcknowledge: false;
             ...options
         };
@@ -31,7 +31,7 @@ export class PerformanceWarningSystem {
      */
     initialize() {
         this.setupWarningCategories();
-        this.createWarningContainer() }
+        this.createWarningContainer();
         this.setupEventListeners(); }
     }
 
@@ -39,38 +39,35 @@ export class PerformanceWarningSystem {
      * 警告カテゴリの設定
      */
     setupWarningCategories() { this.warningCategories.set('performance', {''
-            name: 'パフォーマンス',
+            name: 'パフォーマンス,
             color: '#ff9800',','
             icon: '⚠️')','
-    priority: 2,')',
+    priority: 2,'),
             actions: ['詳細表示', '最適化提案]'),
 
         this.warningCategories.set('memory', {''
-            name: 'メモリ',
+            name: 'メモリ,
             color: '#f44336',','
             icon: '🧠')','
-    priority: 3,')',
+    priority: 3,'),
             actions: ['メモリクリア', '詳細表示]'),
-            actions: ['メモリクリア', '詳細表示]'),
-        };
+            actions: ['メモリクリア', '詳細表示]') };
         this.warningCategories.set('fps', {''
-            name: 'フレームレート',
+            name: 'フレームレート,
             color: '#ff5722',','
             icon: '🎯')','
-    priority: 2,')',
+    priority: 2,'),
             actions: ['品質調整', '詳細表示]'),
-            actions: ['品質調整', '詳細表示]'),
-        };
+            actions: ['品質調整', '詳細表示]') };
         this.warningCategories.set('error', {''
-            name: 'エラー',
+            name: 'エラー,
             color: '#d32f2f',','
             icon: '❌')','
-    priority: 4,')',
+    priority: 4,'),
             actions: ['エラー詳細', 'レポート送信]'),
-            actions: ['エラー詳細', 'レポート送信]'),
-        };
+            actions: ['エラー詳細', 'レポート送信]') };
         this.warningCategories.set('network', {''
-            name: 'ネットワーク',
+            name: 'ネットワーク,
             color: '#2196f3',','
             icon: '🌐')','
     priority: 1,' }'
@@ -88,17 +85,17 @@ export class PerformanceWarningSystem {
         
         // スタイルを設定
         Object.assign(this.warningContainer.style, { ''
-            position: 'fixed',
-            top: '70px',
-            right: '20px',
-            width: '400px',
-            maxWidth: '90vw',
-            zIndex: '10001',
+            position: 'fixed,
+            top: '70px,
+            right: '20px,
+            width: '400px,
+            maxWidth: '90vw,
+            zIndex: '10001,
             fontFamily: 'Arial, sans-serif',','
-            fontSize: '14px',')',
+            fontSize: '14px,')',
             pointerEvents: 'none'),
         document.body.appendChild(this.warningContainer);
-        this.applyWarningStyles(),  }
+        this.applyWarningStyles() }
 
     /**
      * 警告スタイルの適用'
@@ -117,8 +114,7 @@ export class PerformanceWarningSystem {
                 pointer-events: auto,
                 transform: translateX(100%}
                 animation: slideInWarning 0.3s ease-out forwards,
-    transition: all 0.3s ease,
-            }
+    transition: all 0.3s ease }
             .warning-item.critical { animation: pulseWarning 1s infinite alternate }
             .warning-item.dismissing { animation: slideOutWarning 0.3s ease-in forwards }
             .warning-header { display: flex,
@@ -160,8 +156,8 @@ export class PerformanceWarningSystem {
                 cursor: pointer,
                 font-size: 12px,
                 transition: background 0.2s  }
-            .warning-action:hover { background: rgba(255, 255, 255, 0.3) }
-            .warning-action.primary { background: rgba(33, 150, 243, 0.8) }
+            .warning-action:hover { background: rgba(255, 255, 255, 0.3);
+            .warning-action.primary { background: rgba(33, 150, 243, 0.8);
             .warning-close { background: none,
                 border: none,
                 color: #999,
@@ -186,11 +182,11 @@ export class PerformanceWarningSystem {
     color: #999,
                 margin-top: 4px }
             @keyframes slideInWarning {
-                from { transform: translateX(100%),, opacity: 0 }
-                to { transform: translateX(0),, opacity: 1 }
+                from { transform: translateX(100%), opacity: 0 }
+                to { transform: translateX(0), opacity: 1 }
             @keyframes slideOutWarning {
-                from { transform: translateX(0),, opacity: 1 }
-                to { transform: translateX(100%),, opacity: 0 }
+                from { transform: translateX(0), opacity: 1 }
+                to { transform: translateX(100%), opacity: 0 }
             @keyframes pulseWarning { from { box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3 }
                 to { box-shadow: 0 4px 20px rgba(255, 0, 0, 0.4 }
         `;
@@ -232,8 +228,8 @@ export class PerformanceWarningSystem {
             details: alertData.details,
             timestamp: alertData.timestamp || Date.now()','
     source: alertData.source || 'unknown'),
-            category: this.determineCategory(alertData) }
-            autoAcknowledge: this.shouldAutoAcknowledge(alertData); 
+            category: this.determineCategory(alertData),
+            autoAcknowledge: this.shouldAutoAcknowledge(alertData);
     };
 
         this.showWarning(warningData);
@@ -244,13 +240,13 @@ export class PerformanceWarningSystem {
      */
     processPerformanceWarning(warningData) {
         const processedWarning = {''
-            id: this.generateWarningId('',
-    type: 'performance',
-            severity: warningData.severity || 'warning',
-            title: '⚠️ パフォーマンス警告',
-            message: warningData.message || 'パフォーマンスの問題が検出されました',
+            id: this.generateWarningId(',
+    type: 'performance,
+            severity: warningData.severity || 'warning,
+            title: '⚠️ パフォーマンス警告,
+            message: warningData.message || 'パフォーマンスの問題が検出されました,
             details: warningData.details,
-            timestamp: Date.now('',
+            timestamp: Date.now(',
     source: 'performance_monitor' }
 
             category: 'performance' })
@@ -276,16 +272,16 @@ export class PerformanceWarningSystem {
         this.activeWarnings.set(warningData.id, warningData);
 
         // 視覚的警告の表示
-        if (this.options.enableVisualWarnings) { this.displayVisualWarning(warningData) }
+        if (this.options.enableVisualWarnings) { this.displayVisualWarning(warningData);
 
         // 音声警告
-        if (this.options.enableAudioWarnings) { this.playWarningSound(warningData.severity) }
+        if (this.options.enableAudioWarnings) { this.playWarningSound(warningData.severity);
 
         // ブラウザ通知
-        if (this.options.enableBrowserNotifications) { this.showBrowserNotification(warningData) }
+        if (this.options.enableBrowserNotifications) { this.showBrowserNotification(warningData);
 
         // 自動確認
-        if (warningData.autoAcknowledge || this.options.autoAcknowledge) { this.scheduleAutoAcknowledge(warningData.id) }
+        if (warningData.autoAcknowledge || this.options.autoAcknowledge) { this.scheduleAutoAcknowledge(warningData.id);
 
         // カスタムイベント発火
         this.dispatchWarningEvent(warningData);
@@ -312,7 +308,7 @@ export class PerformanceWarningSystem {
             this.options.criticalWarningDuration: this.options.warningDisplayDuration,
 
         warningElement.innerHTML = `';'
-            <div class="warning-progress" style="width: 100%"></div>"",
+            <div class="warning-progress" style="width: 100%"></div>",
             <div class="warning-header">"";
                 <div class="warning-title">"";
                     <span class="warning-icon">${category.icon}</span>
@@ -352,7 +348,7 @@ export class PerformanceWarningSystem {
             const progress = Math.max(0, 100 - (elapsed / duration) * 100); }
             progressBar.style.width = `${progress}%`;
             
-            if (progress > 0 && this.activeWarnings.has(warningData.id) { requestAnimationFrame(updateProgress) }
+            if (progress > 0 && this.activeWarnings.has(warningData.id) { requestAnimationFrame(updateProgress);
         };
         requestAnimationFrame(updateProgress);
 
@@ -428,7 +424,7 @@ export class PerformanceWarningSystem {
         if (Notification.permission === 'granted') { }
 
             const notification = new Notification(`${warningData.title}`, { body: warningData.message,''
-                icon: '/favicon.ico',
+                icon: '/favicon.ico,
                 badge: '/favicon.ico'
             }
 
@@ -437,7 +433,7 @@ export class PerformanceWarningSystem {
             ),
 
             notification.onclick = () => {  window.focus();
-                this.highlightWarning(warningData.id) }
+                this.highlightWarning(warningData.id);
                 notification.close(); }
             };
 
@@ -447,10 +443,8 @@ export class PerformanceWarningSystem {
             }, 5000');'} else if(Notification.permission === 'default' { ''
             const permission = await Notification.requestPermission()','
             if(permission === 'granted' { }
-                this.showBrowserNotification(warningData); }
+                this.showBrowserNotification(warningData);     }
 }
-    }
-
     /**
      * 警告の重複チェック
      */
@@ -470,9 +464,9 @@ export class PerformanceWarningSystem {
 
         if(alertData.severity) return alertData.severity,
 
-        if (alertData.type === 'error') return 'error',
-        if(alertData.details?.currentFPS && alertData.details.currentFPS < 15) return 'critical',
-        if(alertData.details?.usagePercent && alertData.details.usagePercent > 90) return 'critical',
+        if (alertData.type === 'error') return 'error,
+        if(alertData.details?.currentFPS && alertData.details.currentFPS < 15) return 'critical,
+        if(alertData.details?.usagePercent && alertData.details.usagePercent > 90) return 'critical,
 
         ' }'
 
@@ -484,7 +478,7 @@ export class PerformanceWarningSystem {
     generateTitle(alertData) {
 
         const category = this.warningCategories.get(alertData.type);
-        const icon = category?.icon || '⚠️',
+        const icon = category?.icon || '⚠️,
         const name = category?.name || 'システム' }
         return `${icon} ${name}警告`;
     }
@@ -499,9 +493,9 @@ export class PerformanceWarningSystem {
             return alertData.type;
 
         if (alertData.message?.includes('FPS') || alertData.message?.includes('フレーム)' { ''
-            return 'fps',
+            return 'fps,
         if (alertData.message?.includes('メモリ') || alertData.message?.includes('memory)' { ''
-            return 'memory',
+            return 'memory,
         if (alertData.message?.includes('エラー') || alertData.message?.includes('error)' { ''
             return 'error' }
 
@@ -525,7 +519,7 @@ export class PerformanceWarningSystem {
             warningElement.classList.add('dismissing}'
             setTimeout(() => {  }
                 if (warningElement.parentNode) { }
-                    warningElement.parentNode.removeChild(warningElement};
+                    warningElement.parentNode.removeChild(warningElement}
                 }
             }, 300);
         }
@@ -537,7 +531,7 @@ export class PerformanceWarningSystem {
      * 警告の確認
      */
     acknowledgeWarning(warningId) {
-        this.acknowledgements.add(warningId) }
+        this.acknowledgements.add(warningId);
         this.dismissWarning(warningId); }
     }
 
@@ -557,7 +551,7 @@ export class PerformanceWarningSystem {
                 break,
             case 'メモリクリア':','
                 this.triggerMemoryCleanup()','
-            case '品質調整':')',
+            case '品質調整':'),
                 this.suggestQualityAdjustment(warningData);
                 break,
             case 'エラー詳細':','
@@ -567,7 +561,7 @@ export class PerformanceWarningSystem {
                 this.sendErrorReport(warningData);
                 break,
             case '再試行':,
-                this.retryOperation(warningData) }
+                this.retryOperation(warningData);
                 break; }
 }
 
@@ -598,7 +592,7 @@ export class PerformanceWarningSystem {
 
         if (warningData.type === 'performance' || warningData.category === 'fps') {''
             suggestions.push('• エフェクトの品質を下げてください');
-            suggestions.push('• 他のアプリケーションを閉じてください') }
+            suggestions.push('• 他のアプリケーションを閉じてください');
 
             suggestions.push('• ブラウザのタブ数を減らしてください'); }
         }
@@ -606,7 +600,7 @@ export class PerformanceWarningSystem {
         if (warningData.category === 'memory') {
 
             suggestions.push('• ブラウザを再起動してください');
-            suggestions.push('• 不要なタブを閉じてください') }
+            suggestions.push('• 不要なタブを閉じてください');
 
             suggestions.push('• ゲームを一度終了して再開してください'); }
         }
@@ -651,7 +645,7 @@ export class PerformanceWarningSystem {
     dispatchWarningEvent(warningData) {
 
         const event = new CustomEvent('performance-warning-displayed', {
-            detail: warningData)) }
+            detail: warningData));
         window.dispatchEvent(event); }
     }
 
@@ -726,7 +720,7 @@ export class PerformanceWarningSystem {
     destroy() {
         this.clearAllWarnings();
         if (this.warningContainer) {
-            this.warningContainer.remove() }
+            this.warningContainer.remove();
             this.warningContainer = null; }
         }
         ';'

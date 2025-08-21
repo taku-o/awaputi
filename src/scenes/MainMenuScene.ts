@@ -43,7 +43,7 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
             { id: 'shop', key: 'menu.shop', action: () => this.openShop()'
             { id: 'settings', key: 'menu.settings', action: () => this.openSettings()
 
-     }
+     };
     }
 
             { id: 'userInfo', key: 'menu.userInfo', action: () => this.openUserInfo()  }
@@ -77,10 +77,8 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
 
         } catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'MainMenuScene._initializeSubComponents'
-            };
-        }
-    }
-    
+                }
+}
     /**
      * メニューラベルを現在の言語で更新
      */
@@ -91,10 +89,8 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
 
             };'} catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'MainMenuScene.updateMenuLabels'
-            };
-        }
-    }
-    
+                }
+}
     /**
      * シーン開始時の処理
      */
@@ -139,10 +135,8 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
 
             } catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'MainMenuScene.enter'
-            };
-        }
-    }
-    
+                }
+}
     /**
      * シーン終了時の処理
      */
@@ -157,10 +151,8 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
                 }
                 this.resizeCallback = undefined;'} catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'MainMenuScene.exit'
-            };
-        }
-    }
-    
+                }
+}
     /**
      * 更新処理
      */
@@ -173,7 +165,7 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
             const canvas = this.gameEngine.canvas,
             ','
             // 背景
-            context.fillStyle = '#001122',
+            context.fillStyle = '#001122,
             context.fillRect(0, 0, canvas.width, canvas.height);
             if (this.showingUsernameInput) {
     
@@ -185,10 +177,8 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
 
             } catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'MainMenuScene.render'
-            };
-        }
-    }
-    
+                }
+}
     /**
      * 入力処理（統制）
      */
@@ -224,7 +214,7 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
                     break,
                 case 'Enter':','
                     this.selectMenuItem()','
-                case 'Escape':')',
+                case 'Escape':'),
                     console.log('ゲーム終了') }
                     break; }
 
@@ -234,10 +224,8 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
                 this.menuItems),
                 (index: number) => { 
                     this.selectedMenuIndex = index  }
-                    this.selectMenuItem(); }
-                }
-    }
-    
+                    this.selectMenuItem();     }
+}
     /**
      * ユーザー名入力の入力処理'
      */''
@@ -356,7 +344,7 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
      * NavigationContextManagerを使用してコンテキストを管理'
      */''
     openSettings('''
-                accessMethod: 'menu_click',
+                accessMethod: 'menu_click,
                 sourceScene: 'MainMenuScene);'
             }''
 
@@ -371,10 +359,8 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
         } catch (error) { console.error('[MainMenuScene] Error opening settings:', error);
             this.errorHandler.handleError(error, {)'
                 context: 'MainMenuScene.openSettings'
-            };
-        }
-    }
-    
+                }
+}
     /**
      * ユーザー情報画面を開く
      */
@@ -402,10 +388,10 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
      * NavigationContextManagerを使用してコンテキストを管理'
      */''
     openHelp('''
-                accessMethod: 'menu_click',
-                sourceScene: 'MainMenuScene',
+                accessMethod: 'menu_click,
+                sourceScene: 'MainMenuScene,
     standard: true // 標準ヘルプモード);
-            }'
+            }
 
             const success = this.gameEngine.sceneManager.switchScene('help', contextData);
 
@@ -418,10 +404,8 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
         } catch (error) { console.error('[MainMenuScene] Error opening help:', error);
             this.errorHandler.handleError(error, {)'
                 context: 'MainMenuScene.openHelp'
-            };
-        }
-    }
-    
+                }
+}
     // ========================================
     // ダイアログ管理メソッド
     // ========================================

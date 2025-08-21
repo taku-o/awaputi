@@ -46,65 +46,67 @@ export interface ChallengeUIConfig { // 表示設定
 /**
  * UI状態インターフェース
  */
-interface UIState { visible: boolean;
-    challenges: Challenge[];
-    selectedChallenge: Challenge | null;
-    focusedIndex: number;
-    sortBy: 'priority' | 'difficulty' | 'progress' | 'deadline';
-    filterBy: 'all' | 'daily' | 'weekly' | 'completed' | 'active';
-    loading: boolean;
-    error: string | null  }
+interface UIState { visible: boolean,
+    challenges: Challenge[],
+    selectedChallenge: Challenge | null,
+    focusedIndex: number,
+    sortBy: 'priority' | 'difficulty' | 'progress' | 'deadline,
+    filterBy: 'all' | 'daily' | 'weekly' | 'completed' | 'active,
+    loading: boolean,
+    error: string | null  };
 /**
  * UI統計インターフェース
  */
-interface UIStats { views: number;
-    challengeViews: number;
-    completions: number;
-    filterChanges: number;
-    sortChanges: number;
-    keyboardInteractions: number;
+interface UIStats { views: number,
+    challengeViews: number,
+    completions: number,
+    filterChanges: number,
+    sortChanges: number,
+    keyboardInteractions: number,
     announcementsMade: number;
 /**
  * DOM要素インターフェース
  */
-interface UIElements { container: HTMLElement | null;
-    header: HTMLElement | null;
-    filterControls: HTMLElement | null;
-    sortControls: HTMLElement | null;
-    challengeList: HTMLElement | null;
-    challengeItems: HTMLElement[];
-    progressSection: HTMLElement | null;
-    footer: HTMLElement | null;
-    announcer: HTMLElement | null;
-    loadingIndicator: HTMLElement | null;
+interface UIElements { container: HTMLElement | null,
+    header: HTMLElement | null,
+    filterControls: HTMLElement | null,
+    sortControls: HTMLElement | null,
+    challengeList: HTMLElement | null,
+    challengeItems: HTMLElement[],
+    progressSection: HTMLElement | null,
+    footer: HTMLElement | null,
+    announcer: HTMLElement | null,
+    loadingIndicator: HTMLElement | null,
     errorMessage: HTMLElement | null  }
 export class ChallengeUI {
     private challengeSystem: ChallengeSystem;
-    private, config: {
-        maxVisibleChallenges: number;
-        autoRefresh: boolean;
-        refreshInterval: number;
-        showProgress: boolean;
-        showRewards: boolean;
-        showDifficulty: boolean;
-    animations: {
-            enabled: boolean;
-            duration: number;
-    easing: string;
-        accessibility: { enabled: boolean;
+    private, config: { maxVisibleChallenges: number;
+    },
+        autoRefresh: boolean,
+        refreshInterval: number,
+        showProgress: boolean,
+        showRewards: boolean,
+        showDifficulty: boolean,
+    animations: { enabled: boolean;
+    },
+            duration: number,
+    easing: string,
+        accessibility: { enabled: boolean,
             announcements: boolean;
-            keyboardNavigation: boolean;
-            highContrast: boolean;
-            reducedMotion: boolean;
-            progressAnnouncements: boolean;
-            rewardAnnouncements: boolean;
-    screenReaderOptimized: boolean;
-        styles: { backgroundColor: string;
+    },
+            keyboardNavigation: boolean,
+            highContrast: boolean,
+            reducedMotion: boolean,
+            progressAnnouncements: boolean,
+            rewardAnnouncements: boolean,
+    screenReaderOptimized: boolean,
+        styles: { backgroundColor: string,
             textColor: string;
-            accentColor: string;
-            borderRadius: string;
-            fontSize: string;
-    fontFamily: string;
+    },
+            accentColor: string,
+            borderRadius: string,
+            fontSize: string,
+    fontFamily: string,
     fontFamily: string;
         };
     private state: UIState;
@@ -115,72 +117,71 @@ export class ChallengeUI {
     public interactionHandler: ChallengeInteractionHandler;
     public dataController: ChallengeDataController;
 
-    constructor(challengeSystem: ChallengeSystem, options: ChallengeUIConfig = { )) {
+    constructor(challengeSystem: ChallengeSystem, options: ChallengeUIConfig = { ) {
         this.challengeSystem = challengeSystem;
         
         // 設定
         this.config = {
             // 表示設定
-            maxVisibleChallenges: options.maxVisibleChallenges || 5;
-            autoRefresh: options.autoRefresh !== false;
+            maxVisibleChallenges: options.maxVisibleChallenges || 5,
+            autoRefresh: options.autoRefresh !== false,
     refreshInterval: options.refreshInterval || 60000, // 1分;
-            showProgress: options.showProgress !== false;
-            showRewards: options.showRewards !== false;
+            showProgress: options.showProgress !== false,
+            showRewards: options.showRewards !== false,
             showDifficulty: options.showDifficulty !== false;
             // アニメーション設定
-           , animations: {
-                enabled: options.animations !== false;
-    duration: options.animationDuration || 300;
+            animations: { enabled: options.animations !== false  ,
+    duration: options.animationDuration || 300,
                 easing: options.animationEasing || 'ease-in-out'
             };
             // アクセシビリティ設定
-            accessibility: { enabled: options.accessibility !== false;
-                announcements: options.announcements !== false;
-                keyboardNavigation: options.keyboardNavigation !== false;
-                highContrast: options.highContrast === true;
-                reducedMotion: options.reducedMotion === true;
-                progressAnnouncements: options.progressAnnouncements !== false;
-                rewardAnnouncements: options.rewardAnnouncements !== false;
+            accessibility: { enabled: options.accessibility !== false,
+                announcements: options.announcements !== false  ,
+                keyboardNavigation: options.keyboardNavigation !== false,
+                highContrast: options.highContrast === true,
+                reducedMotion: options.reducedMotion === true,
+                progressAnnouncements: options.progressAnnouncements !== false,
+                rewardAnnouncements: options.rewardAnnouncements !== false,
     screenReaderOptimized: options.screenReaderOptimized !== false 
 };
             // スタイル設定
             styles: { ''
-                backgroundColor: options.backgroundColor || '#FFFFFF';
-                textColor: options.textColor || '#333333';
-                accentColor: options.accentColor || '#007AFF';
-                borderRadius: options.borderRadius || '8px';
-                fontSize: options.fontSize || '14px';
+                backgroundColor: options.backgroundColor || '#FFFFFF'  ,
+                textColor: options.textColor || '#333333,
+                accentColor: options.accentColor || '#007AFF,
+                borderRadius: options.borderRadius || '8px,
+                fontSize: options.fontSize || '14px,
                 fontFamily: options.fontFamily || 'system-ui, -apple-system, sans-serif' }
         };
         
         // 状态管理
-        this.state = { visible: false;
-            challenges: [];
-            selectedChallenge: null;
-    focusedIndex: 0;
-            sortBy: 'priority';
-            filterBy: 'all';
-            loading: false;
+        this.state = { visible: false,
+            challenges: [],
+            selectedChallenge: null,
+    focusedIndex: 0,
+            sortBy: 'priority,
+            filterBy: 'all,
+            loading: false,
     error: null;
         // DOM要素
-        this.elements = { container: null;
-            header: null;
-            filterControls: null;
-            sortControls: null;
-            challengeList: null;
-            challengeItems: [];
-            progressSection: null;
-            footer: null;
-            announcer: null;
-            loadingIndicator: null;
+        this.elements = { container: null,
+            header: null,
+            filterControls: null,
+            sortControls: null,
+            challengeList: null,
+            challengeItems: [],
+            progressSection: null,
+            footer: null,
+            announcer: null,
+            loadingIndicator: null,
     errorMessage: null;
         // 統計
-        this.stats = { views: 0;
-            challengeViews: 0;
-            completions: 0;
-            filterChanges: 0;
-            sortChanges: 0;
-            keyboardInteractions: 0;
+        this.stats = { views: 0,
+            challengeViews: 0,
+            completions: 0,
+            filterChanges: 0,
+            sortChanges: 0,
+            keyboardInteractions: 0,
     announcementsMade: 0 
  };
         // サブコンポーネントの初期化（依存注入）
@@ -212,7 +213,7 @@ export class ChallengeUI {
             if (this.config.autoRefresh) { this.dataController.startAutoRefresh(),' }'
 
             } catch (error) {
-            this.handleError('CHALLENGE_UI_INITIALIZATION_FAILED', error as Error) }
+            this.handleError('CHALLENGE_UI_INITIALIZATION_FAILED', error as Error);
     }
     
     // ========== 公開API（サブコンポーネントに委譲） ==========
@@ -224,7 +225,7 @@ export class ChallengeUI {
         
         try {
             this.state.visible = true,
-            this.stats.views++,
+            this.stats.views++;
             
             // チャレンジデータの読み込み（データコントローラーに委譲）
             await this.dataController.loadChallenges();
@@ -240,7 +241,7 @@ export class ChallengeUI {
             this.log('ChallengeUI表示);'
 
         } catch (error) {
-            this.handleError('CHALLENGE_UI_SHOW_FAILED', error as Error) }
+            this.handleError('CHALLENGE_UI_SHOW_FAILED', error as Error);
     }
     
     /**
@@ -261,28 +262,28 @@ export class ChallengeUI {
     /**
      * チャレンジデータの読み込み（データコントローラーに委譲）
      */
-    async loadChallenges(): Promise<void> { return this.dataController.loadChallenges() }
+    async loadChallenges(): Promise<void> { return this.dataController.loadChallenges();
     /**
      * チャレンジの進捗更新（データコントローラーに委譲）
      */
-    updateChallengeProgress(challengeId: string, newProgress: number): void { return this.dataController.updateChallengeProgress(challengeId, newProgress) }
+    updateChallengeProgress(challengeId: string, newProgress: number): void { return this.dataController.updateChallengeProgress(challengeId, newProgress);
     /**
      * チャレンジの検索（データコントローラーに委譲）
      */
-    searchChallenges(query: string): Challenge[] { return this.dataController.searchChallenges(query) }
+    searchChallenges(query: string): Challenge[] { return this.dataController.searchChallenges(query);
     /**
      * チャレンジ統計の取得（データコントローラーに委譲）
      */
-    getChallengeStatistics(): any { return this.dataController.getChallengeStatistics() }
+    getChallengeStatistics(): any { return this.dataController.getChallengeStatistics();
     /**
      * チャレンジデータのエクスポート（データコントローラーに委譲）
      */
-    exportChallengeData(): string { return this.dataController.exportChallengeData() }
+    exportChallengeData(): string { return this.dataController.exportChallengeData();
     /**
      * チャレンジデータのインポート（データコントローラーに委譲）
      */'
     importChallengeData(jsonData: string): boolean {;
-        return this.dataController.importChallengeData(jsonData) }
+        return this.dataController.importChallengeData(jsonData);
     // ========== アナウンス機能 ==========
     
     /**
@@ -291,7 +292,7 @@ export class ChallengeUI {
     announce(message: string, priority: 'polite' | 'assertive' = 'polite': void { ''
         if(!this.config.accessibility.announcements || !this.elements.announcer) return,
         
-        this.stats.announcementsMade++,
+        this.stats.announcementsMade++;
         ','
         // 一度クリアしてから新しいメッセージを設定
         this.elements.announcer.textContent = ','
@@ -329,28 +330,29 @@ export class ChallengeUI {
     /**
      * 現在の状態取得
      */
-    getCurrentState(): { visible: boolean;
+    getCurrentState(): { visible: boolean,
         challenges: number;
-        selectedChallenge: string | null;
-        loading: boolean;
-        error: string | null;
-        sortBy: string;
-    filterBy: string, { return { visible: this.state.visible;
-            challenges: this.state.challenges.length;
+    };
+        selectedChallenge: string | null,
+        loading: boolean,
+        error: string | null,
+        sortBy: string,
+    filterBy: string, { return { visible: this.state.visible,
+            challenges: this.state.challenges.length,
     selectedChallenge: this.state.selectedChallenge?.id || null, : undefined
-            loading: this.state.loading;
-            error: this.state.error;
-    sortBy: this.state.sortBy };
+            loading: this.state.loading,
+            error: this.state.error,
+    sortBy: this.state.sortBy ,
             filterBy: this.state.filterBy ;
     } }
     
     /**
      * 統計の取得
      */
-    getStats(): { main: UIStats;
+    getStats(): { main: UIStats,
         challenge: any; { return { }
-            main: { ...this.stats;
-            challenge: this.dataController.getChallengeStatistics() }
+            main: { ...this.stats,
+            challenge: this.dataController.getChallengeStatistics();
     
     // ========== DOM要素アクセス ==========
     
@@ -362,7 +364,7 @@ export class ChallengeUI {
      * DOM要素を親要素に追加
      */
     appendTo(parentElement: HTMLElement): void { if (parentElement && this.elements.container) {
-            parentElement.appendChild(this.elements.container) }
+            parentElement.appendChild(this.elements.container);
     }
     
     // ========== データ整合性 ==========
@@ -370,11 +372,11 @@ export class ChallengeUI {
     /**
      * データ整合性チェック（データコントローラーに委譲）
      */
-    validateDataIntegrity(): boolean { return this.dataController.validateDataIntegrity() }
+    validateDataIntegrity(): boolean { return this.dataController.validateDataIntegrity();
     /**
      * 期限切れチャレンジの確認（データコントローラーに委譲）
      */
-    checkExpiredChallenges(): void { return this.dataController.checkExpiredChallenges() }
+    checkExpiredChallenges(): void { return this.dataController.checkExpiredChallenges();
     // ========== ユーティリティ ==========
     
     /**
@@ -412,7 +414,7 @@ export class ChallengeUI {
     
 }
             this.dataController.destroy(); }
-        if (this.interactionHandler) { this.interactionHandler.destroy() }
+        if (this.interactionHandler) { this.interactionHandler.destroy();
         // DOM要素の削除
         if (this.elements.container && this.elements.container.parentNode) { }
 
@@ -433,7 +435,7 @@ export class ChallengeUI {
             type,
             error: error.message || error,
             context,
-            timestamp: Date.now(  },
+            timestamp: Date.now(  ,
 
         if (ErrorHandler) {', ' }
 
@@ -448,7 +450,7 @@ export class ChallengeUI {
      */''
     private log(message: string, data: any = null, level: 'info' | 'warn' | 'error' = 'info': void { const logEntry = {''
             timestamp: Date.now('''
-        const, consoleMethod = level === 'error' ? 'error' : ')',
+        const, consoleMethod = level === 'error' ? 'error' : '),
                             level === 'warn' ? 'warn' : 'log',' }'
 
         console[consoleMethod](`[ChallengeUI] ${message}`, data || '');

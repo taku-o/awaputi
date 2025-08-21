@@ -223,7 +223,7 @@ test.describe('Help and Settings Navigation E2E Tests', () => {
             consoleLogs.push({);
                 type: msg.type(
                 text: msg.text(},
-            };
+            }
         }');'
 
         const canvas = page.getByRole('img', { name: 'ゲーム画面' },
@@ -243,5 +243,5 @@ test.describe('Help and Settings Navigation E2E Tests', () => {
         );
 
         expect(invalidSceneReferences).toHaveLength(0);
-    };
+    }
 }');'

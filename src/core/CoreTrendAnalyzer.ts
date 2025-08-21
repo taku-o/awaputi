@@ -5,56 +5,51 @@
 
 import { getErrorHandler  } from '../utils/ErrorHandler';
 
-export interface TrendData { timestamp: number;
+export interface TrendData { timestamp: number,
     value: number;
-    metadata?: Record<string, any> }
+    metadata?: Record<string, any> };
 ';'
 
 export interface TrendAnalysisResult {,
-    trend: 'increasing' | 'decreasing' | 'stable' | 'volatile';
-    slope: number;
-    correlation: number;
+    trend: 'increasing' | 'decreasing' | 'stable' | 'volatile,
+    slope: number,
+    correlation: number,
     volatility: number;
     seasonality?: SeasonalityInfo;
     predictions?: number[];
-
-export interface SeasonalityInfo { detected: boolean;
+    export interface SeasonalityInfo { detected: boolean;
     period?: number;
     strength?: number;
-
-export interface AnalysisConfig { windowSize: number;
-    smoothingFactor: number;
-    volatilityThreshold: number;
-    trendThreshold: number;
-    enablePrediction: boolean;
+    export interface AnalysisConfig { windowSize: number,
+    smoothingFactor: number,
+    volatilityThreshold: number,
+    trendThreshold: number,
+    enablePrediction: boolean,
     predictionSteps: number;
-
-export class CoreTrendAnalyzer {
+    export class CoreTrendAnalyzer {
     private config: AnalysisConfig;
     private, dataHistory: Map<string, TrendData[]> = new Map();
     private analysisCache: Map<string, TrendAnalysisResult> = new Map();
-
-    constructor(config: Partial<AnalysisConfig> = {)) {
+    constructor(config: Partial<AnalysisConfig> = {) {
         this.config = {
-            windowSize: 20;
-            smoothingFactor: 0.3;
-            volatilityThreshold: 0.1;
-            trendThreshold: 0.05;
-            enablePrediction: false;
+            windowSize: 20,
+    smoothingFactor: 0.3,
+    volatilityThreshold: 0.1,
+    trendThreshold: 0.05,
+    enablePrediction: false,
     predictionSteps: 5;
             ...config,
 
         console.log('CoreTrendAnalyzer, initialized)'
-}
-
+};
     addDataPoint(seriesId: string, data: TrendData): void { if (!this.dataHistory.has(seriesId) {
-            this.dataHistory.set(seriesId, []) }
+            this.dataHistory.set(seriesId, []);
 
         const series = this.dataHistory.get(seriesId)!;
         series.push(data);
 
         // データ量を制限
-        if (series.length > this.config.windowSize * 2) { series.splice(0 series.length - this.config.windowSize * 2) }
+        if (series.length > this.config.windowSize * 2) { series.splice(0 series.length - this.config.windowSize * 2);
 
         // キャッシュをクリア
         this.analysisCache.delete(seriesId);
@@ -183,15 +178,13 @@ export class CoreTrendAnalyzer {
                 correlation /= count,
                 if (correlation > bestCorrelation) {
                     bestCorrelation = correlation }
-                    bestPeriod = period; }
+                    bestPeriod = period;     }
 }
-        }
-
         const threshold = 0.5; // 相関の閾値
         if (bestCorrelation > threshold) {
             return { detected: true,
                 period: bestPeriod,
-                strength: bestCorrelation,
+                strength: bestCorrelation;
 
         return { detected: false,
 
@@ -210,9 +203,9 @@ export class CoreTrendAnalyzer {
     getSeries(seriesId: string): TrendData[] { return this.dataHistory.get(seriesId) || [] }
 
     clearSeries(seriesId: string): void { this.dataHistory.delete(seriesId);
-        this.analysisCache.delete(seriesId) }
+        this.analysisCache.delete(seriesId);
 
-    getAllSeriesIds(): string[] { return Array.from(this.dataHistory.keys() }
+    getAllSeriesIds(): string[] { return Array.from(this.dataHistory.keys()));
 
     updateConfig(newConfig: Partial<AnalysisConfig>): void {
         this.config = { ...this.config, ...newConfig,

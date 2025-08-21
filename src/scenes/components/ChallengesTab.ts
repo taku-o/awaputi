@@ -5,18 +5,17 @@ import { ComponentEventBus  } from './ComponentEventBus';
 import { SceneState  } from './SceneState';
 
 interface LocalizationManager { translate(key: string): string;
-
-interface ChallengeData { challengeId: string;
+    interface ChallengeData { challengeId: string;
     challenge?: {
-        titl,e?: string;
+        titl,e?: string };
 
-interface BoundHandlers { challengeClick: (data: any) => void;
-    challengeCompleted: (data: ChallengeData) => void;
-    challengeProgress: (data: any) => void;
+interface BoundHandlers { challengeClick: (data: any) => void,
+    challengeCompleted: (data: ChallengeData) => void,
+    challengeProgress: (data: any) => void,
     refreshData: () => void  }
 }
 
-interface ChallengeConfig { refreshInterval: number;
+interface ChallengeConfig { refreshInterval: number,
     animationEnabled: boolean;
 
 /**
@@ -37,21 +36,20 @@ export class ChallengesTab {
     // 設定
     private, config: ChallengeConfig = {
         refreshInterval: 30000, // 30秒;
-        animationEnabled: true;
+    animationEnabled: true;
     // イベントハンドラー
     private boundHandlers: BoundHandlers;
     constructor(gameEngine: GameEngine, eventBus: ComponentEventBus, sceneState: SceneState) {
     
         this.gameEngine = gameEngine;
-        this.eventBus = eventBus;
-        this.sceneState = sceneState;
+    this.eventBus = eventBus;
+    this.sceneState = sceneState;
         
         // イベントハンドラー
         this.boundHandlers = {
-            challengeClick: this.onChallengeClick.bind(this);
-            challengeCompleted: this.onChallengeCompleted.bind(this;
-    challengeProgress: this.onChallengeProgress.bind(this) }
-
+            challengeClick: this.onChallengeClick.bind(this),
+    challengeCompleted: this.onChallengeCompleted.bind(this,
+    challengeProgress: this.onChallengeProgress.bind(this) };
             refreshData: this.refreshData.bind(this); 
     };
 
@@ -83,7 +81,7 @@ export class ChallengesTab {
 
         } catch (error') {'
             console.error('[ChallengesTab] 初期化エラー:', error);
-            this.handleInitializationError(error, as Error) }
+            this.handleInitializationError(error, as Error);
     }
     
     /**
@@ -92,42 +90,42 @@ export class ChallengesTab {
     private createMockLocalizationManager(): LocalizationManager { return { ''
             translate: (key: string'): string => { '
                 const translations: Record<string, string> = {', 'challenge.ui.title': 'チャレンジ','
-                    'challenge.ui.refresh': '更新',
-                    'challenge.ui.noChallenges': 'チャレンジがありません',
-                    'challenge.filter.active': 'アクティブ',
-                    'challenge.filter.completed': '完了済み',
-                    'challenge.filter.all': 'すべて',
-                    'challenge.stats.active': 'アクティブ',
-                    'challenge.stats.completed': '完了済み',
-                    'challenge.stats.today': '今日',
-                    'challenge.type.daily': 'デイリー',
-                    'challenge.type.weekly': 'ウィークリー',
-                    'challenge.type.event': 'イベント',
-                    'challenge.reward.label': '報酬:',
-                    'challenge.reward.claim': '受け取り',
-                    'challenge.reward.claimed': '受け取り済み',
-                    'challenge.reward.locked': 'ロック中',
-                    'challenge.timeRemaining': '残り時間:',
-                    'time.hours': '時間',
-                    'time.minutes': '分',
-                    'time.days': '日',
-                    'common.close': '閉じる',
-                    'challenge.difficulty': '難易度',
-                    'challenge.category': 'カテゴリ',
-                    'challenge.progress.title': '進捗',
-                    'challenge.progress.current': '現在',
-                    'challenge.progress.target': '目標',
-                    'challenge.progress.remaining': '残り',
-                    'challenge.reward.title': '報酬',
-                    'challenge.reward.description.ap': 'ゲーム内通貨',
-                    'challenge.reward.description.item': 'ゲーム内アイテム',
-                    'challenge.reward.description.title': '称号',
-                    'challenge.reward.description.theme': 'テーマ',
-                    'challenge.tips.title': 'ヒント',
-                    'challenge.tips.score': 'より高いスコアを目指しましょう',
-                    'challenge.tips.combo': 'コンボを繋げることが重要です',
-                    'challenge.tips.bubblePop': 'より多くの泡を割りましょう',
-                    'challenge.tips.timePlayed': '継続してプレイしましょう',
+                    'challenge.ui.refresh': '更新,
+                    'challenge.ui.noChallenges': 'チャレンジがありません,
+                    'challenge.filter.active': 'アクティブ,
+                    'challenge.filter.completed': '完了済み,
+                    'challenge.filter.all': 'すべて,
+                    'challenge.stats.active': 'アクティブ,
+                    'challenge.stats.completed': '完了済み,
+                    'challenge.stats.today': '今日,
+                    'challenge.type.daily': 'デイリー,
+                    'challenge.type.weekly': 'ウィークリー,
+                    'challenge.type.event': 'イベント,
+                    'challenge.reward.label': '報酬:,
+                    'challenge.reward.claim': '受け取り,
+                    'challenge.reward.claimed': '受け取り済み,
+                    'challenge.reward.locked': 'ロック中,
+                    'challenge.timeRemaining': '残り時間:,
+                    'time.hours': '時間,
+                    'time.minutes': '分,
+                    'time.days': '日,
+                    'common.close': '閉じる,
+                    'challenge.difficulty': '難易度,
+                    'challenge.category': 'カテゴリ,
+                    'challenge.progress.title': '進捗,
+                    'challenge.progress.current': '現在,
+                    'challenge.progress.target': '目標,
+                    'challenge.progress.remaining': '残り,
+                    'challenge.reward.title': '報酬,
+                    'challenge.reward.description.ap': 'ゲーム内通貨,
+                    'challenge.reward.description.item': 'ゲーム内アイテム,
+                    'challenge.reward.description.title': '称号,
+                    'challenge.reward.description.theme': 'テーマ,
+                    'challenge.tips.title': 'ヒント,
+                    'challenge.tips.score': 'より高いスコアを目指しましょう,
+                    'challenge.tips.combo': 'コンボを繋げることが重要です,
+                    'challenge.tips.bubblePop': 'より多くの泡を割りましょう,
+                    'challenge.tips.timePlayed': '継続してプレイしましょう,
                     'challenge.tips.daily': '毎日ログインしてチャレンジしましょう',' }'
 
                     'challenge.tips.weekly': '週間目標に向けて計画的に進めましょう',' };'
@@ -174,7 +172,7 @@ export class ChallengesTab {
             // UI更新
             this.challengeUI.refresh();
             // 通知表示（簡単な実装）
-            this.showCompletionNotification(data) }
+            this.showCompletionNotification(data);
     }
     
     /**
@@ -189,7 +187,7 @@ export class ChallengesTab {
      */
     private showChallengeDetail(challengeId: string): void { if (this.detailModal) {
             this.currentChallengeId = challengeId;
-            this.detailModal.show(challengeId) }
+            this.detailModal.show(challengeId);
     }
     
     /**
@@ -203,14 +201,14 @@ export class ChallengesTab {
 
         if (floatingTextManager'}''
             floatingTextManager.show(' }', 'チャレンジ完了!', : undefined') { x: 400, y: 200  }')
-                { color: '#2ecc71', fontSize: 24, duration: 3000 )  }
+                { color: '#2ecc71', fontSize: 24, duration: 3000 );
     }
     
     /**
      * データ更新
      */
     private refreshData(): void { if (this.challengeUI && this.isVisible) {
-            this.challengeUI.refresh() }
+            this.challengeUI.refresh();
     }
     
     /**
@@ -234,7 +232,7 @@ export class ChallengesTab {
         }
         
         // 詳細モーダルも閉じる
-        if (this.detailModal && this.detailModal.isVisible) { this.detailModal.close() }
+        if (this.detailModal && this.detailModal.isVisible) { this.detailModal.close();
     }
     
     /**
@@ -252,9 +250,9 @@ export class ChallengesTab {
             ctx.fillRect(x, y, width, height);
             ','
             // タイトル描画
-            ctx.fillStyle = '#2c3e50',
-            ctx.font = 'bold 24px Arial, sans-serif',
-            ctx.textAlign = 'left',
+            ctx.fillStyle = '#2c3e50,
+            ctx.font = 'bold 24px Arial, sans-serif,
+            ctx.textAlign = 'left,
             ctx.fillText('チャレンジ', x + 20, y + 40);
             // チャレンジUI領域の描画
             const contentY = y + 60,
@@ -272,14 +270,14 @@ export class ChallengesTab {
                 container.style.zIndex = '1000';
                 
                 // コンテナがページに追加されていない場合は追加
-                if (!container.parentNode) { document.body.appendChild(container) }
+                if (!container.parentNode) { document.body.appendChild(container);
             }
             
             ctx.restore();
 
         } catch (error) {
             console.error('[ChallengesTab] レンダリングエラー:', error);
-            this.renderErrorState(ctx, x, y, width, height, error as Error) }
+            this.renderErrorState(ctx, x, y, width, height, error as Error);
     }
     
     /**
@@ -289,11 +287,11 @@ export class ChallengesTab {
         ctx.save()','
         ctx.fillStyle = '#f8f9fa',')'
         ctx.fillRect(x, y, width, height);
-        ctx.fillStyle = '#7f8c8d',
-        ctx.font = '18px Arial, sans-serif',
-        ctx.textAlign = 'center',
+        ctx.fillStyle = '#7f8c8d,
+        ctx.font = '18px Arial, sans-serif,
+        ctx.textAlign = 'center,
         ctx.fillText('チャレンジを読み込み中...', x + width / 2, y + height / 2);
-        ctx.restore() }
+        ctx.restore();
     
     /**
      * エラー状態の描画
@@ -302,15 +300,15 @@ export class ChallengesTab {
         ctx.save()','
         ctx.fillStyle = '#ffebee',')'
         ctx.fillRect(x, y, width, height);
-        ctx.fillStyle = '#e74c3c',
-        ctx.font = '18px Arial, sans-serif',
-        ctx.textAlign = 'center',
+        ctx.fillStyle = '#e74c3c,
+        ctx.font = '18px Arial, sans-serif,
+        ctx.textAlign = 'center,
         ctx.fillText('チャレンジの読み込みに失敗しました', x + width / 2, y + height / 2 - 20','
 
-        ctx.fillStyle = '#7f8c8d',
-        ctx.font = '14px Arial, sans-serif',
+        ctx.fillStyle = '#7f8c8d,
+        ctx.font = '14px Arial, sans-serif,
         ctx.fillText('ページを更新してもう一度お試しください', x + width / 2, y + height / 2 + 10);
-        ctx.restore() }
+        ctx.restore();
     
     /**
      * 初期化エラーの処理'
@@ -347,7 +345,7 @@ export class ChallengesTab {
             case 'Escape':),
                 if (this.detailModal && this.detailModal.isVisible) {
                     event.preventDefault();
-                    this.detailModal.close() }
+                    this.detailModal.close();
                     return true;
                 break;
         }
@@ -393,14 +391,14 @@ export class ChallengesTab {
         
         // UIコンポーネントのクリーンアップ
         if (this.challengeUI) {
-            this.challengeUI.cleanup() }
+            this.challengeUI.cleanup();
             this.challengeUI = null; }
         }
         
         if (this.detailModal) {
         ','
 
-            this.detailModal.cleanup() }
+            this.detailModal.cleanup();
 
         console.log('[ChallengesTab] クリーンアップ完了'); }
 

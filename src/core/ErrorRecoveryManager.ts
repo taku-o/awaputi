@@ -1,6 +1,6 @@
 // TypeScript conversion - basic types
 interface BasicConfig { [key: string]: any;
-import { ErrorPreventionHandler  } from './error-recovery-manager/ErrorPreventionHandler.js';
+    import { ErrorPreventionHandler  } from './error-recovery-manager/ErrorPreventionHandler.js';
 import { UndoRedoSystem  } from './error-recovery-manager/UndoRedoSystem.js';
 import { AutoSaveSystem  } from './error-recovery-manager/AutoSaveSystem.js';
 
@@ -14,7 +14,7 @@ export class ErrorRecoveryManager {
     private config: BasicConfig;
     private, state: any;
     /**
-     * ErrorRecoveryManagerを初期化 }
+     * ErrorRecoveryManagerを初期化 };
      * @param {Object} gameEngine - ゲームエンジンインスタンス'
      */''
     constructor(gameEngine: any) {
@@ -28,25 +28,22 @@ export class ErrorRecoveryManager {
             preventionEnabled: true,
             recoveryEnabled: true,
             undoRedoEnabled: true,
-            warningEnabled: true,
+            warningEnabled: true;
             // エラー防止設定
-           , prevention: {
-                confirmCriticalActions: true,
+            prevention: { confirmCriticalActions: true  ,
                 preventAccidentalClicks: true,
-    safetyDelays: {
-                    criticalAction: 1000,
+    safetyDelays: { criticalAction: 1000  ,
     destructiveAction: 2000 }
                     gameReset: 3000 
     };
                 warningThresholds: { lowHP: 2,
-                    lowScore: 50,
-    timeRunningOut: 10000 // 10秒 },
-                doubleClickPrevention: 500,
-            },
+                    lowScore: 50  ,
+    timeRunningOut: 10000 // 10秒 ,
+                doubleClickPrevention: 500 ,
             
             // エラー回復設定
             recovery: { autoSave: true,
-    saveInterval: 30000, // 30秒,
+    saveInterval: 30000, // 30秒  },
                 maxUndoSteps: 10,
                 maxRedoSteps: 10,
                 maxSavePoints: 5,
@@ -54,18 +51,18 @@ export class ErrorRecoveryManager {
                 emergencyRestore: true,
             // エラーメッセージ設定
             messages: { showDetailed: true,
-                showSuggestions: true,
+                showSuggestions: true ,
     showPreventionTips: true,
-                language: 'ja',
+                language: 'ja,
                 verbosity: 'detailed' // concise, detailed, verbose },
             
             // UI設定
             ui: { ''
-                position: 'center', // center, top, bottom,
-                animation: 'slide',
+                position: 'center', // center, top, bottom  },
+                animation: 'slide,
     duration: 5000,
                 persistent: false,
-                backgroundColor: '#f8f9fa',
+                backgroundColor: '#f8f9fa,
                 borderColor: '#dc3545'
             }
         };
@@ -73,126 +70,126 @@ export class ErrorRecoveryManager {
         this.errorTypes = { // ゲームプレイエラー
             gameplay: {
                 missedBubble: {''
-                    name: 'バブルの取り逃し',
-                    severity: 'medium',
+                    name: 'バブルの取り逃し' ,
+                    severity: 'medium,
     recoverable: false,
                     preventable: true,
-                    message: 'バブルを取り逃しました',
-                    suggestion: 'もう少し早めにクリックしてみましょう',
+                    message: 'バブルを取り逃しました,
+                    suggestion: 'もう少し早めにクリックしてみましょう,
                     prevention: 'バブルの色が変わったらすぐにクリック'
             };
                 wrongBubble: { ''
-                    name: '間違ったバブルをクリック',
-                    severity: 'low',
+                    name: '間違ったバブルをクリック' ,
+                    severity: 'low,
     recoverable: false,
                     preventable: true,
-                    message: '意図しないバブルをクリックしました',
-                    suggestion: '狙いを定めてからクリックしましょう',
+                    message: '意図しないバブルをクリックしました,
+                    suggestion: '狙いを定めてからクリックしましょう,
                     prevention: 'マウスカーソルの位置を確認してからクリック'
             };
                 poisonBubble: { ''
-                    name: 'ポイズンバブルをクリック',
-                    severity: 'high',
+                    name: 'ポイズンバブルをクリック' ,
+                    severity: 'high,
     recoverable: false,
                     preventable: true,
-                    message: '危険なポイズンバブルをクリックしました',
-                    suggestion: 'ピンクバブルでHPを回復しましょう',
+                    message: '危険なポイズンバブルをクリックしました,
+                    suggestion: 'ピンクバブルでHPを回復しましょう,
                     prevention: '緑色のバブルは避けるようにしましょう'
             };
                 comboBreak: { ''
-                    name: 'コンボが途切れた',
-                    severity: 'medium',
+                    name: 'コンボが途切れた' ,
+                    severity: 'medium,
     recoverable: false,
                     preventable: true,
-                    message: 'コンボが途切れました',
-                    suggestion: '次は連続してバブルをクリックしてみましょう',
+                    message: 'コンボが途切れました,
+                    suggestion: '次は連続してバブルをクリックしてみましょう,
                     prevention: 'ミスをしないよう慎重にプレイ'
             }
             };
             // UI/UXエラー
             interface: { accidentalPause: {''
-                    name: '誤って一時停止',
-                    severity: 'low',
+                    name: '誤って一時停止,
+                    severity: 'low,
     recoverable: true,
                     preventable: true,
-                    message: 'ゲームが一時停止されました',
-                    suggestion: 'スペースキーまたは再生ボタンで再開',
+                    message: 'ゲームが一時停止されました,
+                    suggestion: 'スペースキーまたは再生ボタンで再開,
                     prevention: 'ポーズボタンの位置を確認'
-            };
+        }
                 accidentalReset: { ''
-                    name: '誤ってリセット',
-                    severity: 'high',
+                    name: '誤ってリセット' ,
+                    severity: 'high,
     recoverable: true,
                     preventable: true,
-                    message: 'ゲームがリセットされました',
-                    suggestion: '前回のセーブから復元できます',
+                    message: 'ゲームがリセットされました,
+                    suggestion: '前回のセーブから復元できます,
                     prevention: 'リセット前に確認ダイアログを表示'
             };
                 settingsChanged: { ''
-                    name: '意図しない設定変更',
-                    severity: 'medium',
+                    name: '意図しない設定変更' ,
+                    severity: 'medium,
     recoverable: true,
                     preventable: true,
-                    message: '設定が変更されました',
-                    suggestion: '前の設定に戻すことができます',
+                    message: '設定が変更されました,
+                    suggestion: '前の設定に戻すことができます,
                     prevention: '設定変更時の確認'
             };
                 menuNavigation: { ''
-                    name: 'メニューでの迷子',
-                    severity: 'low',
+                    name: 'メニューでの迷子' ,
+                    severity: 'low,
     recoverable: true,
                     preventable: true,
-                    message: 'メニューで迷子になりました',
-                    suggestion: 'ホームボタンでメインメニューに戻れます',
+                    message: 'メニューで迷子になりました,
+                    suggestion: 'ホームボタンでメインメニューに戻れます,
                     prevention: 'パンくずナビゲーションの表示'
             }
             };
             // 入力エラー
             input: { doubleClick: {''
-                    name: 'ダブルクリック',
-                    severity: 'low',
+                    name: 'ダブルクリック,
+                    severity: 'low,
     recoverable: false,
                     preventable: true,
-                    message: '同じバブルを二度クリックしました',
-                    suggestion: '一度のクリックで十分です',
+                    message: '同じバブルを二度クリックしました,
+                    suggestion: '一度のクリックで十分です,
                     prevention: 'クリック後少し待ってから次の操作'
-            };
+        }
                 rapidClicks: { ''
-                    name: '連打し過ぎ',
-                    severity: 'medium',
+                    name: '連打し過ぎ' ,
+                    severity: 'medium,
     recoverable: false,
                     preventable: true,
-                    message: 'クリックが速すぎます',
-                    suggestion: 'もう少しゆっくりクリックしてみましょう',
+                    message: 'クリックが速すぎます,
+                    suggestion: 'もう少しゆっくりクリックしてみましょう,
                     prevention: 'クリック間隔を空ける'
             };
                 misclick: { ''
-                    name: 'ミスクリック',
-                    severity: 'low',
+                    name: 'ミスクリック' ,
+                    severity: 'low,
     recoverable: false,
                     preventable: true,
-                    message: '意図しない場所をクリックしました',
-                    suggestion: '正確に狙ってクリックしましょう',
+                    message: '意図しない場所をクリックしました,
+                    suggestion: '正確に狙ってクリックしましょう,
                     prevention: 'マウス感度を調整'
             }
             };
             // システムエラー
             system: { performanceDrop: {''
-                    name: 'パフォーマンス低下',
-                    severity: 'medium',
+                    name: 'パフォーマンス低下,
+                    severity: 'medium,
     recoverable: true,
                     preventable: true,
-                    message: 'ゲームの動作が重くなっています',
-                    suggestion: '他のアプリを閉じるかブラウザを再起動',
+                    message: 'ゲームの動作が重くなっています,
+                    suggestion: '他のアプリを閉じるかブラウザを再起動,
                     prevention: '定期的なブラウザメンテナンス'
-            };
+        }
                 connectionLoss: { ''
-                    name: '接続の問題',
-                    severity: 'high',
+                    name: '接続の問題' ,
+                    severity: 'high,
     recoverable: true,
                     preventable: false,
-                    message: 'インターネット接続に問題があります',
-                    suggestion: '接続を確認してページを再読み込み',
+                    message: 'インターネット接続に問題があります,
+                    suggestion: '接続を確認してページを再読み込み,
                     prevention: '安定したネットワーク環境の確保'
             }
 };
@@ -200,20 +197,19 @@ export class ErrorRecoveryManager {
         this.state = { errorHistory: [],
             currentError: null,
     errorCount: {
-                total: 0,
-                byType: new Map('',
+                total: 0 ,
+                byType: new Map(',
     level: 'normal'
             };
             recoveryMode: { active: false,
-                availableOptions: [],
+                availableOptions: [] ,
     currentStep: 0 
     };
         // 警告システム)
         this.warningSystem = { enabled: true)
             activeWarnings: new Map(),
             warningHistory: [],
-    thresholds: {
-                errorFrequency: 3, // 3回以上で警告,
+    thresholds: { errorFrequency: 3, // 3回以上で警告  },
                 timeWindow: 60000, // 1分間,
                 criticalHP: 1,
     timeRemaining: 10000 // 10秒  }
@@ -234,7 +230,7 @@ export class ErrorRecoveryManager {
             keydown: this.handleKeydown.bind(this),
             click: this.handleClick.bind(this),
             gameAction: this.handleGameAction.bind(this,
-    stateChange: this.handleStateChange.bind(this  },
+    stateChange: this.handleStateChange.bind(this  ,
         
         this.initialize();
     }
@@ -243,7 +239,7 @@ export class ErrorRecoveryManager {
      * システムを初期化
      */''
     async initialize()';'
-            console.log('ErrorRecoveryManager: 初期化開始',
+            console.log('ErrorRecoveryManager: 初期化開始,
             
             // 設定の読み込み
             await this.loadConfiguration();
@@ -280,7 +276,7 @@ export class ErrorRecoveryManager {
     async loadConfiguration()';'
             const savedConfig = localStorage.getItem('errorRecoveryConfig);'
             if (savedConfig) {
-                const parsed = JSON.parse(savedConfig) }
+                const parsed = JSON.parse(savedConfig);
 
                 this.mergeConfig(parsed); }
             }
@@ -288,7 +284,7 @@ export class ErrorRecoveryManager {
             // エラー履歴の読み込み
             const savedHistory = localStorage.getItem('errorRecoveryHistory);'
             if (savedHistory) {
-                const parsed = JSON.parse(savedHistory) }
+                const parsed = JSON.parse(savedHistory);
                 this.state.errorHistory = parsed.errorHistory || []; }
                 this.state.errorCount = parsed.errorCount || { total: 0, byType: new Map(), recent: []  }
                 // Mapオブジェクトの復元
@@ -306,7 +302,7 @@ export class ErrorRecoveryManager {
         // 警告バナーを作成
         this.ui.warningBanner = this.createWarningBanner();
         // 回復パネルを作成
-        this.ui.recoveryPanel = this.createRecoveryPanel() }
+        this.ui.recoveryPanel = this.createRecoveryPanel();
 
         console.log('ErrorRecoveryManager: UI作成完了') }'
     }
@@ -364,7 +360,7 @@ export class ErrorRecoveryManager {
      * エラーダイアログのスタイルを適用"
      */""
     applyErrorDialogStyles(dialog) {
-        const styles = `,
+        const styles = ,
             .error-dialog {
                 position: fixed,
                 top: 0,
@@ -375,7 +371,7 @@ export class ErrorRecoveryManager {
                 display: flex,
                 align-items: center,
                 justify-content: center,"
-    }"
+    }
                 font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
             }
             
@@ -387,7 +383,7 @@ export class ErrorRecoveryManager {
                 width: 100%,
                 height: 100%,
     background: rgba(0, 0, 0, 0.6);
-                backdrop-filter: blur(3px) }
+                backdrop-filter: blur(3px);
             
             .error-dialog-content { position: relative,
                 background: white,
@@ -495,9 +491,9 @@ export class ErrorRecoveryManager {
 
         if(!document.getElementById('error-dialog-styles)' { ''
             const styleSheet = document.createElement('style');
-            styleSheet.id = 'error-dialog-styles',
+            styleSheet.id = 'error-dialog-styles,
             styleSheet.textContent = styles,
-            document.head.appendChild(styleSheet) }
+            document.head.appendChild(styleSheet);
     }
     
     /**
@@ -566,29 +562,29 @@ export class ErrorRecoveryManager {
     createWarningBanner() {"
 
         const banner = document.createElement('div');
-        banner.id = 'warning-banner',
-        banner.className = 'warning-banner hidden',
+        banner.id = 'warning-banner,
+        banner.className = 'warning-banner hidden,
         banner.setAttribute('role', 'alert');
         banner.setAttribute('aria-live', 'polite');
         ','
 
         banner.innerHTML = `','
-            <div class="warning-content">"",
-                <div class="warning-icon">⚠️</div>"",
-                <div class="warning-text">"",
-                    <div class="warning-title"></div>"",
+            <div class="warning-content">",
+                <div class="warning-icon">⚠️</div>",
+                <div class="warning-text">",
+                    <div class="warning-title"></div>",
                     <div class="warning-message"></div>","
-                </div>"",
-                <div class="warning-actions">"",
-                    <button class="warning-action-btn">対処する</button>"",
+                </div>",
+                <div class="warning-actions">",
+                    <button class="warning-action-btn">対処する</button>",
                     <button class="warning-dismiss-btn">×</button>,
                 </div>,
             </div>,
-        `,
+        ,
         ","
         // イベントリスナー""
         banner.querySelector('.warning-dismiss-btn').addEventListener('click', () => { ''
-            this.hideWarningBanner() }
+            this.hideWarningBanner();
 
         banner.querySelector('.warning-action-btn').addEventListener('click', () => { }
             this.handleWarningAction(); }
@@ -648,7 +644,7 @@ export class ErrorRecoveryManager {
             this.gameEngine.eventEmitter.on('gameAction', this.boundHandlers.gameAction','
             this.gameEngine.eventEmitter.on('stateChange', this.boundHandlers.stateChange','
             this.gameEngine.eventEmitter.on('error', this.handleGameError.bind(this)),
-            this.gameEngine.eventEmitter.on('bubblePopped', this.handleBubblePopped.bind(this)) }
+            this.gameEngine.eventEmitter.on('bubblePopped', this.handleBubblePopped.bind(this));
 
             this.gameEngine.eventEmitter.on('comboBreak', this.handleComboBreak.bind(this); }
 }
@@ -684,9 +680,9 @@ export class ErrorRecoveryManager {
         // FPSが低い場合
         if (currentFPS < 30) {
             this.handleError({''
-                type: 'system',
+                type: 'system,
                 subtype: 'performanceDrop' }''
-                severity: 'medium') }
+                severity: 'medium'),
                 data: { fps: currentFPS,
             ';'
         }
@@ -728,13 +724,13 @@ export class ErrorRecoveryManager {
      * イベントハンドラー
      */
     
-    handlePreventionAction(actionInfo) { this.recordError(actionInfo) }
+    handlePreventionAction(actionInfo) { this.recordError(actionInfo);
     
     handleBeforeUnload(event) {
     ,
         // 未保存の重要な変更がある場合
         if(this.hasUnsavedChanges()) {''
-            const message = '未保存の変更があります。本当にページを離れますか？',
+            const message = '未保存の変更があります。本当にページを離れますか？,
             event.returnValue = message }
             return message;
     
@@ -760,25 +756,25 @@ export class ErrorRecoveryManager {
     ','
 
         let errorInfo = { : undefined''
-            timestamp: Date.now('',
-    type: 'unknown',
-            subtype: 'generic',
-            severity: 'medium',
-            message: 'エラーが発生しました',
-            source: 'system',
+            timestamp: Date.now(',
+    type: 'unknown,
+            subtype: 'generic,
+            severity: 'medium,
+            message: 'エラーが発生しました,
+            source: 'system,
     recoverable: false,
             preventable: false,))
         // エラーの種類を判定)
         if (event.type) { // カスタムエラーオブジェクト }
             errorInfo = { ...errorInfo, ...event,'} else if (event.error) { // JavaScriptエラー'
-            errorInfo.type = 'javascript',
+            errorInfo.type = 'javascript,
             errorInfo.message = event.error.message,
 
             errorInfo.source = event.filename,
             errorInfo.severity = 'high',' }'
 
         } else if (event.reason) { // Promise rejection
-            errorInfo.type = 'promise',
+            errorInfo.type = 'promise,
             errorInfo.message = event.reason.message || String(event.reason);
             errorInfo.severity = 'medium' }
         
@@ -811,7 +807,7 @@ export class ErrorRecoveryManager {
     handleKeydown(event) {
         // F9 で回復パネル表示
         if(event.key === 'F9' {'
-            event.preventDefault() }
+            event.preventDefault();
             this.showRecoveryPanel(); }
 }
     
@@ -832,7 +828,7 @@ export class ErrorRecoveryManager {
     
     handleStateChange(stateChange) { // 必要に応じて処理 }
     
-    handleGameError(error) { this.handleError(error) }
+    handleGameError(error) { this.handleError(error);
     handleBubblePopped(bubble) { /* 実装省略 */ }
     handleComboBreak() { /* 実装省略 */ }
     
@@ -869,7 +865,7 @@ export class ErrorRecoveryManager {
         ';'
         // フォーカスを設定
         const firstButton = dialog.querySelector('.error-action-btn: not([style*="display: none"]),'
-        if (firstButton) { firstButton.focus() }
+        if (firstButton) { firstButton.focus();
         
         // 現在のエラーを記録
         this.state.currentError = errorInfo;
@@ -893,7 +889,7 @@ export class ErrorRecoveryManager {
         this.ui.warningBanner.classList.add('hidden);'
     }
     
-    handleWarningAction() { this.hideWarningBanner() }
+    handleWarningAction() { this.hideWarningBanner();
 
     showRecoveryPanel()';'
         this.ui.recoveryPanel.classList.remove('hidden);'
@@ -910,7 +906,7 @@ export class ErrorRecoveryManager {
             case 'retry':','
                 this.retryLastAction('''
             case 'undo': ','
-                this.undoRedoSystem.undo('',
+                this.undoRedoSystem.undo(',
             case 'continue':,
                 // 何もしない
     
@@ -930,22 +926,22 @@ export class ErrorRecoveryManager {
     // Undo/Redo操作
     undo() { return this.undoRedoSystem.undo() }'
     
-    redo() { return this.undoRedoSystem.redo() }
+    redo() { return this.undoRedoSystem.redo();
     
-    canUndo() { return this.undoRedoSystem.canUndo() }
+    canUndo() { return this.undoRedoSystem.canUndo();
     
-    canRedo() { return this.undoRedoSystem.canRedo() }
+    canRedo() { return this.undoRedoSystem.canRedo();
     ;
     // 自動保存操作
     saveState()';'
         return this.autoSaveSystem.performSave('manual);'
     }
     
-    restoreLatest() { return this.autoSaveSystem.restoreLatest() }
+    restoreLatest() { return this.autoSaveSystem.restoreLatest();
     
-    getSavePoints() { return this.autoSaveSystem.getSavePoints() }
+    getSavePoints() { return this.autoSaveSystem.getSavePoints();
     
-    restoreFromSavePoint(savePointId) { return this.autoSaveSystem.restoreFromSavePoint(savePointId) }
+    restoreFromSavePoint(savePointId) { return this.autoSaveSystem.restoreFromSavePoint(savePointId);
     
     // 設定管理
     updateConfig(newConfig) {
@@ -953,7 +949,7 @@ export class ErrorRecoveryManager {
         // 各コンポーネントの設定更新
         this.preventionHandler.updateConfig(this.config);
         this.undoRedoSystem.updateSettings(this.config);
-        this.autoSaveSystem.updateSettings(this.config) }
+        this.autoSaveSystem.updateSettings(this.config);
         this.saveConfiguration(); }
     }
     
@@ -966,9 +962,9 @@ export class ErrorRecoveryManager {
             localStorage.setItem('errorRecoveryConfig', JSON.stringify(this.config);
             
             const historyData = { errorHistory: this.state.errorHistory,
-                errorCount: {'
-                    ...this.state.errorCount,
-                    byType: Array.from(this.state.errorCount.byType.entries()  }
+                errorCount: { '
+                    ...this.state.errorCount  },
+                    byType: Array.from(this.state.errorCount.byType.entries()));
 
             };
             localStorage.setItem('errorRecoveryHistory', JSON.stringify(historyData);
@@ -976,7 +972,7 @@ export class ErrorRecoveryManager {
         } catch (error) { console.warn('ErrorRecoveryManager: 設定保存エラー:', error }
     }
     
-    saveErrorHistory() { this.saveConfiguration() }
+    saveErrorHistory() { this.saveConfiguration();
     
     // 統計・デバッグ情報
     getStatistics() {
@@ -984,23 +980,22 @@ export class ErrorRecoveryManager {
             errorCount: this.state.errorCount.total,
             recentErrors: this.state.errorCount.recent.length,
             errorTypes: Object.fromEntries(this.state.errorCount.byType,
-    prevention: this.preventionHandler.getStatistics() }
-            undoRedo: this.undoRedoSystem.getStatistics() },
+    prevention: this.preventionHandler.getStatistics(),
+            undoRedo: this.undoRedoSystem.getStatistics() ,
             autoSave: this.autoSaveSystem.getStatistics(); 
     }
 
     getSystemHealth('''
-            status: 'healthy',
+            status: 'healthy,
     components: { preventionHandler: !!this.preventionHandler,
-                undoRedoSystem: !!this.undoRedoSystem,
-    autoSaveSystem: !!this.autoSaveSystem },
+                undoRedoSystem: !!this.undoRedoSystem ,
+    autoSaveSystem: !!this.autoSaveSystem ,
             capabilities: { errorPrevention: true,
-                undoRedo: true,
+                undoRedo: true ,
                 autoSave: true,
     errorRecovery: true,))
             statistics: this.getStatistics(
-    timestamp: new Date().toISOString(),
-        }
+    timestamp: new Date().toISOString();
 
     integrateWithAccessibilityManager()';'
         console.log('ErrorRecoveryManager: アクセシビリティ統合完了 }'
@@ -1015,7 +1010,7 @@ export class ErrorRecoveryManager {
             this.preventionHandler.destroy(); }'
         }
         
-        if (this.undoRedoSystem) { this.undoRedoSystem.destroy() }
+        if (this.undoRedoSystem) { this.undoRedoSystem.destroy();
         
         if (this.autoSaveSystem) {
         ','
@@ -1026,7 +1021,7 @@ export class ErrorRecoveryManager {
         document.removeEventListener('keydown', this.boundHandlers.keydown','
         document.removeEventListener('click', this.boundHandlers.click);
         // UI要素を削除
-        Object.values(this.ui).forEach(element => { ) }
+        Object.values(this.ui).forEach(element => { );
             if (element && element.parentNode) { }
                 element.parentNode.removeChild(element); }
 };

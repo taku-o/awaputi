@@ -122,7 +122,7 @@ test.describe('Analytics Privacy & Dashboard E2E Tests', () => {
         // バブルクリック
         const canvas = page.locator('#gameCanvas');
         await canvas.click({ position: { x: 300, y: 300 } ),
-        await page.waitForTimeout(2000);
+        await page.waitForTimeout(2000) };
 
         // 収集されたデータが匿名化されているか確認
         const anonymizedData = await page.evaluate(async () => {
@@ -249,7 +249,7 @@ test.describe('Analytics Privacy & Dashboard E2E Tests', () => {
 
         const canvas = page.locator('#gameCanvas');
         await canvas.click({ position: { x: 300, y: 300 } ),
-        await page.waitForTimeout(2000');'
+        await page.waitForTimeout(2000');' };
 
         // 設定画面でデータ削除
         await page.click('button: has-text("設定"")',"
@@ -276,7 +276,7 @@ test.describe('Analytics Privacy & Dashboard E2E Tests', () => {
                 // データが削除されたことを確認
                 const remainingData = await page.evaluate(async () => {
                     if (window.gameEngine && window.gameEngine.analyticsManager') {'
-                        return await window.gameEngine.analyticsManager.storageManager.getData('sessions', {};
+                        return await window.gameEngine.analyticsManager.storageManager.getData('sessions', {}
                     }
                     return null;
                 };
@@ -329,7 +329,7 @@ test.describe('Analytics Privacy & Dashboard E2E Tests', () => {
 
             const canvas = page.locator('#gameCanvas');
             await canvas.click({ position: { x: 300, y: 300 } ),
-            await page.waitForTimeout(1000');'
+            await page.waitForTimeout(1000');' };
 
             // セッション終了
             await page.keyboard.press('Escape');
@@ -365,5 +365,5 @@ test.describe('Analytics Privacy & Dashboard E2E Tests', () => {
 
                 expect(download.suggestedFilename()').toContain('.csv') }'
         }
-    };
+    }
 }');'

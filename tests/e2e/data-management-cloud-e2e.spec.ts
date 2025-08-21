@@ -37,7 +37,7 @@ test.describe('データ管理 - クラウド対応E2Eテスト', () => {
                 return Promise.resolve({
                     ok: true),
                    , json: (') => Promise.resolve({ status: 'ok' ) });'
-            };
+            }
         }');'
         
         await page.goto('/');
@@ -66,7 +66,7 @@ test.describe('データ管理 - クラウド対応E2Eテスト', () => {
                 recovery: !!dm.recovery,
                 export: !!dm.export,
                 import: !!dm.import
-            };
+            }
         };
         
         expect(components.storage).toBe(true);
@@ -128,7 +128,7 @@ test.describe('データ管理 - クラウド対応E2Eテスト', () => {
             bestScore: 8500,
             totalPlayTime: 3600000, // 1時間
             bubblesPopped: {
-                normal: 1500,
+                normal: 1500 },
                 rainbow: 50,
                 golden: 10
             }
@@ -177,13 +177,13 @@ test.describe('データ管理 - クラウド対応E2Eテスト', () => {
         // インポート用のテストデータ
         const importData = {
             header: {
-                format: 'BubblePopSave',
+                format: 'BubblePopSave' },
                 version: '1.0',
                 exportedAt: new Date(').toISOString(}'
             },
             userData: {
                 playerData: {
-                    playerName: 'ImportTestPlayer',
+                    playerName: 'ImportTestPlayer' },
                     score: 20000,
                     level: 7
                 }
@@ -213,7 +213,7 @@ test.describe('データ管理 - クラウド対応E2Eテスト', () => {
         await page.evaluate((') => {'
             return window.gameEngine.dataManager.save('playerData', {
                 playerName: 'BackupTestPlayer',
-                score: 18000 };
+                score: 18000 }
         };
         
         // バックアップ作成
@@ -289,7 +289,7 @@ test.describe('データ管理 - クラウド対応E2Eテスト', () => {
                     type: 'save',
                     key: 'offlineData',
                     data: { test: 'offline operation' },
-                };
+                }
             }
             return null;
         };
@@ -375,7 +375,7 @@ test.describe('データ管理 - クラウド対応E2Eテスト', () => {
             return window.gameEngine.dataManager.save('performanceTest', data}
                 .then(() => {
                     const endTime = performance.now();
-                    return endTime - startTime };
+                    return endTime - startTime }
         }, testData);
         
         expect(savePerformance).toBeLessThan(100); // 100ms以内
@@ -386,7 +386,7 @@ test.describe('データ管理 - クラウド対応E2Eテスト', () => {
             return window.gameEngine.dataManager.load('performanceTest'}
                 .then(() => {
                     const endTime = performance.now();
-                    return endTime - startTime };
+                    return endTime - startTime }
         };
         
         expect(loadPerformance).toBeLessThan(50); // 50ms以内
@@ -401,7 +401,7 @@ test.describe('データ管理 - クラウド対応E2Eテスト', () => {
                 return window.gameEngine.dataManager.save(`testKey${index}`, {
                     index,
                     data: `test data ${index}`;);
-                    timestamp: Date.now( };
+                    timestamp: Date.now( }
             }, i);
         }
         
@@ -411,7 +411,7 @@ test.describe('データ管理 - クラウド対応E2Eテスト', () => {
                 return {
                     usedJSHeapSize: performance.memory.usedJSHeapSize,
                     totalJSHeapSize: performance.memory.totalJSHeapSize
-                };
+                }
             }
             return null;
         };
@@ -426,6 +426,6 @@ test.describe('データ管理 - クラウド対応E2Eテスト', () => {
             for (let i = 0, i < 100, i++) {
                 window.gameEngine.dataManager.storage.remove(`testKey${i}`);
             }
-        };
+        }
     };
 }');'

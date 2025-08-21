@@ -24,11 +24,11 @@ describe('Build Process Integration Tests', (') => {'
     return new Promise((resolve, reject) => {
       exec(command, { cwd: projectRoot, ...options }, (error, stdout, stderr) => {
         if (error) {
-          reject({ error, stdout, stderr };
+          reject({ error, stdout, stderr }
         } else {
-          resolve({ stdout, stderr };
+          resolve({ stdout, stderr }
         }
-      };
+      }
     }
   };
   /**
@@ -169,7 +169,7 @@ describe('Build Process Integration Tests', (') => {'
             const { stdout } = await execCommand(`git diff src/locales/${lang}/${category).json`),
             if (stdout.trim()} {
               hasDiff = true,
-              console.error(`Unexpected diff in ${lang}/${category).json:`, stdout};
+              console.error(`Unexpected diff in ${lang}/${category).json:`, stdout}
             } catch (error) {
             // ファイルが存在しない場合はスキップ
           }

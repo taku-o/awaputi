@@ -117,11 +117,11 @@ describe('ConfigurationCommands', () => {  let mockGameEngine: any,
                         baseScores: { }
                             normal: 10 }
                         }
-            };
+            }
             };
                 audio: { volume: {
                         master: 1.0 }
-            };
+            }
                 },'
             };
             const result = configCommands.listConfig([]');'
@@ -135,7 +135,7 @@ describe('ConfigurationCommands', () => {  let mockGameEngine: any,
                         baseScores: { }
                             normal: 10 }
                         }
-            };
+            }
             };
                 audio: { volume: {
                         master: 1.0 }

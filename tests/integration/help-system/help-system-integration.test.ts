@@ -8,7 +8,7 @@ import { ContextManager  } from '../../../src/core/help/ContextManager';
 // モック作成
 const mockGameEngine = {
     localizationManager: {
-        getCurrentLanguage: jest.fn((') => 'ja'),'
+        getCurrentLanguage: jest.fn((') => 'ja'),' };
         getString: jest.fn((key) => `translated_${key)`),
         on: jest.fn(
     sceneManager: {
@@ -19,10 +19,10 @@ const mockGameEngine = {
         switchScene: jest.fn(
         addScene: jest.fn(
     bubbleManager: {
-        getBubbles: jest.fn(() => []),
+        getBubbles: jest.fn(() => []) },
         getActiveBubbleTypes: jest.fn((') => ['normal', 'stone'])),'
     scoreManager: {
-        getCurrentScore: jest.fn(() => 1500),
+        getCurrentScore: jest.fn(() => 1500) },
         getCurrentCombo: jest.fn(() => 3)),
     playerData: {
         getTutorialProgress: jest.fn(() => ({)),
@@ -265,6 +265,6 @@ describe('Help System Integration', () => {
             expect(tooltipContent.keyboardShortcuts').toContain('Tab');'
             expect(tooltipContent.keyboardShortcuts').toContain('Enter');'
             expect(tooltipContent.keyboardShortcuts').toContain('Escape');'
-        };
+        }
     }
 }');'

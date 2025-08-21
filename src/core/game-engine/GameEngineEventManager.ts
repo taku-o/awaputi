@@ -10,8 +10,7 @@ interface GameEngine { eventListeners: Map<string, Function[]>,
 export class GameEngineEventManager {
     private gameEngine: GameEngine;
     constructor(gameEngine: GameEngine) {
-        this.gameEngine = gameEngine }
-    
+        this.gameEngine = gameEngine };
     /**
      * イベントリスナーを追加
      * @param eventName - イベント名
@@ -36,7 +35,7 @@ export class GameEngineEventManager {
                 } catch (error) {
                     console.error(`[GameEngine] Error in event listener for ${eventName}:`, error);
                 }
-            };
+            }
         }
     }
     

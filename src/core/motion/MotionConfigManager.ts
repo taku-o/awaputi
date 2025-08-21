@@ -4,114 +4,92 @@
  */
 
 // 型定義
-export interface MotionManager { visualAccessibilityManager: VisualAccessibilityManager;
-    accessibilityManager: AccessibilityManager;
-    gameEngine: GameEngine;
-    config: MotionConfig;
-    userPreferences: UserPreferences;
+export interface MotionManager { visualAccessibilityManager: VisualAccessibilityManager,
+    accessibilityManager: AccessibilityManager,
+    gameEngine: GameEngine,
+    config: MotionConfig,
+    userPreferences: UserPreferences,
     hazardPatterns: Record<string, HazardPattern>;
-    currentLevel: MotionLevel;
-    stats: MotionStats;
-    setMotionLevel: (level: MotionLevel) => void  }
+    currentLevel: MotionLevel,
+    stats: MotionStats,
+    setMotionLevel: (level: MotionLevel) => void  };
 }
 
 export interface VisualAccessibilityManager { [key: string]: any;
-
-export interface AccessibilityManager { [key: string]: any;
-
-export interface GameEngine { [key: string]: any;
-
-export interface MotionConfig { respectSystemPreference: boolean;
-    globalReducedMotion: boolean;
-    vestibularSafety: boolean;
-    vestibularGuidelines: VestibularGuidelines;
+    export interface AccessibilityManager { [key: string]: any;
+    export interface GameEngine { [key: string]: any;
+    export interface MotionConfig { respectSystemPreference: boolean,
+    globalReducedMotion: boolean,
+    vestibularSafety: boolean,
+    vestibularGuidelines: VestibularGuidelines,
     motionCategories: Record<string, MotionCategoryConfig>;
-    motionLevels: Record<string, MotionLevelConfig> }
-
-export interface VestibularGuidelines { maxRotationSpeed: number;
-    maxScaleChange: number;
-    maxParallaxDistance: number;
+    motionLevels: Record<string, MotionLevelConfig> };
+export interface VestibularGuidelines { maxRotationSpeed: number,
+    maxScaleChange: number,
+    maxParallaxDistance: number,
     flashingThreshold: number;
-
-export interface MotionCategoryConfig { enabled: boolean;
-    intensity: number;
+    export interface MotionCategoryConfig { enabled: boolean,
+    intensity: number,
     duration: number;
     vestibularSafe?: boolean;
-
-export interface MotionLevelConfig { name: string;
-    description: string;
+    export interface MotionLevelConfig { name: string,
+    description: string,
     enabled: boolean;
-
-export interface UserPreferences { motionLevel: MotionLevel;
-    granularControls: GranularControls;
-    selectiveReduction: SelectiveReduction;
+    export interface UserPreferences { motionLevel: MotionLevel,
+    granularControls: GranularControls,
+    selectiveReduction: SelectiveReduction,
     customIntensities: Map<string, number>;
     autoReduceOnPerformance: boolean;
-
-export interface GranularControls { particleDensity: number;
-    cameraMovement: number;
-    backgroundMotion: number;
-    uiTransitions: number;
+    export interface GranularControls { particleDensity: number,
+    cameraMovement: number,
+    backgroundMotion: number,
+    uiTransitions: number,
     gameplayEffects: number;
-
-export interface SelectiveReduction { disableRotation: boolean;
-    disableScaling: boolean;
-    disableParallax: boolean;
-    disableFlashing: boolean;
+    export interface SelectiveReduction { disableRotation: boolean,
+    disableScaling: boolean,
+    disableParallax: boolean,
+    disableFlashing: boolean,
     disableAutoplay: boolean;
-
-export interface HazardPattern { threshold: number;
-    detected: boolean;
-    description: string;
+    export interface HazardPattern { threshold: number,
+    detected: boolean,
+    description: string,
     severity: HazardSeverity;
-
-export interface AnimationParams { rotationSpeed?: number,
+    export interface AnimationParams { rotationSpeed?: number,
     scaleChange?: number;
     parallaxDistance?: number;
     flashingRate?: number;
     duration?: number;
     intensity?: number;
-
-export interface ViolationInfo { type: ViolationType;
-    value: number;
+    export interface ViolationInfo { type: ViolationType,
+    value: number,
     limit: number;
     severity?: HazardSeverity;
-
-export interface ConfigChangeData { [key: string]: any;
-
-export interface SystemPreferenceData {
+    export interface ConfigChangeData { [key: string]: any;
+    export interface SystemPreferenceData {
     reducedMotion: boolean;
-
-export interface MotionLevelChangeData { previous: MotionLevel;
+    export interface MotionLevelChangeData { previous: MotionLevel,
     current: MotionLevel;
-
-export interface CategoryConfigChangeData { category: string;
-    previous: MotionCategoryConfig;
+    export interface CategoryConfigChangeData { category: string,
+    previous: MotionCategoryConfig,
     current: MotionCategoryConfig;
-
-export interface GranularControlsChangeData { previous: GranularControls;
+    export interface GranularControlsChangeData { previous: GranularControls,
     current: GranularControls;
-
-export interface SelectiveReductionChangeData { previous: SelectiveReduction;
+    export interface SelectiveReductionChangeData { previous: SelectiveReduction,
     current: SelectiveReduction;
-
-export interface HazardDetectedData { pattern: string;
-    value: number;
+    export interface HazardDetectedData { pattern: string,
+    value: number,
     threshold: number;
-
-export interface MotionStats { vestibularWarnings: number;
-    configChanges: number;
-    hazardDetections: number;
+    export interface MotionStats { vestibularWarnings: number,
+    configChanges: number,
+    hazardDetections: number,
     performanceReductions: number;
-
-export interface ConfigStats { currentLevel: MotionLevel;
-    globalReducedMotion: boolean;
-    vestibularSafety: boolean;
-    enabledCategories: string[];
-    hazardDetections: string[];
+    export interface ConfigStats { currentLevel: MotionLevel,
+    globalReducedMotion: boolean,
+    vestibularSafety: boolean,
+    enabledCategories: string[],
+    hazardDetections: string[],
     listenerCount: number;
-
-export interface LevelSettings { [category: string]: MotionCategoryConfig;
+    export interface LevelSettings { [category: string]: MotionCategoryConfig;
 
 // 列挙型
 export type MotionLevel = 'none' | 'essential' | 'reduced' | 'normal' | 'enhanced';
@@ -120,8 +98,7 @@ export type MotionLevel = 'none' | 'essential' | 'reduced' | 'normal' | 'enhance
 export type ViolationType = ';'
     | 'rotation_speed' | 'scale_change' | 'parallax_distance', ';'
     | 'flashing_rate' | 'intensity_too_high' | 'duration_too_long';
-
-export type HazardSeverity = 'low' | 'medium' | 'high' | 'critical';
+    export type HazardSeverity = 'low' | 'medium' | 'high' | 'critical';
 ';'
 
 export type ConfigEventType = ';'
@@ -138,51 +115,45 @@ export type ConfigListener = (type: ConfigEventType, data: ConfigChangeData') =>
 ';'
 // 定数
 export const MOTION_LEVELS: MotionLevel[] = ['none', 'essential', 'reduced', 'normal', 'enhanced'];
-export const STORAGE_KEY = 'motionManager_preferences';
-export const MEDIA_QUERY_REDUCED_MOTION = '(prefers-reduced-motion: reduce')','
+    export const STORAGE_KEY = 'motionManager_preferences';
+    export const MEDIA_QUERY_REDUCED_MOTION = '(prefers-reduced-motion: reduce')','
 
 export const DEFAULT_VESTIBULAR_GUIDELINES: VestibularGuidelines = { maxRotationSpeed: 45, // degrees per second
-    maxScaleChange: 1.5;
+    maxScaleChange: 1.5,
     maxParallaxDistance: 100, // pixels,
     flashingThreshold: 3 // flashes per second  };
-export const DEFAULT_CATEGORY_CONFIG: MotionCategoryConfig = { enabled: true;
-    intensity: 1.0;
-    duration: 1.0;
+export const DEFAULT_CATEGORY_CONFIG: MotionCategoryConfig = { enabled: true,
+    intensity: 1.0,
+    duration: 1.0,
     vestibularSafe: true;
-export const DEFAULT_GRANULAR_CONTROLS: GranularControls = { particleDensity: 1.0;
-    cameraMovement: 1.0;
-    backgroundMotion: 1.0;
-    uiTransitions: 1.0;
+export const DEFAULT_GRANULAR_CONTROLS: GranularControls = { particleDensity: 1.0,
+    cameraMovement: 1.0,
+    backgroundMotion: 1.0,
+    uiTransitions: 1.0,
     gameplayEffects: 1.0  };
-export const DEFAULT_SELECTIVE_REDUCTION: SelectiveReduction = { disableRotation: false;
-    disableScaling: false;
-    disableParallax: false;
-    disableFlashing: false;
+export const DEFAULT_SELECTIVE_REDUCTION: SelectiveReduction = { disableRotation: false,
+    disableScaling: false,
+    disableParallax: false,
+    disableFlashing: false,
     disableAutoplay: false;
 // ユーティリティ関数
-export function isValidMotionLevel(level: string): level is MotionLevel { return MOTION_LEVELS.includes(level, as MotionLevel) }
-
-export function isValidCategory(category: string): category is MotionCategory { return [', 'transitions', 'transforms', 'parallax', 'particles',]',
+export function isValidMotionLevel(level: string): level is MotionLevel { return MOTION_LEVELS.includes(level, as MotionLevel) };
+export function isValidCategory(category: string): category is MotionCategory { return [, 'transitions', 'transforms', 'parallax', 'particles',]',
         'camera', 'ui', 'game', 'background'],
-    ].includes(category, as MotionCategory) }
-
+    ].includes(category, as MotionCategory) };
 export function isAnimationParams(params: any): params is AnimationParams {;
-    return params && typeof params === 'object' }
-
-export function isValidViolationType(type: string): type is ViolationType { return [', 'rotation_speed', 'scale_change', 'parallax_distance',]',
+    return params && typeof params === 'object' };
+export function isValidViolationType(type: string): type is ViolationType { return [, 'rotation_speed', 'scale_change', 'parallax_distance',]',
         'flashing_rate', 'intensity_too_high', 'duration_too_long'],
-    ].includes(type) }
-
+    ].includes(type) };
 export function isValidSeverity(severity: string): severity is HazardSeverity {;
     return ['low', 'medium', 'high', 'critical].includes(severity) }'
 
 export function isConfigListener(listener: any): listener is ConfigListener {;
-    return typeof listener === 'function',
+    return typeof listener === 'function,
 
-export function clampIntensity(intensity: number): number { return Math.max(0, Math.min(2, intensity) }
-
-export function clampDuration(duration: number): number { return Math.max(0, Math.min(5, duration) }
-
+export function clampIntensity(intensity: number): number { return Math.max(0, Math.min(2, intensity) };
+export function clampDuration(duration: number): number { return Math.max(0, Math.min(5, duration) };
 export function supportsMatchMedia('';
     return, typeof window !== 'undefined' && ';'
            typeof, window.matchMedia === 'function';
@@ -195,49 +166,49 @@ export, function supportsLocalStorage('';
 
 export function createDefaultLevelSettings(): Record<MotionLevel, LevelSettings> { return {  };
         none: { }
-            transitions: { enabled: false, intensity: 0, duration: 0  };
-            transforms: { enabled: false, intensity: 0, duration: 0  };
-            parallax: { enabled: false, intensity: 0, duration: 0  };
-            particles: { enabled: false, intensity: 0, duration: 0  };
-            camera: { enabled: false, intensity: 0, duration: 0  };
-            ui: { enabled: false, intensity: 0, duration: 0  };
-            game: { enabled: false, intensity: 0, duration: 0  };
-            background: { enabled: false, intensity: 0, duration: 0  };
+            transitions: { enabled: false, intensity: 0, duration: 0  ,
+            transforms: { enabled: false, intensity: 0, duration: 0  ,
+            parallax: { enabled: false, intensity: 0, duration: 0  ,
+            particles: { enabled: false, intensity: 0, duration: 0  ,
+            camera: { enabled: false, intensity: 0, duration: 0  ,
+            ui: { enabled: false, intensity: 0, duration: 0  ,
+            game: { enabled: false, intensity: 0, duration: 0  ,
+            background: { enabled: false, intensity: 0, duration: 0  ,
         essential: {
-            transitions: { enabled: true, intensity: 0.3, duration: 0.5  };
-            transforms: { enabled: false, intensity: 0, duration: 0  };
-            parallax: { enabled: false, intensity: 0, duration: 0  };
-            particles: { enabled: false, intensity: 0, duration: 0  };
-            camera: { enabled: false, intensity: 0, duration: 0  };
-            ui: { enabled: true, intensity: 0.5, duration: 0.5  };
-            game: { enabled: true, intensity: 0.3, duration: 0.5  };
-            background: { enabled: false, intensity: 0, duration: 0  };
+            transitions: { enabled: true, intensity: 0.3, duration: 0.5  ,
+            transforms: { enabled: false, intensity: 0, duration: 0  ,
+            parallax: { enabled: false, intensity: 0, duration: 0  ,
+            particles: { enabled: false, intensity: 0, duration: 0  ,
+            camera: { enabled: false, intensity: 0, duration: 0  ,
+            ui: { enabled: true, intensity: 0.5, duration: 0.5  ,
+            game: { enabled: true, intensity: 0.3, duration: 0.5  ,
+            background: { enabled: false, intensity: 0, duration: 0  ,
         reduced: {
-            transitions: { enabled: true, intensity: 0.6, duration: 0.7  };
-            transforms: { enabled: true, intensity: 0.4, duration: 0.7  };
-            parallax: { enabled: false, intensity: 0, duration: 0  };
-            particles: { enabled: true, intensity: 0.3, duration: 0.7  };
-            camera: { enabled: false, intensity: 0, duration: 0  };
-            ui: { enabled: true, intensity: 0.8, duration: 0.7  };
-            game: { enabled: true, intensity: 0.6, duration: 0.7  };
-            background: { enabled: true, intensity: 0.2, duration: 0.7  };
+            transitions: { enabled: true, intensity: 0.6, duration: 0.7  ,
+            transforms: { enabled: true, intensity: 0.4, duration: 0.7  ,
+            parallax: { enabled: false, intensity: 0, duration: 0  ,
+            particles: { enabled: true, intensity: 0.3, duration: 0.7  ,
+            camera: { enabled: false, intensity: 0, duration: 0  ,
+            ui: { enabled: true, intensity: 0.8, duration: 0.7  ,
+            game: { enabled: true, intensity: 0.6, duration: 0.7  ,
+            background: { enabled: true, intensity: 0.2, duration: 0.7  ,
         normal: {
-            transitions: { enabled: true, intensity: 1.0, duration: 1.0  };
-            transforms: { enabled: true, intensity: 1.0, duration: 1.0  };
-            parallax: { enabled: true, intensity: 0.5, duration: 1.0  };
-            particles: { enabled: true, intensity: 0.8, duration: 1.0  };
-            camera: { enabled: true, intensity: 0.3, duration: 1.0  };
-            ui: { enabled: true, intensity: 1.0, duration: 1.0  };
-            game: { enabled: true, intensity: 0.9, duration: 1.0  };
-            background: { enabled: true, intensity: 0.6, duration: 1.0  };
+            transitions: { enabled: true, intensity: 1.0, duration: 1.0  ,
+            transforms: { enabled: true, intensity: 1.0, duration: 1.0  ,
+            parallax: { enabled: true, intensity: 0.5, duration: 1.0  ,
+            particles: { enabled: true, intensity: 0.8, duration: 1.0  ,
+            camera: { enabled: true, intensity: 0.3, duration: 1.0  ,
+            ui: { enabled: true, intensity: 1.0, duration: 1.0  ,
+            game: { enabled: true, intensity: 0.9, duration: 1.0  ,
+            background: { enabled: true, intensity: 0.6, duration: 1.0  ,
         enhanced: {
-            transitions: { enabled: true, intensity: 1.5, duration: 1.2  };
-            transforms: { enabled: true, intensity: 1.5, duration: 1.2  };
-            parallax: { enabled: true, intensity: 1.0, duration: 1.2  };
-            particles: { enabled: true, intensity: 1.5, duration: 1.2  };
-            camera: { enabled: true, intensity: 0.8, duration: 1.2  };
-            ui: { enabled: true, intensity: 1.2, duration: 1.2  };
-            game: { enabled: true, intensity: 1.3, duration: 1.2  };
+            transitions: { enabled: true, intensity: 1.5, duration: 1.2  ,
+            transforms: { enabled: true, intensity: 1.5, duration: 1.2  ,
+            parallax: { enabled: true, intensity: 1.0, duration: 1.2  ,
+            particles: { enabled: true, intensity: 1.5, duration: 1.2  ,
+            camera: { enabled: true, intensity: 0.8, duration: 1.2  ,
+            ui: { enabled: true, intensity: 1.2, duration: 1.2  ,
+            game: { enabled: true, intensity: 1.3, duration: 1.2  ,
             background: { enabled: true, intensity: 1.0, duration: 1.2  }
     }
 
@@ -307,8 +278,7 @@ export class MotionConfigManager {
         this.motionManager.setMotionLevel(targetLevel);
         this.notifyConfigListeners('systemPreference', { reducedMotion )',' }
 
-        console.log(`System, motion preference, changed: ${reducedMotion ? 'reduced' : 'normal}`}',
-    }
+        console.log(`System, motion preference, changed: ${reducedMotion ? 'reduced' : 'normal}`}' }
     
     /**
      * ユーザー設定の読み込み
@@ -344,9 +314,9 @@ export class MotionConfigManager {
 
         try { const toSave = {
                 ...this.userPreferences,
-                customIntensities: Array.from(this.userPreferences.customIntensities.entries(  },
+                customIntensities: Array.from(this.userPreferences.customIntensities.entries(  };
 
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(toSave)');'
+            localStorage.setItem(STORAGE_KEY, JSON.stringify())toSave)');'
             console.log('Motion, preferences saved');
         } catch (error) { console.warn('Failed to save motion preferences:', error }
     }
@@ -375,7 +345,7 @@ export class MotionConfigManager {
         // 設定の保存
         this.saveUserPreferences()';'
         this.notifyConfigListeners('motionLevel', { previous: previousLevel )
-           , current: level ) }
+            current: level );
         console.log(`Motion, level changed: ${previousLevel} → ${level}`};
         return true;
     }
@@ -386,10 +356,8 @@ export class MotionConfigManager {
     private updateCategorySettings(level: MotionLevel): void { const settings = this.getLevelSettings(level);
         Object.keys(this.config.motionCategories).forEach(category => { );
             if (settings[category]) { }
-                Object.assign(this.config.motionCategories[category], settings[category]); }
-};
-    }
-    
+                Object.assign(this.config.motionCategories[category], settings[category]);     }
+}
     /**
      * レベル別設定の取得
      */
@@ -555,7 +523,7 @@ export class MotionConfigManager {
     }
 
         if (violations.length > 0) {
-            this.motionManager.stats.vestibularWarnings++,
+            this.motionManager.stats.vestibularWarnings++;
             console.warn('Vestibular safety violations detected:', violations }
             return false;
         
@@ -575,12 +543,12 @@ export class MotionConfigManager {
         hazard.detected = value > hazard.threshold;
 
         if (hazard.detected && !wasDetected) {
-            this.motionManager.stats.hazardDetections++,
+            this.motionManager.stats.hazardDetections++;
             this.notifyConfigListeners('hazardDetected', {
                 pattern,
-                value) }
-                threshold: hazard.threshold ) }
-            console.warn(`Hazardous, motion pattern, detected: ${pattern} (${value} > ${hazard.threshold}`};
+                value);
+                threshold: hazard.threshold );
+            console.warn(`Hazardous, motion pattern, detected: ${pattern} (${value} > ${hazard.threshold}`}
         }
         
         return hazard.detected;
@@ -590,7 +558,7 @@ export class MotionConfigManager {
      * 設定リスナーの追加
      */'
     addConfigListener(listener: ConfigListener): void { if (isConfigListener(listener) {''
-            this.configListeners.add(listener) }
+            this.configListeners.add(listener);
 
         } else { }'
 
@@ -600,20 +568,18 @@ export class MotionConfigManager {
     /**
      * 設定リスナーの削除
      */
-    removeConfigListener(listener: ConfigListener): boolean { return this.configListeners.delete(listener) }
+    removeConfigListener(listener: ConfigListener): boolean { return this.configListeners.delete(listener);
     
     /**
      * 設定変更の通知
      */
     private notifyConfigListeners(type: ConfigEventType, data: ConfigChangeData): void { this.configListeners.forEach(listener => { )
-            try {) }
+            try {);
 
                 listener(type, data); }'
 
-            } catch (error) { console.error('Config listener error:', error }
-        };
-    }
-    
+            } catch (error) { console.error('Config listener error:', error     }
+}
     /**
      * 設定の統計情報取得
      */
@@ -627,7 +593,7 @@ export class MotionConfigManager {
         
         return { currentLevel: this.motionManager.currentLevel,
             globalReducedMotion: this.config.globalReducedMotion,
-    vestibularSafety: this.config.vestibularSafety,
+    vestibularSafety: this.config.vestibularSafety;
             enabledCategories,
             hazardDetections };
             listenerCount: this.configListeners.size 
@@ -637,12 +603,12 @@ export class MotionConfigManager {
      * 現在の設定をエクスポート
      */
     exportConfig(): { motionLevel: MotionLevel,
-        categoryConfigs: Record<string, MotionCategoryConfig>,
+        categoryConfigs: Record<string, MotionCategoryConfig> };
         userPreferences: UserPreferences,
     vestibularGuidelines: VestibularGuidelines; { return {  };
             motionLevel: this.motionManager.currentLevel }
-            categoryConfigs: { ...this.config.motionCategories,
-            userPreferences: { ...this.userPreferences,
+            categoryConfigs: { ...this.config.motionCategories;
+            userPreferences: { ...this.userPreferences;
                 customIntensities: new Map(this.userPreferences.customIntensities }
             vestibularGuidelines: { ...this.config.vestibularGuidelines }
 
@@ -692,13 +658,13 @@ export class MotionConfigManager {
         this.userPreferences.customIntensities.clear();
         // 設定を保存
         this.saveUserPreferences()','
-        console.log('Configuration, reset to, defaults') }
+        console.log('Configuration, reset to, defaults');
     
     /**
      * コンポーネントクリーンアップ
      */'
     destroy(): void { ''
         this.configListeners.clear()','
-        console.log('[MotionConfigManager] Component, destroyed') }
+        console.log('[MotionConfigManager] Component, destroyed');
 
     }'}'

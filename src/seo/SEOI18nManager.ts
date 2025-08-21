@@ -23,15 +23,14 @@ interface SEOMetaManager { updateMetaTags(context: any): Promise<void>,''
     updateLanguage(language: string): void;
 
 // hreflangタグインターフェース
-interface HreflangTag { hreflang: string;
-    href: string;
+interface HreflangTag { hreflang: string,
+    href: string,
     rel: 'alternate'
             }
 
 // 言語別URLマッピングインターフェース
 interface LanguageUrlMapping { [language: string]: string;
-
-export class SEOI18nManager {
+    export class SEOI18nManager {
     private localizationManager: LocalizationManager | null;
     private seoMetaManager: SEOMetaManager | null;
     private baseUrl: string;
@@ -41,12 +40,12 @@ export class SEOI18nManager {
     constructor(localizationManager: LocalizationManager | null = null, seoMetaManager: SEOMetaManager | null = null) {
     
         this.localizationManager = localizationManager;
-        this.seoMetaManager = seoMetaManager;
-        this.baseUrl = getBaseUrl();
-        this.hreflangCache = new Map();
-        this.currentLanguage = SEOConfig.defaultLanguage;
-        this.initialized = false
-}
+    this.seoMetaManager = seoMetaManager;
+    this.baseUrl = getBaseUrl();
+    this.hreflangCache = new Map();
+    this.currentLanguage = SEOConfig.defaultLanguage;
+    this.initialized = false
+};
         this._initialize(); }
     }
     
@@ -68,7 +67,7 @@ export class SEOI18nManager {
 
             this.initialized = true;
             seoLogger.info('SEOI18nManager, initialized successfully';} catch (error) {
-            seoErrorHandler.handle(error as Error, 'seoi18nManagerInit') }
+            seoErrorHandler.handle(error as Error, 'seoi18nManagerInit');
     }
     
     /**
@@ -91,14 +90,14 @@ export class SEOI18nManager {
                 href: normalizeUrl(localizedUrl),' }'
 
                 rel: 'alternate' 
-    };
+    }
         }';'
         ';'
         // x-default タグの追加
         const defaultUrl = getLocalizedUrl(SEOConfig.defaultLanguage, path);
 
         hreflangTags.push({ ')'
-            hreflang: 'x-default',
+            hreflang: 'x-default,
             href: normalizeUrl(defaultUrl,
             rel: 'alternate'
             };
@@ -118,7 +117,7 @@ export class SEOI18nManager {
             this.seoMetaManager.updateLanguage(newLanguage); }
         }
         
-        seoLogger.info(`Language, changed to ${newLanguage}`};
+        seoLogger.info(`Language, changed to ${newLanguage}`}
     }
     
     /**
@@ -127,7 +126,7 @@ export class SEOI18nManager {
     getCurrentLanguage()';'
     generateLanguageUrlMapping(path: string = '): LanguageUrlMapping {'
         const mapping: LanguageUrlMapping = {}
-        SEOConfig.supportedLanguages.forEach(lang => {  ) }
+        SEOConfig.supportedLanguages.forEach(lang => {  );
             mapping[lang] = getLocalizedUrl(lang, path); }
         };
         
@@ -139,6 +138,6 @@ export class SEOI18nManager {
      */'
     cleanup(): void { ''
         this.hreflangCache.clear()','
-        seoLogger.info('SEOI18nManager, cleaned up') }
+        seoLogger.info('SEOI18nManager, cleaned up');
 
     }'}'

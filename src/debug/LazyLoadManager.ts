@@ -6,49 +6,44 @@ interface DebugInterface { gameEngine?: GameEngine,
     panelManager?: PanelManager;
     activePanel?: string;
     panelHistory: string[];
-
-interface GameEngine { // Game engine interface }
+    interface GameEngine { // Game engine interface }
 
 interface PanelManager { getPanelInfo(name: string): PanelInfo | null }
 
 interface PanelInfo { instance?: ComponentInstance;
-
-interface ComponentInstance { destroy?(): void;
-
-interface ComponentConfig { path: string;
-    className: string;
-    priority: 'high' | 'medium' | 'low';
-    preload: boolean;
+    interface ComponentInstance { destroy?(): void;
+    interface ComponentConfig { path: string,
+    className: string,
+    priority: 'high' | 'medium' | 'low,
+    preload: boolean,
     dependencies: string[];
-
-interface LoadedComponent { name: string;
-    class: any;
-    instance: ComponentInstance;
+    interface LoadedComponent { name: string,
+    class: any,
+    instance: ComponentInstance,
     config: ComponentConfig;
-
-interface LoadingStats { total: number;
-    loaded: number;
-    loading: number;
-    unloaded: number;
-    loadedComponents: string[];
-    loadingComponents: string[];
+    interface LoadingStats { total: number,
+    loaded: number,
+    loading: number,
+    unloaded: number,
+    loadedComponents: string[],
+    loadingComponents: string[],
     loadPercentage: number;
 ';'
 
 interface PerformanceEvaluation { ''
-    efficiency: 'good' | 'moderate' | 'poor';
-    memoryImpact: 'low' | 'medium' | 'high';
+    efficiency: 'good' | 'moderate' | 'poor,
+    memoryImpact: 'low' | 'medium' | 'high,
     recommendations: string[];
-
-interface DebugInfo { stats: LoadingStats;
+    interface DebugInfo { stats: LoadingStats,
     registry: Array<{
-        nam,e: string;
+        nam,e: string,
         path: string;
-        className: string;
-        priority: string;
-        preload: boolean;
-        dependencies: string[];
-        loaded: boolean;
+}
+        className: string,
+        priority: string,
+        preload: boolean,
+        dependencies: string[],
+        loaded: boolean,
     loading: boolean;>;
     performance: PerformanceEvaluation;
     }
@@ -72,7 +67,7 @@ export class LazyLoadManager {
         this.preloadBatch = 2; // 一度に先読みする数
         
 
-     }
+     };
         this.initialize(); }
     }
 
@@ -80,65 +75,65 @@ export class LazyLoadManager {
      * 初期化
      */
     private initialize(): void { this.registerDefaultComponents();
-        this.setupIntersectionObserver() }
+        this.setupIntersectionObserver();
 
     /**
      * デフォルトコンポーネントを登録
      */''
     private registerDefaultComponents('''
         this.componentRegistry.set('overview', { ''
-            path: './panels/OverviewPanel.js',
+            path: './panels/OverviewPanel.js,
             className: 'OverviewPanel',','
             priority: 'high')','
-    preload: true,')',
+    preload: true,'),
             dependencies: []','
             dependencies: []','
         };
         this.componentRegistry.set('performance', {''
-            path: './panels/PerformancePanel.js',
+            path: './panels/PerformancePanel.js,
             className: 'PerformancePanel',','
             priority: 'high')','
-    preload: false,')',
+    preload: false,'),
             dependencies: []','
             dependencies: []','
         };
         this.componentRegistry.set('console', {''
-            path: './panels/ConsolePanel.js',
+            path: './panels/ConsolePanel.js,
             className: 'ConsolePanel',','
             priority: 'medium')','
-    preload: false,')',
+    preload: false,'),
             dependencies: []','
             dependencies: []','
         };
         this.componentRegistry.set('error', {''
-            path: './panels/ErrorPanel.js',
+            path: './panels/ErrorPanel.js,
             className: 'ErrorPanel',','
             priority: 'medium')','
-    preload: false,')',
+    preload: false,'),
             dependencies: []','
             dependencies: []','
         };
         this.componentRegistry.set('test', {''
-            path: './panels/TestPanel.js',
+            path: './panels/TestPanel.js,
             className: 'TestPanel',','
             priority: 'low')','
-    preload: false,')',
+    preload: false,'),
             dependencies: []'),'
 ','
         // 管理系コンポーネント
         this.componentRegistry.set('theme-manager', {''
-            path: './ThemeManager.js',
+            path: './ThemeManager.js,
             className: 'ThemeManager',','
             priority: 'high')','
-    preload: true,')',
+    preload: true,'),
             dependencies: []','
             dependencies: []','
         };
         this.componentRegistry.set('accessibility-manager', {''
-            path: './AccessibilityManager.js',
+            path: './AccessibilityManager.js,
             className: 'AccessibilityManager',','
-            priority: 'high',
-    preload: true);
+            priority: 'high,
+    preload: true),
             dependencies: []  }
 
     /**
@@ -185,7 +180,7 @@ export class LazyLoadManager {
         const config = this.componentRegistry.get(name);
         if (!config) { }'
 
-            throw new Error(`Component '${name}' not, registered`};
+            throw new Error(`Component '${name}' not, registered`}
         }
 
         // 読み込み開始
@@ -194,7 +189,7 @@ export class LazyLoadManager {
 
         try { const component = await loadPromise,
             this.loadedComponents.add(name);
-            this.loadingComponents.delete(name) }
+            this.loadingComponents.delete(name);
             console.log(`Lazy, loaded component: ${name}`};
             return component;
         } catch (error) {
@@ -211,7 +206,7 @@ export class LazyLoadManager {
     private async performComponentLoad(name: string, config: ComponentConfig): Promise<LoadedComponent> { // 依存関係を先に読み込み
         if (config.dependencies && config.dependencies.length > 0) {
             await Promise.all();
-                config.dependencies.map(dep => this.loadComponent(dep) }
+                config.dependencies.map(dep => this.loadComponent(dep);
             ); }
         }
 
@@ -221,7 +216,7 @@ export class LazyLoadManager {
 
             if (!ComponentClass) { }'
 
-                throw new Error(`Class '${config.className}' not, found in, module`};
+                throw new Error(`Class '${config.className}' not, found in, module`}
             }
 
             // インスタンスを作成
@@ -234,7 +229,7 @@ export class LazyLoadManager {
                 class: ComponentClass,
                 instance };
                 config }
-            } catch (error) {
+        } catch (error) {
             throw new Error(`Failed, to import ${config.path}: ${(error, as, Error}.message}`);
         }
     }
@@ -249,13 +244,12 @@ export class LazyLoadManager {
             name, : undefined
             class: null,
             instance: panelInfo.instance,
-    config: this.componentRegistry.get(name)!  } : null,
-    }
+    config: this.componentRegistry.get(name)!  } : null }
 
     /**
      * 先読みを実行
      */
-    public async preloadComponents(): Promise<void> { const preloadList = Array.from(this.componentRegistry.entries()
+    public async preloadComponents(): Promise<void> { const preloadList = Array.from(this.componentRegistry.entries()))
             .filter(([name, config]) => config.preload && !this.loadedComponents.has(name);
             .sort(([, a], [, b]) => this.getPriorityValue(b.priority) - this.getPriorityValue(a.priority);
             .slice(0, this.preloadBatch);
@@ -290,13 +284,13 @@ export class LazyLoadManager {
     public setupLazyElement(element: HTMLElement, componentName: string): void { if (!this.intersectionObserver) return,
 
         element.dataset.lazyComponent = componentName,
-        this.intersectionObserver.observe(element) }
+        this.intersectionObserver.observe(element);
 
     /**
      * バッチ読み込み
      */
     public async loadComponentBatch(names: string[]): Promise<(LoadedComponent | null)[]> { const loadPromises = names.map(name => );
-            this.loadComponent(name).catch(error => {) }
+            this.loadComponent(name).catch(error => {);
                 console.warn(`Batch load failed for ${name}:`, error};
                 return null;
             };
@@ -327,10 +321,8 @@ export class LazyLoadManager {
             if (!keepLoaded.has(name) {
     
 }
-                this.unloadComponent(name); }
+                this.unloadComponent(name);     }
 }
-    }
-
     /**
      * コンポーネントをアンロード
      */
@@ -357,7 +349,7 @@ export class LazyLoadManager {
             loading: loadingCount,
             unloaded: totalComponents - loadedCount - loadingCount,
             loadedComponents: Array.from(this.loadedComponents,
-    loadingComponents: Array.from(this.loadingComponents.keys()) },
+    loadingComponents: Array.from(this.loadingComponents.keys()) ,
             loadPercentage: (loadedCount / totalComponents) * 100 
     }
 
@@ -368,7 +360,7 @@ export class LazyLoadManager {
         this.unloadUnusedComponents();
         // ガベージコレクションを促進（可能な場合）
         if ((window, as any).gc && typeof(window, as any).gc === 'function') {
-            (window, as any).gc() }
+            (window, as any).gc();
 }
 
     /**
@@ -376,8 +368,8 @@ export class LazyLoadManager {
      */'
     public evaluateLoadingPerformance(): PerformanceEvaluation { ''
         const stats = this.getLoadingStats('''
-            efficiency: stats.loadPercentage < 50 ? 'good' : stats.loadPercentage < 80 ? 'moderate' : 'poor',
-            memoryImpact: stats.loaded < 3 ? 'low' : stats.loaded < 6 ? 'medium' : 'high',
+            efficiency: stats.loadPercentage < 50 ? 'good' : stats.loadPercentage < 80 ? 'moderate' : 'poor,
+            memoryImpact: stats.loaded < 3 ? 'low' : stats.loaded < 6 ? 'medium' : 'high,
             recommendations: []  }', ')';'
         if (stats.loadPercentage > 70) { }
 
@@ -396,10 +388,10 @@ export class LazyLoadManager {
      * デバッグ情報を取得
      */
     public getDebugInfo(): DebugInfo { return { stats: this.getLoadingStats(
-            registry: Array.from(this.componentRegistry.entries().map(([name, config]) => ({
+            registry: Array.from(this.componentRegistry.entries())).map(([name, config]) => ({
                 name,
                 ...config),
-                loaded: this.loadedComponents.has(name) },
+                loaded: this.loadedComponents.has(name) ,
                 loading: this.loadingComponents.has(name);
     },
             performance: this.evaluateLoadingPerformance();
@@ -416,7 +408,7 @@ export class LazyLoadManager {
         }
 
         // Intersection Observer を停止
-        if (this.intersectionObserver) { this.intersectionObserver.disconnect() }
+        if (this.intersectionObserver) { this.intersectionObserver.disconnect();
 
         // 読み込み中の処理をキャンセル
         this.loadingComponents.clear();

@@ -6,13 +6,13 @@
 /**
  * Position interface
  */
-export interface Position { x: number;
+export interface Position { x: number,
     y: number;
 
 /**
  * Loading animation options interface
  */
-export interface LoadingAnimationOptions { color: string;
+export interface LoadingAnimationOptions { color: string,
     thickness: number;
     elements?: number;
     progress?: number;
@@ -24,19 +24,18 @@ export interface LoadingAnimationOptions { color: string;
 /**
  * Loading animation interface
  */
-export interface LoadingAnimation { position: Position;
-    size: number;
-    options: LoadingAnimationOptions;
+export interface LoadingAnimation { position: Position,
+    size: number,
+    options: LoadingAnimationOptions,
     loadingType: 'spinner' | 'dots' | 'pulse' | 'wave' | 'progress';
     rotation?: number;
     dotPhases?: number[];
     phase?: number;
-    waveOffset?: number,  }
-
+    waveOffset?: number };
 /**
  * Ripple effect options interface
  */
-export interface RippleEffectOptions { color: string;
+export interface RippleEffectOptions { color: string,
     maxAlpha: number;
 
 /**
@@ -50,8 +49,8 @@ export interface RippleAnimation { position: Position;
 /**
  * Focus glow state interface
  */
-export interface FocusGlowState { active: boolean;
-    intensity: number;
+export interface FocusGlowState { active: boolean,
+    intensity: number,
     color: string;
     phase?: number;
 
@@ -64,9 +63,9 @@ export interface HoverState { active: boolean;
 /**
  * Element with position and dimensions interface
  */
-export interface ElementBounds { x: number;
-    y: number;
-    width: number;
+export interface ElementBounds { x: number,
+    y: number,
+    width: number,
     height: number;
     focusGlow?: FocusGlowState;
     hoverState?: HoverState;
@@ -83,27 +82,27 @@ export interface HoverOptions { shadow?: boolean,
 /**
  * Particle interface
  */
-export interface Particle { startX: number;
-    startY: number;
-    velocityX: number;
-    velocityY: number;
-    gravity: number;
-    size: number;
-    growth: number;
-    alpha: number;
+export interface Particle { startX: number,
+    startY: number,
+    velocityX: number,
+    velocityY: number,
+    gravity: number,
+    size: number,
+    growth: number,
+    alpha: number,
     color: string;
 
 /**
  * Explosion animation interface
  */
 export interface ExplosionAnimation { particles?: Particle[],
-    duration: number;
+    duration: number,
     options: ParticleOptions;
 
 /**
  * Trail point interface
  */
-export interface TrailPoint { x: number;
+export interface TrailPoint { x: number,
     y: number;
 
 /**
@@ -121,12 +120,12 @@ export interface TrailOptions { color: string;
 /**
  * Sparkle particle interface
  */
-export interface SparkleParticle { x: number;
-    y: number;
-    size: number;
-    alpha: number;
-    phase: number;
-    speed: number;
+export interface SparkleParticle { x: number,
+    y: number,
+    size: number,
+    alpha: number,
+    phase: number,
+    speed: number,
     color: string;
 
 /**
@@ -149,7 +148,7 @@ export interface RenderableElement { render?(context: CanvasRenderingContext2D):
 /**
  * Bezier curve point interface
  */
-export interface BezierPoint { x: number;
+export interface BezierPoint { x: number,
     y: number;
 
 /**
@@ -173,24 +172,24 @@ export class LoadingAnimationRenderer {
         const size = animation.size,
         const options = animation.options,
 
-        context.save('',
+        context.save(',
         context.lineCap = 'round',', ')','
         switch(animation.loadingType) {
 
             case 'spinner':','
                 this.renderSpinner(context, pos, size, animation.rotation || 0, options);
-                break,
+    break,
             case 'dots':','
                 this.renderDots(context, pos, size, animation.dotPhases || [], options);
-                break,
+    break,
             case 'pulse':','
                 this.renderPulse(context, pos, size, animation.phase || 0, options);
-                break,
+    break,
             case 'wave':','
                 this.renderWave(context, pos, size, animation.waveOffset || 0, options);
-                break,
+    break,
             case 'progress':,
-                this.renderProgress(context, pos, size, options) }
+                this.renderProgress(context, pos, size, options) };
                 break; }
         }
         
@@ -212,7 +211,7 @@ export class LoadingAnimationRenderer {
             context.globalAlpha = alpha,
             context.beginPath();
             context.moveTo(Math.cos(angle) * startRadius, Math.sin(angle) * startRadius),
-            context.lineTo(Math.cos(angle) * endRadius, Math.sin(angle) * endRadius) }
+            context.lineTo(Math.cos(angle) * endRadius, Math.sin(angle) * endRadius);
             context.stroke(); }
 }
     
@@ -234,7 +233,7 @@ export class LoadingAnimationRenderer {
             
             context.globalAlpha = scale,
             context.beginPath();
-            context.arc(dotX, pos.y, radius, 0, Math.PI * 2) }
+            context.arc(dotX, pos.y, radius, 0, Math.PI * 2);
             context.fill(); }
 }
     
@@ -248,7 +247,7 @@ export class LoadingAnimationRenderer {
         context.strokeStyle = options.color,
         context.beginPath();
         context.arc(pos.x, pos.y, radius, 0, Math.PI * 2);
-        context.stroke() }
+        context.stroke();
     
     /**
      * ウェーブローディングをレンダリング
@@ -268,7 +267,7 @@ export class LoadingAnimationRenderer {
     
 }
                 context.moveTo(x, y); }
-            } else { context.lineTo(x, y) }
+            } else { context.lineTo(x, y);
         }
         
         context.stroke();
@@ -282,7 +281,7 @@ export class LoadingAnimationRenderer {
         const progress = options.progress || 0,
         ','
         // 背景バー
-        context.fillStyle = options.backgroundColor || '#CCCCCC',
+        context.fillStyle = options.backgroundColor || '#CCCCCC,
         context.fillRect(pos.x - barWidth / 2, pos.y - barHeight / 2, barWidth, barHeight);
         // 進行バー
         context.fillStyle = options.foregroundColor || options.color,
@@ -326,8 +325,7 @@ export class InteractiveEffectRenderer {
         context.beginPath();
         context.arc(pos.x, pos.y, currentRadius, 0, Math.PI * 2);
         context.stroke();
-        context.restore() }
-    
+        context.restore() };
     /**
      * フォーカスグロー効果をレンダリング
      */
@@ -365,14 +363,14 @@ export class InteractiveEffectRenderer {
             const centerY = element.y + element.height / 2,
             
             context.translate(centerX, centerY);
-            context.scale(scale, scale) }
+            context.scale(scale, scale);
             context.translate(-centerX, -centerY); }
         }
         ;
         // 追加の視覚効果（影、グロー等）
         if (hoverOptions?.shadow) {
 
-            context.shadowColor = hoverOptions.shadowColor || '#000000',
+            context.shadowColor = hoverOptions.shadowColor || '#000000,
             context.shadowBlur = hoverOptions.shadowBlur || 10,
             context.shadowOffsetX = hoverOptions.shadowOffsetX || 2 }
             context.shadowOffsetY = hoverOptions.shadowOffsetY || 2; }
@@ -404,7 +402,7 @@ export class ParticleEffectRenderer {
             context.globalAlpha = alpha,
             context.fillStyle = particle.color,
             context.beginPath();
-            context.arc(x, y, size, 0, Math.PI * 2) }
+            context.arc(x, y, size, 0, Math.PI * 2) };
             context.fill(); }
         };
         
@@ -417,7 +415,7 @@ export class ParticleEffectRenderer {
     static renderTrailParticles(context: CanvasRenderingContext2D, animation: TrailAnimation, progress: number): void { const trail = animation.trail || [],
         const options = animation.options,
 
-        context.save('',
+        context.save(',
         context.lineCap = 'round')
         ),
         if (trail.length > 1) {
@@ -475,7 +473,7 @@ export class ParticleEffectRenderer {
     
 }
                 context.moveTo(pointX, pointY); }
-            } else { context.lineTo(pointX, pointY) }
+            } else { context.lineTo(pointX, pointY);
         }
         
         context.closePath();
@@ -495,7 +493,7 @@ export class TransitionEffectRenderer {
         if (fromElement) {
             context.save();
             context.globalAlpha = 1 - progress,
-            this.renderElement(context, fromElement) }
+            this.renderElement(context, fromElement) };
             context.restore(); }
         }
         
@@ -514,7 +512,7 @@ export class TransitionEffectRenderer {
             context.save()','
             if(direction === 'horizontal' { }
                 context.translate(-canvasWidth * progress, 0); }
-            } else { context.translate(0, -canvasHeight * progress) }
+            } else { context.translate(0, -canvasHeight * progress);
             this.renderElement(context, fromElement);
             context.restore();
         }
@@ -525,7 +523,7 @@ export class TransitionEffectRenderer {
             context.save()','
             if(direction === 'horizontal' { }
                 context.translate(canvasWidth * (1 - progress), 0); }
-            } else { context.translate(0, canvasHeight * (1 - progress) }
+            } else { context.translate(0, canvasHeight * (1 - progress);
             this.renderElement(context, toElement);
             context.restore();
         }
@@ -544,7 +542,7 @@ export class TransitionEffectRenderer {
             context.scale(1 + progress * 0.5, 1 + progress * 0.5);
             context.globalAlpha = 1 - progress,
             context.translate(-centerX, -centerY);
-            this.renderElement(context, fromElement) }
+            this.renderElement(context, fromElement);
             context.restore(); }
         }
         
@@ -555,7 +553,7 @@ export class TransitionEffectRenderer {
             context.scale(0.5 + progress * 0.5, 0.5 + progress * 0.5);
             context.globalAlpha = progress,
             context.translate(-centerX, -centerY);
-            this.renderElement(context, toElement) }
+            this.renderElement(context, toElement);
             context.restore(); }
 }
     
@@ -566,10 +564,8 @@ export class TransitionEffectRenderer {
         if (element?.render) {
     
 }
-            element.render(context); }
+            element.render(context);     }
 }
-}
-
 /**
  * Animation Effect Utils
  * アニメーションエフェクトユーティリティ
@@ -587,21 +583,19 @@ export class AnimationEffectUtils {
             const speed = (Math.random() * 100 + 50) * (options.intensity || 1),
             
             particles.push({)
-                startX: centerX);
-                startY: centerY);
-                velocityX: Math.cos(angle) * speed;
-                velocityY: Math.sin(angle) * speed;
-                gravity: options.gravity || 98;
-                size: Math.random() * 3 + 1;
-                growth: Math.random() * 2;
-                alpha: Math.random() * 0.5 + 0.5;
+                startX: centerX),
+                startY: centerY),
+                velocityX: Math.cos(angle) * speed,
+                velocityY: Math.sin(angle) * speed,
+                gravity: options.gravity || 98,
+                size: Math.random() * 3 + 1,
+                growth: Math.random() * 2,
+                alpha: Math.random() * 0.5 + 0.5,
     color: options.colors ? undefined : undefined','
                        options.colors[Math.floor(Math.random() * options.colors.length)] : '
+};
+                       '#FFFFFF'     }
 }
-
-                       '#FFFFFF' }
-            } }
-        
         return particles;
     }
     
@@ -628,9 +622,8 @@ export class AnimationEffectUtils {
                        options.colors[Math.floor(Math.random() * options.colors.length)] : '
 }
 
-                       '#FFD700' }
-            } }
-        
+                       '#FFD700'     }
+}
         return sparkles;
     }
     
@@ -663,6 +656,6 @@ export class AnimationEffectUtils {
         const t2 = t * t,
         const t3 = t2 * t,
         
-        return { x: mt3 * p0.x + 3 * mt2 * t * p1.x + 3 * mt * t2 * p2.x + t3 * p3.x },
+        return { x: mt3 * p0.x + 3 * mt2 * t * p1.x + 3 * mt * t2 * p2.x + t3 * p3.x ,
             y: mt3 * p0.y + 3 * mt2 * t * p1.y + 3 * mt * t2 * p2.y + t3 * p3.y 
     }'}'

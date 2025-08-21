@@ -28,11 +28,11 @@ const mockGameEngine = { isRunning: false,
     performanceOptimizer: { getCurrentFPS: jest.fn(() => 60) }
     ),
     scoreManager: { getScore: jest.fn(() => 1500,
-        setScore: jest.fn(
+        setScore: jest.fn( },
         getCurrentCombo: jest.fn(() => 3,
         resetCombo: jest.fn()),
     bubbleManager: {
-        getActiveBubbleCount: jest.fn(() => 25,
+        getActiveBubbleCount: jest.fn(() => 25 },
         spawnBubble: jest.fn(
         clearAllBubbles: jest.fn(
         getBubbleCountByType: jest.fn(() => ({
@@ -43,7 +43,7 @@ const mockGameEngine = { isRunning: false,
             };
     ),';'
     playerData: { ''
-        getName: jest.fn((') => 'TestPlayer','
+        getName: jest.fn((') => 'TestPlayer',' };
         getLevel: jest.fn(() => 5,
         getAP: jest.fn(() => 2500,
         getTAP: jest.fn(() => 15000,
@@ -52,7 +52,7 @@ const mockGameEngine = { isRunning: false,
         setLevel: jest.fn(
         reset: jest.fn()),','
     stageManager: {''
-        getCurrentStage: jest.fn((') => 'normal'),',
+        getCurrentStage: jest.fn((') => 'normal'),' };
         setCurrentStage: jest.fn(),','
         getDifficulty: jest.fn((') => 'normal'),',
         setDifficulty: jest.fn(),','
@@ -553,7 +553,7 @@ describe('GameStateCommands', () => {  let gameStateCommands: any,
             }
                 score: { current: 5000, combo: 10 }
                 bubbles: { count: 30
-            };
+            }
             }', ')';'
             const formatted = gameStateCommands.formatGameState(state');'
             expect(formatted.toContain('Game State');

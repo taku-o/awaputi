@@ -9,29 +9,25 @@ export interface MemoryOptimizerOptions { maxMemoryUsage?: number,
     warningThreshold?: number;
     criticalThreshold?: number;
     gcInterval?: number;
-
-export interface MemoryUsage { translations: number;
-    cache: number;
-    metadata: number;
-    other: number;
+    export interface MemoryUsage { translations: number,
+    cache: number,
+    metadata: number,
+    other: number,
     total: number;
-
-export interface OptimizationStrategies { stringDeduplication: boolean;
-    objectPooling: boolean;
-    lazyLoading: boolean;
-    compressionThreshold: number;
+    export interface OptimizationStrategies { stringDeduplication: boolean,
+    objectPooling: boolean,
+    lazyLoading: boolean,
+    compressionThreshold: number,
     weakReferences: boolean;
-
-export interface OptimizationStats { totalOptimizations: number;
-    memoryFreed: number;
-    stringsDeduped: number;
-    objectsPooled: number;
-    gcRuns: number;
-    lastGcTime: number;
-    averageGcTime: number;
+    export interface OptimizationStats { totalOptimizations: number,
+    memoryFreed: number,
+    stringsDeduped: number,
+    objectsPooled: number,
+    gcRuns: number,
+    lastGcTime: number,
+    averageGcTime: number,
     memoryPressureEvents: number;
-
-export type MemoryPressureHandler = () => void;
+    export type MemoryPressureHandler = () => void;
 
 /**
  * メモリ最適化システムクラス
@@ -68,10 +64,10 @@ export class MemoryOptimizer {
         
         // メモリ追跡
         this.memoryUsage = {
-            translations: 0;
-            cache: 0;
-            metadata: 0;
-    other: 0 }
+            translations: 0,
+    cache: 0,
+    metadata: 0,
+    other: 0 };
             total: 0 
     };
         // オブジェクト参照管理
@@ -80,19 +76,19 @@ export class MemoryOptimizer {
         this.translationPool = new Map<string, any>(); // 翻訳オブジェクトプール
         
         // 最適化戦略
-        this.optimizationStrategies = { stringDeduplication: true;
-            objectPooling: true;
-            lazyLoading: true;
+        this.optimizationStrategies = { stringDeduplication: true,
+            objectPooling: true,
+            lazyLoading: true,
     compressionThreshold: 1024, // 1KB;
             weakReferences: true;
         // 統計情報
-        this.stats = { totalOptimizations: 0;
-            memoryFreed: 0;
-            stringsDeduped: 0;
-            objectsPooled: 0;
-            gcRuns: 0;
-            lastGcTime: 0;
-            averageGcTime: 0;
+        this.stats = { totalOptimizations: 0,
+            memoryFreed: 0,
+            stringsDeduped: 0,
+            objectsPooled: 0,
+            gcRuns: 0,
+            lastGcTime: 0,
+            averageGcTime: 0,
     memoryPressureEvents: 0  };
         // メモリ圧迫対応
         this.memoryPressureHandlers = new Set<MemoryPressureHandler>();
@@ -123,7 +119,7 @@ export class MemoryOptimizer {
             }
             
             // オブジェクトプーリング
-            if (this.optimizationStrategies.objectPooling) { optimized = this._applyObjectPooling(optimized, language) }
+            if (this.optimizationStrategies.objectPooling) { optimized = this._applyObjectPooling(optimized, language);
             
             // 弱参照の活用
             if (this.optimizationStrategies.weakReferences) { }
@@ -176,13 +172,13 @@ export class MemoryOptimizer {
     
 }
                 const processed = {};
-                for(const [key, val] of Object.entries(value) { processed[key] = processValue(val) }
+                for(const [key, val] of Object.entries(value) { processed[key] = processValue(val);
                 return processed;
             }
             
             return value; }
         
-        for(const [key, value] of Object.entries(data) { deduped[key] = processValue(value) }
+        for(const [key, value] of Object.entries(data) { deduped[key] = processValue(value);
         
         return deduped;
     }
@@ -217,7 +213,7 @@ export class MemoryOptimizer {
         for(const [key, value] of Object.entries(data)) { ''
             if (typeof, value === 'object' && value !== null && !Array.isArray(value) {
                 // 類似した構造がプールにあるかチェック
-                const similar = this._findSimilarStructure(value, pool) }
+                const similar = this._findSimilarStructure(value, pool);
                 if (similar) { }
                     reused[key] = { ...similar, ...value } else {  reused[key] = value }
                     pool.push(value); // プールに追加 }
@@ -254,10 +250,10 @@ export class MemoryOptimizer {
 
         const collectObjects = (obj') => { ''
             if (typeof, obj === 'object' && obj !== null && !Array.isArray(obj) {
-                pool.push(obj) }
+                pool.push(obj);
                 for (const value of Object.values(obj) { }
                     collectObjects(value); }
-} else if (Array.isArray(obj) { obj.forEach(collectObjects) }
+} else if (Array.isArray(obj) { obj.forEach(collectObjects);
         };
         
         collectObjects(data);
@@ -272,9 +268,9 @@ export class MemoryOptimizer {
             const weakRef = new WeakRef(data);
             this.objectReferences.set(data, {
                 language,
-                createdAt: Date.now() }
+                createdAt: Date.now();
                 weakRef }
-            };
+            }
         }
     }
     
@@ -301,7 +297,7 @@ export class MemoryOptimizer {
         if (usageRatio >= this.criticalThreshold) {
     }
             this._handleCriticalMemoryPressure(); }
-        } else if (usageRatio >= this.warningThreshold && !this.isUnderMemoryPressure) { this._handleMemoryWarning() } else if (usageRatio < this.warningThreshold && this.isUnderMemoryPressure) { this._handleMemoryRecovery() }
+        } else if (usageRatio >= this.warningThreshold && !this.isUnderMemoryPressure) { this._handleMemoryWarning() } else if (usageRatio < this.warningThreshold && this.isUnderMemoryPressure) { this._handleMemoryRecovery();
     }
     
     /**
@@ -372,10 +368,10 @@ export class MemoryOptimizer {
         // 文字列プールをクリア
         this.stringPool.clear();
         // 翻訳プールを部分的にクリア
-        const poolEntries = Array.from(this.translationPool.entries();
+        const poolEntries = Array.from(this.translationPool.entries()));
         const toKeep = Math.ceil(poolEntries.length * 0.3), // 30%保持
         
-        this.translationPool.clear() }
+        this.translationPool.clear();
         poolEntries.slice(0, toKeep).forEach(([key, value]) => {  }
             this.translationPool.set(key, value); }
         };
@@ -395,13 +391,13 @@ export class MemoryOptimizer {
     _performPreemptiveCleanup() {
         // 古い文字列プールエントリを削除
         if (this.stringPool.size > 1000) {
-            const entries = Array.from(this.stringPool.entries();
+            const entries = Array.from(this.stringPool.entries()));
             this.stringPool.clear();
             // 最新の70%を保持
-            const toKeep = Math.ceil(entries.length * 0.7) }
+            const toKeep = Math.ceil(entries.length * 0.7);
             entries.slice(-toKeep).forEach(([key, value]) => {  }
                 this.stringPool.set(key, value); }
-            };
+            }
         }
         
         // 弱参照をクリーンアップ
@@ -424,7 +420,7 @@ export class MemoryOptimizer {
                 toDelete.push(obj); }
 }
         
-        toDelete.forEach(obj => {  ) }
+        toDelete.forEach(obj => {  );
             this.objectReferences.delete(obj); }
         };
         
@@ -465,7 +461,7 @@ export class MemoryOptimizer {
     _calculateObjectSize(obj) {
         try {
             // 簡易的なサイズ計算
-            const jsonString = JSON.stringify(obj) }
+            const jsonString = JSON.stringify(obj);
             return new Blob([jsonString]).size; }'
 
         } catch (error) {
@@ -499,8 +495,7 @@ export class MemoryOptimizer {
      * メモリパフォーマンスを分析
      */
     _analyzeMemoryPerformance(entry) { if (entry.duration > 100) { // 100ms以上の処理 }
-            console.warn(`Slow, memory operation, detected: ${entry.name} took ${entry.duration.toFixed(2}ms`),
-        }
+            console.warn(`Slow, memory operation, detected: ${entry.name} took ${entry.duration.toFixed(2}ms`);
     }
     
     /**
@@ -522,13 +517,13 @@ export class MemoryOptimizer {
         this._cleanupWeakReferences();
         // 文字列プールの最適化
         if (this.stringPool.size > 5000) {
-            const entries = Array.from(this.stringPool.entries();
+            const entries = Array.from(this.stringPool.entries()));
             this.stringPool.clear();
             // 使用頻度の高いもの（最新の80%）を保持
-            const toKeep = Math.ceil(entries.length * 0.8) }
+            const toKeep = Math.ceil(entries.length * 0.8);
             entries.slice(-toKeep).forEach(([key, value]) => {  }
                 this.stringPool.set(key, value); }
-            };
+            }
         }
     }
     
@@ -538,7 +533,7 @@ export class MemoryOptimizer {
     addMemoryPressureHandler(handler) {
 
         if(typeof, handler === 'function' {'
-            this.memoryPressureHandlers.add(handler) }
+            this.memoryPressureHandlers.add(handler);
             return true;
         return false;
     }
@@ -546,7 +541,7 @@ export class MemoryOptimizer {
     /**
      * メモリ圧迫ハンドラーを削除
      */
-    removeMemoryPressureHandler(handler) { return this.memoryPressureHandlers.delete(handler) }
+    removeMemoryPressureHandler(handler) { return this.memoryPressureHandlers.delete(handler);
     
     /**
      * メモリ使用状況を取得
@@ -554,11 +549,11 @@ export class MemoryOptimizer {
     getMemoryUsage() {
         return { ...this.memoryUsage,
             usagePercent: Math.round((this.memoryUsage.total / this.maxMemoryUsage) * 10000) / 100,
-            maxMemoryMB: Math.round(this.maxMemoryUsage / 1024 / 1024);
-            totalMB: Math.round(this.memoryUsage.total / 1024 / 1024);
+            maxMemoryMB: Math.round(this.maxMemoryUsage / 1024 / 1024),
+            totalMB: Math.round(this.memoryUsage.total / 1024 / 1024),
             isUnderPressure: this.isUnderMemoryPressure,
     stringPoolSize: this.stringPool.size }
-            translationPoolSize: this.translationPool.size },
+            translationPoolSize: this.translationPool.size ,
             weakReferencesCount: this.objectReferences.size 
     }
     
@@ -572,11 +567,11 @@ export class MemoryOptimizer {
             optimizationStrategies: this.optimizationStrategies,
     thresholds: {
      }
-                warning: this.warningThreshold },
+                warning: this.warningThreshold ,
                 critical: this.criticalThreshold 
     };
             performance: { averageGcTime: Math.round(this.stats.averageGcTime * 100) / 100,
-                lastGcTime: Math.round(this.stats.lastGcTime * 100) / 100,
+                lastGcTime: Math.round(this.stats.lastGcTime * 100) / 100 ,
     gcFrequency: this.stats.gcRuns / Math.max((Date.now() - this.stats.lastGcTime) / 1000, 1 }
         }
     
@@ -611,14 +606,12 @@ export class MemoryOptimizer {
             timestamp: new Date().toISOString(),
             memoryUsage: stats.memoryUsage,
     optimizations: {
-                total: stats.totalOptimizations,
+                total: stats.totalOptimizations ,
                 stringsDeduped: stats.stringsDeduped,
     objectsPooled: stats.objectsPooled }
-                memoryFreedMB: Math.round(stats.memoryFreed / 1024 / 1024),
-    },
+                memoryFreedMB: Math.round(stats.memoryFreed / 1024 / 1024) ,
             performance: stats.performance,
-    recommendations: [],
-        },
+    recommendations: [] ,
         // 推奨事項を生成
         if (stats.memoryUsage.usagePercent > 80) {', ' }
 
@@ -647,7 +640,7 @@ export class MemoryOptimizer {
         }
         
         // パフォーマンスオブザーバーを停止
-        if (this.performanceObserver) { this.performanceObserver.disconnect() }
+        if (this.performanceObserver) { this.performanceObserver.disconnect();
         
         // 全データをクリア
         this.stringPool.clear();

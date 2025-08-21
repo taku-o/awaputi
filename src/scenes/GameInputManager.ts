@@ -6,25 +6,22 @@ import { EnhancedTouchManager  } from '../core/EnhancedTouchManager';
 import { getBrowserCompatibility  } from '../utils/BrowserCompatibility';
 import { InputCoordinateConverter  } from '../utils/InputCoordinateConverter';
 
-interface Position { x: number;
+interface Position { x: number,
     y: number;
     originalEvent?: MouseEvent | TouchEvent  }
 
-interface DragVector { x: number;
+interface DragVector { x: number,
     y: number;
-
-interface TouchData {
+    interface TouchData {
     position: Position;
-
-interface GestureData { position?: Position,
+    interface GestureData { position?: Position,
     startPosition?: Position;
     endPosition?: Position;
     direction?: string;
     velocity?: number;
     scale?: number;
     center?: Position;
-
-export class GameInputManager extends InputManager { private gameScene: any
+    export class GameInputManager extends InputManager { private gameScene: any
     private gameEngine: any;
     private, inputCoordinateConverter: InputCoordinateConverter | null = null;
     private enhancedTouchManager?: EnhancedTouchManager,
@@ -32,13 +29,13 @@ export class GameInputManager extends InputManager { private gameScene: any
     constructor(canvas: HTMLCanvasElement, gameScene: any) {
     
         super(canvas);
-        this.gameScene = gameScene;
-        this.gameEngine = gameScene.gameEngine;
+    this.gameScene = gameScene;
+    this.gameEngine = gameScene.gameEngine;
         
         // 座標変換システムの初期化
         this.initializeCoordinateConverter();
         // モバイルデバイスの場合はEnhancedTouchManagerを使用
-        if (getBrowserCompatibility().deviceInfo.isMobile) { }
+        if (getBrowserCompatibility().deviceInfo.isMobile) { };
             this.setupEnhancedTouch(); }
 }
     
@@ -53,7 +50,7 @@ export class GameInputManager extends InputManager { private gameScene: any
                     responsiveCanvasManager.scaledCoordinateManager)';'
                 '), : undefined'
             
-                console.log('GameInputManager: InputCoordinateConverter, initialized') }
+                console.log('GameInputManager: InputCoordinateConverter, initialized');
 
             } else {
                 console.warn('GameInputManager: ScaledCoordinateManager not available, coordinate conversion disabled }'
@@ -83,7 +80,7 @@ export class GameInputManager extends InputManager { private gameScene: any
         const bubbleClicked = this.gameEngine.bubbleManager.handleClick(convertedPosition.x, convertedPosition.y);
         
         // クリック位置にフィードバック（変換された座標を使用）
-        if (bubbleClicked) { this.gameScene.createDragParticles(convertedPosition.x, convertedPosition.y, 20) }
+        if (bubbleClicked) { this.gameScene.createDragParticles(convertedPosition.x, convertedPosition.y, 20);
     }
     
     /**
@@ -191,7 +188,7 @@ export class GameInputManager extends InputManager { private gameScene: any
             this.gameScene.floatingTextManager.addAnimatedText(
                 convertedEndPosition.x);
                 convertedEndPosition.y - 30,
-                'FLICK!',')',
+                'FLICK!,')',
                 'gentle')' }'
 
             '); }'
@@ -231,8 +228,7 @@ export class GameInputManager extends InputManager { private gameScene: any
         this.enhancedTouchManager.registerCallback('onDoubleTap', (gestureData: GestureData) => { this.handleDoubleTapGesture(gestureData),' 
     }');'
 
-        this.enhancedTouchManager.registerCallback('onLongPress', (gestureData: GestureData) => { this.handleLongPressGesture(gestureData) }),
-    }
+        this.enhancedTouchManager.registerCallback('onLongPress', (gestureData: GestureData) => { this.handleLongPressGesture(gestureData) }) }
     
     /**
      * スワイプジェスチャー処理
@@ -313,7 +309,7 @@ export class GameInputManager extends InputManager { private gameScene: any
         }
         
         // エフェクト表示
-        if (gestureData.position) { this.gameScene.createLongPressEffect(gestureData.position) }
+        if (gestureData.position) { this.gameScene.createLongPressEffect(gestureData.position);
     }
     
     /**
@@ -332,7 +328,7 @@ export class GameInputManager extends InputManager { private gameScene: any
      * タッチ設定の更新
      */
     updateTouchSettings(settings: any): void { if (this.enhancedTouchManager) {
-            this.enhancedTouchManager.configureTouchSettings(settings) }
+            this.enhancedTouchManager.configureTouchSettings(settings);
     }
     
     /**

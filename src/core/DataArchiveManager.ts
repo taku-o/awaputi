@@ -4,109 +4,110 @@
  */
 
 export interface CompressionManager {
-    compressData(data: any, dataType: string, options: { level: number ): Promise<{ compresse,d: boolean,, data: any;>;
-}
+    compressData(data: any, dataType: string, options: { level: number ): Promise<{ compresse,d: boolean, data: any;>;
+} };
 
-export interface ArchiveConfig { archiving: {
-        enable,d: boolean;
-        autoArchive: boolean;
-        archiveThreshold: number;
-        batchSize: number;
-    compressionEnabled: boolean;
-    retention: { activeDays: number;
+export interface ArchiveConfig { archiving: { enable,d: boolean,
+        autoArchive: boolean,
+        archiveThreshold: number,
+        batchSize: number,
+    compressionEnabled: boolean,
+    retention: { activeDays: number,
         archiveDays: number;
-        maxArchiveDays: number;
-    permanentDelete: boolean;
-    storage: { maxArchiveSize: number;
+    },
+        maxArchiveDays: number,
+    permanentDelete: boolean,
+    storage: { maxArchiveSize: number,
         indexEnabled: boolean;
-        encryptionEnabled: boolean;
-    backupEnabled: boolean;
-    performance: { maxConcurrentOperations: number;
+    },
+        encryptionEnabled: boolean,
+    backupEnabled: boolean,
+    performance: { maxConcurrentOperations: number,
         operationTimeout: number;
-    indexRebuildThreshold: number;
+    },
+    indexRebuildThreshold: number,
     indexRebuildThreshold: number;
         };
 export type ArchiveStrategy = 'age' | 'size' | 'frequency' | 'importance';
 
-export interface ArchiveStatistics { totalArchived: number;
-    totalRestored: number;
-    totalSize: number;
-    lastArchive: number | null;
-    lastRestore: number | null  }
-export interface ArchiveState { isArchiving: boolean;
-    isRestoring: boolean;
-    operationQueue: ArchiveOperation[];
+export interface ArchiveStatistics { totalArchived: number,
+    totalRestored: number,
+    totalSize: number,
+    lastArchive: number | null,
+    lastRestore: number | null  };
+export interface ArchiveState { isArchiving: boolean,
+    isRestoring: boolean,
+    operationQueue: ArchiveOperation[],
     statistics: ArchiveStatistics;
 ';'
 
 export interface ArchiveOperation {,
-    operation: 'archive' | 'restore';
-    params: any;
-    resolve: (value: any) => void;
+    operation: 'archive' | 'restore,
+    params: any,
+    resolve: (value: any) => void,
     reject: (error: Error') => void;'
     timestamp: number;
-export interface ArchiveMetadata { id: string;
-    dataType: string;
-    strategy: ArchiveStrategy;
-    createdAt: number;
-    originalSize: number;
-    archivedSize: number;
-    compressionRatio: number;
-    recordCount: number;
-    version: string;
+    export interface ArchiveMetadata { id: string,
+    dataType: string,
+    strategy: ArchiveStrategy,
+    createdAt: number,
+    originalSize: number,
+    archivedSize: number,
+    compressionRatio: number,
+    recordCount: number,
+    version: string,
     options: Record<string, any>;
     checksums: {
         origina,l: string;
-    archived: string;
-    dateRange: DateRange | null;
+    },
+    archived: string,
+    dateRange: DateRange | null,
     tags: string[];
 }
-export interface DateRange { start: number;
-    end: number;
+export interface DateRange { start: number,
+    end: number,
     count: number;
-export interface SearchQuery { dataType?: string,
+    export interface SearchQuery { dataType?: string,
     dateRange?: {,
         start?: number;
-        end?: number;;
+    end?: number;;
     minSize?: number;
     maxSize?: number;
     tags?: string[];
     text?: string;
     limit?: number;
     preferLarger?: boolean;
-}
-
-export interface SearchResult { archiveId: string;
-    metadata: ArchiveMetadata;
+};
+export interface SearchResult { archiveId: string,
+    metadata: ArchiveMetadata,
     score: number;
-export interface SearchResults { total: number;
-    results: SearchResult[];
+    export interface SearchResults { total: number,
+    results: SearchResult[],
     query: SearchQuery;
-export interface ArchiveResult { archiveId: string;
-    success: boolean;
-    metadata: ArchiveMetadata;
-    originalSize: number;
-    archivedSize: number;
-    compressionRatio: number;
+    export interface ArchiveResult { archiveId: string,
+    success: boolean,
+    metadata: ArchiveMetadata,
+    originalSize: number,
+    archivedSize: number,
+    compressionRatio: number,
     processingTime: number;
-export interface RestoreResult { archiveId: string;
-    success: boolean;
-    data: any;
-    metadata: ArchiveMetadata;
-    restoredSize: number;
+    export interface RestoreResult { archiveId: string,
+    success: boolean,
+    data: any,
+    metadata: ArchiveMetadata,
+    restoredSize: number,
     processingTime: number;
-export interface PartitionResult { archive: any[] | null;
-    keep: any[] | null  }
+    export interface PartitionResult { archive: any[] | null,
+    keep: any[] | null  };
 export interface SearchIndex { byDate: Map<string, string[]>,
     byType: Map<string, string[]>;
     bySize: Map<string, string[]>;
-    byMetadata: Map<string, string[]> }
-
+    byMetadata: Map<string, string[]> };
 export type SizeCategory = 'tiny' | 'small' | 'medium' | 'large' | 'huge';
 
-export interface BackupData { archiveId: string;
-    data: any;
-    metadata: ArchiveMetadata;
+export interface BackupData { archiveId: string,
+    data: any,
+    metadata: ArchiveMetadata,
     backupCreated: number;
 ';'
 
@@ -114,7 +115,7 @@ export interface CompressedData {,
     type: 'sampled_data' | 'aggregated_data' | 'dictionary_compressed';
     samples?: any;
     data?: any;
-    dictionary?: Record<string, any> }
+    dictionary?: Record<string, any> };
 export class DataArchiveManager {
     private compressionManager: CompressionManager;
     private config: ArchiveConfig;
@@ -130,38 +131,36 @@ export class DataArchiveManager {
         
         // アーカイブ設定
         this.config = {
-            archiving: {
-                enabled: true;
-                autoArchive: true;
+            archiving: { enabled: true  ,
+                autoArchive: true,
     archiveThreshold: 30000, // 30000レコード以上でアーカイブ;
                 batchSize: 5000
  }
                 compressionEnabled: true ;
     },
             retention: { activeDays: 90, // 90日間はアクティブデータ
-                archiveDays: 365, // 365日間はアーカイブ保持;
+                archiveDays: 365, // 365日間はアーカイブ保持  },
                 maxArchiveDays: 1095, // 最大3年間保持;
                 permanentDelete: false // 永続削除を無効化 
  };
             storage: { maxArchiveSize: 500 * 1024 * 1024, // 500MB
-                indexEnabled: true;
-                encryptionEnabled: false;
-    backupEnabled: true;
-            performance: { maxConcurrentOperations: 3;
-    operationTimeout: 300000, // 5分;
+                indexEnabled: true  ,
+                encryptionEnabled: false,
+    backupEnabled: true,
+            performance: { maxConcurrentOperations: 3,
+    operationTimeout: 300000, // 5分  },
                 indexRebuildThreshold: 1000 
  }
         },
         
         // アーカイブ状態管理
-        this.archiveState = { isArchiving: false;
-            isRestoring: false;
-            operationQueue: [];
-    statistics: {
-                totalArchived: 0;
-                totalRestored: 0;
-                totalSize: 0;
-                lastArchive: null;
+        this.archiveState = { isArchiving: false,
+            isRestoring: false,
+            operationQueue: [],
+    statistics: { totalArchived: 0  ,
+                totalRestored: 0,
+                totalSize: 0,
+                lastArchive: null,
     lastRestore: null;
         },
         
@@ -175,7 +174,7 @@ export class DataArchiveManager {
         
         // 検索インデックス
         this.searchIndex = { byDate: new Map(
-            byType: new Map();
+            byType: new Map(),
             bySize: new Map(
     byMetadata: new Map(  };
         
@@ -187,7 +186,7 @@ export class DataArchiveManager {
      */
     initialize(): void { this.loadArchiveData();
         this.buildSearchIndex();
-        this.setupArchiveScheduler() }
+        this.setupArchiveScheduler();
     /**
      * アーカイブデータの読み込み
      */
@@ -196,7 +195,7 @@ export class DataArchiveManager {
             const archiveKeys = Object.keys(localStorage).filter(key => '),'
                 key.startsWith('archive_') || key.startsWith('archive_index_') || key.startsWith('archive_meta_),'
             
-            archiveKeys.forEach(key => { ) }
+            archiveKeys.forEach(key => { );
 
                 try {),' }'
 
@@ -234,7 +233,7 @@ export class DataArchiveManager {
             tomorrow.setHours(2, 0, 0, 0);
             const timeUntilNextRun = tomorrow.getTime() - now.getTime();
             setTimeout(() => {
-                this.performScheduledArchive() }
+                this.performScheduledArchive();
                 scheduleNextArchive(); // 次の実行をスケジュール }
             }, timeUntilNextRun);
         };
@@ -248,7 +247,7 @@ export class DataArchiveManager {
             nextSunday.setHours(3, 0, 0, 0);
             const timeUntilNextRun = nextSunday.getTime() - now.getTime();
             setTimeout(() => {
-                this.performMaintenance() }
+                this.performMaintenance();
                 scheduleWeeklyMaintenance(); }
             }, timeUntilNextRun);
         };
@@ -262,7 +261,7 @@ export class DataArchiveManager {
     async archiveData(data: any, dataType: string, options: Record<string, any> = { ): Promise<ArchiveResult> {''
         if (this.archiveState.isArchiving) {', ' }
 
-            return this.queueArchiveOperation('archive', { data, dataType, options ) }
+            return this.queueArchiveOperation('archive', { data, dataType, options );
         this.archiveState.isArchiving = true;
         const startTime = Date.now();
         
@@ -296,7 +295,7 @@ export class DataArchiveManager {
             this.updateArchiveStatistics(metadata, 'archive);'
             
             const result: ArchiveResult = { archiveId,
-                success: true,
+                success: true;
                 metadata,
                 originalSize: this.calculateDataSize(data),
                 archivedSize: this.calculateDataSize(archiveData),
@@ -309,7 +308,7 @@ export class DataArchiveManager {
         } catch (error) {
             console.error('Data archiving failed:', error);
             throw error } finally { this.archiveState.isArchiving = false,
-            this.processOperationQueue() }
+            this.processOperationQueue();
     }
     
     /**
@@ -339,7 +338,7 @@ export class DataArchiveManager {
      */
     hasTimestampData(data: any): boolean { ''
         if(Array.isArray(data)) {
-            return data.some(item => ')',
+            return data.some(item => '),
                 item && typeof item === 'object' && ','
                 Object.keys(item).some(key => '),'
                     key.includes('timestamp') || key.includes('date') || key.includes('time),'
@@ -443,7 +442,7 @@ export class DataArchiveManager {
      * アーカイブIDの生成
      */
     generateArchiveId(dataType: string): string { const timestamp = Date.now();
-        const random = Math.random().toString(36).substr(2, 9) }
+        const random = Math.random().toString(36).substr(2, 9);
         return `${dataType}_${timestamp}_${random}`;
     }
     
@@ -454,20 +453,19 @@ export class DataArchiveManager {
         archiveId: string, ;
         dataType: string, ;
         originalData: any, ;
-        archivedData: any );
+        archivedData: any ),
         strategy: ArchiveStrategy,
     options: Record<string, any>;
     ): ArchiveMetadata { return { id: archiveId,
             dataType,
             strategy,
-            createdAt: Date.now();
+            createdAt: Date.now(),
             originalSize: this.calculateDataSize(originalData,
     archivedSize: this.calculateDataSize(archivedData,
             compressionRatio: this.calculateDataSize(archivedData) / this.calculateDataSize(originalData,
             recordCount: this.countRecords(originalData),' };'
 
-            version: '1.0',
-}
+            version: '1.0' }
             options: { ...options,
             checksums: { original: this.calculateChecksum(originalData,
     archived: this.calculateChecksum(archivedData }
@@ -484,7 +482,7 @@ export class DataArchiveManager {
 
         if (typeof, data === 'object' && data !== null) {
             let count = 0,
-            Object.values(data).forEach(value => { ) }
+            Object.values(data).forEach(value => { );
                 if (Array.isArray(value) { }
                     count += value.length; }
             };
@@ -517,9 +515,8 @@ export class DataArchiveManager {
 }
             return null;
         return { start: Math.min(...timestamps,
-            end: Math.max(...timestamps) },
-            count: timestamps.length ,
-    } }
+            end: Math.max(...timestamps) ,
+            count: timestamps.length  } }
     
     /**
      * タイムスタンプの抽出
@@ -528,7 +525,7 @@ export class DataArchiveManager {
         
         const extract = (obj: any): void => { 
             if (Array.isArray(obj) {
-            }'
+            }
 
                 obj.forEach(item => extract(item));' }'
 
@@ -540,7 +537,7 @@ export class DataArchiveManager {
                         timestamps.push(value);' }'
 
                     } else if (typeof, value === 'object) { extract(value) }'
-                };
+                }
             }
         };
         
@@ -555,7 +552,7 @@ export class DataArchiveManager {
         ','
         // データ構造に基づくタグ
         if(Array.isArray(data)) {''
-            tags.push('array',
+            tags.push('array,
             if(data.length > 1000) tags.push('large) }'
         // 日付に基づくタグ
         const dateRange = this.extractDateRange(data);
@@ -563,9 +560,9 @@ export class DataArchiveManager {
             const now = Date.now();
             const daysDiff = (now - dateRange.end) / (24 * 60 * 60 * 1000),
 
-            if(daysDiff < 7) tags.push('recent',
-            else if(daysDiff < 30) tags.push('current',
-            else if(daysDiff < 90) tags.push('old') }
+            if(daysDiff < 7) tags.push('recent,
+            else if(daysDiff < 30) tags.push('current,
+            else if(daysDiff < 90) tags.push('old');
 
             else tags.push('ancient); }'
         return tags;
@@ -584,8 +581,8 @@ export class DataArchiveManager {
             
             // バックアップの作成
             if (this.config.storage.backupEnabled} { }
-                await this.createBackup(archiveId, data, metadata};
-            } catch (error) {
+                await this.createBackup(archiveId, data, metadata}
+        } catch (error) {
             console.error(`Failed to store archive ${archiveId}:`, error);
             throw error; }
 }
@@ -597,9 +594,9 @@ export class DataArchiveManager {
                 archiveId,
                 data,
                 metadata,
-                backupCreated: Date.now(  },
+                backupCreated: Date.now(  ,
             
-            localStorage.setItem(`archive_backup_${archiveId}`, JSON.stringify(backupData}};
+            localStorage.setItem(`archive_backup_${archiveId}`, JSON.stringify(backupData}}
         } catch (error) {
             console.warn(`Failed to create backup for ${archiveId}:`, error);
         }
@@ -614,9 +611,8 @@ export class DataArchiveManager {
                 results.push({)
                     archiveId),
                     metadata }
-                    score: this.calculateRelevanceScore(metadata, query); }
-                };
-            }
+                    score: this.calculateRelevanceScore(metadata, query);     }
+}
         // 関連度でソート
         results.sort((a, b) => b.score - a.score);
         
@@ -646,13 +642,13 @@ export class DataArchiveManager {
         
         // タグフィルター
         if (query.tags && query.tags.length > 0) {
-            const hasAllTags = query.tags.every(tag => metadata.tags.includes(tag) }
+            const hasAllTags = query.tags.every(tag => metadata.tags.includes(tag);
             if (!hasAllTags) return false;
         // テキスト検索
         if (query.text) {
 
             const searchText = query.text.toLowerCase()','
-            ].join(', ').toLowerCase() }
+            ].join(', ').toLowerCase();
             if(!searchableText.includes(searchText) return false;
         return true;
     }
@@ -682,7 +678,7 @@ export class DataArchiveManager {
     async restoreArchive(archiveId: string, options: Record<string, any> = { ): Promise<RestoreResult> {''
         if (this.archiveState.isRestoring) {', ' }
 
-            return this.queueArchiveOperation('restore', { archiveId, options ) }
+            return this.queueArchiveOperation('restore', { archiveId, options );
         this.archiveState.isRestoring = true;
         const startTime = Date.now();
         
@@ -690,14 +686,14 @@ export class DataArchiveManager {
             const archivedData = this.archiveStorage.get(archiveId);
             const metadata = this.archiveMetadata.get(archiveId);
             if (!archivedData || !metadata) { }
-                throw new Error(`Archive ${archiveId} not, found`};
+                throw new Error(`Archive ${archiveId} not, found`}
             }
             
             // データの復元
             let restoredData = archivedData;
             
             // 圧縮データの解凍
-            if (metadata.compressionRatio < 1 && this.compressionManager) { restoredData = await this.decompressArchiveData(archivedData, metadata) }
+            if (metadata.compressionRatio < 1 && this.compressionManager) { restoredData = await this.decompressArchiveData(archivedData, metadata);
             ;
             // データ整合性の検証
             await this.verifyRestoredData(restoredData, metadata);
@@ -719,7 +715,7 @@ export class DataArchiveManager {
             console.error(`Archive restoration failed for ${archiveId}:`, error);
             throw error;
         } finally { this.archiveState.isRestoring = false,
-            this.processOperationQueue() }
+            this.processOperationQueue();
     }
     
     /**
@@ -762,7 +758,7 @@ export class DataArchiveManager {
     async verifyRestoredData(data: any, metadata: ArchiveMetadata): Promise<void> { // チェックサムの検証
         const checksum = this.calculateChecksum(data);
         if (checksum !== metadata.checksums.original) { }
-            console.warn(`Checksum, mismatch for, archive ${metadata.id}`};
+            console.warn(`Checksum, mismatch for, archive ${metadata.id}`}
         }
         
         // データ構造の検証
@@ -790,7 +786,7 @@ export class DataArchiveManager {
             const timestamp = item.timestamp || item.date || item.createdAt || Date.now();
             if (timestamp < cutoffDate) { }
                 old.push(item); }
-            } else { recent.push(item) }
+            } else { recent.push(item);
         };
         
         return [old, recent];
@@ -814,9 +810,9 @@ export class DataArchiveManager {
             for (let, i = data.length - 1, i >= 0, i--) {
                 const itemSize = this.calculateDataSize(data[i]);
                 if (keptSize + itemSize <= targetSize) {
-                    keep.unshift(data[i]) }
+                    keep.unshift(data[i]);
                     keptSize += itemSize; }
-                } else { archive.unshift(data[i]) }
+                } else { archive.unshift(data[i]);
             }
             
             return { archive, keep }
@@ -836,9 +832,9 @@ export class DataArchiveManager {
      * 操作のキューイング
      */''
     queueArchiveOperation(operation: 'archive' | 'restore', params: any): Promise<any> { return new Promise((resolve, reject) => { 
-            this.archiveState.operationQueue.push({) }
+            this.archiveState.operationQueue.push({);
                 operation, params, resolve, reject, timestamp: Date.now(); 
-    };
+    }
         };
     }
     
@@ -861,7 +857,7 @@ export class DataArchiveManager {
 
                 } else if (job.operation === 'restore) { result = await this.restoreArchive(job.params.archiveId, job.params.options) }'
                 job.resolve(result);
-            } catch (error) { job.reject(error) }
+            } catch (error) { job.reject(error);
         }
     /**
      * 検索インデックスの構築
@@ -887,12 +883,12 @@ export class DataArchiveManager {
         }
         
         // タイプインデックス
-        if (!this.searchIndex.byType.has(metadata.dataType) { this.searchIndex.byType.set(metadata.dataType, []) }
+        if (!this.searchIndex.byType.has(metadata.dataType) { this.searchIndex.byType.set(metadata.dataType, []);
         this.searchIndex.byType.get(metadata.dataType)!.push(archiveId);
         
         // サイズインデックス
         const sizeCategory = this.getSizeCategory(metadata.archivedSize);
-        if (!this.searchIndex.bySize.has(sizeCategory) { this.searchIndex.bySize.set(sizeCategory, []) }
+        if (!this.searchIndex.bySize.has(sizeCategory) { this.searchIndex.bySize.set(sizeCategory, []);
         this.searchIndex.bySize.get(sizeCategory)!.push(archiveId);
     }
     
@@ -900,10 +896,10 @@ export class DataArchiveManager {
      * サイズカテゴリの取得
      */
     getSizeCategory(size: number): SizeCategory { ''
-        if(size < 1024) return 'tiny',
-        if(size < 1024 * 1024) return 'small',
-        if(size < 10 * 1024 * 1024) return 'medium',
-        if(size < 100 * 1024 * 1024) return 'large',
+        if(size < 1024) return 'tiny,
+        if(size < 1024 * 1024) return 'small,
+        if(size < 10 * 1024 * 1024) return 'medium,
+        if(size < 100 * 1024 * 1024) return 'large,
         return 'huge' }
     /**
      * 定期アーカイブの実行'
@@ -949,8 +945,8 @@ export class DataArchiveManager {
                 toDelete.push(archiveId); }
         }
         
-        for (const archiveId of toDelete) { await this.deleteArchive(archiveId) }
-        console.debug(`Cleaned, up ${toDelete.length} old, archives`};
+        for (const archiveId of toDelete) { await this.deleteArchive(archiveId);
+        console.debug(`Cleaned, up ${toDelete.length} old, archives`}
     }
     
     /**
@@ -966,8 +962,7 @@ export class DataArchiveManager {
             localStorage.removeItem(`archive_backup_${archiveId}`};
             
             // インデックスから削除 }
-            this.removeFromSearchIndex(archiveId};
-            
+            this.removeFromSearchIndex(archiveId}
         } catch (error) {
             console.error(`Failed to delete archive ${archiveId}:`, error);
         }
@@ -980,7 +975,7 @@ export class DataArchiveManager {
                 if (newArchives.length === 0) {
             }
                     index.delete(key); }
-                } else { index.set(key, newArchives) }
+                } else { index.set(key, newArchives);
             }
     }
 
@@ -1012,15 +1007,15 @@ export class DataArchiveManager {
     updateArchiveStatistics(metadata: ArchiveMetadata, operation: 'archive' | 'restore'): void { const stats = this.archiveState.statistics,
 
         if(operation === 'archive' {'
-            stats.totalArchived++,
+            stats.totalArchived++;
 
             stats.totalSize += metadata.archivedSize
 }
 
-            stats.lastArchive = Date.now() }
+            stats.lastArchive = Date.now();
 
         } else if (operation === 'restore) { stats.totalRestored++,'
-            stats.lastRestore = Date.now() }
+            stats.lastRestore = Date.now();
     }
     
     /**
@@ -1032,15 +1027,14 @@ export class DataArchiveManager {
             isArchiving: this.archiveState.isArchiving,
             isRestoring: this.archiveState.isRestoring,
     indexSizes: {
-                byDate: this.searchIndex.byDate.size,
-    byType: this.searchIndex.byType.size },
-                bySize: this.searchIndex.bySize.size ,
-    } }
+                byDate: this.searchIndex.byDate.size ,
+    byType: this.searchIndex.byType.size ,
+                bySize: this.searchIndex.bySize.size  } }
     
     /**
      * 設定の更新
      */
-    updateConfig(newConfig: Partial<ArchiveConfig>): void { Object.assign(this.config, newConfig) }
+    updateConfig(newConfig: Partial<ArchiveConfig>): void { Object.assign(this.config, newConfig);
     /**
      * リソースのクリーンアップ
      */
@@ -1050,6 +1044,6 @@ export class DataArchiveManager {
         this.archiveMetadata.clear();
         ','
         // 検索インデックスのクリア
-        Object.values(this.searchIndex).forEach(index => index.clear()) }
+        Object.values(this.searchIndex).forEach(index => index.clear());
 
     }'}'

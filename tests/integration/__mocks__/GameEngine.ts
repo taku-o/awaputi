@@ -6,7 +6,7 @@ interface EventListener {
     (event: void;
 
 export class GameEngine {
-    isRunning: boolean;
+    isRunning: boolean,
     config: Record<string, any>;
     eventListeners: Map<string, EventListener[]>;
 

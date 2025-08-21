@@ -2,41 +2,33 @@ import { BaseComponent  } from '../../debug/BaseComponent.js';
 
 // Type definitions
 interface MainController { [key: string]: any;
-
-interface BubbleTypeConfig { health?: number,
+    interface BubbleTypeConfig { health?: number,
     score?: number;
     size?: number;
     maxAge?: number;
     effects?: Record<string, any>;
     [key: string]: any;
-
-interface GameBalanceConfig { baseScores?: Record<string, number>,
+    interface GameBalanceConfig { baseScores?: Record<string, number>,
     bubbles?: Record<string, BubbleTypeConfig> }
 
 interface ExpectationMetadata { extractedAt?: number,
     sourceFiles?: string[];
     generatorVersion?: string;
-
-interface TestExpectations { bubbleTypes?: Record<string, BubbleTypeConfig>,
+    interface TestExpectations { bubbleTypes?: Record<string, BubbleTypeConfig>,
     gameBalance?: GameBalanceConfig;
     metadata?: ExpectationMetadata;
-
-interface TemplateFunction { (expectations: TestExpectations): string;
-
-interface TestTemplates { [testType: string]: TemplateFunction;
-
-interface CacheEntry { testType: string;
-    expectations: TestExpectations;
-    testCode: string;
+    interface TemplateFunction { (expectations: TestExpectations): string;
+    interface TestTemplates { [testType: string]: TemplateFunction;
+    interface CacheEntry { testType: string,
+    expectations: TestExpectations,
+    testCode: string,
     generatedAt: number;
-
-interface ValidationResult { valid: boolean;
-    issues: string[];
+    interface ValidationResult { valid: boolean,
+    issues: string[],
     warnings: string[];
-
-interface GenerationStatistics { totalGenerated: number;
-    templates: string[];
-    cacheSize: number;
+    interface GenerationStatistics { totalGenerated: number,
+    templates: string[],
+    cacheSize: number,
     lastOptimized: number | null }
 
 /**
@@ -50,17 +42,17 @@ export class ExpectationGenerator extends BaseComponent { private expectationCac
     constructor(mainController: MainController) {
 
         super(mainController, 'ExpectationGenerator),'
-        this.expectationCache = new Map() }
+        this.expectationCache = new Map() };
         this.templateCache = new Map(); }
     }
 
-    async _doInitialize(): Promise<void> { this.setupTestTemplates() }
+    async _doInitialize(): Promise<void> { this.setupTestTemplates();
 
     /**
      * テストテンプレートを設定
      */
     private setupTestTemplates(): void { this.testTemplates = {
-            bubble: this.getBubbleTestTemplate();
+            bubble: this.getBubbleTestTemplate(),
             gameBalance: this.getGameBalanceTestTemplate(
     bubbleManager: this.getBubbleManagerTestTemplate( }
 
@@ -89,7 +81,7 @@ import { Bubble  } from '../../src/bubbles/Bubble.js';
 jest.mock('../../src/core/ConfigurationManager.js', () => ({ : undefined, getConfigurationManager: jest.fn(() => ({
         get: jest.fn(),
         watch: jest.fn(
-    set: jest.fn()  }
+    set: jest.fn();
 
     );'}');
 
@@ -102,13 +94,13 @@ jest.mock('../../src/utils/ErrorHandler.js', () => ({ getErrorHandler: jest.fn((
 const createMockGameEngine = () => ({
     canvas: { width: 800, height: 600  })
     ctx: { arc: jest.fn(),
-        fill: jest.fn(),
+        fill: jest.fn()  ,
         stroke: jest.fn(),
         fillText: jest.fn(),
         save: jest.fn(),
         restore: jest.fn(
     translate: jest.fn(
-        scale: jest.fn('',
+        scale: jest.fn(',
     fillStyle: ','
         strokeStyle: ','
     lineWidth: 1  })
@@ -121,7 +113,7 @@ describe('Bubble Class Configuration Tests', () => {
     
     beforeEach(() => {'
         mockGameEngine = createMockGameEngine();
-        jest.clearAllMocks() }
+        jest.clearAllMocks();
 
     describe('Bubble Type Configuration', () => { }
 
@@ -161,12 +153,12 @@ ${Object.entries(expectations.bubbleTypes || {}.map(([bubbleType, config]) => ` 
                 if (expectedConfig.health !== undefined) { }
                     expect(actualConfig.health).toBe(expectedConfig.health); }
                 }
-                if (expectedConfig.score !== undefined) { expect(actualConfig.score).toBe(expectedConfig.score) }
-                if (expectedConfig.size !== undefined) { expect(actualConfig.size).toBe(expectedConfig.size) }
+                if (expectedConfig.score !== undefined) { expect(actualConfig.score).toBe(expectedConfig.score);
+                if (expectedConfig.size !== undefined) { expect(actualConfig.size).toBe(expectedConfig.size);
                 if (expectedConfig.maxAge !== undefined) {', ' }
 
                     expect(actualConfig.maxAge).toBe(expectedConfig.maxAge); }
-};
+}
     };
 
     describe('Metadata Validation', () => { }
@@ -180,7 +172,7 @@ ${Object.entries(expectations.bubbleTypes || {}.map(([bubbleType, config]) => ` 
             
             expect(Array.isArray(metadata.sourceFiles).toBe(true);
             expect(metadata.sourceFiles.length).toBeGreaterThan(0);
-        };
+        }
 };
 `;
         }
@@ -211,7 +203,7 @@ describe('GameBalance Configuration Tests', () => {  ''
         test('should have all expected base scores', () => { }
             const expectedScores = ${JSON.stringify(expectations.gameBalance?.baseScores || {}, null, 12)};
             
-            for(const [bubbleType, expectedScore] of Object.entries(expectedScores) { expect(GameBalance.baseScores[bubbleType]).toBe(expectedScore) }
+            for(const [bubbleType, expectedScore] of Object.entries(expectedScores) { expect(GameBalance.baseScores[bubbleType]).toBe(expectedScore);
 
             }'}');
 
@@ -235,7 +227,7 @@ describe('GameBalance Configuration Tests', () => {  ''
 }
                     expect(actualConfig.health).toBe(expectedConfig.health); }
                 }
-                if (expectedConfig.size !== undefined) { expect(actualConfig.size).toBe(expectedConfig.size) }
+                if (expectedConfig.size !== undefined) { expect(actualConfig.size).toBe(expectedConfig.size);
                 if (expectedConfig.maxAge !== undefined) {', ' }
 
                     expect(actualConfig.maxAge).toBe(expectedConfig.maxAge); }
@@ -244,8 +236,8 @@ describe('GameBalance Configuration Tests', () => {  ''
 
     describe('Configuration Integrity', () => {  ''
         test('should have consistent configuration structure', () => {''
-            expect(GameBalance).toHaveProperty('baseScores',
-            expect(GameBalance).toHaveProperty('bubbles',
+            expect(GameBalance).toHaveProperty('baseScores,
+            expect(GameBalance).toHaveProperty('bubbles,
             expect(typeof, GameBalance.baseScores).toBe('object',' }'
 
             expect(typeof, GameBalance.bubbles).toBe('object'; }
@@ -267,7 +259,7 @@ describe('GameBalance Configuration Tests', () => {  ''
             expect(metadata).toHaveProperty('extractedAt';
             expect(metadata).toHaveProperty('sourceFiles';
             expect(metadata).toHaveProperty('generatorVersion);'
-        };
+        }
 };
 `;
         }
@@ -297,7 +289,7 @@ import { BubbleManager  } from '../../src/managers/BubbleManager.js';
 jest.mock('../../src/core/ConfigurationManager.js', () => ({ : undefined, getConfigurationManager: jest.fn(() => ({
         get: jest.fn(),
         watch: jest.fn(
-    set: jest.fn()  }
+    set: jest.fn();
 
     );'}');
 
@@ -310,18 +302,17 @@ describe('BubbleManager Configuration Tests', () => {  let bubbleManager,
     
     beforeEach(() => { }
         mockGameEngine = { }
-            canvas: { width: 800, height: 600  },
+            canvas: { width: 800, height: 600  ,
             ctx: { arc: jest.fn(),
-                fill: jest.fn(),
+                fill: jest.fn() ,
                 stroke: jest.fn(),
                 fillText: jest.fn(),
                 save: jest.fn(
     restore: jest.fn( }
-            particleManager: { createParticle: jest.fn( },
-            soundManager: { playSound: jest.fn( },
+            particleManager: { createParticle: jest.fn( ,
+            soundManager: { playSound: jest.fn( ,
             inputManager: {
-                getMousePosition: jest.fn(() => ({ x: 0, y: 0 ),
-            }
+                getMousePosition: jest.fn(() => ({ x: 0, y: 0 ) }
         };
         
         bubbleManager = new BubbleManager(mockGameEngine);
@@ -359,7 +350,7 @@ ${Object.keys(expectations.bubbleTypes || {}.map(bubbleType => `        test('sh
             // Test damage handling
             normalBubble.takeDamage(1);
             bossBubble.takeDamage(1);
-            expect(normalBubble.currentHealth).toBe(normalHealth - 1) }
+            expect(normalBubble.currentHealth).toBe(normalHealth - 1);
             expect(bossBubble.currentHealth).toBe(bossHealth - 1);' }'
 
         }');'
@@ -402,7 +393,7 @@ ${Object.keys(expectations.bubbleTypes || {}.map(bubbleType => `        test('sh
             
             expect(Array.isArray(metadata.sourceFiles).toBe(true);
             expect(metadata.sourceFiles.length).toBeGreaterThan(0);
-        };
+        }
 };
 `;
         }
@@ -416,18 +407,18 @@ ${Object.keys(expectations.bubbleTypes || {}.map(bubbleType => `        test('sh
     generateTestCode(expectations: TestExpectations, testType: string): string | null { try {
             const template = this.testTemplates[testType],
             if (!template) { }
-                throw new Error(`Unknown, test type: ${testType}`};
+                throw new Error(`Unknown, test type: ${testType}`}
             }
 
             const testCode = template(expectations);
             
             // キャッシュに保存
-            const cacheKey = `${testType}_${Date.now())`,
+            const cacheKey = `${testType}_${Date.now()),
             this.expectationCache.set(cacheKey, {
                 testType
                 expectations);
                 testCode,
-                generatedAt: Date.now(  },
+                generatedAt: Date.now(  ,
 
             return testCode;
 
@@ -441,7 +432,7 @@ ${Object.keys(expectations.bubbleTypes || {}.map(bubbleType => `        test('sh
      * @param template - テンプレート関数
      */
     registerTemplate(testType: string, template: TemplateFunction): void { this.testTemplates[testType] = template }
-        console.log(`[ExpectationGenerator] カスタムテンプレート登録: ${testType}`};
+        console.log(`[ExpectationGenerator] カスタムテンプレート登録: ${testType}`}
     }
 
     /**
@@ -459,7 +450,7 @@ ${Object.keys(expectations.bubbleTypes || {}.map(bubbleType => `        test('sh
 }
         
         this.lastOptimized = Date.now();
-        console.log(`[ExpectationGenerator] テンプレートキャッシュ最適化完了: ${this.expectationCache.size}件保持`};
+        console.log(`[ExpectationGenerator] テンプレートキャッシュ最適化完了: ${this.expectationCache.size}件保持`}
     }
 
     /**
@@ -470,7 +461,7 @@ ${Object.keys(expectations.bubbleTypes || {}.map(bubbleType => `        test('sh
     validateExpectations(expectations: TestExpectations): ValidationResult { const validation: ValidationResult = {
             valid: true,
             issues: [],
-    warnings: [] },
+    warnings: [] ,
         if (!expectations || typeof, expectations !== 'object') {
             validation.valid = false,
             validation.issues.push('Expectations, must be, an object' }
@@ -512,10 +503,8 @@ ${Object.keys(expectations.bubbleTypes || {}.map(bubbleType => `        test('sh
                         validation.warnings.push(`Missing ${prop} for, bubble type: ${bubbleType}`}';} else if(typeof, config[prop] !== 'number' {'
                         validation.issues.push(`Invalid ${prop} type, for bubble, type: ${bubbleType}`};
                         validation.valid = false;
-                    }
+                        }
 }
-        }
-
         return validation;
     }
 
@@ -525,7 +514,7 @@ ${Object.keys(expectations.bubbleTypes || {}.map(bubbleType => `        test('sh
      */
     getGenerationStatistics(): GenerationStatistics { return { totalGenerated: this.expectationCache.size,
             templates: Object.keys(this.testTemplates,
-    cacheSize: this.expectationCache.size },
+    cacheSize: this.expectationCache.size ,
             lastOptimized: this.lastOptimized || null 
     }
 

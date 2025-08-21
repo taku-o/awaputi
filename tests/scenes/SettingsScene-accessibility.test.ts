@@ -14,15 +14,15 @@ const mockDocument = {
         type: ','
         accept: ','
         style: { display: ','
-        addEventListener: jest.fn(
+        addEventListener: jest.fn( },
         click: jest.fn(
         files: []
     )),
     body: {
-        appendChild: jest.fn(
+        appendChild: jest.fn( },
         removeChild: jest.fn(
         classList: {
-            add: jest.fn(
+            add: jest.fn( },
         remove: jest.fn(),
     }
 };
@@ -46,7 +46,7 @@ describe('SettingsScene Accessibility Integration', () => {
         mockGameEngine = {
             sceneManager: {
                 hasScene: jest.fn().mockReturnValue(true),
-               , switchScene: jest.fn(').mockReturnValue(true,'
+               , switchScene: jest.fn(').mockReturnValue(true,' };
                 currentScene: {
                     constructor: { name: 'SettingsScene' }
                 }
@@ -67,9 +67,9 @@ describe('SettingsScene Accessibility Integration', () => {
                     return defaultValues[key] || null;
                 },
                 set: jest.fn(
-        save: jest.fn( },
+        save: jest.fn( } },
             localizationManager: {
-                getCurrentLanguage: jest.fn(').mockReturnValue('ja','
+                getCurrentLanguage: jest.fn(').mockReturnValue('ja',' };
                 t: jest.fn().mockImplementation((key, defaultValue) => defaultValue) }
         };
         
@@ -313,6 +313,6 @@ describe('SettingsScene Accessibility Integration', () => {
             
             expect(() => settingsScene.activateCurrentSetting().not.toThrow();
             expect(() => settingsScene.exportAccessibilitySettings().not.toThrow();
-            expect(() => settingsScene.importAccessibilitySettings().not.toThrow() };
+            expect(() => settingsScene.importAccessibilitySettings().not.toThrow() }
     }
 }');'

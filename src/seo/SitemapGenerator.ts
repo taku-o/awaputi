@@ -9,9 +9,9 @@ import { seoErrorHandler  } from './SEOErrorHandler';
 import { normalizeUrl, measurePerformance  } from './SEOUtils';
 
 // URL情報インターフェース
-interface UrlData { loc: string;
-    priority: number;
-    changefreq: 'always' | 'hourly' | 'daily' | 'weekly' | 'monthly' | 'yearly' | 'never';
+interface UrlData { loc: string,
+    priority: number,
+    changefreq: 'always' | 'hourly' | 'daily' | 'weekly' | 'monthly' | 'yearly' | 'never,
     lastmod: string;
     hreflang?: string;
 
@@ -25,18 +25,18 @@ interface SitemapGenerationOptions { forceRegenerate?: boolean,
     [key: string]: any;
 
 // サイトマップサマリーインターフェース
-interface SitemapSummary { totalUrls: number;
-    lastGenerated: Date | null;
+interface SitemapSummary { totalUrls: number,
+    lastGenerated: Date | null,
     urlsByPriority: Record<string, number>;
     urlsByChangeFreq: Record<string, number>;
-    supportedLanguages: number;
+    supportedLanguages: number,
     dynamicGenerators: number;
 
 // サイトマップ検証結果インターフェース
-interface SitemapValidationResult { isValid: boolean;
-    issues: string[];
-    warnings: string[];
-    urlCount: number;
+interface SitemapValidationResult { isValid: boolean,
+    issues: string[],
+    warnings: string[],
+    urlCount: number,
     duplicateCount: number;
 
 // LocalizationManager インターフェース
@@ -46,8 +46,8 @@ interface LocalizationManager { getCurrentLanguage(): string,
 // File System Access API拡張インターフェース
 interface ExtendedWindow extends Window { showSaveFilePicker?: (options?: {
         suggestedName?: string;
-        types?: Array<{
-            description: string;
+    types?: Array<{
+            description: string,
     accept: Record<string, string[]> }>;
     } => Promise<FileSystemFileHandle>;
 }
@@ -58,8 +58,7 @@ interface FileSystemFileHandle { createWritable(): Promise<FileSystemWritableFil
 // FileSystemWritableFileStream インターフェース
 interface FileSystemWritableFileStream { write(data: BufferSource | Blob | string): Promise<void>;
     close(): Promise<void>;
-
-export class SitemapGenerator {
+    export class SitemapGenerator {
     private localizationManager: LocalizationManager | null;
     private baseUrl: string;
     private, urls: Map<string, UrlData>,
@@ -70,12 +69,12 @@ export class SitemapGenerator {
     constructor(localizationManager: LocalizationManager | null = null) {
     
         this.localizationManager = localizationManager;
-        this.baseUrl = getBaseUrl();
-        this.urls = new Map();
-        this.staticUrls = [];
-        this.dynamicUrlGenerators = new Map();
-        this.lastGenerated = null
-}
+    this.baseUrl = getBaseUrl();
+    this.urls = new Map();
+    this.staticUrls = [];
+    this.dynamicUrlGenerators = new Map();
+    this.lastGenerated = null
+};
         this._initialize(); }
     }
     
@@ -117,8 +116,7 @@ export class SitemapGenerator {
             ','
 
             return xml,'
-            }'
-
+            }
         } catch (error) {
             return seoErrorHandler.handle(error as Error, 'sitemapGeneration', options','
     
@@ -134,7 +132,7 @@ export class SitemapGenerator {
 
                 // File System Access API(Chrome等);
                 const fileHandle = await extWindow.showSaveFilePicker({)'
-                    suggestedName: 'sitemap.xml',
+                    suggestedName: 'sitemap.xml,
     types: [{ }]'
                         description: 'XML files',' }]'
                         accept: { 'application/xml': ['.xml] }]);'
@@ -151,7 +149,7 @@ export class SitemapGenerator {
                 const url = URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.href = url,
-                a.download = 'sitemap.xml',
+                a.download = 'sitemap.xml,
                 document.body.appendChild(a);
                 a.click();
                 document.body.removeChild(a);
@@ -159,8 +157,7 @@ export class SitemapGenerator {
                 ' }'
 
                 seoLogger.info('Sitemap, file downloaded'; }
-
-            } catch (error) {
+        } catch (error) {
             seoErrorHandler.handle(error as Error, 'sitemapFileWrite', options' }'
     }
     
@@ -171,19 +168,19 @@ export class SitemapGenerator {
                 loc: '/);'
                 priority: SEOConfig.sitemap.priority.home','
     changefreq: SEOConfig.sitemap.changeFrequency.home,
-                lastmod: new Date().toISOString().split('T')[0],
+                lastmod: new Date().toISOString().split('T')[0];
             },
 
             { ''
-                loc: '/help/',
+                loc: '/help/,
     priority: SEOConfig.sitemap.priority.help,
                 changefreq: SEOConfig.sitemap.changeFrequency.help,
                 lastmod: new Date().toISOString().split('T')[0]  }
         ];
         // アセットページ（重要な画像など）
         const importantAssets = [';'
-            '/assets/screenshots/game-portrait.png',
-            '/assets/screenshots/game-landscape-1.png',
+            '/assets/screenshots/game-portrait.png,
+            '/assets/screenshots/game-landscape-1.png,
             '/assets/social/og-image.png',]';'
             '/assets/icons/icon-512x512.png'];
         ];
@@ -205,10 +202,10 @@ export class SitemapGenerator {
             
             // 基本ヘルプページ
             const basicHelp = [','
-                'tutorial',
-                'gameplay',
-                'scoring',
-                'special-bubbles',
+                'tutorial,
+                'gameplay,
+                'scoring,
+                'special-bubbles,
                 'achievements',]','
                 'settings'],
             ],
@@ -221,7 +218,7 @@ export class SitemapGenerator {
 
                     changefreq: 'monthly',' }'
 
-                    lastmod: new Date().toISOString().split('T'}[0]},
+                    lastmod: new Date().toISOString().split('T'}[0]};
             }';'
             ';'
 
@@ -241,23 +238,23 @@ export class SitemapGenerator {
             }
             
             return statsPages;
-        };
+        }
     }
     
     /**
      * 動的URL生成関数の登録
      */
-    registerDynamicGenerator(name: string, generator: DynamicUrlGenerator): void { this.dynamicUrlGenerators.set(name, generator) }
+    registerDynamicGenerator(name: string, generator: DynamicUrlGenerator): void { this.dynamicUrlGenerators.set(name, generator);
     
     /**
      * 静的URLの追加
      */
-    private async _addStaticUrls(): Promise<void> { this.staticUrls.forEach(urlData => {) }
+    private async _addStaticUrls(): Promise<void> { this.staticUrls.forEach(urlData => {);
             const fullUrl = normalizeUrl(`${this.baseUrl}${ urlData.loc)`),
             this.urls.set(fullUrl, {}
                 ...urlData } }
                 loc: fullUrl;);
-            };
+            }
         };
     }
     
@@ -270,12 +267,12 @@ export class SitemapGenerator {
                 if (Array.isArray(urls) {
     
 }
-                    urls.forEach(urlData => {) }
+                    urls.forEach(urlData => {);
                         const fullUrl = normalizeUrl(`${this.baseUrl}${ urlData.loc)`),
                         this.urls.set(fullUrl, {}
                             ...urlData } }
                             loc: fullUrl;);
-                        };
+                        }
                     };
                 } catch (error) {
                 seoLogger.error(`Dynamic URL generation failed for ${name}`, error as Error);
@@ -288,7 +285,7 @@ export class SitemapGenerator {
     private async _addMultilingualUrls(): Promise<void> { if (!this.localizationManager) {
             return }
         
-        const baseUrls = Array.from(this.urls.keys();
+        const baseUrls = Array.from(this.urls.keys()));
         
         SEOConfig.supportedLanguages.forEach(lang => {  );
             if (lang === SEOConfig.defaultLanguage) { }
@@ -307,7 +304,7 @@ export class SitemapGenerator {
                     loc: localizedUrl,
     priority: SEOConfig.sitemap.priority.languageVariants }
                     hreflang: lang); 
-    };
+    }
         };
     }
     
@@ -319,7 +316,7 @@ export class SitemapGenerator {
         xml += '<urlset xmlns="http: //www.sitemaps.org/schemas/sitemap/0.9",';
         xml += ' xmlns: xhtml="http://www.w3.org/1999/xhtml">\n);'
         // URLをソート（優先度とURLでソート）
-        const sortedUrls = Array.from(this.urls.values().sort((a, b) => {  if (a.priority !== b.priority) { }
+        const sortedUrls = Array.from(this.urls.values())).sort((a, b) => {  if (a.priority !== b.priority) { }
                 return b.priority - a.priority;
 
             return a.loc.localeCompare(b.loc);}');'
@@ -373,12 +370,11 @@ export class SitemapGenerator {
 
             const hrefUrl = getLocalizedUrl(lang, path);' }'
 
-            xml += `    <xhtml: link rel="alternate" hreflang="${lang}" href="${this._escapeXml(hrefUrl"}"" />\n`,
-        }";"
+            xml += `    <xhtml: link rel="alternate" hreflang="${lang}" href="${this._escapeXml(hrefUrl"}"" />\n` }";"
         ";"
         // x-default""
         const defaultUrl = getLocalizedUrl(SEOConfig.defaultLanguage, path);""
-        xml += `    <xhtml: link rel="alternate" hreflang="x-default" href="${this._escapeXml(defaultUrl"}"" />\n`,
+        xml += `    <xhtml: link rel="alternate" hreflang="x-default" href="${this._escapeXml(defaultUrl"}"" />\n,
         
         return xml;
     }
@@ -391,7 +387,7 @@ export class SitemapGenerator {
             .replace(/</g, '&lt,')
             .replace(/>/g, '&gt,')
             .replace(/"/g, '&quot,')"
-            .replace(/'/g, '&#39) }
+            .replace(/'/g, '&#39);
     
     /**
      * サイトマップのサマリー取得
@@ -400,9 +396,9 @@ export class SitemapGenerator {
         const urlsByPriority: Record<string, number> = {};
         const urlsByChangeFreq: Record<string, number> = {};
         
-        Array.from(this.urls.values().forEach(urlData => {  )'
+        Array.from(this.urls.values())).forEach(urlData => {  )'
             // 優先度別','
-            const priority = urlData.priority?.toString() || 'undefined',
+            const priority = urlData.priority?.toString() || 'undefined,
             urlsByPriority[priority] = (urlsByPriority[priority] || 0') + 1,'
             ','
             // 更新頻度別
@@ -415,7 +411,7 @@ export class SitemapGenerator {
     lastGenerated: this.lastGenerated,
             urlsByPriority,
             urlsByChangeFreq,
-            supportedLanguages: SEOConfig.supportedLanguages.length },
+            supportedLanguages: SEOConfig.supportedLanguages.length ,
             dynamicGenerators: this.dynamicUrlGenerators.size 
     }
     
@@ -427,34 +423,34 @@ export class SitemapGenerator {
         
         // URL数の制限チェック（50,000URL制限）
         if (this.urls.size > 50000) { }
-            issues.push(`Too many URLs: ${this.urls.size} (limit: 50,000}`};
+            issues.push(`Too many URLs: ${this.urls.size} (limit: 50,000}`}
         }
         
         // 重複URLのチェック
         const urlCounts = new Map<string, number>();
-        Array.from(this.urls.keys().forEach(url => {  ) }
+        Array.from(this.urls.keys())).forEach(url => {  );
             urlCounts.set(url, (urlCounts.get(url) || 0) + 1); }
         };
         
-        const duplicates = Array.from(urlCounts.entries();
+        const duplicates = Array.from(urlCounts.entries()));
             .filter(([url, count]) => count > 1);
             .map(([url]) => url);
         
         if (duplicates.length > 0) {
     
 }
-            issues.push(`Duplicate, URLs found: ${duplicates.length}`};
+            issues.push(`Duplicate, URLs found: ${duplicates.length}`}
         }
         
         // 優先度の範囲チェック
-        Array.from(this.urls.values().forEach(urlData => {  ) }
+        Array.from(this.urls.values())).forEach(urlData => {  );
             if (urlData.priority && (urlData.priority < 0 || urlData.priority > 1) { }
                 warnings.push(`Invalid, priority ${urlData.priority} for ${urlData.loc}`);
             }'}');
         ';'
         // 更新頻度の有効性チェック
         const validChangeFreqs: string[] = ['always', 'hourly', 'daily', 'weekly', 'monthly', 'yearly', 'never'];
-        Array.from(this.urls.values().forEach(urlData => {  ) }
+        Array.from(this.urls.values())).forEach(urlData => {  );
             if (urlData.changefreq && !validChangeFreqs.includes(urlData.changefreq) { }
                 warnings.push(`Invalid, changefreq ${urlData.changefreq} for ${urlData.loc}`);
 
@@ -467,8 +463,8 @@ export class SitemapGenerator {
         return { isValid,
             issues,
             warnings,
-            urlCount: this.urls.size },
-            duplicateCount: duplicates.length 
+            urlCount: this.urls.size ,
+            duplicateCount: duplicates.length; 
     }
     
     /**
@@ -476,6 +472,6 @@ export class SitemapGenerator {
      */'
     cleanup(): void { this.urls.clear();
         this.dynamicUrlGenerators.clear()','
-        seoLogger.info('SitemapGenerator, cleaned up') }
+        seoLogger.info('SitemapGenerator, cleaned up');
 
     }'}'

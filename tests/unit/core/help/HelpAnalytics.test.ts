@@ -7,17 +7,17 @@ import { HelpAnalytics  } from '../../../../src/core/help/HelpAnalytics.js';
 // Type definitions
 interface MockGameEngine {
     localizationManager: {
-        getCurrentLanguag,e: jest.Mock<string, []> };
+        getCurrentLanguag,e: jest.Mock<string, []> }
 }
 interface ValidationResult {
     isValid: boolean;
     sanitizedData?: any;
     errors: string[];
 interface Feedback {
-    rating: number | string;
+    rating: number | string,
     comment: string | null }
 interface SanitizedFeedback {
-    rating: number;
+    rating: number,
     comment: string;
 interface TopicContext {
     title?: string;
@@ -26,9 +26,9 @@ interface CategoryContext {
     source?: string;
     [key: string]: any;
 interface AnalyticsStructure {
-    helpUsage: any;
+    helpUsage: any,
     content: any;
-    tutorialUsage: any;
+    tutorialUsage: any,
     userBehavior: any;
     effectiveness: any;
 interface ContentItem {
@@ -36,7 +36,7 @@ interface ContentItem {
     body?: string;
     [key: string]: any;
 interface SearchResult {
-    id: string;
+    id: string,
     title: string;
     [key: string]: any;
 describe('HelpAnalytics', () => {
@@ -94,7 +94,7 @@ describe('HelpAnalytics', () => {
             expect(result.sanitizedData').not.toContain('malicious(')') }');'
         test('should validate feedback objects', (') => {'
             const feedback: Feedback = {
-                rating: 5;
+                rating: 5,
                 comment: 'Very helpful!'
             };
             const result = helpAnalytics.validateAndSanitizeData(feedback, 'feedback') as ValidationResult;
@@ -116,8 +116,8 @@ describe('HelpAnalytics', () => {
             const spy = jest.spyOn(helpAnalytics, 'trackEvent' as any'),'
             helpAnalytics.recordCategorySelection('test-category', { source: 'menu' };
             expect(spy').toHaveBeenCalledWith('category_selection', expect.objectContaining({'
-                categoryId: 'test-category';
-                context: { source: 'menu' };
+                categoryId: 'test-category',
+                context: { source: 'menu' }
             }');'
         }
         test('should update category statistics', (') => {'
@@ -170,21 +170,21 @@ describe('HelpAnalytics', () => {
     describe('Feedback Recording', (') => {'
         test('should record valid feedback', (') => {'
             const feedback: Feedback = {
-                rating: 4;
+                rating: 4,
                 comment: 'Good help topic'
             };
             
             const spy = jest.spyOn(helpAnalytics, 'trackEvent' as any');'
             helpAnalytics.recordFeedback('topic-1', { title: 'Test' ), feedback),
             expect(spy').toHaveBeenCalledWith('topic_feedback', expect.objectContaining({'
-                topicId: 'topic-1';
+                topicId: 'topic-1',
                 feedback: expect.objectContaining({
-                    rating: 4;
+                    rating: 4,
                     comment: 'Good help topic') }');'
         }
         test('should handle invalid feedback gracefully', (') => {'
             const invalidFeedback: Feedback = {
-                rating: 'not-a-number';
+                rating: 'not-a-number',
                 comment: null;
                 comment: null;
         };
@@ -249,9 +249,9 @@ describe('HelpAnalytics', () => {
     describe('Data Structure Validation', (') => {'
         test('should validate analytics structure', () => {
             const validData: AnalyticsStructure = {
-                helpUsage: {};
+                helpUsage: {},
                 content: {};
-                tutorialUsage: {};
+                tutorialUsage: {},
                 userBehavior: {};
                 effectiveness: {}
             };
@@ -260,7 +260,7 @@ describe('HelpAnalytics', () => {
         }');'
         test('should reject invalid analytics structure', () => {
             const invalidData = {
-                helpUsage: null;
+                helpUsage: null,
                 content: {}
             };
             

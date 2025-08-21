@@ -5,40 +5,40 @@ import { jest  } from '@jest/globals';
 // Mock interfaces
 interface MockStatisticsManager { recordSocialEvent: jest.Mock }
 interface MockAchievementManager { getAchievements: jest.Mock }
-interface MockLocalizationManager { getCurrentLanguage: jest.Mock<string>;
+interface MockLocalizationManager { getCurrentLanguage: jest.Mock<string>,
     translate: jest.Mock<string>  }
-interface MockGameEngine { statisticsManager: MockStatisticsManager;
-    achievementManager: MockAchievementManager;
-    localizationManager: MockLocalizationManager;
-    on: jest.Mock;
-    off: jest.Mock;
-    emit: jest.Mock;
+interface MockGameEngine { statisticsManager: MockStatisticsManager,
+    achievementManager: MockAchievementManager,
+    localizationManager: MockLocalizationManager,
+    on: jest.Mock,
+    off: jest.Mock,
+    emit: jest.Mock,
     isDebugMode: jest.Mock<boolean> }
-interface MockLocalStorage { getItem: jest.Mock;
-    setItem: jest.Mock;
+interface MockLocalStorage { getItem: jest.Mock,
+    setItem: jest.Mock,
     removeItem: jest.Mock }
 interface MockClipboard { writeText: jest.Mock<Promise<void>> }
-interface MockNavigator { onLine: boolean;
-    userAgent: string;
+interface MockNavigator { onLine: boolean,
+    userAgent: string,
     language: string;
     share?: jest.Mock<Promise<void>>;
     canShare?: jest.Mock<boolean>;
     clipboard: MockClipboard;
-interface ShareData { title?: string,
+    interface ShareData { title?: string,
     text?: string;
     url?: string;
     type?: string;
     files?: any[];
-interface ShareValidation { valid: boolean;
+    interface ShareValidation { valid: boolean,
     errors: string[];
-interface ShareResult { success: boolean;
+    interface ShareResult { success: boolean,
     method: string;
     error?: string;
     message?: string;
-interface PerformanceStats { shareRequests: number;
+    interface PerformanceStats { shareRequests: number,
     successfulShares: number;
     [key: string]: number;
-interface SocialSharingManagerInstance { isWebShareSupported(): boolean,
+    interface SocialSharingManagerInstance { isWebShareSupported(): boolean,
     detectPlatform(): string;
     validateShareData(data: ShareData): ShareValidation;
     sanitizeShareData(data: ShareData): ShareData;
@@ -50,7 +50,7 @@ interface SocialSharingManagerInstance { isWebShareSupported(): boolean,
     getPerformanceStats(): PerformanceStats;
     initialize(): Promise<void>;
     cleanup(): void;
-interface SocialSharingManagerConstructor { ''
+    interface SocialSharingManagerConstructor { ''
     new(gameEngine: MockGameEngine): SocialSharingManagerInstance;
 
 }''
@@ -61,11 +61,11 @@ describe('Web Share API Integration', () => {  let socialSharingManager: SocialS
         // GameEngineのモック
         mockGameEngine = {
             statisticsManager: {  }
-                recordSocialEvent: jest.fn(),
+                recordSocialEvent: jest.fn();
     },
         achievementManager: { getAchievements: jest.fn( }
             localizationManager: { ''
-                getCurrentLanguage: jest.fn<string>().mockReturnValue('ja),'
+                getCurrentLanguage: jest.fn<string>().mockReturnValue('ja),'  },
                 translate: jest.fn<string>().mockImplementation((key: string) => key) 
     };
             on: jest.fn(
@@ -76,20 +76,20 @@ describe('Web Share API Integration', () => {  let socialSharingManager: SocialS
         ';'
         // LocalStorageのモック
         Object.defineProperty(window, 'localStorage', { )
-            value: {),
-                getItem: jest.fn(),
+            value: { ),
+                getItem: jest.fn()   ,
                 setItem: jest.fn(
     removeItem: jest.fn( 
     } as, MockLocalStorage'}';
         // NavigatorのモックSetup
         mockNavigator = { onLine: true,''
-            userAgent: 'Mozilla/5.0(Chrome/90.0)',
-            language: 'ja-JP',
+            userAgent: 'Mozilla/5.0(Chrome/90.0),
+            language: 'ja-JP,
             share: jest.fn<Promise<void>>(),
             canShare: jest.fn<boolean>(),
         clipboard: {'
                 writeText: jest.fn<Promise<void>>('
-            }'
+            }
 
     }');'
             }
@@ -99,7 +99,7 @@ describe('Web Share API Integration', () => {  let socialSharingManager: SocialS
             writable: true','
         // performance.nowのモック
         Object.defineProperty(window, 'performance', {)
-            value: {),
+            value: {);
                 now: jest.fn().mockReturnValue(1000  }
 
             }'}';
@@ -116,7 +116,7 @@ describe('Web Share API Integration', () => {  let socialSharingManager: SocialS
         test('Web Share APIがサポートされている場合', () => {
             mockNavigator.share = jest.fn<Promise<void>>(),
             mockNavigator.canShare = jest.fn<boolean>(),
-            const isSupported = socialSharingManager.isWebShareSupported() }
+            const isSupported = socialSharingManager.isWebShareSupported();
 
             expect(isSupported).toBe(true);' }'
 
@@ -124,7 +124,7 @@ describe('Web Share API Integration', () => {  let socialSharingManager: SocialS
         test('Web Share APIがサポートされていない場合', () => {  delete mockNavigator.share,
             delete mockNavigator.canShare,
             
-            const isSupported = socialSharingManager.isWebShareSupported() }
+            const isSupported = socialSharingManager.isWebShareSupported();
 
             expect(isSupported).toBe(false);' }'
 
@@ -142,7 +142,7 @@ describe('Web Share API Integration', () => {  let socialSharingManager: SocialS
     describe('共有データ検証', () => {  ''
         test('有効な共有データの検証', () => {'
             const shareData: ShareData = {''
-                title: 'テストタイトル',
+                title: 'テストタイトル,
                 text: 'テストメッセージ',' }'
 
                 url: 'https://example.com }'
@@ -194,7 +194,7 @@ describe('Web Share API Integration', () => {  let socialSharingManager: SocialS
             ';'
 
             const sanitized = socialSharingManager.sanitizeShareData(shareData);
-            expect(sanitized.text).not.toContain('javascript: ',
+            expect(sanitized.text).not.toContain('javascript: ,
             expect(sanitized.text).not.toContain('onclick=';}');'
         test('URLサニタイゼーション', () => {  const shareData: ShareData = { }
 
@@ -217,14 +217,14 @@ describe('Web Share API Integration', () => {  let socialSharingManager: SocialS
 
     }''
     describe('Web Share API実行', () => {  beforeEach(() => {
-            mockNavigator.share = jest.fn<Promise<void>>() }
+            mockNavigator.share = jest.fn<Promise<void>>();
 
             mockNavigator.canShare = jest.fn<boolean>().mockReturnValue(true);' }'
 
         }');'
         test('正常な共有実行', async () => {  ''
             mockNavigator.share!.mockResolvedValue('''
-                title: 'テストタイトル',
+                title: 'テストタイトル,
                 text: 'テストメッセージ',' }'
 
                 url: 'https://example.com }'),
@@ -234,11 +234,11 @@ describe('Web Share API Integration', () => {  let socialSharingManager: SocialS
             expect(result.method).toBe('web-share-api';
             expect(mockNavigator.share).toHaveBeenCalledWith({ ''
                 title: 'テストタイトル',','
-                text: 'テストメッセージ',')',
+                text: 'テストメッセージ,'),
                 url: 'https://example.com,'
             // 統計の更新確認
             expect(mockGameEngine.statisticsManager.recordSocialEvent).toHaveBeenCalledWith(','
-                'webShareSuccess',
+                'webShareSuccess,
                 expect.objectContaining({)
                     hasTitle: true,
     hasText: true),
@@ -247,7 +247,7 @@ describe('Web Share API Integration', () => {  let socialSharingManager: SocialS
         }');'
         test('ユーザーキャンセル処理', async () => {  ''
             const abortError = new Error('User, cancelled');
-            abortError.name = 'AbortError',
+            abortError.name = 'AbortError,
             mockNavigator.share!.mockRejectedValue(abortError);
             const shareData: ShareData = {''
                 title: 'テストタイトル',' }'
@@ -264,7 +264,7 @@ describe('Web Share API Integration', () => {  let socialSharingManager: SocialS
             expect(mockGameEngine.statisticsManager.recordSocialEvent).toHaveBeenCalledWith()';'
                 'webShareCancelled')';'
                 expect.objectContaining({ ')'
-                    dataType: 'unknown',
+                    dataType: 'unknown,
             ',' }'
 
         }');'
@@ -294,7 +294,7 @@ describe('Web Share API Integration', () => {  let socialSharingManager: SocialS
     describe('フォールバック共有ダイアログ', () => {  ''
         test('ダイアログHTML生成', () => {'
             const shareData: ShareData = {''
-                title: 'テストタイトル',
+                title: 'テストタイトル,
                 text: 'テストメッセージ',' }'
 
                 url: 'https://example.com }'
@@ -376,7 +376,7 @@ describe('Web Share API Integration', () => {  let socialSharingManager: SocialS
             ,
             // DOMのモック
             const mockDialog = document.createElement('div');
-            const mockContainer = document.createElement('div',
+            const mockContainer = document.createElement('div,
             mockContainer.appendChild(mockDialog),' }'
 
             jest.spyOn(document, 'createElement).mockReturnValue(mockContainer);' }
@@ -386,7 +386,7 @@ describe('Web Share API Integration', () => {  let socialSharingManager: SocialS
             jest.spyOn(document, 'getElementById).mockReturnValue(mockDialog);'
 
             const shareData: ShareData = { ''
-                title: 'テストタイトル',
+                title: 'テストタイトル,
                 text: 'テストメッセージ'
             };
             // フォールバックダイアログの即座クローズをシミュレート
@@ -417,9 +417,9 @@ describe('Web Share API Integration', () => {  let socialSharingManager: SocialS
 
             await socialSharingManager.shareViaWebAPI(shareData);
             expect(mockGameEngine.statisticsManager.recordSocialEvent).toHaveBeenCalledWith(';'
-                'webShareSuccess',
+                'webShareSuccess,
                 expect.objectContaining({ ')'
-                    dataType: 'score',
+                    dataType: 'score,
     hasTitle: true,','
         responseTime: expect.any(Number  }
 
@@ -434,6 +434,6 @@ describe('Web Share API Integration', () => {  let socialSharingManager: SocialS
             const updatedStats = socialSharingManager.getPerformanceStats();
             expect(updatedStats.shareRequests).toBe(initialStats.shareRequests + 1);
             expect(updatedStats.successfulShares).toBe(initialStats.successfulShares + 1);
-        };
+        }
 
     }'}');

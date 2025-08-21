@@ -564,7 +564,7 @@ describe('PerformanceThresholdMonitor', () => {  let monitor: any,
                 memory: { usedMemory: 'invalid'
             };
                 render: { drawCalls: undefined,)
-        game: { entityCount: NaN, };
+        game: { entityCount: NaN, }
             }
             expect(() => {  }'
                 monitor.checkThresholds(});'}.not.toThrow(')'

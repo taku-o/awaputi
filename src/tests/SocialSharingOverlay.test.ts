@@ -3,69 +3,69 @@
  */
 import { jest  } from '@jest/globals';
 // Mock interfaces
-interface MockCanvas { width: number;
-    height: number;
-    getContext: jest.Mock<MockCanvasContext>;
+interface MockCanvas { width: number,
+    height: number,
+    getContext: jest.Mock<MockCanvasContext>,
     remove: jest.Mock  }
 interface MockCanvasContext { drawImage: jest.Mock }
-interface MockScreenshotOverlay { createScoreOverlay: jest.Mock<Promise<MockCanvas>>;
-    createAchievementOverlay: jest.Mock<Promise<MockCanvas>>;
-    createCustomOverlay: jest.Mock<Promise<MockCanvas>>;
-    getPresetConfig: jest.Mock<OverlayConfig>;
-    getResponsiveConfig: jest.Mock<OverlayConfig>;
+interface MockScreenshotOverlay { createScoreOverlay: jest.Mock<Promise<MockCanvas>>,
+    createAchievementOverlay: jest.Mock<Promise<MockCanvas>>,
+    createCustomOverlay: jest.Mock<Promise<MockCanvas>>,
+    getPresetConfig: jest.Mock<OverlayConfig>,
+    getResponsiveConfig: jest.Mock<OverlayConfig>,
     getStats: jest.Mock<OverlayStats> }
 interface OverlayConfig {
     score?: { fontSiz,e: number;
     logo?: { textColor: string, enabled?: boolean;
     layout?: { scorePosition: string;
-interface OverlayStats { overlaysCreated: number;
-    averageTimeMs: number;
+    interface OverlayStats { overlaysCreated: number,
+    averageTimeMs: number,
     successRate: number;
-interface ScreenshotResult { data: ArrayBuffer;
-    blob: Blob;
-    url: string;
-    format: string;
-    size: number;
-    width: number;
-    height: number;
+    interface ScreenshotResult { data: ArrayBuffer,
+    blob: Blob,
+    url: string,
+    format: string,
+    size: number,
+    width: number,
+    height: number,
     filename: string;
     overlayType?: string;
     hasOverlay: boolean;
     optimized?: boolean;
-interface MockScreenshotCapture { overlayEnabled: boolean;
-    screenshotOverlay: MockScreenshotOverlay;
-    captureWithOverlay: jest.Mock<Promise<ScreenshotResult>>;
-    captureWithScore: jest.Mock<Promise<ScreenshotResult>>;
-    captureWithAchievement: jest.Mock<Promise<ScreenshotResult>>;
-    captureWithCustomOverlay: jest.Mock<Promise<ScreenshotResult>>;
+    interface MockScreenshotCapture { overlayEnabled: boolean,
+    screenshotOverlay: MockScreenshotOverlay,
+    captureWithOverlay: jest.Mock<Promise<ScreenshotResult>>,
+    captureWithScore: jest.Mock<Promise<ScreenshotResult>>,
+    captureWithAchievement: jest.Mock<Promise<ScreenshotResult>>,
+    captureWithCustomOverlay: jest.Mock<Promise<ScreenshotResult>>,
     generateFilename: jest.Mock<string> }
-    getGameCanvas: jest.Mock<{ width: number,, height: number; | null>;
+    getGameCanvas: jest.Mock<{ width: number, height: number; | null>;
     captureGameCanvas?: jest.Mock<Promise<ScreenshotResult>>;
 }
 interface MockStatisticsManager { recordSocialEvent: jest.Mock }
-interface MockLocalizationManager { getCurrentLanguage: jest.Mock<string>;
+interface MockLocalizationManager { getCurrentLanguage: jest.Mock<string>,
     translate: jest.Mock<string>  }
 interface MockSeoMetaManager { updateOpenGraphTags: jest.Mock }
-interface MockGameEngine { statisticsManager: MockStatisticsManager;
-    localizationManager: MockLocalizationManager;
-    seoMetaManager: MockSeoMetaManager;
-    on: jest.Mock;
-    off: jest.Mock;
-    emit: jest.Mock;
+interface MockGameEngine { statisticsManager: MockStatisticsManager,
+    localizationManager: MockLocalizationManager,
+    seoMetaManager: MockSeoMetaManager,
+    on: jest.Mock,
+    off: jest.Mock,
+    emit: jest.Mock,
     isDebugMode: jest.Mock<boolean> }
 interface ShareData { type: string;
     score?: number;
     name?: string;
-interface ScoreOverlayData { score: number;
+    interface ScoreOverlayData { score: number;
     combo?: number;
     accuracy?: number;
-interface AchievementOverlayData { name: string;
+    interface AchievementOverlayData { name: string;
     description?: string;
     rarity?: string;
-interface CustomOverlayData { elements: Array<{
-        typ,e: string;
-    text: string;
-        position: { x: number,, y: number,>;
+    interface CustomOverlayData { elements: Array<{
+        typ,e: string,
+    text: string,
+    position: { x: number, y: number,>;
 }
 interface ShareOptions { imageFormat?: string,
     imageQuality?: string;
@@ -74,19 +74,19 @@ interface ShareOptions { imageFormat?: string,
     quality?: string;
     optimize?: boolean;
     overlay?: OverlayConfig;
-interface ShareResult { success: boolean;
+    interface ShareResult { success: boolean;
     overlayType?: string;
     screenshot?: ScreenshotResult;
     method?: string;
-interface OverlayCapabilities { available: boolean;
+    interface OverlayCapabilities { available: boolean;
     types?: string[];
     presets?: string[];
     responsive?: boolean;
     customizable?: boolean;
     stats?: OverlayStats;
-interface PresetOverlayData { type: string;
+    interface PresetOverlayData { type: string,
     data: any;
-interface SocialSharingManagerInstance { screenshotCapture: MockScreenshotCapture | null;
+    interface SocialSharingManagerInstance { screenshotCapture: MockScreenshotCapture | null;
     shareWithOverlayScreenshot(data: ShareData, type: string, overlayData: any, options?: ShareOptions): Promise<ShareResult>;
     shareScoreWithOverlay(scoreData: ScoreOverlayData, shareData?: ShareData): Promise<ShareResult>;
     shareAchievementWithOverlay(achievementData: AchievementOverlayData, shareData?: ShareData): Promise<ShareResult>;
@@ -97,7 +97,7 @@ interface SocialSharingManagerInstance { screenshotCapture: MockScreenshotCaptur
     shareWithScreenshot?: jest.Mock<Promise<ShareResult>>;
     initialize(): Promise<void>;
     cleanup(): void;
-interface SocialSharingManagerConstructor { ''
+    interface SocialSharingManagerConstructor { ''
     new(gameEngine: MockGameEngine): SocialSharingManagerInstance;
 
 }''
@@ -111,45 +111,45 @@ describe('SocialSharing Overlay Integration', () => {  let socialSharingManager:
             createScoreOverlay: jest.fn<Promise<MockCanvas>>().mockResolvedValue({)
                 width: 800),
                 height: 600,
-    getContext: jest.fn<MockCanvasContext>().mockReturnValue({),
-                    drawImage: jest.fn() }
-        remove: jest.fn(),
+    getContext: jest.fn<MockCanvasContext>().mockReturnValue({);
+                    drawImage: jest.fn(),
+        remove: jest.fn();
     ),
             createAchievementOverlay: jest.fn<Promise<MockCanvas>>().mockResolvedValue({ width: 800)
                 height: 600,
-    getContext: jest.fn<MockCanvasContext>().mockReturnValue({),
+    getContext: jest.fn<MockCanvasContext>().mockReturnValue({);
                     drawImage: jest.fn(
     remove: jest.fn( ),
             createCustomOverlay: jest.fn<Promise<MockCanvas>>().mockResolvedValue({ width: 800)
                 height: 600,
-    getContext: jest.fn<MockCanvasContext>().mockReturnValue({),
+    getContext: jest.fn<MockCanvasContext>().mockReturnValue({);
                     drawImage: jest.fn(
     remove: jest.fn( ),''
             getPresetConfig: jest.fn<OverlayConfig>().mockReturnValue({)'
-                score: { fontSize: 28 },')'
+                score: { fontSize: 28 ,')'
                 logo: { textColor: '#FF0000' }',''
             getResponsiveConfig: jest.fn<OverlayConfig>().mockReturnValue({)'
-                score: { fontSize: 20 },')'
-                layout: { scorePosition: 'top-center' },
+                score: { fontSize: 20 ,')'
+                layout: { scorePosition: 'top-center'   ,
             getStats: jest.fn<OverlayStats>().mockReturnValue({ overlaysCreated: 3)
-               , averageTimeMs: 150),
-                successRate: 100  },
+            averageTimeMs: 150),
+                successRate: 100  };
         
         // ScreenshotCaptureのモック（オーバーレイ機能付き）
         mockScreenshotCapture = { overlayEnabled: true,
-            screenshotOverlay: mockScreenshotOverlay,
+            screenshotOverlay: mockScreenshotOverlay;
             ','
 
-           , captureWithOverlay: jest.fn<Promise<ScreenshotResult>>().mockResolvedValue({),''
+            captureWithOverlay: jest.fn<Promise<ScreenshotResult>>().mockResolvedValue({),''
                 data: new ArrayBuffer(1024,
                 blob: new Blob(['mock-overlay-screenshot], { type: 'image/png' )',''
-                url: 'blob:mock-overlay-url',
-                format: 'png',
+                url: 'blob:mock-overlay-url,
+                format: 'png,
                 size: 1024 * 120,
     width: 800,
                 height: 600,
-                filename: 'score-overlay-screenshot.png',
-                overlayType: 'score',
+                filename: 'score-overlay-screenshot.png,
+                overlayType: 'score,
                 hasOverlay: true,
     optimized: false,';'
             ';'
@@ -157,70 +157,70 @@ describe('SocialSharing Overlay Integration', () => {  let socialSharingManager:
             captureWithScore: jest.fn<Promise<ScreenshotResult>>().mockResolvedValue({ ),''
                 data: new ArrayBuffer(1024,
                 blob: new Blob(['mock-score-overlay], { type: 'image/png' )',''
-                url: 'blob:mock-score-overlay-url',
-                format: 'png',
+                url: 'blob:mock-score-overlay-url,
+                format: 'png,
                 size: 1024 * 110,
     width: 800,
                 height: 600,
-                filename: 'score-overlay.png',
-                overlayType: 'score',
+                filename: 'score-overlay.png,
+                overlayType: 'score,
     hasOverlay: true,';'
             ';'
 
             captureWithAchievement: jest.fn<Promise<ScreenshotResult>>().mockResolvedValue({ ),''
                 data: new ArrayBuffer(1024,
                 blob: new Blob(['mock-achievement-overlay], { type: 'image/png' )',''
-                url: 'blob:mock-achievement-overlay-url',
-                format: 'png',
+                url: 'blob:mock-achievement-overlay-url,
+                format: 'png,
                 size: 1024 * 130,
     width: 800,
                 height: 600,
-                filename: 'achievement-overlay.png',
-                overlayType: 'achievement',
+                filename: 'achievement-overlay.png,
+                overlayType: 'achievement,
     hasOverlay: true,';'
             ';'
 
             captureWithCustomOverlay: jest.fn<Promise<ScreenshotResult>>().mockResolvedValue({ ),''
                 data: new ArrayBuffer(1024,
                 blob: new Blob(['mock-custom-overlay], { type: 'image/png' )',''
-                url: 'blob:mock-custom-overlay-url',
-                format: 'png',
+                url: 'blob:mock-custom-overlay-url,
+                format: 'png,
                 size: 1024 * 100,
     width: 800,
                 height: 600,
-                filename: 'custom-overlay.png',
-                overlayType: 'custom',
+                filename: 'custom-overlay.png,
+                overlayType: 'custom,
     hasOverlay: true,';'
             generateFilename: jest.fn<string>().mockReturnValue('mock-overlay-filename.png),'
-            getGameCanvas: jest.fn<{ width: number,, height: number, | null>().mockReturnValue({ width: 800)
-               , height: 600 },
+            getGameCanvas: jest.fn<{ width: number, height: number, | null>().mockReturnValue({ width: 800)
+            height: 600 ,
         
         // GameEngineのモック
         mockGameEngine = { statisticsManager: {
-                recordSocialEvent: jest.fn( }
+                recordSocialEvent: jest.fn( } };
             localizationManager: { ''
-                getCurrentLanguage: jest.fn<string>().mockReturnValue('ja),'
+                getCurrentLanguage: jest.fn<string>().mockReturnValue('ja),'  },
                 translate: jest.fn<string>().mockImplementation((key: string) => key) 
     };
         seoMetaManager: { updateOpenGraphTags: jest.fn( }
             on: jest.fn(),
             off: jest.fn(),
             emit: jest.fn(
-    isDebugMode: jest.fn<boolean>().mockReturnValue(false),
+    isDebugMode: jest.fn<boolean>().mockReturnValue(false);
         };
         
         // グローバルAPIのモック
         (global, as any).navigator = { share: jest.fn().mockResolvedValue(true),''
             canShare: jest.fn().mockReturnValue(true,
             onLine: true,
-            userAgent: 'Mozilla/5.0(Chrome/90.0)',
+            userAgent: 'Mozilla/5.0(Chrome/90.0),
             language: 'ja-JP'
             };
         Object.defineProperty(window, 'location', { value: {''
-                origin: 'https://test.example.com',
-                pathname: '/game',
-                href: 'https://test.example.com/game  },''
-            writable: true),
+                origin: 'https://test.example.com,
+                pathname: '/game,
+                href: 'https://test.example.com/game  ,'' };
+            writable: true);
         window.open = jest.fn().mockReturnValue({ )
             closed: false,
         close: jest.fn(),' }'
@@ -235,7 +235,7 @@ describe('SocialSharing Overlay Integration', () => {  let socialSharingManager:
         
         await socialSharingManager.initialize();
     };
-    afterEach(() => {  jest.clearAllMocks() }
+    afterEach(() => {  jest.clearAllMocks();
         socialSharingManager.cleanup();' }'
 
     }');'
@@ -254,13 +254,13 @@ describe('SocialSharing Overlay Integration', () => {  let socialSharingManager:
                 expect.objectContaining({ ''
                     format: 'png',','
                     quality: 'high'),
-                    optimize: true)),
+                    optimize: true));
 
             expect(result.success).toBe(true);
             expect(result.overlayType).toBe('score),'
 
             expect(result.screenshot?.hasOverlay).toBe(true),'
-            }'
+            }
 
         }');'
         test('実績オーバーレイ付き共有が動作する', async () => { : undefined' 
@@ -268,8 +268,8 @@ describe('SocialSharing Overlay Integration', () => {  let socialSharingManager:
             }
 
             const overlayData: AchievementOverlayData = { ''
-                name: 'マスター実績',
-                description: '全ステージクリア',
+                name: 'マスター実績,
+                description: '全ステージクリア,
                 rarity: 'legendary'
             };
             ';'
@@ -280,7 +280,7 @@ describe('SocialSharing Overlay Integration', () => {  let socialSharingManager:
             expect(mockScreenshotCapture.captureWithAchievement).toHaveBeenCalledWith(;
                 overlayData)';'
                 expect.objectContaining({ ')'
-                    format: 'png',
+                    format: 'png';
             ','
             expect(result.overlayType).toBe('achievement),'
 
@@ -312,8 +312,8 @@ describe('SocialSharing Overlay Integration', () => {  let socialSharingManager:
             const overlayData: ScoreOverlayData = { score: 1800 }
 
             const options: ShareOptions = { ''
-                imageFormat: 'jpeg',
-                imageQuality: 'medium',
+                imageFormat: 'jpeg,
+                imageQuality: 'medium,
                 overlayConfig: { }'
 
                     score: { fontSize: 32, textColor: '#FFD700'
@@ -329,7 +329,7 @@ describe('SocialSharing Overlay Integration', () => {  let socialSharingManager:
                 expect.objectContaining({ ''
                     format: 'jpeg',','
                     quality: 'medium'),
-                    overlay: options.overlayConfig,
+                    overlay: options.overlayConfig;
             ',' }'
 
         }');'
@@ -365,7 +365,7 @@ describe('SocialSharing Overlay Integration', () => {  let socialSharingManager:
             const shareData: ShareData = { type: 'custom' }
             const result = await socialSharingManager.shareCustomOverlay(customData, shareData);
             expect(mockScreenshotCapture.captureWithCustomOverlay).toHaveBeenCalledWith();
-                customData,
+                customData };
 
                 expect.any(Object);
             expect(result.overlayType).toBe('custom';}');'
@@ -385,7 +385,7 @@ describe('SocialSharing Overlay Integration', () => {  let socialSharingManager:
             const shareData: ShareData = { type: 'score', score: 2200  }''
             const overlayData: PresetOverlayData = { type: 'score', data: { score: 2200  }
 
-            const result = await socialSharingManager.shareWithPresetOverlay();
+            const result = await socialSharingManager.shareWithPresetOverlay() };
 
                 'gaming', shareData, overlayData';'
             expect(mockScreenshotOverlay.getPresetConfig).toHaveBeenCalledWith('gaming';
@@ -395,7 +395,7 @@ describe('SocialSharing Overlay Integration', () => {  let socialSharingManager:
             const shareData: ShareData = { type: 'score', score: 1000  }''
             const overlayData: PresetOverlayData = { type: 'score', data: { score: 1000  }
             const options: ShareOptions = {
-                overlayConfig: { logo: { enabled: false,
+                overlayConfig: { logo: { enabled: false;
             ';'
 
             await socialSharingManager.shareWithPresetOverlay();
@@ -404,7 +404,7 @@ describe('SocialSharing Overlay Integration', () => {  let socialSharingManager:
             expect(mockScreenshotOverlay.getPresetConfig).toHaveBeenCalledWith('elegant';
 
             // プリセット設定とカスタム設定がマージされることを確認
-        }');'
+        }');' }
 
     }''
     describe('レスポンシブ機能', () => { }
@@ -445,9 +445,9 @@ describe('SocialSharing Overlay Integration', () => {  let socialSharingManager:
             const overlayData: ScoreOverlayData = { score: 2800 }''
             await socialSharingManager.shareWithOverlayScreenshot(shareData, 'score', overlayData';'
             expect(mockGameEngine.statisticsManager.recordSocialEvent).toHaveBeenCalledWith(''
-                'overlayScreenshotCaptured',
+                'overlayScreenshotCaptured,
                 expect.objectContaining({ ''
-                    overlayType: 'score',
+                    overlayType: 'score,
                     format: 'png),'
                     size: 1024 * 120,
     optimized: false,','
@@ -455,7 +455,7 @@ describe('SocialSharing Overlay Integration', () => {  let socialSharingManager:
 
     };'}';
         test('異なるオーバーレイタイプの統計が正しく記録される', async () => { // スコアオーバーレイ }
-            await socialSharingManager.shareScoreWithOverlay({ score: 1000 },
+            await socialSharingManager.shareScoreWithOverlay({ score: 1000 ,
             expect(mockGameEngine.statisticsManager.recordSocialEvent).toHaveBeenCalledWith()';'
                 'overlayScreenshotCaptured')';'
                 expect.objectContaining({ ')'
@@ -467,9 +467,9 @@ describe('SocialSharing Overlay Integration', () => {  let socialSharingManager:
             expect(mockGameEngine.statisticsManager.recordSocialEvent).toHaveBeenCalledWith()','
                 'overlayScreenshotCaptured')','
                 expect.objectContaining({)'
-                    overlayType: 'achievement'),
+                    overlayType: 'achievement');
             ','
-            }'
+            }
 
         }');'
 
@@ -478,12 +478,12 @@ describe('SocialSharing Overlay Integration', () => {  let socialSharingManager:
         test('オーバーレイ機能の状態が正しく取得される', () => {
             const capabilities = socialSharingManager.getOverlayCapabilities();
             expect(capabilities.available).toBe(true);
-            expect(capabilities.types).toContain('score',
-            expect(capabilities.types).toContain('achievement',
-            expect(capabilities.types).toContain('custom',
-            expect(capabilities.presets).toContain('minimal',
+            expect(capabilities.types).toContain('score,
+            expect(capabilities.types).toContain('achievement,
+            expect(capabilities.types).toContain('custom,
+            expect(capabilities.presets).toContain('minimal,
             expect(capabilities.presets).toContain('elegant),'
-            expect(capabilities.responsive).toBe(true) }
+            expect(capabilities.responsive).toBe(true);
 
             expect(capabilities.customizable).toBe(true);' }'
 
@@ -500,14 +500,14 @@ describe('SocialSharing Overlay Integration', () => {  let socialSharingManager:
         }''
         test('オーバーレイ無効時の状態確認', () => {  mockScreenshotCapture.overlayEnabled = false,
             
-            const capabilities = socialSharingManager.getOverlayCapabilities() }
+            const capabilities = socialSharingManager.getOverlayCapabilities();
 
             expect(capabilities.available).toBe(false);' }'
 
         }');'
         test('ScreenshotCapture未初期化時の状態確認', () => {  socialSharingManager.screenshotCapture = null,
             
-            const capabilities = socialSharingManager.getOverlayCapabilities() }
+            const capabilities = socialSharingManager.getOverlayCapabilities();
 
             expect(capabilities.available).toBe(false);' }'
 
@@ -524,7 +524,7 @@ describe('SocialSharing Overlay Integration', () => {  let socialSharingManager:
 
                 shareData, 'unsupported', {}').rejects.toThrow('未対応のオーバーレイタイプ: unsupported';}');
         test('オーバーレイ作成失敗時のフォールバック', async () => { ''
-            mockScreenshotCapture.captureWithScore.mockRejectedValue(new, Error('Overlay, failed',
+            mockScreenshotCapture.captureWithScore.mockRejectedValue(new, Error('Overlay, failed,
 
             // shareWithScreenshot メソッドのモック
             socialSharingManager.shareWithScreenshot = jest.fn<Promise<ShareResult>>().mockResolvedValue({)'
@@ -554,8 +554,8 @@ describe('SocialSharing Overlay Integration', () => {  let socialSharingManager:
             mockScreenshotCapture.captureGameCanvas = jest.fn<Promise<ScreenshotResult>>().mockResolvedValue({);
                 data: new ArrayBuffer(1024,
                 blob: new Blob(['normal-screenshot], { type: 'image/png' )',''
-                url: 'blob:normal-url',
-                format: 'png',
+                url: 'blob:normal-url,
+                format: 'png,
                 size: 1024 * 100,
     width: 800,
                 height: 600,
@@ -579,7 +579,7 @@ describe('SocialSharing Overlay Integration', () => {  let socialSharingManager:
 
             const shareData: ShareData = { type: 'score', score: 1000  }
             // 複数回実行
-            await socialSharingManager.shareScoreWithOverlay({ score: 1000 }, shareData);
+            await socialSharingManager.shareScoreWithOverlay({ score: 1000 , shareData);
             await socialSharingManager.shareScoreWithOverlay({ score: 2000 ), shareData),
             await socialSharingManager.shareScoreWithOverlay({ score: 3000 ), shareData),
             expect(mockScreenshotCapture.captureWithScore).toHaveBeenCalledTimes(3);
@@ -588,12 +588,11 @@ describe('SocialSharing Overlay Integration', () => {  let socialSharingManager:
         }');'
         test('大きなオーバーレイデータの処理', async () => { const largeCustomData: CustomOverlayData = { }
 
-                elements: Array.from({ length: 50 }, (_, i) => ({ ''
+                elements: Array.from({ length: 50 , ())_, i) => ({ ''
                     type: 'text'
             }
                     text: `要素${i}`''
-                    position: { x: i * 10, y: i * 10  }'}'),
-            };
+                    position: { x: i * 10, y: i * 10  }'}') };
 
             const shareData: ShareData = { type: 'custom' }
 
@@ -602,6 +601,6 @@ describe('SocialSharing Overlay Integration', () => {  let socialSharingManager:
             expect(mockScreenshotCapture.captureWithCustomOverlay).toHaveBeenCalledWith();
                 largeCustomData,
                 expect.any(Object);
-        };
+        }
 
     }'}');

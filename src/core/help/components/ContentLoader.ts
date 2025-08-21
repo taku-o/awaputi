@@ -5,15 +5,12 @@
 
 // 型定義
 export interface LocalizationManager { getCurrentLanguage(): string;
-
-export interface HitRatio { hits: number;
+    export interface HitRatio { hits: number,
     misses: number;
-
-export interface LoadQueueItem { category: string;
+    export interface LoadQueueItem { category: string,
     priority: number;
     callback?: () => void 
-    }
-
+    };
 export class ContentLoader {
     private localizationManager: LocalizationManager;
     private, contentCache: Map<string, any>,
@@ -49,8 +46,7 @@ export class ContentLoader {
 
         // パフォーマンス監視
 
-    }
-
+    };
         this.loadTimes = new Map<string, number>(); }'
         this.hitRatio = { hits: 0, misses: 0 }
 
@@ -88,8 +84,7 @@ export class ContentLoader {
     
 }
                 await this.loadHelpContent(category, language); }
-
-            } catch (error) { }
+        } catch (error) { }
 
                 console.warn(`Failed to preload ${category}:`, error);
                 // プリロード失敗は致命的ではない
@@ -108,8 +103,8 @@ export class ContentLoader {
         try { // キャッシュチェック
             const cachedContent = this.getCachedContent(cacheKey);
             if (cachedContent) {
-                this.hitRatio.hits++,
-                this.recordLoadTime(cacheKey, performance.now() - startTime) }
+                this.hitRatio.hits++;
+                this.recordLoadTime(cacheKey, performance.now() - startTime);
                 return cachedContent;
             
             this.hitRatio.misses++;
@@ -141,7 +136,7 @@ export class ContentLoader {
         } finally { this.isLoading = false;
             this.processLoadingQueue()','
     async loadTutorialData(language = 'ja' {'
-        const startTime = performance.now() }
+        const startTime = performance.now();
         const cacheKey = `tutorial_${language}`;
         
         try { const cachedData = this.getCachedContent(cacheKey);
@@ -189,12 +184,12 @@ export class ContentLoader {
         const cacheKey = `image_${imagePath}`;
         
         // キャッシュチェック
-        if (this.imageCache.has(cacheKey) { return this.imageCache.get(cacheKey) }
+        if (this.imageCache.has(cacheKey) { return this.imageCache.get(cacheKey);
         
         return new Promise((resolve, reject) => {  const img = new Image();
             img.onload = () => {
                 this.imageCache.set(cacheKey, img);
-                this.cleanupImageCache() }
+                this.cleanupImageCache();
                 resolve(img); }
             };
             
@@ -203,7 +198,7 @@ export class ContentLoader {
             };
             
             img.src = imagePath;
-        };
+        }
     }
     
     /**
@@ -217,7 +212,7 @@ export class ContentLoader {
             const expiry = this.cacheExpiry.get(key);
             if (Date.now() > expiry) {
                 this.contentCache.delete(key);
-                this.cacheExpiry.delete(key) }
+                this.cacheExpiry.delete(key);
                 return null;
         
         return this.contentCache.get(key) || null;
@@ -248,10 +243,10 @@ export class ContentLoader {
             const regex = new RegExp(pattern);
             for (const key of this.contentCache.keys() {
                 if (regex.test(key) {
-                    this.contentCache.delete(key) }
+                    this.contentCache.delete(key);
                     this.cacheExpiry.delete(key); }
 }
-        } else {  this.contentCache.clear() }
+        } else {  this.contentCache.clear();
             this.cacheExpiry.clear(); }
 }
     
@@ -265,7 +260,7 @@ export class ContentLoader {
             if (versionData.version !== this.contentVersion) {
 
                 console.log('Content version updated, clearing cache');
-                this.clearCache() }
+                this.clearCache();
 
                 this.contentVersion = versionData.version;' }'
 
@@ -285,10 +280,10 @@ export class ContentLoader {
                 type,
                 category,
                 language,
-                resolve) }
+                resolve);
                 reject }
                 timestamp: Date.now(); 
-    };
+    }
         };
     }
     
@@ -315,14 +310,14 @@ export class ContentLoader {
                         result = await this.loadFAQData(item.language);
                         break }
                     default: }
-                        throw new Error(`Unknown, load type: ${item.type}`};
+                        throw new Error(`Unknown, load type: ${item.type}`}
                 }
                 item.resolve(result);
-            } catch (error) { item.reject(error) }
+            } catch (error) { item.reject(error);
         }
         
         // 残りのキューがあれば再帰処理
-        if (this.loadingQueue.length > 0) { setTimeout(() => this.processLoadingQueue(), 100) }
+        if (this.loadingQueue.length > 0) { setTimeout(() => this.processLoadingQueue(), 100);
 }
     
     /**
@@ -352,9 +347,9 @@ export class ContentLoader {
      */''
     async fetchHelpContent(category, language) { // 実際の実装では外部ファイルまたはAPIから読み込み
         const mockContent = [{ }
-                id: `${category}-help-1`,
+                id: `${category}-help-1,
                 category: category,
-    title: `${category}ヘルプ`,
+    title: `${category}ヘルプ,
                 content: `${category}に関するヘルプコンテンツです。`]
                 language: language,']';
                 searchKeywords: [category, 'help', 'ヘルプ],'
@@ -373,16 +368,16 @@ export class ContentLoader {
      * @private
      */''
     async fetchTutorialData(language) { const mockData = [{''
-                id: 'basic-tutorial',
-                title: '基本チュートリアル',
-                description: 'ゲームの基本操作を学習します',
+                id: 'basic-tutorial,
+                title: '基本チュートリアル,
+                description: 'ゲームの基本操作を学習します,
                 language: language,
     steps: [','
                     {''
-                        id: 'step1',
-                        title: 'ステップ1',
-                        instructions: '最初のステップです',
-                        targetElement: '.bubble',
+                        id: 'step1,
+                        title: 'ステップ1,
+                        instructions: '最初のステップです,
+                        targetElement: '.bubble,
                         waitForAction: 'click' }]
                     }]
                 ];
@@ -398,10 +393,10 @@ export class ContentLoader {
      * @private'
      */''
     async fetchFAQData(language) { const mockData = [{''
-                id: 'faq-1',
-                question: 'よくある質問1',
-                answer: '回答1',
-                category: 'basic',
+                id: 'faq-1,
+                question: 'よくある質問1,
+                answer: '回答1,
+                category: 'basic,
                 language: language,
     lastUpdated: new Date().toISOString( }]
             }]
@@ -435,11 +430,10 @@ export class ContentLoader {
      * @private'
      */''
     getDefaultTutorialData('''
-                id: 'default-tutorial',
-                title: 'デフォルトチュートリアル',
-                description: 'オフライン用基本チュートリアル',
-    steps: [],
-            };
+                id: 'default-tutorial,
+                title: 'デフォルトチュートリアル,
+                description: 'オフライン用基本チュートリアル,
+    steps: [] };
         ]);
     }
     
@@ -449,15 +443,15 @@ export class ContentLoader {
      */
     cleanupCache() {
         // LRU方式でキャッシュをクリーンアップ
-        const entries = Array.from(this.contentCache.entries();
-        const expiries = Array.from(this.cacheExpiry.entries();
+        const entries = Array.from(this.contentCache.entries()));
+        const expiries = Array.from(this.cacheExpiry.entries()));
         // 有効期限順でソート
         expiries.sort((a, b) => a[1] - b[1]),
         
         // 古いエントリを削除
         const toDelete = expiries.slice(0, Math.floor(this.maxCacheSize * 0.3);
         for (const [key] of, toDelete) {
-            this.contentCache.delete(key) }
+            this.contentCache.delete(key);
             this.cacheExpiry.delete(key); }
 }
     
@@ -487,7 +481,7 @@ export class ContentLoader {
         times.push(time);
         
         // 最新10回の記録のみ保持
-        if (times.length > 10) { times.shift() }
+        if (times.length > 10) { times.shift();
     }
     
     /**
@@ -495,6 +489,6 @@ export class ContentLoader {
      */
     cleanup() {
         this.clearCache();
-        this.imageCache.clear() }
+        this.imageCache.clear();
 
         this.loadTimes.clear() }'

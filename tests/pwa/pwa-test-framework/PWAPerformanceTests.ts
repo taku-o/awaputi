@@ -8,8 +8,7 @@ export class PWAPerformanceTests {
         this.mainFramework = mainFramework;
         this.executor = mainFramework.executor;
         
-        console.log('[PWAPerformanceTests] Performance tests component initialized') }
-    
+        console.log('[PWAPerformanceTests] Performance tests component initialized') };
     /**
      * Run offline functionality tests
      */
@@ -42,15 +41,15 @@ export class PWAPerformanceTests {
                 const responseText = await response.text('),'
                 
                 return {
-                    fallbackWorking: response.ok;
+                    fallbackWorking: response.ok,
                     responseSize: responseText.length;
                     contentType: response.headers.get('content-type'}
                 };) catch (error) {
                 // In case of network error, check if Service Worker fallback is working
                 return {
-                    fallbackWorking: false;
+                    fallbackWorking: false,
                     error: error.message
-                };
+                }
             }
         }');'
         
@@ -73,7 +72,7 @@ export class PWAPerformanceTests {
             localStorage.removeItem(testKey);
             
             return {
-                localStorageWorking: true;
+                localStorageWorking: true,
                 indexedDBSupported: indexedDBSupported;
                 testDataSize: JSON.stringify(testData.length
             };);
@@ -98,7 +97,7 @@ export class PWAPerformanceTests {
             const loadTime = endTime - startTime;
             
             return {
-                loadTime: loadTime;
+                loadTime: loadTime,
                 manifestSize: JSON.stringify(manifest.length;
                 performance: loadTime < 100 ? 'excellent' : 
                            loadTime < 300 ? 'good' : 
@@ -118,12 +117,12 @@ export class PWAPerformanceTests {
             const startupTime = endTime - startTime;
             
             return {
-                startupTime: startupTime;
+                startupTime: startupTime,
                 performance: startupTime < 500 ? 'excellent' :
                            startupTime < 1000 ? 'good' :
                            startupTime < 2000 ? 'acceptable' : 'poor',
                 hasRegistration: registration !== null
-            };
+            }
         }');'
         
         await this.executor.runTest('cache-performance-test', 'Cache performance test', async (') => {'
@@ -136,7 +135,7 @@ export class PWAPerformanceTests {
             const writePromises: any[] = [];
             for (let i = 0, i < 10, i++) {
                 writePromises.push();
-                    cache.put(`/test-${i)`, new, Response(testData) };
+                    cache.put(`/test-${i)`, new, Response(testData) }
             }
             
             await Promise.all(writePromises);
@@ -147,7 +146,7 @@ export class PWAPerformanceTests {
             const readStartTime = performance.now();
             const readPromises: any[] = [];
             for (let i = 0; i < 10; i++) {
-                readPromises.push(cache.match(`/test-${i)`)};
+                readPromises.push(cache.match(`/test-${i)`)}
             }
             
             await Promise.all(readPromises);
@@ -158,7 +157,7 @@ export class PWAPerformanceTests {
             await caches.delete(testCacheName');'
             
             return {
-                writeTime: writeTime;
+                writeTime: writeTime,
                 readTime: readTime;
                 writePerformance: writeTime < 100 ? 'excellent' : 
                                 writeTime < 300 ? 'good' : 
@@ -166,7 +165,7 @@ export class PWAPerformanceTests {
                 readPerformance: readTime < 50 ? 'excellent' :
                                readTime < 100 ? 'good' :
                                readTime < 300 ? 'acceptable' : 'poor'
-            };
+            }
         };
         
         await this.runMemoryUsageTest();
@@ -182,25 +181,25 @@ export class PWAPerformanceTests {
             // Check memory usage if available
             if ('memory' in performance) {
                 const memoryInfo = {
-                    jsHeapSizeLimit: performance.memory.jsHeapSizeLimit;
+                    jsHeapSizeLimit: performance.memory.jsHeapSizeLimit,
                     totalJSHeapSize: performance.memory.totalJSHeapSize;
-                    usedJSHeapSize: performance.memory.usedJSHeapSize;
+                    usedJSHeapSize: performance.memory.usedJSHeapSize,
                     heapUsagePercent: (performance.memory.usedJSHeapSize / performance.memory.jsHeapSizeLimit') * 100'
                 };
                 
                 return {
-                    memoryAvailable: true;
+                    memoryAvailable: true,
                     memoryInfo: memoryInfo;
                     memoryStatus: memoryInfo.heapUsagePercent < 50 ? 'excellent' :
                                 memoryInfo.heapUsagePercent < 70 ? 'good' :
                                 memoryInfo.heapUsagePercent < 90 ? 'acceptable' : 'critical'
-                };
+                }
             }
             
             return {
-                memoryAvailable: false;
+                memoryAvailable: false,
                 message: 'Performance memory API not available in this browser'
-            };
+            }
         };
     }
     
@@ -224,14 +223,14 @@ export class PWAPerformanceTests {
             const maxLatency = Math.max(...latencies');'
             
             return {
-                averageLatency: avgLatency;
+                averageLatency: avgLatency,
                 minLatency: minLatency;
-                maxLatency: maxLatency;
+                maxLatency: maxLatency,
                 iterations: iterations;
                 performance: avgLatency < 50 ? 'excellent' :
                            avgLatency < 100 ? 'good' :
                            avgLatency < 300 ? 'acceptable' : 'poor'
-            };
+            }
         };
     }
     
@@ -250,12 +249,12 @@ export class PWAPerformanceTests {
             const totalChecks = Object.keys(resourceChecks.length);
             
             return {
-                checks: resourceChecks;
+                checks: resourceChecks,
                 optimizationScore: (optimizationScore / totalChecks') * 100,'
                 optimizationLevel: optimizationScore === totalChecks ? 'excellent' :
                                  optimizationScore >= totalChecks * 0.7 ? 'good' :
                                  optimizationScore >= totalChecks * 0.4 ? 'acceptable' : 'poor'
-            };
+            }
         };
     }
     
@@ -288,9 +287,9 @@ export class PWAPerformanceTests {
      */
     async checkResourceHints(') {'
         const hints = {
-            preconnect: document.querySelectorAll('link[rel="preconnect"]').length > 0;
+            preconnect: document.querySelectorAll('link[rel="preconnect"]').length > 0,
             prefetch: document.querySelectorAll('link[rel="prefetch"]').length > 0;
-            preload: document.querySelectorAll('link[rel="preload"]').length > 0;
+            preload: document.querySelectorAll('link[rel="preload"]').length > 0,
             dnsPrefetch: document.querySelectorAll('link[rel="dns-prefetch"]').length > 0
         };
         

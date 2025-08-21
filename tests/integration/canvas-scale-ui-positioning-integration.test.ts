@@ -278,7 +278,7 @@ describe('Canvas Scale UI Positioning Integration Tests', () => {
             
             // 連続リサイズ処理のパフォーマンスが許容範囲内であることを確認
             expect(executionTime.toBeLessThan(200); // 200ms以下
-        };
+        }
     }
     // ヘルパー関数
     function simulateScreenSize(width, height') {'
@@ -310,6 +310,6 @@ describe('Canvas Scale UI Positioning Integration Tests', () => {
             hp: { x: fillTextCalls[1]?.[1] || 0, y: fillTextCalls[1]? .[2] || 0 }, : undefined
             time: { x: fillTextCalls[2]?.[1] || 0, y: fillTextCalls[2]? .[2] || 0 }, : undefined
             combo: { x: fillTextCalls[3]?.[1] || 0, y: fillTextCalls[3]? .[2] || 0 }
-        };
+        }
     }
 }'); : undefined'

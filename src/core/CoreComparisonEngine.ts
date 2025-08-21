@@ -5,14 +5,13 @@
 
 import { getErrorHandler  } from '../utils/ErrorHandler';
 
-export interface ComparisonConfig { precision: number;
-    includeMetadata: boolean;
-    deepComparison: boolean;
+export interface ComparisonConfig { precision: number,
+    includeMetadata: boolean,
+    deepComparison: boolean,
     ignoreOrder: boolean;
-
-export interface ComparisonResult { equal: boolean;
-    differences: DifferenceItem[];
-    statistics: ComparisonStatistics;
+    export interface ComparisonResult { equal: boolean,
+    differences: DifferenceItem[],
+    statistics: ComparisonStatistics,
     metadata: ComparisonMetadata;
 ';'
 
@@ -21,35 +20,31 @@ export interface DifferenceItem { path: string,''
     oldValue?: any;
     newValue?: any;
     description: string;
-
-export interface ComparisonStatistics { totalItems: number;
-    equalItems: number;
-    differentItems: number;
-    addedItems: number;
-    removedItems: number;
+    export interface ComparisonStatistics { totalItems: number,
+    equalItems: number,
+    differentItems: number,
+    addedItems: number,
+    removedItems: number,
     modifiedItems: number;
-
-export interface ComparisonMetadata { timestamp: number;
+    export interface ComparisonMetadata { timestamp: number,
     processingTime: number;
     memoryUsage?: number;
     complexity: 'low' | 'medium' | 'high'
-            }
-
+            };
 export class CoreComparisonEngine {
     private config: ComparisonConfig;
     private comparisonHistory: ComparisonResult[] = [];
     private, maxHistorySize: number = 100','
 
-    constructor(config: Partial<ComparisonConfig> = {)) {
+    constructor(config: Partial<ComparisonConfig> = {) {
         this.config = {
-            precision: 0.0001;
-            includeMetadata: true;
-            deepComparison: true;
+            precision: 0.0001,
+            includeMetadata: true,
+            deepComparison: true,
     ignoreOrder: false;
             ...config,
 
-        console.log('CoreComparisonEngine, initialized') }
-
+        console.log('CoreComparisonEngine, initialized') };
     compare(source: any, target: any, path: string = '): ComparisonResult { const startTime = performance.now(),'
         const differences: DifferenceItem[] = [];
         
@@ -62,9 +57,8 @@ export class CoreComparisonEngine {
                 equal: differences.length === 0;
                 differences,
                 statistics,
-                metadata: {
-                    timestamp: Date.now();
-                    processingTime,
+                metadata: { timestamp: Date.now(),
+                    processingTime  },
                     complexity: this.determineComplexity(source, target }
             };
 
@@ -74,29 +68,28 @@ export class CoreComparisonEngine {
 
         } catch (error) {
             getErrorHandler().handleError(error, 'COMPARISON_ERROR', {)
-                source: typeof source;
+                source: typeof source,
     target: typeof target,';'
                 path',' }'
 
             }');'
             
-            return { equal: false;
+            return { equal: false,
                 differences: [{'
                     path,
                     type: 'modified',' };]'
                     description: 'Comparison failed due to error' }]
                 }];
-                statistics: { totalItems: 0;
-                    equalItems: 0;
-                    differentItems: 1;
-                    addedItems: 0;
-                    removedItems: 0;
+                statistics: { totalItems: 0,
+                    equalItems: 0  ,
+                    differentItems: 1,
+                    addedItems: 0,
+                    removedItems: 0,
     modifiedItems: 1 };
                 metadata: { timestamp: Date.now(),''
-                    processingTime: performance.now('';
+                    processingTime: performance.now(''  ,
     complexity: 'high'
-            })
-        }
+            });
     }
 );
     private compareValues(source: any, target: any, path: string, differences: DifferenceItem[]): void { // null/undefined の比較
@@ -106,8 +99,8 @@ export class CoreComparisonEngine {
                 differences.push({'
                     path,
                     type: 'modified,'
-    oldValue: source;
-                    newValue: target) }
+    oldValue: source,
+                    newValue: target),
                     description: `Value changed from ${source} to ${target}`);
             }
             return;
@@ -119,8 +112,8 @@ export class CoreComparisonEngine {
 
         if (sourceType !== targetType) { differences.push({'
                 path,
-                type: 'type_changed';
-    oldValue: source;
+                type: 'type_changed,
+    oldValue: source,
 
                 newValue: target,') }'
 
@@ -136,14 +129,14 @@ export class CoreComparisonEngine {
                     differences.push({'
                         path,
                         type: 'modified,'
-    oldValue: source;
-                        newValue: target) }
+    oldValue: source,
+                        newValue: target),
                         description: `Number changed from ${source} to ${target}`;
                 }'} else if (source !== target) { differences.push({'
                     path,
                     type: 'modified),'
-                    oldValue: source;
-    newValue: target;
+                    oldValue: source,
+    newValue: target,
                     description: `Value changed from ${source} to ${target}`);
             }
             return;
@@ -158,7 +151,7 @@ export class CoreComparisonEngine {
                 path,
                 type: 'type_changed),'
                 oldValue: source','
-    newValue: target,')',
+    newValue: target,'),
                 description: 'Type changed between array and object');
             return  }
 
@@ -174,7 +167,7 @@ export class CoreComparisonEngine {
                     path,
                     type: 'modified,'
     oldValue: source.length  }
-                    newValue: target.length) }
+                    newValue: target.length),
                     description: `Array length changed from ${source.length} to ${target.length}`);
             }
         } else {  // 順序を考慮した比較 }
@@ -185,25 +178,23 @@ export class CoreComparisonEngine {
                         path: currentPath,','
                         type: 'added'
             }
-                        newValue: target[i]) }
+                        newValue: target[i]),
 
                         description: `Item added at index ${i}`;'} else if (i >= target.length) { differences.push({'
                         path: currentPath,','
-                        type: 'removed';
-    oldValue: source[i];
+                        type: 'removed,
+    oldValue: source[i],
                         description: `Item removed from index ${i}`);
                 } else if (this.config.deepComparison) { this.compareValues(source[i], target[i], currentPath, differences),' }'
 
                 } else if (source[i] !== target[i]) { differences.push({'
-                        path: currentPath;
+                        path: currentPath,
                         type: 'modified),'
-                        oldValue: source[i];
-    newValue: target[i];
+                        oldValue: source[i],
+    newValue: target[i],
                         description: `Array item changed at index ${i}`);
-                }
+                    }
 }
-    }
-
     private compareObjects(source: Record<string, any>, target: Record<string, any>, path: string, differences: DifferenceItem[]): void { const sourceKeys = Object.keys(source);
         const targetKeys = Object.keys(target);
         const allKeys = new Set([...sourceKeys, ...targetKeys]);
@@ -224,7 +215,7 @@ export class CoreComparisonEngine {
             } else if (this.config.deepComparison) { this.compareValues(source[key], target[key], currentPath, differences),' }'
 
             } else if (source[key] !== target[key]) { differences.push({'
-                    path: currentPath;
+                    path: currentPath,
                     type: 'modified),'
                     oldValue: source[key]','
     newValue: target[key],' }'
@@ -239,18 +230,18 @@ export class CoreComparisonEngine {
             differentItems: differences.length,
             addedItems: 0,
             removedItems: 0,
-    modifiedItems: 0 },
+    modifiedItems: 0 };
 ';'
 
         differences.forEach(diff => {  );
             switch(diff.type) {
 
                 case 'added':,
-                    stats.addedItems++,
+                    stats.addedItems++;
 
                     break,
                 case 'removed':,
-                    stats.removedItems++,
+                    stats.removedItems++;
 
                     break,
                 case 'modified':','
@@ -276,8 +267,8 @@ export class CoreComparisonEngine {
     private determineComplexity(source: any, target: any): 'low' | 'medium' | 'high' { const sourceSize = this.getObjectSize(source);
         const targetSize = this.getObjectSize(target);
         const maxSize = Math.max(sourceSize, targetSize);
-        if(maxSize < 10) return 'low',
-        if(maxSize < 100) return 'medium',
+        if(maxSize < 10) return 'low,
+        if(maxSize < 100) return 'medium,
         return 'high' }
 ';'
 

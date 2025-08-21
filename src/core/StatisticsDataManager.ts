@@ -9,13 +9,12 @@ import { ErrorHandler  } from '../utils/ErrorHandler.js';
 /**
  * 統計データ管理クラス
  */
-export class StatisticsDataManager {'
+export class StatisticsDataManager {
 
-    constructor('',
+    constructor(',
         this.dataVersion = '2.1.0';
         this.backupHistory = [];
-        this.maxBackupCount = 10 }
-
+        this.maxBackupCount = 10 };
     /**
      * 統計データを初期化
      * @returns {Object} 初期化された統計データ'
@@ -34,7 +33,7 @@ export class StatisticsDataManager {'
             totalBubblesMissed: 0,
             bubbleAccuracy: 0,
     bubbleTypeStats: { normal: 0,
-                stone: 0,
+                stone: 0 ,
                 iron: 0,
                 diamond: 0,
                 pink: 0,
@@ -53,24 +52,23 @@ export class StatisticsDataManager {'
                 magnetic: 0,
                 explosive: 0,
                 phantom: 0,
-    multiplier: 0 },
+    multiplier: 0 ,
             // 効率統計
             efficiencyStats: { bubblesPerMinute: 0,
-                bubblesPerSecond: 0,
+                bubblesPerSecond: 0 ,
                 peakEfficiency: 0,
                 efficiencyTrend: [],
                 bestEfficiencySession: 0,
     worstEfficiencySession: Infinity,
             // 反応時間統計
             reactionTimeStats: { average: 0,
-                fastest: Infinity,
+                fastest: Infinity ,
                 slowest: 0,
     distribution: {', 'under_200ms': 0,'
                     '200_500ms': 0,
                     '500_1000ms': 0,
                     'over_1000ms': 0 },
-                recentTimes: [] // 最新100回の反応時間,
-            },
+                recentTimes: [] // 最新100回の反応時間 ,
             
             // コンボ統計
             totalCombos: 0,
@@ -78,16 +76,15 @@ export class StatisticsDataManager {'
             averageCombo: 0,
             comboBreaks: 0,
             // コンボ詳細統計
-           , comboDetailStats: { comboRanges: {', '1-5': 0,'
+            comboDetailStats: { comboRanges: {', '1-5': 0,'
                     '6-10': 0,
                     '11-20': 0,
                     '21-50': 0,
-                    '51+': 0 },
+                    '51+': 0 } };
                 comboSuccessRate: 0,
                 averageComboLength: 0,
                 longestComboStreak: 0,
-    comboRecoveryTime: 0 // コンボが切れてから次のコンボまでの時間,
-            },
+    comboRecoveryTime: 0 // コンボが切れてから次のコンボまでの時間 ,
             
             // HP統計
             totalDamageTaken: 0,
@@ -96,18 +93,18 @@ export class StatisticsDataManager {'
     lowHpTime: 0, // HP10以下の時間;
             // HP詳細統計
             hpDetailStats: { criticalHpEvents: 0, // HP5以下になった回数
-                nearDeathRecoveries: 0, // HP1から回復した回数,
+                nearDeathRecoveries: 0, // HP1から回復した回数  },
                 perfectHealthGames: 0, // ダメージを受けなかったゲーム数,
                 averageDamagePerGame: 0,
                 maxDamageInSingleGame: 0,
-    healingEfficiency: 0 // 回復量/ダメージ量  },
+    healingEfficiency: 0 // 回復量/ダメージ量  ,
             // ステージ統計
             stageStats: {},
             stagesCompleted: 0,
             stagesFailed: 0,
             // ステージ詳細統計
-           , stageDetailStats: { favoriteStage: null,
-    mostDifficultStage: null,
+            stageDetailStats: { favoriteStage: null,
+    mostDifficultStage: null ,
                 fastestClearTime: {},
                 averageClearTime: {},
                 stageRetryCount: {},
@@ -127,49 +124,49 @@ export class StatisticsDataManager {'
             explosiveChains: 0,
             phantomBubbleInteractions: 0,
             // プレイヤー行動統計
-           , playerBehaviorStats: { dragOperations: 0,
-                averageDragDistance: 0,
+            playerBehaviorStats: { dragOperations: 0,
+                averageDragDistance: 0 ,
                 longestDrag: 0,
                 shortestDrag: Infinity,
                 dragAccuracy: 0,
     rapidClickCount: 0, // 短時間での連続クリック,
                 pauseCount: 0,
-    settingsChanges: 0  },
+    settingsChanges: 0  ,
             // 進捗統計
             progressStats: { achievementsUnlocked: 0,
-                totalAP: 0,
+                totalAP: 0 ,
                 levelUps: 0,
                 itemsPurchased: 0,
                 tutorialsCompleted: 0,
     hintsUsed: 0 })
             // 時間統計
             timeStats: { playTimeByHour: new Array(24).fill(0,
-    playTimeByDay: new Array(7).fill(0,
+    playTimeByDay: new Array(7).fill(0 ,
                 playTimeByMonth: new Array(12).fill(0),
                 peakPlayingHour: 0,
                 peakPlayingDay: 0,
                 firstPlayDate: null,
                 lastPlayDate: null,
     longestBreak: 0, // 最長プレイ間隔,
-                regularPlayStreak: 0 // 連続プレイ日数  },
+                regularPlayStreak: 0 // 連続プレイ日数  ,
             // デバイス・環境統計
             deviceStats: { isMobile: false,''
-                screenResolution: ','
+                screenResolution: ','  },
                 browserInfo: ','
     performanceMetrics: {
-                    averageFPS: 0,
+                    averageFPS: 0 ,
                     memoryUsage: 0,
     loadTime: 0  }
             };
             // エラー・クラッシュ統計
             errorStats: { crashCount: 0,
-                errorCount: 0,
+                errorCount: 0 ,
                 recoveryCount: 0,
     lastErrorTime: null,
                 commonErrors: {},
             // ソーシャル統計（新規追加、将来の機能用）
             socialStats: { shareCount: 0,
-                challengesCompleted: 0,
+                challengesCompleted: 0 ,
                 communityRank: 0,
     friendsConnected: 0 
     }
@@ -182,9 +179,8 @@ export class StatisticsDataManager {'
         return { gamesThisSession: 0,
             scoreThisSession: 0,
     bubblesThisSession: 0 }
-            playTimeThisSession: 0 },
-            sessionStartTime: Date.now(),
-    }
+            playTimeThisSession: 0 ,
+            sessionStartTime: Date.now();
 
     /**
      * 統計データの検証
@@ -253,7 +249,7 @@ export class StatisticsDataManager {'
         // 配列フィールドの修復
         this.repairArrayFields(repaired);
         // オブジェクトフィールドの修復
-        this.repairObjectFields(repaired) }
+        this.repairObjectFields(repaired);
         return repaired;
 
     /**
@@ -288,7 +284,7 @@ export class StatisticsDataManager {'
             statistics.timeStats.playTimeByHour = new Array(24).fill(0); }
         }
         
-        if (!Array.isArray(statistics.timeStats?.playTimeByDay) { statistics.timeStats.playTimeByDay = new Array(7).fill(0) }
+        if (!Array.isArray(statistics.timeStats?.playTimeByDay) { statistics.timeStats.playTimeByDay = new Array(7).fill(0);
         
         if (!Array.isArray(statistics.reactionTimeStats?.recentTimes) { statistics.reactionTimeStats.recentTimes = [] }
     }
@@ -313,7 +309,7 @@ export class StatisticsDataManager {'
                 screenResolution: ','
                 browserInfo: ','
     performanceMetrics: {
-                    averageFPS: 0,
+                    averageFPS: 0 ,
     memoryUsage: 0 }
                     loadTime: 0 
     }
@@ -349,7 +345,7 @@ export class StatisticsDataManager {'
         const checks = {
             bubbleAccuracy: this.checkBubbleAccuracy(statistics),
             averageCalculations: this.checkAverageCalculations(statistics,
-    timeConsistency: this.checkTimeConsistency(statistics) }
+    timeConsistency: this.checkTimeConsistency(statistics),
             stageConsistency: this.checkStageConsistency(statistics); 
     };
         
@@ -417,7 +413,7 @@ export class StatisticsDataManager {'
                 passed: false); 
     }
         
-        return { passed: checks.length = == 0 },
+        return { passed: checks.length = == 0 ,
             issues: checks,
 
     /**
@@ -437,7 +433,7 @@ export class StatisticsDataManager {'
         
         return { passed: difference <= statistics.totalGamesPlayed * 0.05, // 5%の差は許容
             totalStageGames,
-            totalGamesPlayed: statistics.totalGamesPlayed },
+            totalGamesPlayed: statistics.totalGamesPlayed ,
             difference }
         }
 
@@ -462,7 +458,7 @@ export class StatisticsDataManager {'
             platform: navigator.platform,
             language: navigator.language,
     cookieEnabled: navigator.cookieEnabled }
-            onLine: navigator.onLine },
+            onLine: navigator.onLine ,
             timestamp: Date.now(); 
     }
 }
@@ -475,7 +471,7 @@ let statisticsDataManagerInstance = null;
  * @returns {StatisticsDataManager} シングルトンインスタンス
  */
 export function getStatisticsDataManager() { if (!statisticsDataManagerInstance) {
-        statisticsDataManagerInstance = new StatisticsDataManager() }
+        statisticsDataManagerInstance = new StatisticsDataManager() };
     return statisticsDataManagerInstance;
 }
 

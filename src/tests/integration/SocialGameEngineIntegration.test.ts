@@ -4,10 +4,10 @@
  */
 import { jest, describe, test, beforeAll, beforeEach, afterEach, expect  } from '@jest/globals';
 // Type definitions
-interface MockGameEngine { canvas: HTMLCanvasElement;
-    context: CanvasRenderingContext2D;
-    isRunning: boolean;
-    currentScene: any;
+interface MockGameEngine { canvas: HTMLCanvasElement,
+    context: CanvasRenderingContext2D,
+    isRunning: boolean,
+    currentScene: any,
     systems: Map<string, any>;
     start(): void;
     stop(): void;
@@ -16,80 +16,83 @@ interface MockGameEngine { canvas: HTMLCanvasElement;
     setCurrentScene(scene: any): void;
     getSystem(systemName: string): any;
     addSystem(systemName: string, system: any): void;
-interface GameEngineStatisticsManager { gameStats: {
-        totalScor,e: number;
-        highScore: number;
-        gamesPlayed: number;
-        totalPlayTime: number;
+    interface GameEngineStatisticsManager { gameStats: { totalScor,e: number,
+        highScore: number,
+    gamesPlayed: number,
+    totalPlayTime: number,
     averageScore: number;
-    getTotalScore(): number;
-    getHighScore(): number;
-    getGamesPlayed(): number;
-    getDetailedStatistics(): { totalScore: number;
+    getTotalScore(): number,
+    getHighScore(): number,
+    getGamesPlayed(): number,
+    getDetailedStatistics(): { totalScore: number,
         highScore: number;
-        gamesPlayed: number;
-        totalPlayTime: number;
+    },
+        gamesPlayed: number,
+        totalPlayTime: number,
     averageScore: number;
-interface Achievement { id: string;
-    name: string;
-    description: string;
-    unlocked: boolean;
+interface Achievement { id: string,
+    name: string,
+    description: string,
+    unlocked: boolean,
     rare: boolean;
-interface GameEngineAchievementManager { achievements: Achievement[];
+    interface GameEngineAchievementManager { achievements: Achievement[];
     getAchievements(): Achievement[];
     getUnlockedAchievements(): Achievement[];
     getRareAchievements(): Achievement[];
-interface SocialSharingManager { gameEngine: MockGameEngine;
-    statisticsManager: GameEngineStatisticsManager;
-    achievementManager: GameEngineAchievementManager;
-    isInitialized: boolean;
-    shareContentGenerator: any;
-    screenshotCapture: any;
-    leaderboardManager: any;
+    interface SocialSharingManager { gameEngine: MockGameEngine,
+    statisticsManager: GameEngineStatisticsManager,
+    achievementManager: GameEngineAchievementManager,
+    isInitialized: boolean,
+    shareContentGenerator: any,
+    screenshotCapture: any,
+    leaderboardManager: any,
     challengeSystem: any;
     initialize(): Promise<void>;
     checkShareSuggestion(gameEndData: GameEndData): Promise<ShareSuggestion>;
     captureGameScreen(options?: CaptureOptions): Promise<string | null>;
     generateAchievementShareData(achievement: Achievement): Promise<AchievementShareData>;
     getAchievementProgress(): Promise<AchievementProgress>;
-interface GameEndData { score: number;
-    isHighScore: boolean;
-    stage: string;
-    playTime: number;
+    interface GameEndData { score: number,
+    isHighScore: boolean,
+    stage: string,
+    playTime: number,
     combo: number;
-interface ShareSuggestion { shouldSuggestShare: boolean;
-    reason: string;
+    interface ShareSuggestion { shouldSuggestShare: boolean,
+    reason: string,
     shareData: {
         typ,e: string;
-        score: number;
+    },
+        score: number,
     isHighScore: boolean;
 interface CaptureOptions { includeOverlay?: boolean,
     overlayData?: {
         scor,e: number;
+    },
     stage: string;
-interface AchievementShareData { type: string;
+interface AchievementShareData { type: string,
     achievement: {
         nam,e: string;
+    },
     shouldHighlight: boolean;
 }
-interface AchievementProgress { total: number;
-    unlocked: number;
-    percentage: number;
+interface AchievementProgress { total: number,
+    unlocked: number,
+    percentage: number,
     rare: number;
-interface MockNavigator { share: jest.Mock<() => Promise<void>>;
-    userAgent: string;
+    interface MockNavigator { share: jest.Mock<() => Promise<void>>,
+    userAgent: string,
     canShare: jest.Mock<() => boolean> 
     }
-interface MockLocalStorage { getItem: jest.Mock<(key: string) => string | null>;
-    setItem: jest.Mock<(key: string, value: string) => void>;
-    removeItem: jest.Mock<(key: string) => void>;
+interface MockLocalStorage { getItem: jest.Mock<(key: string) => string | null>,
+    setItem: jest.Mock<(key: string, value: string) => void>,
+    removeItem: jest.Mock<(key: string) => void>,
     clear: jest.Mock<() => void>  }
 }
 // テスト用のモッククラス
-class MockGameEngine implements MockGameEngine { canvas: HTMLCanvasElement;
-    context: CanvasRenderingContext2D;
-    isRunning: boolean;
-    currentScene: any;
+class MockGameEngine implements MockGameEngine { canvas: HTMLCanvasElement,
+    context: CanvasRenderingContext2D,
+    isRunning: boolean,
+    currentScene: any,
     systems: Map<string, any>;
     constructor()','
         this.canvas = document.createElement('canvas');
@@ -99,44 +102,45 @@ class MockGameEngine implements MockGameEngine { canvas: HTMLCanvasElement;
         this.context = this.canvas.getContext('2d)!;'
         this.isRunning = false;
         this.currentScene = null;
-        this.systems = new Map() }
+        this.systems = new Map();
     start(): void { this.isRunning = true }
     stop(): void { this.isRunning = false }
     getCanvas(): HTMLCanvasElement { return this.canvas }
     getCurrentScene(): any { return this.currentScene }
     setCurrentScene(scene: any): void { this.currentScene = scene }
-    getSystem(systemName: string): any { return this.systems.get(systemName) }
-    addSystem(systemName: string, system: any): void { this.systems.set(systemName, system) }
+    getSystem(systemName: string): any { return this.systems.get(systemName);
+    addSystem(systemName: string, system: any): void { this.systems.set(systemName, system);
 }
 class GameEngineMockStatisticsManager implements GameEngineStatisticsManager { gameStats: {
-        totalScore: number;
-        highScore: number;
-        gamesPlayed: number;
-        totalPlayTime: number;
+        totalScore: number,
+        highScore: number,
+        gamesPlayed: number,
+        totalPlayTime: number,
     averageScore: number;
     constructor() {
         this.gameStats = {
-            totalScore: 50000;
-            highScore: 75000;
-            gamesPlayed: 100;
+            totalScore: 50000,
+            highScore: 75000,
+            gamesPlayed: 100,
     totalPlayTime: 180000 }
             averageScore: 25000 
     }
     getTotalScore(): number { return this.gameStats.totalScore }
     getHighScore(): number { return this.gameStats.highScore }
     getGamesPlayed(): number { return this.gameStats.gamesPlayed }
-    getDetailedStatistics(): { totalScore: number;
+    getDetailedStatistics(): { totalScore: number,
         highScore: number;
-        gamesPlayed: number;
-        totalPlayTime: number;
+    };
+        gamesPlayed: number,
+        totalPlayTime: number,
     averageScore: number; {
         return { ...this.gameStats,
 
 class GameEngineMockAchievementManager implements GameEngineAchievementManager { achievements: Achievement[],''
     constructor('}'
 
-            { id: 'first_win', name: '初勝利', description: '初めてゲームをクリア', unlocked: true, rare: false,,''
-            { id: 'high_scorer', name: 'ハイスコアラー', description: '50000点を達成', unlocked: true, rare: true,,''
+            { id: 'first_win', name: '初勝利', description: '初めてゲームをクリア', unlocked: true, rare: false,''
+            { id: 'high_scorer', name: 'ハイスコアラー', description: '50000点を達成', unlocked: true, rare: true,''
             { id: 'combo_master', name: 'コンボマスター', description: '20コンボを達成', unlocked: false, rare: true,
         ];
             };
@@ -153,7 +157,7 @@ describe('SocialGameEngineIntegration', () => {  let mockGameEngine: MockGameEng
         (global, as any).document = document,
         (global, as any).window = window,
         (global, as any).navigator = {''
-            share: jest.fn()  }
+            share: jest.fn(),
 
             userAgent: 'Mozilla/5.0(Windows, NT 10.0; Win64; x64) AppleWebKit/537.36' }
         } as MockNavigator;
@@ -170,7 +174,7 @@ describe('SocialGameEngineIntegration', () => {  let mockGameEngine: MockGameEng
         (global, as any).localStorage = {
             getItem: jest.fn(),
             setItem: jest.fn(
-    removeItem: jest.fn() }
+    removeItem: jest.fn(),
         clear: jest.fn(); 
     } as MockLocalStorage;
     );
@@ -186,7 +190,7 @@ describe('SocialGameEngineIntegration', () => {  let mockGameEngine: MockGameEng
             await socialManager.initialize();
             expect(socialManager.gameEngine).toBe(mockGameEngine);
             expect(socialManager.statisticsManager).toBe(mockStatisticsManager);
-            expect(socialManager.achievementManager).toBe(mockAchievementManager),  }
+            expect(socialManager.achievementManager).toBe(mockAchievementManager) }
 
             expect(socialManager.isInitialized).toBe(true);' }'
 
@@ -199,7 +203,7 @@ describe('SocialGameEngineIntegration', () => {  let mockGameEngine: MockGameEng
             // 内部システムの初期化確認
             expect(socialManager.shareContentGenerator).toBeDefined();
             expect(socialManager.screenshotCapture).toBeDefined();
-            expect(socialManager.leaderboardManager).toBeDefined() }
+            expect(socialManager.leaderboardManager).toBeDefined();
             expect(socialManager.challengeSystem).toBeDefined();' }'
 
         }');'
@@ -214,7 +218,7 @@ describe('SocialGameEngineIntegration', () => {  let mockGameEngine: MockGameEng
             ','
             await socialManager.initialize('''
                 stage: 'normal,'
-    playTime: 300000)  }
+    playTime: 300000),
                 combo: 15 };)
             const shareSuggestion = await socialManager.checkShareSuggestion(gameEndData);
 
@@ -222,7 +226,7 @@ describe('SocialGameEngineIntegration', () => {  let mockGameEngine: MockGameEng
             expect(shareSuggestion.reason).toBe('high_score';
             expect(shareSuggestion.shareData).toMatchObject({ ')'
                 type: 'score')','
-    score: 75000,')',
+    score: 75000,'),
                 isHighScore: true' }'
 
         }''
@@ -234,8 +238,8 @@ describe('SocialGameEngineIntegration', () => {  let mockGameEngine: MockGameEng
             await socialManager.initialize(','
             ctx.fillStyle = '#0066cc',')'
             ctx.fillRect(0, 0, 800, 600);
-            ctx.fillStyle = '#ffffff',
-            ctx.font = '48px Arial',
+            ctx.fillStyle = '#ffffff,
+            ctx.font = '48px Arial,
             ctx.fillText('Test Game Screen', 200, 300);
             const screenshot = await socialManager.captureGameScreen({)
                 includeOverlay: true,
@@ -254,10 +258,9 @@ describe('SocialGameEngineIntegration', () => {  let mockGameEngine: MockGameEng
                 mockAchievementManager','
             ','
             await socialManager.initialize()','
-               , stage: 'normal'),
+            stage: 'normal'),
                 timestamp: Date.now(
-    metadata: {
-                    combo: 18,
+    metadata: { combo: 18   ,
     accuracy: 0.85 }
                     playTime: 240000 
     };
@@ -275,7 +278,7 @@ describe('SocialGameEngineIntegration', () => {  let mockGameEngine: MockGameEng
                 score: 50000)','
                 isHighScore: false',' }'
 
-                totalGames: mockStatisticsManager.getGamesPlayed() }, 'twitter');
+                totalGames: mockStatisticsManager.getGamesPlayed() , 'twitter');
             expect(shareMessage).toContain('50000';
             expect(shareMessage).toContain('BubblePop);'
 
@@ -290,12 +293,12 @@ describe('SocialGameEngineIntegration', () => {  let mockGameEngine: MockGameEng
                 mockStatisticsManager,
                 mockAchievementManager','
             ','
-            await socialManager.initialize('', id: 'perfect_round',
-                name: 'パーフェクトラウンド',
+            await socialManager.initialize(, id: 'perfect_round',
+                name: 'パーフェクトラウンド,
                 description: '1ラウンドでミスなし),'
                 unlocked: true,
-    rare: true) }
-        unlockedAt: Date.now() },
+    rare: true),
+        unlockedAt: Date.now() };
 
             const shareData = await socialManager.generateAchievementShareData(newAchievement);
             expect(shareData.type).toBe('achievement';
@@ -363,8 +366,8 @@ describe('SocialGameEngineIntegration', () => {  let mockGameEngine: MockGameEng
 
                     stage: 'normal'
             }
-                    timestamp: Date.now() - (i * 1000) }
-                    metadata: { combo: i, accuracy: Math.random(  };
+                    timestamp: Date.now() - (i * 1000),
+                    metadata: { combo: i, accuracy: Math.random(  }
             }
             await Promise.all(promises);
             const endTime = performance.now();
@@ -386,5 +389,5 @@ describe('SocialGameEngineIntegration', () => {  let mockGameEngine: MockGameEng
             const memoryIncrease = finalMemory - initialMemory;
             // メモリ増加量が10MB以下であることを確認（要件8.5）
             expect(memoryIncrease).toBeLessThan(10 * 1024 * 1024);
-        };
+        }
     }'}');

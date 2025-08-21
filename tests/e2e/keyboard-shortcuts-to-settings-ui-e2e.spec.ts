@@ -32,7 +32,7 @@ test.describe('Keyboard Shortcuts to Settings UI Migration (Issue #170')', () =>
             await expect(page.locator('text=一般').toBeVisible('),'
             
             // アクセシビリティカテゴリが存在することを確認
-            await expect(page.locator('text=アクセシビリティ').toBeVisible() };
+            await expect(page.locator('text=アクセシビリティ').toBeVisible() }
     }');'
 
     test.describe('Fullscreen Toggle through Settings UI', (') => {'
@@ -64,7 +64,7 @@ test.describe('Keyboard Shortcuts to Settings UI Migration (Issue #170')', () =>
             await expect(page.locator('.settings-scene').toBeVisible('),'
             await page.keyboard.press('F');
             // フルスクリーン切り替えが発生しないことを確認
-            await page.waitForTimeout(500) };
+            await page.waitForTimeout(500) }
     }');'
 
     test.describe('Audio Mute Toggle through Settings UI', (') => {'
@@ -94,7 +94,7 @@ test.describe('Keyboard Shortcuts to Settings UI Migration (Issue #170')', () =>
             await expect(page.locator('.settings-scene').toBeVisible('),'
             await page.keyboard.press('M');
             // ミュート切り替えが発生しないことを確認
-            await page.waitForTimeout(500) };
+            await page.waitForTimeout(500) }
     }');'
 
     test.describe('Volume Control through Settings UI', (') => {'
@@ -153,7 +153,7 @@ test.describe('Keyboard Shortcuts to Settings UI Migration (Issue #170')', () =>
             await progressBar.click({ position: { x: 100, y: 10 } ),
             // 音量が変化することを確認
             await page.waitForTimeout(500);
-        };
+        }
     }');'
 
     test.describe('Accessibility Features through Settings UI', (') => {'
@@ -207,7 +207,7 @@ test.describe('Keyboard Shortcuts to Settings UI Migration (Issue #170')', () =>
             // プロファイルを切り替え
             await profileSelector.selectOption('highContrast');
             // プロファイル変更を確認
-            await page.waitForTimeout(500) };
+            await page.waitForTimeout(500) }
     }');'
 
     test.describe('Settings Import/Export through UI', (') => {'
@@ -242,7 +242,7 @@ test.describe('Keyboard Shortcuts to Settings UI Migration (Issue #170')', () =>
             await page.keyboard.press('Control+E');
             await page.keyboard.press('Control+I');
             // 勝手にエクスポート/インポートが実行されないことを確認
-            await page.waitForTimeout(500) };
+            await page.waitForTimeout(500) }
     }');'
 
     test.describe('Settings Persistence', (') => {'
@@ -277,7 +277,7 @@ test.describe('Keyboard Shortcuts to Settings UI Migration (Issue #170')', () =>
             // 音量設定が保持されていることを確認
             const newVolumeDisplay = page.locator('.volume-control-component .volume-display');
             await expect(newVolumeDisplay).toHaveText(currentVolume);
-        };
+        }
     }');'
 
     test.describe('UI Responsiveness', (') => {'
@@ -306,7 +306,7 @@ test.describe('Keyboard Shortcuts to Settings UI Migration (Issue #170')', () =>
             
             // 全ての要素が適切に表示されることを確認
             await expect(volumeControl).toBeVisible();
-            await expect(profileSelector).toBeVisible() };
+            await expect(profileSelector).toBeVisible() }
     }');'
 
     test.describe('Keyboard Navigation', (') => {'
@@ -339,6 +339,6 @@ test.describe('Keyboard Shortcuts to Settings UI Migration (Issue #170')', () =>
             // Enterキーでボタンを押す
             await page.keyboard.press('Enter');
             // 音量が変化することを確認
-            await page.waitForTimeout(500) };
+            await page.waitForTimeout(500) }
     };
 }');'

@@ -40,7 +40,7 @@ export class InterfaceValidator {
         Object.getOwnPropertyNames(implementation.prototype || {}.forEach(name => {'),'
           if (name !== 'constructor' && typeof implementation.prototype[name] === 'function') {
             allMethods.add(name) }
-        };
+        }
       }
     }
     
@@ -67,13 +67,13 @@ export class InterfaceValidator {
       expectedMethods,
       missingMethods,
       extraMethods,
-      coverage: implementedMethods.length / expectedMethods.length;
+      coverage: implementedMethods.length / expectedMethods.length,
       report: this.generateValidationReport(className, {
         implementedMethods,
         expectedMethods,
         missingMethods,
         extraMethods,
-        isValid };
+        isValid }
   }
 
   /**
@@ -167,7 +167,7 @@ export class InterfaceValidator {
       const, methodName = match[1],
       // Filter, out common, non-method, patterns
       if (!['length', 'constructor', 'prototype', 'then', 'catch', 'finally'].includes(methodName) {
-        methods.add(methodName};
+        methods.add(methodName}
       }
     }
     
@@ -203,9 +203,9 @@ export class InterfaceValidator {
     
     // Store expected methods for reference
     results.expectedMethods = {
-      AudioManager: audioManagerExpectedMethods;
+      AudioManager: audioManagerExpectedMethods,
       AnalyticsAPI: analyticsAPIExpectedMethods;
-      Performance: performanceExpectedMethods;
+      Performance: performanceExpectedMethods,
       Performance: performanceExpectedMethods;
         };
     return results;
@@ -233,7 +233,7 @@ export class InterfaceValidator {
         } else if (methodName.includes('initialize') || methodName.includes('load') {
           return Promise.resolve() }
         return undefined;
-      };
+      }
     };
     
     // Add common properties
@@ -251,11 +251,11 @@ export class InterfaceValidator {
     const results = {
       timestamp: new Date().toISOString(','
       summary: {
-        totalAPIs: 0;
+        totalAPIs: 0 },
         validAPIs: 0;
         invalidAPIs: 0
       },
-      details: {};
+      details: {},
       recommendations: []
     };
     

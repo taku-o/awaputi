@@ -63,9 +63,9 @@ test.describe('Help System E2E Tests', () => {
                 
                 // メインメニューに戻る
                 await, page.keyboard.press('Escape');
-                await, page.waitForTimeout(500};
+                await, page.waitForTimeout(500}
             }
-        };
+        }
     }');'
 
     test.describe('ヘルプナビゲーション', () => {
@@ -106,7 +106,7 @@ test.describe('Help System E2E Tests', () => {
             
             // メインメニューに戻ることを確認
             const canvas = page.locator('canvas');
-            await expect(canvas).toBeVisible() };
+            await expect(canvas).toBeVisible() }
     }');'
 
     test.describe('検索機能', () => {
@@ -154,7 +154,7 @@ test.describe('Help System E2E Tests', () => {
             
             // 通常のヘルプ表示に戻ることを確認
             const canvas = page.locator('canvas');
-            await expect(canvas).toBeVisible() };
+            await expect(canvas).toBeVisible() }
     }');'
 
     test.describe('チュートリアル機能', (') => {'
@@ -209,7 +209,7 @@ test.describe('Help System E2E Tests', () => {
             
             // チュートリアルが正常に進行することを確認
             const canvas = page.locator('canvas');
-            await expect(canvas).toBeVisible() };
+            await expect(canvas).toBeVisible() }
     }');'
 
     test.describe('多言語対応', (') => {'
@@ -248,7 +248,7 @@ test.describe('Help System E2E Tests', () => {
             // フォールバック言語（日本語または英語）でヘルプが表示される
             const canvas = page.locator('canvas');
             await expect(canvas).toBeVisible();
-        };
+        }
     }');'
 
     test.describe('アクセシビリティ', (') => {'
@@ -296,7 +296,7 @@ test.describe('Help System E2E Tests', () => {
             // 高コントラストスタイルが適用されることを確認
             const canvas = page.locator('canvas');
             await expect(canvas).toBeVisible();
-        };
+        }
     }');'
 
     test.describe('パフォーマンス', (') => {'
@@ -349,7 +349,7 @@ test.describe('Help System E2E Tests', () => {
             // メモリ使用量の増加が許容範囲内であることを確認
             const memoryIncrease = finalMemory - initialMemory;
             expect(memoryIncrease).toBeLessThan(10 * 1024 * 1024); // 10MB以内
-        };
+        }
     }');'
 
     test.describe('エラーハンドリング', (') => {'
@@ -384,7 +384,7 @@ test.describe('Help System E2E Tests', () => {
             // 正常な操作も引き続き動作することを確認
             await page.keyboard.press('ArrowRight');
             await page.waitForTimeout(200);
-        };
+        }
     }');'
 
     test.describe('ブラウザ互換性', (') => {'
@@ -416,6 +416,6 @@ test.describe('Help System E2E Tests', () => {
             // Safari固有の機能をテスト
             await page.keyboard.press('h');
             const canvas = page.locator('canvas');
-            await expect(canvas).toBeVisible() };
+            await expect(canvas).toBeVisible() }
     };
 }');'

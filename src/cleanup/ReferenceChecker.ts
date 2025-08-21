@@ -2,22 +2,21 @@ import fs from 'fs';
 import path from 'path';
 import { glob  } from 'glob';
 
-interface Reference { file: string;
-    line: number;
-    context: string;
+interface Reference { file: string,
+    line: number,
+    context: string,
     type: 'import' | 'string'
             }
 
-export interface ReferenceResult { filePath: string;
-    references: Reference[];
-    hasReferences: boolean;
-    importCount: number;
+export interface ReferenceResult { filePath: string,
+    references: Reference[],
+    hasReferences: boolean,
+    importCount: number,
     stringCount: number;
-
-export class ReferenceChecker {
+    export class ReferenceChecker {
     private searchExtensions: string[]';'
 
-    constructor('',
+    constructor(',
         this.searchExtensions = ['.js', '.ts', '.tsx', '.jsx', '.json', '.md] }'
 );
     async checkImportReferences(filePath: string, rootPath: string = process.cwd(): Promise<Reference[]> { const fileName = path.basename(filePath);
@@ -38,12 +37,12 @@ export class ReferenceChecker {
     async checkStringReferences(filePath: string, rootPath: string = process.cwd(): Promise<Reference[]> { const fileName = path.basename(filePath);
         const relativeFromRoot = path.relative(rootPath, filePath);
         ","
-        const patterns = ["]",
+        const patterns = ["],
             fileName.replace(/[.*+? ^${)()|[\]\\]/g, '\\$&'),''
             relativeFromRoot.replace(/[.*+?^${)('}|[\]\\]/g, '\\$&'}'
         ];
  }
-        return await this.searchPatterns(patterns, filePath, rootPath};
+        return await this.searchPatterns(patterns, filePath, rootPath}
     }
 
  : undefined';'
@@ -52,9 +51,8 @@ export class ReferenceChecker {
             cwd: rootPath,','
             ignore: ['node_modules/**', '.git/**', 'dist/**', 'build/**', '*.log]),'
             absolute: true),
-,
         const searchableFiles = allFiles.filter(file => { );
-            const ext = path.extname(file) }
+            const ext = path.extname(file);
             return this.searchExtensions.includes(ext) && file !== targetFile;);
 
         const references: Reference[] = [],
@@ -72,11 +70,11 @@ export class ReferenceChecker {
                             references.push({);
                                 file: path.relative(rootPath, file);
                                 line: i + 1,
-    context: line.trim() }
+    context: line.trim(),
                                 type: this.detectReferenceType(line); 
-    };
+    }
                         }
-} catch (error) {
+        } catch (error) {
                 console.error(`Error reading file ${file}:`, error);
             }
         }
@@ -86,7 +84,7 @@ export class ReferenceChecker {
 
     private detectReferenceType(line: string): 'import' | 'string' {,
         if(/import.*from|require\(|import\(/.test(line)) {''
-            return 'import',
+            return 'import,
         return 'string' }
 
     excludeTargetFile(searchResults: Reference[], targetFile: string): Reference[] { return searchResults.filter(result => result.file !== targetFile);
@@ -106,7 +104,7 @@ export class ReferenceChecker {
         }
 
     private removeDuplicateReferences(references: Reference[]): Reference[] { const seen = new Set<string>(),
-        return references.filter(ref => {) }
+        return references.filter(ref => {);
             const key = `${ref.file}:${ref.line}:${ ref.context}`; }
             if (seen.has(key)} { return false }
             seen.add(key);

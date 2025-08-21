@@ -11,18 +11,18 @@ interface ICalculator {
     [key: string]: any;
 // Cache stats interface
 interface CacheStats {
-    size: number;
+    size: number,
     hits: number;
-    misses: number;
+    misses: number,
     totalRequests: number;
     hitRate: string;
 // Cache configuration interface
 interface CacheConfig {
-    maxSize: number;
+    maxSize: number,
     ttl: number;
 // Debug info interface
 interface DebugInfo {
-    registeredCalculators: string[];
+    registeredCalculators: string[],
     cacheStats: CacheStats;
     cacheConfig: CacheConfig;
 // モック計算処理クラス
@@ -208,6 +208,6 @@ describe('CalculationEngine', () => {
             expect(engine.getRegisteredCalculators().length).toBe(1);
             engine.destroy();
             expect(engine.getCacheStats().size).toBe(0);
-            expect(engine.getRegisteredCalculators().length).toBe(0) };
+            expect(engine.getRegisteredCalculators().length).toBe(0) }
     }
 }');'

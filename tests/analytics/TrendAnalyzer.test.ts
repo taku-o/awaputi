@@ -12,7 +12,7 @@ class MockStorageManager {
                 const itemDate = new Date(item.startTime);
                 return itemDate >= query.startDate && itemDate <= query.endDate }
             return true;
-        };
+        }
     }
     setTestData(storeName, data) {
         this.data.set(storeName, data') }'
@@ -234,7 +234,7 @@ describe('TrendAnalyzer', () => {
                 testData.push({);
                     period: `day-${i)`,
                     score: 1000 + weekendBonus + Math.random(} * 100
-                };
+                }
             }
             const adjustedData = trendAnalyzer.seasonalAdjustment(testData, 7);
             expect(adjustedData).toHaveLength(14);
@@ -315,12 +315,12 @@ describe('TrendAnalyzer', () => {
             const trendAnalysis = {
                 period: 'weekly',
                 metrics: {
-                    scoreImprovement: 15.5,
+                    scoreImprovement: 15.5 },
                     playTimeChange: -5.2,
                     accuracyChange: 8.3
                 },
                 trend: {
-                    direction: 'increasing',
+                    direction: 'increasing' },
                     strength: 0.7,
                     confidence: 0.85
                 }
@@ -335,12 +335,12 @@ describe('TrendAnalyzer', () => {
             const trendAnalysis = {
                 period: 'monthly',
                 metrics: {
-                    scoreImprovement: -12.3,
+                    scoreImprovement: -12.3 },
                     playTimeChange: 10.1,
                     accuracyChange: -6.7
                 },
                 trend: {
-                    direction: 'decreasing',
+                    direction: 'decreasing' },
                     strength: 0.6,
                     confidence: 0.75
                 }

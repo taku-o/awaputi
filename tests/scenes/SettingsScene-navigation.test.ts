@@ -31,17 +31,17 @@ describe('SettingsScene Context-Aware Navigation', () => {
         mockGameEngine = {
             sceneManager: {
                 hasScene: jest.fn().mockReturnValue(true),
-               , switchScene: jest.fn(').mockReturnValue(true,'
+               , switchScene: jest.fn(').mockReturnValue(true,' };
                 currentScene: {
                     constructor: { name: 'SettingsScene' }
                 }
             },
             settingsManager: {,
-                save: jest.fn(
+                save: jest.fn( },
                 get: jest.fn().mockReturnValue(true),
        , set: jest.fn( },
             localizationManager: {
-                getCurrentLanguage: jest.fn(').mockReturnValue('ja','
+                getCurrentLanguage: jest.fn(').mockReturnValue('ja',' };
                 t: jest.fn().mockImplementation((key, defaultValue) => defaultValue) }
         };
         
@@ -243,7 +243,7 @@ describe('SettingsScene Context-Aware Navigation', () => {
                 {
                     contextData,
                     accessMethod: 'keyboard_s'
-                };
+                }
         }');'
         test('should log successful navigation', () => {
             settingsScene.navigationContext.getReturnDestination = jest.fn(').mockReturnValue('menu') as jest.Mock,'

@@ -9,18 +9,18 @@ export class SocialPlatformAdapters {
         // プラットフォーム設定
         this.platformConfig = {
             twitter: {
-                maxTextLength: 280;
-                hashtagLimit: 3;
+                maxTextLength: 280 ,
+                hashtagLimit: 3,
     urlLength: 23, // Twitter t.co短縮URL長
     }
-                imageSupported: true;
-            facebook: { maxTextLength: 63206;
-                hashtagSupported: false;
-                urlRequired: true;
-    imageSupported: true;
+                imageSupported: true,
+            facebook: { maxTextLength: 63206,
+                hashtagSupported: false  ,
+                urlRequired: true,
+    imageSupported: true,
             webShare: { supported: this.isWebShareSupported(
     filesSupported: navigator.canShare && navigator.canShare({ files: [] 
-    }
+        }
 
     /**
      * プラットフォーム検出
@@ -83,8 +83,7 @@ export class SocialPlatformAdapters {
             params.append('hashtags', hashtags.slice(0, config.hashtagLimit).join('); }'
         }
 
-        return `https: //twitter.com/intent/tweet? ${params.toString(}`,
-    }
+        return `https: //twitter.com/intent/tweet? ${params.toString(}` }
 
     /**
      * TwitterでのWeb Share API使用共有
@@ -93,12 +92,12 @@ export class SocialPlatformAdapters {
      */
     async shareViaTwitterWebAPI(shareData) { ''
         if(!this.isWebShareSupported()) {''
-            throw new Error('Web, Share API, not supported') }
+            throw new Error('Web, Share API, not supported');
 
         const data = { : undefined'
             title: shareData.title,
             text: this.generateOptimizedMessage(shareData, 'twitter),'
-            url: shareData.url  },
+            url: shareData.url  ,
         if (shareData.files && this.platformConfig.webShare.filesSupported) { data.files = shareData.files }
 ';'
 
@@ -159,7 +158,7 @@ export class SocialPlatformAdapters {
         const data = { : undefined
             title: shareData.title,
             text: shareData.description || shareData.text,
-    url: shareData.url  },
+    url: shareData.url  ,
 ';'
 
         try {'
@@ -201,7 +200,7 @@ export class SocialPlatformAdapters {
         // 実績関連
         if (shareData.achievement) {
 
-            hashtags.push('Achievement',
+            hashtags.push('Achievement,
             if (shareData.achievement.isRare) {
         }
 
@@ -282,7 +281,7 @@ export class SocialPlatformAdapters {
 
         const data = { title: shareData.title,
             text: shareData.text,
-    url: shareData.url  },
+    url: shareData.url  ,
         // ファイル共有対応
         if (shareData.files && this.platformConfig.webShare.filesSupported) { data.files = shareData.files }
 ';'
@@ -325,8 +324,8 @@ export class SocialPlatformAdapters {
      * @returns {Object} 全プラットフォーム対応状況'
      */''
     getAllPlatformCapabilities()';'
-            twitter: this.getPlatformCapabilities('twitter',
-            facebook: this.getPlatformCapabilities('facebook',
+            twitter: this.getPlatformCapabilities('twitter,
+            facebook: this.getPlatformCapabilities('facebook,
             webShare: this.getPlatformCapabilities('webShare,'
     currentPlatform: this.detectPlatform();
         }
@@ -381,7 +380,7 @@ export class SocialPlatformAdapters {
         if (shareData.platform) {
             const config = this.platformConfig[shareData.platform] }
             if (!config) { }
-                warnings.push(`未対応のプラットフォーム: ${shareData.platform}`};
+                warnings.push(`未対応のプラットフォーム: ${shareData.platform}`}
             } else {  // テキスト長チェック }
                 if (shareData.text && shareData.text.length > config.maxTextLength) { }'
 

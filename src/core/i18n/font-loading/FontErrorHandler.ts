@@ -5,7 +5,7 @@ export interface FontErrorConfig { suppressRepeated?: boolean,
     logLevel?: 'debug' | 'info' | 'warn' | 'error';
     development?: {,
         verboseLogging?: boolean;
-';'
+';' };
 
 export interface FontErrorContext {,
     source: 'local' | 'google' | 'system';
@@ -16,15 +16,13 @@ export interface FontErrorContext {,
 
 export interface ErrorInfo { type: string,''
     severity: 'info' | 'warn' | 'error'
-            }
-export interface SuppressionRules { repeatSuppression: {
-        enable,d: boolean;
-        timeWindow: number;
-    maxOccurrences: number;
+            };
+export interface SuppressionRules { repeatSuppression: { enable,d: boolean,
+        timeWindow: number,
+    maxOccurrences: number,
     sourceBasedSuppression: { [source: string]: {''
             [errorType: string]: 'suppress' | 'warn_once' | 'error'
-            };
-}
+             , }
 
 export class FontErrorHandler {
     private config: FontErrorConfig;
@@ -37,7 +35,7 @@ export class FontErrorHandler {
         this.config = config;
         this.errorCounts = new Map<string, number>();
         this.suppressedErrors = new Set<string>();
-        this.errorHistory = new Map<string, number[]>() }
+        this.errorHistory = new Map<string, number[]>() };
         this.suppressionRules = this._initializeSuppressionRules(); }
     }
 
@@ -154,16 +152,15 @@ export class FontErrorHandler {
     
 }
             this._logDetailedError(error, context, level); }
-        } else { this._logSimpleError(message, level) }
+        } else { this._logSimpleError(message, level);
     }
 
  : undefined';'
     private _formatErrorMessage(error: Error, context: FontErrorContext): string { ''
-        const fontFamily = context.fontFamily || 'unknown',
-        const source = context.source || 'unknown',
-        const suggestion = this._getSuggestion(error, context) }
-        return `Font loading failed: ${fontFamily} from ${source}. ${suggestion}`,
-    }
+        const fontFamily = context.fontFamily || 'unknown,
+        const source = context.source || 'unknown,
+        const suggestion = this._getSuggestion(error, context);
+        return `Font loading failed: ${fontFamily} from ${source}. ${suggestion}` }
 ';'
 
     private _getSuggestion(error: Error, context: FontErrorContext): string { ''
@@ -192,7 +189,7 @@ export class FontErrorHandler {
             source: context.source,
             error: error.message,
             stack: error.stack,
-            timestamp: new Date().toISOString();
+            timestamp: new Date().toISOString(),
     suggestion: this._getSuggestion(error, context };
 
         (console: any)[level]('[FontErrorHandler] Detailed font loading error:', details');'
@@ -205,7 +202,7 @@ export class FontErrorHandler {
             return; }
         // consoleにdebugメソッドがない場合はlogを使用
         const logMethod = (console, as any)[level] || console.log;
-        logMethod(`[FontErrorHandler] ${message}`};
+        logMethod(`[FontErrorHandler] ${message}`}
     }
  : undefined
     private _updateErrorHistory(errorInfo: ErrorInfo, context: FontErrorContext): void {
@@ -215,18 +212,18 @@ export class FontErrorHandler {
         history.push(Date.now();
         
         const maxHistoryLength = 10;
-        if (history.length > maxHistoryLength) { history.splice(0, history.length - maxHistoryLength) }
+        if (history.length > maxHistoryLength) { history.splice(0, history.length - maxHistoryLength);
         this.errorHistory.set(errorKey, history);
     }
 
     clearErrorHistory(): void { this.errorHistory.clear();
         this.suppressedErrors.clear();
-        this.errorCounts.clear() }
+        this.errorCounts.clear();
     getErrorStats(): Record<string, Record<string, number>> {
         const stats: Record<string, Record<string, number>> = {};
 
         for(const [errorKey, history] of this.errorHistory.entries()) { ''
-            const [source, type] = errorKey.split(':',
+            const [source, type] = errorKey.split(':,
             if (!stats[source]) { }
                 stats[source] = {}
             stats[source][type] = history.length;

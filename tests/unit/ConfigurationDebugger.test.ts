@@ -4,49 +4,49 @@
 import { jest, describe, test, expect, beforeEach, beforeAll  } from '@jest/globals';
 // Configuration debugger interfaces
 interface DebugConfig {
-    enabled: boolean;
+    enabled: boolean,
     trackUsage: boolean;
-    trackPerformance: boolean;
+    trackPerformance: boolean,
     trackErrors: boolean;
-    hotKeyThreshold: number;
+    hotKeyThreshold: number,
     slowAccessThreshold: number;
     maxHistorySize: number;
 interface Statistics {
-    totalAccesses: number;
+    totalAccesses: number,
     uniqueKeys: number;
     errorRate: number | string }
 interface UsageTracking {
     accessCount: Map<string, number>;
-    accessHistory: any[];
+    accessHistory: any[],
     hotKeys: Set<string>;
     unusedKeys: Set<string>;
 interface PerformanceTracking {
     accessTimes: Map<string, number[]>;
-    slowAccesses: any[];
+    slowAccesses: any[],
     cacheHitRates: Map<string, { total: number,, hits: number,>;
 }
 interface ErrorTracking {
     errorsByKey: Map<string, any[]>;
     errorPatterns: Map<string, number>;
-    criticalErrors: any[];
+    criticalErrors: any[],
     recoverySuccess: Map<string, { total: number,, recovered: number,>;
 }
 interface KeyDetails {
-    fullKey: string;
+    fullKey: string,
     accessCount: number;
-    isHotKey: boolean;
+    isHotKey: boolean,
     isUnused: boolean;
     errors: any[];
     lastAccess?: Date;
 interface Report {
-    timestamp: string;
+    timestamp: string,
     statistics: Statistics;
     usage: {
-        hotKey,s: string[];
+        hotKey,s: string[] },
         unusedKeys: string[];
         topAccessed: Array<{ ke,y: string,, accessCount: number;>
     },
-    performance: any;
+    performance: any,
     errors: any;
 // Mock window and localStorage for testing
 declare global {
@@ -56,9 +56,9 @@ declare global {
     }
     
     var localStorage: {
-        setItem: jest.MockedFunction<(key: string, value: string) => void>;
-        removeItem: jest.MockedFunction<(key: string) => void>;
-        getItem: jest.MockedFunction<(key: string) => string | null>;
+        setItem: jest.MockedFunction<(key: string, value: string) => void> },
+        removeItem: jest.MockedFunction<(key: string) => void>,
+        getItem: jest.MockedFunction<(key: string) => string | null>,
         clear: jest.MockedFunction<(') => void> };'
 }
 describe('ConfigurationDebugger', () => {
@@ -387,6 +387,6 @@ describe('ConfigurationDebugger', () => {
             }
             
             expect(configDebugger.performanceTracking.slowAccesses.length).toBeLessThanOrEqual(50);
-        };
+        }
     }
 }'); : undefined'

@@ -3,88 +3,85 @@
  * リアルタイムパフォーマンス可視化システム
  */
 
-interface PerformanceSettings { updateInterval: number;
-    timeWindow: number;
-    chartHeight: number;
-    gridColor: string;
-    textColor: string;
-    backgroundColor: string;
+interface PerformanceSettings { updateInterval: number,
+    timeWindow: number,
+    chartHeight: number,
+    gridColor: string,
+    textColor: string,
+    backgroundColor: string,
     colors: {
         fp,s: string;
-        memory: string;
-        frameTime: string;
-        drawCalls: string;
-        entityCount: string;
-        warning: string;
-    critical: string;
+    },
+        memory: string,
+        frameTime: string,
+        drawCalls: string,
+        entityCount: string,
+        warning: string,
+    critical: string,
     critical: string;
         };
-interface ChartState { lastUpdate: number;
-    viewportOffset: number;
-    zoomLevel: number;
-    selectedMetric: string | null;
+interface ChartState { lastUpdate: number,
+    viewportOffset: number,
+    zoomLevel: number,
+    selectedMetric: string | null,
     hoverPoint: HoverPoint | null  }
 
-interface HoverPoint { x: number;
-    y: number;
-    metric: string;
-    value: number;
-    unit: string;
-    timestamp: number;
+interface HoverPoint { x: number,
+    y: number,
+    metric: string,
+    value: number,
+    unit: string,
+    timestamp: number,
     status: string;
-
-interface PerformanceMetrics { frame: {
-        currentFP,S: number;
-    frameTime: number;
-    memory: { usedMemory: number;
+    interface PerformanceMetrics { frame: { currentFP,S: number,
+    frameTime: number,
+    memory: { usedMemory: number,
     pressureLevel: number;
-    render: { drawCalls: number;
+    },
+    render: { drawCalls: number,
+    game: { entityCount: number,
     game: { entityCount: number;
-    game: { entityCount: number;
-        };
+         },
 interface PerformanceMonitor { getCurrentMetrics(): PerformanceMetrics,
     getHistoryData(): any;
     getStatistics(): {
         uptime: number;
-        totalSamples: number;
+    };
+        totalSamples: number,
     samplesPerSecond: number;
         totalErrors?: number;;
     getAnalysisResults(): { anomalies: Array<{
             severity: 'critical' | 'warning' }>;
     }
 
-interface ChartPosition { x: number;
-    y: number;
-    width: number;
+interface ChartPosition { x: number,
+    y: number,
+    width: number,
     height: number;
-
-interface ChartConfig { name: string;
+    interface ChartConfig { name: string,
     color: string;
     backgroundColor?: string;
-    minValue: number;
-    maxValue: number;
-    unit: string;
+    minValue: number,
+    maxValue: number,
+    unit: string,
     position: ChartPosition;
     showGrid?: boolean;
     showThresholds?: boolean;
-
-interface DataPoint { timestamp: number;
+    interface DataPoint { timestamp: number,
     value: number;
     threshold?: {
         warnin,g?: number;
-        critical?: number,  }
+    critical?: number }
 
-interface HeatmapData { fps: number;
-    memory: number;
-    frameTime: number;
+interface HeatmapData { fps: number,
+    memory: number,
+    frameTime: number,
     timestamp: number;
-
-interface HeatmapConfig { name: string;
+    interface HeatmapConfig { name: string,
     position: ChartPosition;
     cellSize?: number;
     maxAge?: number;
-
-export class PerformanceVisualizer {
+    export class PerformanceVisualizer {
     private monitor: PerformanceMonitor;
     private canvas: HTMLCanvasElement | null = null;
     private, ctx: CanvasRenderingContext2D | null = null;
@@ -99,26 +96,26 @@ export class PerformanceVisualizer {
         // 可視化設定
         this.settings = {
             updateInterval: 100, // ms;
-            timeWindow: 30000, // 30秒;
-            chartHeight: 150;
-            gridColor: '#333333';
-            textColor: '#ffffff';
-            backgroundColor: '#1a1a1a';
-            colors: {''
-                fps: '#00ff00';
-                memory: '#ff6b6b';
-                frameTime: '#4ecdc4';
-                drawCalls: '#ffe66d';
-                entityCount: '#a8e6cf';
-                warning: '#ffa500' }
+    timeWindow: 30000, // 30秒;
+    chartHeight: 150,
+    gridColor: '#333333,
+    textColor: '#ffffff,
+    backgroundColor: '#1a1a1a,
+    colors: { ''
+                fps: '#00ff00'  ,
+                memory: '#ff6b6b,
+    frameTime: '#4ecdc4,
+    drawCalls: '#ffe66d,
+    entityCount: '#a8e6cf,
+    warning: '#ffa500' }
 
                 critical: '#ff0000' 
     };
         // チャート状態
-        this.chartState = { lastUpdate: 0;
-            viewportOffset: 0;
-            zoomLevel: 1;
-            selectedMetric: null;
+        this.chartState = { lastUpdate: 0,
+            viewportOffset: 0,
+            zoomLevel: 1,
+            selectedMetric: null,
     hoverPoint: null;
         this.initialize();
     }
@@ -178,17 +175,15 @@ export class PerformanceVisualizer {
 
         }');'
 
-        this.canvas.addEventListener('wheel', (e: WheelEvent) => {  e.preventDefault() }
-            this.handleWheel(e.deltaY); }
-        };
-    }
-
+        this.canvas.addEventListener('wheel', (e: WheelEvent) => {  e.preventDefault();
+            this.handleWheel(e.deltaY);     }
+}
     /**
      * チャート設定'
      */''
     private setupCharts('''
         this.charts.set('fps', new PerformanceChart({ ''
-            name: 'FPS',
+            name: 'FPS,
             color: this.settings.colors.fps),
             minValue: 0','
     maxValue: 120,
@@ -198,7 +193,7 @@ export class PerformanceVisualizer {
             position: { x: 10, y: 10, width: 380, height: this.settings.chartHeight  }';}');
 
         this.charts.set('memory', new PerformanceChart({ ''
-            name: 'Memory Usage',
+            name: 'Memory Usage,
             color: this.settings.colors.memory),
             minValue: 0','
     maxValue: 200, // MB,
@@ -207,7 +202,7 @@ export class PerformanceVisualizer {
             position: { x: 410, y: 10, width: 380, height: this.settings.chartHeight  }');'
 
         this.charts.set('frameTime', new PerformanceChart({ ''
-            name: 'Frame Time',
+            name: 'Frame Time,
             color: this.settings.colors.frameTime),
             minValue: 0','
     maxValue: 50, // ms,
@@ -216,7 +211,7 @@ export class PerformanceVisualizer {
             position: { x: 10, y: 180, width: 380, height: this.settings.chartHeight  }');'
 
         this.charts.set('drawCalls', new PerformanceChart({ ''
-            name: 'Draw Calls',
+            name: 'Draw Calls,
             color: this.settings.colors.drawCalls),
             minValue: 0','
     maxValue: 500,
@@ -225,7 +220,7 @@ export class PerformanceVisualizer {
             position: { x: 410, y: 180, width: 380, height: this.settings.chartHeight  }');'
 
         this.charts.set('entities', new PerformanceChart({ ''
-            name: 'Entity Count',
+            name: 'Entity Count,
             color: this.settings.colors.entityCount),
             minValue: 0','
     maxValue: 1000,
@@ -236,14 +231,13 @@ export class PerformanceVisualizer {
         this.charts.set('heatmap', new PerformanceHeatmap({ ')'
             name: 'Performance Heatmap'
             }
-            position: { x: 410, y: 350, width: 380, height: this.settings.chartHeight  }),
-    }
+            position: { x: 410, y: 350, width: 380, height: this.settings.chartHeight  }) }
 
     /**
      * レンダリング開始
      */
     private startRendering(): void { if (this.animationId) {
-            cancelAnimationFrame(this.animationId) }
+            cancelAnimationFrame(this.animationId);
 
         const render = (): void => {  ''
             if(this.canvas && this.canvas.style.display !== 'none' { }
@@ -323,7 +317,7 @@ export class PerformanceVisualizer {
         // ヒートマップ更新
         const heatmap = this.charts.get('heatmap) as PerformanceHeatmap;'
         if (heatmap) { heatmap.updateHeatmap({
-                fps: metrics.frame.currentFPS || 0);
+                fps: metrics.frame.currentFPS || 0),
                 memory: metrics.memory.pressureLevel || 0,
     frameTime: metrics.frame.frameTime || 0 }
                 timestamp: now); 
@@ -340,10 +334,8 @@ export class PerformanceVisualizer {
 
         this.charts.forEach(chart => { '),'
             if ('cleanupOldData' in, chart) { }
-                chart.cleanupOldData(cutoffTime); }
-};
-    }
-
+                chart.cleanupOldData(cutoffTime);     }
+}
     /**
      * チャートレンダリング
      */
@@ -358,7 +350,7 @@ export class PerformanceVisualizer {
         // タイトル描画
         this.renderTitle(ctx);
         // 各チャートレンダリング
-        this.charts.forEach(chart => { ) }
+        this.charts.forEach(chart => { );
             chart.render(ctx, this.settings); }
         };
         
@@ -366,7 +358,7 @@ export class PerformanceVisualizer {
         this.renderStatistics(ctx);
         
         // ホバー情報表示
-        if (this.chartState.hoverPoint) { this.renderHoverInfo(ctx) }
+        if (this.chartState.hoverPoint) { this.renderHoverInfo(ctx);
         
         // 警告・エラー表示
         this.renderAlerts(ctx);
@@ -380,14 +372,14 @@ export class PerformanceVisualizer {
 ','
 
         ctx.fillStyle = this.settings.textColor,
-        ctx.font = 'bold 16px Arial',
-        ctx.textAlign = 'center',
+        ctx.font = 'bold 16px Arial,
+        ctx.textAlign = 'center,
         ctx.fillText('Real-time Performance Monitor', this.canvas.width / 2, 25','
         ','
         // 時間窓表示
-        ctx.font = '12px Arial',
+        ctx.font = '12px Arial,
         ctx.textAlign = 'right' }
-        ctx.fillText(`Time Window: ${this.settings.timeWindow / 1000}s`, this.canvas.width - 10, 45};
+        ctx.fillText(`Time Window: ${this.settings.timeWindow / 1000}s`, this.canvas.width - 10, 45}
     }
 
     /**
@@ -395,12 +387,12 @@ export class PerformanceVisualizer {
      */
     private renderStatistics(ctx: CanvasRenderingContext2D): void { if (!this.canvas) return,
 
-        const stats = this.monitor.getStatistics('',
-        ctx.font = '12px, Arial',
+        const stats = this.monitor.getStatistics(',
+        ctx.font = '12px, Arial,
         ctx.textAlign = 'left');
         const statsText = [ }
-            `Uptime: ${Math.floor(stats.uptime / 1000}s`,
-            `Samples: ${stats.totalSamples}`,
+            `Uptime: ${Math.floor(stats.uptime / 1000}s,
+            `Samples: ${stats.totalSamples},
             `Rate: ${stats.samplesPerSecond.toFixed(1}/s`]
             `Errors: ${stats.totalErrors || 0}`]
         ];
@@ -423,23 +415,23 @@ export class PerformanceVisualizer {
         const y = Math.max(hover.y - boxHeight, 10);
         ','
         // ボックス描画
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.8)',
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.8),
         ctx.fillRect(x, y, boxWidth, boxHeight);
         ctx.strokeStyle = this.settings.gridColor,
         ctx.strokeRect(x, y, boxWidth, boxHeight);
         // テキスト描画
         ctx.fillStyle = this.settings.textColor,
-        ctx.font = '12px Arial',
-        ctx.textAlign = 'left',
+        ctx.font = '12px Arial,
+        ctx.textAlign = 'left,
         
         const lines = [}
-            `Metric: ${hover.metric}`,
-            `Value: ${hover.value.toFixed(2} ${hover.unit}`,
+            `Metric: ${hover.metric},
+            `Value: ${hover.value.toFixed(2} ${hover.unit},
             `Time: ${new, Date(hover.timestamp}.toLocaleTimeString(}`]
             `Status: ${hover.status}`]
         ];
         
-        lines.forEach((line, index) => { ctx.fillText(line, x + 10, y + 20 + index * 15) };
+        lines.forEach((line, index) => { ctx.fillText(line, x + 10, y + 20 + index * 15);
     }
 
     /**
@@ -452,23 +444,21 @@ export class PerformanceVisualizer {
         const alertY = 60,
         const criticalAnomalies = analysis.anomalies.filter(a => a.severity === 'critical');
         const warningAnomalies = analysis.anomalies.filter(a => a.severity === 'warning');
-        ctx.font = 'bold 12px Arial',
-        ctx.textAlign = 'left',
+        ctx.font = 'bold 12px Arial,
+        ctx.textAlign = 'left,
         
         // 重要なアラート
         if (criticalAnomalies.length > 0) {
     
 }
             ctx.fillStyle = this.settings.colors.critical; }
-            ctx.fillText(`🚨 Critical: ${criticalAnomalies.length} issues`, 10, alertY};
+            ctx.fillText(`🚨 Critical: ${criticalAnomalies.length} issues`, 10, alertY}
         }
         
         // 警告
         if (warningAnomalies.length > 0) { ctx.fillStyle = this.settings.colors.warning }
-            ctx.fillText(`⚠️ Warning: ${warningAnomalies.length} issues`, 200, alertY};
-        }
-    }
-
+            ctx.fillText(`⚠️ Warning: ${warningAnomalies.length} issues`, 200, alertY    }
+}
     /**
      * マウス移動ハンドラ
      */
@@ -501,7 +491,7 @@ export class PerformanceVisualizer {
         this.charts.forEach((chart, name) => { ''
             if ('isPointInChart' in chart && chart.isPointInChart(x, y) { }
                 this.chartState.selectedMetric = this.chartState.selectedMetric === name ? null: name; 
-    };
+    }
     }
 
     /**
@@ -510,17 +500,17 @@ export class PerformanceVisualizer {
     private handleWheel(deltaY: number): void { const zoomFactor = deltaY > 0 ? 0.9 : 1.1,
         this.chartState.zoomLevel = Math.max(0.5, Math.min(3, this.chartState.zoomLevel * zoomFactor);
         // ズームレベルに応じて時間窓調整
-        this.settings.timeWindow = Math.max(5000, Math.min(120000, 30000 / this.chartState.zoomLevel) }
+        this.settings.timeWindow = Math.max(5000, Math.min(120000, 30000 / this.chartState.zoomLevel);
 
     /**
      * 値から状態判定
      */
     private getStatusFromValue(value: number, threshold?: { warning?: number, critical?: number ): string {''
-        if(!threshold) return 'normal',
+        if(!threshold) return 'normal,
 
-        if(threshold.critical && value >= threshold.critical) return 'critical',
-        if(threshold.warning && value >= threshold.warning) return 'warning',
-        return 'normal' }
+        if(threshold.critical && value >= threshold.critical) return 'critical,
+        if(threshold.warning && value >= threshold.warning) return 'warning,
+        return 'normal' } };
 
     /**
      * 可視化表示/非表示切り替え
@@ -528,8 +518,8 @@ export class PerformanceVisualizer {
     public toggle(): void { ''
         if(!this.canvas) return,
 
-        const isVisible = this.canvas.style.display !== 'none',
-        this.canvas.style.display = isVisible ? 'none' : 'block',
+        const isVisible = this.canvas.style.display !== 'none,
+        this.canvas.style.display = isVisible ? 'none' : 'block,
 
         ' }'
 
@@ -559,7 +549,7 @@ export class PerformanceVisualizer {
 
         const dataURL = this.canvas.toDataURL('image/png');
         const link = document.createElement('a' }'
-        link.download = `performance-${Date.now()).png`,
+        link.download = `performance-${Date.now()).png,
 
         link.href = dataURL,
         link.click()','
@@ -572,7 +562,7 @@ export class PerformanceVisualizer {
             cancelAnimationFrame(this.animationId);
             this.animationId = null }
         
-        if (this.canvas && this.canvas.parentNode) { this.canvas.parentNode.removeChild(this.canvas) }
+        if (this.canvas && this.canvas.parentNode) { this.canvas.parentNode.removeChild(this.canvas);
 
         this.charts.clear()';'
         console.log('[PerformanceVisualizer] Destroyed';
@@ -588,15 +578,15 @@ class PerformanceChart { public config: ChartConfig;
 
     constructor(config: ChartConfig') {'
         this.config = {''
-            name: 'Chart';
-            color: '#ffffff';
+            name: 'Chart,
+            color: '#ffffff,
             backgroundColor: 'rgba(255, 255, 255, 0.1)';
-            minValue: 0;
+            minValue: 0,
             maxValue: 100 }
 
             unit: '}'
-            position: { x: 0, y: 0, width: 300, height: 150  };
-            showGrid: true;
+            position: { x: 0, y: 0, width: 300, height: 150  ,
+            showGrid: true,
     showThresholds: true;
             ...config;
     }
@@ -615,15 +605,15 @@ class PerformanceChart { public config: ChartConfig;
     public render(ctx: CanvasRenderingContext2D, globalSettings: PerformanceSettings): void { const pos = this.config.position,
         ','
         // 背景描画
-        ctx.fillStyle = this.config.backgroundColor || 'rgba(255, 255, 255, 0.1)',
+        ctx.fillStyle = this.config.backgroundColor || 'rgba(255, 255, 255, 0.1),
         ctx.fillRect(pos.x, pos.y, pos.width, pos.height);
         // 境界線描画
         ctx.strokeStyle = globalSettings.gridColor,
         ctx.strokeRect(pos.x, pos.y, pos.width, pos.height);
         // タイトル描画
         ctx.fillStyle = globalSettings.textColor,
-        ctx.font = 'bold 12px Arial',
-        ctx.textAlign = 'left',
+        ctx.font = 'bold 12px Arial,
+        ctx.textAlign = 'left,
         ctx.fillText(this.config.name, pos.x + 5, pos.y + 15);
         // 現在値表示
         if (this.data.length > 0) {
@@ -637,13 +627,13 @@ class PerformanceChart { public config: ChartConfig;
         }
         
         // グリッド描画
-        if (this.config.showGrid) { this.renderGrid(ctx, globalSettings) }
+        if (this.config.showGrid) { this.renderGrid(ctx, globalSettings);
         
         // 閾値線描画
-        if (this.config.showThresholds && this.data.length > 0) { this.renderThresholds(ctx, globalSettings) }
+        if (this.config.showThresholds && this.data.length > 0) { this.renderThresholds(ctx, globalSettings);
         
         // データ線描画
-        if (this.data.length > 1) { this.renderDataLine(ctx) }
+        if (this.data.length > 1) { this.renderDataLine(ctx);
     }
 
     private renderGrid(ctx: CanvasRenderingContext2D, globalSettings: PerformanceSettings): void { const pos = this.config.position,
@@ -658,7 +648,7 @@ class PerformanceChart { public config: ChartConfig;
             const y = pos.y + (pos.height * i / gridLines),
             ctx.beginPath();
             ctx.moveTo(pos.x, y);
-            ctx.lineTo(pos.x + pos.width, y) }
+            ctx.lineTo(pos.x + pos.width, y);
             ctx.stroke(); }
         }
         
@@ -667,7 +657,7 @@ class PerformanceChart { public config: ChartConfig;
             const x = pos.x + (pos.width * i / gridLines),
             ctx.beginPath();
             ctx.moveTo(x, pos.y);
-            ctx.lineTo(x, pos.y + pos.height) }
+            ctx.lineTo(x, pos.y + pos.height);
             ctx.stroke(); }
         }
         
@@ -691,9 +681,9 @@ class PerformanceChart { public config: ChartConfig;
             ctx.beginPath();
             ctx.moveTo(pos.x, y);
             ctx.lineTo(pos.x + pos.width, y);
-            ctx.stroke('',
-            ctx.font = '10px, Arial',
-            ctx.textAlign = 'left') }
+            ctx.stroke(',
+            ctx.font = '10px, Arial,
+            ctx.textAlign = 'left');
             ctx.fillText(label, pos.x + 5, y - 3); }
         };
 
@@ -731,9 +721,9 @@ class PerformanceChart { public config: ChartConfig;
             const y = pos.y + pos.height - ((dataPoint.value - this.config.minValue) / valueRange) * pos.height,
             
             if (firstPoint) {
-                ctx.moveTo(x, y) }
+                ctx.moveTo(x, y);
                 firstPoint = false; }
-            } else { ctx.lineTo(x, y) }
+            } else { ctx.lineTo(x, y);
         }
         
         ctx.stroke();
@@ -767,7 +757,7 @@ class PerformanceChart { public config: ChartConfig;
         return closestPoint;
     }
 
-    public cleanupOldData(cutoffTime: number): void { this.data = this.data.filter(point => point.timestamp > cutoffTime) }
+    public cleanupOldData(cutoffTime: number): void { this.data = this.data.filter(point => point.timestamp > cutoffTime);
 
     public updateSettings(settings: PerformanceSettings): void { // 設定更新処理
         if (settings.colors && settings.colors[this.config.name.toLowerCase() as keyof typeof settings.colors]) {
@@ -778,7 +768,7 @@ class PerformanceChart { public config: ChartConfig;
  * パフォーマンスヒートマップクラス
  */
 class PerformanceHeatmap { public config: HeatmapConfig;
-    private heatmapData: Array<{ timestamp: number, score: number,, details: any;> = [];
+    private heatmapData: Array<{ timestamp: number, score: number, details: any;> = [];
     private colorScale = [;
         { value: 0, color: [0, 255, 0] },     // Green
         { value: 0.5, color: [255, 255, 0] }, // Yellow
@@ -790,8 +780,8 @@ class PerformanceHeatmap { public config: HeatmapConfig;
 
             name: 'Heatmap'
             }
-            position: { x: 0, y: 0, width: 300, height: 150  };
-            cellSize: 5;
+            position: { x: 0, y: 0, width: 300, height: 150  ,
+            cellSize: 5,
     maxAge: 60000, // 1分;
             ...config;
     }
@@ -799,12 +789,12 @@ class PerformanceHeatmap { public config: HeatmapConfig;
     public updateHeatmap(data: HeatmapData): void { // パフォーマンス指標を0-1に正規化
         const normalizedScore = this.calculatePerformanceScore(data);
         this.heatmapData.push({)
-            timestamp: data.timestamp;
-    score: normalizedScore);
+            timestamp: data.timestamp,
+    score: normalizedScore),
             details: data);
         // 古いデータのクリーンアップ
         const cutoffTime = data.timestamp - (this.config.maxAge || 60000),
-        this.heatmapData = this.heatmapData.filter(point => point.timestamp > cutoffTime),  }
+        this.heatmapData = this.heatmapData.filter(point => point.timestamp > cutoffTime) }
     }
 
     private calculatePerformanceScore(data: HeatmapData): number { // FPS、メモリ、フレーム時間から統合スコア計算
@@ -824,20 +814,20 @@ class PerformanceHeatmap { public config: HeatmapConfig;
     public render(ctx: CanvasRenderingContext2D, globalSettings: PerformanceSettings): void { const pos = this.config.position;
         ','
         // 背景
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.8)',
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.8),
         ctx.fillRect(pos.x, pos.y, pos.width, pos.height);
         // 境界線
         ctx.strokeStyle = globalSettings.gridColor,
         ctx.strokeRect(pos.x, pos.y, pos.width, pos.height);
         // タイトル
         ctx.fillStyle = globalSettings.textColor,
-        ctx.font = 'bold 12px Arial',
-        ctx.textAlign = 'left',
+        ctx.font = 'bold 12px Arial,
+        ctx.textAlign = 'left,
         ctx.fillText(this.config.name, pos.x + 5, pos.y + 15);
         // ヒートマップ描画
         this.renderHeatmapCells(ctx);
         // カラースケール描画
-        this.renderColorScale(ctx, globalSettings) }
+        this.renderColorScale(ctx, globalSettings);
 
     private renderHeatmapCells(ctx: CanvasRenderingContext2D): void { const pos = this.config.position;
         const cellSize = this.config.cellSize || 5,
@@ -864,8 +854,7 @@ class PerformanceHeatmap { public config: HeatmapConfig;
                     const x = pos.x + pos.width - (col + 1} * cellSize;
                     const y = pos.y + 25 + row * cellSize;
                      }
-                    ctx.fillRect(x, y, cellSize - 1, cellSize - 1};
-                }
+                    ctx.fillRect(x, y, cellSize - 1, cellSize - 1    }
 }
     }
 
@@ -894,7 +883,7 @@ class PerformanceHeatmap { public config: HeatmapConfig;
                 return [,
                     Math.round(current.color[0] + (next.color[0] - current.color[0]) * ratio),
                     Math.round(current.color[1] + (next.color[1] - current.color[1]) * ratio),
-                    Math.round(current.color[2] + (next.color[2] - current.color[2]) * ratio) }
+                    Math.round(current.color[2] + (next.color[2] - current.color[2]) * ratio);
                 ]; }
 }
         
@@ -910,7 +899,7 @@ class PerformanceHeatmap { public config: HeatmapConfig;
         // カラースケール描画
         for(let, i = 0, i < scaleWidth, i++) {
             const value = i / scaleWidth,
-            const color = this.interpolateColor(value) }
+            const color = this.interpolateColor(value);
             ctx.fillStyle = `rgb(${color[0]}, ${color[1]}, ${ color[2]}`;' }'
 
             ctx.fillRect(scaleX + i, scaleY, 1, scaleHeight'}';
@@ -927,7 +916,7 @@ class PerformanceHeatmap { public config: HeatmapConfig;
 ';'
 
     public cleanupOldData(cutoffTime: number): void { ''
-        this.heatmapData = this.heatmapData.filter(point => point.timestamp > cutoffTime) }
+        this.heatmapData = this.heatmapData.filter(point => point.timestamp > cutoffTime);
 }
 
 export default PerformanceVisualizer;

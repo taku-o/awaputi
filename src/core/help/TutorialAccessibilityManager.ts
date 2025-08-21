@@ -8,60 +8,50 @@ import { ErrorHandler  } from '../../utils/ErrorHandler.js';
 import { LoggingSystem  } from '../LoggingSystem.js';
 
 // 型定義
-export interface AccessibilityConfig { enabled: boolean;
-    highContrast: boolean;
-    largeText: boolean;
-    screenReaderMode: boolean;
-    cognitiveAssistance: boolean;
-    alternativeInput: boolean;
-    voiceInstructions: boolean;
-    extendedTimeouts: boolean;
-    simplifiedMode: boolean;
-    keyboardNavigation: boolean;
-    focusIndicators: boolean;
-    reducedMotion: boolean;
+export interface AccessibilityConfig { enabled: boolean,
+    highContrast: boolean,
+    largeText: boolean,
+    screenReaderMode: boolean,
+    cognitiveAssistance: boolean,
+    alternativeInput: boolean,
+    voiceInstructions: boolean,
+    extendedTimeouts: boolean,
+    simplifiedMode: boolean,
+    keyboardNavigation: boolean,
+    focusIndicators: boolean,
+    reducedMotion: boolean,
     audioDescriptions: boolean;
-
-export interface TutorialAccessibilitySettings { highContrast: boolean;
-    largeText: boolean;
-    screenReaderMode: boolean;
-    reducedMotion: boolean;
-    keyboardNavigation: boolean;
+    export interface TutorialAccessibilitySettings { highContrast: boolean,
+    largeText: boolean,
+    screenReaderMode: boolean,
+    reducedMotion: boolean,
+    keyboardNavigation: boolean,
     focusIndicators: boolean;
-
-export interface TutorialConfig { defaultTimeout?: number,
+    export interface TutorialConfig { defaultTimeout?: number,
     autoAdvanceDelay?: number;
     autoAdvance?: boolean;
     [key: string]: any;
-
-export interface TutorialStep { id?: string,
+    export interface TutorialStep { id?: string,
     content: string;
     validation?: TutorialValidation;
     timeout?: number;
     [key: string]: any;
-
-export interface Tutorial { id?: string,
+    export interface Tutorial { id?: string,
     title?: string;
     steps: TutorialStep[];
     [key: string]: any;
-
-export interface SimplifiedValidation { strict?: boolean,
+    export interface SimplifiedValidation { strict?: boolean,
     tolerance?: string;
     [key: string]: any;
-
-export type TutorialValidation = Function | SimplifiedValidation | any;
-
-export interface AccessibilityManagerEvent { detail: Partial<AccessibilityConfig>;
-
-export interface AccessibilitySystemPrefs { highContrast?: boolean,
+    export type TutorialValidation = Function | SimplifiedValidation | any;
+    export interface AccessibilityManagerEvent { detail: Partial<AccessibilityConfig>;
+    export interface AccessibilitySystemPrefs { highContrast?: boolean,
     largeText?: boolean;
     screenReader?: boolean;
     reducedMotion?: boolean;
-
-export interface AccessibilityEventData { config: AccessibilityConfig;
+    export interface AccessibilityEventData { config: AccessibilityConfig,
     source: string;
-
-export interface ScreenReaderAnnouncementData {
+    export interface ScreenReaderAnnouncementData {
     message: string;
 
 // AccessibilityManager インターフェース
@@ -69,8 +59,7 @@ export interface AccessibilityManager { getConfiguration(): AccessibilitySystemP
     addEventListener(event: string, handler: (event: AccessibilityManagerEvent) => void): void;
     removeEventListener(event: string, handler: (event: AccessibilityManagerEvent) => void): void;
     emit(event: string, data: AccessibilityEventData | ScreenReaderAnnouncementData): void;
-}
-
+    };
 // TutorialOverlay インターフェース
 export interface TutorialOverlay { updateAccessibilitySettings(settings: TutorialAccessibilitySettings): void;
 
@@ -82,27 +71,26 @@ export class TutorialAccessibilityManager {
     private loggingSystem: LoggingSystem;
     private config: AccessibilityConfig;
     private, boundSettingsHandler: (event: AccessibilityManagerEvent) => void;
-
     constructor(accessibilityManager?: AccessibilityManager | null, loggingSystem?: LoggingSystem | null) {
 
         this.accessibilityManager = accessibilityManager || null;
-        this.loggingSystem = loggingSystem || (LoggingSystem.getInstance ? LoggingSystem.getInstance() : new LoggingSystem();
+    this.loggingSystem = loggingSystem || (LoggingSystem.getInstance ? LoggingSystem.getInstance() : new LoggingSystem();
         
         // アクセシビリティ設定
         this.config = {
-            enabled: false;
-            highContrast: false;
-            largeText: false;
-            screenReaderMode: false;
-            cognitiveAssistance: false;
-            alternativeInput: false;
-            voiceInstructions: false;
-            extendedTimeouts: false;
-            simplifiedMode: false;
-            keyboardNavigation: true;
-            focusIndicators: true;
+            enabled: false,
+    highContrast: false,
+    largeText: false,
+    screenReaderMode: false,
+    cognitiveAssistance: false,
+    alternativeInput: false,
+    voiceInstructions: false,
+    extendedTimeouts: false,
+    simplifiedMode: false,
+    keyboardNavigation: true,
+    focusIndicators: true,
     reducedMotion: false;
-    }
+    };
             audioDescriptions: false;;
         // イベントハンドラーをバインド
         this.boundSettingsHandler = this.handleAccessibilitySettingsChange.bind(this);
@@ -179,7 +167,7 @@ export class TutorialAccessibilityManager {
                 screenReaderMode: this.config.screenReaderMode),
                 reducedMotion: this.config.reducedMotion,
     keyboardNavigation: this.config.keyboardNavigation),
-                focusIndicators: this.config.focusIndicators),
+                focusIndicators: this.config.focusIndicators);
             // 拡張タイムアウトの適用  }
             const updatedConfig: TutorialConfig = { ...tutorialConfig
             if (this.config.extendedTimeouts) {
@@ -211,12 +199,12 @@ export class TutorialAccessibilityManager {
                 ...tutorial,
                 steps: tutorial.steps.map((step: TutorialStep) => ({
                     ...step),
-                    content: this.simplifyStepContent(step.content),
+                    content: this.simplifyStepContent(step.content);
                     // 複雑な検証を簡略化
-                    validation: step.validation ? this.simplifyValidation(step.validation) : null,
+                    validation: step.validation ? this.simplifyValidation(step.validation) : null;
                     // より長いタイムアウト
-                   , timeout: (step.timeout || 30000) * 1.5'
-            }'
+            timeout: (step.timeout || 30000) * 1.5'
+            }
 
                 }');'
             };
@@ -243,7 +231,7 @@ export class TutorialAccessibilityManager {
             if (sentences.length <= 2) return content,
             ','
             // 最初の1-2文のみ使用
-            const simplified = sentences.slice(0, 2).join('。') + '。',
+            const simplified = sentences.slice(0, 2).join('。') + '。,
             return simplified, catch (error) { return content, // エラー時は元の内容を返す }
     }
     
@@ -279,7 +267,7 @@ export class TutorialAccessibilityManager {
     
 }
                 this.announceSettingsChange(newSettings); }
-            } catch (error) { }
+        } catch (error) { }
 
             this.loggingSystem.log(`設定変更処理エラー: ${(error, as, Error'}'.message}`, 'error', 'TutorialAccessibilityManager');
         }
@@ -309,7 +297,7 @@ export class TutorialAccessibilityManager {
 
             if (changes.length > 0 && this.accessibilityManager) {
 
-                const announcement = changes.join('。') }
+                const announcement = changes.join('。');
 
                 this.accessibilityManager.emit('announceToScreenReader', { message: announcement, catch (error) { }
 
@@ -477,7 +465,7 @@ export function getTutorialAccessibilityManager(;
     accessibilityManager?: AccessibilityManager | null);
     loggingSystem?: LoggingSystem | null;
 ): TutorialAccessibilityManager { if (!tutorialAccessibilityManagerInstance) {
-        tutorialAccessibilityManagerInstance = new TutorialAccessibilityManager(accessibilityManager, loggingSystem) }
+        tutorialAccessibilityManagerInstance = new TutorialAccessibilityManager(accessibilityManager, loggingSystem) };
     return tutorialAccessibilityManagerInstance;
 }
 

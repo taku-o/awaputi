@@ -14,15 +14,14 @@ import { DataStorageManager  } from './data/DataStorageManager.js';
  */
 
 // 型定義
-interface DataManagerStatus { lastBackup: number | null;
-    lastValidation: number | null;
-    operationInProgress: boolean;
+interface DataManagerStatus { lastBackup: number | null,
+    lastValidation: number | null,
+    operationInProgress: boolean,
     errors: Error[];
-
-interface CloudConfig { enabled: boolean;
-    provider: string;
-    apiEndpoint: string | null;
-    autoSync: boolean;
+    interface CloudConfig { enabled: boolean,
+    provider: string,
+    apiEndpoint: string | null,
+    autoSync: boolean,
     conflictResolution: string;
 ';'
 
@@ -40,55 +39,52 @@ interface LoadOptions { useCache?: boolean,
     dependencies?: string[];
     chunkSize?: number;
     parallel?: boolean;
-
-interface BatchOperation { dataType: string;
+    interface BatchOperation { dataType: string;
     data?: any;
     operationOptions?: SaveOptions | LoadOptions }
 
-interface SaveResult { result: any;
+interface SaveResult { result: any,
     duration: number;
-
-interface LoadResult { result: any;
+    interface LoadResult { result: any,
     duration: number;
-
-interface PlayerDataInterface { username: string;
-    currentHP: number;
-    maxHP: number;
-    currentScore: number;
-    ap: number;
-    tap: number;
-    combo: number;
-    highScores: any[];
-    unlockedStages: any[];
-    ownedItems: any[];
+    interface PlayerDataInterface { username: string,
+    currentHP: number,
+    maxHP: number,
+    currentScore: number,
+    ap: number,
+    tap: number,
+    combo: number,
+    highScores: any[],
+    unlockedStages: any[],
+    ownedItems: any[],
     save: () => Promise<any> 
     }
 
-interface SettingsManagerInterface { save: () => Promise<any>;
-    get: (key: string) => any;
+interface SettingsManagerInterface { save: () => Promise<any>,
+    get: (key: string) => any,
     getAllSettings: () => any 
     }
 
-interface StatisticsManagerInterface { statistics: any;
-    sessionStats: any;
+interface StatisticsManagerInterface { statistics: any,
+    sessionStats: any,
     save: () => Promise<any> 
     }
 
-interface StorageInterface { save: (key: string, data: any) => Promise<any>;
-    load: (key: string) => Promise<any>;
+interface StorageInterface { save: (key: string, data: any) => Promise<any>,
+    load: (key: string) => Promise<any>,
     remove: (key: string) => Promise<void>;
     destroy?: () => void  }
 }
 
-interface CloudStorageInterface { authenticate: (credentials: any) => Promise<boolean>;
-    logout: () => Promise<void>;
+interface CloudStorageInterface { authenticate: (credentials: any) => Promise<boolean>,
+    logout: () => Promise<void>,
     isAuthenticated: () => boolean;
     destroy?: () => void 
     }
 
-interface SyncManagerInterface { sync: (options?: any) => Promise<any>;
-    getSyncStatus: () => any;
-    startAutoSync: () => void;
+interface SyncManagerInterface { sync: (options?: any) => Promise<any>,
+    getSyncStatus: () => any,
+    startAutoSync: () => void,
     stopAutoSync: () => void;
     destroy?: () => void 
     }
@@ -100,7 +96,7 @@ interface OfflineManagerInterface { getOfflineStatus: () => any;
 interface GameEngineInterface { playerData?: PlayerDataInterface,
     settingsManager?: SettingsManagerInterface;
     statisticsManager?: StatisticsManagerInterface;
-export class DataManager {
+    export class DataManager {
     private gameEngine: GameEngineInterface | null;
     private isInitialized: boolean;
     private version: string;
@@ -130,27 +126,27 @@ export class DataManager {
         
         // 基本プロパティ
         this.isInitialized = false;
-        this.version = '1.0.0';
+    this.version = '1.0.0';
         
         // 既存システムへの参照
         this.playerData = null;
-        this.settingsManager = null;
-        this.statisticsManager = null;
+    this.settingsManager = null;
+    this.statisticsManager = null;
         
         // 管理コンポーネント（遅延初期化）
         this.storage = null;
-        this.backup = null;
-        this.recovery = null;
-        this.export = null;
-        this.import = null;
-        this.security = null;
-        this.validation = null;
-        this.ui = null;
+    this.backup = null;
+    this.recovery = null;
+    this.export = null;
+    this.import = null;
+    this.security = null;
+    this.validation = null;
+    this.ui = null;
         
         // クラウド対応コンポーネント
         this.cloudStorage = null;
-        this.syncManager = null;
-        this.offlineManager = null;
+    this.syncManager = null;
+    this.offlineManager = null;
         
         // 非同期操作管理
         this.asyncQueue = getAsyncOperationQueue();
@@ -169,10 +165,10 @@ export class DataManager {
         
         // ステータス管理
         this.status = {
-            lastBackup: null;
-            lastValidation: null;
-    operationInProgress: false;
-            errors: [] 
+            lastBackup: null,
+    lastValidation: null,
+    operationInProgress: false,
+    errors: [] 
     };
         this.initialize();
     }
@@ -197,10 +193,8 @@ export class DataManager {
 
         } catch (error) { getErrorHandler().handleError(error, 'DATA_MANAGER_INITIALIZATION_ERROR', {''
                 operation: 'initialize'
-            };
-        }
-    }
-    
+                }
+}
     /**
      * 既存システムとの統合
      */
@@ -229,10 +223,8 @@ export class DataManager {
 
             } catch (error) { getErrorHandler().handleError(error, 'SYSTEM_INTEGRATION_ERROR', {''
                 operation: 'integrateExistingSystems'
-            };
-        }
-    }
-    
+                }
+}
     /**
      * 基本コンポーネントの初期化
      */
@@ -262,7 +254,7 @@ export class DataManager {
                 },
                 load: async (key) => { const data = localStorage.getItem(key }
                     return, data ? JSON.parse(data) : null;,
-                remove: async (key) => { localStorage.removeItem(key) }
+                remove: async (key) => { localStorage.removeItem(key);
             }
     }
     
@@ -299,7 +291,7 @@ export class DataManager {
             if (cloudConfig.enabled) {
             ','
 
-                this.cloudStorage = createCloudStorageAdapter(cloudConfig.provider, cloudConfig) }
+                this.cloudStorage = createCloudStorageAdapter(cloudConfig.provider, cloudConfig);
 
                 console.log('DataManager: CloudStorageAdapter, initialized'),' }'
 
@@ -330,7 +322,7 @@ export class DataManager {
      * クラウド設定の取得'
      */''
     private getCloudConfig('''
-            provider: 'generic',
+            provider: 'generic,
     apiEndpoint: null,
             autoSync: true,
             conflictResolution: 'timestamp);'
@@ -343,7 +335,7 @@ export class DataManager {
             ';'
             // LocalStorageから設定を取得（フォールバック）
             const storedConfig = localStorage.getItem('bubblePop_cloudConfig);'
-            if (storedConfig) { const parsedConfig = JSON.parse(storedConfig) }
+            if (storedConfig) { const parsedConfig = JSON.parse(storedConfig);
 
                 return { ...defaultConfig, ...parsedConfig,'} catch (error) { console.warn('Failed to get cloud config:', error }'
         
@@ -353,7 +345,7 @@ export class DataManager {
     /**
      * データ保存の統一インターフェース（ストレージマネージャーに委譲）
      */
-    async save(dataType: string, data: any, options: SaveOptions = {}: Promise<any> { return await this.storageManager.save(dataType, data, options) }
+    async save(dataType: string, data: any, options: SaveOptions = {}: Promise<any> { return await this.storageManager.save(dataType, data, options);
     
     /**
      * データ読み込みの統一インターフェース（キャッシュ対応）
@@ -375,8 +367,7 @@ export class DataManager {
                 { ttl: options.cacheTtl || 5 * 60 * 1000, // 5分
                     priority: options.priority === 'high' ? 'high' : 'normal',' 
                     tags: [`dataType:${dataType }`, 'data-load],'
-                    dependencies: options.dependencies || [],
-                }
+                    dependencies: options.dependencies || [] }
             ) } else {  // キャッシュを使用しない直接読み込み }
             return await this.storageManager.loadWithQueue(dataType, options);
     
@@ -388,7 +379,7 @@ export class DataManager {
             // 既存のPlayerDataシステムを使用
             return this.playerData.save()','
         const key = 'bubblePop_playerData')
-        return await this.storage.save(key, data) }
+        return await this.storage.save(key, data);
     
     /**
      * PlayerDataの読み込み
@@ -423,7 +414,7 @@ export class DataManager {
             // 既存のSettingsManagerシステムを使用
             return this.settingsManager.save()','
         const key = 'bubblePop_settings')
-        return await this.storage.save(key, data) }
+        return await this.storage.save(key, data);
     
     /**
      * 設定データの読み込み
@@ -432,7 +423,7 @@ export class DataManager {
             // 既存のSettingsManagerから読み込み
             return this.settingsManager.getAllSettings()','
         const key = 'bubblePop_settings')
-        return await this.storage.load(key) }
+        return await this.storage.load(key);
     
     /**
      * 統計データの保存
@@ -441,7 +432,7 @@ export class DataManager {
             // 既存のStatisticsManagerシステムを使用
             return this.statisticsManager.save()','
         const key = 'bubblePop_statistics')
-        return await this.storage.save(key, data) }
+        return await this.storage.save(key, data);
     
     /**
      * 統計データの読み込み
@@ -450,7 +441,7 @@ export class DataManager {
         if (this.statisticsManager) {
             // 既存のStatisticsManagerから読み込み
         }
-            return { statistics: this.statisticsManager.statistics },
+            return { statistics: this.statisticsManager.statistics ,
                 sessionStats: this.statisticsManager.sessionStats 
     }
         ;
@@ -487,8 +478,7 @@ export class DataManager {
             priority: options.priority || 'normal')','
     parallel: options.parallel !== false,' };'
 
-            metadata: { operation: 'batchSave', count: operations.length  },
-        };
+            metadata: { operation: 'batchSave', count: operations.length  , }
     }
     
     /**
@@ -503,8 +493,7 @@ export class DataManager {
             priority: options.priority || 'low')','
     parallel: options.parallel !== false,' };'
 
-            metadata: { operation: 'batchLoad', count: dataTypes.length  },
-        };
+            metadata: { operation: 'batchLoad', count: dataTypes.length  , }
     }
     
     /**
@@ -581,7 +570,7 @@ export class DataManager {
      */'
     async saveLargeData(dataType, data, options = {} { ''
         if(!Array.isArray(data) && typeof data !== 'object') {''
-            throw new Error('Large, data must, be an, array or, object') }
+            throw new Error('Large, data must, be an, array or, object');
         ';'
 
         const chunkSize = options.chunkSize || 1000;
@@ -601,8 +590,8 @@ export class DataManager {
                         dataType,
                         progress: (processInfo.processedItems / processInfo.totalItems) * 100,
                         processedItems: processInfo.processedItems,
-    totalItems: processInfo.totalItems  },
-                    return { chunkIndex, itemCount: chunk.length  },
+    totalItems: processInfo.totalItems  ,
+                    return { chunkIndex, itemCount: chunk.length  ,
                 { chunkSize,
                     collectResults: true,
                     ...options
@@ -619,14 +608,13 @@ export class DataManager {
                         dataType,
                         progress: (processInfo.processedItems / processInfo.totalItems) * 100,
                         processedItems: processInfo.processedItems,
-    totalItems: processInfo.totalItems  },
-                    return { chunkIndex, keyCount: Object.keys(chunkObj).length  },
+    totalItems: processInfo.totalItems  ,
+                    return { chunkIndex, keyCount: Object.keys(chunkObj).length  ,
                 { chunkSize,
                     collectResults: true,
     mergeResults: false,
                     ...options
-            )
-}
+            );
     }
     
     /**
@@ -644,7 +632,7 @@ export class DataManager {
             if (!metadata || !metadata.result) {
     
 }
-                throw new Error(`Large, data metadata, not found, for ${dataType}`};
+                throw new Error(`Large, data metadata, not found, for ${dataType}`}
             }
             
             const { totalChunks, dataStructure } = metadata.result;
@@ -663,7 +651,7 @@ export class DataManager {
                             batchResults.push({)
                                 chunkIndex,') }'
 
-                                data: chunkData.result'), }'
+                                data: chunkData.result') }'
 }
 
                     this.emit('largeDataProgress', { ')'
@@ -671,7 +659,7 @@ export class DataManager {
                         dataType,
                         progress: (processInfo.processedItems / processInfo.totalItems) * 100,
                         processedItems: processInfo.processedItems,
-    totalItems: processInfo.totalItems  },
+    totalItems: processInfo.totalItems  ,
                     return batchResults;
                 },
                 { chunkSize: Math.min(chunkSize, 10), // 読み込みは小さなバッチで
@@ -699,7 +687,7 @@ export class DataManager {
             const metadata = await this.loadDataDirect(metadataKey, options);
             
             if (!metadata || !metadata.result) { console.warn(`Large data metadata not found for ${dataType}, attempting direct deletion`}
-                return await this.deleteGenericData(dataType, options};
+                return await this.deleteGenericData(dataType, options}
             }
             
             const { totalChunks } = metadata.result;
@@ -711,21 +699,19 @@ export class DataManager {
 }
                 const chunkKey = `${dataType}_chunk_${i}`;
                 deleteOperations.push({ dataType: chunkKey)
-                   , data: null),
+            data: null),
                     operationOptions: options,
             
             // メタデータ削除も追加
             deleteOperations.push({ dataType: metadataKey)
-               , data: null),
+            data: null),
                 operationOptions: options),
-            ,
             // バッチ削除実行
             await this.deleteBatch(deleteOperations, options);
             this.emit('largeDataDeleted', { dataType, chunks: totalChunks ,
             
             return true
              }
-
         } catch (error) {
             getErrorHandler().handleError(error, 'LARGE_DATA_DELETE_ERROR', {)
                 dataType),
@@ -748,7 +734,7 @@ export class DataManager {
                     return result.concat(chunk.data); }'
 
                 }, []');'} else if (dataStructure === 'object) { return chunks.reduce((result, chunk) => { }'
-                    return { ...result, ...chunk.data }, {};
+                    return { ...result, ...chunk.data }, {}
             }
             
             // デフォルト: 配列として返す
@@ -782,10 +768,10 @@ export class DataManager {
                 // パターンマッチング','
 
                 const regex = new RegExp(pattern.replace(/\*/g, '.*),'
-                const keysToDelete = this.cache.keys().filter(key => regex.test(key) }
+                const keysToDelete = this.cache.keys().filter(key => regex.test(key);
                 return this.cache.deleteMany(keysToDelete); else {  // 単一キー }
                 return this.cache.delete(pattern) ? 1 : 0; else if (Array.isArray(pattern) { // 複数キー
-            return this.cache.deleteMany(pattern) }
+            return this.cache.deleteMany(pattern);
         
         return 0;
     }
@@ -794,34 +780,34 @@ export class DataManager {
     /**
      * 依存関係によるキャッシュ無効化
      */
-    invalidateCacheByDependency(dependency) { return this.cache.invalidateByDependency(dependency) }
+    invalidateCacheByDependency(dependency) { return this.cache.invalidateByDependency(dependency);
     
     /**
      * キャッシュ統計の取得
      */
-    getCacheStatus() { return this.cache.getStats() }
+    getCacheStatus() { return this.cache.getStats();
     
     /**
      * チャンク処理の状態を取得
      */
-    getChunkProcessorStatus() { return this.chunkProcessor.getStats() }
+    getChunkProcessorStatus() { return this.chunkProcessor.getStats();
     
     /**
      * 非同期操作キューの状態を取得
      */
-    getAsyncQueueStatus() { return this.asyncQueue.getStatus() }
+    getAsyncQueueStatus() { return this.asyncQueue.getStatus();
     
     /**
      * データマネージャーの状態を取得
      */
-    getStatus() { return { isInitialized: this.isInitialized },
+    getStatus() { return { isInitialized: this.isInitialized ,
             version: this.version }
             status: { ...this.status,
-            asyncQueue: this.getAsyncQueueStatus(),
+            asyncQueue: this.getAsyncQueueStatus() ,
             chunkProcessor: this.getChunkProcessorStatus(),
             cache: this.getCacheStatus(
     components: { playerData: !!this.playerData,
-                settingsManager: !!this.settingsManager,
+                settingsManager: !!this.settingsManager ,
                 statisticsManager: !!this.statisticsManager,
                 storage: !!this.storage,
                 backup: !!this.backup,
@@ -853,25 +839,21 @@ export class DataManager {
             const index = callbacks.indexOf(callback);
             if (index > -1) {
     }
-                callbacks.splice(index, 1); }
+                callbacks.splice(index, 1);     }
 }
-    }
-    
     /**
      * イベントの発火
      */
     emit(event, data) {
         if (this.listeners.has(event) {
-            this.listeners.get(event).forEach(callback => { )
-    }
-                try {) }
+            this.listeners.get(event).forEach(callback => { );
+                try {);
                     callback(data); }
-                } catch (error) {
+        } catch (error) {
                     getErrorHandler().handleError(error, 'EVENT_CALLBACK_ERROR', {)
                         event),
-                        data };
-                }
-            };
+                        data     }
+}
         }
     }
     
@@ -885,7 +867,7 @@ export class DataManager {
                 throw new Error('Sync, manager not, available'); }
             }
 
-            console.log('DataManager: Starting, cloud sync...',
+            console.log('DataManager: Starting, cloud sync...,
             const syncResult = await this.syncManager.sync(options');'
 
             this.emit('cloudSyncCompleted', syncResult';'
@@ -908,10 +890,9 @@ export class DataManager {
     getOfflineStatus() {
         if (this.offlineManager) {''
             return this.offlineManager.getOfflineStatus('''
-            connectionQuality: 'unknown',
+            connectionQuality: 'unknown,
     offlineOperations: 0 }
-            cloudAvailable: !!this.cloudStorage })
-    }
+            cloudAvailable: !!this.cloudStorage });
     
     /**
      * 同期状態の取得
@@ -946,9 +927,9 @@ export class DataManager {
     
 }
 
-                    this.syncManager.startAutoSync() }
+                    this.syncManager.startAutoSync();
 
-                this.emit('cloudAuthenticated', { timestamp: Date.now( };
+                this.emit('cloudAuthenticated', { timestamp: Date.now( }
             }
             
             return result;
@@ -979,17 +960,15 @@ export class DataManager {
 
                 ' }'
 
-                this.syncManager.stopAutoSync() }
+                this.syncManager.stopAutoSync();
 
             this.emit('cloudLoggedOut', { timestamp: Date.now( };
             ';'
 
         } catch (error) { getErrorHandler().handleError(error, 'CLOUD_LOGOUT_ERROR', {''
                 operation: 'logoutCloud'
-            };
-        }
-    }
-    
+                }
+}
     /**
      * リソースの解放
      */
@@ -1005,12 +984,10 @@ export class DataManager {
             if(this.cloudStorage && typeof, this.cloudStorage.destroy === 'function' {''
                 this.cloudStorage.destroy()','
             console.log('DataManager, destroyed' }
-} catch (error') { getErrorHandler().handleError(error, 'DATA_MANAGER_DESTROY_ERROR', {''
+        } catch (error') { getErrorHandler().handleError(error, 'DATA_MANAGER_DESTROY_ERROR', {''
                 operation: 'destroy'
-            };
-        }
+                }
 }
-
 // シングルトンインスタンス
 let dataManagerInstance = null;
 
@@ -1018,6 +995,5 @@ let dataManagerInstance = null;
  * DataManagerシングルトンインスタンスの取得
  */
 export function getDataManager(gameEngine = null) { if (!dataManagerInstance && gameEngine) {''
-        dataManagerInstance = new DataManager(gameEngine) }
-
+        dataManagerInstance = new DataManager(gameEngine) };
     return dataManagerInstance;}

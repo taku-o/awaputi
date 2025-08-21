@@ -9,7 +9,7 @@ interface MockFetch {
 interface MockFontFace {
     load: jest.Mock<Promise<void>, []> }
 interface MockCanvasContext {
-    font: string;
+    font: string,
     measureText: jest.Mock<{ widt,h: number;, [string]>;
 }
 interface MockCanvas {
@@ -25,9 +25,9 @@ interface MockDocument {
 interface MockNavigator {
     onLine: boolean;
 interface MockLink {
-    rel: string;
+    rel: string,
     href: string;
-    onload: (() => void) | null;
+    onload: (() => void) | null,
     onerror: (() => void) | null }
 interface FontSource {
     load: jest.Mock<Promise<any>, [string, any? ]>, : undefined
@@ -39,21 +39,21 @@ interface LoadResult {
     cached?: boolean;
     system?: boolean;
 interface SourceLoadResult {
-    success: boolean;
+    success: boolean,
     fontFamily: string;
     source: string;
     loadTime?: number;
 interface LoadHistory {
-    timestamp: number;
+    timestamp: number,
     failed: boolean;
     error?: any;
 interface FontManagerStats {
-    enabledSources: string[];
+    enabledSources: string[],
     availableSources: string[];
-    loadAttempts: number;
+    loadAttempts: number,
     timeouts: any;
 interface ConsoleSpy {
-    warn: jest.SpyInstance;
+    warn: jest.SpyInstance,
     log: jest.SpyInstance }
 interface FontSourceConfig {
     enabledSources?: string[];
@@ -64,14 +64,14 @@ interface FontSourceConfig {
 (global: any).fetch = jest.fn() as MockFetch;
 (global: any).document = {
     fonts: {
-        add: jest.fn( };
+        add: jest.fn( },
     createElement: jest.fn(() => ({
         getContext: jest.fn((') => ({'
             font: ','
             measureText: jest.fn(() => ({ width: 100 ))))
     )),
     head: {
-        appendChild: jest.fn( };
+        appendChild: jest.fn( },
     querySelectorAll: jest.fn(() => []);
     ) as MockDocument;
 (global: any).FontFace = jest.fn(() => ({
@@ -217,7 +217,7 @@ describe('FontSourceManager', () => {
             expect(stats.availableSources).toBeDefined();
             expect(Array.isArray(stats.availableSources).toBe(true);
             expect(typeof stats.loadAttempts').toBe('number'),'
-            expect(stats.timeouts).toBeDefined() };
+            expect(stats.timeouts).toBeDefined() }
     }
 }');'
 describe('LocalFontSource', () => {
@@ -261,7 +261,7 @@ describe('LocalFontSource', () => {
             const config: FontSourceConfig = { formats: ['woff', 'ttf'] };
             const source = new LocalFontSource(config);
             expect(source.formats').toEqual(['woff', 'ttf']);'
-        };
+        }
     }
 }');'
 describe('GoogleFontSource', () => {
@@ -273,7 +273,7 @@ describe('GoogleFontSource', () => {
             const mockLink: MockLink = {
                 rel: ','
                 href: ','
-                onload: null;
+                onload: null,
                 onerror: null;
                 onerror: null;
         };
@@ -290,7 +290,7 @@ describe('GoogleFontSource', () => {
             const mockLink: MockLink = {
                 rel: ','
                 href: ','
-                onload: null;
+                onload: null,
                 onerror: null;
                 onerror: null;
         };
@@ -327,7 +327,7 @@ describe('GoogleFontSource', () => {
             (navigator.onLine = false),
             expect(googleFontSource.isAvailable().toBe(false);
             // Restore original state
-            (navigator.onLine = true) };
+            (navigator.onLine = true) }
     }
 }');'
 describe('SystemFontSource', () => {
@@ -369,6 +369,6 @@ describe('SystemFontSource', () => {
             
             const source = new SystemFontSource();
             expect(source.isAvailable().toBe(false);
-            (global: any).document = originalDocument };
+            (global: any).document = originalDocument }
     }
 }');'
