@@ -91,13 +91,13 @@ function fixComprehensiveSyntax(content, filePath) {
             'for(const [key, data] of Array.from(compatibility.entries()))');
         
         // 数値の修正
-        content = content.replace(/data\.duration\.toFixed\(2\"\}"/g, 'data.duration.toFixed(2)');
+        content = content.replace(/data\.duration\.toFixed\(2\"\}\"/g, 'data.duration.toFixed(2)');
         content = content.replace(/\$\{slowTests\.length'/g, '${slowTests.length}');
         
         // 条件文の修正
         content = content.replace(/if\(report\.results\.errors\.length > 0\} \{'/g, 
             'if(report.results.errors.length > 0) {');
-        content = content.replace(/if\(report\.results\.performance\)\.length === 0\} \{'/g, 
+        content = content.replace(/if\(report\.results\.performance\)\)\.length === 0\} \{'/g, 
             'if(Object.keys(report.results.performance).length === 0) {');
     }
     
@@ -109,7 +109,7 @@ function fixComprehensiveSyntax(content, filePath) {
     content = content.replace(/,,\s*/g, ',');
     
     // 14. 不適切な引用符の修正
-    content = content.replace(/(['"`])\s*(['"`])/g, '$1');
+    content = content.replace(/(['\"`])\s*(['\"`])/g, '$1');
     
     // 15. 関数呼び出しの修正
     content = content.replace(/Math\.floor\(rate \* 100\}%\)/g, 'Math.floor(rate * 100)%');

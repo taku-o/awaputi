@@ -71,6 +71,9 @@ export class APIEndpointManager {
             averageResponseTime: 0,
             lastRequestTime: null
         };
+        
+        this.initialize();
+    }
 
     /**
      * エンドポイントマネージャーの初期化
@@ -164,7 +167,7 @@ export class APIEndpointManager {
         const requestId = this.generateRequestId();
         try {
             const requestOptions = {
-                clientId: 'default,
+                clientId: 'default',
                 skipRateLimit: false,
                 skipAnonymization: false,
                 ...options
@@ -174,14 +177,14 @@ export class APIEndpointManager {
             if (!requestOptions.skipRateLimit && !this.checkRateLimit(requestOptions.clientId)) {
                 this.apiStats.rateLimitedRequests++;
                 this.apiStats.failedRequests++;
-                return this.createErrorResponse('RATE_LIMIT_EXCEEDED,
+                return this.createErrorResponse('RATE_LIMIT_EXCEEDED',
                     'Rate limit exceeded. Please try again later.', 429);
             }
             // エンドポイント存在確認
             const endpointConfig = this.endpoints.get(endpoint);
             if (!endpointConfig) {
                 this.apiStats.failedRequests++;
-                return this.createErrorResponse('ENDPOINT_NOT_FOUND,
+                return this.createErrorResponse('ENDPOINT_NOT_FOUND',
                     `Endpoint '${endpoint}' not found`, 404);
             }
             
@@ -196,7 +199,7 @@ export class APIEndpointManager {
             if (!requestOptions.skipAnonymization && 
                 endpointConfig.options.anonymizeData && 
                 this.privacyManager) {
-                data = await this.privacyManager.anonymizeData({ data }.then((result: any) => result.data);
+                data = await this.privacyManager.anonymizeData({ data }.then((result: any) => result.data));
                 isAnonymized = true;
             }
             const responseTime = performance.now() - startTime;
@@ -212,21 +215,24 @@ export class APIEndpointManager {
                 query: processedQuery,
                 responseTime: Math.max(responseTime, 0.1), // 最小0.1ms
                 dataCount: Array.isArray(data) ? data.length : 1,
-                anonymized: isAnonymized,);
+                anonymized: isAnonymized
+            });
         } catch (error) {
-            const responseTime = Math.max(performance.now() - startTime, 0.1),
+            const responseTime = Math.max(performance.now() - startTime, 0.1);
             
             // エラー統計の更新
             const endpointConfig = this.endpoints.get(endpoint);
             if (endpointConfig) {
                 this.updateRequestStats(endpointConfig, false, responseTime);
+            }
             this.updateAPIStats(false, responseTime);
 
             console.error(`API request failed for ${endpoint}:`, error);
 
-            return this.createErrorResponse('INTERNAL_ERROR,
-                'Internal server error occurred', 500, { requestId     }
-}
+            return this.createErrorResponse('INTERNAL_ERROR',
+                'Internal server error occurred', 500, { requestId });
+        }
+    }
     /**
      * クエリの前処理
      * @param {Object} query - 元のクエリ
@@ -238,18 +244,21 @@ export class APIEndpointManager {
         // 日付文字列をタイムスタンプに変換
         if (processedQuery.startDate && typeof processedQuery.startDate === 'string') {
             processedQuery.startDate = new Date(processedQuery.startDate).getTime();
+        }
         if (processedQuery.endDate && typeof processedQuery.endDate === 'string') {
             processedQuery.endDate = new Date(processedQuery.endDate).getTime();
+        }
         // 制限値の設定
         if (processedQuery.limit) {
-            processedQuery.limit = Math.min(parseInt(processedQuery.limit), 10000), // 最大10,000件
+            processedQuery.limit = Math.min(parseInt(processedQuery.limit), 10000); // 最大10,000件
         }
         
         // ソート設定の検証
         if (processedQuery.sortBy) {
-            const allowedSortFields = ['timestamp', 'sessionId', 'bubbleType', 'score', 'duration'],
+            const allowedSortFields = ['timestamp', 'sessionId', 'bubbleType', 'score', 'duration'];
             if (!allowedSortFields.includes(processedQuery.sortBy)) {
-                delete processedQuery.sortBy }
+                delete processedQuery.sortBy;
+            }
         }
         
         return processedQuery;
@@ -262,7 +271,8 @@ export class APIEndpointManager {
      */
     checkRateLimit(clientId: string) {
         if (!this.rateLimiting.enabled) {
-            return true }
+            return true;
+        }
         const now = Date.now();
         const requests = this.rateLimiting.requestHistory.get(clientId) || [];
         
@@ -272,10 +282,12 @@ export class APIEndpointManager {
         // 1分間の制限確認
         const lastMinuteRequests = recentRequests.filter((time: number) => now - time < 60 * 1000);
         if (lastMinuteRequests.length >= this.rateLimiting.maxRequestsPerMinute) {
-            return false }
+            return false;
+        }
         // 1時間の制限確認
         if (recentRequests.length >= this.rateLimiting.maxRequestsPerHour) {
-            return false }
+            return false;
+        }
         // リクエスト履歴を更新
         recentRequests.push(now);
         this.rateLimiting.requestHistory.set(clientId, recentRequests);
@@ -291,14 +303,15 @@ export class APIEndpointManager {
      */
     createSuccessResponse(data: any, metadata: any = {}) {
         return {
-            success: true;
+            success: true,
             data,
             metadata: {
-                timestamp: new Date().toISOString() ,
-                version: '1.0.0';
+                timestamp: new Date().toISOString(),
+                version: '1.0.0',
                 ...metadata
-                }
-}
+            }
+        };
+    }
     /**
      * エラーレスポンスの作成
      * @param {string} code - エラーコード
@@ -316,33 +329,34 @@ export class APIEndpointManager {
                 status
             },
             metadata: {
-                timestamp: new Date().toISOString();
+                timestamp: new Date().toISOString(),
                 ...metadata
-                }
-}
+            }
+        };
+    }
     /**
      * APIメタデータの取得
      * @returns {Object} APIメタデータ
      */
     getAPIMetadata() {
         return {
-            version: '1.0.0,
+            version: '1.0.0',
             endpoints: Array.from(this.endpoints.keys()),
             rateLimiting: {
-                enabled: this.rateLimiting.enabled ,
+                enabled: this.rateLimiting.enabled,
                 maxRequestsPerMinute: this.rateLimiting.maxRequestsPerMinute,
                 maxRequestsPerHour: this.rateLimiting.maxRequestsPerHour
-            ,
+            },
             stats: { ...this.apiStats },
             features: [
-                'data_retrieval,
-                'aggregation,
-                'rate_limiting,
-                'anonymization,
-                'filtering,
+                'data_retrieval',
+                'aggregation',
+                'rate_limiting',
+                'anonymization',
+                'filtering',
                 'sorting'
             ]
-        }
+        };
     }
     
     /**
@@ -363,8 +377,10 @@ export class APIEndpointManager {
         endpointConfig.stats.callCount++;
         
         if (success) {
-            endpointConfig.stats.successCount++ } else {
-            endpointConfig.stats.errorCount++ }
+            endpointConfig.stats.successCount++;
+        } else {
+            endpointConfig.stats.errorCount++;
+        }
         // 平均レスポンス時間の更新
         const totalTime = endpointConfig.stats.averageResponseTime * (endpointConfig.stats.callCount - 1) + responseTime;
         endpointConfig.stats.averageResponseTime = totalTime / endpointConfig.stats.callCount;
@@ -378,8 +394,10 @@ export class APIEndpointManager {
     updateAPIStats(success: boolean, responseTime: number) {
         this.apiStats.totalRequests++;
         if (success) {
-            this.apiStats.successfulRequests++ } else {
-            this.apiStats.failedRequests++ }
+            this.apiStats.successfulRequests++;
+        } else {
+            this.apiStats.failedRequests++;
+        }
         // 平均レスポンス時間の更新
         const totalTime = this.apiStats.averageResponseTime * (this.apiStats.totalRequests - 1) + responseTime;
         this.apiStats.averageResponseTime = totalTime / this.apiStats.totalRequests;
@@ -416,7 +434,7 @@ export class APIEndpointManager {
                 Math.round((this.apiStats.successfulRequests / this.apiStats.totalRequests) * 100) : 0,
             rateLimitRate: this.apiStats.totalRequests > 0 ?
                 Math.round((this.apiStats.rateLimitedRequests / this.apiStats.totalRequests) * 100) : 0
-        }
+        };
     }
     
     /**
@@ -424,7 +442,7 @@ export class APIEndpointManager {
      * @param {Object} newSettings - 新しい設定
      */
     updateRateLimitSettings(newSettings: any) {
-        this.rateLimiting = { ...this.rateLimiting, ...newSettings }
+        this.rateLimiting = { ...this.rateLimiting, ...newSettings };
     }
     
     /**
@@ -434,4 +452,5 @@ export class APIEndpointManager {
         this.endpoints.clear();
         this.rateLimiting.requestHistory.clear();
         console.log('API Endpoint Manager destroyed');
+    }
 }
