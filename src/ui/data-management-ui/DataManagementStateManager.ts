@@ -539,7 +539,7 @@ export class BackupStatusManager {
     // 更新コールバック
     private updateCallbacks: BackupUpdateCallback[] = [];
     // 定期更新タイマー
-    private updateInterval: NodeJS.Timer | null = null;
+    private updateInterval: NodeJS.Timeout | null = null;
     // Data manager reference
     private dataManager: DataManager | undefined;
 
