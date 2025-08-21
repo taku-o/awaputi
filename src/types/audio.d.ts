@@ -116,24 +116,25 @@ export interface AudioPlaybackController {
     playbackStats: PlaybackStats;
     effectConfig: EffectConfig;
     soundCategories: Record<string, SoundCategory>;
-}
+    
     setDependencies(
         audioContext: AudioContext,
         sfxGainNode: GainNode,
         masterGainNode: GainNode,
         soundBuffers: Map<string, AudioBuffer>
     ): void;
-  playSound(soundName: string, options?: PlaySoundOptions): AudioBufferSourceNode | null;
-  playBubbleSound(bubbleType: string, comboLevel?: number, options?: PlaySoundOptions): AudioBufferSourceNode | null;
-  playUISound(actionType: string, options?: PlaySoundOptions): AudioBufferSourceNode | null;
-  playComboSound(comboLevel: number, options?: PlaySoundOptions): AudioBufferSourceNode | null;
-  playAchievementSound(rarity: string, options?: PlaySoundOptions): AudioBufferSourceNode | null;
-  playGameStateSound(stateType: string, options?: PlaySoundOptions): AudioBufferSourceNode | null;
-  stopAllSounds(): void;
-  stopOldestSound(): void;
-  getPlaybackStats(): PlaybackStats;
-  testSound(soundName?: string): boolean;
-  dispose(): void;
+    playSound(soundName: string, options?: PlaySoundOptions): AudioBufferSourceNode | null;
+    playBubbleSound(bubbleType: string, comboLevel?: number, options?: PlaySoundOptions): AudioBufferSourceNode | null;
+    playUISound(actionType: string, options?: PlaySoundOptions): AudioBufferSourceNode | null;
+    playComboSound(comboLevel: number, options?: PlaySoundOptions): AudioBufferSourceNode | null;
+    playAchievementSound(rarity: string, options?: PlaySoundOptions): AudioBufferSourceNode | null;
+    playGameStateSound(stateType: string, options?: PlaySoundOptions): AudioBufferSourceNode | null;
+    stopAllSounds(): void;
+    stopOldestSound(): void;
+    getPlaybackStats(): PlaybackStats;
+    testSound(soundName?: string): boolean;
+    dispose(): void;
+}
 
 export interface PlaySoundOptions {
     volume?: number;
