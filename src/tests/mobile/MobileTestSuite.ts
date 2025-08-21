@@ -16,7 +16,8 @@ import { MobileTestReporter  } from './mobile-test-suite/MobileTestReporter.js';
 interface TestResult { passed: boolean;
     performance?: Record<string, any>;
     error?: Error;
-    interface TestFunction { name: string,
+    interface TestFunction {
+     name: string;
     run: (context?: any) => Promise<TestResult>;
     setup?: (context: any) => Promise<void>;
     cleanup?: (context: any) => Promise<void>;
@@ -24,59 +25,64 @@ interface TestResult { passed: boolean;
 }
 
 interface TestSuiteInterface { getTests(): TestFunction[];
-    interface TestResults { passed: number,
-    failed: number,
-    skipped: number,
-    errors: TestError[],
+    interface TestResults {
+     passed: number;
+    failed: number;
+    skipped: number;
+    errors: TestError[];
     performance: Map<string, PerformanceResult>;
     compatibility: Map<string, CompatibilityResult> }
 
-interface TestError { suite: string,
-    test: string,
+interface TestError {
+     suite: string;
+    test: string;
     error: string;
     stack?: string;
     timestamp: number;
-    interface PerformanceResult { duration: number,
+    interface PerformanceResult {
+     duration: number;
     metrics: Record<string, any>;
     timestamp: number;
-    interface CompatibilityResult { device: string,
-    browser: string,
+    interface CompatibilityResult {
+     device: string;
+    browser: string;
     results: Record<string, any>;
     timestamp: number;
-    interface DeviceUtils { createTouchEvent: (type: string, touches: any[]) => Event,
+    interface DeviceUtils { createTouchEvent: (type: string, touches: any[]) => Event;
     createTouch: (x: number, y: number, id?: number) => any;
-    createDeviceInfo: (device: string) => any,
-    measurePerformance: (testFunction: () => Promise<void>) => Promise<number>,
-    wait: (ms: number) => Promise<void>,
+    createDeviceInfo: (device: string) => any;
+    measurePerformance: (testFunction: () => Promise<void>) => Promise<number>;
+    wait: (ms: number) => Promise<void>;
     randomDelay: (min: number, max: number) => Promise<void>  }
 }
 
 interface DebugInfo { mainController: {
-        testSuite,s: string[],
+        testSuite,s: string[];
     testResultsSummary: {
             passe,d: number;
-    },
-            failed: number,
-            errors: number,
-            performance: number,
-    compatibility: number,
-    testRunner: any,
-    deviceSimulator: any,
-    components: { testRunner: boolean,
+    };
+            failed: number;
+            errors: number;
+            performance: number;
+    compatibility: number;
+    testRunner: any;
+    deviceSimulator: any;
+    components: { testRunner: boolean;
         deviceSimulator: boolean;
-    },
-    testReporter: boolean,
+    };
+    testReporter: boolean;
     testReporter: boolean;
         };
-interface HealthCheckResult { healthy: boolean,
-    issues: string[],
+interface HealthCheckResult {
+     healthy: boolean;
+    issues: string[];
     componentStatus: {
         testRunne,r: boolean;
-    },
-        deviceSimulator: boolean,
-        testReporter: boolean,
-        testSuites: number,
-    testContainer: boolean,
+    };
+        deviceSimulator: boolean;
+        testReporter: boolean;
+        testSuites: number;
+    testContainer: boolean;
     testContainer: boolean;
         };
 // 既存のテストスイートクラス（変更なし）
@@ -237,10 +243,10 @@ export class MobileTestSuite {
         
         // テスト結果（従来との互換性のため維持）
         this.testResults = {
-            passed: 0,
-            failed: 0,
-            skipped: 0,
-            errors: [],
+            passed: 0;
+            failed: 0;
+            skipped: 0;
+            errors: [];
     performance: new Map<string, PerformanceResult>() };
             compatibility: new Map<string, CompatibilityResult>(); }
         };
@@ -286,11 +292,11 @@ export class MobileTestSuite {
         this.testContainer = document.createElement('div');
         this.testContainer.id = 'mobile-test-container';
         this.testContainer.style.cssText = `;
-            position: absolute,
-            top: -9999px,
-            left: -9999px,
-            width: 375px,
-            height: 667px,
+            position: absolute;
+            top: -9999px;
+            left: -9999px;
+            width: 375px;
+            height: 667px;
     overflow: hidden;
         `;
         document.body.appendChild(this.testContainer);
@@ -384,10 +390,10 @@ export class MobileTestSuite {
      * テスト結果リセット
      */
     resetTestResults(): void { this.testResults = {
-            passed: 0,
-            failed: 0,
-            skipped: 0,
-            errors: [],
+            passed: 0;
+            failed: 0;
+            skipped: 0;
+            errors: [];
     performance: new Map<string, PerformanceResult>();
             compatibility: new Map<string, CompatibilityResult>( }
     
@@ -395,10 +401,10 @@ export class MobileTestSuite {
      * テストエラー記録
      */''
     recordTestError(suiteName: string, testName: string, error: Error | string): void { this.testResults.errors.push({'
-            suite: suiteName,
+            suite: suiteName;
             test: testName || 'unknown',';'
             error: typeof error === 'string' ? error : error.message,')';
-            stack: typeof error === 'object' && error.stack ? error.stack : undefined,
+            stack: typeof error === 'object' && error.stack ? error.stack : undefined;
     timestamp: Date.now(  };
     }
     
@@ -500,23 +506,23 @@ export class MobileTestSuite {
      */
     getDebugInfo(): DebugInfo { return { mainController: { testSuites: Array.from(this.testSuites.keys(
     testResultsSummary: {
-                    passed: this.testResults.passed   ,
-                    failed: this.testResults.failed,
-                    errors: this.testResults.errors.length,
+                    passed: this.testResults.passed   ;
+                    failed: this.testResults.failed;
+                    errors: this.testResults.errors.length;
     performance: this.testResults.performance.size };
                     compatibility: this.testResults.compatibility.size 
     };
-            testRunner: this.testRunner.getDebugInfo())),
+            testRunner: this.testRunner.getDebugInfo()));
             deviceSimulator: this.deviceSimulator.getDebugInfo(
-    components: { testRunner: !!this.testRunner,
-                deviceSimulator: !!this.deviceSimulator   ,
+    components: { testRunner: !!this.testRunner;
+                deviceSimulator: !!this.deviceSimulator   ;
     testReporter: !!this.testReporter 
     }
     
     /**
      * システム健全性チェック
      */
-    performHealthCheck(): HealthCheckResult { const issues: string[] = [],
+    performHealthCheck(): HealthCheckResult { const issues: string[] = [];
         ;
         // サブコンポーネントの存在確認
         if(!this.testRunner) issues.push('MobileTestRunner, not initialized';
@@ -532,11 +538,11 @@ export class MobileTestSuite {
             issues.push('Test, container not, properly mounted'; }'
         }
         
-        return { healthy: issues.length === 0,
+        return { healthy: issues.length === 0;
             issues;
-            componentStatus: { testRunner: !!this.testRunner   ,
-                deviceSimulator: !!this.deviceSimulator,
-                testReporter: !!this.testReporter,
+            componentStatus: { testRunner: !!this.testRunner   ;
+                deviceSimulator: !!this.deviceSimulator;
+                testReporter: !!this.testReporter;
     testSuites: this.testSuites.size };
                 testContainer: !!this.testContainer 
     }
@@ -574,7 +580,7 @@ export class MobileTestSuite {
 // シングルトンインスタンス管理
 // ========================================
 
-let mobileTestSuiteInstance: MobileTestSuite | null = null,
+let mobileTestSuiteInstance: MobileTestSuite | null = null;
 
 /**
  * MobileTestSuiteシングルトンインスタンス取得

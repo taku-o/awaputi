@@ -4,113 +4,129 @@
  */
 
 // Type definitions
-interface ReportConfig { formats: string[],
-    includeStackTraces: boolean,
-    includePerformanceMetrics: boolean,
-    includeCompatibilityMatrix: boolean,
-    maxErrorDetails: number,
+interface ReportConfig {
+     formats: string[];
+    includeStackTraces: boolean;
+    includePerformanceMetrics: boolean;
+    includeCompatibilityMatrix: boolean;
+    maxErrorDetails: number;
     timestampFormat: string;
     includeCharts?: boolean;
-    interface TemplateConfig { html: { titl,e: string,
-        theme: string,
-    includeCharts: boolean,
-    responsiveDesign: boolean,
-    email: { subject: string,
+    interface TemplateConfig { html: { titl,e: string;
+        theme: string;
+    includeCharts: boolean;
+    responsiveDesign: boolean;
+    email: { subject: string;
     includeAttachments: boolean;
-    },
-    compressAttachments: boolean,
+    };
+    compressAttachments: boolean;
     compressAttachments: boolean;
         };
-interface TestResults { passed: number,
-    failed: number,
-    skipped: number,
-    errors: TestError[],
+interface TestResults {
+     passed: number;
+    failed: number;
+    skipped: number;
+    errors: TestError[];
     performance: Map<string, PerformanceResult>;
     compatibility: Map<string, CompatibilityResult> }
 
-interface TestError { suite: string,
-    test: string,
+interface TestError {
+     suite: string;
+    test: string;
     error: string;
     stack?: string;
     timestamp: number;
-    interface PerformanceResult { duration: number,
+    interface PerformanceResult {
+     duration: number;
     metrics: Record<string, any>;
     timestamp: number;
-    interface CompatibilityResult { device: string,
-    browser: string,
+    interface CompatibilityResult {
+     device: string;
+    browser: string;
     results: Record<string, any>;
     timestamp: number;
-    interface ReportMetadata { generatedAt: number,
-    generatedBy: string,
-    version: string,
-    testDuration: number,
+    interface ReportMetadata {
+     generatedAt: number;
+    generatedBy: string;
+    version: string;
+    testDuration: number;
     environment: EnvironmentInfo;
-    interface EnvironmentInfo { userAgent: string,
-    platform: string,
-    language: string,
-    screenResolution: string,
+    interface EnvironmentInfo {
+     userAgent: string;
+    platform: string;
+    language: string;
+    screenResolution: string;
     timestamp: number;
-    interface ReportSummary { total: number,
-    passed: number,
-    failed: number,
-    skipped: number,
-    successRate: string,
-    testSuites: number,
+    interface ReportSummary {
+     total: number;
+    passed: number;
+    failed: number;
+    skipped: number;
+    successRate: string;
+    testSuites: number;
     avgTestTime: string;
-    interface FormattedError extends TestError { formattedTimestamp: string,
+    interface FormattedError extends TestError {
+     formattedTimestamp: string;
     severity: string;
     stackTrace?: string;
-    interface FormattedPerformanceResult { duration: number,
-    formattedDuration: string,
+    interface FormattedPerformanceResult {
+     duration: number;
+    formattedDuration: string;
     status: string;
     metrics?: Record<string, any>;
-    timestamp: number,
+    timestamp: number;
     formattedTimestamp: string;
-    interface FormattedCompatibilityResult { device: string,
-    browser: string,
+    interface FormattedCompatibilityResult {
+     device: string;
+    browser: string;
     results: Record<string, any>;
-    status: string,
-    timestamp: number,
+    status: string;
+    timestamp: number;
     formattedTimestamp: string;
-    interface TestTrends { successRate: string,
-    testCount: string,
+    interface TestTrends {
+     successRate: string;
+    testCount: string;
     errorCount: string;
-    interface Recommendation { type: string,
-    priority: string,
-    message: string,
+    interface Recommendation {
+     type: string;
+    priority: string;
+    message: string;
     action: string;
     details?: any[];
-    interface Risk { level: string,
-    category: string,
-    message: string,
+    interface Risk {
+     level: string;
+    category: string;
+    message: string;
     impact: string;
     interface ChartData { summary: {
-        typ,e: string,
+        typ,e: string;
     data: {
-            label,s: string[] ,
-    values: number[],
-    performance: { type: string,
+            label,s: string[] ;
+    values: number[];
+    performance: { type: string;
     data: {
-            labels: string[]    ,
+            labels: string[]    ;
     values: number[];
 }
 
-interface TestReport { metadata: ReportMetadata,
-    summary: ReportSummary,
+interface TestReport {
+     metadata: ReportMetadata;
+    summary: ReportSummary;
     results: {
-        error,s: FormattedError[] ,
+        error,s: FormattedError[] ;
     performance: Record<string, FormattedPerformanceResult>;
     compatibility: Record<string, FormattedCompatibilityResult> };
     analysis: {
-        trends: TestTrends | { message: string,
-        recommendations: Recommendation[],
+        trends: TestTrends | { message: string;
+        recommendations: Recommendation[];
     riskAssessment: Risk[];
     } };
     charts: ChartData | null;
 }
 
-interface ReportHistoryEntry { timestamp: number,
-    summary: ReportSummary,
+interface ReportHistoryEntry {
+     timestamp: number;
+    summary: ReportSummary;
     errorCount: number;
     export class MobileTestReporter {
     private mobileTestSuite: any, // MobileTestSuite type would create circular dependency
@@ -125,21 +141,21 @@ interface ReportHistoryEntry { timestamp: number,
         // レポート設定
         this.reportConfig = {
             formats: ['json', 'html', 'csv', 'xml'];
-    includeStackTraces: true,
-    includePerformanceMetrics: true,
-    includeCompatibilityMatrix: true,
+    includeStackTraces: true;
+    includePerformanceMetrics: true;
+    includeCompatibilityMatrix: true;
     maxErrorDetails: 50 };
             timestampFormat: 'ISO' 
     };
         // テンプレート設定
         this.templates = { html: { ''
-                title: 'Mobile Test Report,
-                theme: 'default,
-                includeCharts: true,
-    responsiveDesign: true,
+                title: 'Mobile Test Report;
+                theme: 'default;
+                includeCharts: true;
+    responsiveDesign: true;
             email: { ''
-                subject: 'Mobile Test Results'    ,
-                includeAttachments: true,
+                subject: 'Mobile Test Results'    ;
+                includeAttachments: true;
     compressAttachments: true;
         // レポート履歴
         this.reportHistory = [];
@@ -150,35 +166,35 @@ interface ReportHistoryEntry { timestamp: number,
      * テストレポート生成
      */
     generateTestReport(options: Partial<ReportConfig> = { ): TestReport { }
-        const config: ReportConfig = { ...this.reportConfig, ...options,
+        const config: ReportConfig = { ...this.reportConfig, ...options;
         const testResults: TestResults = this.mobileTestSuite.testResults;
         
-        const total = testResults.passed + testResults.failed + testResults.skipped,
-        const successRate = total > 0 ? (testResults.passed / total * 100).toFixed(2) : 0,
+        const total = testResults.passed + testResults.failed + testResults.skipped;
+        const successRate = total > 0 ? (testResults.passed / total * 100).toFixed(2) : 0;
         ','
 
         const report: TestReport = { metadata: {''
-                generatedAt: Date.now(,
+                generatedAt: Date.now(;
     generatedBy: 'MobileTestSuite',';'
-                version: '1.0.0'),
+                version: '1.0.0');
                 testDuration: this.calculateTestDuration(
     environment: this.getEnvironmentInfo(  } };
-            summary: { total,
-                passed: testResults.passed    ,
-                failed: testResults.failed,
+            summary: { total;
+                passed: testResults.passed    ;
+                failed: testResults.failed;
     skipped: testResults.skipped }
                 successRate: `${successRate}%`;
-                testSuites: this.mobileTestSuite.testSuites.size,
+                testSuites: this.mobileTestSuite.testSuites.size;
     avgTestTime: this.calculateAverageTestTime();
-            },
-            results: { errors: this.formatErrors(testResults.errors, config),
-                performance: this.formatPerformanceResults(testResults.performance, config)  },
+            };
+            results: { errors: this.formatErrors(testResults.errors, config);
+                performance: this.formatPerformanceResults(testResults.performance, config)  };
                 compatibility: this.formatCompatibilityResults(testResults.compatibility, config };
-            analysis: { trends: this.analyzeTestTrends(),
-                recommendations: this.generateRecommendations(    ,
+            analysis: { trends: this.analyzeTestTrends();
+                recommendations: this.generateRecommendations(    ;
     riskAssessment: this.assessRisks( }
             charts: config.includeCharts ? this.generateChartData() : null;
-        },
+        };
         // レポート履歴に追加
         this.addToHistory(report);
         
@@ -199,7 +215,7 @@ interface ReportHistoryEntry { timestamp: number,
                 return this.exportToCSV(report, options);
             case 'xml':','
                 return this.exportToXML(report, options);
-            case 'pdf':,
+            case 'pdf':;
                 return this.exportToPDF(report, options);
             default:  }
                 throw new Error(`Unsupported, export format: ${format}`    }
@@ -208,21 +224,21 @@ interface ReportHistoryEntry { timestamp: number,
      * JSON形式でエクスポート
      */
     private exportToJSON(report: TestReport, options: Record<string, any> = { ): string {
-        const indent = options.pretty ? 2 : 0,
+        const indent = options.pretty ? 2 : 0;
         return JSON.stringify(report, null, indent);
     
     /**
      * HTML形式でエクスポート'
      */''
     private exportToHTML(report: TestReport, options: Record<string, any> = { )): string { }
-        const config = { ...this.templates.html, ...options,
+        const config = { ...this.templates.html, ...options;
         ','
 
         return `<!DOCTYPE html>','
 <html lang="ja">","
-<head>,
-    <meta charset="UTF-8">,
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">,
+<head>;
+    <meta charset="UTF-8">;
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">;
     <title>${config.title}</title>"
     <style>"";
         ${this.getHTMLStyles(config"}""
@@ -252,11 +268,11 @@ interface ReportHistoryEntry { timestamp: number,
         // サマリー情報
         sections.push('# Test, Summary');
         sections.push('Metric,Value),'
-        sections.push(`Total Tests,${report.summary.total)`),
-        sections.push(`Passed,${report.summary.passed)`),
+        sections.push(`Total Tests,${report.summary.total)`);
+        sections.push(`Passed,${report.summary.passed)`);
 
-        sections.push(`Failed,${report.summary.failed)`),
-        sections.push(`Success, Rate,${report.summary.successRate)`),
+        sections.push(`Failed,${report.summary.failed)`);
+        sections.push(`Success, Rate,${report.summary.successRate)`);
         sections.push();
         ','
         // エラー情報
@@ -275,7 +291,7 @@ interface ReportHistoryEntry { timestamp: number,
         // パフォーマンス情報
         if (Object.keys(report.results.performance).length > 0') { ''
             sections.push('# Performance, Results');
-            sections.push('Test,Duration (ms),Status,Metrics'),
+            sections.push('Test,Duration (ms),Status,Metrics');
             Object.entries(report.results.performance).forEach(([test, data]) => { }'
 
                 const status = data.duration < 100 ? 'Good' : data.duration < 500 ? 'Fair' : 'Poor'; }
@@ -301,17 +317,17 @@ interface ReportHistoryEntry { timestamp: number,
         xml.push('  <metadata>' }'
 
         xml.push(`    <generatedAt>${new, Date(report.metadata.generatedAt}.toISOString(}</generatedAt>`);
-        xml.push(`    <version>${ report.metadata.version)</version>`),
+        xml.push(`    <version>${ report.metadata.version)</version>`);
         xml.push('  </metadata>');
         ','
         // サマリー
         xml.push('  <summary>),'
-        xml.push(`    <total>${report.summary.total)</total>`),
-        xml.push(`    <passed>${report.summary.passed)</passed>`),
+        xml.push(`    <total>${report.summary.total)</total>`);
+        xml.push(`    <passed>${report.summary.passed)</passed>`);
 
-        xml.push(`    <failed>${report.summary.failed)</failed>`),
-        xml.push(`    <successRate>${report.summary.successRate)</successRate>`),
-        xml.push('  </summary>,
+        xml.push(`    <failed>${report.summary.failed)</failed>`);
+        xml.push(`    <successRate>${report.summary.successRate)</successRate>`);
+        xml.push('  </summary>;
         ','
         // エラー
         if(report.results.errors.length > 0} {'
@@ -339,8 +355,8 @@ interface ReportHistoryEntry { timestamp: number,
      */ : undefined''
     private exportToPDF(report: TestReport, options: Record<string, any> = { )): any {
         // PDF生成は外部ライブラリが必要なため、現在はプレースホルダー
-        return {,
-            format: 'pdf,
+        return {;
+            format: 'pdf;
             message: 'PDF export requires additional library'
             };
             htmlVersion: this.exportToHTML(report, options); }
@@ -350,9 +366,9 @@ interface ReportHistoryEntry { timestamp: number,
      * エラー情報フォーマット
      */
     private formatErrors(errors: TestError[], config: ReportConfig): FormattedError[] { return errors.slice(0, config.maxErrorDetails).map(error => ({)
-            ...error),
-            formattedTimestamp: new Date(error.timestamp).toISOString(),
-            severity: this.categorizeErrorSeverity(error,
+            ...error);
+            formattedTimestamp: new Date(error.timestamp).toISOString();
+            severity: this.categorizeErrorSeverity(error;
     stackTrace: config.includeStackTraces ? error.stack : undefined,);
     }
     
@@ -365,9 +381,9 @@ interface ReportHistoryEntry { timestamp: number,
         for(const [test, data] of Array.from(performance.entries()) { results[test] = {
                 duration: data.duration }
                 formattedDuration: `${data.duration.toFixed(2}ms`;
-                status: this.categorizePerformanceStatus(data.duration),
-                metrics: config.includePerformanceMetrics ? data.metrics : undefined,
-                timestamp: data.timestamp,
+                status: this.categorizePerformanceStatus(data.duration);
+                metrics: config.includePerformanceMetrics ? data.metrics : undefined;
+                timestamp: data.timestamp;
     formattedTimestamp: new Date(data.timestamp).toISOString();
             }
         
@@ -381,11 +397,11 @@ interface ReportHistoryEntry { timestamp: number,
         const results: Record<string, FormattedCompatibilityResult> = {};
         
         for(const [key, data] of Array.from(compatibility.entries()) { results[key] = {
-                device: data.device,
-                browser: data.browser,
-                results: data.results,
-                status: this.categorizeCompatibilityStatus(data.results),
-                timestamp: data.timestamp,
+                device: data.device;
+                browser: data.browser;
+                results: data.results;
+                status: this.categorizeCompatibilityStatus(data.results);
+                timestamp: data.timestamp;
     formattedTimestamp: new Date(data.timestamp).toISOString( }
         
         return, results;
@@ -395,17 +411,17 @@ interface ReportHistoryEntry { timestamp: number,
      * テスト期間計算
      */
     private, calculateTestDuration(): number { // テスト実行時間の推定（実際のタイマーがないため）
-        const testCount = this.mobileTestSuite.testResults.passed + ,
-                         this.mobileTestSuite.testResults.failed,
+        const testCount = this.mobileTestSuite.testResults.passed + ;
+                         this.mobileTestSuite.testResults.failed;
         return testCount * 500, // 平均500ms/テストと仮定 }
     
     /**
      * 平均テスト時間計算
      */
-    private calculateAverageTestTime(): string { const performance: Map<string, PerformanceResult> = this.mobileTestSuite.testResults.performance,
-        if(performance.size === 0) return '0,
+    private calculateAverageTestTime(): string { const performance: Map<string, PerformanceResult> = this.mobileTestSuite.testResults.performance;
+        if(performance.size === 0) return '0;
         
-        let totalTime = 0,
+        let totalTime = 0;
         for (const data of Array.from(performance.values()) {
             totalTime += data.duration }
         
@@ -415,7 +431,7 @@ interface ReportHistoryEntry { timestamp: number,
     /**
      * 環境情報取得
      */
-    private getEnvironmentInfo(): EnvironmentInfo { return { userAgent: navigator.userAgent,
+    private getEnvironmentInfo(): EnvironmentInfo { return { userAgent: navigator.userAgent;
             platform: navigator.platform };
             language: navigator.language }
             screenResolution: `${screen.width}x${screen.height}`;
@@ -430,8 +446,8 @@ interface ReportHistoryEntry { timestamp: number,
 
             return { message: 'Insufficient data for trend analysis' }
         
-        const trends: TestTrends = { successRate: this.calculateTrend(history.map(h => parseFloat(h.summary.successRate),
-            testCount: this.calculateTrend(history.map(h => h.summary.total),
+        const trends: TestTrends = { successRate: this.calculateTrend(history.map(h => parseFloat(h.summary.successRate);
+            testCount: this.calculateTrend(history.map(h => h.summary.total);
             errorCount: this.calculateTrend(history.map(h => h.summary.failed);
         };
         
@@ -445,8 +461,8 @@ interface ReportHistoryEntry { timestamp: number,
         const results: TestResults = this.mobileTestSuite.testResults;
         
         // 失敗率に基づく推奨事項
-        const total = results.passed + results.failed + results.skipped,
-        const failureRate = total > 0 ? (results.failed / total) : 0,
+        const total = results.passed + results.failed + results.skipped;
+        const failureRate = total > 0 ? (results.failed / total) : 0;
 
         if (failureRate > 0.1) {
             recommendations.push({)'
@@ -466,8 +482,8 @@ interface ReportHistoryEntry { timestamp: number,
 
         if (slowTests.length > 0) {
             recommendations.push({)'
-                type: 'slow_tests,'),
-                priority: 'medium,
+                type: 'slow_tests,');
+                priority: 'medium;
                 message: `${slowTests.length'
             }個のテストが1秒以上かかっています`;
         }
@@ -484,8 +500,8 @@ interface ReportHistoryEntry { timestamp: number,
     /**
      * リスク評価
      */
-    private assessRisks(): Risk[] { const risks: Risk[] = [],
-        const results: TestResults = this.mobileTestSuite.testResults,
+    private assessRisks(): Risk[] { const risks: Risk[] = [];
+        const results: TestResults = this.mobileTestSuite.testResults;
         
         // クリティカルエラーの評価
         const criticalErrors = results.errors.filter(error => );
@@ -494,7 +510,7 @@ interface ReportHistoryEntry { timestamp: number,
 
         if (criticalErrors.length > 0) {
             risks.push({''
-                level: 'critical,
+                level: 'critical;
                 category: 'stability',','
                 message: 'クリティカルエラーが検出されました',')'
         }
@@ -509,15 +525,15 @@ interface ReportHistoryEntry { timestamp: number,
      * チャートデータ生成'
      */''
     private generateChartData('''
-                type: 'pie,
+                type: 'pie;
                 data: { ''
-                    labels: ['Passed', 'Failed', 'Skipped']  },
+                    labels: ['Passed', 'Failed', 'Skipped']  };
                     values: [results.passed, results.failed, results.skipped] }
-            },
+            };
 
             performance: { ')'
-                type: 'bar'    ,
-    data: { labels: Array.from(results.performance.keys(    ,
+                type: 'bar'    ;
+    data: { labels: Array.from(results.performance.keys(    ;
     values: Array.from(results.performance.values())).map(d => d.duration);
         }
     
@@ -539,7 +555,7 @@ interface ReportHistoryEntry { timestamp: number,
             .error { background: #fff5f5, border: 1px solid #fed7d7, padding: 15px, margin: 10px 0, border-radius: 4px }
             .error-title { font-weight: bold, color: #c53030 }
             table { width: 100%, border-collapse: collapse, margin: 20px 0 }
-            th, td { border: 1px solid #ddd, padding: 12px, text-align: left,
+            th, td { border: 1px solid #ddd, padding: 12px, text-align: left;
             th { background: #f8f9fa, font-weight: 600 }
             .status-good { color: #28a745 }
             .status-fair { color: #ffc107 }
@@ -566,7 +582,7 @@ interface ReportHistoryEntry { timestamp: number,
      * HTMLサマリー生成'
      */''
     private generateHTMLSummary(report: TestReport): string { return `''
-            <section class="summary">,
+            <section class="summary">;
                 <div class="metric">" }"
                     <div class="metric-value">${report.summary.total}</div>""
                     <div class="metric-label">Total Tests</div>";"
@@ -600,7 +616,7 @@ interface ReportHistoryEntry { timestamp: number,
                 <div class="error-title">${error.suite} - ${error.test}</div>)
                 <div>${error.error}</div>)
                 <small>Severity: ${error.severity} | ${ error.formattedTimestamp"</small>"
-            </div>,
+            </div>;
         `"}.join(};"
         
         return `;
@@ -716,42 +732,42 @@ interface ReportHistoryEntry { timestamp: number,
      */'
     private categorizeErrorSeverity(error: TestError): string { ''
         const message = error.error.toLowerCase()','
-        if (message.includes('fatal') || message.includes('critical)' return 'critical,
-        if (message.includes('error') || message.includes('failed)' return 'high,
-        if (message.includes('warning') || message.includes('deprecated)' return 'medium,
+        if (message.includes('fatal') || message.includes('critical)' return 'critical;
+        if (message.includes('error') || message.includes('failed)' return 'high;
+        if (message.includes('warning') || message.includes('deprecated)' return 'medium;
         return 'low' }
     
     /**
      * パフォーマンス状態分類
      */'
     private categorizePerformanceStatus(duration: number): string { ''
-        if(duration < 100) return 'Good,
-        if(duration < 500) return 'Fair,
+        if(duration < 100) return 'Good;
+        if(duration < 500) return 'Fair;
         return 'Poor' }
     
     /**
      * 互換性状態分類'
      */''
     private categorizeCompatibilityStatus(results: Record<string, any>): string { ''
-        if (!results || typeof, results !== 'object') return 'Unknown,
+        if (!results || typeof, results !== 'object') return 'Unknown;
         ','
 
-        const issues = Object.values(results).filter(result => !result).length,
-        if(issues === 0) return 'Compatible,
-        if(issues <= 2) return 'Minor Issues,
-        return 'Major Issues,
+        const issues = Object.values(results).filter(result => !result).length;
+        if(issues === 0) return 'Compatible;
+        if(issues <= 2) return 'Minor Issues;
+        return 'Major Issues;
     
     /**
      * トレンド計算
      */'
     private calculateTrend(values: number[]): string { ''
-        if(values.length < 2) return 'stable,
+        if(values.length < 2) return 'stable;
         
-        const recent = values[values.length - 1],
-        const previous = values[values.length - 2],
+        const recent = values[values.length - 1];
+        const previous = values[values.length - 2];
 
-        if(recent > previous) return 'increasing,
-        if(recent < previous) return 'decreasing,
+        if(recent > previous) return 'increasing;
+        if(recent < previous) return 'decreasing;
         return 'stable' }
     
     /**
@@ -769,9 +785,9 @@ interface ReportHistoryEntry { timestamp: number,
      * レポート履歴に追加
      */
     private addToHistory(report: TestReport): void { this.reportHistory.push({)
-            timestamp: report.metadata.generatedAt,
-    summary: report.summary),
-            errorCount: report.results.errors.length),
+            timestamp: report.metadata.generatedAt;
+    summary: report.summary);
+            errorCount: report.results.errors.length);
         // 履歴サイズ制限
         if (this.reportHistory.length > this.maxHistorySize) {
     
@@ -782,7 +798,7 @@ interface ReportHistoryEntry { timestamp: number,
     /**
      * レポート履歴取得
      */
-    getReportHistory(): ReportHistoryEntry[] { return [...this.reportHistory],
+    getReportHistory(): ReportHistoryEntry[] { return [...this.reportHistory];
     
     /**
      * 設定更新
