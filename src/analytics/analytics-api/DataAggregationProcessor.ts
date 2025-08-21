@@ -4,7 +4,11 @@
  * 集計処理、時系列分析、高度な集計機能、統計サマリー計算を専門的に処理します
  */
 export class DataAggregationProcessor {
-    constructor(storageManager) {
+    private storageManager: any;
+    private aggregationCache: Map<string, any>;
+    private maxCacheSize: number;
+
+    constructor(storageManager: any) {
         this.storageManager = storageManager;
         
         // 集計キャッシュ（LRUキャッシュ）
@@ -17,7 +21,7 @@ export class DataAggregationProcessor {
      * @param {Object} options - オプション
      * @returns {Promise<Object>} 集計結果
      */
-    async getAggregatedData(aggregationRules, options: any = {}) {
+    async getAggregatedData(aggregationRules: any, options: any = {}): Promise<any> {
         try {
             const {
                 dataType = 'sessionData',
@@ -143,10 +147,10 @@ export class DataAggregationProcessor {
      * @param {Object} options - オプション
      * @returns {Promise<Object>} 時系列集計結果
      */
-    async getTimeSeriesAggregation(timeSeriesRules, options: any = {}) {
+    async getTimeSeriesAggregation(timeSeriesRules: any, options: any = {}): Promise<any> {
+        const requestId = this.generateRequestId();
         try {
             const startTime = performance.now();
-            const requestId = this.generateRequestId();
             
             const {
                 dataType = 'sessionData',
@@ -190,10 +194,10 @@ export class DataAggregationProcessor {
                 interval,
                 dataPoints: timeSeriesResult.length
             });
-        } catch (error) {
+        } catch (error: any) {
             console.error('Time series aggregation error:', error);
             return this.createErrorResponse('TIMESERIES_AGGREGATION_ERROR',
-                error.message, 500, { requestId });
+                error.message || 'Unknown error', 500, { requestId });
         }
     }
     
@@ -202,7 +206,7 @@ export class DataAggregationProcessor {
      * @param {Object} query - クエリパラメータ
      * @returns {Promise<Object>} 統計サマリー
      */
-    async getStatsSummary(query = {}) {
+    async getStatsSummary(query: any = {}): Promise<any> {
         try {
             const { period = 'last7d' } = query;
             // 並列でデータを取得
@@ -240,7 +244,7 @@ export class DataAggregationProcessor {
      * @param {Object} rules - 集計ルール
      * @returns {Object} 集計結果
      */
-    performAggregation(data, rules) {
+    performAggregation(data: any[], rules: any): any {
         const { groupBy = [], aggregateBy = {} } = rules;
         
         // グループ化
@@ -261,7 +265,7 @@ export class DataAggregationProcessor {
      * @param {Array} groupBy - グループ化キー
      * @returns {Object} グループ化されたデータ
      */
-    groupData(data, groupBy) {
+    groupData(data: any[], groupBy: string[]): any {
         if (groupBy.length === 0) {
             return { 'all': data };
         }
@@ -292,7 +296,7 @@ export class DataAggregationProcessor {
      * @param {Object} aggregateBy - 集計設定
      * @returns {Object} 集計結果
      */
-    aggregateGroup(groupData, aggregateBy) {
+    aggregateGroup(groupData: any[], aggregateBy: any): any {
         const result = {
             count: groupData.length
         };
@@ -327,11 +331,11 @@ export class DataAggregationProcessor {
     
     /**
      * 集計用クエリの構築
-     * @paramObject} filters - フィルター条件
-     * @paramstring} period - 期間設定
-     * @returnsObject} クエリオブジェクト
+     * @param {Object} filters - フィルター条件
+     * @param {string} period - 期間設定
+     * @returns {Object} クエリオブジェクト
      */
-    buildAggregationQuery(filters, period) {
+    buildAggregationQuery(filters: any, period: string | null): any {
         const query = { ...filters };
         
         // 期間設定の処理
@@ -358,7 +362,7 @@ export class DataAggregationProcessor {
      * @param {Array} sessions - セッションデータ
      * @returns {Object} セッション統計
      */
-    calculateSessionStats(sessions) {
+    calculateSessionStats(sessions: any[]): any {
         if (sessions.length === 0) {
             return { noData: true };
         }
@@ -382,7 +386,7 @@ export class DataAggregationProcessor {
      * @param {Array} interactions - インタラクションデータ
      * @returns {Object} インタラクション統計
      */
-    calculateInteractionStats(interactions) {
+    calculateInteractionStats(interactions: any[]): any {
         if (interactions.length === 0) {
             return { noData: true };
         }
@@ -392,17 +396,17 @@ export class DataAggregationProcessor {
         let totalScore = 0;
         
         for (const interaction of interactions) {
-        
             // バブルタイプ別統計
-        
-        }
-            if (!bubbleTypes[interaction.bubbleType]) { }
-                bubbleTypes[interaction.bubbleType] = { count: 0, totalScore: 0  }
+            if (!bubbleTypes[interaction.bubbleType]) {
+                bubbleTypes[interaction.bubbleType] = { count: 0, totalScore: 0 };
+            }
             bubbleTypes[interaction.bubbleType].count++;
             bubbleTypes[interaction.bubbleType].totalScore += interaction.scoreGained || 0;
             
             // 反応時間統計
-            if (interaction.reactionTime > 0) { reactionTimes.push(interaction.reactionTime);
+            if (interaction.reactionTime > 0) {
+                reactionTimes.push(interaction.reactionTime);
+            }
             
             totalScore += interaction.scoreGained || 0;
         }
@@ -420,7 +424,7 @@ export class DataAggregationProcessor {
      * @param {Array} performanceData - パフォーマンスデータ
      * @returns {Object} パフォーマンス統計
      */
-    calculatePerformanceStats(performanceData) {
+    calculatePerformanceStats(performanceData: any[]): any {
         if (performanceData.length === 0) {
             return { noData: true };
         }
@@ -438,7 +442,7 @@ export class DataAggregationProcessor {
     }
     
     // 詳細な処理メソッド（元のコードから移植）
-    async performAdvancedAggregation(dataType, rules) {
+    async performAdvancedAggregation(dataType: string, rules: any): Promise<any> {
         // 高度集計実装（元の performAdvancedAggregation メソッド）
         const query = this.buildAggregationQuery(rules.filters, rules.period);
         const rawData = await this.storageManager.getData(dataType, query);
@@ -464,7 +468,8 @@ export class DataAggregationProcessor {
         };
     }
     
-    performTimeSeriesAggregation(data, rules) { // 時系列集計実装（元の performTimeSeriesAggregation メソッド）
+    performTimeSeriesAggregation(data: any[], rules: any): any {
+        // 時系列集計実装（元の performTimeSeriesAggregation メソッド）
         const { timeField, interval, aggregateBy } = rules;
         const intervalMs = this.getIntervalMilliseconds(interval);
         
@@ -498,7 +503,7 @@ export class DataAggregationProcessor {
     }
     
     // ヘルパーメソッド
-    buildTimeSeriesQuery(filters, startDate, endDate) {
+    buildTimeSeriesQuery(filters: any, startDate: any, endDate: any): any {
         const query = { ...filters };
         if (startDate || endDate) {
             query.timestamp = {};
@@ -508,7 +513,7 @@ export class DataAggregationProcessor {
         return query;
     }
 
-    getIntervalMilliseconds(interval) {
+    getIntervalMilliseconds(interval: string): number {
         const intervals = {
             'minute': 60 * 1000,
             'hour': 60 * 60 * 1000,
@@ -526,7 +531,7 @@ export class DataAggregationProcessor {
         };
     }
     
-    createAggregationSummary(aggregatedResults) {
+    createAggregationSummary(aggregatedResults: any): any {
         const summary = {};
         for(const [dataType, result] of Object.entries(aggregatedResults)) {
             summary[dataType] = {
@@ -537,7 +542,7 @@ export class DataAggregationProcessor {
         return summary;
     }
     
-    countTotalGroups(result) {
+    countTotalGroups(result: any): number {
         let total = 0;
         if (result.details) {
             for (const typeResult of Object.values(result.details)) {
@@ -549,11 +554,11 @@ export class DataAggregationProcessor {
         return total;
     }
     
-    generateRequestId() {
+    generateRequestId(): string {
         return `agg_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     }
     
-    createSuccessResponse(data, metadata = {}) {
+    createSuccessResponse(data: any, metadata: any = {}): any {
         return {
             success: true,
             data,
@@ -564,7 +569,7 @@ export class DataAggregationProcessor {
         };
     }
     
-    createErrorResponse(code, message, status = 500, metadata = {}) {
+    createErrorResponse(code: string, message: string, status: number = 500, metadata: any = {}): any {
         return {
             success: false,
             error: { code, message, status },
@@ -578,7 +583,7 @@ export class DataAggregationProcessor {
     /**
      * リソースの解放
      */
-    destroy() {
+    destroy(): void {
         this.aggregationCache.clear();
         console.log('DataAggregationProcessor destroyed');
     }
