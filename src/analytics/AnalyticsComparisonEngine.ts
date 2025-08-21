@@ -47,15 +47,16 @@ export class AnalyticsComparisonEngine {
      * @param {Object} options - 比較オプション
      * @returns {Promise<Object>} ベンチマーク比較結果
      */
-    async benchmarkComparison(options: any = { ) {
+    async benchmarkComparison(options: any = {}) {
         try {
-            return await this.dataComparator.benchmarkComparison(options, this.storageManager),' }'
-
+            return await this.dataComparator.benchmarkComparison(options, this.storageManager);
         } catch (error) {
             console.error('AnalyticsComparisonEngine.benchmarkComparison error:', error);
-            return { success: false,
-                error: error.message 
-    }
+            return {
+                success: false,
+                error: error.message
+            };
+        }
     }
 
     /**
@@ -63,15 +64,16 @@ export class AnalyticsComparisonEngine {
      * @param {Object} options - 比較オプション
      * @returns {Promise<Object>} ステージ別比較結果
      */
-    async stageComparison(options: any = { ) {
+    async stageComparison(options: any = {}) {
         try {
-            return await this.dataComparator.stageComparison(options, this.storageManager),' }'
-
+            return await this.dataComparator.stageComparison(options, this.storageManager);
         } catch (error) {
             console.error('AnalyticsComparisonEngine.stageComparison error:', error);
-            return { success: false,
-                error: error.message 
-    }
+            return {
+                success: false,
+                error: error.message
+            };
+        }
     }
 
     /**
@@ -82,31 +84,32 @@ export class AnalyticsComparisonEngine {
      */
     generateImprovementSuggestions(comparisonResult, options: any = {}) {
         try {
-    }
-
-            return this.algorithms.generateImprovementSuggestions(comparisonResult, options); }'
-
+            return this.algorithms.generateImprovementSuggestions(comparisonResult, options);
         } catch (error) {
-            console.error('AnalyticsComparisonEngine.generateImprovementSuggestions error:', error','
-            return { success: false,
-                error: error.message 
-    }
+            console.error('AnalyticsComparisonEngine.generateImprovementSuggestions error:', error);
+            return {
+                success: false,
+                error: error.message
+            };
+        }
     }
 
     /**
      * 期間別トレンド分析
      * @param {string} period - 分析期間
      * @param {Array} metrics - 分析指標
-     * @returns {Promise<Object>} トレンド分析結果'
-     */''
-    async trendAnalysis(period = 'month', metrics = ['score', 'accuracy]) { try {'
-            return await this.algorithms.trendAnalysis(period, metrics, this.storageManager),' }'
-
+     * @returns {Promise<Object>} トレンド分析結果
+     */
+    async trendAnalysis(period = 'month', metrics = ['score', 'accuracy']) {
+        try {
+            return await this.algorithms.trendAnalysis(period, metrics, this.storageManager);
         } catch (error) {
             console.error('AnalyticsComparisonEngine.trendAnalysis error:', error);
-            return { success: false,
-                error: error.message 
-    }
+            return {
+                success: false,
+                error: error.message
+            };
+        }
     }
 
     /**
@@ -117,15 +120,14 @@ export class AnalyticsComparisonEngine {
      */
     renderResults(comparisonResult, options: any = {}) {
         try {
-    }
-
-            return this.renderer.renderResults(comparisonResult, options); }'
-
+            return this.renderer.renderResults(comparisonResult, options);
         } catch (error) {
             console.error('AnalyticsComparisonEngine.renderResults error:', error);
-            return { success: false,
-                error: error.message 
-    }
+            return {
+                success: false,
+                error: error.message
+            };
+        }
     }
 
     /**
@@ -136,15 +138,14 @@ export class AnalyticsComparisonEngine {
      */
     generateSummaryReport(comparisonResult, options: any = {}) {
         try {
-    }
-
-            return this.renderer.generateSummaryReport(comparisonResult, options); }'
-
+            return this.renderer.generateSummaryReport(comparisonResult, options);
         } catch (error) {
             console.error('AnalyticsComparisonEngine.generateSummaryReport error:', error);
-            return { success: false,
-                error: error.message 
-    }
+            return {
+                success: false,
+                error: error.message
+            };
+        }
     }
 
     /**
@@ -155,15 +156,14 @@ export class AnalyticsComparisonEngine {
      */
     generateDetailedReport(comparisonResult, options: any = {}) {
         try {
-    }
-
-            return this.renderer.generateDetailedReport(comparisonResult, options); }'
-
+            return this.renderer.generateDetailedReport(comparisonResult, options);
         } catch (error) {
             console.error('AnalyticsComparisonEngine.generateDetailedReport error:', error);
-            return { success: false,
-                error: error.message 
-    }
+            return {
+                success: false,
+                error: error.message
+            };
+        }
     }
 
     /**
@@ -174,8 +174,8 @@ export class AnalyticsComparisonEngine {
     getCachedData(key) {
         const cached = this.cache.get(key);
         if (cached && (Date.now() - cached.timestamp) < this.cacheExpiry) {
-    }
             return cached.data;
+        }
         return null;
     }
 
@@ -186,9 +186,9 @@ export class AnalyticsComparisonEngine {
      */
     setCachedData(key, data) {
         this.cache.set(key, {
-                data: data),
-            timestamp: Date.now(); 
-    }
+            data: data,
+            timestamp: Date.now()
+        });
     }
 
     /**
@@ -196,16 +196,23 @@ export class AnalyticsComparisonEngine {
      */
     clearCache() {
         this.cache.clear();
-        this.dataComparator.clearCache?.(),
+        this.dataComparator.clearCache?.();
         this.algorithms.clearCache?.();
-        this.renderer.clearCache?.(); }
+        this.renderer.clearCache?.();
     }
 
     /**
      * 分割されたコンポーネントへの直接アクセス用メソッド
      */
-    getDataComparator() { return this.dataComparator }
+    getDataComparator() {
+        return this.dataComparator;
+    }
 
-    getAlgorithms() { return this.algorithms }
+    getAlgorithms() {
+        return this.algorithms;
+    }
 
-    getRenderer();
+    getRenderer() {
+        return this.renderer;
+    }
+}

@@ -450,28 +450,32 @@ export class DataAggregationProcessor {
         const groupedData = this.groupData(rawData, rules.multiGroupBy);
         const aggregatedResult = {};
         
-        for(const [groupKey, groupData] of Object.entries(groupedData) { aggregatedResult[groupKey] = this.aggregateGroup(groupData, rules.customAggregations);
+        for(const [groupKey, groupData] of Object.entries(groupedData)) {
+            aggregatedResult[groupKey] = this.aggregateGroup(groupData, rules.customAggregations);
+        }
         
-        return { groups: aggregatedResult,
+        return {
+            groups: aggregatedResult,
             metadata: {
-                totalRecords: rawData.length ,
-    processedRecords: rawData.length ,
-                groupCount: Object.keys(aggregatedResult).length; 
+                totalRecords: rawData.length,
+                processedRecords: rawData.length,
+                groupCount: Object.keys(aggregatedResult).length
+            }
+        };
     }
     
-    performTimeSeriesAggregation(data, rules) { // 時系列集計実装（元の performTimeSeriesAggregation メソッド） }
+    performTimeSeriesAggregation(data, rules) { // 時系列集計実装（元の performTimeSeriesAggregation メソッド）
         const { timeField, interval, aggregateBy } = rules;
         const intervalMs = this.getIntervalMilliseconds(interval);
         
         const timeGroups = {};
         for (const record of data) {
-            const timestamp = record[timeField],
-            if (!timestamp) continue,
+            const timestamp = record[timeField];
+            if (!timestamp) continue;
             
-            const timeKey = Math.floor(timestamp / intervalMs) * intervalMs,
+            const timeKey = Math.floor(timestamp / intervalMs) * intervalMs;
             if (!timeGroups[timeKey]) {
-        }
-                timeGroups[timeKey] = []; }
+                timeGroups[timeKey] = [];
             }
             timeGroups[timeKey].push(record);
         }
@@ -480,15 +484,14 @@ export class DataAggregationProcessor {
         const sortedTimeKeys = Object.keys(timeGroups).map(Number).sort((a, b) => a - b);
         
         for (const timeKey of sortedTimeKeys) {
-        
-            const groupData = timeGroups[timeKey],
+            const groupData = timeGroups[timeKey];
             const aggregated = this.aggregateGroup(groupData, aggregateBy);
-            result.push({)
+            result.push({
                 timestamp: timeKey,
-    datetime: new Date(timeKey).toISOString(),
-                interval }
+                datetime: new Date(timeKey).toISOString(),
+                interval,
                 ...aggregated
-            }
+            });
         }
         
         return result;
@@ -496,12 +499,8 @@ export class DataAggregationProcessor {
     
     // ヘルパーメソッド
     buildTimeSeriesQuery(filters, startDate, endDate) {
-    
-}
-        const query = { ...filters,
+        const query = { ...filters };
         if (startDate || endDate) {
-    
-}
             query.timestamp = {};
             if (startDate) query.timestamp.$gte = new Date(startDate).getTime();
             if (endDate) query.timestamp.$lte = new Date(endDate).getTime();
@@ -510,83 +509,77 @@ export class DataAggregationProcessor {
     }
 
     getIntervalMilliseconds(interval) {
-        const intervals = {', 'minute': 60 * 1000,'
+        const intervals = {
+            'minute': 60 * 1000,
             'hour': 60 * 60 * 1000,
             'day': 24 * 60 * 60 * 1000,
-            'week': 7 * 24 * 60 * 60 * 1000 }
-
-            'month': 30 * 24 * 60 * 60 * 1000 
-    };
+            'week': 7 * 24 * 60 * 60 * 1000,
+            'month': 30 * 24 * 60 * 60 * 1000
+        };
         return intervals[interval] || intervals['hour'];
     }
     
     consolidateAggregationResults(aggregatedResults, options: any = {}) {
-    
-}
-        return { summary: this.createAggregationSummary(aggregatedResults) ,
-            details: aggregatedResults,
+        return {
+            summary: this.createAggregationSummary(aggregatedResults),
+            details: aggregatedResults
+        };
+    }
     
     createAggregationSummary(aggregatedResults) {
-    
-}
         const summary = {};
-        for(const [dataType, result] of Object.entries(aggregatedResults) {
+        for(const [dataType, result] of Object.entries(aggregatedResults)) {
             summary[dataType] = {
-                totalGroups: Object.keys(result.groups || {).length }
-                totalRecords: result.metadata?.totalRecords || 0 
-    }
+                totalGroups: Object.keys(result.groups || {}).length,
+                totalRecords: result.metadata?.totalRecords || 0
+            };
+        }
         return summary;
     }
     
     countTotalGroups(result) {
-    
-        let total = 0,
+        let total = 0;
         if (result.details) {
-            for (const typeResult of Object.values(result.details) {
+            for (const typeResult of Object.values(result.details)) {
                 if (typeResult.groups) {
-    
-}
-                    total += Object.keys(typeResult.groups).length;     }
-}
+                    total += Object.keys(typeResult.groups).length;
+                }
+            }
+        }
         return total;
     }
     
     generateRequestId() {
-    
-}
-        return `agg_${Date.now())_${Math.random().toString(36).substr(2, 9}`;
+        return `agg_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     }
     
-    createSuccessResponse(data, metadata = { ) {
-    
-        return { : undefined
+    createSuccessResponse(data, metadata = {}) {
+        return {
             success: true,
             data,
             metadata: {
-    
-}
-                timestamp: new Date().toISOString() ,
+                timestamp: new Date().toISOString(),
                 ...metadata
             }
-        }
+        };
+    }
     
-    createErrorResponse(code, message, status = 500, metadata = { ) {
-    
-}
-        return {  };
+    createErrorResponse(code, message, status = 500, metadata = {}) {
+        return {
             success: false,
             error: { code, message, status },
-            metadata: { timestamp: new Date().toISOString(),
+            metadata: {
+                timestamp: new Date().toISOString(),
                 ...metadata
-        }
+            }
+        };
+    }
     
     /**
      * リソースの解放
      */
     destroy() {
-
         this.aggregationCache.clear();
-
-        console.log('Data, Aggregation Processor, destroyed'); }
-
-    }' }'
+        console.log('DataAggregationProcessor destroyed');
+    }
+}
