@@ -3,12 +3,21 @@
  * プレイヤーのパフォーマンスを過去データやベンチマークと比較する分析機能を提供します
  * 分割されたコンポーネントを統合管理するメインクラス
  */
-import { DataComparator } from './comparison/DataComparator.ts';
-import { ComparisonAlgorithms } from './comparison/ComparisonAlgorithms.ts';
-import { ComparisonResultRenderer } from './comparison/ComparisonResultRenderer.ts';
+import { DataComparator } from './comparison/DataComparator.js';
+import { ComparisonAlgorithms } from './comparison/ComparisonAlgorithms.js';
+import { ComparisonResultRenderer } from './comparison/ComparisonResultRenderer.js';
 
 export class AnalyticsComparisonEngine {
-    constructor(storageManager) {
+    private storageManager: any;
+    private dataComparator: DataComparator;
+    private algorithms: ComparisonAlgorithms;
+    private renderer: ComparisonResultRenderer;
+    private comparisonPeriods: any;
+    private metrics: any;
+    private cache: Map<string, any>;
+    private cacheExpiry: number;
+
+    constructor(storageManager: any) {
         this.storageManager = storageManager;
         
         // 分割されたコンポーネントを初期化
@@ -30,7 +39,7 @@ export class AnalyticsComparisonEngine {
      * @param {Object} options - 比較オプション
      * @returns {Promise<Object>} 比較結果
      */
-    async compareWithPastData(options: any = {}) {
+    async compareWithPastData(options: any = {}): Promise<any> {
         try {
             return await this.dataComparator.compareWithPastData(options, this.storageManager);
         } catch (error) {
@@ -47,7 +56,7 @@ export class AnalyticsComparisonEngine {
      * @param {Object} options - 比較オプション
      * @returns {Promise<Object>} ベンチマーク比較結果
      */
-    async benchmarkComparison(options: any = {}) {
+    async benchmarkComparison(options: any = {}): Promise<any> {
         try {
             return await this.dataComparator.benchmarkComparison(options, this.storageManager);
         } catch (error) {
@@ -64,7 +73,7 @@ export class AnalyticsComparisonEngine {
      * @param {Object} options - 比較オプション
      * @returns {Promise<Object>} ステージ別比較結果
      */
-    async stageComparison(options: any = {}) {
+    async stageComparison(options: any = {}): Promise<any> {
         try {
             return await this.dataComparator.stageComparison(options, this.storageManager);
         } catch (error) {
@@ -82,7 +91,7 @@ export class AnalyticsComparisonEngine {
      * @param {Object} options - オプション
      * @returns {Object} 改善提案
      */
-    generateImprovementSuggestions(comparisonResult, options: any = {}) {
+    generateImprovementSuggestions(comparisonResult: any, options: any = {}): any {
         try {
             return this.algorithms.generateImprovementSuggestions(comparisonResult, options);
         } catch (error) {
@@ -100,7 +109,7 @@ export class AnalyticsComparisonEngine {
      * @param {Array} metrics - 分析指標
      * @returns {Promise<Object>} トレンド分析結果
      */
-    async trendAnalysis(period = 'month', metrics = ['score', 'accuracy']) {
+    async trendAnalysis(period: string = 'month', metrics: string[] = ['score', 'accuracy']): Promise<any> {
         try {
             return await this.algorithms.trendAnalysis(period, metrics, this.storageManager);
         } catch (error) {
@@ -118,7 +127,7 @@ export class AnalyticsComparisonEngine {
      * @param {Object} options - レンダリングオプション
      * @returns {Object} レンダリング済み結果
      */
-    renderResults(comparisonResult, options: any = {}) {
+    renderResults(comparisonResult: any, options: any = {}): any {
         try {
             return this.renderer.renderResults(comparisonResult, options);
         } catch (error) {
@@ -136,7 +145,7 @@ export class AnalyticsComparisonEngine {
      * @param {Object} options - オプション
      * @returns {Object} サマリーレポート
      */
-    generateSummaryReport(comparisonResult, options: any = {}) {
+    generateSummaryReport(comparisonResult: any, options: any = {}): any {
         try {
             return this.renderer.generateSummaryReport(comparisonResult, options);
         } catch (error) {
@@ -154,7 +163,7 @@ export class AnalyticsComparisonEngine {
      * @param {Object} options - オプション
      * @returns {Object} 詳細レポート
      */
-    generateDetailedReport(comparisonResult, options: any = {}) {
+    generateDetailedReport(comparisonResult: any, options: any = {}): any {
         try {
             return this.renderer.generateDetailedReport(comparisonResult, options);
         } catch (error) {
@@ -171,7 +180,7 @@ export class AnalyticsComparisonEngine {
      * @param {string} key - キー
      * @returns {*} キャッシュされたデータまたはnull
      */
-    getCachedData(key) {
+    getCachedData(key: string): any {
         const cached = this.cache.get(key);
         if (cached && (Date.now() - cached.timestamp) < this.cacheExpiry) {
             return cached.data;
@@ -184,7 +193,7 @@ export class AnalyticsComparisonEngine {
      * @param {string} key - キー
      * @param {*} data - データ
      */
-    setCachedData(key, data) {
+    setCachedData(key: string, data: any): void {
         this.cache.set(key, {
             data: data,
             timestamp: Date.now()
@@ -194,7 +203,7 @@ export class AnalyticsComparisonEngine {
     /**
      * キャッシュをクリア
      */
-    clearCache() {
+    clearCache(): void {
         this.cache.clear();
         this.dataComparator.clearCache?.();
         this.algorithms.clearCache?.();
@@ -204,15 +213,15 @@ export class AnalyticsComparisonEngine {
     /**
      * 分割されたコンポーネントへの直接アクセス用メソッド
      */
-    getDataComparator() {
+    getDataComparator(): DataComparator {
         return this.dataComparator;
     }
 
-    getAlgorithms() {
+    getAlgorithms(): ComparisonAlgorithms {
         return this.algorithms;
     }
 
-    getRenderer() {
+    getRenderer(): ComparisonResultRenderer {
         return this.renderer;
     }
 }
