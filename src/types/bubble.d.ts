@@ -4,25 +4,31 @@
  */
 
 // 基本データ構造
-export interface Position { x: number,
+export interface Position {
+    x: number;
     y: number;
-    export interface Velocity { x: number,
-            y: number;
+}
+
+export interface Velocity {
+    x: number;
+    y: number;
+}
 
 // バブルタイプ定義
-export type BubbleType = ;
-    | 'normal' | 'stone' | 'iron' | 'diamond''';
-    | 'pink' | 'poison' | 'spiky' | 'rainbow''';
-    | 'clock' | 'score' | 'electric' | 'escaping''';
-    | 'cracked' | 'boss' | 'golden' | 'frozen''';
+export type BubbleType = 
+    | 'normal' | 'stone' | 'iron' | 'diamond'
+    | 'pink' | 'poison' | 'spiky' | 'rainbow'
+    | 'clock' | 'score' | 'electric' | 'escaping'
+    | 'cracked' | 'boss' | 'golden' | 'frozen'
     | 'magnetic' | 'explosive' | 'phantom' | 'multiplier';
 
 // バブル設定インターフェース
-export interface BubbleConfig { health: number,
-    size: number,
-    maxAge: number,
-    color: string,
-            score: number;
+export interface BubbleConfig {
+    health: number;
+    size: number;
+    maxAge: number;
+    color: string;
+    score: number;
     // 特殊効果プロパティ（オプション）
     healAmount?: number;
     damageAmount?: number;
@@ -39,40 +45,40 @@ export interface BubbleConfig { health: number,
     magnetRadius?: number;
     explosionRadius?: number;
     phaseChance?: number;
-    scoreMultiplier?: number };
+    scoreMultiplier?: number;
+}
 // バブル効果定義
-export interface BubbleEffect { type: BubbleEffectType;
+export interface BubbleEffect {
+    type: BubbleEffectType;
     amount?: number;
     position?: Position;
     radius?: number;
     duration?: number;
     intensity?: number;
     multiplier?: number;
-    slowFactor?: number;
-    strength?: number;
-    damage?: number;
-';'
+}
 
-export type BubbleEffectType = '';
-    | 'heal' | 'damage' | 'chain_destroy' | 'bonus_time''';
-    | 'time_stop' | 'bonus_score' | 'screen_shake''';
-    | 'score_multiplier' | 'slow_area' | 'magnetic_pull''';
+export type BubbleEffectType = 
+    | 'heal' | 'damage' | 'chain_destroy' | 'bonus_time'
+    | 'time_stop' | 'bonus_score' | 'screen_shake'
+    | 'score_multiplier' | 'slow_area' | 'magnetic_pull'
     | 'big_explosion' | 'next_score_multiplier';
 
 // バブルクラス型定義
-export interface BubbleInterface { // 基本プロパティ
-    id: string,
-    type: BubbleType,
-    position: Position,
-    velocity: Velocity,
-    size: number,
-    health: number,
-    maxHealth: number,
-    age: number,
-    maxAge: number,
-    isAlive: boolean,
-    effects: BubbleEffect[],
-            clickCount: number;
+export interface BubbleInterface {
+    // 基本プロパティ
+    id: string;
+    type: BubbleType;
+    position: Position;
+    velocity: Velocity;
+    size: number;
+    health: number;
+    maxHealth: number;
+    age: number;
+    maxAge: number;
+    isAlive: boolean;
+    effects: BubbleEffect[];
+    clickCount: number;
     // メソッド定義
     applyTypeConfig(): void;
     getTypeConfig(): BubbleConfig;
