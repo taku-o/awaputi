@@ -10,40 +10,36 @@ test.describe('Shop Button Main Menu E2E Tests', () => {
     test.beforeEach(async ({ page }) => {
         // LocalStorageをクリア
         await page.evaluate(() => {
-            localStorage.clear();
-            sessionStorage.clear();
-        }');
+            localStorage.clear(),
+            sessionStorage.clear() }');
         
         // URLパラメータでユーザー名入力をスキップしてメインメニューに直接アクセス
-        await page.goto('http: //localhost:8001? username=TestUser&skipUsernameInput=true'),
+        await page.goto('http: //localhost:8001? username=TestUser&skipUsernameInput=true',
         
         // ページを再読み込み
         await page.reload(');
         
         // エントリーページの「ゲームを開始する」ボタンをクリック : undefined
-        await page.getByRole('button', { name: 'ゲームを開始する' ).click('),
+        await page.getByRole('button', { name: 'ゲームを開始する' ).click(',
         
         // PWAウェルカム画面の「始める」ボタンをクリック
-        await page.getByRole('button', { name: '始める' ).click(),
+        await page.getByRole('button', { name: '始める' ).click(
         
         // メインメニュー表示を待機
-        await page.waitForTimeout(2000);
-    }');
+        await page.waitForTimeout(2000) }');
 
     test('should access shop from main menu with keyboard navigation', async ({ page )') => {
         // コンソールエラーの監視
         const consoleErrors: any[] = [],
-        page.on('console', msg => {);
+        page.on('console', msg => {),
             if (msg.type(') === 'error') {
-                consoleErrors.push(msg.text();
-            }
+                consoleErrors.push(msg.text() }
         }');
 
         // JavaScript エラーの監視
         const jsErrors: any[] = [],
-        page.on('pageerror', error => {);
-            jsErrors.push(error.message);
-        }');
+        page.on('pageerror', error => {),
+            jsErrors.push(error.message) }');
 
         // Canvas要素が存在することを確認
         const canvas = page.getByRole('img', { name: 'ゲーム画面' });
@@ -65,8 +61,8 @@ test.describe('Shop Button Main Menu E2E Tests', () => {
 
         // エラーが発生していないことを確認
         expect(consoleErrors.filter(error => ')
-            !error.includes('Failed to load resource'') && 
-            !error.includes('favicon.ico'') &&
+            !error.includes('Failed to load resource') && 
+            !error.includes('favicon.ico') &&
             !error.includes('FontFace')).toEqual([]);
         expect(jsErrors).toEqual([]);
     }');
@@ -124,42 +120,38 @@ test.describe('Stage Select S Key Disabled E2E Tests', () => {
     test.beforeEach(async ({ page }) => {
         // LocalStorageをクリア
         await page.evaluate(() => {
-            localStorage.clear();
-            sessionStorage.clear();
-        }');
+            localStorage.clear(),
+            sessionStorage.clear() }');
         
         // URLパラメータでユーザー名入力をスキップ
-        await page.goto('http: //localhost:8001? username=TestUser&skipUsernameInput=true'),
+        await page.goto('http: //localhost:8001? username=TestUser&skipUsernameInput=true',
         await page.reload(');
         
         // エントリーページをクリック : undefined
-        await page.getByRole('button', { name: 'ゲームを開始する' ).click('),
+        await page.getByRole('button', { name: 'ゲームを開始する' ).click(',
         
         // PWAウェルカム画面をクリック
-        await page.getByRole('button', { name: '始める' ).click(),
+        await page.getByRole('button', { name: '始める' ).click(
         
         // メインメニュー表示を待機
-        await page.waitForTimeout(2000');
+        await page.waitForTimeout(2000'),
         
         // ゲーム開始を選択してステージ選択画面に移動
-        await page.keyboard.press('Enter');
-        await page.waitForTimeout(2000);
-    }');
+        await page.keyboard.press('Enter'),
+        await page.waitForTimeout(2000) }');
 
     test('should not navigate to shop with S key in stage select', async ({ page )') => {
         // コンソールエラーの監視
         const consoleErrors: any[] = [],
-        page.on('console', msg => {);
+        page.on('console', msg => {),
             if (msg.type(') === 'error') {
-                consoleErrors.push(msg.text();
-            }
+                consoleErrors.push(msg.text() }
         }');
 
         // JavaScript エラーの監視
         const jsErrors: any[] = [],
-        page.on('pageerror', error => {);
-            jsErrors.push(error.message);
-        }');
+        page.on('pageerror', error => {),
+            jsErrors.push(error.message) }');
 
         // Canvas要素が存在することを確認（ステージ選択画面）
         const canvas = page.getByRole('img', { name: 'ゲーム画面' });
@@ -190,8 +182,8 @@ test.describe('Stage Select S Key Disabled E2E Tests', () => {
 
         // エラーが発生していないことを確認
         expect(consoleErrors.filter(error => ')
-            !error.includes('Failed to load resource'') && 
-            !error.includes('favicon.ico'') &&
+            !error.includes('Failed to load resource') && 
+            !error.includes('favicon.ico') &&
             !error.includes('FontFace')).toEqual([]);
         expect(jsErrors).toEqual([]);
     }');
@@ -225,15 +217,13 @@ test.describe('Stage Select S Key Disabled E2E Tests', () => {
         const consoleWarnings: any[] = [],
         const consoleErrors: any[] = [],
 
-        page.on('console', msg => {);
-            const text = msg.text();
-            consoleMessages.push(text);
+        page.on('console', msg => {),
+            const text = msg.text(),
+            consoleMessages.push(text),
             
             if (msg.type(') === 'warning') {
-                consoleWarnings.push(text);
-            } else if (msg.type(') === 'error') {
-                consoleErrors.push(text);
-            }
+                consoleWarnings.push(text) } else if (msg.type(') === 'error') {
+                consoleErrors.push(text) }
         }');
 
         // Canvas要素が存在することを確認

@@ -1,27 +1,27 @@
 // インターフェース定義
-interface ListenerOptions { once?: boolean;
-    priority?: number; }
+interface ListenerOptions { once?: boolean,
+    priority?: number }
 
 interface ListenerInfo { callback: EventCallback,
-    once: boolean;
+    once: boolean,
     priority: number,
-    id: string ,}
+    id: string  }
 
-interface EventHistoryEntry { event: string;
+interface EventHistoryEntry { event: string,
     data: any,
     timestamp: number }
 
-interface ErrorInfo { type: 'listener_error' | 'emit_error';
-    error: Error;
-    event: string;
-    listenerId?: string;
+interface ErrorInfo { type: 'listener_error' | 'emit_error',
+    error: Error,
+    event: string,
+    listenerId?: string,
     data?: any,
     timestamp: number }
 
 interface DebugInfo { eventNames: string[],
-    listenerCounts: Record<string, number>;
+    listenerCounts: Record<string, number>,
     recentEvents: EventHistoryEntry[],
-    totalEvents: number ,}
+    totalEvents: number  }
 
 type EventCallback = (data: any, event: string) => boolean | void;
 type ErrorHandler = (errorInfo: ErrorInfo) => void;
@@ -33,25 +33,25 @@ type UnsubscribeFunction = () => void;
  */
 export class ComponentEventBus {
     // イベントリスナーの管理
-    private listeners: Map<string, ListenerInfo[]>;
+    private listeners: Map<string, ListenerInfo[]>,
     
     // デバッグ用のイベント履歴
-    private eventHistory: EventHistoryEntry[];
-    private maxHistorySize: number;
+    private eventHistory: EventHistoryEntry[],
+    private maxHistorySize: number,
     // エラーハンドリング
-    private, errorHandlers: ErrorHandler[];
+    private, errorHandlers: ErrorHandler[],
     constructor() {
 
         // イベントリスナーの管理
-        this.listeners = new Map();
+        this.listeners = new Map(),
         
         // デバッグ用のイベント履歴
-        this.eventHistory = [];
-        this.maxHistorySize = 100;
+        this.eventHistory = [],
+        this.maxHistorySize = 100,
         
         // エラーハンドリング
 
-    ,}
+     }
         this.errorHandlers = []; }
     }
     
@@ -63,19 +63,17 @@ export class ComponentEventBus {
      * @returns リスナー削除用の関数
      */''
     on(event: string, callback: EventCallback, options: ListenerOptions = { )): UnsubscribeFunction {''
-        if(typeof, event !== 'string' || typeof, callback !== 'function'') {', ';
-
-        }
+        if(typeof, event !== 'string' || typeof, callback !== 'function') {', ' }
 
             throw new Error('Invalid, event or, callback'; }'
         }
         
-        if(!this.listeners.has(event) { this.listeners.set(event, []); }
+        if(!this.listeners.has(event) { this.listeners.set(event, []) }
         
         const listenerInfo: ListenerInfo = { callback,
-            once: options.once || false;
+            once: options.once || false,
             priority: options.priority || 0,
-    id: this.generateListenerId( ,};
+    id: this.generateListenerId(  };
         
         this.listeners.get(event)!.push(listenerInfo);
         
@@ -92,7 +90,7 @@ export class ComponentEventBus {
      * @param callback - コールバック関数
      * @returns リスナー削除用の関数
      */
-    once(event: string, callback: EventCallback): UnsubscribeFunction { return this.on(event, callback, { once: true ,}
+    once(event: string, callback: EventCallback): UnsubscribeFunction { return this.on(event, callback, { once: true  }
     
     /**
      * イベントリスナーを削除
@@ -100,7 +98,7 @@ export class ComponentEventBus {
      * @param callbackOrId - コールバック関数またはリスナーID
      */
     off(event: string, callbackOrId: EventCallback | string): void { if(!this.listeners.has(event) {
-            return; }
+            return }
         
         const listeners = this.listeners.get(event)!;
         const index = listeners.findIndex(listener => );
@@ -108,12 +106,12 @@ export class ComponentEventBus {
         
         if(index !== -1) {
         
-            listeners.splice(index, 1);
+            listeners.splice(index, 1),
             
             // リスナーが空になった場合はイベント自体を削除
             if (listeners.length === 0) {
-        
-        }
+    
+}
                 this.listeners.delete(event); }
 }
     }
@@ -126,53 +124,51 @@ export class ComponentEventBus {
      */
     emit(event: string, data?: any): boolean { try {
             // イベント履歴に記録
-            this.addToHistory(event, data);
+            this.addToHistory(event, data),
             
             if(!this.listeners.has(event) {
-            
-                
-            
-            }
+    
+}
                 return false;
             
             const listeners = this.listeners.get(event)!;
             let handled = false;
             const toRemove: string[] = [],
             
-            for(const, listener of, listeners) {
+            for (const listener of listeners) {
             
                 try {
-                    const result = listener.callback(data, event);
+                    const result = listener.callback(data, event),
                     if (result === true) {
-            
-            }
+    
+}
                         handled = true; }
                     }
                     
                     // onceリスナーの場合は削除対象にマーク
-                    if (listener.once) { toRemove.push(listener.id); } catch (error) { this.handleListenerError(error as Error, event, listener); }
+                    if (listener.once) { toRemove.push(listener.id) } catch (error) { this.handleListenerError(error as Error, event, listener) }
             }
             
             // onceリスナーを削除
-            for (const, id of, toRemove) { this.off(event, id); }
+            for (const id of toRemove) { this.off(event, id) }
             
             return handled;
-        } catch (error) { this.handleEmitError(error as Error, event, data);
-            return false;
+        } catch (error) { this.handleEmitError(error as Error, event, data),
+            return false,
     
     /**
      * すべてのリスナーを削除
      * @param event - 特定のイベント名（省略時は全イベント）
      */
     removeAllListeners(event?: string): void { if (event) {
-            this.listeners.delete(event); } else { this.listeners.clear(); }
+            this.listeners.delete(event) } else { this.listeners.clear() }
     }
     
     /**
      * 登録されているイベントの一覧を取得
      * @returns イベント名の配列
      */
-    getEventNames(): string[] { return Array.from(this.listeners.keys(); }
+    getEventNames(): string[] { return Array.from(this.listeners.keys() }
     
     /**
      * 特定のイベントのリスナー数を取得
@@ -185,9 +181,7 @@ export class ComponentEventBus {
      * @param handler - エラーハンドラー関数
      */''
     onError(handler: ErrorHandler): void { ''
-        if(typeof, handler === 'function' {'
-            
-        ,}
+        if(typeof, handler === 'function' { }
             this.errorHandlers.push(handler);
     
     /**
@@ -195,10 +189,9 @@ export class ComponentEventBus {
      * @returns デバッグ情報
      */
     getDebugInfo(): DebugInfo { return { eventNames: this.getEventNames()
-           , listenerCounts: Object.fromEntries();
-                this.getEventNames().map(event => [event, this.getListenerCount(event)]);
-            ),
-            recentEvents: this.eventHistory.slice(-10), };
+           , listenerCounts: Object.fromEntries(),
+                this.getEventNames().map(event => [event, this.getListenerCount(event)])),
+            recentEvents: this.eventHistory.slice(-10) };
             totalEvents: this.eventHistory.length 
     }
     
@@ -216,12 +209,12 @@ export class ComponentEventBus {
      * @param data - イベントデータ
      */
     private addToHistory(event: string, data: any): void { this.eventHistory.push({)
-            event);
-            data: this.safeClone(data),
+            event,
+            data: this.safeClone(data,
     timestamp: Date.now( });
         
         // 履歴サイズを制限
-        if (this.eventHistory.length > this.maxHistorySize) { this.eventHistory.shift(); }
+        if (this.eventHistory.length > this.maxHistorySize) { this.eventHistory.shift() }
     }
     
     /**
@@ -231,11 +224,11 @@ export class ComponentEventBus {
      * @param listener - リスナー情報
      */''
     private handleListenerError(error: Error, event: string, listener: ListenerInfo): void { const errorInfo: ErrorInfo = {''
-            type: 'listener_error';
+            type: 'listener_error',
             error,
             event,
             listenerId: listener.id,
-    timestamp: Date.now( ,};
+    timestamp: Date.now(  };
         
         // エラーハンドラーに通知
         for(const handler of this.errorHandlers) {
@@ -256,11 +249,11 @@ export class ComponentEventBus {
      * @param data - イベントデータ'
      */''
     private handleEmitError(error: Error, event: string, data: any): void { const errorInfo: ErrorInfo = {''
-            type: 'emit_error';
+            type: 'emit_error',
             error,
             event,
-            data: this.safeClone(data),
-    timestamp: Date.now( ,};
+            data: this.safeClone(data,
+    timestamp: Date.now(  };
         
         // エラーハンドラーに通知
         for(const handler of this.errorHandlers) {
@@ -280,14 +273,11 @@ export class ComponentEventBus {
      * @returns クローンされたオブジェクト'
      */''
     private safeClone(obj: any): any { try {'
-            if(obj === null || typeof, obj !== 'object' {'
-                
-            }
+            if(obj === null || typeof, obj !== 'object' { }
                 return obj;
 
-            return JSON.parse(JSON.stringify(obj);''
-        } catch (error) {
-            return '[Uncloneable Object]';
+            return JSON.parse(JSON.stringify(obj);} catch (error) {
+            return '[Uncloneable Object]',
     
     /**
      * EventBusのクリーンアップ

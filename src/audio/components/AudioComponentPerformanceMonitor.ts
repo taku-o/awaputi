@@ -12,13 +12,13 @@ import { LoggingSystem  } from '../../core/LoggingSystem';
  * パフォーマンスメトリクスインターフェース
  */
 interface PerformanceMetrics { cpuUsage: number,
-    memoryUsage: number;
-    audioProcessingLoad: number;
-    activeAudioNodes: number;
-    bufferUnderruns: number;
-    latency: number;
+    memoryUsage: number,
+    audioProcessingLoad: number,
+    activeAudioNodes: number,
+    bufferUnderruns: number,
+    latency: number,
     droppedFrames: number,
-    frameRate: number ,}
+    frameRate: number  }
 
 /**
  * メトリクス履歴エントリインターフェース
@@ -31,52 +31,52 @@ interface MetricsHistoryEntry extends PerformanceMetrics { timestamp: number }
 interface AnalysisData { averageLoad: number,
     peakLoad: number,
     stabilityScore: number,
-    performanceGrade: 'A' | 'B' | 'C' | 'D' | 'F';
+    performanceGrade: 'A' | 'B' | 'C' | 'D' | 'F',
     recommendations: Recommendation[],
     bottlenecks: Bottleneck[]
-    ,}
+     }
 
 /**
  * 推奨事項インターフェース
  */'
 interface Recommendation { ''
     type: 'performance' | 'optimization' | 'stability' | 'memory',
-    severity: 'low' | 'medium' | 'high';
+    severity: 'low' | 'medium' | 'high',
     message: string,
-    action: string ,}
+    action: string  }
 
 /**
  * ボトルネックインターフェース
  */'
 interface Bottleneck { ''
     type: 'cpu' | 'memory' | 'latency' | 'buffer',
-    severity: 'low' | 'medium' | 'high' | 'critical';
+    severity: 'low' | 'medium' | 'high' | 'critical',
     value: number,
-    description: string ,}
+    description: string  }
 
 /**
  * アラートインターフェース
  */
 interface Alert { id: string,
     type: string,
-    severity: 'warning' | 'critical';
-    value: number;
-    message: string;
+    severity: 'warning' | 'critical',
+    value: number,
+    message: string,
     timestamp: number,
-    count: number ,}
+    count: number  }
 
 /**
  * パフォーマンスモニター設定インターフェース
  */
-interface PerformanceMonitorConfig { updateInterval: number;
-    intervalId: NodeJS.Timeout | null;
+interface PerformanceMonitorConfig { updateInterval: number,
+    intervalId: NodeJS.Timeout | null,
     lastUpdateTime: number,
-    metrics: Map<number, MetricsHistoryEntry>;
+    metrics: Map<number, MetricsHistoryEntry>,
     thresholds: {
-        cpuHig;h: number;
-        memoryHigh: number;
+        cpuHig,h: number,
+        memoryHigh: number,
         latencyHigh: number,
-    droppedFramesHigh: number ,};
+    droppedFramesHigh: number  };
     maxHistorySize: number;
     analysisWindow: number,
     stabilityWindow: number;
@@ -86,9 +86,9 @@ interface PerformanceMonitorConfig { updateInterval: number;
  * パフォーマンス設定インターフェース
  */
 interface PerformanceConfig { enabledMetrics: {
-        cp;u: boolean;
-        memory: boolean;
-        audio: boolean;
+        cp,u: boolean,
+        memory: boolean,
+        audio: boolean,
         latency: boolean,
     frames: boolean };
     alertThresholds: { warning: number,
@@ -101,95 +101,94 @@ interface PerformanceConfig { enabledMetrics: {
 /**
  * アラートシステムインターフェース
  */
-interface AlertSystem { alerts: Map<string, Alert>;
-    lastAlert: number;
+interface AlertSystem { alerts: Map<string, Alert>,
+    lastAlert: number,
     alertCooldown: number,
-    maxActiveAlerts: number ,}
+    maxActiveAlerts: number  }
 
 /**
  * パフォーマンスレポートインターフェース
  */
-interface PerformanceReport { timestamp: number;
-    current: PerformanceMetrics;
+interface PerformanceReport { timestamp: number,
+    current: PerformanceMetrics,
     analysis: AnalysisData,
     monitoring: {
-        enable;d: boolean;
-        interval: number;
+        enable,d: boolean,
+        interval: number,
         lastUpdate: number,
     historySize: number };
-    alerts: { active: Alert[];
+    alerts: { active: Alert[],
         totalCount: number,
     lastAlert: number };
     configuration: { ''
         thresholds: PerformanceMonitorConfig['thresholds'],
         adaptiveOptimization: boolean,
-        enabledMetrics: PerformanceConfig['enabledMetrics] ,}
+        enabledMetrics: PerformanceConfig['enabledMetrics]  }
 
 /**
  * ConfigurationManager インターフェース（型定義用）
  */
 interface ConfigurationManager { get(category: string): any,
-    watch(category: string, path: string, callback: (value: any) => void): void ,}
+    watch(category: string, path: string, callback: (value: any) => void): void  }
 }
 
 /**
  * ErrorHandler インターフェース（型定義用）
  */
-interface ErrorHandler { handleError(error: any, context: string): void ,}
+interface ErrorHandler { handleError(error: any, context: string): void  }
 
 /**
  * AudioManager インターフェース
  */
-interface AudioManager { getActiveNodeCount?(): number;
-    reduceQuality?(): void;
+interface AudioManager { getActiveNodeCount?(): number,
+    reduceQuality?(): void,
     limitConcurrentSounds?(limit: number): void,
-    cleanupUnusedBuffers?(): void;
+    cleanupUnusedBuffers?(): void,
     adjustBufferSize?(mode: string): void, 
 /**
  * WindowWithGC インターフェース
  */
-interface WindowWithGC extends Window { gc?(): void; }
+interface WindowWithGC extends Window { gc?(): void }
 
 export class AudioComponentPerformanceMonitor {
-    private audioContext: AudioContext;
-    private audioManager: AudioManager;
-    private configManager: ConfigurationManager;
-    private errorHandler: ErrorHandler;
-    private loggingSystem: LoggingSystem;
+    private audioContext: AudioContext,
+    private audioManager: AudioManager,
+    private configManager: ConfigurationManager,
+    private errorHandler: ErrorHandler,
+    private loggingSystem: LoggingSystem,
     // パフォーマンス監視設定
-    private performanceMonitor: PerformanceMonitorConfig;
+    private performanceMonitor: PerformanceMonitorConfig,
     // 現在のパフォーマンスメトリクス
-    private currentMetrics: PerformanceMetrics;
+    private currentMetrics: PerformanceMetrics,
     // 分析データ
-    private analysisData: AnalysisData;
+    private analysisData: AnalysisData,
     // パフォーマンス設定
-    private performanceConfig: PerformanceConfig;
+    private performanceConfig: PerformanceConfig,
     // リアルタイム警告
-    private, alertSystem: AlertSystem;
+    private, alertSystem: AlertSystem,
     constructor(audioContext: AudioContext, audioManager: AudioManager) {
 
-        this.audioContext = audioContext;
-        this.audioManager = audioManager;
-        this.configManager = getConfigurationManager();
-        this.errorHandler = getErrorHandler();
-        this.loggingSystem = LoggingSystem.getInstance ? LoggingSystem.getInstance() : new LoggingSystem();
+        this.audioContext = audioContext,
+        this.audioManager = audioManager,
+        this.configManager = getConfigurationManager(),
+        this.errorHandler = getErrorHandler(),
+        this.loggingSystem = LoggingSystem.getInstance ? LoggingSystem.getInstance() : new LoggingSystem(),
         
         // パフォーマンス監視設定
         this.performanceMonitor = {
-            updateInterval: 1000, // ms;
+            updateInterval: 1000, // ms,
             intervalId: null,
     lastUpdateTime: 0,
             metrics: new Map('''
             performanceGrade: 'A',
-    recommendations: [];
-    ,}
+    recommendations: [] }
             bottlenecks: [] 
     };
         // パフォーマンス設定
         this.performanceConfig = { enabledMetrics: {
-                cpu: true;
-                memory: true;
-                audio: true;
+                cpu: true,
+                memory: true,
+                audio: true,
                 latency: true,
     frames: true };
             alertThresholds: { warning: 0.7,
@@ -197,12 +196,12 @@ export class AudioComponentPerformanceMonitor {
             adaptiveOptimization: true,
     reportingInterval: 10000, // 10秒;
             cleanupInterval: 60000 // 1分);
-        })
+            });
         // リアルタイム警告
-        this.alertSystem = { alerts: new Map(),
+        this.alertSystem = { alerts: new Map(
             lastAlert: 0,
-    alertCooldown: 5000, // 5秒;
-            maxActiveAlerts: 10 ,};
+    alertCooldown: 5000, // 5秒,
+            maxActiveAlerts: 10  };
         this.initialize();
     }
     
@@ -211,23 +210,23 @@ export class AudioComponentPerformanceMonitor {
      */
     async initialize(): Promise<void> { try {
             // 設定を読み込み
-            this.loadConfiguration();
+            this.loadConfiguration(),
             
             // 設定監視を開始
-            this.setupConfigWatchers();
+            this.setupConfigWatchers(),
             // 監視を開始
-            this.startMonitoring()';
-            this.loggingSystem.info('AudioPerformanceMonitor', 'Audio performance monitor initialized';' }
+            this.startMonitoring()',
+            this.loggingSystem.info('AudioPerformanceMonitor', 'Audio performance monitor initialized',' }
 
         } catch (error) {
-            this.errorHandler.handleError(error, 'AudioPerformanceMonitor.initialize'; }'
+            this.errorHandler.handleError(error, 'AudioPerformanceMonitor.initialize' }'
     }
     
     /**
      * 設定を読み込み'
      */''
     private loadConfiguration()';
-            const performanceConfig = this.configManager.get('performance'') || {};
+            const performanceConfig = this.configManager.get('performance') || {};
             
             // 更新間隔
             this.performanceMonitor.updateInterval = performanceConfig.optimization?.optimizationInterval || 1000;
@@ -242,12 +241,13 @@ export class AudioComponentPerformanceMonitor {
             this.performanceConfig.adaptiveOptimization = performanceConfig.optimization?.adaptiveMode !== false;
 
             this.loggingSystem.debug('AudioPerformanceMonitor', 'Configuration loaded', { : undefined)
-                updateInterval: this.performanceMonitor.updateInterval),
-    thresholds: this.performanceMonitor.thresholds,'';
-                adaptive: this.performanceConfig.adaptiveOptimization';' ,}'
+                updateInterval: this.performanceMonitor.updateInterval,
+    thresholds: this.performanceMonitor.thresholds,',
+                adaptive: this.performanceConfig.adaptiveOptimization','
+            }'
 
         } catch (error) {
-            this.errorHandler.handleError(error, 'AudioPerformanceMonitor.loadConfiguration'; }'
+            this.errorHandler.handleError(error, 'AudioPerformanceMonitor.loadConfiguration' }'
     }
     
     /**
@@ -255,21 +255,18 @@ export class AudioComponentPerformanceMonitor {
      */''
     private setupConfigWatchers()';
             this.configManager.watch('performance', 'optimization.optimizationInterval', (newValue: number) => {  if (newValue !== undefined) {
-                    this.performanceMonitor.updateInterval = newValue; }
+                    this.performanceMonitor.updateInterval = newValue }
                     this.restartMonitoring(); }
 
-                }''
-            }');
+                }'}');
 
             this.configManager.watch('performance', 'optimization.adaptiveMode', (newValue: boolean) => {  if (newValue !== undefined) { }
                     this.performanceConfig.adaptiveOptimization = newValue; }
 
-                }''
-            }');
+                }'}');
 
-            this.loggingSystem.debug('AudioPerformanceMonitor', 'Config watchers setup completed';''
-        } catch (error) {
-            this.errorHandler.handleError(error, 'AudioPerformanceMonitor.setupConfigWatchers'; }'
+            this.loggingSystem.debug('AudioPerformanceMonitor', 'Config watchers setup completed';} catch (error) {
+            this.errorHandler.handleError(error, 'AudioPerformanceMonitor.setupConfigWatchers' }'
     }
     
     /**
@@ -277,75 +274,74 @@ export class AudioComponentPerformanceMonitor {
      */
     private startMonitoring(): void { try {
             if(this.performanceMonitor.intervalId) {
-                
-            }
+    
+}
                 this.stopMonitoring(); }
             }
             
-            this.performanceMonitor.intervalId = setInterval(() => {  this.updatePerformanceMetrics();
-                this.analyzePerformance(); }
+            this.performanceMonitor.intervalId = setInterval(() => {  this.updatePerformanceMetrics(),
+                this.analyzePerformance() }
 
                 this.checkAlerts();' }'
 
             }, this.performanceMonitor.updateInterval';
 
-            this.loggingSystem.info('AudioPerformanceMonitor', `Performance monitoring started (interval: ${this.performanceMonitor.updateInterval}ms}`});''
-        } catch (error) {
-            this.errorHandler.handleError(error, 'AudioPerformanceMonitor.startMonitoring'; }'
+            this.loggingSystem.info('AudioPerformanceMonitor', `Performance monitoring started (interval: ${this.performanceMonitor.updateInterval}ms}`});'} catch (error) {
+            this.errorHandler.handleError(error, 'AudioPerformanceMonitor.startMonitoring' }'
     }
     
     /**
      * 監視を停止
      */
     private stopMonitoring(): void { try {
-            if(this.performanceMonitor.intervalId) {'
+            if(this.performanceMonitor.intervalId) {
 
-                clearInterval(this.performanceMonitor.intervalId);
-            }
+                clearInterval(this.performanceMonitor.intervalId) }
                 this.performanceMonitor.intervalId = null; }
             }
 
-            this.loggingSystem.info('AudioPerformanceMonitor', 'Performance monitoring stopped';''
-        } catch (error) {
-            this.errorHandler.handleError(error, 'AudioPerformanceMonitor.stopMonitoring'; }'
+            this.loggingSystem.info('AudioPerformanceMonitor', 'Performance monitoring stopped';} catch (error) {
+            this.errorHandler.handleError(error, 'AudioPerformanceMonitor.stopMonitoring' }'
     }
     
     /**
      * 監視を再開
      */
     private restartMonitoring(): void { try {
-            this.stopMonitoring();
+            this.stopMonitoring(),
 
-            this.startMonitoring();' }'
+            this.startMonitoring(),' }'
 
         } catch (error) {
-            this.errorHandler.handleError(error, 'AudioPerformanceMonitor.restartMonitoring'; }'
+            this.errorHandler.handleError(error, 'AudioPerformanceMonitor.restartMonitoring' }'
     }
     
     /**
      * パフォーマンスメトリクスを更新
      */
     private updatePerformanceMetrics(): void { try {
-            const currentTime = performance.now();
+            const currentTime = performance.now(),
             
             // システムメトリクスを収集
-            this.collectSystemMetrics();
+            this.collectSystemMetrics(),
             
             // オーディオ固有メトリクスを収集
-            this.collectAudioMetrics();
+            this.collectAudioMetrics(),
             
             // 履歴に保存
-            this.performanceMonitor.metrics.set(currentTime, {)
-                ...this.currentMetrics,);
-                timestamp: currentTime);
+            this.performanceMonitor.metrics.set(currentTime, {
+                ...this.currentMetrics),
+                timestamp: currentTime),
             // 古い履歴を削除
-            this.cleanupHistory(currentTime);
+            this.cleanupHistory(currentTime),
             
-            this.performanceMonitor.lastUpdateTime = currentTime;
-            ' ,}'
+            this.performanceMonitor.lastUpdateTime = currentTime,
+            '
+            
+            })'
 
         } catch (error) {
-            this.errorHandler.handleError(error, 'AudioPerformanceMonitor.updatePerformanceMetrics'; }'
+            this.errorHandler.handleError(error, 'AudioPerformanceMonitor.updatePerformanceMetrics' }'
     }
     
     /**
@@ -353,20 +349,19 @@ export class AudioComponentPerformanceMonitor {
      */''
     private collectSystemMetrics()';
             if(typeof, performance !== 'undefined' && performance.now) {
-                const start = performance.now();
+                const start = performance.now(),
                 // 簡単な計算を実行
-                for (let, i = 0; i < 1000; i++) {
+                for (let, i = 0, i < 1000, i++) {
             }
                     Math.random(); }
                 }
-                const end = performance.now();''
+                const end = performance.now();
                 this.currentMetrics.cpuUsage = Math.min(1.0, (end - start) / 10');
             }
             ';
             // メモリ使用量
             if(typeof, performance !== 'undefined' && 'memory' in, performance) {
-                const memory = (performance, as any).memory;
-            }
+                const memory = (performance, as any).memory }
                 this.currentMetrics.memoryUsage = memory.usedJSHeapSize / memory.totalJSHeapSize; }
             } else {  // 概算値 }
                 this.currentMetrics.memoryUsage = Math.random() * 0.3 + 0.2; }
@@ -376,7 +371,7 @@ export class AudioComponentPerformanceMonitor {
             this.currentMetrics.frameRate = this.estimateFrameRate();
 
         } catch (error) {
-            this.errorHandler.handleError(error, 'AudioPerformanceMonitor.collectSystemMetrics'; }'
+            this.errorHandler.handleError(error, 'AudioPerformanceMonitor.collectSystemMetrics' }'
     }
     
     /**
@@ -384,15 +379,15 @@ export class AudioComponentPerformanceMonitor {
      */
     private collectAudioMetrics(): void { try {
             // アクティブなオーディオノード数
-            this.currentMetrics.activeAudioNodes = this.countActiveAudioNodes();
+            this.currentMetrics.activeAudioNodes = this.countActiveAudioNodes(),
             
             // オーディオ処理負荷
-            this.currentMetrics.audioProcessingLoad = this.calculateAudioProcessingLoad();
+            this.currentMetrics.audioProcessingLoad = this.calculateAudioProcessingLoad(),
             
             // レイテンシー
             if(this.audioContext) {
-                
-            }
+    
+}
                 this.currentMetrics.latency = (this.audioContext.baseLatency || 0) * 1000; }
             }
             
@@ -400,7 +395,7 @@ export class AudioComponentPerformanceMonitor {
             this.currentMetrics.bufferUnderruns = this.detectBufferUnderruns();
 
         } catch (error) {
-            this.errorHandler.handleError(error, 'AudioPerformanceMonitor.collectAudioMetrics'; }'
+            this.errorHandler.handleError(error, 'AudioPerformanceMonitor.collectAudioMetrics' }'
     }
     
     /**
@@ -408,34 +403,33 @@ export class AudioComponentPerformanceMonitor {
      * @returns アクティブノード数'
      */''
     private countActiveAudioNodes()';
-            if(this.audioManager && typeof, this.audioManager.getActiveNodeCount === 'function) { nodeCount = this.audioManager.getActiveNodeCount(); } else {  // 推定値 }'
+            if(this.audioManager && typeof, this.audioManager.getActiveNodeCount === 'function) { nodeCount = this.audioManager.getActiveNodeCount() } else {  // 推定値 }'
                 nodeCount = Math.floor(Math.random() * 15) + 5; }
             }
             ';
 
-            return nodeCount;''
-        } catch (error) {
-            this.errorHandler.handleError(error, 'AudioPerformanceMonitor.countActiveAudioNodes);
-            return 0;
+            return nodeCount;} catch (error) {
+            this.errorHandler.handleError(error, 'AudioPerformanceMonitor.countActiveAudioNodes),
+            return 0,
     
     /**
      * オーディオ処理負荷を計算
      * @returns 処理負荷 (0-1)
      */
     private calculateAudioProcessingLoad(): number { try {
-            const nodeCount = this.currentMetrics.activeAudioNodes;
-            const cpuUsage = this.currentMetrics.cpuUsage;
+            const nodeCount = this.currentMetrics.activeAudioNodes,
+            const cpuUsage = this.currentMetrics.cpuUsage,
             
             // ノード数とCPU使用率から処理負荷を推定
-            const nodeLoad = Math.min(1.0, nodeCount / 20); // 20ノードで100%と仮定
-            const combinedLoad = Math.max(nodeLoad, cpuUsage * 0.7); // CPUの70%をオーディオ処理と仮定
-            ';
+            const nodeLoad = Math.min(1.0, nodeCount / 20), // 20ノードで100%と仮定
+            const combinedLoad = Math.max(nodeLoad, cpuUsage * 0.7), // CPUの70%をオーディオ処理と仮定
+            ',
 
-            return Math.min(1.0, combinedLoad);' }'
+            return Math.min(1.0, combinedLoad),' }'
 
         } catch (error) {
-            this.errorHandler.handleError(error, 'AudioPerformanceMonitor.calculateAudioProcessingLoad);
-            return 0;
+            this.errorHandler.handleError(error, 'AudioPerformanceMonitor.calculateAudioProcessingLoad),
+            return 0,
     
     /**
      * フレームレートを推定
@@ -444,16 +438,16 @@ export class AudioComponentPerformanceMonitor {
     private estimateFrameRate(): number { try {
             // 簡易的なフレームレート推定
             // 実際の実装では requestAnimationFrame を使用
-            const targetFPS = 60;
-            const cpuImpact = this.currentMetrics.cpuUsage * 20; // CPU使用率による影響
-            const estimatedFPS = Math.max(30, targetFPS - cpuImpact);
-            ';
+            const targetFPS = 60,
+            const cpuImpact = this.currentMetrics.cpuUsage * 20, // CPU使用率による影響
+            const estimatedFPS = Math.max(30, targetFPS - cpuImpact),
+            ',
 
-            return Math.round(estimatedFPS);' }'
+            return Math.round(estimatedFPS),' }'
 
         } catch (error) {
-            this.errorHandler.handleError(error, 'AudioPerformanceMonitor.estimateFrameRate);
-            return 60;
+            this.errorHandler.handleError(error, 'AudioPerformanceMonitor.estimateFrameRate),
+            return 60,
     
     /**
      * バッファーアンダーランを検出
@@ -462,39 +456,37 @@ export class AudioComponentPerformanceMonitor {
     private detectBufferUnderruns(): number { try {
             // 簡易的な検出
             if(this.currentMetrics.cpuUsage > 0.9 || this.currentMetrics.memoryUsage > 0.9) {
-                
-            }
+    
+}
                 return this.currentMetrics.bufferUnderruns + 1;
             ';
 
-            return this.currentMetrics.bufferUnderruns;''
-        } catch (error) {
-            this.errorHandler.handleError(error, 'AudioPerformanceMonitor.detectBufferUnderruns);
-            return 0;
+            return this.currentMetrics.bufferUnderruns;} catch (error) {
+            this.errorHandler.handleError(error, 'AudioPerformanceMonitor.detectBufferUnderruns),
+            return 0,
     
     /**
      * 履歴をクリーンアップ
      * @param currentTime - 現在時刻
      */
     private cleanupHistory(currentTime: number): void { try {
-            const cutoffTime = currentTime - this.performanceMonitor.analysisWindow;
+            const cutoffTime = currentTime - this.performanceMonitor.analysisWindow,
             
             for(const [timestamp] of, this.performanceMonitor.metrics) {
             
                 if (timestamp < cutoffTime) {
-            
-            ,}
+    
+}
                     this.performanceMonitor.metrics.delete(timestamp); }
 }
             
             // 最大サイズ制限
             while(this.performanceMonitor.metrics.size > this.performanceMonitor.maxHistorySize) {
-                const oldestKey = this.performanceMonitor.metrics.keys().next().value;
-            }
+                const oldestKey = this.performanceMonitor.metrics.keys().next().value }
                 this.performanceMonitor.metrics.delete(oldestKey);' }'
 
             } catch (error) {
-            this.errorHandler.handleError(error, 'AudioPerformanceMonitor.cleanupHistory'; }'
+            this.errorHandler.handleError(error, 'AudioPerformanceMonitor.cleanupHistory' }'
     }
     
     /**
@@ -502,8 +494,8 @@ export class AudioComponentPerformanceMonitor {
      */
     private analyzePerformance(): void { try {
             if(this.performanceMonitor.metrics.size < 5) {
-                
-            }
+    
+}
                 return; // 十分なデータがない }
             }
             
@@ -528,14 +520,14 @@ export class AudioComponentPerformanceMonitor {
             this.identifyBottlenecks();
 
         } catch (error) {
-            this.errorHandler.handleError(error, 'AudioPerformanceMonitor.analyzePerformance'; }'
+            this.errorHandler.handleError(error, 'AudioPerformanceMonitor.analyzePerformance' }'
     }
     
     /**
      * 平均負荷を計算
      * @param metrics - メトリクス配列
      */
-    private calculateAverageLoad(metrics: MetricsHistoryEntry[]): void { const recentMetrics = metrics.slice(-10); // 最新10個
+    private calculateAverageLoad(metrics: MetricsHistoryEntry[]): void { const recentMetrics = metrics.slice(-10), // 最新10個
         const totalLoad = recentMetrics.reduce((sum, metric) => {  }
             return sum + Math.max(metric.cpuUsage, metric.audioProcessingLoad, metric.memoryUsage);, 0);
         
@@ -547,7 +539,7 @@ export class AudioComponentPerformanceMonitor {
      * @param metrics - メトリクス配列
      */
     private calculatePeakLoad(metrics: MetricsHistoryEntry[]): void { this.analysisData.peakLoad = metrics.reduce((max, metric) => { 
-            const currentLoad = Math.max(metric.cpuUsage, metric.audioProcessingLoad, metric.memoryUsage); }
+            const currentLoad = Math.max(metric.cpuUsage, metric.audioProcessingLoad, metric.memoryUsage) }
             return Math.max(max, currentLoad);, 0);
     }
     
@@ -556,8 +548,8 @@ export class AudioComponentPerformanceMonitor {
      * @param metrics - メトリクス配列
      */
     private calculateStabilityScore(metrics: MetricsHistoryEntry[]): void { if (metrics.length < 2) {
-            this.analysisData.stabilityScore = 1.0;
-            return; }
+            this.analysisData.stabilityScore = 1.0,
+            return }
         
         const loads = metrics.map(m => Math.max(m.cpuUsage, m.audioProcessingLoad, m.memoryUsage);
         
@@ -573,23 +565,21 @@ export class AudioComponentPerformanceMonitor {
     /**
      * パフォーマンスグレードを決定
      */
-    private determinePerformanceGrade(): void { const avgLoad = this.analysisData.averageLoad;
-        const stability = this.analysisData.stabilityScore;
+    private determinePerformanceGrade(): void { const avgLoad = this.analysisData.averageLoad,
+        const stability = this.analysisData.stabilityScore,
 
-        if(avgLoad < 0.3 && stability > 0.8) {', ';
+        if(avgLoad < 0.3 && stability > 0.8) {', ' }
 
-        }
-
-            this.analysisData.performanceGrade = 'A';' }
+            this.analysisData.performanceGrade = 'A'; }
 
         } else if(avgLoad < 0.5 && stability > 0.6) { ''
-            this.analysisData.performanceGrade = 'B';' }
+            this.analysisData.performanceGrade = 'B',' }
 
         } else if(avgLoad < 0.7 && stability > 0.4) { ''
-            this.analysisData.performanceGrade = 'C';' }
+            this.analysisData.performanceGrade = 'C',' }
 
         } else if(avgLoad < 0.9) { ''
-            this.analysisData.performanceGrade = 'D'; }
+            this.analysisData.performanceGrade = 'D' }
 
         } else { }'
 
@@ -599,39 +589,39 @@ export class AudioComponentPerformanceMonitor {
     /**
      * 推奨事項を生成
      */
-    private generateRecommendations(): void { this.analysisData.recommendations = [];
+    private generateRecommendations(): void { this.analysisData.recommendations = [],
 
-        if(this.analysisData.averageLoad > 0.8) {'
+        if(this.analysisData.averageLoad > 0.8) {
             this.analysisData.recommendations.push({''
                 type: 'performance',
-                severity: 'high','';
+                severity: 'high',',
                 message: '音質設定を下げることを推奨します',' }
 
                 action: 'reduce_quality'); 
     }
 
-        if(this.currentMetrics.activeAudioNodes > 15) { '
+        if(this.currentMetrics.activeAudioNodes > 15) {
             this.analysisData.recommendations.push({''
                 type: 'optimization',
-                severity: 'medium','';
+                severity: 'medium',',
                 message: '同時再生音声数を制限することを推奨します',' }
 
                 action: 'limit_concurrent_audio'); 
     }
 
-        if(this.analysisData.stabilityScore < 0.5) { '
+        if(this.analysisData.stabilityScore < 0.5) {
             this.analysisData.recommendations.push({''
                 type: 'stability',
-                severity: 'medium','';
+                severity: 'medium',',
                 message: '自動品質調整を有効にすることを推奨します',' }
 
                 action: 'enable_adaptive_quality'); 
     }
 
-        if(this.currentMetrics.memoryUsage > 0.8) { '
+        if(this.currentMetrics.memoryUsage > 0.8) {
             this.analysisData.recommendations.push({''
                 type: 'memory',
-                severity: 'high','';
+                severity: 'high',',
                 message: 'メモリクリーンアップを実行することを推奨します',' }
 
                 action: 'cleanup_memory'); 
@@ -640,38 +630,38 @@ export class AudioComponentPerformanceMonitor {
     /**
      * ボトルネックを特定
      */
-    private identifyBottlenecks(): void { this.analysisData.bottlenecks = [];
+    private identifyBottlenecks(): void { this.analysisData.bottlenecks = [],
 
-        if(this.currentMetrics.cpuUsage > 0.8) {'
+        if(this.currentMetrics.cpuUsage > 0.8) {
             this.analysisData.bottlenecks.push({''
-                type: 'cpu','';
-                severity: this.currentMetrics.cpuUsage > 0.9 ? 'critical' : 'high')';
+                type: 'cpu',',
+                severity: this.currentMetrics.cpuUsage > 0.9 ? 'critical' : 'high')',
                 value: this.currentMetrics.cpuUsage,' }'
 
                 description: 'CPU使用率が高すぎます'); 
     }
 
-        if(this.currentMetrics.memoryUsage > 0.8) { '
+        if(this.currentMetrics.memoryUsage > 0.8) {
             this.analysisData.bottlenecks.push({''
-                type: 'memory','';
-                severity: this.currentMetrics.memoryUsage > 0.9 ? 'critical' : 'high')';
+                type: 'memory',',
+                severity: this.currentMetrics.memoryUsage > 0.9 ? 'critical' : 'high')',
                 value: this.currentMetrics.memoryUsage,' }'
 
                 description: 'メモリ使用量が多すぎます'); 
     }
 
-        if(this.currentMetrics.latency > 50) { '
+        if(this.currentMetrics.latency > 50) {
             this.analysisData.bottlenecks.push({''
-                type: 'latency','';
-                severity: this.currentMetrics.latency > 100 ? 'critical' : 'medium')';
+                type: 'latency',',
+                severity: this.currentMetrics.latency > 100 ? 'critical' : 'medium')',
                 value: this.currentMetrics.latency,' }'
 
                 description: 'オーディオレイテンシーが高すぎます'); 
     }
 
-        if(this.currentMetrics.bufferUnderruns > 5) { '
+        if(this.currentMetrics.bufferUnderruns > 5) {
             this.analysisData.bottlenecks.push({''
-                type: 'buffer','';
+                type: 'buffer',',
                 severity: 'high')',
     value: this.currentMetrics.bufferUnderruns,' }'
 
@@ -682,25 +672,25 @@ export class AudioComponentPerformanceMonitor {
      * アラートをチェック
      */
     private checkAlerts(): void { try {
-            const currentTime = Date.now();
-            ';
+            const currentTime = Date.now(),
+            ',
             // アラートクールダウンチェック
             if(currentTime - this.alertSystem.lastAlert < this.alertSystem.alertCooldown) {
-                
-            }
+    
+}
                 return; }
             }
             ';
             // 閾値を超えているメトリクスをチェック
-            this.checkMetricAlert('cpu', this.currentMetrics.cpuUsage, 'CPU使用率が高すぎます'');''
-            this.checkMetricAlert('memory', this.currentMetrics.memoryUsage, 'メモリ使用量が多すぎます'');''
+            this.checkMetricAlert('cpu', this.currentMetrics.cpuUsage, 'CPU使用率が高すぎます');
+            this.checkMetricAlert('memory', this.currentMetrics.memoryUsage, 'メモリ使用量が多すぎます');
             this.checkMetricAlert('latency', this.currentMetrics.latency / 100, 'オーディオレイテンシーが高すぎます);
             
             // 古いアラートをクリーンアップ
             this.cleanupAlerts(currentTime);
 
         } catch (error) {
-            this.errorHandler.handleError(error, 'AudioPerformanceMonitor.checkAlerts'; }'
+            this.errorHandler.handleError(error, 'AudioPerformanceMonitor.checkAlerts' }'
     }
     
     /**
@@ -709,35 +699,30 @@ export class AudioComponentPerformanceMonitor {
      * @param value - 値
      * @param message - アラートメッセージ
      */'
-    private checkMetricAlert(type: string, value: number, message: string): void { const thresholds = this.performanceConfig.alertThresholds;''
-        const currentTime = Date.now()';
-        let severity: 'warning' | 'critical' | null = null,')';
-        if(value > thresholds.critical) {', ';
+    private checkMetricAlert(type: string, value: number, message: string): void { const thresholds = this.performanceConfig.alertThresholds,
+        const currentTime = Date.now()',
+        let severity: 'warning' | 'critical' | null = null,')',
+        if(value > thresholds.critical) {', ' }
 
-        }
-
-            severity = 'critical';' }
+            severity = 'critical'; }
 
         } else if(value > thresholds.warning) { ''
-            severity = 'warning'; }
+            severity = 'warning' }
         
         if(severity) {
-        
-            
-        
-        }
+    
+}
             const alertId = `${type}_${severity}`;
             
             if(!this.alertSystem.alerts.has(alertId) {
             
                 const alert: Alert = {
-                    id: alertId;
-                    type: type;
-                    severity: severity;
-                    value: value;
+                    id: alertId,
+                    type: type,
+                    severity: severity,
+                    value: value,
                     message: message,
-    timestamp: currentTime;
-            }
+    timestamp: currentTime }
                     count: 1 
     };
                 this.alertSystem.alerts.set(alertId, alert);
@@ -745,9 +730,9 @@ export class AudioComponentPerformanceMonitor {
                 
                 this.triggerAlert(alert);
             } else {  // 既存のアラートのカウントを更新
-                const existingAlert = this.alertSystem.alerts.get(alertId)!;
-                existingAlert.count++;
-                existingAlert.value = value; }
+                const existingAlert = this.alertSystem.alerts.get(alertId)!,
+                existingAlert.count++,
+                existingAlert.value = value }
                 existingAlert.timestamp = currentTime; }
 }
     }
@@ -758,19 +743,16 @@ export class AudioComponentPerformanceMonitor {
      */''
     private triggerAlert(alert: Alert): void { try { }
 
-            this.loggingSystem.warn('AudioPerformanceMonitor', `Performance alert: ${alert.message}`, { type: alert.type''
-               , severity: alert.severity,')';
-                value: alert.value'');
-            ';
+            this.loggingSystem.warn('AudioPerformanceMonitor', `Performance alert: ${alert.message}`, { type: alert.type', severity: alert.severity,')',
+                value: alert.value'),
+            ',
             // 必要に応じて自動最適化を実行
-            if(this.performanceConfig.adaptiveOptimization && alert.severity === 'critical' {'
-                
-            ,}
+            if(this.performanceConfig.adaptiveOptimization && alert.severity === 'critical' { }
 
                 this.triggerAutoOptimization(alert);' }'
 
             } catch (error) {
-            this.errorHandler.handleError(error, 'AudioPerformanceMonitor.triggerAlert'; }'
+            this.errorHandler.handleError(error, 'AudioPerformanceMonitor.triggerAlert' }'
     }
     
     /**
@@ -778,19 +760,17 @@ export class AudioComponentPerformanceMonitor {
      * @param alert - アラート情報
      */'
     private triggerAutoOptimization(alert: Alert): void { try {'
-            switch(alert.type) {'
+            switch(alert.type) {
 
-                case 'cpu':'';
+                case 'cpu':',
                     this.optimizeCPUUsage('''
-                case 'memory': '';
-                    this.optimizeMemoryUsage(''';
-                case 'latency':';
-            }''
+                case 'memory': ',
+                    this.optimizeMemoryUsage('',
+                case 'latency':' }''
                     this.optimizeLatency() }
 
-            this.loggingSystem.info('AudioPerformanceMonitor', `Auto-optimization triggered for: ${alert.type}`}';''
-        } catch (error) {
-            this.errorHandler.handleError(error, 'AudioPerformanceMonitor.triggerAutoOptimization'; }'
+            this.loggingSystem.info('AudioPerformanceMonitor', `Auto-optimization triggered for: ${alert.type}`}';} catch (error) {
+            this.errorHandler.handleError(error, 'AudioPerformanceMonitor.triggerAutoOptimization' }'
     }
     
     /**
@@ -799,14 +779,13 @@ export class AudioComponentPerformanceMonitor {
     private optimizeCPUUsage()';
             if(this.audioManager && typeof, this.audioManager.reduceQuality === 'function' {'
 
-                this.audioManager.reduceQuality()';
-            if(this.audioManager && typeof, this.audioManager.limitConcurrentSounds === 'function' {'
-            }
+                this.audioManager.reduceQuality()',
+            if(this.audioManager && typeof, this.audioManager.limitConcurrentSounds === 'function' { }
 
                 this.audioManager.limitConcurrentSounds(5);' }'
 
             } catch (error) {
-            this.errorHandler.handleError(error, 'AudioPerformanceMonitor.optimizeCPUUsage'; }'
+            this.errorHandler.handleError(error, 'AudioPerformanceMonitor.optimizeCPUUsage' }'
     }
     
     /**
@@ -815,52 +794,49 @@ export class AudioComponentPerformanceMonitor {
     private optimizeMemoryUsage()';
             if(this.audioManager && typeof, this.audioManager.cleanupUnusedBuffers === 'function' {'
 
-                this.audioManager.cleanupUnusedBuffers()';
+                this.audioManager.cleanupUnusedBuffers()',
             if (typeof, window !== 'undefined' && (window, as WindowWithGC).gc) {
             }
 
                 (window, as WindowWithGC).gc!();' }'
 
             } catch (error) {
-            this.errorHandler.handleError(error, 'AudioPerformanceMonitor.optimizeMemoryUsage'; }'
+            this.errorHandler.handleError(error, 'AudioPerformanceMonitor.optimizeMemoryUsage' }'
     }
     
     /**
      * レイテンシーを最適化'
      */''
     private optimizeLatency()';
-            if(this.audioManager && typeof, this.audioManager.adjustBufferSize === 'function'') {', ';
+            if(this.audioManager && typeof, this.audioManager.adjustBufferSize === 'function') {', ' }
 
-            }
-
-                this.audioManager.adjustBufferSize('low_latency';' }
+                this.audioManager.adjustBufferSize('low_latency'; }
 
             } catch (error) {
-            this.errorHandler.handleError(error, 'AudioPerformanceMonitor.optimizeLatency'; }'
+            this.errorHandler.handleError(error, 'AudioPerformanceMonitor.optimizeLatency' }'
     }
     
     /**
      * 古いアラートをクリーンアップ
      * @param currentTime - 現在時刻
      */
-    private cleanupAlerts(currentTime: number): void { const maxAge = 300000; // 5分
+    private cleanupAlerts(currentTime: number): void { const maxAge = 300000, // 5分
         
         for(const [alertId, alert] of this.alertSystem.alerts) {
         
             if (currentTime - alert.timestamp > maxAge) {
-        
-        }
+    
+}
                 this.alertSystem.alerts.delete(alertId); }
 }
         
         // 最大アラート数制限
         if(this.alertSystem.alerts.size > this.alertSystem.maxActiveAlerts) {
-            const sortedAlerts = Array.from(this.alertSystem.alerts.entries();
-                .sort((a, b) => a[1].timestamp - b[1].timestamp);
+            const sortedAlerts = Array.from(this.alertSystem.alerts.entries(),
+                .sort((a, b) => a[1].timestamp - b[1].timestamp),
             
             // 古いアラートを削除
-            const toDelete = sortedAlerts.slice(0, sortedAlerts.length - this.alertSystem.maxActiveAlerts);
-        }
+            const toDelete = sortedAlerts.slice(0, sortedAlerts.length - this.alertSystem.maxActiveAlerts) }
             toDelete.forEach(([alertId]) => {  }
                 this.alertSystem.alerts.delete(alertId); }
             });
@@ -872,28 +848,26 @@ export class AudioComponentPerformanceMonitor {
      * @returns 現在のメトリクス
      */
     getCurrentMetrics(): PerformanceMetrics {
-        return { ...this.currentMetrics;
-    }
+        return { ...this.currentMetrics }
     
     /**
      * 詳細分析データを取得
      * @returns 分析データ
      */
     getAnalysisData(): AnalysisData {
-        return { ...this.analysisData;
-    }
+        return { ...this.analysisData }
     
     /**
      * パフォーマンス履歴を取得
      * @param timeWindow - 時間範囲（ミリ秒）
      * @returns パフォーマンス履歴
      */
-    getPerformanceHistory(timeWindow: number = 30000): MetricsHistoryEntry[] { const currentTime = performance.now();
-        const cutoffTime = currentTime - timeWindow;
+    getPerformanceHistory(timeWindow: number = 30000): MetricsHistoryEntry[] { const currentTime = performance.now(),
+        const cutoffTime = currentTime - timeWindow,
         
-        return Array.from(this.performanceMonitor.metrics.values();
-            .filter(metric => metric.timestamp >= cutoffTime);
-            .sort((a, b) => a.timestamp - b.timestamp); }
+        return Array.from(this.performanceMonitor.metrics.values(),
+            .filter(metric => metric.timestamp >= cutoffTime),
+            .sort((a, b) => a.timestamp - b.timestamp) }
     }
     
     /**
@@ -901,25 +875,25 @@ export class AudioComponentPerformanceMonitor {
      * @returns アクティブなアラート
      */
     getActiveAlerts(): Alert[] { return Array.from(this.alertSystem.alerts.values()
-            .sort((a, b) => b.timestamp - a.timestamp);
+            .sort((a, b) => b.timestamp - a.timestamp),
     
     /**
      * パフォーマンスレポートを生成
      * @returns パフォーマンスレポート
      */
-    generatePerformanceReport(): PerformanceReport { return { timestamp: Date.now(),
-            current: this.getCurrentMetrics();
-            analysis: this.getAnalysisData(),
+    generatePerformanceReport(): PerformanceReport { return { timestamp: Date.now(
+            current: this.getCurrentMetrics(),
+            analysis: this.getAnalysisData(
     monitoring: {
-                enabled: this.performanceMonitor.intervalId !== null;
+                enabled: this.performanceMonitor.intervalId !== null,
                 interval: this.performanceMonitor.updateInterval,
-    lastUpdate: this.performanceMonitor.lastUpdateTime, };
+    lastUpdate: this.performanceMonitor.lastUpdateTime };
                 historySize: this.performanceMonitor.metrics.size 
     };
-            alerts: { active: this.getActiveAlerts();
+            alerts: { active: this.getActiveAlerts(),
                 totalCount: this.alertSystem.alerts.size,
     lastAlert: this.alertSystem.lastAlert };
-            configuration: { thresholds: this.performanceMonitor.thresholds;
+            configuration: { thresholds: this.performanceMonitor.thresholds,
                 adaptiveOptimization: this.performanceConfig.adaptiveOptimization,
     enabledMetrics: this.performanceConfig.enabledMetrics 
     }
@@ -929,40 +903,35 @@ export class AudioComponentPerformanceMonitor {
      * @returns ステータス情報
      */''
     getStatus()';
-    updateConfiguration(newConfig: Partial<PerformanceConfig & { updateInterval?: number; thresholds?: Partial<PerformanceMonitorConfig['thresholds]> )>': void {'
+    updateConfiguration(newConfig: Partial<PerformanceConfig & { updateInterval?: number, thresholds?: Partial<PerformanceMonitorConfig['thresholds]> )>': void {'
         try {
-            Object.assign(this.performanceConfig, newConfig);
+            Object.assign(this.performanceConfig, newConfig),
             
             if(newConfig.updateInterval) {
             
-                this.performanceMonitor.updateInterval = newConfig.updateInterval;
-            
-            }
+                this.performanceMonitor.updateInterval = newConfig.updateInterval }
                 this.restartMonitoring(); }
             }
             
             if(newConfig.thresholds) {
-            ';
+            ',
 
-                ';
-
-            }
+                ' }
 
                 Object.assign(this.performanceMonitor.thresholds, newConfig.thresholds); }
             }
 
-            this.loggingSystem.debug('AudioPerformanceMonitor', 'Configuration updated', newConfig';''
-        } catch (error) {
-            this.errorHandler.handleError(error, 'AudioPerformanceMonitor.updateConfiguration'; }'
+            this.loggingSystem.debug('AudioPerformanceMonitor', 'Configuration updated', newConfig';} catch (error) {
+            this.errorHandler.handleError(error, 'AudioPerformanceMonitor.updateConfiguration' }'
     }
     
     /**
      * パフォーマンス監視をリセット
      */
     reset(): void { try {
-            this.performanceMonitor.metrics.clear();
-            this.alertSystem.alerts.clear();
-            this.alertSystem.lastAlert = 0;
+            this.performanceMonitor.metrics.clear(),
+            this.alertSystem.alerts.clear(),
+            this.alertSystem.lastAlert = 0,
             
             // メトリクスをリセット
             Object.keys(this.currentMetrics).forEach(key => { ) }
@@ -974,26 +943,24 @@ export class AudioComponentPerformanceMonitor {
             this.analysisData = { averageLoad: 0,
                 peakLoad: 0,
     stabilityScore: 1.0,
-                performanceGrade: 'A';
+                performanceGrade: 'A',
                 recommendations: [],
-    bottlenecks: [] ,};
-            this.loggingSystem.info('AudioPerformanceMonitor', 'Performance monitor reset';''
-        } catch (error) {
-            this.errorHandler.handleError(error, 'AudioPerformanceMonitor.reset'; }'
+    bottlenecks: []  };
+            this.loggingSystem.info('AudioPerformanceMonitor', 'Performance monitor reset';} catch (error) {
+            this.errorHandler.handleError(error, 'AudioPerformanceMonitor.reset' }'
     }
     
     /**
      * パフォーマンス監視を破棄
      */
     dispose(): void { try {
-            this.stopMonitoring();
+            this.stopMonitoring(),
 
-            this.performanceMonitor.metrics.clear();''
-            this.alertSystem.alerts.clear()';
-            this.loggingSystem.info('AudioPerformanceMonitor', 'Audio performance monitor disposed';' }
+            this.performanceMonitor.metrics.clear(),
+            this.alertSystem.alerts.clear()',
+            this.loggingSystem.info('AudioPerformanceMonitor', 'Audio performance monitor disposed',' }
 
         } catch (error) {
-            this.errorHandler.handleError(error, 'AudioPerformanceMonitor.dispose''); }
+            this.errorHandler.handleError(error, 'AudioPerformanceMonitor.dispose') }
 
-    }''
-}
+    }'}

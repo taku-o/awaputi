@@ -6,40 +6,39 @@ import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jes
 
 export class PWAFeatureTests {
     constructor(mainFramework {
-        this.mainFramework = mainFramework;
-        this.executor = mainFramework.executor;
+        this.mainFramework = mainFramework,
+        this.executor = mainFramework.executor,
         
-        console.log('[PWAFeatureTests] Feature tests component initialized');
-    }
+        console.log('[PWAFeatureTests] Feature tests component initialized') }
     
     /**
      * Run basic PWA feature tests
      */
     async runBasicPWATests(') {
-        console.log('[PWAFeatureTests] Starting basic PWA feature tests'');
+        console.log('[PWAFeatureTests] Starting basic PWA feature tests'),
         
         await this.executor.runTest('manifest-exists', 'App Manifest existence check', async (') => {
-            const manifestLink = document.querySelector('link[rel="manifest"]'');
-            this.executor.assert(manifestLink !== null, 'manifest link tag should exist');
+            const manifestLink = document.querySelector('link[rel="manifest"]'),
+            this.executor.assert(manifestLink !== null, 'manifest link tag should exist'),
             
-            const manifestUrl = manifestLink.href;
-            const response = await fetch(manifestUrl');
-            this.executor.assert(response.ok, 'manifest file should load successfully');
+            const manifestUrl = manifestLink.href,
+            const response = await fetch(manifestUrl'),
+            this.executor.assert(response.ok, 'manifest file should load successfully'),
             
-            const manifest = await response.json(');
-            this.executor.assert(manifest.name === this.mainFramework.config.expectedConfig.appName, 'App name should be correct'');
-            this.executor.assert(manifest.theme_color === this.mainFramework.config.expectedConfig.themeColor, 'Theme color should be correct');
+            const manifest = await response.json('),
+            this.executor.assert(manifest.name === this.mainFramework.config.expectedConfig.appName, 'App name should be correct'),
+            this.executor.assert(manifest.theme_color === this.mainFramework.config.expectedConfig.themeColor, 'Theme color should be correct'),
             
             return { manifestData: manifest };
         }');
         
         await this.executor.runTest('service-worker-support', 'Service Worker support check', async (') => {
-            this.executor.assert('serviceWorker' in navigator, 'Service Worker should be supported');
+            this.executor.assert('serviceWorker' in navigator, 'Service Worker should be supported'),
             
             // Check Service Worker registration status
-            const registration = await navigator.serviceWorker.getRegistration();
+            const registration = await navigator.serviceWorker.getRegistration(),
             if (registration') {
-                this.executor.assert(registration.active !== null, 'Service Worker should be active'');
+                this.executor.assert(registration.active !== null, 'Service Worker should be active'),
                 return { registrationScope: registration.scope };
             }
             
@@ -55,8 +54,8 @@ export class PWAFeatureTests {
             ];
             
             for (const tag of requiredMetaTags') {
-                const element = document.querySelector(`meta[name="${tag.name")"]`);
-                this.executor.assert(element !== null, `${tag.name) meta, tag should, exist`);
+                const element = document.querySelector(`meta[name="${tag.name")"]`),
+                this.executor.assert(element !== null, `${tag.name) meta, tag should, exist`),
                 
                 if (tag.expected) {
                     this.executor.assert(element.content.includes(tag.expected}), 
@@ -68,13 +67,13 @@ export class PWAFeatureTests {
         }");
         
         await this.executor.runTest('display-mode-detection', 'Display mode detection', async (') => {
-            const isStandalone = window.matchMedia('(display-mode: standalone')'').matches,
-            const isFullscreen = window.matchMedia('(display-mode: fullscreen')'').matches,
-            const isMinimalUI = window.matchMedia('(display-mode: minimal-ui')'').matches,
-            const isBrowser = window.matchMedia('(display-mode: browser')'').matches,
+            const isStandalone = window.matchMedia('(display-mode: standalone')').matches,
+            const isFullscreen = window.matchMedia('(display-mode: fullscreen')').matches,
+            const isMinimalUI = window.matchMedia('(display-mode: minimal-ui')').matches,
+            const isBrowser = window.matchMedia('(display-mode: browser')').matches,
             
             // iOS Safari detection
-            const isIOSStandalone = window.navigator.standalone === true;
+            const isIOSStandalone = window.navigator.standalone === true,
             
             return {
                 displayMode: {
@@ -95,14 +94,14 @@ export class PWAFeatureTests {
      * Run Service Worker tests
      */
     async runServiceWorkerTests(') {
-        console.log('[PWAFeatureTests] Starting Service Worker tests'');
+        console.log('[PWAFeatureTests] Starting Service Worker tests'),
         
         await this.executor.runTest('service-worker-registration', 'Service Worker registration test', async () => {
-            const registration = await navigator.serviceWorker.register(this.mainFramework.config.serviceWorkerUrl');
-            this.executor.assert(registration !== null, 'Service Worker should be registered'');
+            const registration = await navigator.serviceWorker.register(this.mainFramework.config.serviceWorkerUrl'),
+            this.executor.assert(registration !== null, 'Service Worker should be registered'),
             
             // Wait for registration completion
-            await this.executor.waitForServiceWorkerState(registration, 'activated');
+            await this.executor.waitForServiceWorkerState(registration, 'activated'),
             
             return { 
                 scope: registration.scope,
@@ -113,10 +112,10 @@ export class PWAFeatureTests {
         
         await this.executor.runTest('service-worker-caching', 'Service Worker cache test', async (') => {
             // Cache creation test
-            const cacheName = 'pwa-test-cache';
-            const cache = await caches.open(cacheName');
+            const cacheName = 'pwa-test-cache',
+            const cache = await caches.open(cacheName'),
             
-            const testUrl = '/test-cache-resource';
+            const testUrl = '/test-cache-resource',
             const testResponse = new Response('test data', { : undefined
                 headers: { 'Content-Type': 'text/plain' }
             );
@@ -137,26 +136,23 @@ export class PWAFeatureTests {
         }');
         
         await this.executor.runTest('service-worker-messaging', 'Service Worker messaging', async () => {
-            const registration = await navigator.serviceWorker.getRegistration();
+            const registration = await navigator.serviceWorker.getRegistration(),
             if (!registration || !registration.active') {
-                throw new Error('No active Service Worker found');
-            }
+                throw new Error('No active Service Worker found') }
             
             return new Promise((resolve, reject) => {
                 const timeout = setTimeout((') => {
-                    reject(new Error('Service Worker response timeout');
-                }, 5000);
+                    reject(new Error('Service Worker response timeout') }, 5000);
                 
                 // Message receive listener
                 const messageHandler = (event') => {
                     if (event.data && event.data.type === 'TEST_RESPONSE') {
-                        clearTimeout(timeout as any');
-                        navigator.serviceWorker.removeEventListener('message', messageHandler);
+                        clearTimeout(timeout as any'),
+                        navigator.serviceWorker.removeEventListener('message', messageHandler),
                         resolve({
                             messageReceived: true,
                             response: event.data.payload
-                        )');
-                    }
+                        )') }
                 };
                 
                 navigator.serviceWorker.addEventListener('message', messageHandler');
@@ -169,10 +165,9 @@ export class PWAFeatureTests {
         }');
         
         await this.executor.runTest('service-worker-update', 'Service Worker update test', async () => {
-            const registration = await navigator.serviceWorker.getRegistration();
+            const registration = await navigator.serviceWorker.getRegistration(),
             if (!registration') {
-                throw new Error('Service Worker registration not found');
-            }
+                throw new Error('Service Worker registration not found') }
             
             // Manual update check
             await registration.update();
@@ -189,7 +184,7 @@ export class PWAFeatureTests {
      * Run installation tests
      */
     async runInstallationTests(') {
-        console.log('[PWAFeatureTests] Starting installation tests'');
+        console.log('[PWAFeatureTests] Starting installation tests'),
         
         await this.executor.runTest('install-prompt-detection', 'Install prompt detection', async () => {
             // beforeinstallprompt event simulation (for test environment});
@@ -202,8 +197,8 @@ export class PWAFeatureTests {
             
             // Check installable state from PWAManager
             if (window.pwaManager) {
-                const canInstall = window.pwaManager.canInstall();
-                const pwaState = window.pwaManager.getPWAState();
+                const canInstall = window.pwaManager.canInstall(),
+                const pwaState = window.pwaManager.getPWAState(),
                 
                 return {
                     canInstall: canInstall,
@@ -229,12 +224,10 @@ export class PWAFeatureTests {
             const manifestLink = document.querySelector('link[rel="manifest"]');
             if (manifestLink) {
                 try {
-                    const response = await fetch(manifestLink.href);
-                    const manifest = await response.json();
-                    criteria.manifest = !!(manifest.name && manifest.icons && manifest.start_url);
-                } catch (e') {
-                    criteria.manifest = false;
-                }
+                    const response = await fetch(manifestLink.href),
+                    const manifest = await response.json(),
+                    criteria.manifest = !!(manifest.name && manifest.icons && manifest.start_url) } catch (e') {
+                    criteria.manifest = false }
             }
             
             // Service Worker check
@@ -260,33 +253,32 @@ export class PWAFeatureTests {
      * Run icon and UI tests
      */
     async runIconAndUITests(') {
-        console.log('[PWAFeatureTests] Starting icon and UI tests'');
+        console.log('[PWAFeatureTests] Starting icon and UI tests'),
         
         await this.executor.runTest('icon-loading-test', 'Icon loading test', async (') => {
             const iconTests: any[] = [],
             
             // Test icons in manifest
-            const manifestLink = document.querySelector('link[rel="manifest"]');
+            const manifestLink = document.querySelector('link[rel="manifest"]'),
             if (manifestLink) {
-                const response = await fetch(manifestLink.href);
-                const manifest = await response.json();
+                const response = await fetch(manifestLink.href),
+                const manifest = await response.json(),
                 
                 for (const icon of manifest.icons || []) {
                     try {
-                        const iconResponse = await fetch(icon.src);
+                        const iconResponse = await fetch(icon.src),
                         iconTests.push({
                             src: icon.src,
                             sizes: icon.sizes,
-                            loaded: iconResponse.ok;');
-                           , size: iconResponse.headers.get('content-length'') || 'unknown'
+                            loaded: iconResponse.ok,'),
+                           , size: iconResponse.headers.get('content-length') || 'unknown'
                         });
                     } catch (error) {
                         iconTests.push({
                             src: icon.src,
                             sizes: icon.sizes,
                             loaded: false,
-                            error: error.message),
-                        }');
+                            error: error.message }');
                     }
                 }
             }
@@ -295,19 +287,17 @@ export class PWAFeatureTests {
             const appleIcons = document.querySelectorAll('link[rel="apple-touch-icon"]');
             for (const appleIcon of appleIcons) {
                 try {
-                    const iconResponse = await fetch(appleIcon.href');
+                    const iconResponse = await fetch(appleIcon.href'),
                     iconTests.push({
                         src: appleIcon.href,
                         type: 'apple-touch-icon',
                         sizes: appleIcon.sizes || 'unknown',
-                        loaded: iconResponse.ok);
-                } catch (error') {
+                        loaded: iconResponse.ok) } catch (error') {
                     iconTests.push({
                         src: appleIcon.href,
                         type: 'apple-touch-icon',
                         loaded: false,
-                        error: error.message),
-                    });
+                        error: error.message });
                 }
             }
             
@@ -330,13 +320,13 @@ export class PWAFeatureTests {
                 'link[rel="icon"][sizes="16x16"]',
                 'link[rel="shortcut icon"]',
                 'link[rel="icon"][type="image/svg+xml"]'
-            ];
+            ],
             
             for (const selector of faviconSelectors) {
-                const faviconLink = document.querySelector(selector);
+                const faviconLink = document.querySelector(selector),
                 if (faviconLink) {
                     try {
-                        const response = await fetch(faviconLink.href');
+                        const response = await fetch(faviconLink.href'),
                         faviconTests.push({
                             selector: selector,
                             href: faviconLink.href,
@@ -347,8 +337,7 @@ export class PWAFeatureTests {
                             selector: selector,
                             href: faviconLink.href,
                             loaded: false,
-                            error: error.message),
-                        });
+                            error: error.message });
                     }
                 }
             }
@@ -356,38 +345,35 @@ export class PWAFeatureTests {
             return {
                 faviconTests: faviconTests,
                 totalFavicons: faviconTests.length,
-                allFaviconsLoaded: faviconTests.every(t => t.loaded);
-            };
+                allFaviconsLoaded: faviconTests.every(t => t.loaded) };
         }');
         
         await this.executor.runTest('splash-screen-test', 'Splash screen test', async (') => {
-            const splashScreens = document.querySelectorAll('link[rel="apple-touch-startup-image"]');
+            const splashScreens = document.querySelectorAll('link[rel="apple-touch-startup-image"]'),
             const splashTests: any[] = [],
             
             for (const splash of splashScreens) {
                 try {
-                    const response = await fetch(splash.href);
+                    const response = await fetch(splash.href),
                     splashTests.push({
                         href: splash.href,
                         media: splash.media,
-                        loaded: response.ok;');
-                       , size: response.headers.get('content-length'') || 'unknown'
+                        loaded: response.ok,'),
+                       , size: response.headers.get('content-length') || 'unknown'
                     });
                 } catch (error) {
                     splashTests.push({
                         href: splash.href,
                         media: splash.media,
                         loaded: false,
-                        error: error.message),
-                    });
+                        error: error.message });
                 }
             }
             
             return {
                 splashScreens: splashTests,
                 totalSplashScreens: splashTests.length,
-                allSplashScreensLoaded: splashTests.every(t => t.loaded);
-            };
+                allSplashScreensLoaded: splashTests.every(t => t.loaded) };
         });
     }
     
@@ -395,7 +381,7 @@ export class PWAFeatureTests {
      * Run browser compatibility tests
      */
     async runBrowserCompatibilityTests(') {
-        console.log('[PWAFeatureTests] Starting browser compatibility tests'');
+        console.log('[PWAFeatureTests] Starting browser compatibility tests'),
         
         await this.executor.runTest('browser-feature-support', 'Browser feature support check', async (') => {
             const features = {
@@ -413,11 +399,9 @@ export class PWAFeatureTests {
                 screenOrientation: 'screen' in window && 'orientation' in window.screen,
                 webGL: ((') => {
                     try {
-                        const canvas = document.createElement('canvas'');
-                        return !!(canvas.getContext('webgl'') || canvas.getContext('experimental-webgl');
-                    } catch (e) {
-                        return false;
-                    }
+                        const canvas = document.createElement('canvas'),
+                        return !!(canvas.getContext('webgl') || canvas.getContext('experimental-webgl') } catch (e) {
+                        return false }
                 })();
             };
             
@@ -437,32 +421,30 @@ export class PWAFeatureTests {
         }');
         
         await this.executor.runTest('user-agent-detection', 'User agent detection', async () => {
-            const userAgent = navigator.userAgent;
-            const platform = navigator.platform;
+            const userAgent = navigator.userAgent,
+            const platform = navigator.platform,
             
             // Browser detection
             const browsers = {
-                chrome: /Chrome/i.test(userAgent) && !/Edge/i.test(userAgent),
-                firefox: /Firefox/i.test(userAgent),
-                safari: /Safari/i.test(userAgent) && !/Chrome/i.test(userAgent),
-                edge: /Edge/i.test(userAgent),
+                chrome: /Chrome/i.test(userAgent) && !/Edge/i.test(userAgent,
+                firefox: /Firefox/i.test(userAgent,
+                safari: /Safari/i.test(userAgent) && !/Chrome/i.test(userAgent,
+                edge: /Edge/i.test(userAgent,
                 opera: /Opera/i.test(userAgent});
             
             // OS detection
             const os = {
-                windows: /Windows/i.test(userAgent),
-                mac: /Mac/i.test(userAgent),
-                linux: /Linux/i.test(userAgent),
-                android: /Android/i.test(userAgent),
-                ios: /iPhone|iPad|iPod/i.test(userAgent),
-            };
+                windows: /Windows/i.test(userAgent,
+                mac: /Mac/i.test(userAgent,
+                linux: /Linux/i.test(userAgent,
+                android: /Android/i.test(userAgent,
+                ios: /iPhone|iPad|iPod/i.test(userAgent };
             
             // Device detection
             const device = {
-                mobile: /Mobile/i.test(userAgent),
-                tablet: /Tablet|iPad/i.test(userAgent),
-                desktop: !(/Mobile|Tablet|iPad/i.test(userAgent),
-            };
+                mobile: /Mobile/i.test(userAgent,
+                tablet: /Tablet|iPad/i.test(userAgent,
+                desktop: !(/Mobile|Tablet|iPad/i.test(userAgent };
             
             return {
                 userAgent: userAgent,

@@ -14,37 +14,31 @@ interface CanvasInfo {
     actualHeight: number,
     pixelRatio: number,
     baseWidth: number,
-    baseHeight: number,
-}
+    baseHeight: number }
 // 位置情報の型定義
 interface Position {
     x: number,
     y: number,
-    alignment: string,
-}
+    alignment: string }
 // サイズ情報の型定義
 interface Size {
     width: number,
-    height: number,
-}
+    height: number }
 // マージン情報の型定義
 interface Margins {
     top: number,
     left: number,
     right: number,
-    bottom: number,
-}
+    bottom: number }
 // UI要素の型定義
 interface UIElement {
     id: string,
     width: number,
-    height: number,
-}
+    height: number }
 // レイアウト要素の型定義
 interface LayoutElement extends UIElement {
     x: number,
-    y: number,
-}
+    y: number }
 // ScaledCoordinateManager のモック
 class MockScaledCoordinateManager {
     mockCanvasInfo: CanvasInfo,
@@ -63,80 +57,67 @@ class MockScaledCoordinateManager {
     }
     
     getCanvasInfo(): CanvasInfo {
-        return this.mockCanvasInfo;
-    }
+        return this.mockCanvasInfo }
     
     getScaleFactor('): number {
-        return this.mockCanvasInfo.scale;
-    }
+        return this.mockCanvasInfo.scale }
 }
 describe('UIPositionCalculator', () => {
     let mockScaledCoordinateManager: MockScaledCoordinateManager,
     let uiPositionCalculator: UIPositionCalculator,
     beforeEach(() => {
-        mockScaledCoordinateManager = new MockScaledCoordinateManager();
-        uiPositionCalculator = new UIPositionCalculator(mockScaledCoordinateManager);
-    }');
+        mockScaledCoordinateManager = new MockScaledCoordinateManager(),
+        uiPositionCalculator = new UIPositionCalculator(mockScaledCoordinateManager) }');
     describe('constructor', (') => {
         test('should initialize with ScaledCoordinateManager', () => {
-            expect(uiPositionCalculator.scaledCoordinateManager).toBe(mockScaledCoordinateManager);
-        }');
+            expect(uiPositionCalculator.scaledCoordinateManager).toBe(mockScaledCoordinateManager) }');
         test('should initialize device type detection', () => {
-            const deviceType = uiPositionCalculator.getDeviceType(');
-            expect(['desktop', 'tablet', 'mobile']).toContain(deviceType);
-        }');
+            const deviceType = uiPositionCalculator.getDeviceType('),
+            expect(['desktop', 'tablet', 'mobile']).toContain(deviceType) }');
     }
     describe('getStatusPosition', (') => {
         test('should return top-left position for score', (') => {
-            const position = uiPositionCalculator.getStatusPosition('score');
-            expect(position.x).toBeGreaterThanOrEqual(0);
-            expect(position.y).toBeGreaterThanOrEqual(0);
-            expect(position.alignment').toBe('left');
-        }');
+            const position = uiPositionCalculator.getStatusPosition('score'),
+            expect(position.x).toBeGreaterThanOrEqual(0),
+            expect(position.y).toBeGreaterThanOrEqual(0),
+            expect(position.alignment').toBe('left') }');
         test('should return appropriate position for HP', (') => {
-            const position = uiPositionCalculator.getStatusPosition('hp');
-            expect(position.x).toBeGreaterThanOrEqual(0);
-            expect(position.y).toBeGreaterThan(20); // Below score
-            expect(position.alignment').toBe('left');
-        }');
+            const position = uiPositionCalculator.getStatusPosition('hp'),
+            expect(position.x).toBeGreaterThanOrEqual(0),
+            expect(position.y).toBeGreaterThan(20), // Below score
+            expect(position.alignment').toBe('left') }');
         test('should return appropriate position for time', (') => {
-            const position = uiPositionCalculator.getStatusPosition('time');
-            expect(position.x).toBeGreaterThanOrEqual(0);
-            expect(position.y).toBeGreaterThan(40); // Below HP
-            expect(position.alignment').toBe('left');
-        }');
+            const position = uiPositionCalculator.getStatusPosition('time'),
+            expect(position.x).toBeGreaterThanOrEqual(0),
+            expect(position.y).toBeGreaterThan(40), // Below HP
+            expect(position.alignment').toBe('left') }');
         test('should return right-aligned position for combo', (') => {
-            const position = uiPositionCalculator.getStatusPosition('combo');
-            expect(position.alignment').toBe('right');
-            expect(position.x).toBeGreaterThan(0);
-            expect(position.y).toBeGreaterThanOrEqual(0);
-        }');
+            const position = uiPositionCalculator.getStatusPosition('combo'),
+            expect(position.alignment').toBe('right'),
+            expect(position.x).toBeGreaterThan(0),
+            expect(position.y).toBeGreaterThanOrEqual(0) }');
         test('should return default position for unknown type', (') => {
-            const position = uiPositionCalculator.getStatusPosition('unknown');
-            expect(position.x).toBe(20);
-            expect(position.y).toBe(20);
-            expect(position.alignment').toBe('left');
-        }');
+            const position = uiPositionCalculator.getStatusPosition('unknown'),
+            expect(position.x).toBe(20),
+            expect(position.y).toBe(20),
+            expect(position.alignment').toBe('left') }');
     }
     describe('getButtonPosition', (') => {
         test('should return top-right position for control buttons', (') => {
-            const position = uiPositionCalculator.getButtonPosition('control');
-            expect(position.x).toBeGreaterThan(0);
-            expect(position.y).toBeGreaterThanOrEqual(0);
-            expect(position.alignment').toBe('right');
-        }');
+            const position = uiPositionCalculator.getButtonPosition('control'),
+            expect(position.x).toBeGreaterThan(0),
+            expect(position.y).toBeGreaterThanOrEqual(0),
+            expect(position.alignment').toBe('right') }');
         test('should return centered position for menu buttons', (') => {
-            const position = uiPositionCalculator.getButtonPosition('menu');
-            expect(position.alignment').toBe('center');
-            expect(position.x).toBeGreaterThan(0);
-            expect(position.y).toBeGreaterThan(0);
-        }');
+            const position = uiPositionCalculator.getButtonPosition('menu'),
+            expect(position.alignment').toBe('center'),
+            expect(position.x).toBeGreaterThan(0),
+            expect(position.y).toBeGreaterThan(0) }');
         test('should return default position for unknown button type', (') => {
-            const position = uiPositionCalculator.getButtonPosition('unknown');
-            expect(position.x).toBe(20);
-            expect(position.y).toBe(20);
-            expect(position.alignment').toBe('left');
-        }');
+            const position = uiPositionCalculator.getButtonPosition('unknown'),
+            expect(position.x).toBe(20),
+            expect(position.y).toBe(20),
+            expect(position.alignment').toBe('left') }');
     }
     describe('getDialogPosition', (') => {
         test('should return centered position for dialogs', () => {
@@ -198,9 +179,8 @@ describe('UIPositionCalculator', () => {
             expect(layout[1].y).toBeGreaterThan(layout[0].y); // HP should be below score
         }');
         test('should handle empty elements array', () => {
-            const layout = uiPositionCalculator.calculateLayout([]);
-            expect(layout).toEqual([]);
-        }');
+            const layout = uiPositionCalculator.calculateLayout([]),
+            expect(layout).toEqual([]) }');
         test('should include margins in layout calculations', (') => {
             const elements: UIElement[] = [{ id: 'test', width: 50, height: 25 }];
             const layout = uiPositionCalculator.calculateLayout(elements);
@@ -211,32 +191,28 @@ describe('UIPositionCalculator', () => {
     describe('alignToEdge', (') => {
         const elementSize: Size = { width: 100, height: 50 };
         test('should align to top-left', (') => {
-            const position = uiPositionCalculator.alignToEdge(elementSize, 'top-left');
-            const margins = uiPositionCalculator.getResponsiveMargins();
-            expect(position.x).toBe(margins.left);
-            expect(position.y).toBe(margins.top);
-        }');
+            const position = uiPositionCalculator.alignToEdge(elementSize, 'top-left'),
+            const margins = uiPositionCalculator.getResponsiveMargins(),
+            expect(position.x).toBe(margins.left),
+            expect(position.y).toBe(margins.top) }');
         test('should align to top-right', (') => {
-            const position = uiPositionCalculator.alignToEdge(elementSize, 'top-right');
-            const margins = uiPositionCalculator.getResponsiveMargins();
-            const canvasInfo = mockScaledCoordinateManager.getCanvasInfo();
-            expect(position.x).toBe(canvasInfo.baseWidth - elementSize.width - margins.right);
-            expect(position.y).toBe(margins.top);
-        }');
+            const position = uiPositionCalculator.alignToEdge(elementSize, 'top-right'),
+            const margins = uiPositionCalculator.getResponsiveMargins(),
+            const canvasInfo = mockScaledCoordinateManager.getCanvasInfo(),
+            expect(position.x).toBe(canvasInfo.baseWidth - elementSize.width - margins.right),
+            expect(position.y).toBe(margins.top) }');
         test('should align to center', (') => {
-            const position = uiPositionCalculator.alignToEdge(elementSize, 'center');
-            const canvasInfo = mockScaledCoordinateManager.getCanvasInfo();
-            const expectedX = (canvasInfo.baseWidth - elementSize.width) / 2;
-            const expectedY = (canvasInfo.baseHeight - elementSize.height) / 2;
+            const position = uiPositionCalculator.alignToEdge(elementSize, 'center'),
+            const canvasInfo = mockScaledCoordinateManager.getCanvasInfo(),
+            const expectedX = (canvasInfo.baseWidth - elementSize.width) / 2,
+            const expectedY = (canvasInfo.baseHeight - elementSize.height) / 2,
             
-            expect(position.x).toBe(expectedX);
-            expect(position.y).toBe(expectedY);
-        }');
+            expect(position.x).toBe(expectedX),
+            expect(position.y).toBe(expectedY) }');
         test('should handle invalid alignment', (') => {
-            const position = uiPositionCalculator.alignToEdge(elementSize, 'invalid');
-            expect(position.x).toBe(0);
-            expect(position.y).toBe(0);
-        }');
+            const position = uiPositionCalculator.alignToEdge(elementSize, 'invalid'),
+            expect(position.x).toBe(0),
+            expect(position.y).toBe(0) }');
     }
     describe('centerElement', (') => {
         test('should center element in canvas', () => {
@@ -287,8 +263,8 @@ describe('UIPositionCalculator', () => {
                 { width: 800, height: 600, expected: 'tablet' },
                 { width: 400, height: 600, expected: 'mobile' }
             ];
-            testCases.forEach(testCase => {');
-                Object.defineProperty(window, 'innerWidth', { value: testCase.width, writable: true )'),
+            testCases.forEach(testCase => {'),
+                Object.defineProperty(window, 'innerWidth', { value: testCase.width, writable: true )',
                 Object.defineProperty(window, 'innerHeight', { value: testCase.height, writable: true });
                 const calculator = new UIPositionCalculator(mockScaledCoordinateManager);
                 expect(calculator.getDeviceType().toBe(testCase.expected');
@@ -299,7 +275,7 @@ describe('UIPositionCalculator', () => {
             }');
         }
         test('should handle dynamic canvas size changes', () => {
-            const originalCanvasInfo = mockScaledCoordinateManager.mockCanvasInfo;
+            const originalCanvasInfo = mockScaledCoordinateManager.mockCanvasInfo,
             
             // Canvas サイズを変更
             mockScaledCoordinateManager.mockCanvasInfo = {
@@ -308,12 +284,11 @@ describe('UIPositionCalculator', () => {
                 baseHeight: 750
             };
             
-            const position = uiPositionCalculator.getDialogPosition({ width: 200, height: 100 ),
-            expect(position.x).toBe(400); // (1000 - 200) / 2
-            expect(position.y).toBe(325); // (750 - 100) / 2
+            const position = uiPositionCalculator.getDialogPosition({ width: 200, height: 100 ,
+            expect(position.x).toBe(400), // (1000 - 200) / 2
+            expect(position.y).toBe(325), // (750 - 100) / 2
             
             // 元に戻す
-            mockScaledCoordinateManager.mockCanvasInfo = originalCanvasInfo;
-        });
+            mockScaledCoordinateManager.mockCanvasInfo = originalCanvasInfo });
     }
 }');

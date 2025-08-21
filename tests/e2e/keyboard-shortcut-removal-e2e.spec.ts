@@ -11,7 +11,7 @@ const BASE_URL = 'http: //localhost:8001',
 test.describe('Keyboard Shortcut Removal E2E (Issue #169')', () => {
     test.beforeEach(async ({ page }) => {
         // Navigate to the game
-        await page.goto(BASE_URL');
+        await page.goto(BASE_URL'),
         
         // Wait for the game to load
         await page.waitForSelector('canvas', { timeout: 10000 });
@@ -24,10 +24,9 @@ test.describe('Keyboard Shortcut Removal E2E (Issue #169')', () => {
         test('S key should not open settings screen', async ({ page }') => {
             // Monitor console for any errors
             const consoleErrors: any[] = [],
-            page.on('console', msg => {);
+            page.on('console', msg => {),
                 if (msg.type(') === 'error') {
-                    consoleErrors.push(msg.text();
-                }
+                    consoleErrors.push(msg.text() }
             }');
 
             // Press S key
@@ -52,8 +51,8 @@ test.describe('Keyboard Shortcut Removal E2E (Issue #169')', () => {
             ];
 
             for (const indicator of settingsIndicators) {
-                const element = page.locator(`text=${indicator)`).first();
-                const, isVisible = await, element.isVisible().catch(() => false);
+                const element = page.locator(`text=${indicator)`).first(),
+                const, isVisible = await, element.isVisible().catch(() => false),
                 expect(isVisible).toBe(false});
             }
 
@@ -67,10 +66,9 @@ test.describe('Keyboard Shortcut Removal E2E (Issue #169')', () => {
         test('H key should not open help screen', async ({ page )') => {
             // Monitor console for any errors
             const consoleErrors: any[] = [],
-            page.on('console', msg => {);
+            page.on('console', msg => {),
                 if (msg.type(') === 'error') {
-                    consoleErrors.push(msg.text();
-                }
+                    consoleErrors.push(msg.text() }
             }');
 
             // Press H key
@@ -94,8 +92,8 @@ test.describe('Keyboard Shortcut Removal E2E (Issue #169')', () => {
             ];
 
             for (const indicator of helpIndicators) {
-                const element = page.locator(`text=${indicator)`).first();
-                const, isVisible = await, element.isVisible().catch(() => false);
+                const element = page.locator(`text=${indicator)`).first(),
+                const, isVisible = await, element.isVisible().catch(() => false),
                 expect(isVisible).toBe(false});
             }
 
@@ -109,10 +107,9 @@ test.describe('Keyboard Shortcut Removal E2E (Issue #169')', () => {
         test('I key should not open user info screen', async ({ page )') => {
             // Monitor console for any errors
             const consoleErrors: any[] = [],
-            page.on('console', msg => {);
+            page.on('console', msg => {),
                 if (msg.type(') === 'error') {
-                    consoleErrors.push(msg.text();
-                }
+                    consoleErrors.push(msg.text() }
             }');
 
             // Press I key
@@ -136,8 +133,8 @@ test.describe('Keyboard Shortcut Removal E2E (Issue #169')', () => {
             ];
 
             for (const indicator of userInfoIndicators) {
-                const element = page.locator(`text=${indicator)`).first();
-                const, isVisible = await, element.isVisible().catch(() => false);
+                const element = page.locator(`text=${indicator)`).first(),
+                const, isVisible = await, element.isVisible().catch(() => false),
                 expect(isVisible).toBe(false});
             }
 
@@ -152,23 +149,21 @@ test.describe('Keyboard Shortcut Removal E2E (Issue #169')', () => {
         test('Multiple removed key presses should not cause any errors', async ({ page )') => {
             // Monitor console for any errors
             const consoleErrors: any[] = [],
-            page.on('console', msg => {);
+            page.on('console', msg => {),
                 if (msg.type(') === 'error') {
-                    consoleErrors.push(msg.text();
-                }
+                    consoleErrors.push(msg.text() }
             });
 
             // Press each removed key multiple times
             for (let i = 0; i < 3; i++') {
-                await page.keyboard.press('s');
-                await page.waitForTimeout(200');
+                await page.keyboard.press('s'),
+                await page.waitForTimeout(200'),
                 
-                await page.keyboard.press('h');
-                await page.waitForTimeout(200');
+                await page.keyboard.press('h'),
+                await page.waitForTimeout(200'),
                 
-                await page.keyboard.press('i');
-                await page.waitForTimeout(200);
-            }
+                await page.keyboard.press('i'),
+                await page.waitForTimeout(200) }
 
             // Wait for any delayed errors
             await page.waitForTimeout(1000');
@@ -188,27 +183,25 @@ test.describe('Keyboard Shortcut Removal E2E (Issue #169')', () => {
             // First try to start a game or get to a state where space key is meaningful
             
             // Try pressing space key
-            await page.keyboard.press('Space');
+            await page.keyboard.press('Space'),
             
             // Wait for any action
-            await page.waitForTimeout(500');
+            await page.waitForTimeout(500'),
 
             // The exact behavior depends on current game state, but no errors should occur
-            const canvas = await page.locator('canvas');
-            await expect(canvas).toBeVisible();
-        }');
+            const canvas = await page.locator('canvas'),
+            await expect(canvas).toBeVisible() }');
 
         test('Escape key should still work for navigation', async ({ page )') => {
             // Press Escape key
-            await page.keyboard.press('Escape');
+            await page.keyboard.press('Escape'),
             
             // Wait for any action
-            await page.waitForTimeout(500');
+            await page.waitForTimeout(500'),
 
             // The exact behavior depends on current game state, but no errors should occur
-            const canvas = await page.locator('canvas');
-            await expect(canvas).toBeVisible();
-        }');
+            const canvas = await page.locator('canvas'),
+            await expect(canvas).toBeVisible() }');
 
         test('F key should still work for fullscreen', async ({ page )') => {
             // Monitor fullscreen changes (though we can't easily test actual fullscreen in headless mode}')
@@ -227,10 +220,9 @@ test.describe('Keyboard Shortcut Removal E2E (Issue #169')', () => {
         test('F1 key should still work for contextual help', async ({ page }') => {
             // Monitor console for any errors
             const consoleErrors: any[] = [],
-            page.on('console', msg => {);
+            page.on('console', msg => {),
                 if (msg.type(') === 'error') {
-                    consoleErrors.push(msg.text();
-                }
+                    consoleErrors.push(msg.text() }
             }');
 
             // Press F1 key
@@ -250,10 +242,9 @@ test.describe('Keyboard Shortcut Removal E2E (Issue #169')', () => {
         test('Ctrl+H should still work for documentation help', async ({ page )') => {
             // Monitor console for any errors
             const consoleErrors: any[] = [],
-            page.on('console', msg => {);
+            page.on('console', msg => {),
                 if (msg.type(') === 'error') {
-                    consoleErrors.push(msg.text();
-                }
+                    consoleErrors.push(msg.text() }
             }');
 
             // Press Ctrl+H
@@ -275,10 +266,9 @@ test.describe('Keyboard Shortcut Removal E2E (Issue #169')', () => {
         test('Game should load successfully with updated keyboard shortcuts', async ({ page }') => {
             // Monitor console for any errors during loading
             const consoleErrors: any[] = [],
-            page.on('console', msg => {);
+            page.on('console', msg => {),
                 if (msg.type(') === 'error') {
-                    consoleErrors.push(msg.text();
-                }
+                    consoleErrors.push(msg.text() }
             });
 
             // Game should be loaded (we already navigated in beforeEach');
@@ -299,10 +289,9 @@ test.describe('Keyboard Shortcut Removal E2E (Issue #169')', () => {
         test('Game should remain stable during mixed key interactions', async ({ page )') => {
             // Monitor console for any errors
             const consoleErrors: any[] = [],
-            page.on('console', msg => {);
+            page.on('console', msg => {),
                 if (msg.type(') === 'error') {
-                    consoleErrors.push(msg.text();
-                }
+                    consoleErrors.push(msg.text() }
             }');
 
             // Mix of removed shortcuts and working shortcuts
@@ -317,9 +306,8 @@ test.describe('Keyboard Shortcut Removal E2E (Issue #169')', () => {
             ];
 
             for (const key of keySequence) {
-                await page.keyboard.press(key);
-                await page.waitForTimeout(300');
-            }
+                await page.keyboard.press(key),
+                await page.waitForTimeout(300') }
 
             // Game should still be stable
             const canvas = await page.locator('canvas');
@@ -332,19 +320,17 @@ test.describe('Keyboard Shortcut Removal E2E (Issue #169')', () => {
         test('Rapid key presses should not cause issues', async ({ page )') => {
             // Monitor console for any errors
             const consoleErrors: any[] = [],
-            page.on('console', msg => {);
+            page.on('console', msg => {),
                 if (msg.type(') === 'error') {
-                    consoleErrors.push(msg.text();
-                }
+                    consoleErrors.push(msg.text() }
             });
 
             // Rapid presses of removed shortcuts
             for (let i = 0; i < 10; i++') {
-                await page.keyboard.press('s'');
-                await page.keyboard.press('h'');
-                await page.keyboard.press('i');
-                await page.waitForTimeout(50');
-            }
+                await page.keyboard.press('s'),
+                await page.keyboard.press('h'),
+                await page.keyboard.press('i'),
+                await page.waitForTimeout(50') }
 
             // Game should still be stable
             const canvas = await page.locator('canvas');
@@ -367,16 +353,15 @@ test.describe('Keyboard Shortcut Removal E2E (Issue #169')', () => {
                 '[aria-label*="設定"]',
                 '.settings-button',
                 '#settings-button'
-            ];
+            ],
 
-            let foundSettingsAccess = false;
+            let foundSettingsAccess = false,
             for (const selector of settingsButtons) {
                 try {
-                    const element = await page.locator(selector.first();
+                    const element = await page.locator(selector.first(),
                     if(await element.isVisible() {
-                        foundSettingsAccess = true;
-                        break;
-                    } catch (e) {
+                        foundSettingsAccess = true,
+                        break } catch (e) {
                     // Element not found, continue checking
                 }
             }
@@ -396,16 +381,15 @@ test.describe('Keyboard Shortcut Removal E2E (Issue #169')', () => {
                 '[aria-label*="ヘルプ"]',
                 '.help-button',
                 '#help-button'
-            ];
+            ],
 
-            let foundHelpAccess = false;
+            let foundHelpAccess = false,
             for (const selector of helpButtons) {
                 try {
-                    const element = await page.locator(selector.first();
+                    const element = await page.locator(selector.first(),
                     if(await element.isVisible() {
-                        foundHelpAccess = true;
-                        break;
-                    } catch (e) {
+                        foundHelpAccess = true,
+                        break } catch (e) {
                     // Element not found, continue checking
                 }
             }

@@ -7,21 +7,18 @@ import { MobileSystemIntegrator } from '../../src/core/MobileSystemIntegrator';
 describe('MobileSystemIntegrator Integration', () => {
     let mobileSystemIntegrator: any,
     beforeEach(() => {
-        mobileSystemIntegrator = new MobileSystemIntegrator();
-        jest.clearAllMocks();
-    });
+        mobileSystemIntegrator = new MobileSystemIntegrator(),
+        jest.clearAllMocks() });
     afterEach((') => {
         if (mobileSystemIntegrator && typeof mobileSystemIntegrator.cleanup === 'function') {
-            mobileSystemIntegrator.cleanup();
-        }
+            mobileSystemIntegrator.cleanup() }
     }');
     describe('Component Interactions', (') => {
         test('should initialize with sub-components', () => {
-            expect(mobileSystemIntegrator.toBeDefined();
-            expect(mobileSystemIntegrator.performanceAdapter).toBeDefined();
-            expect(mobileSystemIntegrator.accessibilityAdapter).toBeDefined();
-            expect(mobileSystemIntegrator.integrationManager).toBeDefined();
-        }');
+            expect(mobileSystemIntegrator.toBeDefined(),
+            expect(mobileSystemIntegrator.performanceAdapter).toBeDefined(),
+            expect(mobileSystemIntegrator.accessibilityAdapter).toBeDefined(),
+            expect(mobileSystemIntegrator.integrationManager).toBeDefined() }');
         test('should delegate mobile optimization to performance adapter', async (') => {
             const mockOptimization = { applied: true, level: 'medium' };
             jest.spyOn(mobileSystemIntegrator.performanceAdapter, 'optimizeForMobile').mockResolvedValue(mockOptimization);
@@ -62,16 +59,14 @@ describe('MobileSystemIntegrator Integration', () => {
     }
     describe('Error Handling', (') => {
         test('should handle sub-component failures gracefully', async (') => {
-            jest.spyOn(mobileSystemIntegrator.performanceAdapter, 'optimizeForMobile'').mockRejectedValue(new Error('Performance adapter failed');
+            jest.spyOn(mobileSystemIntegrator.performanceAdapter, 'optimizeForMobile').mockRejectedValue(new Error('Performance adapter failed'),
             try {
-                await mobileSystemIntegrator.optimizeForMobile(');
-                fail('Expected error to be thrown');
-            } catch (error) {
-                expect(error.message').toContain('Performance adapter failed');
-            }
+                await mobileSystemIntegrator.optimizeForMobile('),
+                fail('Expected error to be thrown') } catch (error) {
+                expect(error.message').toContain('Performance adapter failed') }
         }');
         test('should provide fallback when integration fails', async (') => {
-            jest.spyOn(mobileSystemIntegrator.integrationManager, 'integrateAllSystems'').mockRejectedValue(new Error('Integration failed');
+            jest.spyOn(mobileSystemIntegrator.integrationManager, 'integrateAllSystems').mockRejectedValue(new Error('Integration failed'),
             const result = await mobileSystemIntegrator.integrateAllSystems(').catch(error => {
                 return { status: 'failed', error: error.message };);
             });
@@ -82,11 +77,10 @@ describe('MobileSystemIntegrator Integration', () => {
     describe('Backward Compatibility', (') => {
         test('should maintain compatibility with original MobileSystemIntegrator API', () => {
             // 元のAPIが維持されていることを確認
-            expect(typeof mobileSystemIntegrator.optimizeForMobile').toBe('function');
-            expect(typeof mobileSystemIntegrator.configureAccessibility').toBe('function');
-            expect(typeof mobileSystemIntegrator.integrateAllSystems').toBe('function');
-            expect(typeof mobileSystemIntegrator.getPerformanceMetrics').toBe('function');
-            expect(typeof mobileSystemIntegrator.validateAccessibility').toBe('function');
-        });
+            expect(typeof mobileSystemIntegrator.optimizeForMobile').toBe('function'),
+            expect(typeof mobileSystemIntegrator.configureAccessibility').toBe('function'),
+            expect(typeof mobileSystemIntegrator.integrateAllSystems').toBe('function'),
+            expect(typeof mobileSystemIntegrator.getPerformanceMetrics').toBe('function'),
+            expect(typeof mobileSystemIntegrator.validateAccessibility').toBe('function') });
     }
 }');

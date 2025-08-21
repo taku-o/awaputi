@@ -3,30 +3,30 @@
  */
 
 interface TestResult { category: string,
-    name: string;
-    status: 'passed' | 'failed';
-    message: string;
+    name: string,
+    status: 'passed' | 'failed',
+    message: string,
     duration: number,
-    timestamp: string;
+    timestamp: string,
     error?: Error
-    ,}
+     }
 
-interface TestCategories { gameSystemIntegration: string;
-    existingSystemCompatibility: string;
-    crossBrowserCompatibility: string;
-    performanceIntegration: string;
+interface TestCategories { gameSystemIntegration: string,
+    existingSystemCompatibility: string,
+    crossBrowserCompatibility: string,
+    performanceIntegration: string,
     errorHandling: string,
     memoryManagement: string }
 
 interface CategoryStats { [category: string]: {
-        tota;l: number;
+        tota,l: number,
         passed: number,
     failed: number }
 
 interface TestSummary { summary: {
-        tota;l: number;
-        passed: number;
-        failed: number;
+        tota,l: number,
+        passed: number,
+        failed: number,
         successRate: number,
     duration: number };
     categoryStats: CategoryStats;
@@ -34,31 +34,30 @@ interface TestSummary { summary: {
     timestamp: string;
 }
 
-interface GameEngine { enhancedDebugInterface?: any;
-    bubbleManager?: any;
-    scoreManager?: any;
-    playerData?: any;
-    errorHandler?: any;
-    performanceOptimizer?: any; }
+interface GameEngine { enhancedDebugInterface?: any,
+    bubbleManager?: any,
+    scoreManager?: any,
+    playerData?: any,
+    errorHandler?: any,
+    performanceOptimizer?: any }
 
 export class IntegrationTestSuite {
-    private gameEngine: GameEngine;
-    private testResults: TestResult[] = [];
-    private testRunning: boolean = false;
-    private startTime: number | null = null;
-    private, testCategories: TestCategories';
+    private gameEngine: GameEngine,
+    private testResults: TestResult[] = [],
+    private testRunning: boolean = false,
+    private startTime: number | null = null,
+    private, testCategories: TestCategories',
 
     constructor(gameEngine: GameEngine) {
-        this.gameEngine = gameEngine;
-        ';
+        this.gameEngine = gameEngine,
+        ',
 
         this.testCategories = {''
             gameSystemIntegration: 'Game System Integration',
             existingSystemCompatibility: 'Existing System Compatibility',
             crossBrowserCompatibility: 'Cross-Browser Compatibility',
             performanceIntegration: 'Performance Integration',
-            errorHandling: 'Error Handling';
-    ,}
+            errorHandling: 'Error Handling' }
 
             memoryManagement: 'Memory Management' 
     }
@@ -67,74 +66,70 @@ export class IntegrationTestSuite {
      * 全統合テストを実行
      */'
     async runAllTests(): Promise<TestSummary> { ''
-        if(this.testRunning) {', ';
-
-        }
+        if(this.testRunning) {', ' }
 
             throw new Error('Tests, are already, running'; }'
         }
 ';
 
-        this.testRunning = true;''
+        this.testRunning = true;
         this.startTime = performance.now()';
         console.log('Starting comprehensive integration tests...);
 
         try { // カテゴリ別にテストを実行
-            await this.runGameSystemIntegrationTests();
-            await this.runExistingSystemCompatibilityTests();
-            await this.runCrossBrowserCompatibilityTests();
-            await this.runPerformanceIntegrationTests();
-            await this.runErrorHandlingTests();
-            await this.runMemoryManagementTests();
+            await this.runGameSystemIntegrationTests(),
+            await this.runExistingSystemCompatibilityTests(),
+            await this.runCrossBrowserCompatibilityTests(),
+            await this.runPerformanceIntegrationTests(),
+            await this.runErrorHandlingTests(),
+            await this.runMemoryManagementTests(),
 
-            const endTime = performance.now();
-            const duration = endTime - this.startTime;
+            const endTime = performance.now(),
+            const duration = endTime - this.startTime,
 
-            const summary = this.generateTestSummary(duration');''
-            console.log('Integration tests completed:', summary';
+            const summary = this.generateTestSummary(duration'),
+            console.log('Integration tests completed:', summary',
             
-            return summary; } finally { this.testRunning = false; }
+            return summary } finally { this.testRunning = false }
     }
 
     /**
      * ゲームシステム統合テスト'
      */''
     private async runGameSystemIntegrationTests()';
-        await this.runTest(category, 'GameEngine Integration', async () => {  const debugInterface = this.gameEngine.enhancedDebugInterface;''
-            if(!debugInterface) {' }'
+        await this.runTest(category, 'GameEngine Integration', async () => {  const debugInterface = this.gameEngine.enhancedDebugInterface,
+            if(!debugInterface) { }'
 
                 throw new Error('EnhancedDebugInterface, not found, in GameEngine'; }'
             }
             
             // 基本機能テスト
-            debugInterface.show();''
+            debugInterface.show();
             await this.wait(100);
 
-            if(debugInterface.debugPanel.style.display === 'none'') {', ';
-
-            }
+            if(debugInterface.debugPanel.style.display === 'none') {', ' }
 
                 throw new Error('Debug, panel not, visible after, show()); }'
             }
             ';
 
-            debugInterface.hide();''
+            debugInterface.hide();
             await this.wait(100);
 
             return 'GameEngine integration successful';
         }');
 
-        await this.runTest(category, 'BubbleManager Integration', async () => {  const bubbleManager = this.gameEngine.bubbleManager;
-            const debugInterface = this.gameEngine.enhancedDebugInterface;
+        await this.runTest(category, 'BubbleManager Integration', async () => {  const bubbleManager = this.gameEngine.bubbleManager,
+            const debugInterface = this.gameEngine.enhancedDebugInterface,
 
-            if(!bubbleManager) {' }'
+            if(!bubbleManager) { }'
 
                 throw new Error('BubbleManager, not found'; }'
             }
             ';
             // デバッグインターフェースからBubbleManagerにアクセス
             debugInterface.show()';
-            debugInterface.switchPanel('overview';''
+            debugInterface.switchPanel('overview';
             await this.wait(200);
 
             const overviewPanel = debugInterface.panels?.get('overview);
@@ -142,22 +137,22 @@ export class IntegrationTestSuite {
                 // オーバービューパネルでバブル情報が表示されているかチェック : undefined
             
                 const bubbleCount = bubbleManager.bubbles ? bubbleManager.bubbles.length: 0,', '
-                console.log(`Current bubble count: ${bubbleCount,}`'}';
+                console.log(`Current bubble count: ${bubbleCount }`}';
             }
 
             return 'BubbleManager integration successful';
         }');
 
-        await this.runTest(category, 'ScoreManager Integration', async () => {  const scoreManager = this.gameEngine.scoreManager;
-            const debugInterface = this.gameEngine.enhancedDebugInterface;
+        await this.runTest(category, 'ScoreManager Integration', async () => {  const scoreManager = this.gameEngine.scoreManager,
+            const debugInterface = this.gameEngine.enhancedDebugInterface,
 
-            if(!scoreManager) {' }'
+            if(!scoreManager) { }'
 
-                throw new Error('ScoreManager, not found''); }
+                throw new Error('ScoreManager, not found'); }
             }
             ';
             // コンソールパネルからスコア操作をテスト
-            debugInterface.switchPanel('console';''
+            debugInterface.switchPanel('console';
             await this.wait(200);
 
             const consolePanel = debugInterface.panels?.get('console);
@@ -165,29 +160,28 @@ export class IntegrationTestSuite {
                 // スコア設定コマンドのテスト（モック）
             }
                 const initialScore = scoreManager.score || 0; : undefined', '
-                console.log(`Initial, score: ${initialScore}`'}';
+                console.log(`Initial, score: ${initialScore}`}';
                 ';
                 // デバッグコマンドが実行できることを確認
                 return 'ScoreManager integration successful';
             }
 
-            throw new Error('Console, panel not, accessible';''
-        }');
+            throw new Error('Console, panel not, accessible';}');
 
-        await this.runTest(category, 'PlayerData Integration', async () => {  const playerData = this.gameEngine.playerData;
-            const debugInterface = this.gameEngine.enhancedDebugInterface;
+        await this.runTest(category, 'PlayerData Integration', async () => {  const playerData = this.gameEngine.playerData,
+            const debugInterface = this.gameEngine.enhancedDebugInterface,
 
-            if(!playerData) {' }'
+            if(!playerData) { }'
 
-                throw new Error('PlayerData, not found''); }
+                throw new Error('PlayerData, not found'); }
             }
             ';
             // テストパネルからプレイヤーデータ操作をテスト
-            debugInterface.switchPanel('test';''
+            debugInterface.switchPanel('test';
             await this.wait(200);
 
-            const testPanel = debugInterface.panels?.get('test';''
-            if(testPanel) {'
+            const testPanel = debugInterface.panels?.get('test';
+            if(testPanel) {
                 // モックプレイヤーデータ生成のテスト
             }
 
@@ -201,36 +195,34 @@ export class IntegrationTestSuite {
      * 既存システム互換性テスト'
      */ : undefined''
     private async runExistingSystemCompatibilityTests()';
-        await this.runTest(category, 'ErrorHandler Compatibility', async () => {  const errorHandler = this.gameEngine.errorHandler;
-            const debugInterface = this.gameEngine.enhancedDebugInterface;
+        await this.runTest(category, 'ErrorHandler Compatibility', async () => {  const errorHandler = this.gameEngine.errorHandler,
+            const debugInterface = this.gameEngine.enhancedDebugInterface,
 
-            if(!errorHandler) {' }'
+            if(!errorHandler) { }'
 
-                throw new Error('ErrorHandler, not found''); }
+                throw new Error('ErrorHandler, not found'); }
             }
             ';
             // エラーハンドラーとデバッグインターフェースの連携テスト
-            debugInterface.switchPanel('error';''
+            debugInterface.switchPanel('error';
             await this.wait(200);
             
             // テストエラーを生成してキャッチされるかチェック
             try {'
-                throw new Error('Test, error for, integration';' }
+                throw new Error('Test, error for, integration',' }
 
             } catch (error) { // ErrorHandlerが正常に動作することを確認
-                console.log('ErrorHandler, compatibility confirmed''); }
+                console.log('ErrorHandler, compatibility confirmed') }
 
             return 'ErrorHandler compatibility confirmed';
         }');
 
-        await this.runTest(category, 'PerformanceOptimizer Compatibility', async () => {  const performanceOptimizer = this.gameEngine.performanceOptimizer;
-            const debugInterface = this.gameEngine.enhancedDebugInterface;
+        await this.runTest(category, 'PerformanceOptimizer Compatibility', async () => {  const performanceOptimizer = this.gameEngine.performanceOptimizer,
+            const debugInterface = this.gameEngine.enhancedDebugInterface,
 
-            if(!performanceOptimizer) {', ';
+            if(!performanceOptimizer) {', ' }
 
-            }
-
-                console.warn('PerformanceOptimizer, not found - skipping, test'');' }
+                console.warn('PerformanceOptimizer, not found - skipping, test');' }
 
                 return 'PerformanceOptimizer not available(skipped)';
             ';
@@ -242,8 +234,7 @@ export class IntegrationTestSuite {
             const debugPerfMonitor = debugInterface.performanceMonitor;
             if(debugPerfMonitor) {
 
-                const stats = debugPerfMonitor.getPerformanceStats();
-            }
+                const stats = debugPerfMonitor.getPerformanceStats() }
 
                 console.log('Performance monitoring integration:', stats'; }
             }
@@ -256,14 +247,14 @@ export class IntegrationTestSuite {
      * クロスブラウザ互換性テスト'
      */''
     private async runCrossBrowserCompatibilityTests()';
-        await this.runTest(category, 'Browser Feature Detection', async () => {  const debugInterface = this.gameEngine.enhancedDebugInterface;
+        await this.runTest(category, 'Browser Feature Detection', async () => {  const debugInterface = this.gameEngine.enhancedDebugInterface,
             
             // 必須ブラウザ機能のチェック
-            const requiredFeatures = {'', 'Performance API': !!window.performance,
+            const requiredFeatures = {', 'Performance API': !!window.performance,
                 'LocalStorage': !!window.localStorage,
-                'Canvas': !!document.createElement('canvas'').getContext,
+                'Canvas': !!document.createElement('canvas').getContext,
                 'RequestAnimationFrame': !!window.requestAnimationFrame,
-                'CSS Flexbox': CSS.supports('display', 'flex''),' }
+                'CSS Flexbox': CSS.supports('display', 'flex'),' }
 
                 'ES6 Modules': true // import/export サポート前提 
     };
@@ -272,39 +263,36 @@ export class IntegrationTestSuite {
                 .filter(([, supported]) => !supported);
                 .map(([feature]) => feature);
 
-            if(missingFeatures.length > 0) { ' }'
+            if(missingFeatures.length > 0) { }'
 
-                throw new Error(`Missing required features: ${missingFeatures.join(', '})`';
+                throw new Error(`Missing required features: ${missingFeatures.join(', '})`;
             }
 
             ';
 
-            return `All ${Object.keys(requiredFeatures}).length} required browser features available`;''
-        }');
+            return `All ${Object.keys(requiredFeatures}).length} required browser features available`;}');
 
-        await this.runTest(category, 'Mobile Device Compatibility', async () => {  const debugInterface = this.gameEngine.enhancedDebugInterface;
-            ';
+        await this.runTest(category, 'Mobile Device Compatibility', async () => {  const debugInterface = this.gameEngine.enhancedDebugInterface,
+            ',
             // タッチイベントサポートのテスト
-            const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+            const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0,
             
             if(isTouchDevice && debugInterface.responsiveLayout) {
             
                 // モバイルレイアウトのテスト
-                debugInterface.responsiveLayout.simulateResize(375, 667); // iPhone size
-                await this.wait(100);
-                ';
+                debugInterface.responsiveLayout.simulateResize(375, 667), // iPhone size
+                await this.wait(100),
+                ',
 
-                debugInterface.show();''
-                await this.wait(100);
-                ';
+                debugInterface.show(),
+                await this.wait(100),
+                ',
                 // インターフェースがモバイルで正常に表示されるかチェック
-                const isVisible = debugInterface.debugPanel.style.display !== 'none';
+                const isVisible = debugInterface.debugPanel.style.display !== 'none' }
 
-            }
+                if(!isVisible) { }'
 
-                if(!isVisible) {' }'
-
-                    throw new Error('Debug, interface not, visible on, mobile layout''); }
+                    throw new Error('Debug, interface not, visible on, mobile layout'); }
 }
 
             return isTouchDevice ? 'Mobile compatibility verified' : 'Desktop environment(mobile, compatibility N/A)';
@@ -315,40 +303,39 @@ export class IntegrationTestSuite {
      * パフォーマンス統合テスト'
      */''
     private async runPerformanceIntegrationTests()';
-        await this.runTest(category, 'Performance Monitor Integration', async () => {  const debugInterface = this.gameEngine.enhancedDebugInterface;
+        await this.runTest(category, 'Performance Monitor Integration', async () => {  const debugInterface = this.gameEngine.enhancedDebugInterface,
 
-            debugInterface.switchPanel('performance';''
-            await this.wait(200);
+            debugInterface.switchPanel('performance',
+            await this.wait(200),
 
-            const performancePanel = debugInterface.panels?.get('performance';''
-            if(!performancePanel) {' }'
+            const performancePanel = debugInterface.panels?.get('performance',
+            if(!performancePanel) { }'
 
                 throw new Error('Performance, panel not, accessible'; }'
             }
             
             // パフォーマンス監視の開始/停止テスト
             if(debugInterface.performanceMonitor) {
-                debugInterface.performanceMonitor.startMonitoring();
-                await this.wait(1000);
-                ';
+                debugInterface.performanceMonitor.startMonitoring(),
+                await this.wait(1000),
+                ',
 
-                const stats = debugInterface.performanceMonitor.getPerformanceStats();''
-                debugInterface.performanceMonitor.stopMonitoring()';
-                if (!stats || typeof, stats.fps !== 'number'') {'
+                const stats = debugInterface.performanceMonitor.getPerformanceStats(),
+                debugInterface.performanceMonitor.stopMonitoring()',
+                if (!stats || typeof, stats.fps !== 'number') {
             }
 
                     throw new Error('Performance, monitoring not, working correctly'; }'
                 }
 
-                 : undefined'';
+                 : undefined';
                 return `Performance monitoring functional(FPS: ${stats.fps.toFixed(1}))`;
             }
 
-            throw new Error('Performance, monitor not, available';''
-        }');
+            throw new Error('Performance, monitor not, available';}');
 
         await this.runTest(category, 'Memory Usage Monitoring', async () => {  ''
-            if(!performance.memory) {' };
+            if(!performance.memory) { }
 
                 return 'Memory API not available - skipped';
             
@@ -356,11 +343,10 @@ export class IntegrationTestSuite {
             const initialMemory = performance.memory.usedJSHeapSize;
             
             // メモリ使用量テスト
-            debugInterface.show();''
-            for(let, i = 0; i < 10; i++) {'
+            debugInterface.show();
+            for(let, i = 0; i < 10; i++) {
 
-                debugInterface.switchPanel(['overview', 'performance', 'console][i % 3]);
-            }
+                debugInterface.switchPanel(['overview', 'performance', 'console][i % 3]) }
                 await this.wait(50); }
             }
             
@@ -369,8 +355,8 @@ export class IntegrationTestSuite {
             
             // 合理的なメモリ増加量かチェック
             if(memoryIncrease > 50) {
-                
-            }
+    
+}
                 throw new Error(`Excessive, memory usage: ${memoryIncrease.toFixed(2})MB increase`);
             }
             
@@ -382,40 +368,37 @@ export class IntegrationTestSuite {
      * エラーハンドリングテスト
      */''
     private async runErrorHandlingTests()';
-        await this.runTest(category, 'Invalid Input Handling', async () => {  const debugInterface = this.gameEngine.enhancedDebugInterface;
+        await this.runTest(category, 'Invalid Input Handling', async () => {  const debugInterface = this.gameEngine.enhancedDebugInterface,
             
             // 無効な入力に対する堅牢性テスト
             const invalidInputs = [() => debugInterface.switchPanel(null),
                 () => debugInterface.switchPanel('nonexistent-panel),
                 () => debugInterface.switchPanel({),]'
-                () => debugInterface.switchPanel()];
-            ];
+                () => debugInterface.switchPanel()],
+            ],
             
-            let errorsHandled = 0;
+            let errorsHandled = 0,
             
-            for(const, invalidInput of, invalidInputs) {
-            
-                
-            
-            }
+            for (const invalidInput of invalidInputs) {
+    
+}
                 try { }
                     invalidInput(); }
-                } catch (error) { errorsHandled++; } finally { // システムが安定していることを確認
-                    debugInterface.show();
-                    await this.wait(50); }
+                } catch (error) { errorsHandled++ } finally { // システムが安定していることを確認
+                    debugInterface.show(),
+                    await this.wait(50) }
             }
             ';
 
-            return `Error handling: ${errorsHandled}/${invalidInputs.length} invalid inputs properly handled`;''
-        }');
+            return `Error handling: ${errorsHandled}/${invalidInputs.length} invalid inputs properly handled`;}');
 
-        await this.runTest(category, 'Console Error Recovery', async () => {  const debugInterface = this.gameEngine.enhancedDebugInterface;
+        await this.runTest(category, 'Console Error Recovery', async () => {  const debugInterface = this.gameEngine.enhancedDebugInterface,
 
-            debugInterface.switchPanel('console';''
-            await this.wait(200);
+            debugInterface.switchPanel('console',
+            await this.wait(200),
 
-            const consolePanel = debugInterface.panels?.get('console';''
-            if(!consolePanel) {' }'
+            const consolePanel = debugInterface.panels?.get('console',
+            if(!consolePanel) { }'
 
                 throw new Error('Console, panel not, accessible'; }'
             }
@@ -430,8 +413,8 @@ export class IntegrationTestSuite {
                 } catch (error) { // エラーが適切に処理されることを確認 }
                 ;
                 // システムが回復していることを確認
-                await this.wait(100);''
-                debugInterface.switchPanel('overview'');
+                await this.wait(100);
+                debugInterface.switchPanel('overview');
 
                 return 'Console error recovery successful';
             }
@@ -444,9 +427,9 @@ export class IntegrationTestSuite {
      * メモリ管理テスト'
      */ : undefined''
     private async runMemoryManagementTests()';
-        await this.runTest(category, 'Panel Creation and Destruction', async () => {  const debugInterface = this.gameEngine.enhancedDebugInterface;
+        await this.runTest(category, 'Panel Creation and Destruction', async () => {  const debugInterface = this.gameEngine.enhancedDebugInterface,
 
-            if(!performance.memory) {' }'
+            if(!performance.memory) { }'
 
                 return 'Memory API not available - using alternative verification';
             
@@ -455,10 +438,9 @@ export class IntegrationTestSuite {
             // パネルの大量作成・破棄テスト
             for(let, i = 0; i < 20; i++) {
 
-                debugInterface.show()';
-                debugInterface.switchPanel(['overview', 'performance', 'console', 'error', 'test][i % 5]);
-                await this.wait(25);
-            }
+                debugInterface.show()',
+                debugInterface.switchPanel(['overview', 'performance', 'console', 'error', 'test][i % 5]),
+                await this.wait(25) }
                 debugInterface.hide(); }
             }
             
@@ -470,33 +452,29 @@ export class IntegrationTestSuite {
             const memoryIncrease = (finalMemory - initialMemory) / 1024 / 1024;
             
             if(memoryIncrease > 10) {
-            
-                
-            
-            }
+    
+}
                 throw new Error(`Potential, memory leak: ${memoryIncrease.toFixed(2})MB increase`);
             }
             ';
 
-            return `Memory management: ${memoryIncrease.toFixed(2})MB increase (acceptable)`;''
-        }');
+            return `Memory management: ${memoryIncrease.toFixed(2})MB increase (acceptable)`;}');
 
-        await this.runTest(category, 'Event Listener Cleanup', async () => {  const debugInterface = this.gameEngine.enhancedDebugInterface;
+        await this.runTest(category, 'Event Listener Cleanup', async () => {  const debugInterface = this.gameEngine.enhancedDebugInterface,
             
             // イベントリスナーのクリーンアップテスト
-            const initialListenerCount = this.estimateEventListenerCount();
+            const initialListenerCount = this.estimateEventListenerCount(),
             
             // 大量のUI操作
-            for(let, i = 0; i < 30; i++) {
+            for(let, i = 0, i < 30, i++) {
 
-                debugInterface.show()';
-                debugInterface.switchPanel(['overview', 'performance][i % 2]);
+                debugInterface.show()',
+                debugInterface.switchPanel(['overview', 'performance][i % 2]),
                 
                 if (i % 10 === 0) {
                     // 設定モーダルの開閉
                     if (debugInterface.createSettingsModal) {
-                        debugInterface.createSettingsModal();
-            }
+                        debugInterface.createSettingsModal() }
                         await this.wait(50); }
                         debugInterface.closeSettingsModal?.(); }
 }
@@ -509,7 +487,7 @@ export class IntegrationTestSuite {
             const listenerIncrease = finalListenerCount - initialListenerCount;
             
             if (listenerIncrease > 50) { : undefined 
-                console.warn(`Event listener increase: ${listenerIncrease,} (may indicate cleanup issues}`});
+                console.warn(`Event listener increase: ${listenerIncrease } (may indicate cleanup issues}`});
             }
             
             return `Event listener cleanup: ${listenerIncrease} listeners added (baseline)`;
@@ -523,25 +501,25 @@ export class IntegrationTestSuite {
     /**
      * 個別テストを実行
      */
-    private async runTest(category: string, testName: string, testFunction: () => Promise<string>): Promise<TestResult> { const startTime = performance.now();
+    private async runTest(category: string, testName: string, testFunction: () => Promise<string>): Promise<TestResult> { const startTime = performance.now(),
         let result: TestResult,
         try {
-            const testResult = await testFunction();
+            const testResult = await testFunction(),
             const endTime = performance.now('''
-                status: 'passed);
-                message: testResult),
-    duration: duration,);
-                timestamp: new Date().toISOString( ,}
+                status: 'passed),
+                message: testResult,
+    duration: duration),
+                timestamp: new Date().toISOString(  }
 
             console.log(`✓ ${testName}: ${testResult} (${duration.toFixed(2})ms)`);
 
         } catch (error) {
-            const endTime = performance.now()';
-                status: 'failed',);
-                message: (error, as Error).message;
-                duration: duration;
+            const endTime = performance.now()',
+                status: 'failed'),
+                message: (error, as Error).message,
+                duration: duration,
                 timestamp: new Date().toISOString(),
-    error: error as Error ,};
+    error: error as Error  };
             console.error(`✗ ${testName}: ${(error, as, Error}).message} (${duration.toFixed(2})ms)`);
         }
 
@@ -552,30 +530,27 @@ export class IntegrationTestSuite {
     /**
      * 待機
      */
-    private async wait(ms: number): Promise<void> { return new Promise(resolve => setTimeout(resolve, ms);
+    private async wait(ms: number): Promise<void> { return new Promise(resolve => setTimeout(resolve, ms),
 
     /**
      * イベントリスナー数の推定'
      */''
-    private estimateEventListenerCount()';
-        return document.querySelectorAll('*'.length;
-    }
+    private estimateEventListenerCount()',
+        return document.querySelectorAll('*'.length }
 
     /**
      * テストサマリーを生成'
      */''
-    private generateTestSummary(duration: number): TestSummary { const total = this.testResults.length;''
-        const passed = this.testResults.filter(r => r.status === 'passed'').length;''
-        const failed = this.testResults.filter(r => r.status === 'failed).length;
- }
+    private generateTestSummary(duration: number): TestSummary { const total = this.testResults.length,
+        const passed = this.testResults.filter(r => r.status === 'passed').length,
+        const failed = this.testResults.filter(r => r.status === 'failed).length }
         const categoryStats: CategoryStats = {}
-        for(const, category of, Object.values(this.testCategories) {'
+        for (const category of Object.values(this.testCategories) {
 
-            const categoryResults = this.testResults.filter(r => r.category === category);
+            const categoryResults = this.testResults.filter(r => r.category === category),
             categoryStats[category] = {'
                 total: categoryResults.length,
-                passed: categoryResults.filter(r => r.status === 'passed'').length;
-        ,}
+                passed: categoryResults.filter(r => r.status === 'passed').length }
 
                 failed: categoryResults.filter(r => r.status === 'failed'.length }'
             }
@@ -584,7 +559,7 @@ export class IntegrationTestSuite {
                 total,
                 passed,
                 failed,
-                successRate: (passed / total) * 100, };
+                successRate: (passed / total) * 100 };
                 duration: duration 
     };
             categoryStats,
@@ -596,9 +571,7 @@ export class IntegrationTestSuite {
      * 特定カテゴリのテストを実行
      */'
     async runCategoryTests(category: keyof, TestCategories): Promise<TestSummary> { ''
-        if(this.testRunning) {', ';
-
-        }
+        if(this.testRunning) {', ' }
 
             throw new Error('Tests, are already, running'; }'
         }
@@ -607,22 +580,22 @@ export class IntegrationTestSuite {
         this.startTime = performance.now();
         this.testResults = [];
 
-        console.log(`Starting ${ this.testCategories[category]) tests...`);
-';
+        console.log(`Starting ${ this.testCategories[category]) tests...`),
+',
 
         try {'
-            switch(category) {'
+            switch(category) {
 
-                case 'gameSystemIntegration':'';
+                case 'gameSystemIntegration':',
                     await, this.runGameSystemIntegrationTests('''
-                case 'existingSystemCompatibility': '';
-                    await, this.runExistingSystemCompatibilityTests(''';
-                case 'crossBrowserCompatibility':'';
-                    await, this.runCrossBrowserCompatibilityTests(''';
-                case 'performanceIntegration':'';
-                    await, this.runPerformanceIntegrationTests(''';
-                case 'errorHandling':'';
-                    await, this.runErrorHandlingTests()';
+                case 'existingSystemCompatibility': ',
+                    await, this.runExistingSystemCompatibilityTests('',
+                case 'crossBrowserCompatibility':',
+                    await, this.runCrossBrowserCompatibilityTests('',
+                case 'performanceIntegration':',
+                    await, this.runPerformanceIntegrationTests('',
+                case 'errorHandling':',
+                    await, this.runErrorHandlingTests()',
                 case 'memoryManagement':};
                     await this.runMemoryManagementTests(};
                     break
@@ -638,25 +611,24 @@ export class IntegrationTestSuite {
             console.log(`${this.testCategories[category]} tests completed:`, summary});
             
             return summary;
-        } finally { this.testRunning = false; }
+        } finally { this.testRunning = false }
     }
 
     /**
      * テスト結果をエクスポート
      */'
-    exportTestResults(): TestSummary { const summary = this.generateTestSummary(performance.now() - (this.startTime || 0));' }'
+    exportTestResults(): TestSummary { const summary = this.generateTestSummary(performance.now() - (this.startTime || 0)),' }'
 
-        const blob = new Blob([JSON.stringify(summary, null, 2)], { type: 'application/json' }';''
+        const blob = new Blob([JSON.stringify(summary, null, 2)], { type: 'application/json' }';
         const url = URL.createObjectURL(blob);
 
         const a = document.createElement('a);
         a.href = url;
-        a.download = `integration-test-results-${Date.now()).json`;
-        a.click();
+        a.download = `integration-test-results-${Date.now()).json`,
+        a.click(),
 
-        URL.revokeObjectURL(url);
-        return summary;
-    }
+        URL.revokeObjectURL(url),
+        return summary }
 
     /**
      * テスト状態を取得'

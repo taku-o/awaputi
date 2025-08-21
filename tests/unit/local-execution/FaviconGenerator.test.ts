@@ -17,73 +17,65 @@ interface MockContext {
     fillStyle: string,
     strokeStyle: string,
     lineWidth: number,
-    fillRect: jest.Mock<void, [number, number, number, number]>;
-    strokeRect: jest.Mock<void, [number, number, number, number]>;
-    beginPath: jest.Mock<void, []>;
-    arc: jest.Mock<void, [number, number, number, number, number]>;
-    fill: jest.Mock<void, []>;
-    stroke: jest.Mock<void, []>;
-    clearRect: jest.Mock<void, [number, number, number, number]>;
-    createRadialGradient: jest.Mock<CanvasGradient, [number, number, number, number, number, number]>;
-    createLinearGradient: jest.Mock<CanvasGradient, [number, number, number, number]>;
-    drawImage: jest.Mock<void, any[]>;
-    getImageData: jest.Mock<ImageData, [number, number, number, number]>;
-    putImageData: jest.Mock<void, [ImageData, number, number]>;
-}
+    fillRect: jest.Mock<void, [number, number, number, number]>,
+    strokeRect: jest.Mock<void, [number, number, number, number]>,
+    beginPath: jest.Mock<void, []>,
+    arc: jest.Mock<void, [number, number, number, number, number]>,
+    fill: jest.Mock<void, []>,
+    stroke: jest.Mock<void, []>,
+    clearRect: jest.Mock<void, [number, number, number, number]>,
+    createRadialGradient: jest.Mock<CanvasGradient, [number, number, number, number, number, number]>,
+    createLinearGradient: jest.Mock<CanvasGradient, [number, number, number, number]>,
+    drawImage: jest.Mock<void, any[]>,
+    getImageData: jest.Mock<ImageData, [number, number, number, number]>,
+    putImageData: jest.Mock<void, [ImageData, number, number]> }
 interface MockCanvas {
     width: number,
     height: number,
-    getContext: jest.Mock<MockContext | null, [string]>;
-    toDataURL: jest.Mock<string, [string? , number?]>; : undefined
-    toBlob?: jest.Mock<void, [(blob: Blob | null') => void, string? , number?]>; : undefined
-    style: Partial<CSSStyleDeclaration>,
-}
+    getContext: jest.Mock<MockContext | null, [string]>,
+    toDataURL: jest.Mock<string, [string? , number?]>, : undefined
+    toBlob?: jest.Mock<void, [(blob: Blob | null') => void, string? , number?]>, : undefined
+    style: Partial<CSSStyleDeclaration> }
 interface MockLink {
     rel: string,
     type: string,
     sizes: string,
     href: string,
     id: string,
-    remove?: jest.Mock<void, []>;
-}
+    remove?: jest.Mock<void, []> }
 interface MockDocument {
-    createElement: jest.Mock<MockCanvas | MockLink | any, [string]>;
+    createElement: jest.Mock<MockCanvas | MockLink | any, [string]>,
     head?: {
-        appendChil;d: jest.Mock<void, [any]>;
-        removeChild: jest.Mock<void, [any]>;
-        querySelector: jest.Mock<MockLink | null, [string]>;
-        querySelectorAll: jest.Mock<NodeListOf<MockLink>, [string]>;
-    };
+        appendChil,d: jest.Mock<void, [any]>,
+        removeChild: jest.Mock<void, [any]>,
+        querySelector: jest.Mock<MockLink | null, [string]>,
+        querySelectorAll: jest.Mock<NodeListOf<MockLink>, [string]> };
     getElementById: jest.Mock<any, [string]>;
 }
 interface MockLocalStorage {
-    getItem: jest.Mock<string | null, [string]>;
-    setItem: jest.Mock<void, [string, string]>;
-    removeItem: jest.Mock<void, [string]>;
-}
+    getItem: jest.Mock<string | null, [string]>,
+    setItem: jest.Mock<void, [string, string]>,
+    removeItem: jest.Mock<void, [string]> }
 interface GenerateConfig {
-    sizes?: number[];
-    bubbleColor?: string;
-    backgroundColor?: string;
-    highlightColor?: string;
-    enableCaching?: boolean;
-    enableBubbleDesign?: boolean;
-    cacheExpiry?: number;
-    injectIntoDOM?: boolean;
-    replaceExisting?: boolean;
-    enableHighDPI?: boolean;
-    preferBlob?: boolean;
-}
+    sizes?: number[],
+    bubbleColor?: string,
+    backgroundColor?: string,
+    highlightColor?: string,
+    enableCaching?: boolean,
+    enableBubbleDesign?: boolean,
+    cacheExpiry?: number,
+    injectIntoDOM?: boolean,
+    replaceExisting?: boolean,
+    enableHighDPI?: boolean,
+    preferBlob?: boolean }
 interface GenerateResult {
     success: boolean,
     generated: number,
-    fromCache?: number;
-    error?: string;
-    errors?: string[];
-}
+    fromCache?: number,
+    error?: string,
+    errors?: string[] }
 interface CanvasGradient {
-    addColorStop: jest.Mock<void, [number, string]>;
-}
+    addColorStop: jest.Mock<void, [number, string]> }
 describe('FaviconGenerator', () => {
     let mockCanvas: MockCanvas,
     let mockContext: MockContext,
@@ -92,23 +84,21 @@ describe('FaviconGenerator', () => {
     beforeEach((') => {
         // Mock Canvas and Context
         mockContext = {
-            fillStyle: '',
-            strokeStyle: '',
+            fillStyle: ',
+            strokeStyle: ',
             lineWidth: 1,
-            fillRect: jest.fn(),
-            strokeRect: jest.fn(),
-            beginPath: jest.fn(),
-            arc: jest.fn(),
-            fill: jest.fn(),
-            stroke: jest.fn(),
-            clearRect: jest.fn(),
+            fillRect: jest.fn(
+            strokeRect: jest.fn(
+            beginPath: jest.fn(
+            arc: jest.fn(
+            fill: jest.fn(
+            stroke: jest.fn(
+            clearRect: jest.fn(
             createRadialGradient: jest.fn(() => ({
-                addColorStop: jest.fn(),
-    }))),
+                addColorStop: jest.fn()),
             createLinearGradient: jest.fn(() => ({
-                addColorStop: jest.fn(),
-    }))),
-            drawImage: jest.fn(),
+                addColorStop: jest.fn()),
+            drawImage: jest.fn(
             getImageData: jest.fn(() => ({
                 data: new Uint8ClampedArray(4), // RGBA pixel data
                 width: 32,
@@ -118,42 +108,39 @@ describe('FaviconGenerator', () => {
         mockCanvas = {
             width: 32,
             height: 32,
-            getContext: jest.fn(() => mockContext);
-            toDataURL: jest.fn((') => 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg=='),
+            getContext: jest.fn(() => mockContext),
+            toDataURL: jest.fn((') => 'data:image/png,base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg=='),
             toBlob: jest.fn((callback: (blob: Blob | null) => void') => {
                 callback(new Blob(['fake-image-data'], { type: 'image/png' )),
-            ),
             style: {}
         };
         mockDocument = {
             createElement: jest.fn((tag: string') => {
-                if (tag === 'canvas'') return mockCanvas;
-                if (tag === 'link'') return {
-                    rel: '',
-                    type: '',
-                    sizes: '',
-                    href: '',
-                    id: ''
-    }) as MockLink;
+                if (tag === 'canvas') return mockCanvas,
+                if (tag === 'link') return {
+                    rel: ',
+                    type: ',
+                    sizes: ',
+                    href: ',
+                    id: '}) as MockLink;
                 return {});
             }),
             head: {
-                appendChild: jest.fn(),
-                removeChild: jest.fn(),
-                querySelector: jest.fn(() => null);
-                querySelectorAll: jest.fn(() => [] as unknown as NodeListOf<MockLink>);
-    }),
+                appendChild: jest.fn(
+                removeChild: jest.fn(
+                querySelector: jest.fn(() => null),
+                querySelectorAll: jest.fn(() => [] as unknown as NodeListOf<MockLink>) }),
             getElementById: jest.fn(() => null);
-    });
+    );
         mockLocalStorage = {
-            getItem: jest.fn(() => null);
-            setItem: jest.fn(),
+            getItem: jest.fn(() => null),
+            setItem: jest.fn(
         removeItem: jest.fn()
-        );
+        ),
         // Setup global mocks
-        (global as any).document = mockDocument;
-        (global as any).localStorage = mockLocalStorage;
-        (global as any).window = {
+        (global: any).document = mockDocument,
+        (global: any).localStorage = mockLocalStorage,
+        (global: any).window = {
             document: mockDocument,
             localStorage: mockLocalStorage
     });
@@ -161,17 +148,15 @@ describe('FaviconGenerator', () => {
         jest.clearAllMocks();
     );
     afterEach(() => {
-        jest.clearAllMocks();
-    }');
+        jest.clearAllMocks() }');
     describe('generateMissingFavicons', (') => {
         test('should generate basic favicon with default settings', async () => {
-            const result = await FaviconGenerator.generateMissingFavicons();
-            expect(result.success).toBe(true);
-            expect(result.generated).toBeGreaterThan(0);
-            expect(mockDocument.createElement').toHaveBeenCalledWith('canvas');
-            expect(mockCanvas.getContext').toHaveBeenCalledWith('2d');
-            expect(mockContext.fillRect).toHaveBeenCalled();
-        }');
+            const result = await FaviconGenerator.generateMissingFavicons(),
+            expect(result.success).toBe(true),
+            expect(result.generated).toBeGreaterThan(0),
+            expect(mockDocument.createElement').toHaveBeenCalledWith('canvas'),
+            expect(mockCanvas.getContext').toHaveBeenCalledWith('2d'),
+            expect(mockContext.fillRect).toHaveBeenCalled() }');
         test('should generate multiple favicon sizes', async () => {
             const config: GenerateConfig = {
                 sizes: [16, 32, 48],
@@ -197,7 +182,7 @@ describe('FaviconGenerator', () => {
         }');
         test('should handle Canvas creation failure', async () => {
             mockDocument.createElement.mockImplementation((tag: string') => {
-                if (tag === 'canvas'') throw new Error('Canvas not supported');
+                if (tag === 'canvas') throw new Error('Canvas not supported'),
                 return {};
             });
             const result = await FaviconGenerator.generateMissingFavicons();
@@ -205,15 +190,13 @@ describe('FaviconGenerator', () => {
             expect(result.error').toContain('Canvas not supported');
         }');
         test('should handle getContext failure', async () => {
-            mockCanvas.getContext.mockReturnValue(null);
-            const result = await FaviconGenerator.generateMissingFavicons();
-            expect(result.success).toBe(false);
-            expect(result.error').toContain('Canvas context');
-        }');
+            mockCanvas.getContext.mockReturnValue(null),
+            const result = await FaviconGenerator.generateMissingFavicons(),
+            expect(result.success).toBe(false),
+            expect(result.error').toContain('Canvas context') }');
         test('should handle toDataURL failure', async () => {
             mockCanvas.toDataURL.mockImplementation((') => {
-                throw new Error('toDataURL failed');
-            });
+                throw new Error('toDataURL failed') });
             const result = await FaviconGenerator.generateMissingFavicons();
             expect(result.success).toBe(false);
             expect(result.error').toContain('toDataURL failed');
@@ -236,9 +219,8 @@ describe('FaviconGenerator', () => {
         test('should retrieve cached favicons', async (') => {
             // Mock existing cache
             const cachedData = JSON.stringify({
-                '16': 'data:image/png;base64,cached-favicon-16');
-        timestamp: Date.now(),
-            });
+                '16': 'data:image/png,base64,cached-favicon-16'),
+        timestamp: Date.now( });
             mockLocalStorage.getItem.mockReturnValue(cachedData);
             const config: GenerateConfig = {
                 sizes: [16],
@@ -253,7 +235,7 @@ describe('FaviconGenerator', () => {
         test('should handle cache expiration', async () => {
             // Mock expired cache (older than 24 hours}');
             const expiredData = JSON.stringify({
-                '16': 'data:image/png;base64,expired-favicon-16');
+                '16': 'data:image/png,base64,expired-favicon-16'),
                 timestamp: Date.now() - (25 * 60 * 60 * 1000) // 25 hours ago
             });
             mockLocalStorage.getItem.mockReturnValue(expiredData);
@@ -270,7 +252,7 @@ describe('FaviconGenerator', () => {
             expect(mockDocument.createElement').toHaveBeenCalledWith('canvas');
         }');
         test('should handle corrupted cache data', async (') => {
-            mockLocalStorage.getItem.mockReturnValue('invalid-json-data');
+            mockLocalStorage.getItem.mockReturnValue('invalid-json-data'),
             const config: GenerateConfig = {
                 sizes: [16],
                 enableCaching: true
@@ -282,7 +264,7 @@ describe('FaviconGenerator', () => {
             expect(mockDocument.createElement').toHaveBeenCalledWith('canvas');
         }');
         test('should handle localStorage unavailability', async () => {
-            (global as any).localStorage = null;
+            (global: any).localStorage = null,
             const config: GenerateConfig = {
                 sizes: [16],
                 enableCaching: true
@@ -308,7 +290,7 @@ describe('FaviconGenerator', () => {
         }');
         test('should replace existing favicon links', async (') => {
             // Mock existing favicon link
-            const existingLink: MockLink = { rel: 'icon', href: '/old-favicon.png', remove: jest.fn('), type: '', sizes: '', id: '' };
+            const existingLink: MockLink = { rel: 'icon', href: '/old-favicon.png', remove: jest.fn('), type: ', sizes: ', id: '};
             mockDocument.head!.querySelector.mockReturnValue(existingLink);
             const config: GenerateConfig = {
                 sizes: [16],
@@ -321,7 +303,7 @@ describe('FaviconGenerator', () => {
             expect(existingLink.remove).toHaveBeenCalled();
         }');
         test('should preserve existing favicon links when replaceExisting is false', async (') => {
-            const existingLink: MockLink = { rel: 'icon', href: '/old-favicon.png', remove: jest.fn('), type: '', sizes: '', id: '' };
+            const existingLink: MockLink = { rel: 'icon', href: '/old-favicon.png', remove: jest.fn('), type: ', sizes: ', id: '};
             mockDocument.head!.querySelector.mockReturnValue(existingLink);
             const config: GenerateConfig = {
                 sizes: [16],
@@ -366,7 +348,7 @@ describe('FaviconGenerator', () => {
                 enableCaching: false
             };
             // Mock high DPI environment
-            (global as any).devicePixelRatio = 2;
+            (global: any).devicePixelRatio = 2;
             const result = await FaviconGenerator.generateMissingFavicons(config);
             expect(result.success).toBe(true);
             // Canvas should be created at 2x resolution for high DPI
@@ -375,7 +357,7 @@ describe('FaviconGenerator', () => {
     }
     describe('Performance and optimization', (') => {
         test('should complete favicon generation quickly', async () => {
-            const startTime = Date.now();
+            const startTime = Date.now(),
             const config: GenerateConfig = {
                 sizes: [16, 32, 48],
                 enableCaching: false
@@ -398,12 +380,11 @@ describe('FaviconGenerator', () => {
         }');
         test('should handle memory limitations gracefully', async () => {
             // Mock Canvas toDataURL to fail due to memory issues
-            let callCount = 0;
+            let callCount = 0,
             mockCanvas.toDataURL.mockImplementation(() => {
-                callCount++;
+                callCount++,
                 if (callCount > 2') {
-                    throw new Error('Out of memory'');
-                }
+                    throw new Error('Out of memory') }
                 return 'data:image/png;base64,valid-data';
             });
             const config: GenerateConfig = {
@@ -419,8 +400,8 @@ describe('FaviconGenerator', () => {
     describe('Browser compatibility', (') => {
         test('should work with basic Canvas support', async () => {
             // Remove advanced Canvas features
-            delete (mockContext.createRadialGradient);
-            delete (mockContext.createLinearGradient);
+            delete (mockContext.createRadialGradient),
+            delete (mockContext.createLinearGradient),
             const config: GenerateConfig = {
                 sizes: [16],
                 enableCaching: false
@@ -431,7 +412,7 @@ describe('FaviconGenerator', () => {
             expect(mockContext.fillRect).toHaveBeenCalled();
         }');
         test('should handle missing toBlob method', async () => {
-            delete mockCanvas.toBlob;
+            delete mockCanvas.toBlob,
             const config: GenerateConfig = {
                 sizes: [16],
                 preferBlob: true,
@@ -443,7 +424,7 @@ describe('FaviconGenerator', () => {
             expect(mockCanvas.toDataURL).toHaveBeenCalled();
         }');
         test('should work in environments without document.head', async () => {
-            delete mockDocument.head;
+            delete mockDocument.head,
             const config: GenerateConfig = {
                 sizes: [16],
                 injectIntoDOM: true,

@@ -5,25 +5,22 @@ import { ComparisonEngine, as CoreComparisonEngine  } from '../../../src/core/Co
 // モックStorageManager - 高度機能テスト用
 class MockStorageManager {
     constructor() {
-        this.data = new Map();
-    }
+        this.data = new Map() }
 
     async getData(storeName, query) {
-        const storeData = this.data.get(storeName || []);
-        if (!query') return storeData;
+        const storeData = this.data.get(storeName || []),
+        if (!query') return storeData,
 
         if (query.range && query.index === 'startTime') {
             return storeData.filter(item => {
-                const timestamp = item.startTime;
-                return timestamp >= query.range.lower && timestamp <= query.range.upper;);
-        }
+                const timestamp = item.startTime,
+                return timestamp >= query.range.lower && timestamp <= query.range.upper) }
 
         return storeData;
     }
 
     setTestData(storeName, data) {
-        this.data.set(storeName, data');
-    }
+        this.data.set(storeName, data') }
 }
 
 describe('ComparisonEngine - Advanced Features Tests', () => {
@@ -31,9 +28,8 @@ describe('ComparisonEngine - Advanced Features Tests', () => {
     let mockStorageManager: any,
 
     beforeEach(() => {
-        mockStorageManager = new MockStorageManager();
-        comparisonEngine = new ComparisonEngine(mockStorageManager as any);
-    }');
+        mockStorageManager = new MockStorageManager(),
+        comparisonEngine = new ComparisonEngine(mockStorageManager: any) }');
 
     describe('過去データとの比較', () => {
         beforeEach((') => {
@@ -71,8 +67,7 @@ describe('ComparisonEngine - Advanced Features Tests', () => {
         test('過去データとの比較が実行される', async (') => {
             const result = await comparisonEngine.compareWithPastData({
                 periods: ['week'],
-                metrics: ['score', 'accuracy']);
-            });
+                metrics: ['score', 'accuracy']) });
 
             expect(result.success).toBe(true);
             expect(result.comparisons.week.available).toBe(true);
@@ -80,24 +75,22 @@ describe('ComparisonEngine - Advanced Features Tests', () => {
         }');
 
         test('データ不足時の適切な処理', async (') => {
-            mockStorageManager.setTestData('sessions', []); // 空のデータ
+            mockStorageManager.setTestData('sessions', []), // 空のデータ
 
-            const result = await comparisonEngine.compareWithPastData();
+            const result = await comparisonEngine.compareWithPastData(),
 
-            expect(result.success).toBe(false);
-            expect(result.error').toBe('Current performance data is insufficient');
-        });
+            expect(result.success).toBe(false),
+            expect(result.error').toBe('Current performance data is insufficient') });
     }');
 
     describe('エラーハンドリング', (') => {
         test('ストレージエラーが適切に処理される', async () => {
-            mockStorageManager.getData = jest.fn(') as jest.Mock.mockRejectedValue(new Error('Database error');
+            mockStorageManager.getData = jest.fn(') as jest.Mock.mockRejectedValue(new Error('Database error'),
 
-            const result = await comparisonEngine.compareWithPastData();
+            const result = await comparisonEngine.compareWithPastData(),
 
-            expect(result.success).toBe(false as any);
-            expect(result.error').toBe('Database error');
-        });
+            expect(result.success).toBe(false: any),
+            expect(result.error').toBe('Database error') });
     });
 }');
 
@@ -106,8 +99,7 @@ describe('CoreComparisonEngine (Task 8.3 & 8.4')', () => {
     let coreComparisonEngine: any,
 
     beforeEach(() => {
-        coreComparisonEngine = new CoreComparisonEngine();
-    }');
+        coreComparisonEngine = new CoreComparisonEngine() }');
 
     describe('Task 8.3: ステージ別比較機能', (') => {
         test('ステージ別パフォーマンス比較が正しく実行される', (') => {
@@ -194,19 +186,18 @@ describe('CoreComparisonEngine (Task 8.3 & 8.4')', () => {
             };
 
             const result = coreComparisonEngine.compareStagePerformance(stageData, {
-                includeDifficultyAdjustment: true);
+                includeDifficultyAdjustment: true),
 
             // 実際の実装に合わせたテスト
-            expect(result.stageStatistics').toHaveProperty('stage_easy');
-            expect(result.stageStatistics').toHaveProperty('stage_hard');
+            expect(result.stageStatistics').toHaveProperty('stage_easy'),
+            expect(result.stageStatistics').toHaveProperty('stage_hard'),
             
             // 難易度調整された指標の確認
-            const easyStage = result.stageStatistics.stage_easy;
-            const hardStage = result.stageStatistics.stage_hard;
+            const easyStage = result.stageStatistics.stage_easy,
+            const hardStage = result.stageStatistics.stage_hard,
             
-            expect(easyStage.difficultyAdjustedMetrics).toBeDefined();
-            expect(hardStage.difficultyAdjustedMetrics).toBeDefined();
-        }');
+            expect(easyStage.difficultyAdjustedMetrics).toBeDefined(),
+            expect(hardStage.difficultyAdjustedMetrics).toBeDefined() }');
 
         test('ステージランキングが正しく生成される', (') => {
             const stageData = {
@@ -279,7 +270,7 @@ describe('CoreComparisonEngine (Task 8.3 & 8.4')', () => {
 
             const result = coreComparisonEngine.generatePersonalizedImprovementPlan(
                 playerData, 
-                comparisonAnalysis);
+                comparisonAnalysis,
 
             // 実際の実装に合わせたテスト
             expect(result.planId).toBeDefined();
@@ -294,8 +285,8 @@ describe('CoreComparisonEngine (Task 8.3 & 8.4')', () => {
 
             // プレイヤープロファイルの確認
             expect(result.playerProfile).toBeDefined();
-            expect(result.analysis.strengths).toBeInstanceOf(Array as any);
-            expect(result.analysis.weaknesses).toBeInstanceOf(Array as any);
+            expect(result.analysis.strengths).toBeInstanceOf(Array: any);
+            expect(result.analysis.weaknesses).toBeInstanceOf(Array: any);
         }');
 
         test('カスタムオプションが正しく適用される', (') => {
@@ -321,7 +312,7 @@ describe('CoreComparisonEngine (Task 8.3 & 8.4')', () => {
             const result = coreComparisonEngine.generatePersonalizedImprovementPlan(
                 playerData, 
                 comparisonAnalysis,
-                customOptions);
+                customOptions,
 
             expect(result.planId).toBeDefined();
             expect(result.actionPlan).toBeDefined();

@@ -1,7 +1,7 @@
 import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it  } from '@jest/globals';
 import { ErrorNotificationSystem  } from '../../src/analytics/ErrorNotificationSystem';
 // fetch APIのモック
-(global as any).fetch = jest.fn(') as jest.Mock;
+(global: any).fetch = jest.fn(') as jest.Mock;
 // performance.memory のモック
 Object.defineProperty(performance, 'memory', {
     value: {
@@ -12,11 +12,10 @@ Object.defineProperty(performance, 'memory', {
     configurable: true)');
 // navigator.storage のモック
 Object.defineProperty(navigator, 'storage', {
-    value: {),
+    value: {,
         estimate: jest.fn().mockResolvedValue({
             quota: 1024 * 1024 * 1024, // 1GB
-            usage: 100 * 1024 * 1024    // 100MB);
-    },
+            usage: 100 * 1024 * 1024    // 100MB) },
     configurable: true
 }');
 describe('ErrorNotificationSystem', () => {
@@ -25,11 +24,11 @@ describe('ErrorNotificationSystem', () => {
     let eventListeners: any,
     beforeEach((') => {
         // DOM要素をクリア
-        document.body.innerHTML = '';
+        document.body.innerHTML = ',
         
         // イベントリスナーをモック
-        eventListeners = [];
-        originalAddEventListener = window.addEventListener;
+        eventListeners = [],
+        originalAddEventListener = window.addEventListener,
         window.addEventListener = jest.fn((event, handler, options) => {
             eventListeners.push({ event, handler, options )});
         );
@@ -40,8 +39,7 @@ describe('ErrorNotificationSystem', () => {
     });
     afterEach(() => {
         if (errorSystem) {
-            errorSystem.destroy();
-        }
+            errorSystem.destroy() }
         
         // イベントリスナーを復元
         window.addEventListener = originalAddEventListener;
@@ -51,32 +49,29 @@ describe('ErrorNotificationSystem', () => {
     }');
     describe('Task 9.3: エラー通知システムの実装', (') => {
         test('エラーシステムが正しく初期化される', () => {
-            expect(errorSystem.isInitialized).toBe(true);
-            expect(errorSystem.errorTypes.size).toBeGreaterThan(0);
-            expect(errorSystem.notificationContainer).toBeTruthy(');
-            expect(document.getElementById('error-notification-container').toBeTruthy();
-        }');
+            expect(errorSystem.isInitialized).toBe(true),
+            expect(errorSystem.errorTypes.size).toBeGreaterThan(0),
+            expect(errorSystem.notificationContainer).toBeTruthy('),
+            expect(document.getElementById('error-notification-container').toBeTruthy() }');
         test('エラータイプが正しく設定される', (') => {
-            expect(errorSystem.errorTypes.has('javascript').toBe(true');
-            expect(errorSystem.errorTypes.has('network').toBe(true');
-            expect(errorSystem.errorTypes.has('resource').toBe(true');
-            expect(errorSystem.errorTypes.has('permission').toBe(true');
-            expect(errorSystem.errorTypes.has('storage').toBe(true');
-            expect(errorSystem.errorTypes.has('performance').toBe(true');
-            expect(errorSystem.errorTypes.has('security').toBe(true');
-            const jsErrorType = errorSystem.errorTypes.get('javascript');
-            expect(jsErrorType.name').toBe('JavaScript エラー');
-            expect(jsErrorType.severity').toBe('error');
-            expect(jsErrorType.recoverable).toBe(false);
-            expect(jsErrorType.actions').toContain('詳細表示');
-        }');
+            expect(errorSystem.errorTypes.has('javascript').toBe(true'),
+            expect(errorSystem.errorTypes.has('network').toBe(true'),
+            expect(errorSystem.errorTypes.has('resource').toBe(true'),
+            expect(errorSystem.errorTypes.has('permission').toBe(true'),
+            expect(errorSystem.errorTypes.has('storage').toBe(true'),
+            expect(errorSystem.errorTypes.has('performance').toBe(true'),
+            expect(errorSystem.errorTypes.has('security').toBe(true'),
+            const jsErrorType = errorSystem.errorTypes.get('javascript'),
+            expect(jsErrorType.name').toBe('JavaScript エラー'),
+            expect(jsErrorType.severity').toBe('error'),
+            expect(jsErrorType.recoverable).toBe(false),
+            expect(jsErrorType.actions').toContain('詳細表示') }');
         test('グローバルエラーハンドラーが設定される', () => {
             // error, unhandledrejection, error (capture') イベントリスナーが設定される
-            const errorEvents = eventListeners.filter(l => l.event === 'error'');
-            const rejectionEvents = eventListeners.filter(l => l.event === 'unhandledrejection');
-            expect(errorEvents.length).toBeGreaterThanOrEqual(1);
-            expect(rejectionEvents.length).toBe(1);
-        }');
+            const errorEvents = eventListeners.filter(l => l.event === 'error'),
+            const rejectionEvents = eventListeners.filter(l => l.event === 'unhandledrejection'),
+            expect(errorEvents.length).toBeGreaterThanOrEqual(1),
+            expect(rejectionEvents.length).toBe(1) }');
         test('JavaScriptエラーが正しく処理される', (') => {
             const errorData = {
                 type: 'javascript',
@@ -84,22 +79,19 @@ describe('ErrorNotificationSystem', () => {
                 filename: 'test.js',
                 lineno: 10,
                 colno: 5,
-                error: new Error('Test error'),
-        timestamp: Date.now(),
-            };
+                error: new Error('Test error',
+        timestamp: Date.now( };
             errorSystem.handleError(errorData);
             expect(errorSystem.errorHistory.length).toBe(1);
             const recordedError = errorSystem.errorHistory[0];
             expect(recordedError.type').toBe('javascript');
             expect(recordedError.severity').toBe('error');
-            expect(recordedError.message').toBe('Uncaught ReferenceError: x is not defined'),
-        }');
+            expect(recordedError.message').toBe('Uncaught ReferenceError: x is not defined' }');
         test('ネットワークエラーが正しく処理される', (') => {
             const errorData = {
                 type: 'network',
                 message: 'Failed to fetch data from server',
-        timestamp: Date.now(),
-            };
+        timestamp: Date.now( };
             errorSystem.handleError(errorData);
             expect(errorSystem.errorHistory.length).toBe(1);
             const recordedError = errorSystem.errorHistory[0];
@@ -125,19 +117,18 @@ describe('ErrorNotificationSystem', () => {
             expect(details.errorName').toBe('TypeError');
         }');
         test('コンテキスト情報が収集される', () => {
-            const context = errorSystem.collectContext();
-            expect(context').toHaveProperty('url');
-            expect(context').toHaveProperty('userAgent');
-            expect(context').toHaveProperty('timestamp');
-            expect(context').toHaveProperty('viewport');
-            expect(context').toHaveProperty('language');
-            expect(context').toHaveProperty('online');
-            expect(context').toHaveProperty('memory');
+            const context = errorSystem.collectContext(),
+            expect(context').toHaveProperty('url'),
+            expect(context').toHaveProperty('userAgent'),
+            expect(context').toHaveProperty('timestamp'),
+            expect(context').toHaveProperty('viewport'),
+            expect(context').toHaveProperty('language'),
+            expect(context').toHaveProperty('online'),
+            expect(context').toHaveProperty('memory'),
             // performance.memoryがモックされている場合のみテスト
             if (context.memory) {
-                expect(context.memory').toHaveProperty('used');
-                expect(context.memory').toHaveProperty('total');
-            }
+                expect(context.memory').toHaveProperty('used'),
+                expect(context.memory').toHaveProperty('total') }
         }');
         test('エラー通知が表示される', (') => {
             const errorData = {
@@ -187,8 +178,7 @@ describe('ErrorNotificationSystem', () => {
             const errorData = { type: 'network' };
             const result = await errorSystem.recoverFromNetworkError(errorData);
             expect(result).toBe(true);
-            expect(fetch').toHaveBeenCalledWith('/', { method: 'HEAD' )'),
-        }
+            expect(fetch').toHaveBeenCalledWith('/', { method: 'HEAD' )' }
         test('リソースエラーからの復旧が試行される', async () => {
             fetch.mockResolvedValueOnce({ ok: true }');
             const errorData = { 
@@ -197,8 +187,7 @@ describe('ErrorNotificationSystem', () => {
             };
             const result = await errorSystem.recoverFromResourceError(errorData);
             expect(result).toBe(true);
-            expect(fetch').toHaveBeenCalledWith('test.jpg', { method: 'HEAD' )'),
-        }
+            expect(fetch').toHaveBeenCalledWith('test.jpg', { method: 'HEAD' )' }
         test('ストレージエラーからの復旧が試行される', async () => {
             const result = await errorSystem.recoverFromStorageError({});
             expect(result).toBe(true);
@@ -245,22 +234,20 @@ describe('ErrorNotificationSystem', () => {
                 column: 5
             };
             const formatted = errorSystem.formatErrorDetails(details);
-            expect(formatted').toContain('filename: test.js'),
-            expect(formatted').toContain('line: 10'),
-            expect(formatted').toContain('column: 5'),
-        }');
+            expect(formatted').toContain('filename: test.js',
+            expect(formatted').toContain('line: 10',
+            expect(formatted').toContain('column: 5' }');
         test('復旧状況が表示される', (') => {
             // 復旧状況表示用のDOM要素を作成
-            const statusElement = document.createElement('div'');
-            statusElement.id = 'recovery-status-test-id';
-            document.body.appendChild(statusElement');
-            errorSystem.showRecoveryStatus('test-id', 'attempting');
-            expect(statusElement.innerHTML').toContain('復旧を試行中'');
-            errorSystem.showRecoveryStatus('test-id', 'success');
-            expect(statusElement.innerHTML').toContain('自動復旧に成功'');
-            errorSystem.showRecoveryStatus('test-id', 'failed');
-            expect(statusElement.innerHTML').toContain('自動復旧に失敗');
-        }');
+            const statusElement = document.createElement('div'),
+            statusElement.id = 'recovery-status-test-id',
+            document.body.appendChild(statusElement'),
+            errorSystem.showRecoveryStatus('test-id', 'attempting'),
+            expect(statusElement.innerHTML').toContain('復旧を試行中'),
+            errorSystem.showRecoveryStatus('test-id', 'success'),
+            expect(statusElement.innerHTML').toContain('自動復旧に成功'),
+            errorSystem.showRecoveryStatus('test-id', 'failed'),
+            expect(statusElement.innerHTML').toContain('自動復旧に失敗') }');
         test('エラー統計が正しく計算される', (') => {
             // 複数のエラーを追加
             const errors = [
@@ -268,9 +255,8 @@ describe('ErrorNotificationSystem', () => {
                 { type: 'network', severity: 'warning', timestamp: Date.now(') },
                 { type: 'resource', severity: 'warning', timestamp: Date.now() }
             ];
-            errors.forEach(error => {);
-                errorSystem.recordError(error);
-            });
+            errors.forEach(error => {),
+                errorSystem.recordError(error) });
             const stats = errorSystem.getErrorStatistics();
             expect(stats.totalErrors).toBe(3);
             expect(stats.recentErrors).toBe(3);
@@ -280,9 +266,9 @@ describe('ErrorNotificationSystem', () => {
             expect(stats.errorsBySeverity.warning).toBe(2);
         }');
         test('エラー履歴がトリミングされる', () => {
-            errorSystem.options.maxErrorHistory = 2;
+            errorSystem.options.maxErrorHistory = 2,
             // 3つのエラーを記録
-            for (let i = 0; i < 3; i++') {
+            for (let i = 0, i < 3, i++') {
                 errorSystem.recordError({
                     id: `test-${i}`;
                     type: 'javascript',
@@ -303,7 +289,7 @@ describe('ErrorNotificationSystem', () => {
         }');
         test('カスタムイベントが発火される', (') => {
             // windowのdispatchEventをスパイ
-            const dispatchEventSpy = jest.spyOn(window, 'dispatchEvent'');
+            const dispatchEventSpy = jest.spyOn(window, 'dispatchEvent'),
             const errorData = {
                 id: 'custom-event-test',
                 type: 'javascript',
@@ -314,26 +300,22 @@ describe('ErrorNotificationSystem', () => {
             expect(dispatchEventSpy').toHaveBeenCalledWith(
                 expect.objectContaining({
                     type: 'error-notification-displayed',
-                    detail: errorData);
-            );
-            dispatchEventSpy.mockRestore();
-        }');
+                    detail: errorData)),
+            dispatchEventSpy.mockRestore() }');
         test('エラーIDが生成される', () => {
-            const id1 = errorSystem.generateErrorId();
-            const id2 = errorSystem.generateErrorId();
-            expect(typeof id1').toBe('string');
-            expect(typeof id2').toBe('string');
-            expect(id1).not.toBe(id2);
-            expect(id1).toMatch(/^error_\d+_[a-z0-9]+$/);
-        }');
+            const id1 = errorSystem.generateErrorId(),
+            const id2 = errorSystem.generateErrorId(),
+            expect(typeof id1').toBe('string'),
+            expect(typeof id2').toBe('string'),
+            expect(id1).not.toBe(id2),
+            expect(id1).toMatch(/^error_\d+_[a-z0-9]+$/) }');
         test('ストレージ情報が取得される', () => {
-            const storageInfo = errorSystem.getStorageInfo();
-            expect(storageInfo.available).toBe(true);
-            expect(typeof storageInfo.quota').toBe('object'); // 非同期で設定されるためnull
-            expect(typeof storageInfo.usage').toBe('object');
-        }');
+            const storageInfo = errorSystem.getStorageInfo(),
+            expect(storageInfo.available).toBe(true),
+            expect(typeof storageInfo.quota').toBe('object'), // 非同期で設定されるためnull
+            expect(typeof storageInfo.usage').toBe('object') }');
         test('エラー処理が無効化できる', (') => {
-            errorSystem.options.enableErrorNotifications = false;
+            errorSystem.options.enableErrorNotifications = false,
             const errorData = {
                 type: 'javascript',
                 message: 'Test error'
@@ -343,14 +325,13 @@ describe('ErrorNotificationSystem', () => {
             expect(errorSystem.errorHistory.length).toBe(0);
         }');
         test('リソースが正しく解放される', (') => {
-            expect(document.getElementById('error-notification-container').toBeTruthy();
-            errorSystem.destroy(');
-            expect(document.getElementById('error-notification-container').toBeFalsy();
-            expect(errorSystem.notificationContainer).toBe(null);
-            expect(errorSystem.errorHistory.length).toBe(0);
-        }');
+            expect(document.getElementById('error-notification-container').toBeTruthy(),
+            errorSystem.destroy('),
+            expect(document.getElementById('error-notification-container').toBeFalsy(),
+            expect(errorSystem.notificationContainer).toBe(null),
+            expect(errorSystem.errorHistory.length).toBe(0) }');
         test('重要度別のタイムアウトが設定される', () => {
-            jest.useFakeTimers(');
+            jest.useFakeTimers('),
             const criticalError = {
                 id: 'critical-test',
                 type: 'security',
@@ -358,8 +339,7 @@ describe('ErrorNotificationSystem', () => {
                 message: 'Critical error',
                 details: {},
                 actions: [],
-        timestamp: Date.now('),
-            };
+        timestamp: Date.now(' };
             const warningError = {
                 id: 'warning-test', 
                 type: 'network',
@@ -367,8 +347,7 @@ describe('ErrorNotificationSystem', () => {
                 message: 'Warning error',
                 details: {},
                 actions: [],
-        timestamp: Date.now(),
-            };
+        timestamp: Date.now( };
             errorSystem.showErrorNotification(criticalError);
             errorSystem.showErrorNotification(warningError');
             // 両方の通知が表示されることを確認
@@ -377,8 +356,8 @@ describe('ErrorNotificationSystem', () => {
             // 通常のタイムアウト（8秒）経過
             jest.advanceTimersByTime(8000');
             // warningは削除されているはず（dismissingクラスが付いているか削除されている）
-            const warningElement = document.querySelector('[data-error-id="warning-test"]'');
-            const criticalElement = document.querySelector('[data-error-id="critical-test"]'');
+            const warningElement = document.querySelector('[data-error-id="warning-test"]');
+            const criticalElement = document.querySelector('[data-error-id="critical-test"]');
             // warningは削除されているかdismissingクラスが付いている
             expect(warningElement === null || warningElement.classList.contains('dismissing').toBe(true);
             // criticalはまだ残っている

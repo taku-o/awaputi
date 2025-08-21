@@ -13,73 +13,62 @@ describe('Security Integration Tests', () => {
     let mockDOM: any,
     beforeEach(() => {
         // LocalizationManagerインスタンス作成
-        localizationManager = new LocalizationManager(');
+        localizationManager = new LocalizationManager('),
         // DOM環境のモック
         global.document = {
             documentElement: { lang: 'ja' };
             createElement: jest.fn(').mockReturnValue({
-                id: '',
-                textContent: '',
-                style: { cssText: '' };);
-                appendChild: jest.fn(),
-                remove: jest.fn(),
-                setAttribute: jest.fn(),
+                id: ',
+                textContent: ',
+                style: { cssText: '};);
+                appendChild: jest.fn(
+                remove: jest.fn(
+                setAttribute: jest.fn(
         getAttribute: jest.fn(),
-            }),
             head: {
-                appendChild: jest.fn(),
-        removeChild: jest.fn(),
-            },
+                appendChild: jest.fn(
+        removeChild: jest.fn( },
             body: {
-                appendChild: jest.fn(),
-        removeChild: jest.fn(),
-            },
-            querySelector: jest.fn().mockReturnValue({),
-                setAttribute: jest.fn(),
-                getAttribute: jest.fn(').mockReturnValue('default-src \'self\'; script-src \'self\'');
-            }),
-            querySelectorAll: jest.fn().mockReturnValue([]),
-        };
+                appendChild: jest.fn(
+        removeChild: jest.fn( },
+            querySelector: jest.fn().mockReturnValue({,
+                setAttribute: jest.fn(
+                getAttribute: jest.fn(').mockReturnValue('default-src \'self\', script-src \'self\') }),
+            querySelectorAll: jest.fn().mockReturnValue([] };
         global.window = {
-            addEventListener: jest.fn(),
-            removeEventListener: jest.fn(),
+            addEventListener: jest.fn(
+            removeEventListener: jest.fn(
             performance: {
                 now: jest.fn(() => Date.now());
-    })
         );
         // コンソールをモック
         global.console = {
-            log: jest.fn(),
-            warn: jest.fn(),
-            error: jest.fn(),
-            debug: jest.fn(),
-        info: jest.fn(),
-        };
+            log: jest.fn(
+            warn: jest.fn(
+            error: jest.fn(
+            debug: jest.fn(
+        info: jest.fn( };
         mockDOM = {
             elements: []
         };
     });
     afterEach(() => {
-        localizationManager? .cleanup();
-        jest.clearAllMocks();
-    }');
+        localizationManager? .cleanup(),
+        jest.clearAllMocks() }');
     describe('Security System Integration', (') => {
         test('I18nSecurityManagerが正しく統合されている', () => {
-            expect(localizationManager.securityManager).toBeInstanceOf(I18nSecurityManager);
-            expect(localizationManager.securityManager).toBeDefined();
-        }');
+            expect(localizationManager.securityManager).toBeInstanceOf(I18nSecurityManager),
+            expect(localizationManager.securityManager).toBeDefined() }');
         test('I18nSecurityTesterが正しく統合されている', () => {
-            expect(localizationManager.securityTester).toBeInstanceOf(I18nSecurityTester);
-            expect(localizationManager.securityTester).toBeDefined();
-        }');
+            expect(localizationManager.securityTester).toBeInstanceOf(I18nSecurityTester),
+            expect(localizationManager.securityTester).toBeDefined() }');
         test('セキュリティ統計を取得できる', () => {
-            const stats = localizationManager.getSecurityStats(');
-            expect(stats.toHaveProperty('totalValidations')');
-            expect(stats.toHaveProperty('blockedAttempts')');
-            expect(stats.toHaveProperty('xssAttempts')');
-            expect(stats.toHaveProperty('securityLevel')');
-            expect(stats.toHaveProperty('threatLevel');
-        }');
+            const stats = localizationManager.getSecurityStats('),
+            expect(stats.toHaveProperty('totalValidations')'),
+            expect(stats.toHaveProperty('blockedAttempts')'),
+            expect(stats.toHaveProperty('xssAttempts')'),
+            expect(stats.toHaveProperty('securityLevel')'),
+            expect(stats.toHaveProperty('threatLevel') }');
     }
     describe('Translation Data Security Validation', (') => {
         test('安全な翻訳データは検証をパスする', (') => {
@@ -180,7 +169,7 @@ describe('Security Integration Tests', () => {
             expect(result.toBe('こんにちは テストさん');
         }');
         test('危険なパラメータは自動的にサニタイズされる', (') => {
-            const result = localizationManager.t('test.parameter', { ');
+            const result = localizationManager.t('test.parameter', { '),
                 name: '<script>alert("XSS"")</script>' 
             }');
             expect(result.not.toContain('<script>')');
@@ -188,7 +177,7 @@ describe('Security Integration Tests', () => {
             expect(result.toContain('&lt;'); // HTMLエンティティ化されている
         }');
         test('HTMLテンプレートでの危険なパラメータ処理', (') => {
-            const result = localizationManager.t('test.html', { ');
+            const result = localizationManager.t('test.html', { '),
                 message: '<img src="x" onerror="alert(1")">' 
             }');
             expect(result.not.toContain('onerror')');
@@ -199,31 +188,28 @@ describe('Security Integration Tests', () => {
             const result = localizationManager.t('test.parameter', { 
                 '__proto__': 'malicious',
                 'constructor': 'malicious',
-                'name': 'safe_value');
-            }');
+                'name': 'safe_value') }');
             expect(result.toBe('こんにちは safe_valueさん')');
             expect(result.not.toContain('malicious');
         }');
     }
     describe('Security Testing Integration', (') => {
         test('包括的セキュリティテストを実行できる', async () => {
-            const testReport = await localizationManager.runSecurityTest(');
-            expect(testReport.toHaveProperty('summary')');
-            expect(testReport.toHaveProperty('vulnerabilities')');
-            expect(testReport.toHaveProperty('recommendations');
-            expect(testReport.summary').toHaveProperty('totalTests');
-            expect(testReport.summary').toHaveProperty('passedTests');
-            expect(testReport.summary').toHaveProperty('failedTests');
-            expect(testReport.summary').toHaveProperty('successRate');
-        }');
+            const testReport = await localizationManager.runSecurityTest('),
+            expect(testReport.toHaveProperty('summary')'),
+            expect(testReport.toHaveProperty('vulnerabilities')'),
+            expect(testReport.toHaveProperty('recommendations'),
+            expect(testReport.summary').toHaveProperty('totalTests'),
+            expect(testReport.summary').toHaveProperty('passedTests'),
+            expect(testReport.summary').toHaveProperty('failedTests'),
+            expect(testReport.summary').toHaveProperty('successRate') }');
         test('セキュリティレポートを生成できる', () => {
-            const report = localizationManager.generateSecurityReport(');
-            expect(report.toHaveProperty('timestamp')');
-            expect(report.toHaveProperty('securityConfig')');
-            expect(report.toHaveProperty('statistics')');
-            expect(report.toHaveProperty('cspConfig')');
-            expect(report.toHaveProperty('recommendations');
-        }');
+            const report = localizationManager.generateSecurityReport('),
+            expect(report.toHaveProperty('timestamp')'),
+            expect(report.toHaveProperty('securityConfig')'),
+            expect(report.toHaveProperty('statistics')'),
+            expect(report.toHaveProperty('cspConfig')'),
+            expect(report.toHaveProperty('recommendations') }');
     }
     describe('Security Configuration', (') => {
         test('セキュリティ設定を更新できる', () => {
@@ -239,45 +225,41 @@ describe('Security Integration Tests', () => {
             expect(stats.securityLevel).toBeDefined();
         }');
         test('無効なセキュリティ設定は拒否される', (') => {
-            const invalidConfig = 'invalid_config';
+            const invalidConfig = 'invalid_config',
             
-            const result = localizationManager.updateSecurityConfig(invalidConfig);
-            expect(result.toBe(false);
-        }');
+            const result = localizationManager.updateSecurityConfig(invalidConfig),
+            expect(result.toBe(false) }');
     }
     describe('Text Sanitization', (') => {
         test('危険な文字列は適切にサニタイズされる', (') => {
-            const dangerousText = '<script>alert("XSS"")</script>';
-            const sanitized = localizationManager.sanitizeTranslation(dangerousText');
-            expect(sanitized.not.toContain('<script>')');
-            expect(sanitized.not.toContain('alert(')');
-            expect(sanitized.toContain('&lt;')');
-            expect(sanitized.toContain('&gt;');
-        }');
+            const dangerousText = '<script>alert("XSS"")</script>',
+            const sanitized = localizationManager.sanitizeTranslation(dangerousText'),
+            expect(sanitized.not.toContain('<script>')'),
+            expect(sanitized.not.toContain('alert(')'),
+            expect(sanitized.toContain('&lt,')'),
+            expect(sanitized.toContain('&gt,') }');
         test('HTMLエンティティが適切にエスケープされる', (') => {
-            const textWithEntities = 'Text with & < > " \' / ` = characters';
-            const sanitized = localizationManager.sanitizeTranslation(textWithEntities');
-            expect(sanitized.toContain('&amp;')');
-            expect(sanitized.toContain('&lt;')');
-            expect(sanitized.toContain('&gt;')');
-            expect(sanitized.toContain('&quot;')');
-            expect(sanitized.toContain('&#39;')');
-            expect(sanitized.toContain('&#x2F;')');
-            expect(sanitized.toContain('&#x60;')');
-            expect(sanitized.toContain('&#x3D;');
-        }');
+            const textWithEntities = 'Text with & < > " \' / ` = characters',
+            const sanitized = localizationManager.sanitizeTranslation(textWithEntities'),
+            expect(sanitized.toContain('&amp,')'),
+            expect(sanitized.toContain('&lt,')'),
+            expect(sanitized.toContain('&gt,')'),
+            expect(sanitized.toContain('&quot,')'),
+            expect(sanitized.toContain('&#39,')'),
+            expect(sanitized.toContain('&#x2F,')'),
+            expect(sanitized.toContain('&#x60,')'),
+            expect(sanitized.toContain('&#x3D,') }');
         test('安全なテキストはそのまま保持される', (') => {
-            const safeText = 'これは安全なテキストです';
-            const sanitized = localizationManager.sanitizeTranslation(safeText);
-            expect(sanitized.toBe(safeText);
-        }');
+            const safeText = 'これは安全なテキストです',
+            const sanitized = localizationManager.sanitizeTranslation(safeText),
+            expect(sanitized.toBe(safeText) }');
     }
     describe('Performance Impact of Security Features', (') => {
         test('セキュリティ機能による性能への影響は許容範囲内', async () => {
-            const startTime = performance.now();
+            const startTime = performance.now(),
             // 複数の翻訳操作を実行
-            for (let i = 0; i < 100; i++') {
-                localizationManager.t('test.simple');
+            for (let i = 0, i < 100, i++') {
+                localizationManager.t('test.simple'),
                 localizationManager.sanitizeTranslation(`Test text ${i}`);
             }
             
@@ -309,40 +291,34 @@ describe('Security Integration Tests', () => {
             // securityManagerをモックしてエラーを発生させる
             localizationManager.securityManager.generateSafeTranslation = jest.fn() as jest.Mock
                 .mockImplementation((') => {
-                    throw new Error('Security error');
-                }');
+                    throw new Error('Security error') }');
             // 翻訳データをセットアップ
             localizationManager.translations.set('ja', {
                 'test.error': 'Test {{param}}');
             }');
-            localizationManager.loadedLanguages.add('ja'');
-            const result = localizationManager.t('test.error', { param: 'value' ),
+            localizationManager.loadedLanguages.add('ja');
+            const result = localizationManager.t('test.error', { param: 'value' ,
             // エラーが発生してもフォールバック処理で翻訳が返される
-            expect(result.toBeTruthy();
-        }');
+            expect(result.toBeTruthy() }');
         test('翻訳データ検証エラー時の処理', () => {
             // securityManagerをモックしてエラーを発生させる
             localizationManager.securityManager.validateTranslationData = jest.fn() as jest.Mock
                 .mockImplementation((') => {
-                    throw new Error('Validation error');
-                }');
+                    throw new Error('Validation error') }');
             const testData = { 'test.key': 'Test value' };
             const result = localizationManager.validateTranslationSecurity(testData);
             expect(result.isValid).toBe(false);
             expect(result.violations').toContainEqual(
                 expect.objectContaining({
-                    type: 'validation_error'));
-            );
-        }');
+                    type: 'validation_error')) }');
     }
     describe('Cleanup', (') => {
         test('セキュリティコンポーネントが適切にクリーンアップされる', () => {
-            localizationManager.securityManager.cleanup = jest.fn() as jest.Mock;
-            localizationManager.securityTester.cleanup = jest.fn() as jest.Mock;
+            localizationManager.securityManager.cleanup = jest.fn() as jest.Mock,
+            localizationManager.securityTester.cleanup = jest.fn() as jest.Mock,
             
-            localizationManager.cleanup();
-            expect(localizationManager.securityManager.cleanup).toHaveBeenCalled();
-            expect(localizationManager.securityTester.cleanup).toHaveBeenCalled();
-        });
+            localizationManager.cleanup(),
+            expect(localizationManager.securityManager.cleanup).toHaveBeenCalled(),
+            expect(localizationManager.securityTester.cleanup).toHaveBeenCalled() });
     }
 }');

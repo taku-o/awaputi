@@ -7,54 +7,53 @@ import { jest  } from '@jest/globals';
 
 export class JestErrorRecovery {
   constructor() {
-    this.errorLog = [];
-    this.recoveryStrategies = new Map();
-    this.fallbackImplementations = new Map();
-    this.validationResults = new Map();
+    this.errorLog = [],
+    this.recoveryStrategies = new Map(),
+    this.fallbackImplementations = new Map(),
+    this.validationResults = new Map(),
     
-    this.initializeRecoveryStrategies();
-    this.setupFallbackImplementations();
-  }
+    this.initializeRecoveryStrategies(),
+    this.setupFallbackImplementations() }
 
   /**
    * Initialize recovery strategies for different types of Jest errors
    */
   initializeRecoveryStrategies(') {
     // Jest undefined error recovery
-    this.recoveryStrategies.set('jest_undefined', {);
-      detect: (error') => error.message? .includes('jest is not defined'); : undefined
-      recover: () => this.handleJestUndefinedError(');
+    this.recoveryStrategies.set('jest_undefined', {),
+      detect: (error') => error.message? .includes('jest is not defined'), : undefined
+      recover: () => this.handleJestUndefinedError('),
       description: 'Jest functions not available in ES Modules context'
     }');
 
     // ES Modules setup error recovery
-    this.recoveryStrategies.set('es_modules_setup', {);
-      detect: (error') => error.message? .includes('extensionsToTreatAsEsm'); : undefined
-      recover: () => this.handleESModulesSetupError(');
+    this.recoveryStrategies.set('es_modules_setup', {),
+      detect: (error') => error.message? .includes('extensionsToTreatAsEsm'), : undefined
+      recover: () => this.handleESModulesSetupError('),
       description: 'ES Modules configuration issues'
     }');
 
     // Mock creation error recovery
-    this.recoveryStrategies.set('mock_creation', {);
-      detect: (error') => error.message? .includes('Cannot create property'') ||
+    this.recoveryStrategies.set('mock_creation', {),
+      detect: (error') => error.message? .includes('Cannot create property') ||
                         error.message?.includes('jest.fn is not a function'), : undefined
-      recover: () => this.handleMockCreationError(');
+      recover: () => this.handleMockCreationError('),
       description: 'Mock function creation failures'
     }');
 
     // Global setup error recovery
-    this.recoveryStrategies.set('global_setup', {);
-      detect: (error') => error.message? .includes('setupFilesAfterEnv'') ||
+    this.recoveryStrategies.set('global_setup', {),
+      detect: (error') => error.message? .includes('setupFilesAfterEnv') ||
                         error.message?.includes('globalSetup'), : undefined
-      recover: () => this.handleGlobalSetupError(');
+      recover: () => this.handleGlobalSetupError('),
       description: 'Jest global setup configuration issues'
     }');
 
     // Test environment error recovery
-    this.recoveryStrategies.set('test_environment', {);
-      detect: (error') => error.message? .includes('testEnvironment'') ||
+    this.recoveryStrategies.set('test_environment', {),
+      detect: (error') => error.message? .includes('testEnvironment') ||
                         error.message?.includes('jsdom'), : undefined
-      recover: () => this.handleTestEnvironmentError(');
+      recover: () => this.handleTestEnvironmentError('),
       description: 'Test environment configuration problems'
     });
   }
@@ -66,16 +65,14 @@ export class JestErrorRecovery {
     // Fallback jest.fn implementation
     this.fallbackImplementations.set('jest.fn', () => {
       const mockFn = function(...args) {
-        mockFn.mock.calls.push(args);
-        mockFn.mock.instances.push(this);
+        mockFn.mock.calls.push(args),
+        mockFn.mock.instances.push(this),
         
         if (mockFn.mock.implementation) {
-          return mockFn.mock.implementation.apply(this, args);
-        }
+          return mockFn.mock.implementation.apply(this, args) }
         
         if (mockFn.mock.returnValue !== undefined) {
-          return mockFn.mock.returnValue;
-        }
+          return mockFn.mock.returnValue }
         
         return undefined;
       };
@@ -93,68 +90,58 @@ export class JestErrorRecovery {
 
       // Mock function methods
       mockFn.mockImplementation = (fn) => {
-        mockFn.mock.implementation = fn;
-        return mockFn;
-      };
+        mockFn.mock.implementation = fn,
+        return mockFn };
 
       mockFn.mockReturnValue = (value) => {
-        mockFn.mock.returnValue = value;
-        return mockFn;
-      };
+        mockFn.mock.returnValue = value,
+        return mockFn };
 
       mockFn.mockReturnValueOnce = (value) => {
         if (!mockFn.mock.returnValues') {
-          mockFn.mock.returnValues = [];
-        }
+          mockFn.mock.returnValues = [] }
         mockFn.mock.returnValues.push({ type: 'return', value });
         return mockFn;
       };
 
       mockFn.mockResolvedValue = (value) => {
-        mockFn.mock.implementation = () => Promise.resolve(value);
-        return mockFn;
-      };
+        mockFn.mock.implementation = () => Promise.resolve(value),
+        return mockFn };
 
       mockFn.mockRejectedValue = (value) => {
-        mockFn.mock.implementation = () => Promise.reject(value);
-        return mockFn;
-      };
+        mockFn.mock.implementation = () => Promise.reject(value),
+        return mockFn };
 
       mockFn.mockClear = () => {
-        mockFn.mock.calls = [];
-        mockFn.mock.instances = [];
-        mockFn.mock.contexts = [];
-        mockFn.mock.results = [];
-        return mockFn;
-      };
+        mockFn.mock.calls = [],
+        mockFn.mock.instances = [],
+        mockFn.mock.contexts = [],
+        mockFn.mock.results = [],
+        return mockFn };
 
       mockFn.mockReset = () => {
-        mockFn.mockClear();
-        mockFn.mock.implementation = null;
-        mockFn.mock.returnValue = undefined;
-        return mockFn;
-      };
+        mockFn.mockClear(),
+        mockFn.mock.implementation = null,
+        mockFn.mock.returnValue = undefined,
+        return mockFn };
 
       mockFn.mockRestore = () => {
         // Fallback restore implementation
-        return mockFn;
-      };
+        return mockFn };
 
       return mockFn;
     }');
 
     // Fallback jest.spyOn implementation
     this.fallbackImplementations.set('jest.spyOn', (object, method') => {
-      const original = object[method];
-      const spy = this.fallbackImplementations.get('jest.fn')();
+      const original = object[method],
+      const spy = this.fallbackImplementations.get('jest.fn')(),
       
       spy.mockImplementation((...args) => {
-        return original? .apply(object, args);
-      });
+        return original? .apply(object, args) });
       
       spy.mockRestore = () => {
-        object[method] = original;
-      };
+        object[method] = original };
       
       object[method] = spy;
       return spy;
@@ -172,25 +159,23 @@ export class JestErrorRecovery {
    * @returns {Object} Recovery result
    */
   handleJestUndefinedError(') { : undefined
-    console.log('JestErrorRecovery: Handling jest undefined error...'),
+    console.log('JestErrorRecovery: Handling jest undefined error...',
     
     try {
       // Ensure Jest globals are available
       if (typeof (global as any').jest === 'undefined') {
         (global as any').jest = {
-          fn: this.fallbackImplementations.get('jest.fn''),
-          spyOn: this.fallbackImplementations.get('jest.spyOn''),
-          mock: this.fallbackImplementations.get('jest.mock'),
-          clearAllMocks: (') => console.warn('jest.clearAllMocks fallback');
-          resetAllMocks: (') => console.warn('jest.resetAllMocks fallback'),
-          restoreAllMocks: (') => console.warn('jest.restoreAllMocks fallback'');
-        };
+          fn: this.fallbackImplementations.get('jest.fn',
+          spyOn: this.fallbackImplementations.get('jest.spyOn',
+          mock: this.fallbackImplementations.get('jest.mock',
+          clearAllMocks: (') => console.warn('jest.clearAllMocks fallback'),
+          resetAllMocks: (') => console.warn('jest.resetAllMocks fallback',
+          restoreAllMocks: (') => console.warn('jest.restoreAllMocks fallback') };
       }
 
       // Ensure window.jest is available if window exists
-      if (typeof window !== 'undefined' && typeof window.jest === 'undefined'') {
-        window.jest = global.jest;
-      }
+      if (typeof window !== 'undefined' && typeof window.jest === 'undefined') {
+        window.jest = global.jest }
 
       return {
         success: true,
@@ -222,9 +207,9 @@ export class JestErrorRecovery {
    * @returns {Object} Recovery result
    */
   handleESModulesSetupError(') {
-    console.log('JestErrorRecovery: Handling ES Modules setup error...'),
+    console.log('JestErrorRecovery: Handling ES Modules setup error...',
     
-    const validation = this.validateESModulesSetup(');
+    const validation = this.validateESModulesSetup('),
     
     return {
       success: validation.isValid,
@@ -247,12 +232,12 @@ export class JestErrorRecovery {
    * @returns {Object} Recovery result
    */
   handleMockCreationError(') {
-    console.log('JestErrorRecovery: Handling mock creation error...''),
+    console.log('JestErrorRecovery: Handling mock creation error...',
     
     try {
       // Ensure mock functions are available
-      if (typeof jest === 'undefined' || typeof jest.fn !== 'function'') {
-        const fallbackFn = this.fallbackImplementations.get('jest.fn');
+      if (typeof jest === 'undefined' || typeof jest.fn !== 'function') {
+        const fallbackFn = this.fallbackImplementations.get('jest.fn'),
         
         if (typeof (global as any').jest === 'undefined') {
           (global as any').jest = {};
@@ -260,8 +245,8 @@ export class JestErrorRecovery {
         
         global.jest.fn = fallbackFn;
         
-        if (typeof window !== 'undefined'') {
-          if (typeof window.jest === 'undefined'') {
+        if (typeof window !== 'undefined') {
+          if (typeof window.jest === 'undefined') {
             window.jest = {};
           }
           window.jest.fn = fallbackFn;
@@ -298,7 +283,7 @@ export class JestErrorRecovery {
    * @returns {Object} Recovery result
    */
   handleGlobalSetupError(') {
-    console.log('JestErrorRecovery: Handling global setup error...''),
+    console.log('JestErrorRecovery: Handling global setup error...',
     
     return {
       success: true,
@@ -322,7 +307,7 @@ export class JestErrorRecovery {
    * @returns {Object} Recovery result
    */
   handleTestEnvironmentError(') {
-    console.log('JestErrorRecovery: Handling test environment error...''),
+    console.log('JestErrorRecovery: Handling test environment error...',
     
     return {
       success: true,
@@ -354,35 +339,31 @@ export class JestErrorRecovery {
 
     try {
       // Check if jest is available via import
-      if (typeof jest === 'undefined'') {
-        validation.issues.push('Jest functions not available via ES Modules import'');
-        validation.recommendations.push('Import jest from @jest/globals'');
-        validation.isValid = false;
-      }
+      if (typeof jest === 'undefined') {
+        validation.issues.push('Jest functions not available via ES Modules import'),
+        validation.recommendations.push('Import jest from @jest/globals'),
+        validation.isValid = false }
 
       // Check if NODE_OPTIONS includes experimental-vm-modules
-      const nodeOptions = process.env.NODE_OPTIONS || '';
+      const nodeOptions = process.env.NODE_OPTIONS || ';
       if (!nodeOptions.includes('--experimental-vm-modules')') {
-        validation.issues.push('NODE_OPTIONS missing --experimental-vm-modules flag'');
-        validation.recommendations.push('Add --experimental-vm-modules to NODE_OPTIONS'');
-      }
+        validation.issues.push('NODE_OPTIONS missing --experimental-vm-modules flag'),
+        validation.recommendations.push('Add --experimental-vm-modules to NODE_OPTIONS') }
 
       // Check package.json type field
       try {
-        const packageJson = JSON.parse(require('fs'').readFileSync('./package.json', 'utf8')');
-        if (packageJson.type !== 'module'') {
-          validation.issues.push('package.json "type" field not set to "module"'');
-          validation.recommendations.push('Set "type": "module" in package.json');
-        } catch (error') {
-        validation.issues.push('Could not read package.json'');
-      }
+        const packageJson = JSON.parse(require('fs').readFileSync('./package.json', 'utf8')'),
+        if (packageJson.type !== 'module') {
+          validation.issues.push('package.json "type" field not set to "module"'),
+          validation.recommendations.push('Set "type": "module" in package.json') } catch (error') {
+        validation.issues.push('Could not read package.json') }
 
       // Store validation results
       this.validationResults.set('es_modules_setup', validation);
 
     } catch (error) {
-      validation.isValid = false;
-      validation.issues.push(`Validation error: ${error.message}`');
+      validation.isValid = false,
+      validation.issues.push(`Validation error: ${error.message}`);
     }
 
     return validation;
@@ -394,10 +375,10 @@ export class JestErrorRecovery {
    * @returns {Object} Recovery result
    */
   recoverFromJestError(error {
-    console.log('JestErrorRecovery: Attempting automatic recovery...', error.message);
+    console.log('JestErrorRecovery: Attempting automatic recovery...', error.message),
 
     // Log the error
-    this.errorLog.push({);
+    this.errorLog.push({),
       timestamp: new Date().toISOString(),
       error: error.message,
       stack: error.stack,
@@ -407,7 +388,7 @@ export class JestErrorRecovery {
     // Find appropriate recovery strategy
     for (const [strategyName, strategy] of this.recoveryStrategies) {
       if (strategy.detect(error') {
-        console.log(`JestErrorRecovery: Using strategy "${strategyName")"`),
+        console.log(`JestErrorRecovery: Using strategy "${strategyName")"`,
         
         const, result = strategy.recover("});
         
@@ -455,14 +436,13 @@ export class JestErrorRecovery {
     return {
       timestamp: new Date().toISOString(),
       totalErrors: this.errorLog.length,
-      recoveryAttempts: this.errorLog.filter(log => log.recoveryAttempted).length;
+      recoveryAttempts: this.errorLog.filter(log => log.recoveryAttempted).length,
       successfulRecoveries: this.errorLog.filter(log => 
         log.recoveryAttempted && log.recoveryResult? .success).length, : undefined
       errors: this.errorLog,
-      validationResults: Object.fromEntries(this.validationResults),
-      availableStrategies: Array.from(this.recoveryStrategies.keys(),
-      recommendations: this.generateRecommendations(),
-    };
+      validationResults: Object.fromEntries(this.validationResults,
+      availableStrategies: Array.from(this.recoveryStrategies.keys(
+      recommendations: this.generateRecommendations( };
   }
 
   /**
@@ -473,33 +453,29 @@ export class JestErrorRecovery {
     const recommendations: any[] = [],
     
     // Analyze error patterns
-    const jestUndefinedErrors = this.errorLog.filter(log => ');
-      log.error.includes('jest is not defined').length;
+    const jestUndefinedErrors = this.errorLog.filter(log => '),
+      log.error.includes('jest is not defined').length,
     
-    const esModulesErrors = this.errorLog.filter(log => ');
-      log.error.includes('extensionsToTreatAsEsm').length;
+    const esModulesErrors = this.errorLog.filter(log => '),
+      log.error.includes('extensionsToTreatAsEsm').length,
     
-    const mockErrors = this.errorLog.filter(log => ');
-      log.error.includes('jest.fn'') || log.error.includes('Cannot create property').length;
+    const mockErrors = this.errorLog.filter(log => '),
+      log.error.includes('jest.fn') || log.error.includes('Cannot create property').length,
 
     if (jestUndefinedErrors > 0') {
-      recommendations.push('Consider using import { jest ') from "@jest/globals" in, test files'');
-      recommendations.push('Ensure, Jest globals, are properly, configured in, setup files');
-     }
+      recommendations.push('Consider using import { jest ') from "@jest/globals" in, test files'),
+      recommendations.push('Ensure, Jest globals, are properly, configured in, setup files') }
 
     if (esModulesErrors > 0') {
-      recommendations.push('Remove extensionsToTreatAsEsm configuration from Jest config'');
-      recommendations.push('Use NODE_OPTIONS="--experimental-vm-modules" for ES Modules support');
-    }
+      recommendations.push('Remove extensionsToTreatAsEsm configuration from Jest config'),
+      recommendations.push('Use NODE_OPTIONS="--experimental-vm-modules" for ES Modules support') }
 
     if (mockErrors > 0') {
-      recommendations.push('Import Jest functions explicitly in test files'');
-      recommendations.push('Use MockFactory for standardized mock creation');
-    }
+      recommendations.push('Import Jest functions explicitly in test files'),
+      recommendations.push('Use MockFactory for standardized mock creation') }
 
     if (this.errorLog.length === 0') {
-      recommendations.push('No Jest errors detected - configuration appears healthy');
-    }
+      recommendations.push('No Jest errors detected - configuration appears healthy') }
 
     return recommendations;
   }
@@ -508,16 +484,15 @@ export class JestErrorRecovery {
    * Clear error log and reset recovery state
    */
   reset() {
-    this.errorLog = [];
-    this.validationResults.clear(');
-    console.log('JestErrorRecovery: State reset completed'),
-  }
+    this.errorLog = [],
+    this.validationResults.clear('),
+    console.log('JestErrorRecovery: State reset completed' }
 }
 
 // Export singleton instance
 export const jestErrorRecovery = new JestErrorRecovery();
 
 // Export helper functions
-export const recoverFromJestError = (error) => jestErrorRecovery.recoverFromJestError(error as any);
+export const recoverFromJestError = (error) => jestErrorRecovery.recoverFromJestError(error: any);
 export const validateESModulesSetup = () => jestErrorRecovery.validateESModulesSetup();
 export const getJestErrorReport = () => jestErrorRecovery.getErrorReport(');

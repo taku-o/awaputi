@@ -6,33 +6,28 @@ import { DataCollector } from '../../src/analytics/DataCollector';
 // モッククラス
 class MockPrivacyManager {
     constructor() {
-        this.consentStatus = true;
-        this.optOutFeatures = new Set();
-    }
+        this.consentStatus = true,
+        this.optOutFeatures = new Set() }
     
     checkConsent() {
-        return this.consentStatus;
-    }
+        return this.consentStatus }
     
     isOptedOut(feature {
-        return this.optOutFeatures.has(feature);
-    }
+        return this.optOutFeatures.has(feature) }
     
     anonymizeData(data {
         // 簡易匿名化 - 実際のPrivacyManagerと同様にハッシュ化
         if (data.data && data.data.sessionId) {
-            data.data.sessionId = this.hashString(data.data.sessionId);
-        }
+            data.data.sessionId = this.hashString(data.data.sessionId) }
         return data;
     }
     
     hashString(str {
-        let hash = 0;
-        for (let i = 0; i < str.length; i++) {
-            const char = str.charCodeAt(i);
-            hash = ((hash << 5) - hash) + char;
-            hash = hash & hash;
-        }
+        let hash = 0,
+        for (let i = 0, i < str.length, i++) {
+            const char = str.charCodeAt(i),
+            hash = ((hash << 5) - hash) + char,
+            hash = hash & hash }
         return Math.abs(hash.toString(36);
     }
 }
@@ -43,19 +38,15 @@ class MockStorageManager {
     
     async saveData(storeName, data) {
         if (!this.savedData[storeName]) {
-            this.savedData[storeName] = [];
-        }
+            this.savedData[storeName] = [] }
         if (Array.isArray(data) {
-            this.savedData[storeName].push(...data);
-        } else {
-            this.savedData[storeName].push(data);
-        }
+            this.savedData[storeName].push(...data) } else {
+            this.savedData[storeName].push(data) }
     }
     
     getSavedData(storeName {
-        return this.savedData[storeName] || [];
-    )
-    ;
+        return this.savedData[storeName] || [])
+    ,
     clearData(') {
         this.savedData = {};
     }
@@ -66,27 +57,23 @@ describe('DataCollector', () => {
     let mockStorageManager: any,
     
     beforeEach(() => {
-        mockPrivacyManager = new MockPrivacyManager();
-        mockStorageManager = new MockStorageManager();
-        dataCollector = new DataCollector(mockPrivacyManager, mockStorageManager);
+        mockPrivacyManager = new MockPrivacyManager(),
+        mockStorageManager = new MockStorageManager(),
+        dataCollector = new DataCollector(mockPrivacyManager, mockStorageManager),
         // タイマーをモック
-        jest.useFakeTimers();
-    });
+        jest.useFakeTimers() });
     afterEach(() => {
-        dataCollector.destroy();
-        jest.useRealTimers();
-    }');
+        dataCollector.destroy(),
+        jest.useRealTimers() }');
     describe('初期化', (') => {
         test('初期状態が正しく設定される', () => {
-            expect(dataCollector.eventQueue).toEqual([]);
-            expect(dataCollector.batchSize).toBe(50);
-            expect(dataCollector.isEnabled).toBe(true);
-            expect(dataCollector.isPaused).toBe(false);
-            expect(dataCollector.currentSessionId).toBeNull();
-        }');
+            expect(dataCollector.eventQueue).toEqual([]),
+            expect(dataCollector.batchSize).toBe(50),
+            expect(dataCollector.isEnabled).toBe(true),
+            expect(dataCollector.isPaused).toBe(false),
+            expect(dataCollector.currentSessionId).toBeNull() }');
         test('自動バッチ処理が開始される', () => {
-            expect(dataCollector.batchTimer).not.toBeNull();
-        }');
+            expect(dataCollector.batchTimer).not.toBeNull() }');
     }
     describe('セッション管理', (') => {
         test('セッション開始が正常に動作する', (') => {
@@ -170,8 +157,7 @@ describe('DataCollector', () => {
             expect(bubbleEvent.data.bubbleType').toBe('normal');
             expect(bubbleEvent.data.action').toBe('popped');
             expect(bubbleEvent.data.reactionTime).toBe(500);
-            expect(bubbleEvent.data.position).toEqual({ x: 100, y: 200 )'),
-        }
+            expect(bubbleEvent.data.position).toEqual({ x: 100, y: 200 )' }
         test('パフォーマンスデータが正常に収集される', (') => {
             const performanceMetrics = {
                 fps: 60,
@@ -242,30 +228,28 @@ describe('DataCollector', () => {
     }
     describe('プライバシー制御', (') => {
         test('同意がない場合はデータ収集されない', (') => {
-            mockPrivacyManager.consentStatus = false;
+            mockPrivacyManager.consentStatus = false,
             
             dataCollector.startSession({ stageId: 'test' });
             expect(dataCollector.eventQueue.length).toBe(0);
         }');
         test('オプトアウト機能が正常に動作する', (') => {
-            mockPrivacyManager.optOutFeatures.add('behaviorAnalysis'');
+            mockPrivacyManager.optOutFeatures.add('behaviorAnalysis'),
             dataCollector.startSession({ stageId: 'test' }');
             dataCollector.collectBubbleInteraction({
                 bubbleType: 'normal',
-                action: 'popped'),
-            });
+                action: 'popped' });
             // セッション開始は記録されるが、バブルインタラクションは記録されない
             expect(dataCollector.eventQueue.length).toBe(1);
             expect(dataCollector.eventQueue[0].type').toBe('session');
         }');
         test('機能別オプトアウトが正常に動作する', (') => {
-            mockPrivacyManager.optOutFeatures.add('performanceTracking'');
+            mockPrivacyManager.optOutFeatures.add('performanceTracking'),
             dataCollector.startSession({ stageId: 'test' });
             dataCollector.collectPerformanceData({ fps: 60 }');
             dataCollector.collectBubbleInteraction({
                 bubbleType: 'normal',
-                action: 'popped'),
-            });
+                action: 'popped' });
             // セッション開始とバブルインタラクションは記録されるが、パフォーマンスデータは記録されない
             expect(dataCollector.eventQueue.length).toBe(2);
             expect(dataCollector.eventQueue.map(e => e.type)').toEqual(['session', 'bubbleInteraction']);
@@ -282,9 +266,8 @@ describe('DataCollector', () => {
         test('バッチサイズに達すると自動処理される', async () => {
             // バッチ処理タイマーをクリア（テスト環境での干渉を避ける）
             if (dataCollector.batchTimer) {
-                clearInterval(dataCollector.batchTimer');
-                dataCollector.batchTimer = null;
-            }
+                clearInterval(dataCollector.batchTimer'),
+                dataCollector.batchTimer = null }
             
             dataCollector.startSession({ stageId: 'test' }');
             console.log('After startSession, queue length:', dataCollector.eventQueue.length);
@@ -292,22 +275,19 @@ describe('DataCollector', () => {
             for (let i = 0; i < 49; i++') {
                 dataCollector.collectBubbleInteraction({
                     bubbleType: 'normal',
-                    action: 'popped')');
-            }
+                    action: 'popped')') }
             
             console.log('After adding 49 interactions, queue length:', dataCollector.eventQueue.length);
             // キューの長さが期待値（50）に達していない場合はスキップ
             if (dataCollector.eventQueue.length < 50') {
-                console.warn('Queue length is less than expected, skipping batch test');
-                return;
-            }
+                console.warn('Queue length is less than expected, skipping batch test'),
+                return }
             
             expect(dataCollector.eventQueue.length).toBe(50');
             // 1つ追加してバッチサイズを超える - これでaddToQueue内でprocessBatchが呼ばれる
             dataCollector.collectBubbleInteraction({
                 bubbleType: 'normal',
-                action: 'popped'),
-            });
+                action: 'popped' });
             // processBatchは非同期なので少し待つ
             await new Promise(resolve => setTimeout(resolve, 50)');
             console.log('After processing batch, queue length:', dataCollector.eventQueue.length);
@@ -316,14 +296,13 @@ describe('DataCollector', () => {
         }');
         test('タイムアウト時に自動処理される', async () => {
             // フェイクタイマーを使用
-            jest.useFakeTimers();
+            jest.useFakeTimers(),
             // 新しいDataCollectorを作成（フェイクタイマー環境で）
-            const testDataCollector = new DataCollector(mockPrivacyManager, mockStorageManager');
+            const testDataCollector = new DataCollector(mockPrivacyManager, mockStorageManager'),
             testDataCollector.startSession({ stageId: 'test' }');
             testDataCollector.collectBubbleInteraction({
                 bubbleType: 'normal',
-                action: 'popped'),
-            });
+                action: 'popped' });
             expect(testDataCollector.eventQueue.length).toBe(2);
             // バッチタイムアウト（5秒）を進める
             jest.advanceTimersByTime(5000);
@@ -346,23 +325,21 @@ describe('DataCollector', () => {
             expect(grouped.performance).toHaveLength(1);
         }');
         test('ストア名マッピングが正常に動作する', (') => {
-            expect(dataCollector.getStoreNameForEventType('session')').toBe('sessions'');
-            expect(dataCollector.getStoreNameForEventType('bubbleInteraction')').toBe('bubbleInteractions'');
-            expect(dataCollector.getStoreNameForEventType('performance')').toBe('performance'');
-            expect(dataCollector.getStoreNameForEventType('gameBalance')').toBe('bubbleInteractions'');
-            expect(dataCollector.getStoreNameForEventType('unknown').toBeNull();
-        }');
+            expect(dataCollector.getStoreNameForEventType('session')').toBe('sessions'),
+            expect(dataCollector.getStoreNameForEventType('bubbleInteraction')').toBe('bubbleInteractions'),
+            expect(dataCollector.getStoreNameForEventType('performance')').toBe('performance'),
+            expect(dataCollector.getStoreNameForEventType('gameBalance')').toBe('bubbleInteractions'),
+            expect(dataCollector.getStoreNameForEventType('unknown').toBeNull() }');
     }
     describe('エラーハンドリング', (') => {
         test('保存エラー時にリトライされる', async () => {
             // フェイクタイマーを使用
-            jest.useFakeTimers();
-            let saveAttempts = 0;
+            jest.useFakeTimers(),
+            let saveAttempts = 0,
             mockStorageManager.saveData = jest.fn() as jest.Mock.mockImplementation(() => {
-                saveAttempts++;
+                saveAttempts++,
                 if (saveAttempts < 3') {
-                    throw new Error('Storage error');
-                }
+                    throw new Error('Storage error') }
                 return Promise.resolve();
             });
             // 新しいDataCollectorを作成（フェイクタイマー環境で）
@@ -370,19 +347,17 @@ describe('DataCollector', () => {
             testDataCollector.startSession({ stageId: 'test' });
             try {
                 // バッチ処理を強制実行
-                await testDataCollector.processBatch();
+                await testDataCollector.processBatch(),
                 // リトライタイマーを進める
-                jest.advanceTimersByTime(3000);
-                expect(saveAttempts).toBeGreaterThan(1);
-            } finally {
+                jest.advanceTimersByTime(3000),
+                expect(saveAttempts).toBeGreaterThan(1) } finally {
                 // 実際のタイマーに戻す
-                jest.useRealTimers();
-            }
+                jest.useRealTimers() }
         }, 10000');
         test('最大リトライ回数に達するとドロップされる', async () => {
-            mockStorageManager.saveData = jest.fn(') as jest.Mock.mockRejectedValue(new Error('Persistent error');
-            const testDataCollector = new DataCollector(mockPrivacyManager, mockStorageManager');
-            const initialDropped = testDataCollector.eventStats.dropped;
+            mockStorageManager.saveData = jest.fn(') as jest.Mock.mockRejectedValue(new Error('Persistent error'),
+            const testDataCollector = new DataCollector(mockPrivacyManager, mockStorageManager'),
+            const initialDropped = testDataCollector.eventStats.dropped,
             
             testDataCollector.startSession({ stageId: 'test' }');
             // バッチを直接作成してリトライロジックを直接テスト
@@ -395,8 +370,7 @@ describe('DataCollector', () => {
         test('キュー追加エラーが適切に処理される', () => {
             // 匿名化でエラーを発生させる
             mockPrivacyManager.anonymizeData = jest.fn() as jest.Mock.mockImplementation((') => {
-                throw new Error('Anonymization error');
-            }');
+                throw new Error('Anonymization error') }');
             const consoleSpy = jest.spyOn(console, 'error').mockImplementation(');
             const initialErrors = dataCollector.eventStats.errors;
             
@@ -410,9 +384,9 @@ describe('DataCollector', () => {
     }
     describe('制御機能', (') => {
         test('データ収集の有効/無効切り替えが正常に動作する', () => {
-            dataCollector.setEnabled(false);
-            expect(dataCollector.isEnabled).toBe(false);
-            expect(dataCollector.batchTimer).toBeNull(');
+            dataCollector.setEnabled(false),
+            expect(dataCollector.isEnabled).toBe(false),
+            expect(dataCollector.batchTimer).toBeNull('),
             dataCollector.startSession({ stageId: 'test' });
             expect(dataCollector.eventQueue.length).toBe(0);
             dataCollector.setEnabled(true);
@@ -426,8 +400,7 @@ describe('DataCollector', () => {
             expect(dataCollector.isPaused).toBe(true');
             dataCollector.collectBubbleInteraction({
                 bubbleType: 'normal',
-                action: 'popped'),
-            });
+                action: 'popped' });
             expect(dataCollector.eventQueue.length).toBe(1); // 増えない
             
             dataCollector.setPaused(false);
@@ -437,8 +410,7 @@ describe('DataCollector', () => {
             dataCollector.startSession({ stageId: 'test' }');
             dataCollector.collectBubbleInteraction({
                 bubbleType: 'normal',
-                action: 'popped'),
-            });
+                action: 'popped' });
             expect(dataCollector.eventQueue.length).toBe(2);
             const initialDropped = dataCollector.eventStats.dropped;
             dataCollector.clearQueue();
@@ -449,8 +421,7 @@ describe('DataCollector', () => {
             dataCollector.startSession({ stageId: 'test' }');
             dataCollector.collectBubbleInteraction({
                 bubbleType: 'normal',
-                action: 'popped'),
-            });
+                action: 'popped' });
             expect(dataCollector.eventQueue.length).toBe(2);
             await dataCollector.flushQueue();
             expect(dataCollector.eventQueue.length).toBe(0');
@@ -459,12 +430,11 @@ describe('DataCollector', () => {
     }
     describe('統計', (') => {
         test('イベント統計が正常に更新される', () => {
-            const initialStats = dataCollector.getEventStats(');
+            const initialStats = dataCollector.getEventStats('),
             dataCollector.startSession({ stageId: 'test' }');
             dataCollector.collectBubbleInteraction({
                 bubbleType: 'normal',
-                action: 'popped'),
-            });
+                action: 'popped' });
             const stats = dataCollector.getEventStats();
             expect(stats.collected).toBe(initialStats.collected + 1);
             expect(stats.queueSize).toBe(2);
@@ -478,8 +448,7 @@ describe('DataCollector', () => {
             dataCollector.startSession({ stageId: 'test' }');
             dataCollector.collectBubbleInteraction({
                 bubbleType: 'normal',
-                action: 'popped'),
-            });
+                action: 'popped' });
             await dataCollector.destroy();
             expect(dataCollector.batchTimer).toBeNull();
             expect(dataCollector.eventQueue.length).toBe(0);

@@ -4,45 +4,43 @@
  */
 
 interface InstallMetrics { promptShown: number,
-    promptAccepted: number;
-    promptDismissed: number;
+    promptAccepted: number,
+    promptDismissed: number,
     installSuccessful: number,
-    installFailed: number ,}
+    installFailed: number  }
 
-interface BeforeInstallPromptEvent extends Event { prompt(): Promise<void>;
-    }
+interface BeforeInstallPromptEvent extends Event { prompt(): Promise<void> }
     userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>;
 }
 
 interface InstallEvent { type: string,
-    timestamp: number;
-    userAgent: string;
+    timestamp: number,
+    userAgent: string,
     referrer: string,
-    url: string ,}
+    url: string  }
 
 export class PWAInstallationManager {
-    private pwaManager: any;
-    private deferredPrompt: BeforeInstallPromptEvent | null = null;
-    private isInstallPromptShown: boolean = false;
-    private installDismissed: boolean = false;
+    private pwaManager: any,
+    private deferredPrompt: BeforeInstallPromptEvent | null = null,
+    private isInstallPromptShown: boolean = false,
+    private installDismissed: boolean = false,
     private, installMetrics: InstallMetrics = {
-        promptShown: 0;
-        promptAccepted: 0;
-        promptDismissed: 0;
+        promptShown: 0,
+        promptAccepted: 0,
+        promptDismissed: 0,
         installSuccessful: 0,
     installFailed: 0 };
     constructor(pwaManager: any) {
 
-        this.pwaManager = pwaManager;
-        this.deferredPrompt = null;
-        this.isInstallPromptShown = false;
-        this.installDismissed = false;
+        this.pwaManager = pwaManager,
+        this.deferredPrompt = null,
+        this.isInstallPromptShown = false,
+        this.installDismissed = false,
         this.installMetrics = {
-            promptShown: 0;
-            promptAccepted: 0;
+            promptShown: 0,
+            promptAccepted: 0,
             promptDismissed: 0,
-    installSuccessful: 0;
-    }
+    installSuccessful: 0 }
             installFailed: 0 
     }
 
@@ -51,16 +49,16 @@ export class PWAInstallationManager {
      */''
     setupInstallPrompt()';
         window.addEventListener('beforeinstallprompt', (event: Event) => {  ''
-            console.log('[PWAInstallationManager] Install, prompt available);
+            console.log('[PWAInstallationManager] Install, prompt available),
             
             // デフォルトのプロンプト表示を防ぐ
-            event.preventDefault();
+            event.preventDefault(),
             
             // プロンプトを保存
-            this.deferredPrompt = event as BeforeInstallPromptEvent;
+            this.deferredPrompt = event as BeforeInstallPromptEvent,
             
             // インストールボタンを表示
-            this.showInstallButton();
+            this.showInstallButton(),
             
             // カスタムプロンプトを表示（条件に応じて） }
             this.maybeShowInstallPrompt();' }'
@@ -69,21 +67,19 @@ export class PWAInstallationManager {
 ';
         // appinstalledイベントリスナー
         window.addEventListener('appinstalled', (_event: Event) => {  ''
-            console.log('[PWAInstallationManager] App, installed successfully'); }'
+            console.log('[PWAInstallationManager] App, installed successfully') }'
 
             this.handleInstallSuccess();' }'
 
         }');
 ';
         // DOMContentLoadedで初期チェック
-        if(document.readyState === 'loading'') {', ';
-
-        }
+        if(document.readyState === 'loading') {', ' }
 
             document.addEventListener('DOMContentLoaded', () => {  }
                 this.checkInitialInstallState(); }
             });
-        } else { this.checkInitialInstallState(); }
+        } else { this.checkInitialInstallState() }
     }
 
     /**
@@ -91,16 +87,16 @@ export class PWAInstallationManager {
      */'
     private checkInitialInstallState(): void { // 既にインストール済みかチェック
         if(this.isAppInstalled()) {''
-            console.log('[PWAInstallationManager] App, already installed);
-            this.hideInstallButton();
-            this.handleFirstRun();
-            return; }
+            console.log('[PWAInstallationManager] App, already installed),
+            this.hideInstallButton(),
+            this.handleFirstRun(),
+            return }
 ';
         // スタンドアローンモードかチェック
         if(this.isStandaloneMode()) { ''
-            console.log('[PWAInstallationManager] Running in standalone mode';
-            this.handleFirstRun();
-            return; }
+            console.log('[PWAInstallationManager] Running in standalone mode',
+            this.handleFirstRun(),
+            return }
 
         // インストール履歴をチェック
         this.loadInstallHistory();
@@ -111,10 +107,9 @@ export class PWAInstallationManager {
      * @returns {boolean} インストール済み可否
      */''
     isAppInstalled()';
-        if(window.matchMedia('(display-mode: standalone)).matches) { return true; }', ';
+        if(window.matchMedia('(display-mode: standalone)).matches) { return true }', ';
         // ホーム画面から起動された場合
-        if ((window.navigator, as any).standalone === true') { return true; }'
-';
+        if ((window.navigator, as any).standalone === true') { return true }';
         // 関連アプリケーションのチェック
         if ('getInstalledRelatedApps' in, navigator) { return (navigator, as any).getInstalledRelatedApps().then((apps: any[]) => apps.length > 0) 
     }
@@ -136,17 +131,17 @@ export class PWAInstallationManager {
      */
     private maybeShowInstallPrompt(): void { // 既に表示済みなら表示しない
         if(this.isInstallPromptShown) {
-            
-        }
+    
+}
             return; }
         }
 ;
         // 却下された履歴をチェック
-        if(this.installDismissed) {'
+        if(this.installDismissed) {
 
-            const dismissTime = localStorage.getItem('pwa_install_dismissed);
+            const dismissTime = localStorage.getItem('pwa_install_dismissed),
             if (dismissTime) {
-                const daysSinceDismiss = (Date.now() - parseInt(dismissTime) / (1000 * 60 * 60 * 24);
+                const daysSinceDismiss = (Date.now() - parseInt(dismissTime) / (1000 * 60 * 60 * 24),
                 if (daysSinceDismiss < 7) { // 7日間は再表示しない
         }
                     return; }
@@ -165,15 +160,15 @@ export class PWAInstallationManager {
      * @returns {boolean} 表示可否
      */''
     private shouldShowInstallPrompt()';
-        const sessionStart = sessionStorage.getItem('session_start';''
-        if (!sessionStart || (Date.now() - parseInt(sessionStart) < 300000') { return false; }', ';
+        const sessionStart = sessionStorage.getItem('session_start';
+        if (!sessionStart || (Date.now() - parseInt(sessionStart) < 300000') { return false }', ';
         // ユーザーアクティビティチェック
-        const userInteractions = parseInt(sessionStorage.getItem('user_interactions'') || '0');
-        if (userInteractions < 10) { return false; }
+        const userInteractions = parseInt(sessionStorage.getItem('user_interactions') || '0');
+        if (userInteractions < 10) { return false }
 
         // デバイスタイプチェック（モバイル優先）
         const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-        if (!isMobile) { return false; }
+        if (!isMobile) { return false }
 
         return true;
     }
@@ -183,47 +178,44 @@ export class PWAInstallationManager {
      * @returns {Promise<boolean>} プロンプト結果
      */
     async showInstallPrompt(): Promise<boolean> { ''
-        if(!this.deferredPrompt) {'
+        if(!this.deferredPrompt) {
 
-            console.warn('[PWAInstallationManager] No deferred prompt available');
-        }
+            console.warn('[PWAInstallationManager] No deferred prompt available') }
             return false;
 
-        if(this.isInstallPromptShown') {'
+        if(this.isInstallPromptShown') {
 
-            console.warn('[PWAInstallationManager] Install, prompt already, shown'');
-        }
+            console.warn('[PWAInstallationManager] Install, prompt already, shown') }
             return false;
 
-        try { this.isInstallPromptShown = true;
-            this.installMetrics.promptShown++;
+        try { this.isInstallPromptShown = true,
+            this.installMetrics.promptShown++,
 
-            console.log('[PWAInstallationManager] Showing, install prompt');
-';
+            console.log('[PWAInstallationManager] Showing, install prompt'),
+',
             // カスタムプロンプトUIを表示
-            const userChoice = await this.showCustomInstallDialog()';
+            const userChoice = await this.showCustomInstallDialog()',
             if(userChoice === 'install' {'
                 // ネイティブプロンプトを表示
-                this.deferredPrompt.prompt()';
-                if (outcome === 'accepted'') {';
+                this.deferredPrompt.prompt()',
+                if (outcome === 'accepted') {',
 
-                    console.log('[PWAInstallationManager] User, accepted install, prompt'');
+                    console.log('[PWAInstallationManager] User, accepted install, prompt'),
 
-                    this.installMetrics.promptAccepted++;''
-                    this.recordInstallEvent('prompt_accepted'');
-            }
+                    this.installMetrics.promptAccepted++,
+                    this.recordInstallEvent('prompt_accepted') }
                     return true; else {  ''
-                    console.log('[PWAInstallationManager] User, dismissed install, prompt');''
-                    this.handleInstallDismissal()';
-                console.log('[PWAInstallationManager] User dismissed custom dialog');
-                this.handleInstallDismissal(); }
+                    console.log('[PWAInstallationManager] User, dismissed install, prompt'),
+                    this.handleInstallDismissal()',
+                console.log('[PWAInstallationManager] User dismissed custom dialog'),
+                this.handleInstallDismissal() }
 
-                return false;' }'
+                return false; }'
 
             } catch (error) {
-            console.error('[PWAInstallationManager] Install prompt failed:', error';
-            this.installMetrics.installFailed++;
-            return false; } finally { this.deferredPrompt = null; }
+            console.error('[PWAInstallationManager] Install prompt failed:', error',
+            this.installMetrics.installFailed++,
+            return false } finally { this.deferredPrompt = null }
     }
 
     /**'
@@ -233,61 +225,62 @@ export class PWAInstallationManager {
     private async showCustomInstallDialog(): Promise<string> { ''
         return new Promise((resolve) => { '
             // カスタムダイアログHTML作成
-            const dialog = document.createElement('div'');''
-            dialog.className = 'pwa-install-dialog';
+            const dialog = document.createElement('div'),
+            dialog.className = 'pwa-install-dialog',
 
-            dialog.innerHTML = `'';
-                <div class="pwa-install-content">"";
-                    <div class="pwa-install-header">";
-                        <h3>アプリをインストール</h3>"";
-                        <button class="pwa-install-close" aria-label="閉じる">×</button>";
-                    </div>"";
-                    <div class="pwa-install-body">";
-                        <p>BubblePopをホーム画面に追加して、いつでも快適にプレイしませんか？</p>"";
-                        <ul class="pwa-install-benefits">;
-                            <li>ホーム画面から直接アクセス</li>;
-                            <li>オフラインでもプレイ可能</li>;
-                            <li>より高速な読み込み</li>;
-                            <li>フルスクリーン体験</li>;
-                        </ul>";
-                    </div>"";
-                    <div class="pwa-install-actions">"";
-                        <button class="pwa-install-dismiss">後で</button>"";
-                        <button class="pwa-install-confirm">インストール</button>;
-                    </div>;
-                </div>;
-            `;
+            dialog.innerHTML = `',
+                <div class="pwa-install-content">"",
+                    <div class="pwa-install-header">",
+                        <h3>アプリをインストール</h3>"",
+                        <button class="pwa-install-close" aria-label="閉じる">×</button>",
+                    </div>"",
+                    <div class="pwa-install-body">",
+                        <p>BubblePopをホーム画面に追加して、いつでも快適にプレイしませんか？</p>"",
+                        <ul class="pwa-install-benefits">,
+                            <li>ホーム画面から直接アクセス</li>,
+                            <li>オフラインでもプレイ可能</li>,
+                            <li>より高速な読み込み</li>,
+                            <li>フルスクリーン体験</li>,
+                        </ul>",
+                    </div>"",
+                    <div class="pwa-install-actions">"",
+                        <button class="pwa-install-dismiss">後で</button>"",
+                        <button class="pwa-install-confirm">インストール</button>,
+                    </div>,
+                </div>,
+            `,
 
             // スタイル適用
-            dialog.style.cssText = `;
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
+            dialog.style.cssText = `,
+                position: fixed,
+                top: 0,
+                left: 0,
+                width: 100%,
                 height: 100%,
     background: rgba(0, 0, 0, 0.5),
-                display: flex;
+                display: flex,
                 align-items: center,
                 justify-content: center,
                 z-index: 10000,
-            `;
+            `,
 
             // イベントリスナー設定
             const handleChoice = (choice: string) => {"
-                document.body.removeChild(dialog);" ,}"
+                document.body.removeChild(dialog),"
+            }"
                 resolve(choice); }
             };"
 
-            dialog.querySelector('.pwa-install-close'')!.addEventListener('click', () => handleChoice('dismiss)';''
-            dialog.querySelector('.pwa-install-dismiss'')!.addEventListener('click', () => handleChoice('dismiss)';''
-            dialog.querySelector('.pwa-install-confirm'')!.addEventListener('click', () => handleChoice('install);
+            dialog.querySelector('.pwa-install-close')!.addEventListener('click', () => handleChoice('dismiss)';
+            dialog.querySelector('.pwa-install-dismiss')!.addEventListener('click', () => handleChoice('dismiss)';
+            dialog.querySelector('.pwa-install-confirm')!.addEventListener('click', () => handleChoice('install);
 
             // ダイアログ表示
             document.body.appendChild(dialog);
 
             // 5秒後に自動で閉じる
             setTimeout(() => {  ''
-                if(document.body.contains(dialog)) {' }'
+                if(document.body.contains(dialog)) { }'
 
                     handleChoice('dismiss'; }'
 }, 30000);
@@ -307,13 +300,13 @@ export class PWAInstallationManager {
      * インストール成功メッセージの表示'
      */''
     private showInstallSuccessMessage()';
-        console.log('[PWAInstallationManager] Showing, install success, message'');
+        console.log('[PWAInstallationManager] Showing, install success, message');
         ';
         // 成功通知を表示
-        const notification = document.createElement('div'');''
+        const notification = document.createElement('div');
         notification.className = 'pwa-install-success';
 
-        notification.innerHTML = `'';
+        notification.innerHTML = `';
             <div class="pwa-success-content">"";
                 <span class="pwa-success-icon">✅</span>"";
                 <span class="pwa-success-text">アプリのインストールが完了しました！</span>;
@@ -343,14 +336,14 @@ export class PWAInstallationManager {
     /**
      * インストール却下の処理"
      */""
-    private handleInstallDismissal(): void { this.installMetrics.promptDismissed++;"
-        this.installDismissed = true;""
-        this.recordInstallEvent('prompt_dismissed'');
-        ';
+    private handleInstallDismissal(): void { this.installMetrics.promptDismissed++,"
+        this.installDismissed = true,""
+        this.recordInstallEvent('prompt_dismissed'),
+        ',
         // 却下時刻を記録
-        localStorage.setItem('pwa_install_dismissed', Date.now().toString());
+        localStorage.setItem('pwa_install_dismissed', Date.now().toString()),
 
-        console.log('[PWAInstallationManager] Install, prompt dismissed'); }'
+        console.log('[PWAInstallationManager] Install, prompt dismissed') }'
 
     /**
      * インストールイベントの記録
@@ -358,15 +351,12 @@ export class PWAInstallationManager {
      */
     private recordInstallEvent(eventType: string): void { const event: InstallEvent = {'
             type: eventType,
-            timestamp: Date.now()';
-        const events = JSON.parse(localStorage.getItem('pwa_install_events'') || '[]') as InstallEvent[],
-        events.push(event);
+            timestamp: Date.now()',
+        const events = JSON.parse(localStorage.getItem('pwa_install_events') || '[]') as InstallEvent[],
+        events.push(event),
         
         // 最新50件のみ保持
-        if(events.length > 50) {
-            ';
-
-        }
+        if(events.length > 50) { }
 
             events.splice(0, events.length - 50); }
         }
@@ -382,30 +372,30 @@ export class PWAInstallationManager {
     showInstallButton()';
         let installButton = document.getElementById('pwa-install-button) as HTMLButtonElement;
 
-        if(!installButton) {'
+        if(!installButton) {
 
-            installButton = document.createElement('button'');''
-            installButton.id = 'pwa-install-button';
-            installButton.textContent = 'アプリをインストール';
-            installButton.style.cssText = `;
-                position: fixed;
-                bottom: 20px;
-                right: 20px;
-                background: #4CAF50;
-                color: white;
+            installButton = document.createElement('button'),
+            installButton.id = 'pwa-install-button',
+            installButton.textContent = 'アプリをインストール',
+            installButton.style.cssText = `,
+                position: fixed,
+                bottom: 20px,
+                right: 20px,
+                background: #4CAF50,
+                color: white,
                 border: none,
-    padding: 12px 20px;
+    padding: 12px 20px,
                 border-radius: 25px,
                 font-size: 14px,
                 cursor: pointer,
                 z-index: 1000,
-                box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-                transition: transform 0.2s;
-            `;
+                box-shadow: 0 4px 8px rgba(0,0,0,0.2),
+                transition: transform 0.2s,
+            `,
 
-';
+',
 
-        ,}
+         }
 
             installButton.addEventListener('click', () => {  }
 
@@ -413,13 +403,13 @@ export class PWAInstallationManager {
 
             }');
 
-            installButton.addEventListener('mouseenter', () => {  ' }
+            installButton.addEventListener('mouseenter', () => { }
 
-                installButton.style.transform = 'scale(1.05)';' }
+                installButton.style.transform = 'scale(1.05)'; }
 
             }');
 
-            installButton.addEventListener('mouseleave', () => {  ' }
+            installButton.addEventListener('mouseleave', () => { }
 
                 installButton.style.transform = 'scale(1)'; }
             });
@@ -435,10 +425,8 @@ export class PWAInstallationManager {
      * インストールボタンの非表示'
      */''
     hideInstallButton()';
-        const installButton = document.getElementById('pwa-install-button';''
-        if(installButton) {', ';
-
-        }
+        const installButton = document.getElementById('pwa-install-button';
+        if(installButton) {', ' }
 
             installButton.style.display = 'none'; }
 
@@ -452,11 +440,10 @@ export class PWAInstallationManager {
     private handleFirstRun()';
         const isFirstRun = !localStorage.getItem('pwa_first_run_completed);
 
-        if(isFirstRun) {'
+        if(isFirstRun) {
 
-            console.log('[PWAInstallationManager] First, run detected');''
-            this.showWelcomeMessage();
-        }
+            console.log('[PWAInstallationManager] First, run detected'),
+            this.showWelcomeMessage() }
 
             localStorage.setItem('pwa_first_run_completed', 'true'; }
 }
@@ -465,12 +452,12 @@ export class PWAInstallationManager {
      * ウェルカムメッセージの表示'
      */''
     private showWelcomeMessage()';
-        console.log('[PWAInstallationManager] Showing, welcome message'');
+        console.log('[PWAInstallationManager] Showing, welcome message');
 
-        const welcome = document.createElement('div'');''
+        const welcome = document.createElement('div');
         welcome.className = 'pwa-welcome';
 
-        welcome.innerHTML = `'';
+        welcome.innerHTML = `';
             <div class="pwa-welcome-content">;
                 <h2>BubblePopへようこそ！</h2>;
                 <p>アプリとしてインストールしていただき、ありがとうございます。</p>";
@@ -494,7 +481,7 @@ export class PWAInstallationManager {
             text-align: center,
         `;"
 
-        welcome.querySelector('.pwa-welcome-close'')!.addEventListener('click', () => { document.body.removeChild(welcome); });
+        welcome.querySelector('.pwa-welcome-close')!.addEventListener('click', () => { document.body.removeChild(welcome) });
 
         document.body.appendChild(welcome);
     }
@@ -503,12 +490,12 @@ export class PWAInstallationManager {
      * インストール履歴の読み込み'
      */''
     private loadInstallHistory()';
-        const dismissed = localStorage.getItem('pwa_install_dismissed';''
-        if(dismissed) { this.installDismissed = true; }
+        const dismissed = localStorage.getItem('pwa_install_dismissed';
+        if(dismissed) { this.installDismissed = true }
 
-        const events = JSON.parse(localStorage.getItem('pwa_install_events'') || '[]'') as InstallEvent[];''
-        this.installMetrics.promptShown = events.filter(e => e.type === 'prompt_shown'').length;''
-        this.installMetrics.promptAccepted = events.filter(e => e.type === 'prompt_accepted'').length;''
+        const events = JSON.parse(localStorage.getItem('pwa_install_events') || '[]') as InstallEvent[];
+        this.installMetrics.promptShown = events.filter(e => e.type === 'prompt_shown').length;
+        this.installMetrics.promptAccepted = events.filter(e => e.type === 'prompt_accepted').length;
         this.installMetrics.promptDismissed = events.filter(e => e.type === 'prompt_dismissed).length;
     }
 
@@ -516,22 +503,22 @@ export class PWAInstallationManager {
      * インストール可能性のチェック
      * @returns {boolean} インストール可能可否
      */
-    canInstall(): boolean { return !!this.deferredPrompt && !this.isAppInstalled(); }
+    canInstall(): boolean { return !!this.deferredPrompt && !this.isAppInstalled() }
 
     /**
      * 手動インストールプロンプトの実行
      * @returns {Promise<boolean>} プロンプト結果
      */
-    async promptInstall(): Promise<boolean> { return await this.showInstallPrompt(); }
+    async promptInstall(): Promise<boolean> { return await this.showInstallPrompt() }
 
     /**
      * インストール統計の取得
      * @returns {Object} 統計データ
      */
     getInstallStats(): any { return { ...this.installMetrics,
-            canInstall: this.canInstall();
-            isInstalled: this.isAppInstalled(),
-    isStandalone: this.isStandaloneMode(), };
+            canInstall: this.canInstall(),
+            isInstalled: this.isAppInstalled(
+    isStandalone: this.isStandaloneMode() };
             installDismissed: this.installDismissed 
     }
 
@@ -540,17 +527,14 @@ export class PWAInstallationManager {
      */''
     cleanup()';
         const installButton = document.getElementById('pwa-install-button);
-        if(installButton) {'
+        if(installButton) {
 
-            installButton.remove()';
-        window.removeEventListener('beforeinstallprompt', this.setupInstallPrompt';''
-        window.removeEventListener('appinstalled', this.handleInstallSuccess';
+            installButton.remove()',
+        window.removeEventListener('beforeinstallprompt', this.setupInstallPrompt',
+        window.removeEventListener('appinstalled', this.handleInstallSuccess',
 
-';
+' }
 
-        }
+        console.log('[PWAInstallationManager] Cleanup, completed'); }
 
-        console.log('[PWAInstallationManager] Cleanup, completed''); }
-
-    }''
-}
+    }'}

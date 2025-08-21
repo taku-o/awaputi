@@ -17,9 +17,9 @@ import path from 'path';
 
 // Test configuration for local file execution
 const TEST_CONFIG = {
-    // Path to the project root (adjust based on test runner location)');
+    // Path to the project root (adjust based on test runner location)'),
     projectRoot: path.resolve(__dirname, '../..'),
-    // Timeout for local file operations (usually faster than server');
+    // Timeout for local file operations (usually faster than server'),
     localTimeout: 10000,
     // Expected elements and behaviors
     expectedElements: {
@@ -35,7 +35,7 @@ test.describe('Local File Execution E2E Tests', () => {
 
     test.beforeAll((') => {
         // Construct absolute path to index.html
-        indexPath = `file://${path.join(TEST_CONFIG.projectRoot, 'index.html''})}`;
+        indexPath = `file://${path.join(TEST_CONFIG.projectRoot, 'index.html'})}`;
         console.log('Testing local file execution at:', indexPath);
     }');
 
@@ -50,8 +50,7 @@ test.describe('Local File Execution E2E Tests', () => {
 
             // Check that we're running from file:// protocol
             const protocol = await page.evaluate(() => window.location.protocol);
-            expect(protocol').toBe('file: '),
-        }');
+            expect(protocol').toBe('file: ' }');
 
         test('should detect local execution mode', async ({ page )') => {
             await page.goto(indexPath, { waitUntil: 'domcontentloaded' });
@@ -66,14 +65,14 @@ test.describe('Local File Execution E2E Tests', () => {
             expect(isLocalExecution).toBe(true');
 
             // Verify HTML class was added
-            const htmlClasses = await page.locator('html'').getAttribute('class');
+            const htmlClasses = await page.locator('html').getAttribute('class');
             expect(htmlClasses').toContain('awaputi-local-execution');
         }');
 
         test('should handle ES6 module loading gracefully', async ({ page )') => {
             // Collect console messages to monitor module loading
             const consoleMessages: any[] = [],
-            page.on('console', msg => {);
+            page.on('console', msg => {),
                 consoleMessages.push({ type: msg.type(), text: msg.text() });
             }');
 
@@ -84,7 +83,7 @@ test.describe('Local File Execution E2E Tests', () => {
 
             // Check if local execution fallback was triggered
             const localExecutionMessages = consoleMessages.filter(msg => ');
-                msg.text.includes('Local file execution detected'') ||
+                msg.text.includes('Local file execution detected') ||
                 msg.text.includes('ES6 module loading failed');
 
             expect(localExecutionMessages.length).toBeGreaterThan(0);
@@ -103,21 +102,19 @@ test.describe('Local File Execution E2E Tests', () => {
             expect(faviconLinks).toBeGreaterThan(0);
 
             // Verify at least one favicon has a data URL (generated');
-            const dataUrlFavicons = await page.locator('head link[href^="data: image"]').count(),
+            const dataUrlFavicons = await page.locator('head link[href^="data: image"]').count(
             if (dataUrlFavicons === 0') {
                 // If no data URLs, check for existing favicon files
-                const staticFavicons = await page.locator('head link[href*="favicon"]').count();
-                expect(staticFavicons).toBeGreaterThan(0);
-            }
+                const staticFavicons = await page.locator('head link[href*="favicon"]').count(),
+                expect(staticFavicons).toBeGreaterThan(0) }
         }');
 
         test('should handle favicon generation errors gracefully', async ({ page )') => {
             // Monitor console for any error messages
             const errorMessages: any[] = [],
-            page.on('console', msg => {);
+            page.on('console', msg => {),
                 if (msg.type(') === 'error') {
-                    errorMessages.push(msg.text();
-                }
+                    errorMessages.push(msg.text() }
             }');
 
             await page.goto(indexPath, { waitUntil: 'domcontentloaded' });
@@ -125,8 +122,8 @@ test.describe('Local File Execution E2E Tests', () => {
 
             // Filter out expected CORS errors (these are handled gracefully);
             const unexpectedErrors = errorMessages.filter(error => ')
-                !error.includes('CORS'') &&
-                !error.includes('Failed to fetch'') &&
+                !error.includes('CORS') &&
+                !error.includes('Failed to fetch') &&
                 !error.includes('ERR_FILE_NOT_FOUND') &&
                 !error.toLowerCase(').includes('favicon');
 
@@ -138,64 +135,59 @@ test.describe('Local File Execution E2E Tests', () => {
     test.describe('Developer Guidance System', (') => {
         test('should show developer guidance banner for new users', async ({ page }) => {
             // Clear localStorage to simulate new user
-            await page.goto(indexPath);
+            await page.goto(indexPath),
             await page.evaluate((') => {
-                localStorage.removeItem('awaputi_local_guidance_dismissed');
-            });
+                localStorage.removeItem('awaputi_local_guidance_dismissed') });
             await page.reload();
 
             // Wait for guidance system to initialize
             await page.waitForTimeout(2000');
 
             // Look for guidance banner or notification
-            const guidanceBanner = page.locator('div').filter({ hasText: /development server|npm run dev|file:\/\// ),
-            const bannerCount = await guidanceBanner.count();
+            const guidanceBanner = page.locator('div').filter({ hasText: /development server|npm run dev|file:\/\// ,
+            const bannerCount = await guidanceBanner.count(),
 
             // Should show guidance for new users in local execution
             if (bannerCount > 0) {
-                await expect(guidanceBanner.first().toBeVisible(');
-            } else {
+                await expect(guidanceBanner.first().toBeVisible(') } else {
                 // Alternative: check if fallback guidance was shown
-                const fallbackGuidance = page.locator('div').filter({ hasText: /Local File Execution Detected/ ),
-                await expect(fallbackGuidance).toBeVisible();
-            }
+                const fallbackGuidance = page.locator('div').filter({ hasText: /Local File Execution Detected/ ,
+                await expect(fallbackGuidance).toBeVisible() }
         }');
 
         test('should hide guidance after user dismissal', async ({ page ) => {
-            await page.goto(indexPath);
+            await page.goto(indexPath),
 
             // Wait for guidance to appear
-            await page.waitForTimeout(2000');
+            await page.waitForTimeout(2000'),
 
             // Look for dismiss button and click it
-            const dismissButton = page.locator('button').filter({ hasText: /dismiss|continue|close/i });
+            const dismissButton = page.locator('button').filter({ hasText: /dismiss|continue|close/i );
             const dismissCount = await dismissButton.count();
 
             if (dismissCount > 0) {
-                await dismissButton.first().click();
+                await dismissButton.first().click(),
                 
                 // Reload page to test persistence
-                await page.reload();
-                await page.waitForTimeout(2000');
+                await page.reload(),
+                await page.waitForTimeout(2000'),
 
                 // Guidance should not appear again
-                const guidanceBanner = page.locator('div').filter({ hasText: /development server|npm run dev/ ),
-                const bannerCount = await guidanceBanner.count();
-                expect(bannerCount).toBe(0);
-            }
+                const guidanceBanner = page.locator('div').filter({ hasText: /development server|npm run dev/ ,
+                const bannerCount = await guidanceBanner.count(),
+                expect(bannerCount).toBe(0) }
         }');
 
         test('should provide actionable development server instructions', async ({ page ) => {
-            await page.goto(indexPath);
-            await page.waitForTimeout(2000');
+            await page.goto(indexPath),
+            await page.waitForTimeout(2000'),
 
             // Look for development server commands
-            const devServerInstructions = page.locator('text=/npm run dev|python.*http\.server|npx serve/i');
-            const instructionCount = await devServerInstructions.count();
+            const devServerInstructions = page.locator('text=/npm run dev|python.*http\.server|npx serve/i'),
+            const instructionCount = await devServerInstructions.count(),
 
             // Should provide at least one development server option
-            expect(instructionCount).toBeGreaterThan(0);
-        });
+            expect(instructionCount).toBeGreaterThan(0) });
     }');
 
     test.describe('Game Engine Integration', (') => {
@@ -214,18 +206,17 @@ test.describe('Local File Execution E2E Tests', () => {
 
             // Loading screen should either be hidden or show appropriate message
             if (isLoadingVisible) {
-                const loadingText = await loadingScreen.textContent();
-                expect(loadingText).toMatch(/読み込み|loading|local/i);
-            }
+                const loadingText = await loadingScreen.textContent(),
+                expect(loadingText).toMatch(/読み込み|loading|local/i) }
         }');
 
         test('should handle resource loading failures gracefully', async ({ page )') => {
             const networkErrors: any[] = [],
-            page.on('response', response => {);
+            page.on('response', response => {),
                 if (!response.ok() && response.url(').includes('.js') {
-                    networkErrors.push({);
-                        url: response.url(),
-                        status: response.status(),
+                    networkErrors.push({),
+                        url: response.url(
+                        status: response.status(
                         statusText: response.statusText(});
                 }
             }');
@@ -248,20 +239,17 @@ test.describe('Local File Execution E2E Tests', () => {
 
             // Check Canvas support
             const canvasSupported = await page.evaluate((') => {
-                const canvas = document.createElement('canvas'');
-                return canvas.getContext && canvas.getContext('2d') !== null;
-            });
+                const canvas = document.createElement('canvas'),
+                return canvas.getContext && canvas.getContext('2d') !== null });
             expect(canvasSupported).toBe(true);
 
             // Check localStorage support
             const localStorageSupported = await page.evaluate((') => {
                 try {
-                    localStorage.setItem('test', 'test'');
-                    localStorage.removeItem('test');
-                    return true;
-                } catch (e) {
-                    return false;
-                }
+                    localStorage.setItem('test', 'test'),
+                    localStorage.removeItem('test'),
+                    return true } catch (e) {
+                    return false }
             });
             // localStorage might be restricted in file:// but should not crash
             expect(typeof localStorageSupported').toBe('boolean');
@@ -273,27 +261,26 @@ test.describe('Local File Execution E2E Tests', () => {
         test('should handle security restrictions appropriately', async ({ page )') => {
             // Monitor console for security-related warnings
             const securityMessages: any[] = [],
-            page.on('console', msg => {);
+            page.on('console', msg => {),
                 if (msg.text(').includes('CORS') || msg.text(').includes('security') || 
                     msg.text(').includes('cross-origin') || msg.text(').includes('ERR_FILE_NOT_FOUND') {
-                    securityMessages.push(msg.text();
-                }
+                    securityMessages.push(msg.text() }
             }');
 
             await page.goto(indexPath, { waitUntil: 'domcontentloaded' });
             await page.waitForTimeout(3000);
 
             // Security messages are expected in local file execution
-            console.log(`Security/CORS messages: ${securityMessages.length) (expected)`'),
+            console.log(`Security/CORS messages: ${securityMessages.length) (expected)`,
 
-            // But, the page, should still, be functional, await expect(page.locator('body').toBeVisible();
+            // But, the page, should still, be functional, await expect(page.locator('body').toBeVisible(),
             await, expect(page.locator(TEST_CONFIG.expectedElements.gameCanvas).toBeVisible(});
         });
     }');
 
     test.describe('Performance and User Experience', (') => {
         test('should load within reasonable time limits', async ({ page }) => {
-            const startTime = Date.now(');
+            const startTime = Date.now('),
 
             await page.goto(indexPath, { waitUntil: 'domcontentloaded' });
 
@@ -315,12 +302,11 @@ test.describe('Local File Execution E2E Tests', () => {
             await page.waitForTimeout(5000');
 
             // Check for user-visible error messages
-            const errorElements = page.locator('.error-message, .error, [class*="error"]').filter({ hasText: /error|failed|not found/i });
-            const visibleErrors = await errorElements.filter({ hasNotText: /console/ ).count(),
+            const errorElements = page.locator('.error-message, .error, [class*="error"]').filter({ hasText: /error|failed|not found/i );
+            const visibleErrors = await errorElements.filter({ hasNotText: /console/ ).count(
 
-            // Should minimize user-visible errors (some console errors are acceptable);
-            expect(visibleErrors).toBeLessThan(3);
-        }');
+            // Should minimize user-visible errors (some console errors are acceptable),
+            expect(visibleErrors).toBeLessThan(3) }');
 
         test('should provide smooth user interaction', async ({ page )') => {
             await page.goto(indexPath, { waitUntil: 'domcontentloaded' });
@@ -335,9 +321,8 @@ test.describe('Local File Execution E2E Tests', () => {
 
             // Verify no JavaScript errors occurred during interaction
             const jsErrors: any[] = [],
-            page.on('pageerror', error => {);
-                jsErrors.push(error.message);
-            });
+            page.on('pageerror', error => {),
+                jsErrors.push(error.message) });
 
             await page.waitForTimeout(1000);
             expect(jsErrors).toHaveLength(0);
@@ -351,7 +336,7 @@ test.describe('Local File Execution E2E Tests', () => {
             // Check for accessibility attributes
             const gameCanvas = page.locator(TEST_CONFIG.expectedElements.gameCanvas);
             await expect(gameCanvas').toHaveAttribute('role');
-            await expect(gameCanvas').toHaveAttribute('aria-label'');
+            await expect(gameCanvas').toHaveAttribute('aria-label');
 
             // Check for screen reader content
             const screenReaderContent = page.locator('.screen-reader-only');
@@ -367,7 +352,7 @@ test.describe('Local File Execution E2E Tests', () => {
             await page.waitForTimeout(2000');
 
             // Test tab navigation
-            await page.keyboard.press('Tab'');
+            await page.keyboard.press('Tab');
             
             // Check if focus is visible and functional
             const focusedElement = await page.locator(':focus').count();

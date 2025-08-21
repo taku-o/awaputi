@@ -7,16 +7,15 @@ import { TutorialOverlay  } from '../../src/core/help/TutorialOverlay';
 import { TooltipSystem  } from '../../src/core/help/TooltipSystem';
 // ARIA属性検証ヘルパー
 const validateARIA = (element') => {
-    const requiredAttrs = ['role', 'aria-label', 'aria-describedby'];
-    return requiredAttrs.every(attr => element.hasAttribute && element.hasAttribute(attr);
-};
+    const requiredAttrs = ['role', 'aria-label', 'aria-describedby'],
+    return requiredAttrs.every(attr => element.hasAttribute && element.hasAttribute(attr) };
 // キーボード操作シミュレーター
 const simulateKeyPress = (key, target = document') => {
     const event = new KeyboardEvent('keydown', {
         key: key,
         code: `Key${key.toUpperCase(})}`;
-        keyCode: key.charCodeAt(0),
-        which: key.charCodeAt(0),
+        keyCode: key.charCodeAt(0,
+        which: key.charCodeAt(0,
         bubbles: true
     });
     target.dispatchEvent(event);
@@ -25,18 +24,17 @@ const simulateKeyPress = (key, target = document') => {
 // モック作成
 const mockGameEngine = {
     localizationManager: {
-        getCurrentLanguage: jest.fn((') => 'ja');
-        getString: jest.fn((key) => `translated_${key)`});
-    }),
+        getCurrentLanguage: jest.fn((') => 'ja'),
+        getString: jest.fn((key) => `translated_${key)`);
+    ),
     sceneManager: {
-        getCurrentScene: jest.fn((') => ({ constructor: { name: 'HelpScene' ) )));
-       , switchScene: jest.fn(),
+        getCurrentScene: jest.fn((') => ({ constructor: { name: 'HelpScene' ) )),
+       , switchScene: jest.fn(
     helpManager: {
-        getHelpSection: jest.fn(),
-        searchContent: jest.fn(() => []);
-        getSearchSuggestions: jest.fn(() => []);
-    }),
-    canvas: { width: 800, height: 600 ),
+        getHelpSection: jest.fn(
+        searchContent: jest.fn(() => []),
+        getSearchSuggestions: jest.fn(() => [])),
+    canvas: { width: 800, height: 600 ,
     state: {
         accessibilitySettings: {
             highContrast: false,
@@ -47,71 +45,65 @@ const mockGameEngine = {
 };
 // DOM環境セットアップ
 const setupDOM = () => {
-    (global as any).document = {
+    (global: any).document = {
         createElement: jest.fn(() => ({
-            setAttribute: jest.fn(),
-            getAttribute: jest.fn(),
-            hasAttribute: jest.fn(() => true);
-            appendChild: jest.fn(),
-            removeChild: jest.fn(),
-            addEventListener: jest.fn(),
-            removeEventListener: jest.fn(),
-            focus: jest.fn(),
-            blur: jest.fn(),
-            style: {),
+            setAttribute: jest.fn(
+            getAttribute: jest.fn(
+            hasAttribute: jest.fn(() => true),
+            appendChild: jest.fn(
+            removeChild: jest.fn(
+            addEventListener: jest.fn(
+            removeEventListener: jest.fn(
+            focus: jest.fn(
+            blur: jest.fn(
+            style: {,
             classList: {
-                add: jest.fn(),
-                remove: jest.fn(),
-                contains: jest.fn(() => false);
-    })
-        ))),
-        getElementById: jest.fn(),
-        querySelector: jest.fn(),
-        querySelectorAll: jest.fn(() => []),
+                add: jest.fn(
+                remove: jest.fn(
+                contains: jest.fn(() => false));
+        )),
+        getElementById: jest.fn(
+        querySelector: jest.fn(
+        querySelectorAll: jest.fn(() => [],
         activeElement: null,
         body: {
-            appendChild: jest.fn(),
-        removeChild: jest.fn(),
-            })
+            appendChild: jest.fn(
+        removeChild: jest.fn();
     );
-    (global as any).window = {
+    (global: any).window = {
         getComputedStyle: jest.fn((') => ({
             fontSize: '16px',
             color: '#000000',
             backgroundColor: '#ffffff'
-    }))),
-        addEventListener: jest.fn(),
+    })),
+        addEventListener: jest.fn(
         removeEventListener: jest.fn();
 ');
 describe('Help System Accessibility Tests', () => {
     beforeEach(() => {
-        setupDOM();
-        jest.clearAllMocks();
-    }');
+        setupDOM(),
+        jest.clearAllMocks() }');
     describe('HelpScene Accessibility', () => {
         let helpScene: any,
         beforeEach(() => {
-            helpScene = new HelpScene(mockGameEngine);
-        });
+            helpScene = new HelpScene(mockGameEngine) });
         afterEach(() => {
             if (helpScene) {
-                helpScene.destroy();
-            }
+                helpScene.destroy() }
         }');
         test('ARIA属性が適切に設定される', () => {
             const mockCanvas = {
-                setAttribute: jest.fn(),
-                getAttribute: jest.fn(),
-                hasAttribute: jest.fn(() => true);
-    });
+                setAttribute: jest.fn(
+                getAttribute: jest.fn(
+                hasAttribute: jest.fn(() => true));
             helpScene.setupAccessibility(mockCanvas);
             expect(mockCanvas.setAttribute').toHaveBeenCalledWith('role', 'application');
             expect(mockCanvas.setAttribute').toHaveBeenCalledWith('aria-label', expect.stringContaining('ヘルプ');
             expect(mockCanvas.setAttribute').toHaveBeenCalledWith('tabindex', '0');
         )');
         test('キーボードナビゲーションが機能する', (') => {
-            helpScene.selectedCategory = 0;
-            helpScene.categories = ['gameplay', 'features', 'troubleshooting'];
+            helpScene.selectedCategory = 0,
+            helpScene.categories = ['gameplay', 'features', 'troubleshooting'],
             // 右矢印キー
             const rightEvent = { key: 'ArrowRight', preventDefault: jest.fn() };
             const rightHandled = helpScene.handleKeyboard(rightEvent);
@@ -119,14 +111,13 @@ describe('Help System Accessibility Tests', () => {
             expect(helpScene.selectedCategory).toBe(1);
             expect(rightEvent.preventDefault).toHaveBeenCalled(');
             // 左矢印キー
-            const leftEvent = { key: 'ArrowLeft', preventDefault: jest.fn(),
-            const leftHandled = helpScene.handleKeyboard(leftEvent);
-            expect(leftHandled).toBe(true);
-            expect(helpScene.selectedCategory).toBe(0);
-        }');
+            const leftEvent = { key: 'ArrowLeft', preventDefault: jest.fn(
+            const leftHandled = helpScene.handleKeyboard(leftEvent),
+            expect(leftHandled).toBe(true),
+            expect(helpScene.selectedCategory).toBe(0) }');
         test('Enterキーでカテゴリ選択が機能する', (') => {
-            helpScene.selectedCategory = 1;
-            helpScene.categories = ['gameplay', 'features', 'troubleshooting'];
+            helpScene.selectedCategory = 1,
+            helpScene.categories = ['gameplay', 'features', 'troubleshooting'],
             const enterEvent = { key: 'Enter', preventDefault: jest.fn() };
             const handled = helpScene.handleKeyboard(enterEvent);
             expect(handled).toBe(true);
@@ -135,27 +126,25 @@ describe('Help System Accessibility Tests', () => {
         test('検索機能がアクセシブル', (') => {
             const searchInput = {
                 value: 'bubble',
-                setAttribute: jest.fn(),
-        focus: jest.fn(),
-            };
+                setAttribute: jest.fn(
+        focus: jest.fn( };
             helpScene.searchInput = searchInput;
             helpScene.handleSearch();
             expect(mockGameEngine.helpManager.searchContent').toHaveBeenCalledWith('bubble');
             expect(searchInput.setAttribute').toHaveBeenCalledWith('aria-describedby', 'search-results');
         }');
         test('高コントラストモード対応', (') => {
-            mockGameEngine.state.accessibilitySettings.highContrast = true;
+            mockGameEngine.state.accessibilitySettings.highContrast = true,
             const context = {
-                fillStyle: '',
-                strokeStyle: '',
-                font: ''
-            };
+                fillStyle: ',
+                strokeStyle: ',
+                font: '};
             helpScene.applyAccessibilityStyles(context);
             expect(context.fillStyle).toMatch(/#000000|#FFFFFF/); // 高コントラスト色
         }');
         test('大きなテキストモード対応', (') => {
-            mockGameEngine.state.accessibilitySettings.largeText = true;
-            const context = { font: '' };
+            mockGameEngine.state.accessibilitySettings.largeText = true,
+            const context = { font: '};
             helpScene.applyAccessibilityStyles(context);
             expect(context.font).toMatch(/\d+px/);
             const fontSize = parseInt(context.font.match(/(\d+)px/)[1]);
@@ -180,8 +169,7 @@ describe('Help System Accessibility Tests', () => {
         }
         afterEach(() => {
             if (tutorialOverlay) {
-                tutorialOverlay.destroy();
-            }
+                tutorialOverlay.destroy() }
         }');
         test('チュートリアルステップがARIA Live Regionで通知される', (') => {
             const step = {
@@ -190,9 +178,8 @@ describe('Help System Accessibility Tests', () => {
                 targetElement: '.bubble'
             };
             const liveRegion = {
-                setAttribute: jest.fn('),
-                textContent: ''
-            };
+                setAttribute: jest.fn(',
+                textContent: '};
             global.document.getElementById.mockReturnValue(liveRegion);
             tutorialOverlay.announceStep(step);
             expect(liveRegion.setAttribute').toHaveBeenCalledWith('aria-live', 'polite');
@@ -201,10 +188,9 @@ describe('Help System Accessibility Tests', () => {
         }');
         test('ハイライト要素にARIA属性が追加される', () => {
             const targetElement = {
-                setAttribute: jest.fn(),
-                getAttribute: jest.fn(() => null);
-                getBoundingClientRect: () => ({ left: 100, top: 100, width: 50, height: 50 ),
-    });
+                setAttribute: jest.fn(
+                getAttribute: jest.fn(() => null),
+                getBoundingClientRect: () => ({ left: 100, top: 100, width: 50, height: 50  });
             global.document.querySelector.mockReturnValue(targetElement');
             tutorialOverlay.highlightElement('.bubble', 'このバブルをクリック');
             expect(targetElement.setAttribute').toHaveBeenCalledWith('aria-describedby', 'tutorial-instructions');
@@ -224,16 +210,14 @@ describe('Help System Accessibility Tests', () => {
             expect(nextEvent.preventDefault).toHaveBeenCalled(');
             // 前のステップ（左矢印）
             tutorialOverlay.tutorial.currentStep = 1;
-            const prevEvent = { key: 'ArrowLeft', preventDefault: jest.fn(),
-            const prevHandled = tutorialOverlay.handleKeyboard(prevEvent);
-            expect(prevHandled).toBe(true);
-        }');
+            const prevEvent = { key: 'ArrowLeft', preventDefault: jest.fn(
+            const prevHandled = tutorialOverlay.handleKeyboard(prevEvent),
+            expect(prevHandled).toBe(true) }');
         test('チュートリアルスキップのアクセシビリティ', () => {
             const skipButton = {
-                setAttribute: jest.fn(),
-                addEventListener: jest.fn(),
-        focus: jest.fn(),
-            };
+                setAttribute: jest.fn(
+                addEventListener: jest.fn(
+        focus: jest.fn( };
             tutorialOverlay.createSkipButton(skipButton);
             expect(skipButton.setAttribute').toHaveBeenCalledWith('aria-label', 'チュートリアルをスキップ');
             expect(skipButton.setAttribute').toHaveBeenCalledWith('role', 'button');
@@ -241,9 +225,8 @@ describe('Help System Accessibility Tests', () => {
         }');
         test('進捗表示がスクリーンリーダーで読み上げ可能', () => {
             const progressElement = {
-                setAttribute: jest.fn('),
-                textContent: ''
-            };
+                setAttribute: jest.fn(',
+                textContent: '};
             tutorialOverlay.updateProgress(2, 5, progressElement);
             expect(progressElement.setAttribute').toHaveBeenCalledWith('aria-label', '進捗: 5つのステップ中2つ完了');
             expect(progressElement.setAttribute').toHaveBeenCalledWith('role', 'progressbar');
@@ -254,17 +237,15 @@ describe('Help System Accessibility Tests', () => {
     describe('TooltipSystem Accessibility', () => {
         let tooltipSystem: any,
         beforeEach(() => {
-            tooltipSystem = new TooltipSystem(mockGameEngine);
-        });
+            tooltipSystem = new TooltipSystem(mockGameEngine) });
         afterEach(() => {
             if (tooltipSystem) {
-                tooltipSystem.destroy();
-            }
+                tooltipSystem.destroy() }
         }');
         test('ツールチップがARIA属性で関連付けられる', () => {
             const triggerElement = {
-                setAttribute: jest.fn(),
-                getAttribute: jest.fn(() => null');
+                setAttribute: jest.fn(
+                getAttribute: jest.fn(() => null'),
                 id: 'trigger-element'
     }');
             const content = {
@@ -290,10 +271,9 @@ describe('Help System Accessibility Tests', () => {
         }');
         test('ツールチップ内容がスクリーンリーダーで読み上げ可能', () => {
             const tooltipElement = {
-                setAttribute: jest.fn('),
-                textContent: '',
-        appendChild: jest.fn()'),
-            };
+                setAttribute: jest.fn(',
+                textContent: ',
+        appendChild: jest.fn()' };
             const content = {
                 title: 'ショートカット',
                 description: 'Hキーでヘルプを開きます',
@@ -314,11 +294,11 @@ describe('Help System Accessibility Tests', () => {
             expect(position.avoidScreenReader).toBe(false); // スクリーンリーダー領域を避けない
         }');
         test('色覚異常対応のツールチップスタイル', () => {
-            mockGameEngine.state.accessibilitySettings.colorBlindFriendly = true;
-            const styles = tooltipSystem.getAccessibleStyles();
-            expect(styles.backgroundColor').not.toBe('#FF0000'); // 赤色を避ける
-            expect(styles.borderColor).toMatch(/#[0-9A-F]{6)/); // 高コントラスト色
-            expect(styles.textColor).toMatch(/#000000|#FFFFFF/); // 黒または白
+            mockGameEngine.state.accessibilitySettings.colorBlindFriendly = true,
+            const styles = tooltipSystem.getAccessibleStyles(),
+            expect(styles.backgroundColor').not.toBe('#FF0000'), // 赤色を避ける
+            expect(styles.borderColor).toMatch(/#[0-9A-F]{6)/), // 高コントラスト色
+            expect(styles.textColor).toMatch(/#000000|#FFFFFF/), // 黒または白
         }');
     }
     describe('全体的なアクセシビリティ統合', (') => {
@@ -343,29 +323,26 @@ describe('Help System Accessibility Tests', () => {
             const announceText = (text') => {
                 screenReaderOutput.push({
                     type: 'announcement',
-                    text: text;);
-       , timestamp: Date.now(),
-                }');
+                    text: text),
+       , timestamp: Date.now( }');
             };
             // ヘルプシステムの操作をシミュレート
-            announceText('ヘルプシステムが開きました'');
-            announceText('ゲームプレイカテゴリが選択されました'');
+            announceText('ヘルプシステムが開きました');
+            announceText('ゲームプレイカテゴリが選択されました');
             announceText('検索結果: 5件の結果が見つかりました');
             expect(screenReaderOutput.length).toBe(3);
             expect(screenReaderOutput[0].text').toContain('ヘルプシステム');
             expect(screenReaderOutput[2].text').toContain('5件');
         }');
         test('キーボードトラップ防止', (') => {
-            let focusedElement = null;
-            const focusableElements = ['help-search', 'category-nav', 'content-area', 'close-button'];
+            let focusedElement = null,
+            const focusableElements = ['help-search', 'category-nav', 'content-area', 'close-button'],
             // Tabキーナビゲーションのシミュレーション
             const simulateTabNavigation = (forward = true) => {
-                const currentIndex = focusableElements.indexOf(focusedElement);
+                const currentIndex = focusableElements.indexOf(focusedElement),
                 if (forward) {
-                    focusedElement = focusableElements[(currentIndex + 1) % focusableElements.length];
-                } else {
-                    focusedElement = focusableElements[(currentIndex - 1 + focusableElements.length) % focusableElements.length];
-                }
+                    focusedElement = focusableElements[(currentIndex + 1) % focusableElements.length] } else {
+                    focusedElement = focusableElements[(currentIndex - 1 + focusableElements.length) % focusableElements.length] }
             };
             // 初期フォーカス
             focusedElement = focusableElements[0];
@@ -394,7 +371,7 @@ describe('Help System Accessibility Tests', () => {
             };
             const displayText = cognitiveSettings.simplifiedLanguage 
                 ? helpContent.simpleDescription: helpContent.detailedDescription,
-            expect(displayText').toBe('バブルをクリックして得点を得る'');
+            expect(displayText').toBe('バブルをクリックして得点を得る');
             expect(displayText.split(', ').length).toBeLessThan(10); // 短い文章
         });
     }

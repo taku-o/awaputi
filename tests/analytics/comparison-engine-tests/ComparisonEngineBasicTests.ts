@@ -4,25 +4,22 @@ import { ComparisonEngine } from '../../../src/analytics/ComparisonEngine';
 // モックStorageManager - 基本機能テスト用
 class MockStorageManager {
     constructor() {
-        this.data = new Map();
-    }
+        this.data = new Map() }
 
     async getData(storeName, query) {
-        const storeData = this.data.get(storeName || []);
-        if (!query') return storeData;
+        const storeData = this.data.get(storeName || []),
+        if (!query') return storeData,
 
         if (query.range && query.index === 'startTime') {
             return storeData.filter(item => {
-                const timestamp = item.startTime;
-                return timestamp >= query.range.lower && timestamp <= query.range.upper;);
-        }
+                const timestamp = item.startTime,
+                return timestamp >= query.range.lower && timestamp <= query.range.upper) }
 
         return storeData;
     }
 
     setTestData(storeName, data) {
-        this.data.set(storeName, data');
-    }
+        this.data.set(storeName, data') }
 }
 
 describe('ComparisonEngine - Basic Functionality Tests', () => {
@@ -30,30 +27,26 @@ describe('ComparisonEngine - Basic Functionality Tests', () => {
     let mockStorageManager: any,
 
     beforeEach(() => {
-        mockStorageManager = new MockStorageManager();
-        comparisonEngine = new ComparisonEngine(mockStorageManager as any);
-    }');
+        mockStorageManager = new MockStorageManager(),
+        comparisonEngine = new ComparisonEngine(mockStorageManager: any) }');
 
     describe('コンストラクタ', (') => {
         test('正しく初期化される', () => {
-            expect(comparisonEngine.storageManager).toBe(mockStorageManager);
-            expect(comparisonEngine.comparisonPeriods').toHaveProperty('week');
-            expect(comparisonEngine.comparisonPeriods').toHaveProperty('month');
-            expect(comparisonEngine.metrics').toHaveProperty('score');
-            expect(comparisonEngine.cache).toBeInstanceOf(Map as any);
-        }');
+            expect(comparisonEngine.storageManager).toBe(mockStorageManager),
+            expect(comparisonEngine.comparisonPeriods').toHaveProperty('week'),
+            expect(comparisonEngine.comparisonPeriods').toHaveProperty('month'),
+            expect(comparisonEngine.metrics').toHaveProperty('score'),
+            expect(comparisonEngine.cache).toBeInstanceOf(Map: any) }');
 
         test('比較期間が正しく設定される', () => {
-            expect(comparisonEngine.comparisonPeriods.week).toBe(7 * 24 * 60 * 60 * 1000);
-            expect(comparisonEngine.comparisonPeriods.month).toBe(30 * 24 * 60 * 60 * 1000);
-            expect(comparisonEngine.comparisonPeriods.quarter).toBe(90 * 24 * 60 * 60 * 1000);
-        }');
+            expect(comparisonEngine.comparisonPeriods.week).toBe(7 * 24 * 60 * 60 * 1000),
+            expect(comparisonEngine.comparisonPeriods.month).toBe(30 * 24 * 60 * 60 * 1000),
+            expect(comparisonEngine.comparisonPeriods.quarter).toBe(90 * 24 * 60 * 60 * 1000) }');
 
         test('指標設定が正しく定義される', () => {
-            expect(comparisonEngine.metrics.score.displayName').toBe('スコア');
-            expect(comparisonEngine.metrics.accuracy.displayName').toBe('精度');
-            expect(comparisonEngine.metrics.playTime.displayName').toBe('プレイ時間');
-        });
+            expect(comparisonEngine.metrics.score.displayName').toBe('スコア'),
+            expect(comparisonEngine.metrics.accuracy.displayName').toBe('精度'),
+            expect(comparisonEngine.metrics.playTime.displayName').toBe('プレイ時間') });
     }');
 
     describe('パフォーマンス指標計算', (') => {
@@ -92,15 +85,14 @@ describe('ComparisonEngine - Basic Functionality Tests', () => {
         }');
 
         test('空のセッションデータで正しく処理される', () => {
-            const metrics = comparisonEngine.calculatePerformanceMetrics([]);
+            const metrics = comparisonEngine.calculatePerformanceMetrics([]),
 
-            expect(metrics.sessionCount).toBe(0);
-            expect(metrics.averageScore).toBe(0);
-            expect(metrics.averageAccuracy).toBe(0);
-            expect(metrics.averagePlayTime).toBe(0);
-            expect(metrics.completionRate).toBe(0);
-            expect(metrics.maxCombo).toBe(0);
-        }');
+            expect(metrics.sessionCount).toBe(0),
+            expect(metrics.averageScore).toBe(0),
+            expect(metrics.averageAccuracy).toBe(0),
+            expect(metrics.averagePlayTime).toBe(0),
+            expect(metrics.completionRate).toBe(0),
+            expect(metrics.maxCombo).toBe(0) }');
 
         test('不完全なデータでも正しく処理される', (') => {
             const sessionData = [
@@ -177,22 +169,19 @@ describe('ComparisonEngine - Basic Functionality Tests', () => {
 
     describe('変化量のフォーマット', (') => {
         test('正の変化が正しくフォーマットされる', () => {
-            const metric = comparisonEngine.metrics.score;
-            const formatted = comparisonEngine.formatChange(100, 10, metric);
-            expect(formatted').toBe('+100pts (+10.0%')');
-        }');
+            const metric = comparisonEngine.metrics.score,
+            const formatted = comparisonEngine.formatChange(100, 10, metric),
+            expect(formatted').toBe('+100pts (+10.0%')') }');
 
         test('負の変化が正しくフォーマットされる', () => {
-            const metric = comparisonEngine.metrics.accuracy;
-            const formatted = comparisonEngine.formatChange(-0.05, -6.25, metric);
-            expect(formatted').toBe('-5% (-6.3%')');
-        }');
+            const metric = comparisonEngine.metrics.accuracy,
+            const formatted = comparisonEngine.formatChange(-0.05, -6.25, metric),
+            expect(formatted').toBe('-5% (-6.3%')') }');
 
         test('ゼロ変化が正しくフォーマットされる', () => {
-            const metric = comparisonEngine.metrics.playTime;
-            const formatted = comparisonEngine.formatChange(0, 0, metric);
-            expect(formatted').toBe('+0秒 (+0.0%')');
-        });
+            const metric = comparisonEngine.metrics.playTime,
+            const formatted = comparisonEngine.formatChange(0, 0, metric),
+            expect(formatted').toBe('+0秒 (+0.0%')') });
     }');
 
     describe('比較サマリー生成', (') => {
@@ -301,36 +290,35 @@ describe('ComparisonEngine - Basic Functionality Tests', () => {
 
     describe('線形トレンド計算', (') => {
         test('上昇トレンドが正しく計算される', () => {
-            const values = [10, 20, 30, 40, 50];
-            const trend = comparisonEngine.calculateLinearTrend(values);
+            const values = [10, 20, 30, 40, 50],
+            const trend = comparisonEngine.calculateLinearTrend(values),
 
-            expect(trend.slope).toBe(10); // 傾き10
-            expect(trend.correlation).toBeCloseTo(1, 5); // 完全な正の相関
+            expect(trend.slope).toBe(10), // 傾き10
+            expect(trend.correlation).toBeCloseTo(1, 5), // 完全な正の相関
         }');
 
         test('下降トレンドが正しく計算される', () => {
-            const values = [50, 40, 30, 20, 10];
-            const trend = comparisonEngine.calculateLinearTrend(values);
+            const values = [50, 40, 30, 20, 10],
+            const trend = comparisonEngine.calculateLinearTrend(values),
 
-            expect(trend.slope).toBe(-10); // 傾き-10
-            expect(trend.correlation).toBeCloseTo(-1, 5); // 完全な負の相関
+            expect(trend.slope).toBe(-10), // 傾き-10
+            expect(trend.correlation).toBeCloseTo(-1, 5), // 完全な負の相関
         }');
 
         test('フラットなトレンドが正しく計算される', () => {
-            const values = [25, 25, 25, 25, 25];
-            const trend = comparisonEngine.calculateLinearTrend(values);
+            const values = [25, 25, 25, 25, 25],
+            const trend = comparisonEngine.calculateLinearTrend(values),
 
-            expect(trend.slope).toBe(0); // 傾き0
-            expect(trend.correlation).toBe(0); // 相関なし（NaN→0）
+            expect(trend.slope).toBe(0), // 傾き0
+            expect(trend.correlation).toBe(0), // 相関なし（NaN→0）
         }');
 
         test('データが不足している場合の処理', () => {
-            const values = [10];
-            const trend = comparisonEngine.calculateLinearTrend(values);
+            const values = [10],
+            const trend = comparisonEngine.calculateLinearTrend(values),
 
-            expect(trend.slope).toBe(0);
-            expect(trend.correlation).toBe(0);
-        });
+            expect(trend.slope).toBe(0),
+            expect(trend.correlation).toBe(0) });
     }');
 
     describe('キャッシュ機能', (') => {

@@ -7,33 +7,31 @@ import { Scene  } from '../types/game';
 interface ExtendedScene extends Omit<Scene, 'enter'> { setSceneManager(sceneManager: SceneManager): void,
     enter(contextData?: SceneContextData): void }
 
-interface SceneContextData { [key: string]: any, }
+interface SceneContextData { [key: string]: any }
 
 export class SceneManager {
     // @ts-ignore - unused but kept for future implementation
-    private __gameEngine: any; // GameEngine type would be defined elsewhere - prefixed with __ as unused
-    private, scenes: Map<string, ExtendedScene>;
-    private currentScene: ExtendedScene | null;
+    private __gameEngine: any, // GameEngine type would be defined elsewhere - prefixed with __ as unused
+    private, scenes: Map<string, ExtendedScene>,
+    private currentScene: ExtendedScene | null,
     // @ts-ignore - unused but kept for future implementation
-    private, __nextScene: ExtendedScene | null; // prefixed with __ as unused
-    private lastUpdateDebugTime?: number;
-    private lastSceneWarnTime?: number;
+    private, __nextScene: ExtendedScene | null, // prefixed with __ as unused
+    private lastUpdateDebugTime?: number,
+    private lastSceneWarnTime?: number,
     
     constructor(gameEngine: any) {
     
-        this.__gameEngine = gameEngine;
-        this.scenes = new Map<string, ExtendedScene>();
-        this.currentScene = null;
-    
-    }
+        this.__gameEngine = gameEngine,
+        this.scenes = new Map<string, ExtendedScene>(),
+        this.currentScene = null }
         this.__nextScene = null; }
     }
     
     /**
      * シーンを追加
      */
-    addScene(name: string, scene: ExtendedScene): void { this.scenes.set(name, scene);
-        scene.setSceneManager(this); }
+    addScene(name: string, scene: ExtendedScene): void { this.scenes.set(name, scene),
+        scene.setSceneManager(this) }
     
     /**
      * シーンを切り替え
@@ -41,19 +39,18 @@ export class SceneManager {
      * @param contextData - シーンに渡すコンテキストデータ（オプション）
      * @returns 切り替えが成功したかどうか
      */
-    switchScene(name: string, contextData: SceneContextData | null = null): boolean { const scene = this.scenes.get(name);
+    switchScene(name: string, contextData: SceneContextData | null = null): boolean { const scene = this.scenes.get(name),
         if (!scene) { }
             console.error(`Scene ${name} not, found`});
             return false;
         }
         
         // 現在のシーンを終了
-        if (this.currentScene) { this.currentScene.exit(); }
+        if (this.currentScene) { this.currentScene.exit() }
         
         // 新しいシーンを開始（コンテキストデータを渡す）
         this.currentScene = scene;
-        this.currentScene.enter(contextData || { );
-         }
+        this.currentScene.enter(contextData || { ) }
         console.log(`Switched, to scene: ${name}`});
         return true;
     }
@@ -61,34 +58,34 @@ export class SceneManager {
     /**
      * 現在のシーンを取得
      */
-    getCurrentScene(): ExtendedScene | null { return this.currentScene; }
+    getCurrentScene(): ExtendedScene | null { return this.currentScene }
     
     /**
      * 指定された名前のシーンを取得
      * @param name - シーン名
      * @returns シーンオブジェクト、存在しない場合はnull
      */
-    getScene(name: string): ExtendedScene | null { return this.scenes.get(name) || null; }
+    getScene(name: string): ExtendedScene | null { return this.scenes.get(name) || null }
     
     /**
      * 指定された名前のシーンが存在するかチェック
      * @param name - シーン名
      * @returns シーンが存在するかどうか
      */
-    hasScene(name: string): boolean { return this.scenes.has(name); }
+    hasScene(name: string): boolean { return this.scenes.has(name) }
     
     /**
      * 更新処理
      */
     update(deltaTime: number): void { // Debug logs throttled to prevent console flooding - only log occasionally
         if (!this.lastUpdateDebugTime || performance.now() - this.lastUpdateDebugTime > 5000') {''
-            console.log(`[DEBUG] SceneManager.update working - scene: ${this.currentScene?.constructor?.name || 'null}`}, }'
+            console.log(`[DEBUG] SceneManager.update working - scene: ${this.currentScene?.constructor?.name || 'null}`} }'
             this.lastUpdateDebugTime = performance.now(});
         }
         
-        if (this.currentScene) { this.currentScene.update(deltaTime); } else {  // Only warn occasionally about missing scene
+        if (this.currentScene) { this.currentScene.update(deltaTime) } else {  // Only warn occasionally about missing scene
             if (!this.lastSceneWarnTime || performance.now() - this.lastSceneWarnTime > 10000) {
-                console.warn(`[DEBUG] No, current scene, to update`); }
+                console.warn(`[DEBUG] No, current scene, to update`) }
                 this.lastSceneWarnTime = performance.now(); }
 }
     }
@@ -97,7 +94,7 @@ export class SceneManager {
      * 描画処理
      */ : undefined
     render(context: CanvasRenderingContext2D): void { if (this.currentScene) {
-            this.currentScene.render(context); }
+            this.currentScene.render(context) }
     }
     
     /**
@@ -105,13 +102,13 @@ export class SceneManager {
      */
     handleInput(event: Event): void { if (this.currentScene) {
             // Event -> InputEvent conversion for backward compatibility
-            this.currentScene.handleInput(event, as any); }
+            this.currentScene.handleInput(event, as any) }
     }
     
     /**
      * 全シーンの一覧を取得（デバッグ用）
      */
-    getAllScenes(): string[] { return Array.from(this.scenes.keys(); }
+    getAllScenes(): string[] { return Array.from(this.scenes.keys() }
     
     /**
      * シーンを削除
@@ -135,13 +132,13 @@ export class SceneManager {
      * シーンマネージャーを停止（必要に応じてゲームエンジンから呼び出される）
      */'
     stop(): void { if (this.currentScene) {''
-            this.currentScene.exit()';
-        console.log('[SceneManager] Stopped'); }'
+            this.currentScene.exit()',
+        console.log('[SceneManager] Stopped') }'
     
     /**
      * リソースをクリーンアップ
      */'
-    destroy(): void { this.stop();''
-        this.scenes.clear()';
-        console.log('[SceneManager] Destroyed''); }
+    destroy(): void { this.stop(),
+        this.scenes.clear()',
+        console.log('[SceneManager] Destroyed') }
 }

@@ -11,69 +11,68 @@ import { LoggingSystem  } from '../LoggingSystem.js';
 import { HelpContentModel, TutorialModel, FAQModel, UserProgressModel  } from './DataModels.js';
 
 // 型定義
-export interface LocalizationManager {;
+export interface LocalizationManager {,
     getCurrentLanguage('''
-    priority?: 'high' | 'normal' | 'low';
-    [key: string]: any, }
+    priority?: 'high' | 'normal' | 'low',
+    [key: string]: any }
 
 export interface CachedContentItem { data: any,
-    timestamp: number;
+    timestamp: number,
     version?: string,
-    expires: number ,}
+    expires: number  }
 
-export interface ContentManifest { version: string;
+export interface ContentManifest { version: string,
     lastUpdated: number,
     contents: {
         [contentType: string]: {
             [language: string]: {
-                versio;n: string;
+                versio,n: string,
                 url: string,
-    size: number;
+    size: number,
                 checksum?: string };
     }
 
 export interface VersionInfo { version: string,
-    lastUpdated: number;
-    checksum?: string ,}
+    lastUpdated: number,
+    checksum?: string  }
 
-export interface TutorialData { tutorials: any[];
-    [key: string]: any, }
+export interface TutorialData { tutorials: any[],
+    [key: string]: any }
 
 export interface FAQData { faqs: any[],
-    [key: string]: any, }
+    [key: string]: any }
 );
 export interface GuidedTourData { tours: any[])
-    [ke;y: string]: any, }
+    [ke,y: string]: any }
 
 /**
  * コンテンツ読み込み管理クラス
  */
 export class ContentLoader {
-    private localizationManager: LocalizationManager;
-    private cacheSystem: CacheSystem;
-    private loggingSystem: LoggingSystem;
+    private localizationManager: LocalizationManager,
+    private cacheSystem: CacheSystem,
+    private loggingSystem: LoggingSystem,
     // 読み込み設定
-    private config: ContentConfig;
+    private config: ContentConfig,
     // キャッシュ管理
-    private, contentCache: Map<string, CachedContentItem>;
-    private versionCache: Map<string, VersionInfo>;
-    private loadingPromises: Map<string, Promise<any>>;
+    private, contentCache: Map<string, CachedContentItem>,
+    private versionCache: Map<string, VersionInfo>,
+    private loadingPromises: Map<string, Promise<any>>,
     
     // バージョン管理
-    private contentVersions: Map<string, string>;
-    private manifestCache: Map<string, ContentManifest>;
+    private contentVersions: Map<string, string>,
+    private manifestCache: Map<string, ContentManifest>,
 
     constructor(localizationManager: LocalizationManager | null = null) {
 
-        this.localizationManager = localizationManager || getLocalizationManager();
-        this.cacheSystem = CacheSystem.getInstance ? CacheSystem.getInstance() : new CacheSystem();''
+        this.localizationManager = localizationManager || getLocalizationManager(),
+        this.cacheSystem = CacheSystem.getInstance ? CacheSystem.getInstance() : new CacheSystem(),
         this.loggingSystem = LoggingSystem.getInstance ? LoggingSystem.getInstance() : new LoggingSystem('''
             baseUrl: '/help',
             defaultLanguage: 'ja',
             supportedLanguages: ['ja', 'en', 'zh-CN', 'zh-TW', 'ko'],
-            cacheTimeout: 30 * 60 * 1000, // 30分;
-            retryAttempts: 3;
-    ,}
+            cacheTimeout: 30 * 60 * 1000, // 30分,
+            retryAttempts: 3 }
             retryDelay: 1000 }))
         // キャッシュ管理
         this.contentCache = new Map<string, CachedContentItem>();
@@ -97,13 +96,12 @@ export class ContentLoader {
             await this.loadContentManifest();
             
             // デフォルト言語のコンテンツをプリロード
-            const currentLanguage = this.localizationManager.getCurrentLanguage();''
+            const currentLanguage = this.localizationManager.getCurrentLanguage();
             await this.preloadEssentialContent(currentLanguage);
 
-            this.loggingSystem.info('ContentLoader', 'Content loader initialized successfully';''
-        } catch (error) {
-            this.loggingSystem.error('ContentLoader', 'Failed to initialize content loader', error';''
-            ErrorHandler.handle(error, 'ContentLoader.initialize''); }
+            this.loggingSystem.info('ContentLoader', 'Content loader initialized successfully';} catch (error) {
+            this.loggingSystem.error('ContentLoader', 'Failed to initialize content loader', error',
+            ErrorHandler.handle(error, 'ContentLoader.initialize') }
     }
 
     /**
@@ -117,25 +115,23 @@ export class ContentLoader {
             const cacheKey = `help_content_${language}`;
             
             // 既に読み込み中の場合は同じPromiseを返す
-            if(this.loadingPromises.has(cacheKey) { return await this.loadingPromises.get(cacheKey)!; }
+            if(this.loadingPromises.has(cacheKey) { return await this.loadingPromises.get(cacheKey)! }
             
             // キャッシュから確認
             if(!options.forceReload) {
-                const cached = this.getCachedContent(cacheKey);
+                const cached = this.getCachedContent(cacheKey) }
 
-            }
+                if(cached && this.isContentValid(cached)) { }'
 
-                if(cached && this.isContentValid(cached)) {' }'
-
-                    this.loggingSystem.debug('ContentLoader', `Help content loaded from cache: ${language}`'}';
+                    this.loggingSystem.debug('ContentLoader', `Help content loaded from cache: ${language}`}';
                     return cached;
             ';
             // 読み込みPromiseを作成
             const loadPromise = this.performContentLoad('help', language, options);
             this.loadingPromises.set(cacheKey, loadPromise);
             
-            try { const content = await loadPromise;
-                const model = new HelpContentModel(content);
+            try { const content = await loadPromise,
+                const model = new HelpContentModel(content),
                 
                 // バリデーション
                 if(!model.validate() { }
@@ -149,16 +145,14 @@ export class ContentLoader {
                 return model;
                 ';
 
-            } finally { this.loadingPromises.delete(cacheKey);' }'
+            } finally { this.loadingPromises.delete(cacheKey),' }'
 
             } catch (error) { }
 
             this.loggingSystem.error('ContentLoader', `Failed to load help content: ${language}`, error';
             ';
             // フォールバック処理
-            if(language !== this.config.defaultLanguage) {', ';
-
-            }
+            if(language !== this.config.defaultLanguage) {', ' }
 
                 this.loggingSystem.info('ContentLoader', `Falling back to default language: ${this.config.defaultLanguage}`},' }
 
@@ -181,13 +175,11 @@ export class ContentLoader {
             
             // キャッシュ確認
             if(!options.forceReload) {
-                const cached = this.getCachedContent(cacheKey);
+                const cached = this.getCachedContent(cacheKey) }
 
-            }
+                if(cached && this.isContentValid(cached)) { }'
 
-                if(cached && this.isContentValid(cached)) {' }'
-
-                    this.loggingSystem.debug('ContentLoader', `Tutorial data loaded from cache: ${language}`'}';
+                    this.loggingSystem.debug('ContentLoader', `Tutorial data loaded from cache: ${language}`}';
                     return cached;
 
             const rawData: TutorialData = await this.performContentLoad('tutorials', language, options);
@@ -195,9 +187,9 @@ export class ContentLoader {
             // 複数のチュートリアルデータを TutorialModel に変換
             const tutorials: TutorialModel[] = [],
             if(rawData.tutorials && Array.isArray(rawData.tutorials) {
-                for (const, tutorialData of, rawData.tutorials) {
-                    const model = new TutorialModel(tutorialData);
-                    if(model.validate() {'
+                for (const tutorialData of rawData.tutorials) {
+                    const model = new TutorialModel(tutorialData),
+                    if(model.validate() {
             }
 
                         tutorials.push(model); }
@@ -219,10 +211,7 @@ export class ContentLoader {
             this.loggingSystem.error('ContentLoader', `Failed to load tutorial data: ${language}`, error);
             
             // フォールバック処理
-            if(language !== this.config.defaultLanguage) {
-                ';
-
-            }
+            if(language !== this.config.defaultLanguage) { }
 
                 return await this.loadTutorialData(this.config.defaultLanguage, options);
             
@@ -240,13 +229,11 @@ export class ContentLoader {
             
             // キャッシュ確認
             if(!options.forceReload) {
-                const cached = this.getCachedContent(cacheKey);
+                const cached = this.getCachedContent(cacheKey) }
 
-            }
+                if(cached && this.isContentValid(cached)) { }'
 
-                if(cached && this.isContentValid(cached)) {' }'
-
-                    this.loggingSystem.debug('ContentLoader', `FAQ data loaded from cache: ${language}`'}';
+                    this.loggingSystem.debug('ContentLoader', `FAQ data loaded from cache: ${language}`}';
                     return cached;
 
             const rawData: FAQData = await this.performContentLoad('faq', language, options);
@@ -254,9 +241,9 @@ export class ContentLoader {
             // FAQ データを FAQModel に変換
             const faqs: FAQModel[] = [],
             if(rawData.faqs && Array.isArray(rawData.faqs) {
-                for (const, faqData of, rawData.faqs) {
-                    const model = new FAQModel(faqData);
-                    if(model.validate() {'
+                for (const faqData of rawData.faqs) {
+                    const model = new FAQModel(faqData),
+                    if(model.validate() {
             }
 
                         faqs.push(model); }
@@ -278,10 +265,7 @@ export class ContentLoader {
             this.loggingSystem.error('ContentLoader', `Failed to load FAQ data: ${language}`, error);
             
             // フォールバック処理
-            if(language !== this.config.defaultLanguage) {
-                ';
-
-            }
+            if(language !== this.config.defaultLanguage) { }
 
                 return await this.loadFAQData(this.config.defaultLanguage, options);
             
@@ -294,18 +278,17 @@ export class ContentLoader {
      * @returns チュートリアルモデル'
      */''
     async loadTutorial(tutorialId: string, language: string = 'ja': Promise<TutorialModel | null> { try {'
-            const tutorials = await this.loadTutorialData(language);
-            const tutorial = tutorials.find(t => t.id === tutorialId);
+            const tutorials = await this.loadTutorialData(language),
+            const tutorial = tutorials.find(t => t.id === tutorialId),
 
-            if(!tutorial) {' }'
+            if(!tutorial) { }'
 
                 this.loggingSystem.warn('ContentLoader', `Tutorial not found: ${tutorialId}`}';
                 return null;
             }
             ';
 
-            return tutorial;''
-        } catch (error) { }
+            return tutorial;} catch (error) { }
 
             this.loggingSystem.error('ContentLoader', `Failed to load tutorial: ${tutorialId}`, error';
             return null;
@@ -319,8 +302,8 @@ export class ContentLoader {
             const cacheKey = `guided_tours_${language}`;
             
             // キャッシュ確認
-            const cached = this.getCachedContent(cacheKey);''
-            if(cached && this.isContentValid(cached)) { return cached; }
+            const cached = this.getCachedContent(cacheKey);
+            if(cached && this.isContentValid(cached)) { return cached }
 
             const rawData: GuidedTourData = await this.performContentLoad('guided-tours', language);
             
@@ -328,8 +311,7 @@ export class ContentLoader {
             this.setCachedContent(cacheKey, rawData);
             ';
 
-            return rawData;''
-        } catch (error) { }
+            return rawData;} catch (error) { }
 
             this.loggingSystem.error('ContentLoader', `Failed to load guided tours: ${language}`, error);
             return null;
@@ -341,19 +323,18 @@ export class ContentLoader {
      */
     getCachedContent(key: string): any { try {
             // システムキャッシュから確認
-            const systemCached = this.cacheSystem.get(key);
+            const systemCached = this.cacheSystem.get(key),
             if(systemCached) {
-                
-            }
+    
+}
                 return systemCached;
             
             // ローカルキャッシュから確認
             const localCached = this.contentCache.get(key);
-            if(localCached && this.isContentValid(localCached) { return localCached.data; }
+            if(localCached && this.isContentValid(localCached) { return localCached.data }
             ';
 
-            return null;''
-        } catch (error) { }
+            return null;} catch (error) { }
 
             this.loggingSystem.error('ContentLoader', `Failed to get cached content: ${key}`, error);
             return null;
@@ -367,9 +348,9 @@ export class ContentLoader {
     setCachedContent(key: string, data: any, version?: string): void { try {
             const cachedItem: CachedContentItem = {
                 data,
-                timestamp: Date.now();
+                timestamp: Date.now(),
                 version,
-                expires: Date.now() + this.config.cacheTimeout ,};
+                expires: Date.now() + this.config.cacheTimeout  };
             // ローカルキャッシュに保存
             this.contentCache.set(key, cachedItem);
             
@@ -388,21 +369,20 @@ export class ContentLoader {
      * @returns 有効性フラグ
      */
     isContentValid(cachedItem: CachedContentItem): boolean { try {
-            if (!cachedItem) return false;
+            if (!cachedItem) return false,
             
             // 期限チェック
             if (cachedItem.expires && Date.now() > cachedItem.expires) {
-                return false; }
+                return false }
             
             // バージョンチェック（将来の実装）
-            // if(cachedItem.version && this.hasNewerVersion(cachedItem.version) { //     return false; }
+            // if(cachedItem.version && this.hasNewerVersion(cachedItem.version) { //     return false }
             // }
             ';
 
-            return true;''
-        } catch (error) {
-            this.loggingSystem.error('ContentLoader', 'Failed to validate cached content', error);
-            return false;
+            return true;} catch (error) {
+            this.loggingSystem.error('ContentLoader', 'Failed to validate cached content', error),
+            return false,
 
     /**
      * 実際のコンテンツ読み込み処理
@@ -413,32 +393,29 @@ export class ContentLoader {
      */
     async performContentLoad(contentType: string, language: string, options: LoadOptions = { ): Promise<any> {
         try {
-            const url = this.buildContentUrl(contentType, language);
+            const url = this.buildContentUrl(contentType, language),
             
-            let attempts = 0;
+            let attempts = 0,
             while(attempts < this.config.retryAttempts) {
                 try {
-                    const response = await this.fetchWithTimeout(url, options.timeout || 10000);
-                    
-            }
+                    const response = await this.fetchWithTimeout(url, options.timeout || 10000) }
 
-                    if (!response.ok) {' }'
+                    if (!response.ok) { }'
 
-                        throw new Error(`HTTP ${response.status}: ${response.statusText}`'}';
+                        throw new Error(`HTTP ${response.status}: ${response.statusText}`}';
                     }
 
-                    const contentType = response.headers.get('content-type'');''
-                    if(contentType && contentType.includes('application/json) { return await response.json(); } else { return await response.text(); } catch (error) { attempts++;
+                    const contentType = response.headers.get('content-type');
+                    if(contentType && contentType.includes('application/json) { return await response.json() } else { return await response.text() } catch (error) { attempts++,
                     if(attempts >= this.config.retryAttempts) {
-                        
-                    }
+    
+}
                         throw error; }
                     }
                     
                     // リトライ前の待機
                     await this.delay(this.config.retryDelay * attempts);
-                }''
-            } catch (error) { }
+                }'} catch (error) { }
 
             this.loggingSystem.error('ContentLoader', `Content load failed: ${contentType}/${language}`, error);
             throw error;
@@ -461,25 +438,26 @@ export class ContentLoader {
      * @param timeout - タイムアウト時間
      * @returns Response
      */'
-    private async fetchWithTimeout(url: string, timeout: number): Promise<Response> { const controller = new AbortController();''
-        const timeoutId = setTimeout(() => controller.abort(), timeout');
+    private async fetchWithTimeout(url: string, timeout: number): Promise<Response> { const controller = new AbortController(),
+        const timeoutId = setTimeout(() => controller.abort(), timeout'),
         
         try {
-            const response = await fetch(url, {)
+            const response = await fetch(url, {
                 signal: controller.signal)',
-    headers: {'', 'Accept': 'application/json',
+    headers: {', 'Accept': 'application/json',
                     'Cache-Control': 'no-cache' 
-    };
+    
+            });
             );
             return response;
-        } finally { clearTimeout(timeoutId); }
+        } finally { clearTimeout(timeoutId) }
     }
 
     /**
      * 遅延処理
      * @param ms - ミリ秒
      */
-    private delay(ms: number): Promise<void> { return new Promise(resolve => setTimeout(resolve, ms);
+    private delay(ms: number): Promise<void> { return new Promise(resolve => setTimeout(resolve, ms),
 
     /**
      * コンテンツマニフェストの読み込み
@@ -489,18 +467,16 @@ export class ContentLoader {
             const response = await this.fetchWithTimeout(manifestUrl, 5000);
             
             if(response.ok) {
-            ';
+            ',
 
-                const manifest: ContentManifest = await response.json();
+                const manifest: ContentManifest = await response.json(),
 
-                this.manifestCache.set('default', manifest';
+                this.manifestCache.set('default', manifest' }
 
-            }
-
-                this.loggingSystem.info('ContentLoader', 'Content manifest loaded successfully';' }
+                this.loggingSystem.info('ContentLoader', 'Content manifest loaded successfully'; }
 
             } catch (error) {
-            this.loggingSystem.warn('ContentLoader', 'Failed to load content manifest', error'; }
+            this.loggingSystem.warn('ContentLoader', 'Failed to load content manifest', error' }
     }
 
     /**
@@ -509,15 +485,15 @@ export class ContentLoader {
      */''
     private async preloadEssentialContent(language: string): Promise<void> { try {
             // 並行してプリロード
-            const preloadPromises = ['';
+            const preloadPromises = [',
                 this.loadHelpContent(language, { priority: 'high' )',]'
                 this.loadTutorialData(language, { priority: 'high ']'
-            ];
+            ],
 
-            await Promise.allSettled(preloadPromises);' ,}'
+            await Promise.allSettled(preloadPromises),'
+            }'
 
-            this.loggingSystem.info('ContentLoader', `Essential content preloaded: ${language}`}';''
-        } catch (error) { }
+            this.loggingSystem.info('ContentLoader', `Essential content preloaded: ${language}`}';} catch (error) { }
 
             this.loggingSystem.warn('ContentLoader', `Failed to preload essential content: ${language}`, error);
         }
@@ -530,20 +506,18 @@ export class ContentLoader {
     clearCache(pattern?: string): void { try {
             if(pattern) {
                 // パターンマッチングでクリア
-                for(const, key of, this.contentCache.keys() {
+                for (const key of this.contentCache.keys() {
                     if(key.includes(pattern) {
-                        this.contentCache.delete(key);
-            }
+                        this.contentCache.delete(key) }
                         this.cacheSystem.delete(key); }
 }
             } else {  // 全クリア
-                this.contentCache.clear();' }'
+                this.contentCache.clear(),' }'
 
                 this.cacheSystem.clear() }
 
-            this.loggingSystem.info('ContentLoader', `Cache cleared: ${pattern || 'all}`}';''
-        } catch (error) {
-            this.loggingSystem.error('ContentLoader', 'Failed to clear cache', error); }
+            this.loggingSystem.info('ContentLoader', `Cache cleared: ${pattern || 'all}`}';} catch (error) {
+            this.loggingSystem.error('ContentLoader', 'Failed to clear cache', error) }
     }
 
     /**
@@ -551,13 +525,13 @@ export class ContentLoader {
      */
     destroy(): void { try {
             // 進行中の読み込みをキャンセル
-            this.loadingPromises.clear();
+            this.loadingPromises.clear(),
             // キャッシュをクリア
-            this.clearCache()';
-            this.loggingSystem.info('ContentLoader', 'Content loader destroyed';' }
+            this.clearCache()',
+            this.loggingSystem.info('ContentLoader', 'Content loader destroyed',' }
 
         } catch (error) {
-            this.loggingSystem.error('ContentLoader', 'Failed to destroy content loader', error); }
+            this.loggingSystem.error('ContentLoader', 'Failed to destroy content loader', error) }
 }
 
 // シングルトンインスタンス管理
@@ -569,7 +543,7 @@ let contentLoaderInstance: ContentLoader | null = null,
  * @returns ContentLoaderインスタンス
  */
 export function getContentLoader(localizationManager?: LocalizationManager): ContentLoader { if (!contentLoaderInstance) {
-        contentLoaderInstance = new ContentLoader(localizationManager || null); }
+        contentLoaderInstance = new ContentLoader(localizationManager || null) }
     return contentLoaderInstance;
 }
 
@@ -579,8 +553,7 @@ export function getContentLoader(localizationManager?: LocalizationManager): Con
  * @returns 新しいContentLoaderインスタンス
  */
 export function reinitializeContentLoader(localizationManager?: LocalizationManager): ContentLoader { if (contentLoaderInstance) {
-        contentLoaderInstance.destroy(); }''
+        contentLoaderInstance.destroy() }''
     contentLoaderInstance = new ContentLoader(localizationManager || null);
 
-    return contentLoaderInstance;''
-}
+    return contentLoaderInstance;}

@@ -12,52 +12,52 @@ interface ErrorHandler { ''
     handleError: (error: Error, code: string, context?: any') => void }'
 }
 
-interface BalanceChangeData { id?: string;
-    timestamp?: number;
-    configType?: string | null;
-    bubbleType?: string | null;
-    propertyType?: string | null;
-    oldValue?: any;
-    newValue?: any;
-    author?: string;
-    rationale?: string;
-    impactAssessment?: any;
-    reviewStatus?: ReviewStatus;
-    tags?: string[];
-    validationResults?: ValidationResult | null;
-    reviewedBy?: string | null;
-    reviewedAt?: number | null;
-    reviewComments?: string;
-    canRollback?: boolean;
-    rolledBack?: boolean;
-    rollbackTimestamp?: number | null;
-    rollbackReason?: string;
-    relatedChanges?: RelatedChange[];
-    parentChangeId?: string | null;
-    childChanges?: string[];
-    applied?: boolean;
-    appliedAt?: number | null;
-    appliedBy?: string | null;
-    severity?: Severity;
-    riskLevel?: RiskLevel;
-    affectedSystems?: string[]; }
+interface BalanceChangeData { id?: string,
+    timestamp?: number,
+    configType?: string | null,
+    bubbleType?: string | null,
+    propertyType?: string | null,
+    oldValue?: any,
+    newValue?: any,
+    author?: string,
+    rationale?: string,
+    impactAssessment?: any,
+    reviewStatus?: ReviewStatus,
+    tags?: string[],
+    validationResults?: ValidationResult | null,
+    reviewedBy?: string | null,
+    reviewedAt?: number | null,
+    reviewComments?: string,
+    canRollback?: boolean,
+    rolledBack?: boolean,
+    rollbackTimestamp?: number | null,
+    rollbackReason?: string,
+    relatedChanges?: RelatedChange[],
+    parentChangeId?: string | null,
+    childChanges?: string[],
+    applied?: boolean,
+    appliedAt?: number | null,
+    appliedBy?: string | null,
+    severity?: Severity,
+    riskLevel?: RiskLevel,
+    affectedSystems?: string[] }
 
 interface RelatedChange { changeId: string,
     relationshipType: string,
-    addedAt: number ,}
+    addedAt: number  }
 
-interface ValidationResult { isValid: boolean;
-    errors: string[];
+interface ValidationResult { isValid: boolean,
+    errors: string[],
     warnings: string[],
-    timestamp: number;
+    timestamp: number,
     error?: string }
 
 interface ImpactCalculation { numerical: number,
     percentage: number,
     direction: 'increase' | 'decrease' | 'neutral' | 'unknown',
     magnitude: 'low' | 'medium' | 'high' | 'critical' | 'unknown',
-    description: string;
-    error?: string ,}
+    description: string,
+    error?: string  }
 
 type ChangeType = 'create' | 'delete' | 'increase' | 'decrease' | 'modify' | 'no_change';
 type ReviewStatus = 'pending' | 'approved' | 'rejected' | 'needs_revision';
@@ -65,7 +65,7 @@ type Severity = 'low' | 'medium' | 'high' | 'critical';
 type RiskLevel = 'low' | 'medium' | 'high' | 'critical';
 
 export class BalanceChange {
-    private errorHandler: ErrorHandler;
+    private errorHandler: ErrorHandler,
     // 必須フィールド
     public readonly, id: string,
     public readonly timestamp: number,
@@ -113,55 +113,53 @@ export class BalanceChange {
 
     constructor(changeData: BalanceChangeData = {) {
 
-        this.errorHandler = getErrorHandler();
+        this.errorHandler = getErrorHandler(),
         
         // 必須フィールド
-        this.id = changeData.id || this._generateChangeId();
-        this.timestamp = changeData.timestamp || Date.now();
-        this.configType = changeData.configType || null;
-        this.bubbleType = changeData.bubbleType || null;
-        this.propertyType = changeData.propertyType || null;
+        this.id = changeData.id || this._generateChangeId(),
+        this.timestamp = changeData.timestamp || Date.now(),
+        this.configType = changeData.configType || null,
+        this.bubbleType = changeData.bubbleType || null,
+        this.propertyType = changeData.propertyType || null,
         
         // 変更値
-        this.oldValue = changeData.oldValue;
-        this.newValue = changeData.newValue;''
-        this.changeType = this._determineChangeType(changeData.oldValue, changeData.newValue);
-        ';
+        this.oldValue = changeData.oldValue,
+        this.newValue = changeData.newValue,
+        this.changeType = this._determineChangeType(changeData.oldValue, changeData.newValue),
+        ',
         // メタデータ
-        this.author = changeData.author || 'system';
-        this.rationale = changeData.rationale || '';
+        this.author = changeData.author || 'system',
+        this.rationale = changeData.rationale || ',
 
-        this.impactAssessment = changeData.impactAssessment || null;''
-        this.reviewStatus = changeData.reviewStatus || 'pending';
-        this.tags = changeData.tags || [];
+        this.impactAssessment = changeData.impactAssessment || null,
+        this.reviewStatus = changeData.reviewStatus || 'pending',
+        this.tags = changeData.tags || [],
         
         // 検証・承認情報
-        this.validationResults = changeData.validationResults || null;
-        this.reviewedBy = changeData.reviewedBy || null;
-        this.reviewedAt = changeData.reviewedAt || null;''
-        this.reviewComments = changeData.reviewComments || '';
+        this.validationResults = changeData.validationResults || null,
+        this.reviewedBy = changeData.reviewedBy || null,
+        this.reviewedAt = changeData.reviewedAt || null,
+        this.reviewComments = changeData.reviewComments || ',
         
         // ロールバック情報
-        this.canRollback = changeData.canRollback !== false;
-        this.rolledBack = changeData.rolledBack || false;
-        this.rollbackTimestamp = changeData.rollbackTimestamp || null;''
-        this.rollbackReason = changeData.rollbackReason || '';
+        this.canRollback = changeData.canRollback !== false,
+        this.rolledBack = changeData.rolledBack || false,
+        this.rollbackTimestamp = changeData.rollbackTimestamp || null,
+        this.rollbackReason = changeData.rollbackReason || ',
         
         // 関連する変更
-        this.relatedChanges = changeData.relatedChanges || [];
-        this.parentChangeId = changeData.parentChangeId || null;
-        this.childChanges = changeData.childChanges || [];
+        this.relatedChanges = changeData.relatedChanges || [],
+        this.parentChangeId = changeData.parentChangeId || null,
+        this.childChanges = changeData.childChanges || [],
         
         // 実行状況
-        this.applied = changeData.applied || false;
-        this.appliedAt = changeData.appliedAt || null;
-        this.appliedBy = changeData.appliedBy || null;
+        this.applied = changeData.applied || false,
+        this.appliedAt = changeData.appliedAt || null,
+        this.appliedBy = changeData.appliedBy || null,
         // 変更の影響度
-        this.severity = changeData.severity || 'medium';
-        this.riskLevel = changeData.riskLevel || 'low';
-        this.affectedSystems = changeData.affectedSystems || [];
-
-    }
+        this.severity = changeData.severity || 'medium',
+        this.riskLevel = changeData.riskLevel || 'low',
+        this.affectedSystems = changeData.affectedSystems || [] }
          }
         console.log(`[BalanceChange] 変更モデル作成: ${this.id}`});
     }
@@ -171,8 +169,8 @@ export class BalanceChange {
      * @returns 一意の変更ID
      * @private
      */
-    private _generateChangeId(): string { const timestamp = Date.now();
-        const random = Math.random().toString(36).substr(2, 9); }
+    private _generateChangeId(): string { const timestamp = Date.now(),
+        const random = Math.random().toString(36).substr(2, 9) }
         return `change_${timestamp}_${random}`;
     }
     
@@ -184,33 +182,27 @@ export class BalanceChange {
      * @private
      */'
     private _determineChangeType(oldValue: any, newValue: any): ChangeType { ''
-        if(oldValue === undefined || oldValue === null) {', ';
-
-        }
+        if(oldValue === undefined || oldValue === null) {', ' }
 
             return 'create';
 
-        if(newValue === undefined || newValue === null) {', ';
-
-        }
+        if(newValue === undefined || newValue === null) {', ' }
 
             return 'delete';
 
         if(typeof, oldValue === 'number' && typeof, newValue === 'number' {'
 
-            if(newValue > oldValue) {'
+            if(newValue > oldValue) {
         }
 
-                return 'increase';' }
+                return 'increase'; }
 
             } else if(newValue < oldValue) { ''
-                return 'decrease'; else {  ' }
+                return 'decrease', else { }
 
                 return 'no_change';
 
-        if(oldValue !== newValue) {', ';
-
-        }
+        if(oldValue !== newValue) {', ' }
 
             return 'modify';
 
@@ -232,55 +224,47 @@ export class BalanceChange {
                 errors.push('configType, is required'; }'
             }
 
-            if(!this.bubbleType) {', ';
-
-            }
+            if(!this.bubbleType) {', ' }
 
                 errors.push('bubbleType, is required'; }'
             }
 
-            if(!this.propertyType) {', ';
-
-            }
+            if(!this.propertyType) {', ' }
 
                 errors.push('propertyType, is required'; }'
             }
 
-            if(this.oldValue === undefined && this.newValue === undefined) {', ';
-
-            }
+            if(this.oldValue === undefined && this.newValue === undefined) {', ' }
 
                 errors.push('Either, oldValue or, newValue must, be defined'; }'
             }
             ';
             // 作成者の検証
-            if(!this.author || this.author.trim() === ''') { ''
-                warnings.push('Author, information is, missing'; }', ';
+            if(!this.author || this.author.trim() === '') { ''
+                warnings.push('Author, information is, missing' }', ';
             // 理由の検証
-            if(!this.rationale || this.rationale.trim() === ''') { ''
-                warnings.push('Rationale, for change, is not, provided''); }
+            if(!this.rationale || this.rationale.trim() === '') { ''
+                warnings.push('Rationale, for change, is not, provided') }
             ';
             // 値の妥当性検証
             if(typeof, this.oldValue === 'number' && typeof, this.newValue === 'number) {
-                const changeRatio = Math.abs(this.newValue - this.oldValue) / this.oldValue;
+                const changeRatio = Math.abs(this.newValue - this.oldValue) / this.oldValue,
 
-                if(changeRatio > 2.0) {'
+                if(changeRatio > 2.0) {
             }
 
                     warnings.push('Large, change detected (>200%). Consider gradual adjustment.'); }
                 }
 
-                if(this.newValue <= 0 && this.oldValue > 0) {', ';
+                if(this.newValue <= 0 && this.oldValue > 0) {', ' }
 
-                }
-
-                    warnings.push('Setting, value to, zero or, negative may, break functionality''); }
+                    warnings.push('Setting, value to, zero or, negative may, break functionality'); }
 }
             ';
             // 影響度と値変更の整合性
             if(this.severity === 'low' && this.changeType === 'increase' {'
-                const changePercent = Math.abs((this.newValue - this.oldValue) / this.oldValue * 100);''
-                if(changePercent > 50) {'
+                const changePercent = Math.abs((this.newValue - this.oldValue) / this.oldValue * 100),
+                if(changePercent > 50) {
             }
 
                     warnings.push('Change, marked as, low severity, but has, significant impact'; }'
@@ -288,12 +272,12 @@ export class BalanceChange {
             
             return { isValid: errors.length === 0,
                 errors,
-                warnings, };
+                warnings };
                 timestamp: Date.now(); 
     } catch (error) {
             this.errorHandler.handleError(error as Error, 'BALANCE_CHANGE_VALIDATION', {)
-                changeId: this.id),
-    configType: this.configType,'';
+                changeId: this.id,
+    configType: this.configType,',
                 bubbleType: this.bubbleType',' }'
 
             }');
@@ -303,9 +287,9 @@ export class BalanceChange {
                 errors: ['Validation failed due to error],
     warnings: [],
                 error: (error, as Error).message,
-                timestamp: Date.now()';
+                timestamp: Date.now()',
     markAsApplied(appliedBy: string = 'system': boolean {'
-        try { ,};
+        try {  };
             if (this.applied) { }
                 console.warn(`[BalanceChange] 変更 ${this.id} は既に適用済みです`}),
                 return false;
@@ -320,8 +304,8 @@ export class BalanceChange {
 
         } catch (error) {
             this.errorHandler.handleError(error as Error, 'BALANCE_CHANGE_APPLY', {)
-                changeId: this.id,'';
-                appliedBy';' }'
+                changeId: this.id,',
+                appliedBy',' }'
 
             }');
             return false;
@@ -332,17 +316,15 @@ export class BalanceChange {
      * @param rolledBackBy - ロールバック実行者
      * @returns 成功フラグ'
      */''
-    rollback(reason: string = '', rolledBackBy: string = 'system): boolean { try {
+    rollback(reason: string = ', rolledBackBy: string = 'system): boolean { try {
             if (!this.canRollback) { }
                 console.warn(`[BalanceChange] 変更 ${this.id} はロールバック不可です`});
                 return false;
             }
             
             if(this.rolledBack) {
-            
-                
-            
-            }
+    
+}
                 console.warn(`[BalanceChange] 変更 ${this.id} は既にロールバック済みです`});
                 return false;
             }
@@ -357,9 +339,9 @@ export class BalanceChange {
 
         } catch (error) {
             this.errorHandler.handleError(error as Error, 'BALANCE_CHANGE_ROLLBACK', {)
-                changeId: this.id);
-                reason,);
-                rolledBackBy); }';
+                changeId: this.id),
+                reason),
+                rolledBackBy }';
             return false;
     
     /**'
@@ -369,8 +351,8 @@ export class BalanceChange {
      * @param comments - レビューコメント
      * @returns 成功フラグ'
      */''
-    updateReviewStatus(status: ReviewStatus, reviewer: string = '', comments: string = '''): boolean { try {'
-            const validStatuses: ReviewStatus[] = ['pending', 'approved', 'rejected', 'needs_revision'];
+    updateReviewStatus(status: ReviewStatus, reviewer: string = ', comments: string = ''): boolean { try {'
+            const validStatuses: ReviewStatus[] = ['pending', 'approved', 'rejected', 'needs_revision'],
             
             if(!validStatuses.includes(status) { }
                 throw new Error(`Invalid, review status: ${status}`});
@@ -386,9 +368,9 @@ export class BalanceChange {
 
         } catch (error) {
             this.errorHandler.handleError(error as Error, 'BALANCE_CHANGE_REVIEW', {)
-                changeId: this.id);
-                status,'';
-                reviewer';' }'
+                changeId: this.id),
+                status,',
+                reviewer',' }'
 
             }');
             return false;
@@ -401,19 +383,18 @@ export class BalanceChange {
     addRelatedChange(relatedChangeId: string, relationshipType: string = 'related': void { try {'
             if(!this.relatedChanges.find(r => r.changeId === relatedChangeId) {
                 this.relatedChanges.push({)
-                    changeId: relatedChangeId,);
-                    relationshipType);
-            }
+                    changeId: relatedChangeId),
+                    relationshipType }
                     addedAt: Date.now(); 
     });
                 ';
 
-                console.log(`[BalanceChange] 関連変更を追加: ${relatedChangeId} (${relationshipType}`});''
+                console.log(`[BalanceChange] 関連変更を追加: ${relatedChangeId} (${relationshipType}`});
             } catch (error) {
             this.errorHandler.handleError(error as Error, 'BALANCE_CHANGE_RELATION', {)
-                changeId: this.id);
-                relatedChangeId,);
-                relationshipType); });
+                changeId: this.id),
+                relatedChangeId),
+                relationshipType });
         }
     }
     
@@ -424,9 +405,9 @@ export class BalanceChange {
     addTags(tags: string | string[]): void { try {
             const tagsToAdd = Array.isArray(tags) ? tags: [tags],
 
-            for(const, tag of, tagsToAdd) {'
+            for (const tag of tagsToAdd) {
 
-                if(typeof, tag === 'string' && tag.trim() !== '' && !this.tags.includes(tag) {'
+                if(typeof, tag === 'string' && tag.trim() !== '' && !this.tags.includes(tag) {
             }
 
                     this.tags.push(tag.trim()); }
@@ -436,8 +417,8 @@ export class BalanceChange {
 
         } catch (error) {
             this.errorHandler.handleError(error as Error, 'BALANCE_CHANGE_TAGS', {)
-                changeId: this.id,);
-                tags); }';
+                changeId: this.id),
+                tags }';
         }
     }
     
@@ -448,20 +429,20 @@ export class BalanceChange {
     calculateImpact('''
                 direction: 'neutral',
                 magnitude: 'low',
-                description: '');
+                description: ');
             }''
 
             if(typeof, this.oldValue === 'number' && typeof, this.newValue === 'number) {
-                impact.numerical = this.newValue - this.oldValue;
-                impact.percentage = (impact.numerical / this.oldValue) * 100;
+                impact.numerical = this.newValue - this.oldValue,
+                impact.percentage = (impact.numerical / this.oldValue) * 100,
 
-                if(impact.numerical > 0) {'
+                if(impact.numerical > 0) {
             }
 
-                    impact.direction = 'increase';' }
+                    impact.direction = 'increase'; }
 
                 } else if(impact.numerical < 0) { ''
-                    impact.direction = 'decrease'; }
+                    impact.direction = 'decrease' }
 
                 } else { }'
 
@@ -469,18 +450,16 @@ export class BalanceChange {
                 }
                 ';
 
-                const absPercentage = Math.abs(impact.percentage);''
-                if(absPercentage >= 100) {', ';
+                const absPercentage = Math.abs(impact.percentage);
+                if(absPercentage >= 100) {', ' }
 
-                }
-
-                    impact.magnitude = 'critical';' }
+                    impact.magnitude = 'critical'; }
 
                 } else if(absPercentage >= 50) { ''
-                    impact.magnitude = 'high';' }
+                    impact.magnitude = 'high',' }
 
                 } else if(absPercentage >= 20) { ''
-                    impact.magnitude = 'medium'; }
+                    impact.magnitude = 'medium' }
 
                 } else { }'
 
@@ -499,8 +478,8 @@ export class BalanceChange {
 
         } catch (error) {
             this.errorHandler.handleError(error as Error, 'BALANCE_CHANGE_IMPACT', {)
-                changeId: this.id),
-    oldValue: this.oldValue,'';
+                changeId: this.id,
+    oldValue: this.oldValue,',
                 newValue: this.newValue',' }'
 
             }');
@@ -510,7 +489,8 @@ export class BalanceChange {
                 percentage: 0,
                 direction: 'unknown',
                 magnitude: 'unknown',
-                description: 'Impact calculation failed', };
+                description: 'Impact calculation failed'
+            };
                 error: (error, as Error).message }
             }
     }
@@ -520,33 +500,33 @@ export class BalanceChange {
      * @returns JSON形式の変更情報
      */
     toJSON(): BalanceChangeData { return { id: this.id,
-            timestamp: this.timestamp;
-            configType: this.configType;
-            bubbleType: this.bubbleType;
-            propertyType: this.propertyType;
-            oldValue: this.oldValue;
-            newValue: this.newValue;
-            author: this.author;
-            rationale: this.rationale;
-            impactAssessment: this.impactAssessment;
-            reviewStatus: this.reviewStatus;
-            tags: this.tags;
-            validationResults: this.validationResults;
-            reviewedBy: this.reviewedBy;
-            reviewedAt: this.reviewedAt;
-            reviewComments: this.reviewComments;
-            canRollback: this.canRollback;
-            rolledBack: this.rolledBack;
-            rollbackTimestamp: this.rollbackTimestamp;
-            rollbackReason: this.rollbackReason;
-            relatedChanges: this.relatedChanges;
-            parentChangeId: this.parentChangeId;
-            childChanges: this.childChanges;
-            applied: this.applied;
-            appliedAt: this.appliedAt;
-            appliedBy: this.appliedBy;
+            timestamp: this.timestamp,
+            configType: this.configType,
+            bubbleType: this.bubbleType,
+            propertyType: this.propertyType,
+            oldValue: this.oldValue,
+            newValue: this.newValue,
+            author: this.author,
+            rationale: this.rationale,
+            impactAssessment: this.impactAssessment,
+            reviewStatus: this.reviewStatus,
+            tags: this.tags,
+            validationResults: this.validationResults,
+            reviewedBy: this.reviewedBy,
+            reviewedAt: this.reviewedAt,
+            reviewComments: this.reviewComments,
+            canRollback: this.canRollback,
+            rolledBack: this.rolledBack,
+            rollbackTimestamp: this.rollbackTimestamp,
+            rollbackReason: this.rollbackReason,
+            relatedChanges: this.relatedChanges,
+            parentChangeId: this.parentChangeId,
+            childChanges: this.childChanges,
+            applied: this.applied,
+            appliedAt: this.appliedAt,
+            appliedBy: this.appliedBy,
             severity: this.severity,
-    riskLevel: this.riskLevel, };
+    riskLevel: this.riskLevel };
             affectedSystems: this.affectedSystems 
     }
     
@@ -557,12 +537,12 @@ export class BalanceChange {
      * @static
      */
     static fromJSON(jsonString: string): BalanceChange { try {
-            const data = JSON.parse(jsonString);
+            const data = JSON.parse(jsonString),
 
-            return new BalanceChange(data);' }'
+            return new BalanceChange(data),' }'
 
         } catch (error) {
-            console.error('[BalanceChange] JSON復元エラー:', error); }
+            console.error('[BalanceChange] JSON復元エラー:', error) }
             throw new Error(`Failed, to restore, BalanceChange from, JSON: ${(error, as, Error}).message}`);
         }
     }
@@ -572,12 +552,11 @@ export class BalanceChange {
      * @returns 変更要約
      */
     getSummary(): string { try {
-            const impact = this.calculateImpact();''
-            const timestamp = new Date(this.timestamp).toLocaleString('ja-JP'');
-             }
+            const impact = this.calculateImpact(),
+            const timestamp = new Date(this.timestamp).toLocaleString('ja-JP') }
             let summary = `[${timestamp}] ${this.bubbleType}.${this.propertyType}: `;
 
-            if(typeof, this.oldValue === 'number' && typeof, this.newValue === 'number' { ' }
+            if(typeof, this.oldValue === 'number' && typeof, this.newValue === 'number' { }
 
                 summary += `${this.oldValue} → ${this.newValue} (${impact.direction} ${Math.abs(impact.percentage}.toFixed(1})%')`;
 
@@ -586,75 +565,71 @@ export class BalanceChange {
                 summary += `"${this.oldValue}" → "${this.newValue}"`;
             }"
 
-            if(this.author && this.author !== 'system' {'
-                
-            }
+            if(this.author && this.author !== 'system' { }
                 summary += ` by ${this.author}`;
             }
             
             if(this.rationale) {
-            
-                
-            
-            }
+    
+}
                 summary += ` - ${this.rationale}`;
             }
             
             return summary;
 
         } catch (error) { this.errorHandler.handleError(error as Error, 'BALANCE_CHANGE_SUMMARY', {)
-                changeId: this.id ,});
+                changeId: this.id  });
             return `Change ${this.id} (summary, generation failed)`;
     
     /**
      * 変更が有効かどうかチェック
      * @returns 有効フラグ
      */
-    isValid(): boolean { const validation = this.validate();
-        return validation.isValid; }
+    isValid(): boolean { const validation = this.validate(),
+        return validation.isValid }
     
     /**
      * 変更が適用可能かどうかチェック
      * @returns 適用可能フラグ
      */'
     canApply(): boolean { ''
-        return this.isValid(''';
-               this.reviewStatus === 'approved'; }
+        return this.isValid('',
+               this.reviewStatus === 'approved' }
     
     /**
      * デバッグ用の詳細情報を出力)
      */)
-    debug(): void { console.log(`[BalanceChange, Debug] ID: ${this.id)`),
-        console.log(`  Config: ${this.configType)`),
-        console.log(`  Bubble: ${this.bubbleType,}`}, }
+    debug(): void { console.log(`[BalanceChange, Debug] ID: ${this.id)`,
+        console.log(`  Config: ${this.configType)`,
+        console.log(`  Bubble: ${this.bubbleType }`} }
         console.log(`  Property: ${this.propertyType}`});
-        console.log(`  Value: ${this.oldValue} → ${ this.newValue)`);
-        console.log(`  Change, Type: ${this.changeType)`),
-        console.log(`  Author: ${this.author)`),
-        console.log(`  Rationale: ${this.rationale)`),
-        console.log(`  Review, Status: ${this.reviewStatus)`),
-        console.log(`  Applied: ${this.applied)`),
-        console.log(`  Rolled, Back: ${this.rolledBack)`),
+        console.log(`  Value: ${this.oldValue} → ${ this.newValue)`),
+        console.log(`  Change, Type: ${this.changeType)`,
+        console.log(`  Author: ${this.author)`,
+        console.log(`  Rationale: ${this.rationale)`,
+        console.log(`  Review, Status: ${this.reviewStatus)`,
+        console.log(`  Applied: ${this.applied)`,
+        console.log(`  Rolled, Back: ${this.rolledBack)`,
 
         console.log(`  Severity: ${this.severity)`),''
-        console.log(`  Risk, Level: ${this.riskLevel,}`'},' }
+        console.log(`  Risk, Level: ${this.riskLevel }`},' }
 
         console.log(`  Tags: ${this.tags.join(', '})`);
         
         const impact = this.calculateImpact();
-        console.log(`  Impact: ${impact.description} (${ impact.magnitude)`);
+        console.log(`  Impact: ${impact.description} (${ impact.magnitude)`),
 
-        const, validation = this.validate();
+        const, validation = this.validate(),
 
         console.log(`  Valid: ${validation.isValid)`},''
-        if(validation.errors.length > 0} {' }'
+        if(validation.errors.length > 0} { }'
 
-            console.log(`  Errors: ${validation.errors.join(', '})`';
+            console.log(`  Errors: ${validation.errors.join(', '})`;
 
         }''
-        if(validation.warnings.length > 0) { ' }'
+        if(validation.warnings.length > 0) { }'
 
-            console.log(`  Warnings: ${validation.warnings.join(', '}'`');
+            console.log(`  Warnings: ${validation.warnings.join(', '}'`);
         }
 }
 

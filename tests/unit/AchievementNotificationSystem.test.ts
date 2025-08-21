@@ -7,35 +7,29 @@ import { AchievementNotificationSystem  } from '../../src/core/achievements/Achi
 interface Achievement {
     id: string,
     name: string,
-    description?: string;
+    description?: string,
     icon: string,
     reward?: {
-        a;p: number
+        a,p: number
     },
-    rarity: string,
-}
+    rarity: string }
 interface PlaySoundOptions {
-    volume?: number;
-    loop?: boolean;
-}
+    volume?: number,
+    loop?: boolean }
 interface SoundRecord {
     soundId: string,
-    options: PlaySoundOptions,
-}
+    options: PlaySoundOptions }
 interface Notification {
     type: string,
     achievement: Achievement,
     startTime: number,
-    visible?: boolean;
-}
+    visible?: boolean }
 interface NotificationSettings {
-    displayDuration?: number;
-    animationDuration?: number;
-    maxVisibleNotifications?: number;
-}
+    displayDuration?: number,
+    animationDuration?: number,
+    maxVisibleNotifications?: number }
 interface MockCanvasGradient {
-    addColorStop: jest.Mock,
-}
+    addColorStop: jest.Mock }
 interface MockCanvasRenderingContext2D {
     save: jest.Mock,
     restore: jest.Mock,
@@ -56,20 +50,17 @@ interface MockCanvasRenderingContext2D {
     font: string,
     textAlign: string,
     textBaseline: string,
-    globalAlpha: number,
-}
+    globalAlpha: number }
 interface MockCanvas {
     width: number,
     height: number,
-    getContext: jest.Mock,
-}
+    getContext: jest.Mock }
 // Mock AudioManagerクラス
 class MockAudioManager {
     public playedSounds: SoundRecord[] = [],
     playSound(soundId: string, options: PlaySoundOptions = {): boolean {
-        this.playedSounds.push({ soundId, options )');
-        return true;
-    }
+        this.playedSounds.push({ soundId, options )'),
+        return true }
 }
 describe('AchievementNotificationSystem', () => {
     let notificationSystem: AchievementNotificationSystem,
@@ -77,26 +68,25 @@ describe('AchievementNotificationSystem', () => {
     let mockCanvas: MockCanvas,
     let mockContext: MockCanvasRenderingContext2D,
     beforeEach(() => {
-        mockAudioManager = new MockAudioManager();
+        mockAudioManager = new MockAudioManager(),
         // Canvas context をモック
         mockContext = {
-            save: jest.fn(),
-            restore: jest.fn(),
-            clearRect: jest.fn(),
-            fillRect: jest.fn(),
-            strokeRect: jest.fn(),
-            beginPath: jest.fn(),
-            arc: jest.fn(),
-            fill: jest.fn(),
-            stroke: jest.fn(),
+            save: jest.fn(
+            restore: jest.fn(
+            clearRect: jest.fn(
+            fillRect: jest.fn(
+            strokeRect: jest.fn(
+            beginPath: jest.fn(
+            arc: jest.fn(
+            fill: jest.fn(
+            stroke: jest.fn(
             createLinearGradient: jest.fn(() => ({
-                addColorStop: jest.fn(),
-    }) as MockCanvasGradient),
-            measureText: jest.fn(() => ({ width: 100 )));
-           , fillText: jest.fn(),
-            strokeText: jest.fn('),
-            fillStyle: '',
-            strokeStyle: '',
+                addColorStop: jest.fn() as MockCanvasGradient),
+            measureText: jest.fn(() => ({ width: 100 )),
+           , fillText: jest.fn(
+            strokeText: jest.fn(',
+            fillStyle: ',
+            strokeStyle: ',
             lineWidth: 1,
             font: '14px Arial',
             textAlign: 'left',
@@ -106,21 +96,18 @@ describe('AchievementNotificationSystem', () => {
         mockCanvas = {
             width: 800,
             height: 600,
-            getContext: jest.fn(() => mockContext);
-    });
+            getContext: jest.fn(() => mockContext));
         notificationSystem = new AchievementNotificationSystem(mockAudioManager);
     )');
     describe('初期化', (') => {
         test('正常に初期化される', () => {
-            expect(notificationSystem).toBeDefined();
-            expect(notificationSystem.audioManager).toBe(mockAudioManager);
-            expect(notificationSystem.notificationQueue).toEqual([]);
-        )');
+            expect(notificationSystem).toBeDefined(),
+            expect(notificationSystem.audioManager).toBe(mockAudioManager),
+            expect(notificationSystem.notificationQueue).toEqual([]))'),
         test('設定が正しく初期化される', () => {
-            expect(notificationSystem.displayDuration).toBe(4000);
-            expect(notificationSystem.animationDuration).toBe(500);
-            expect(notificationSystem.maxVisibleNotifications).toBe(3);
-        }');
+            expect(notificationSystem.displayDuration).toBe(4000),
+            expect(notificationSystem.animationDuration).toBe(500),
+            expect(notificationSystem.maxVisibleNotifications).toBe(3) }');
     }
     describe('通知表示', (') => {
         test('実績解除通知が正しく表示される', (') => {
@@ -140,7 +127,7 @@ describe('AchievementNotificationSystem', () => {
             expect(notification.startTime).toBeDefined();
         }');
         test('レアリティ別の通知デザインが適用される', (') => {
-            const rarities = ['common', 'rare', 'epic', 'legendary'];
+            const rarities = ['common', 'rare', 'epic', 'legendary'],
             
             rarities.forEach(rarity => {
                 const achievement: Achievement = {
@@ -153,13 +140,12 @@ describe('AchievementNotificationSystem', () => {
             });
             expect(notificationSystem.notificationQueue.length).toBe(4);
             // 各レアリティの通知が正しく設定されていることを確認
-            notificationSystem.notificationQueue.forEach(notification => {');
-                expect(['common', 'rare', 'epic', 'legendary']).toContain(notification.achievement.rarity);
-            }');
+            notificationSystem.notificationQueue.forEach(notification => {'),
+                expect(['common', 'rare', 'epic', 'legendary']).toContain(notification.achievement.rarity) }');
         }
         test('最大表示数を超える通知は待機列に追加される', () => {
             // 最大表示数（3）を超える通知を追加
-            for (let i = 0; i < 5; i++') {
+            for (let i = 0, i < 5, i++') {
                 const achievement: Achievement = {
                     id: `test_${i}`;
                     name: `Test ${i}`;
@@ -182,15 +168,13 @@ describe('AchievementNotificationSystem', () => {
                 icon: '🏆',
                 rarity: 'common'
             });
-            achievements.forEach(achievement => {);
-                notificationSystem.showUnlockNotification(achievement);
-            });
+            achievements.forEach(achievement => {),
+                notificationSystem.showUnlockNotification(achievement) });
             // 最初の通知を処理
             notificationSystem.update(16); // 1フレーム
             setTimeout(() => {
-                expect(notificationSystem.notificationQueue.length).toBeGreaterThan(0);
-                done();
-            }, 100);
+                expect(notificationSystem.notificationQueue.length).toBeGreaterThan(0),
+                done() }, 100);
         }');
         test('期限切れ通知が正しく削除される', (') => {
             const achievement: Achievement = {
@@ -208,7 +192,7 @@ describe('AchievementNotificationSystem', () => {
         }');
         test('通知キューのクリアが正しく動作する', () => {
             // 複数の通知を追加
-            for (let i = 0; i < 3; i++') {
+            for (let i = 0, i < 3, i++') {
                 const achievement: Achievement = {
                     id: `test_${i}`;
                     name: `Test ${i}`;
@@ -266,7 +250,7 @@ describe('AchievementNotificationSystem', () => {
         }');
         test('複数通知の位置調整が正しく動作する', () => {
             // 複数の通知を追加
-            for (let i = 0; i < 3; i++') {
+            for (let i = 0, i < 3, i++') {
                 const achievement: Achievement = {
                     id: `test_${i}`;
                     name: `Test ${i}`;
@@ -293,7 +277,7 @@ describe('AchievementNotificationSystem', () => {
             expect(mockAudioManager.playedSounds[0].soundId').toBe('achievement_unlock');
         }');
         test('レアリティ別の音響効果が再生される', (') => {
-            const rarities = ['common', 'rare', 'epic', 'legendary'];
+            const rarities = ['common', 'rare', 'epic', 'legendary'],
             
             rarities.forEach(rarity => {
                 const achievement: Achievement = {
@@ -306,12 +290,11 @@ describe('AchievementNotificationSystem', () => {
             });
             expect(mockAudioManager.playedSounds.length).toBe(4);
             // 各レアリティに応じた音が再生されることを確認
-            mockAudioManager.playedSounds.forEach(sound => {);
-                expect(sound.soundId).toMatch(/achievement_/);
-            }');
+            mockAudioManager.playedSounds.forEach(sound => {),
+                expect(sound.soundId).toMatch(/achievement_/) }');
         }
         test('音響なしモードが正しく動作する', () => {
-            (notificationSystem.enableAudio = false');
+            (notificationSystem.enableAudio = false'),
             const achievement: Achievement = {
                 id: 'test',
                 name: 'Test',
@@ -369,27 +352,25 @@ describe('AchievementNotificationSystem', () => {
             notificationSystem.updateSettings({
                 displayDuration: 5000,
                 animationDuration: 800,
-                maxVisibleNotifications: 5),
-            });
+                maxVisibleNotifications: 5 });
             expect(notificationSystem.displayDuration).toBe(5000);
             expect(notificationSystem.animationDuration).toBe(800);
             expect(notificationSystem.maxVisibleNotifications).toBe(5);
         }');
         test('無効な設定値は無視される', (') => {
-            const originalDuration = notificationSystem.displayDuration;
+            const originalDuration = notificationSystem.displayDuration,
             
             notificationSystem.updateSettings({
                 displayDuration: -1000, // 無効な値
-                animationDuration: 'invalid' as any // 無効な型),
-            });
+                animationDuration: 'invalid' as any // 無効な型 });
             expect(notificationSystem.displayDuration).toBe(originalDuration);
         }');
     }
     describe('パフォーマンス', (') => {
         test('大量の通知でもパフォーマンスが維持される', () => {
-            const startTime = performance.now();
+            const startTime = performance.now(),
             // 大量の通知を追加
-            for (let i = 0; i < 100; i++') {
+            for (let i = 0, i < 100, i++') {
                 const achievement: Achievement = {
                     id: `test_${i}`;
                     name: `Test ${i}`;
@@ -408,7 +389,7 @@ describe('AchievementNotificationSystem', () => {
         }');
         test('メモリリークが発生しない', () => {
             // 通知を追加して削除を繰り返す
-            for (let i = 0; i < 50; i++') {
+            for (let i = 0, i < 50, i++') {
                 const achievement: Achievement = {
                     id: `test_${i}`;
                     name: `Test ${i}`;

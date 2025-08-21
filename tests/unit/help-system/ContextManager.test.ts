@@ -6,155 +6,133 @@ import { ContextManager  } from '../../../src/core/help/ContextManager';
 // Type definitions
 interface MockGameEngine {
     sceneManager: {
-        getCurrentScen;e: jest.Mock<() => MockScene>
+        getCurrentScen,e: jest.Mock<() => MockScene>
     },
     bubbleManager: {
-        getBubbles: jest.Mock<() => any[]>;
+        getBubbles: jest.Mock<() => any[]>,
         getActiveBubbleTypes: jest.Mock<() => string[]>
     },
     scoreManager: {
-        getCurrentScore: jest.Mock<() => number>;
+        getCurrentScore: jest.Mock<() => number>,
         getCurrentCombo: jest.Mock<() => number>
     },
-    canvas: { width: number;, height: number };
+    canvas: { width: number,, height: number };
 }
 interface MockScene {
-    constructor: { nam;e: string };
+    constructor: { nam,e: string };
     getCurrentState: jest.Mock<(') => SceneState>;
 }
 interface SceneState {
-    bubbleCount?: number;
-    timeRemaining?: number;
-    menuSelection?: string;
-    [key: string]: any,
-}
+    bubbleCount?: number,
+    timeRemaining?: number,
+    menuSelection?: string,
+    [key: string]: any }
 interface GameContext {
     sceneName: string,
-    sceneState?: SceneState;
-    gameState?: GameState;
-    error?: boolean;
-}
+    sceneState?: SceneState,
+    gameState?: GameState,
+    error?: boolean }
 interface GameState {
     bubbleCount: number,
     timeRemaining: number,
     currentScore: number,
     currentCombo: number,
-    activeBubbleTypes: string[],
-}
+    activeBubbleTypes: string[] }
 interface HelpItem {
     priority: 'high' | 'medium' | 'low',
     category: string,
-    content?: string;
-}
+    content?: string }
 interface TooltipContent {
     title: string,
-    description?: string;
-}
+    description?: string }
 interface Tooltip {
     x: number,
     y: number,
-    content: TooltipContent,
-}
+    content: TooltipContent }
 interface SuggestedAction {
     action: string,
     reason: string,
-    priority?: 'urgent' | 'normal';
-}
+    priority?: 'urgent' | 'normal' }
 interface UserBehavior {
-    recentActions?: string[];
+    recentActions?: string[],
     averageAccuracy: number,
-    preferredBubbleTypes?: string[];
-    sessionTime: number,
-}
+    preferredBubbleTypes?: string[],
+    sessionTime: number }
 interface SmartHelp {
     category: 'basic' | 'intermediate' | 'advanced',
-    suggestions: string[],
-}
+    suggestions: string[] }
 interface MockDOMRect {
     left: number,
     top: number,
     width: number,
-    height: number,
-}
+    height: number }
 interface MockElement {
-    id?: string;
-    getBoundingClientRect?: () => MockDOMRect;
-}
+    id?: string,
+    getBoundingClientRect?: () => MockDOMRect }
 // Mock creation
 const mockGameEngine: MockGameEngine = {
     sceneManager: {
         getCurrentScene: jest.fn((') => ({ 
-            constructor: { name: 'GameScene' ),
-            getCurrentState: jest.fn(() => ({ bubbleCount: 5, timeRemaining: 120 ))),
-    })))
+            constructor: { name: 'GameScene' ,
+            getCurrentState: jest.fn(() => ({ bubbleCount: 5, timeRemaining: 120 )) }))
     ),
     bubbleManager: {
-        getBubbles: jest.fn(() => []);
-        getActiveBubbleTypes: jest.fn((') => ['normal', 'stone']);
-    }),
+        getBubbles: jest.fn(() => []),
+        getActiveBubbleTypes: jest.fn((') => ['normal', 'stone'])),
     scoreManager: {
-        getCurrentScore: jest.fn(() => 1500);
-        getCurrentCombo: jest.fn(() => 3);
-    }),
+        getCurrentScore: jest.fn(() => 1500),
+        getCurrentCombo: jest.fn(() => 3)),
     canvas: { width: 800,
-        height: 600 
-    })
+        height: 600
+            });
 ');
 describe('ContextManager', () => {
     let contextManager: ContextManager,
     
     beforeEach(() => {
-        jest.clearAllMocks();
-        contextManager = new ContextManager(mockGameEngine);
-    });
+        jest.clearAllMocks(),
+        contextManager = new ContextManager(mockGameEngine) });
     afterEach(() => {
         if (contextManager) {
-            contextManager.destroy();
-        }
+            contextManager.destroy() }
     }');
     describe('初期化', (') => {
         test('正常に初期化される', () => {
-            expect(contextManager).toBeInstanceOf(ContextManager);
-            expect(contextManager.gameEngine).toBe(mockGameEngine);
-            expect(contextManager.tooltipElements).toBeInstanceOf(Map);
-        }');
+            expect(contextManager).toBeInstanceOf(ContextManager),
+            expect(contextManager.gameEngine).toBe(mockGameEngine),
+            expect(contextManager.tooltipElements).toBeInstanceOf(Map) }');
         test('初期状態が正しく設定される', () => {
-            expect(contextManager.currentTooltip).toBeNull();
-            expect(contextManager.contextCache).toBeInstanceOf(Map);
-            expect(contextManager.tooltipElements.size).toBe(0);
-        }');
+            expect(contextManager.currentTooltip).toBeNull(),
+            expect(contextManager.contextCache).toBeInstanceOf(Map),
+            expect(contextManager.tooltipElements.size).toBe(0) }');
     }
     describe('コンテキスト検出', (') => {
         test('現在のコンテキストを検出できる', () => {
-            const context = contextManager.detectCurrentContext() as GameContext;
-            expect(context).toBeDefined();
-            expect(context.sceneName').toBe('GameScene');
-            expect(context.sceneState).toBeDefined();
-            expect(context.gameState).toBeDefined();
-        }');
+            const context = contextManager.detectCurrentContext() as GameContext,
+            expect(context).toBeDefined(),
+            expect(context.sceneName').toBe('GameScene'),
+            expect(context.sceneState).toBeDefined(),
+            expect(context.gameState).toBeDefined() }');
         test('GameSceneの詳細コンテキストを検出', () => {
-            const context = contextManager.detectCurrentContext() as GameContext;
-            expect(context.gameState!.bubbleCount).toBe(5);
-            expect(context.gameState!.timeRemaining).toBe(120);
-            expect(context.gameState!.currentScore).toBe(1500);
-            expect(context.gameState!.currentCombo).toBe(3);
-            expect(context.gameState!.activeBubbleTypes').toEqual(['normal', 'stone']);
-        }');
+            const context = contextManager.detectCurrentContext() as GameContext,
+            expect(context.gameState!.bubbleCount).toBe(5),
+            expect(context.gameState!.timeRemaining).toBe(120),
+            expect(context.gameState!.currentScore).toBe(1500),
+            expect(context.gameState!.currentCombo).toBe(3),
+            expect(context.gameState!.activeBubbleTypes').toEqual(['normal', 'stone']) }');
         test('異なるシーンのコンテキストを検出', (') => {
             mockGameEngine.sceneManager.getCurrentScene.mockReturnValue({
                 constructor: { name: 'MainMenuScene' };);
                 getCurrentState: jest.fn((') => ({ menuSelection: 'start' )));
-    });
             const context = contextManager.detectCurrentContext() as GameContext;
             expect(context.sceneName').toBe('MainMenuScene');
             expect(context.sceneState!.menuSelection').toBe('start');
         )');
         test('コンテキストキャッシュが機能する', () => {
-            const context1 = contextManager.detectCurrentContext();
-            const context2 = contextManager.detectCurrentContext();
+            const context1 = contextManager.detectCurrentContext(),
+            const context2 = contextManager.detectCurrentContext(),
             // Same object returned within same frame
-            expect(context1).toBe(context2);
-        }');
+            expect(context1).toBe(context2) }');
     }
     describe('関連ヘルプ取得', (') => {
         test('GameSceneでの関連ヘルプを取得', (') => {
@@ -330,37 +308,33 @@ describe('ContextManager', () => {
     }
     describe('パフォーマンス', (') => {
         test('コンテキスト検出のキャッシュ機能', (') => {
-            const spy = jest.spyOn(mockGameEngine.sceneManager, 'getCurrentScene');
+            const spy = jest.spyOn(mockGameEngine.sceneManager, 'getCurrentScene'),
             // Multiple calls within same frame
-            contextManager.detectCurrentContext();
-            contextManager.detectCurrentContext();
-            contextManager.detectCurrentContext();
+            contextManager.detectCurrentContext(),
+            contextManager.detectCurrentContext(),
+            contextManager.detectCurrentContext(),
             // Cache prevents multiple actual calls
-            expect(spy).toHaveBeenCalledTimes(1);
-        }');
+            expect(spy).toHaveBeenCalledTimes(1) }');
         test('フレーム更新時にキャッシュがクリアされる', () => {
-            contextManager.detectCurrentContext();
+            contextManager.detectCurrentContext(),
             // Simulate frame update
-            contextManager.clearContextCache();
-            expect(contextManager.contextCache.size).toBe(0);
-        }');
+            contextManager.clearContextCache(),
+            expect(contextManager.contextCache.size).toBe(0) }');
     }
     describe('エラーハンドリング', (') => {
         test('シーン取得エラーが処理される', () => {
             mockGameEngine.sceneManager.getCurrentScene.mockImplementation((') => {
-                throw new Error('Scene error');
-            });
+                throw new Error('Scene error') });
             const context = contextManager.detectCurrentContext() as GameContext;
             expect(context).toBeDefined();
             expect(context.sceneName').toBe('unknown');
             expect(context.error).toBe(true);
         }');
         test('ツールチップ表示エラーが処理される', () => {
-            const invalidContent = null as any;
-            const result = contextManager.showContextualTooltip(100, 100, invalidContent);
-            expect(result).toBe(false);
-            expect(contextManager.currentTooltip).toBeNull();
-        }');
+            const invalidContent = null as any,
+            const result = contextManager.showContextualTooltip(100, 100, invalidContent),
+            expect(result).toBe(false),
+            expect(contextManager.currentTooltip).toBeNull() }');
         test('不正な座標でのツールチップ表示', (') => {
             const content: TooltipContent = { title: 'テスト' };
             const result = contextManager.showContextualTooltip(-100, -100, content);

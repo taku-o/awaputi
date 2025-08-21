@@ -5,106 +5,87 @@ import { describe, test, beforeEach, expect, jest  } from '@jest/globals';
 import { BalanceConfigurationValidator, getBalanceConfigurationValidator  } from '../../src/utils/BalanceConfigurationValidator.js';
 // Type definitions for test objects
 interface MockErrorHandler {
-    handleError: jest.Mock,
-}
+    handleError: jest.Mock }
 interface BubbleConfig {
-    health?: number;
-    size?: number;
-    maxAge?: number;
-    score?: number;
-    healAmount?: number;
-    shakeIntensity?: number;
-    disableDuration?: number;
-}
+    health?: number,
+    size?: number,
+    maxAge?: number,
+    score?: number,
+    healAmount?: number,
+    shakeIntensity?: number,
+    disableDuration?: number }
 interface ScoreConfig {
     baseScores?: {
-        [bubbleTyp;e: string]: number,
-    };
+        [bubbleTyp,e: string]: number };
     combo?: {
-        maxMultiplier: number,
-    };
+        maxMultiplier: number };
     ageBonus?: {
         earlyBonus: number,
-        lateBonus: number,
-    };
+        lateBonus: number };
 }
 interface StageConfig {
-    spawnRate?: number;
-    maxBubbles?: number;
-    unlockRequirement?: number;
-}
+    spawnRate?: number,
+    maxBubbles?: number,
+    unlockRequirement?: number }
 interface ItemConfig {
-    baseCost?: number;
-    costMultiplier?: number;
-    maxLevel?: number;
-}
+    baseCost?: number,
+    costMultiplier?: number,
+    maxLevel?: number }
 interface ValidationError {
     property: string,
     rule: string,
-    error: string,
-}
+    error: string }
 interface ValidationWarning {
     property: string,
-    message: string,
-}
+    message: string }
 interface ValidationResult {
     isValid: boolean,
     errors: ValidationError[],
     warnings: ValidationWarning[],
-    bubbleType?: string;
-    validationId?: string;
-    timestamp?: number;
-    executionTime?: number;
-}
+    bubbleType?: string,
+    validationId?: string,
+    timestamp?: number,
+    executionTime?: number }
 interface ValidationStats {
     totalValidations: number,
     failedValidations: number,
-    successRate: string,
-}
+    successRate: string }
 interface ValidationHistoryEntry {
     validationId: string,
-    bubbleType: string,
-}
+    bubbleType: string }
 interface ValidationRule {
     type: string,
-    min?: number;
-    max?: number;
-    description: string,
-}
+    min?: number,
+    max?: number,
+    description: string }
 interface PropertyValidationResult {
     isValid: boolean,
-    error: string | null,
-}
+    error: string | null }
 // Jest の設定
 const mockErrorHandler: MockErrorHandler = {
-    handleError: jest.fn()'),
-};
+    handleError: jest.fn()' };
 // モックの設定
 jest.mock('../../src/utils/ErrorHandler.js', () => ({
-    getErrorHandler: jest.fn(() => mockErrorHandler));
-    }))');
+    getErrorHandler: jest.fn(() => mockErrorHandler)))');
 describe('BalanceConfigurationValidator', () => {
     let validator: BalanceConfigurationValidator,
     beforeEach(() => {
         // モックをリセット
-        jest.clearAllMocks();
+        jest.clearAllMocks(),
         // インスタンスを作成
-        validator = new BalanceConfigurationValidator();
-    )');
+        validator = new BalanceConfigurationValidator())'),
     describe('Constructor', (') => {
         test('should initialize with correct properties', () => {
-            expect(validator.errorHandler).toBe(mockErrorHandler);
-            expect(validator.validationRules).toBeInstanceOf(Map);
-            expect(validator.validationHistory).toEqual([]);
-            expect(validator.errorStats').toHaveProperty('totalValidations', 0);
-            expect(validator.errorStats').toHaveProperty('failedValidations', 0);
-        }');
+            expect(validator.errorHandler).toBe(mockErrorHandler),
+            expect(validator.validationRules).toBeInstanceOf(Map),
+            expect(validator.validationHistory).toEqual([]),
+            expect(validator.errorStats').toHaveProperty('totalValidations', 0),
+            expect(validator.errorStats').toHaveProperty('failedValidations', 0) }');
         test('should initialize validation rules', () => {
-            expect(validator.validationRules.size).toBeGreaterThan(0');
-            expect(validator.validationRules.has('bubble.health').toBe(true');
-            expect(validator.validationRules.has('bubble.score').toBe(true');
-            expect(validator.validationRules.has('score.baseScore').toBe(true);
-        }');
+            expect(validator.validationRules.size).toBeGreaterThan(0'),
+            expect(validator.validationRules.has('bubble.health').toBe(true'),
+            expect(validator.validationRules.has('bubble.score').toBe(true'),
+            expect(validator.validationRules.has('score.baseScore').toBe(true) }');
     }
     describe('validateBubbleConfig', (') => {
         test('should validate valid normal bubble config', (') => {
@@ -206,10 +187,9 @@ describe('BalanceConfigurationValidator', () => {
         }');
         test('should handle validation errors gracefully', () => {
             // モックエラーハンドラーがエラーを投げるように設定
-            const originalValidateProperty = validator._validateProperty;
+            const originalValidateProperty = validator._validateProperty,
             validator._validateProperty = jest.fn().mockImplementation((') => {
-                throw new Error('Validation error');
-            }');
+                throw new Error('Validation error') }');
             const config: BubbleConfig = { health: 1 };
             const result: ValidationResult = validator.validateBubbleConfig('normal', config);
             expect(result.isValid).toBe(false);
@@ -236,7 +216,7 @@ describe('BalanceConfigurationValidator', () => {
                     lateBonus: 3.0
                 }
             };
-            const result: ValidationResult = validator.validateScoreConfig(scoreConfig),
+            const result: ValidationResult = validator.validateScoreConfig(scoreConfig,
             expect(result.isValid).toBe(true);
             expect(result.errors).toHaveLength(0);
         }');
@@ -247,7 +227,7 @@ describe('BalanceConfigurationValidator', () => {
                    , stone: 25
                 }
             };
-            const result: ValidationResult = validator.validateScoreConfig(scoreConfig),
+            const result: ValidationResult = validator.validateScoreConfig(scoreConfig,
             expect(result.isValid).toBe(false);
             expect(result.errors).toHaveLength(1);
             expect(result.errors[0]').toHaveProperty('property', 'baseScores.normal');
@@ -259,7 +239,7 @@ describe('BalanceConfigurationValidator', () => {
                     stone: 20 //, Warning: stone should be higher than normal
                 }
             };
-            const result: ValidationResult = validator.validateScoreConfig(scoreConfig),
+            const result: ValidationResult = validator.validateScoreConfig(scoreConfig,
             expect(result.isValid).toBe(true);
             expect(result.warnings.length).toBeGreaterThan(0');
             const stoneWarning = result.warnings.find(w => w.property === 'baseScores.stone');
@@ -273,7 +253,7 @@ describe('BalanceConfigurationValidator', () => {
                 maxBubbles: 20,
                 unlockRequirement: 500
             };
-            const result: ValidationResult = validator.validateStageConfig(stageConfig),
+            const result: ValidationResult = validator.validateStageConfig(stageConfig,
             expect(result.isValid).toBe(true);
             expect(result.errors).toHaveLength(0);
         }');
@@ -281,7 +261,7 @@ describe('BalanceConfigurationValidator', () => {
             const stageConfig: StageConfig = {
                 spawnRate: 15.0 //, Invalid: above maximum
             };
-            const result: ValidationResult = validator.validateStageConfig(stageConfig),
+            const result: ValidationResult = validator.validateStageConfig(stageConfig,
             expect(result.isValid).toBe(false);
             expect(result.errors).toHaveLength(1);
             expect(result.errors[0]').toHaveProperty('property', 'spawnRate');
@@ -294,7 +274,7 @@ describe('BalanceConfigurationValidator', () => {
                 costMultiplier: 1.3,
                 maxLevel: 5
             };
-            const result: ValidationResult = validator.validateItemConfig(itemConfig),
+            const result: ValidationResult = validator.validateItemConfig(itemConfig,
             expect(result.isValid).toBe(true);
             expect(result.errors).toHaveLength(0);
         }');
@@ -302,7 +282,7 @@ describe('BalanceConfigurationValidator', () => {
             const itemConfig: ItemConfig = {
                 costMultiplier: 5.0 //, Invalid: above maximum
             };
-            const result: ValidationResult = validator.validateItemConfig(itemConfig),
+            const result: ValidationResult = validator.validateItemConfig(itemConfig,
             expect(result.isValid).toBe(false);
             expect(result.errors).toHaveLength(1);
             expect(result.errors[0]').toHaveProperty('property', 'costMultiplier');
@@ -310,36 +290,32 @@ describe('BalanceConfigurationValidator', () => {
     }
     describe('_validateProperty', (') => {
         test('should validate number type correctly', (') => {
-            const result: PropertyValidationResult = validator._validateProperty('bubble.health', 5);
-            expect(result.isValid).toBe(true);
-            expect(result.error).toBeNull();
-        }');
+            const result: PropertyValidationResult = validator._validateProperty('bubble.health', 5),
+            expect(result.isValid).toBe(true),
+            expect(result.error).toBeNull() }');
         test('should reject wrong type', (') => {
-            const result: PropertyValidationResult = validator._validateProperty('bubble.health', '5');
-            expect(result.isValid).toBe(false);
-            expect(result.error').toContain('Expected number');
-        }');
+            const result: PropertyValidationResult = validator._validateProperty('bubble.health', '5'),
+            expect(result.isValid).toBe(false),
+            expect(result.error').toContain('Expected number') }');
         test('should validate number range', (') => {
-            const validResult: PropertyValidationResult = validator._validateProperty('bubble.health', 5);
-            expect(validResult.isValid).toBe(true');
-            const belowMinResult: PropertyValidationResult = validator._validateProperty('bubble.health', 0);
-            expect(belowMinResult.isValid).toBe(false);
-            expect(belowMinResult.error').toContain('below minimum'');
-            const aboveMaxResult: PropertyValidationResult = validator._validateProperty('bubble.health', 25);
-            expect(aboveMaxResult.isValid).toBe(false);
-            expect(aboveMaxResult.error').toContain('above maximum');
-        }');
+            const validResult: PropertyValidationResult = validator._validateProperty('bubble.health', 5),
+            expect(validResult.isValid).toBe(true'),
+            const belowMinResult: PropertyValidationResult = validator._validateProperty('bubble.health', 0),
+            expect(belowMinResult.isValid).toBe(false),
+            expect(belowMinResult.error').toContain('below minimum'),
+            const aboveMaxResult: PropertyValidationResult = validator._validateProperty('bubble.health', 25),
+            expect(aboveMaxResult.isValid).toBe(false),
+            expect(aboveMaxResult.error').toContain('above maximum') }');
         test('should pass validation for unknown rule', (') => {
-            const result: PropertyValidationResult = validator._validateProperty('unknown.rule', 'any value');
-            expect(result.isValid).toBe(true);
-            expect(result.error).toBeNull();
-        }');
+            const result: PropertyValidationResult = validator._validateProperty('unknown.rule', 'any value'),
+            expect(result.isValid).toBe(true),
+            expect(result.error).toBeNull() }');
     }
     describe('Statistics and history', (') => {
         test('should update validation statistics', (') => {
             const config: BubbleConfig = { health: 1 };
             validator.validateBubbleConfig('normal', config);
-            const stats: ValidationStats = validator.getValidationStats(),
+            const stats: ValidationStats = validator.getValidationStats(
             expect(stats.totalValidations).toBe(1);
             expect(stats.failedValidations).toBe(0);
             expect(stats.successRate').toBe('100.00%');
@@ -347,7 +323,7 @@ describe('BalanceConfigurationValidator', () => {
         test('should track failed validations', (') => {
             const config: BubbleConfig = { health: 0 }; // Invalid
             validator.validateBubbleConfig('normal', config);
-            const stats: ValidationStats = validator.getValidationStats(),
+            const stats: ValidationStats = validator.getValidationStats(
             expect(stats.totalValidations).toBe(1);
             expect(stats.failedValidations).toBe(1);
             expect(stats.successRate').toBe('0.00%');
@@ -355,14 +331,14 @@ describe('BalanceConfigurationValidator', () => {
         test('should maintain validation history', (') => {
             const config: BubbleConfig = { health: 1 };
             validator.validateBubbleConfig('normal', config);
-            const history: ValidationHistoryEntry[] = validator.getValidationHistory(),
+            const history: ValidationHistoryEntry[] = validator.getValidationHistory(
             expect(history).toHaveLength(1);
             expect(history[0]').toHaveProperty('validationId');
             expect(history[0]').toHaveProperty('bubbleType', 'normal');
         }');
         test('should cleanup history when it gets too long', () => {
             // 履歴クリーンアップのテスト用に大量のバリデーションを実行
-            for (let i = 0; i < 1100; i++') {
+            for (let i = 0, i < 1100, i++') {
                 validator.validateBubbleConfig('normal', { health: 1 });
             }
             expect(validator.validationHistory.length).toBeLessThan(1100);
@@ -377,22 +353,20 @@ describe('BalanceConfigurationValidator', () => {
                 description: 'Custom test rule'
             };
             validator.addValidationRule('custom.test', customRule');
-            const retrievedRule: ValidationRule = validator.getValidationRule('custom.test'),
+            const retrievedRule: ValidationRule = validator.getValidationRule('custom.test',
             expect(retrievedRule).toEqual(customRule);
         }');
         test('should return all validation rules', () => {
-            const allRules: Record<string, ValidationRule> = validator.getAllValidationRules();
-            expect(typeof allRules').toBe('object');
-            expect(allRules').toHaveProperty('bubble.health');
-            expect(allRules').toHaveProperty('bubble.score');
-        }');
+            const allRules: Record<string, ValidationRule> = validator.getAllValidationRules(),
+            expect(typeof allRules').toBe('object'),
+            expect(allRules').toHaveProperty('bubble.health'),
+            expect(allRules').toHaveProperty('bubble.score') }');
     }
     describe('Singleton pattern', (') => {
         test('should return same instance for getBalanceConfigurationValidator', () => {
-            const instance1 = getBalanceConfigurationValidator();
-            const instance2 = getBalanceConfigurationValidator();
-            expect(instance1).toBe(instance2);
-        }');
+            const instance1 = getBalanceConfigurationValidator(),
+            const instance2 = getBalanceConfigurationValidator(),
+            expect(instance1).toBe(instance2) }');
     }
     describe('Logical consistency validation', (') => {
         test('should validate hard bubble health progression', (') => {
@@ -423,7 +397,7 @@ describe('BalanceConfigurationValidator', () => {
                     boss: 100
                 }
             };
-            const result: ValidationResult = validator.validateScoreConfig(scoreConfig),
+            const result: ValidationResult = validator.validateScoreConfig(scoreConfig,
             expect(result.isValid).toBe(true);
             // Proper progression should not generate warnings about order
             const orderWarnings = result.warnings.filter(w => ');

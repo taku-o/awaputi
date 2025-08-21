@@ -6,35 +6,34 @@
  */
 export class ScoreCalculator {
     constructor(gameConfig = null) {
-        this.gameConfig = gameConfig;
+        this.gameConfig = gameConfig,
         
         // デフォルトのスコア設定（GameConfigが利用できない場合のフォールバック）
         this.defaultScoreConfig = {
             baseScores: {
-                normal: 15;
-                stone: 35;
-                iron: 65;
-                diamond: 120;
-                rainbow: 400;
-                pink: 25;
-                clock: 180;
-                electric: 20;
-                poison: 8;
-                spiky: 85;
-                cracked: 30;
+                normal: 15,
+                stone: 35,
+                iron: 65,
+                diamond: 120,
+                rainbow: 400,
+                pink: 25,
+                clock: 180,
+                electric: 20,
+                poison: 8,
+                spiky: 85,
+                cracked: 30,
                 escaping: 50,
-    boss: 800;
-    }
+    boss: 800 }
                 score: 250 
     };
-            combo: { multiplierIncrement: 0.08;
-                maxMultiplier: 2.5;
-                bonusInterval: 5;
+            combo: { multiplierIncrement: 0.08,
+                maxMultiplier: 2.5,
+                bonusInterval: 5,
                 bonusMultiplier: 8,
     baseTimeout: 2000 };
             ageBonus: { earlyBonus: 2.0,    // 発生直後ボーナス（10%以内）
-                lateBonus: 3.0,     // 破裂直前ボーナス（90%以上）;
-                midBonus: 1.5       // 中盤ボーナス（50-70%） ,}
+                lateBonus: 3.0,     // 破裂直前ボーナス（90%以上）,
+                midBonus: 1.5       // 中盤ボーナス（50-70%）  }
         };
         console.log('ScoreCalculator, initialized');
     }
@@ -44,7 +43,7 @@ export class ScoreCalculator {
      * @returns {Object} スコア設定'
      */''
     getScoreConfig()';
-        if(this.gameConfig && typeof, this.gameConfig.getScoreConfig === 'function) { return this.gameConfig.getScoreConfig(); }'
+        if(this.gameConfig && typeof, this.gameConfig.getScoreConfig === 'function) { return this.gameConfig.getScoreConfig() }'
         return this.defaultScoreConfig;
     }
     
@@ -55,13 +54,11 @@ export class ScoreCalculator {
      * @returns {number} 基本スコア
      */
     calculateBaseScore(bubbleType, ageRatio = 0) {
-        const config = this.getScoreConfig();
-        const baseScore = config.baseScores[bubbleType] || config.baseScores.normal;
+        const config = this.getScoreConfig(),
+        const baseScore = config.baseScores[bubbleType] || config.baseScores.normal,
         
         // 年齢ボーナスを適用
-        const ageMultiplier = this.calculateAgeBonus(ageRatio);
-        
-    }
+        const ageMultiplier = this.calculateAgeBonus(ageRatio) }
         return Math.floor(baseScore * ageMultiplier);
     
     /**
@@ -75,7 +72,7 @@ export class ScoreCalculator {
         }
         
         // ageRatio が 0 の場合は通常倍率（ボーナスなし）
-        if (ageRatio === 0) { return 1.0; }
+        if (ageRatio === 0) { return 1.0 }
         
         const config = this.getScoreConfig();
         
@@ -85,8 +82,8 @@ export class ScoreCalculator {
         
         }
             return config.ageBonus.earlyBonus; else if (ageRatio > 0.9) { // 破裂直前ボーナス
-            return config.ageBonus.lateBonus; } else if (ageRatio >= 0.5 && ageRatio <= 0.7) { // 中盤ボーナス
-            return config.ageBonus.midBonus; }
+            return config.ageBonus.lateBonus } else if (ageRatio >= 0.5 && ageRatio <= 0.7) { // 中盤ボーナス
+            return config.ageBonus.midBonus }
         
         return 1.0; // 通常倍率
     }
@@ -113,7 +110,7 @@ export class ScoreCalculator {
      * @returns {number} コンボボーナススコア（5コンボごとに発生）
      */
     calculateComboBonus(comboCount) {
-        const config = this.getScoreConfig();
+        const config = this.getScoreConfig(),
         
         if (comboCount % config.combo.bonusInterval === 0 && comboCount > 0) {
     }
@@ -160,13 +157,13 @@ export class ScoreCalculator {
             finalScore,
             comboBonus,
             multipliers: {
-                age: this.calculateAgeBonus(ageRatio);
-                combo: comboMultiplier;
+                age: this.calculateAgeBonus(ageRatio),
+                combo: comboMultiplier,
                 special: specialMultiplier,
-    item: itemMultiplier, };
+    item: itemMultiplier };
                 total: totalMultiplier 
     };
-            breakdown: { bubbleType;
+            breakdown: { bubbleType,
                 ageRatio,
                 comboCount }
         }
@@ -178,28 +175,26 @@ export class ScoreCalculator {
      * @returns {number} ボーナススコア
      */
     calculateSpecialBubbleBonus(bubbleType, effectParams = { ) {
-        const config = this.getScoreConfig();
+        const config = this.getScoreConfig(),
 
         switch(bubbleType) {''
-            case 'rainbow':;
+            case 'rainbow':,
                 // レインボー泡：ボーナスタイム中の追加スコア
-                return effectParams.bonusTimeActive ? config.baseScores.rainbow * 0.5 : 0;
+                return effectParams.bonusTimeActive ? config.baseScores.rainbow * 0.5 : 0,
 
-            case 'spiky':;
+            case 'spiky':,
                 // とげとげ泡：連鎖による追加スコア
-                const chainCount = effectParams.chainCount || 0;
-                return chainCount * 20;
+                const chainCount = effectParams.chainCount || 0,
+                return chainCount * 20,
 
-            case 'score':;
+            case 'score':,
                 // S字泡：固定ボーナススコア
-                return effectParams.bonusScore || 80;
+                return effectParams.bonusScore || 80,
 
-            case 'boss':;
+            case 'boss':,
                 // ボス泡：体力に応じたボーナス
-                const healthRatio = effectParams.healthRatio || 1;
-                return Math.floor(config.baseScores.boss * (1 - healthRatio) * 0.2);
-                
-    }
+                const healthRatio = effectParams.healthRatio || 1,
+                return Math.floor(config.baseScores.boss * (1 - healthRatio) * 0.2) }
             default: return 0;
     
     /**
@@ -210,11 +205,10 @@ export class ScoreCalculator {
     calculateScoreStatistics(scoreHistory) {
         if (!Array.isArray(scoreHistory) || scoreHistory.length === 0) {
             return { total: 0,
-                average: 0;
+                average: 0,
                 highest: 0,
-    lowest: 0;
-    ,}
-                comboCount: 0, };
+    lowest: 0 }
+                comboCount: 0 };
                 bonusCount: 0 
     }
         
@@ -230,7 +224,7 @@ export class ScoreCalculator {
             highest,
             lowest,
             comboCount,
-            bonusCount, };
+            bonusCount };
             totalEntries: scoreHistory.length 
     }
     
@@ -263,33 +257,29 @@ export class ScoreCalculator {
         ';
 
         const strategy = { ''
-            priority: 'normal';
+            priority: 'normal',
             targetBubbles: [],
     reasoning: [] };
         ';
         // コンボが高い場合は継続を優先
-        if(currentCombo >= 3) {'
+        if(currentCombo >= 3) {
 
-            strategy.priority = 'combo';
-
-        }
+            strategy.priority = 'combo' }
 
             strategy.reasoning.push('高コンボ継続を優先'; }'
         }
         ';
         // 時間が少ない場合は高得点泡を優先
-        if(timeRemaining < 30000) {'
+        if(timeRemaining < 30000) {
             // 30秒未満
-            strategy.priority = 'highScore';
-
-        }
+            strategy.priority = 'highScore' }
 
             strategy.reasoning.push('時間切れ前の高得点狙い'; }'
         }
         
         // 利用可能な泡から推奨順を決定
         const bubbleValues = availableBubbles.map(bubble => ({ )
-            ...bubble);
+            ...bubble),
             expectedScore: this.calculateBaseScore(bubble.type, bubble.ageRatio || 0 });
         
         // 期待スコア順でソート
@@ -305,11 +295,9 @@ export class ScoreCalculator {
      * @returns {Object} デバッグ情報
      */
     getDebugInfo() {
-        return { hasGameConfig: !!this.gameConfig,
+        return { hasGameConfig: !!this.gameConfig }
 
-    }
-
-            scoreConfig: this.getScoreConfig('' }
+            scoreConfig: this.getScoreConfig('}
 
             version: '1.0.0' }))
     }

@@ -7,8 +7,7 @@ import { DataVisualizer } from '../../src/analytics/DataVisualizer';
 const mockD3 = {
     select: jest.fn(() => ({
         select: jest.fn(() => ({
-            remove: jest.fn(),
-    }))),
+            remove: jest.fn()),
         selectAll: jest.fn(() => ({
             data: jest.fn(() => ({
                 enter: jest.fn(() => ({
@@ -16,147 +15,129 @@ const mockD3 = {
                         attr: jest.fn(() => ({
                             attr: jest.fn(() => ({
                                 style: jest.fn(() => ({
-                                    text: jest.fn(),
-                                    on: jest.fn(),
+                                    text: jest.fn(
+                                    on: jest.fn(
                                     transition: jest.fn(() => ({
                                         duration: jest.fn(() => ({
-                                            attr: jest.fn(),
+                                            attr: jest.fn(
         style: jest.fn()
-                                        )))
-                                    )))
-                                )));
-                            });
+                                        ))
+                                    ))
+                                )) });
                         }),
                         style: jest.fn(() => ({
-                            attr: jest.fn(),
-                            style: jest.fn(),
-                            text: jest.fn(),
+                            attr: jest.fn(
+                            style: jest.fn(
+                            text: jest.fn(
         on: jest.fn()
-                        ))),
-                        text: jest.fn(),
-                        call: jest.fn(),
+                        )),
+                        text: jest.fn(
+                        call: jest.fn(
                         datum: jest.fn(() => ({
                             attr: jest.fn(() => ({
-                                style: jest.fn(),
-    })))
-                        )))
-                    )));
+                                style: jest.fn())
+                        ))
+                    ));
                 });
             }),
         remove: jest.fn(),
-        }),
         append: jest.fn(() => ({
             attr: jest.fn(() => ({
                 attr: jest.fn(() => ({
                     append: jest.fn(() => ({
                         attr: jest.fn(() => ({
-                            call: jest.fn(),
-                            text: jest.fn(),
+                            call: jest.fn(
+                            text: jest.fn(
         style: jest.fn()
-                        ))),
+                        )),
                         style: jest.fn(() => ({
-                            text: jest.fn(),
-    }))),
-        text: jest.fn()))
-                )));
-            });
+                            text: jest.fn()),
+        text: jest.fn())
+                ));
+            );
         });
     }),
     scaleLinear: jest.fn(() => ({
         domain: jest.fn(() => ({
             range: jest.fn(() => ({
                 nice: jest.fn(() => ({
-                    range: jest.fn(),
-    })))
-            )))
-        ))),
+                    range: jest.fn())
+            ))
+        )),
         range: jest.fn(),
-    }),
     scaleTime: jest.fn(() => ({
         domain: jest.fn(() => ({
-            range: jest.fn(),
-    })))
-    ))),
+            range: jest.fn())
+    )),
     scaleBand: jest.fn(() => ({
         domain: jest.fn(() => ({
-            range: jest.fn(),
-    })))
-    ))),
+            range: jest.fn())
+    )),
     scaleSequential: jest.fn(() => ({
-        domain: jest.fn(),
-    }))),
-    scaleOrdinal: jest.fn(),
+        domain: jest.fn()),
+    scaleOrdinal: jest.fn(
     extent: jest.fn(() => [0, 100]),
-    axisBottom: jest.fn(),
-    axisLeft: jest.fn(),
+    axisBottom: jest.fn(
+    axisLeft: jest.fn(
     line: jest.fn(() => ({
         x: jest.fn(() => ({
             y: jest.fn(() => ({
-                curve: jest.fn(),
-    })))
-        )))
-    ))),
+                curve: jest.fn())
+        ))
+    )),
     area: jest.fn(() => ({
         x: jest.fn(() => ({
             y0: jest.fn(() => ({
                 y1: jest.fn(() => ({
-                    curve: jest.fn(),
-    })))
-            )))
-        )));
+                    curve: jest.fn())
+            ))
+        ));
     }),
     forceSimulation: jest.fn(() => ({
         force: jest.fn(() => ({
             force: jest.fn(() => ({
-                force: jest.fn(),
-    })))
-        ))),
-        on: jest.fn(),
+                force: jest.fn())
+        )),
+        on: jest.fn(
         alphaTarget: jest.fn(() => ({
-            restart: jest.fn(),
-    }))),
-        stop: jest.fn())),
+            restart: jest.fn()),
+        stop: jest.fn()),
     forceLink: jest.fn(() => ({
         id: jest.fn(() => ({
-            distance: jest.fn(),
-    })))
-    ))),
+            distance: jest.fn())
+    )),
     forceManyBody: jest.fn(() => ({
-        strength: jest.fn(),
-    }))),
-    forceCenter: jest.fn(),
+        strength: jest.fn()),
+    forceCenter: jest.fn(
     drag: jest.fn(() => ({
         on: jest.fn(() => ({
             on: jest.fn(() => ({
-                on: jest.fn(),
-    })))
-        )))
-    ))),
+                on: jest.fn())
+        ))
+    )),
     transition: jest.fn(() => ({
         duration: jest.fn(() => ({
-            ease: jest.fn(),
-    })))
-    ))),
+            ease: jest.fn())
+    )),
     timeParse: jest.fn(() => jest.fn(d => new Date(d);
-    timeFormat: jest.fn(() => jest.fn(),
-    interpolateViridis: jest.fn('),
+    timeFormat: jest.fn(() => jest.fn(
+    interpolateViridis: jest.fn(',
     schemeCategory10: ['#1f77b4', '#ff7f0e', '#2ca02c'],
-    easeCircleOut: jest.fn(),
+    easeCircleOut: jest.fn(
         curveMonotoneX: jest.fn()
 );
 (global as any').d3 = mockD3;
 // DOM のモック
 Object.defineProperty(global, 'document', {
-    value: {),
-        getElementById: jest.fn(),
+    value: {,
+        getElementById: jest.fn(
         createElement: jest.fn((') => ({
-            id: '',
+            id: ',
             width: 500,
             height: 400
-    }))),
+    })),
         head: {
-            appendChild: jest.fn(),
-    });
+            appendChild: jest.fn();
         }');
 }
 // ブラウザ API のモック
@@ -168,38 +149,35 @@ describe('DataVisualizer', () => {
     let dataVisualizer: any,
     let mockContainer: any,
     beforeEach(() => {
-        jest.clearAllMocks(');
+        jest.clearAllMocks('),
         mockContainer = {
             id: 'test-container',
-        appendChild: jest.fn(),
-        };
+        appendChild: jest.fn( };
         document.getElementById.mockReturnValue(mockContainer);
         dataVisualizer = new DataVisualizer({
             animationDuration: 100, // テスト用に短縮
             defaultWidth: 400,
             defaultHeight: 300
-        );
+        ),
         // D3.jsが読み込まれたとして設定
-        dataVisualizer.d3 = mockD3;
-        dataVisualizer.colorScale = jest.fn(i => `color-${i)`);
+        dataVisualizer.d3 = mockD3,
+        dataVisualizer.colorScale = jest.fn(i => `color-${i)`),
         dataVisualizer.transition = {
             duration: jest.fn(() => ({
-                ease: jest.fn()});
-    })))
+                ease: jest.fn());
+    ))
         );
     );
     afterEach(() => {
         if (dataVisualizer) {
-            dataVisualizer.destroy();
-        }
+            dataVisualizer.destroy() }
     }');
     describe('初期化', (') => {
         test('正しく初期化される', () => {
-            expect(dataVisualizer).toBeDefined();
-            expect(dataVisualizer.visualizations).toBeInstanceOf(Map);
-            expect(dataVisualizer.svgElements).toBeInstanceOf(Map);
-            expect(dataVisualizer.scales).toBeInstanceOf(Map);
-        }');
+            expect(dataVisualizer).toBeDefined(),
+            expect(dataVisualizer.visualizations).toBeInstanceOf(Map),
+            expect(dataVisualizer.svgElements).toBeInstanceOf(Map),
+            expect(dataVisualizer.scales).toBeInstanceOf(Map) }');
         test('オプションが正しく設定される', (') => {
             const customVisualizer = new DataVisualizer({
                 defaultWidth: 600,
@@ -216,15 +194,13 @@ describe('DataVisualizer', () => {
     }
     describe('D3.js セットアップ', (') => {
         test('D3.jsデフォルト設定が適用される', () => {
-            dataVisualizer.setupD3Defaults();
-            expect(dataVisualizer.colorScale).toBeDefined();
-            expect(dataVisualizer.transition).toBeDefined();
-        }');
+            dataVisualizer.setupD3Defaults(),
+            expect(dataVisualizer.colorScale).toBeDefined(),
+            expect(dataVisualizer.transition).toBeDefined() }');
         test('D3.jsが利用できない場合はフォールバック', () => {
-            const fallbackVisualizer = new DataVisualizer();
-            fallbackVisualizer.fallbackToCanvasRenderer();
-            expect(fallbackVisualizer.useCanvasFallback).toBe(true);
-        }');
+            const fallbackVisualizer = new DataVisualizer(),
+            fallbackVisualizer.fallbackToCanvasRenderer(),
+            expect(fallbackVisualizer.useCanvasFallback).toBe(true) }');
     }
     describe('散布図作成', (') => {
         test('散布図を作成できる', (') => {
@@ -240,18 +216,17 @@ describe('DataVisualizer', () => {
             };
             const visualization = dataVisualizer.createScatterPlot('test-scatter', testData, config);
             expect(visualization).toBeDefined();
-            expect(visualization.type').toBe('scatter'');
+            expect(visualization.type').toBe('scatter');
             expect(dataVisualizer.visualizations.has('test-scatter').toBe(true);
             expect(mockD3.scaleLinear).toHaveBeenCalled();
             expect(mockD3.axisBottom).toHaveBeenCalled();
             expect(mockD3.axisLeft).toHaveBeenCalled();
         }');
         test('データが空の場合はnullを返す', (') => {
-            const result = dataVisualizer.createScatterPlot('empty-scatter', []);
-            expect(result).toBe(null);
-        }');
+            const result = dataVisualizer.createScatterPlot('empty-scatter', []),
+            expect(result).toBe(null) }');
         test('コンテナが存在しない場合はnullを返す', () => {
-            document.getElementById.mockReturnValue(null');
+            document.getElementById.mockReturnValue(null'),
             const result = dataVisualizer.createScatterPlot('missing-container', [{ x: 1, y: 2 }]);
             expect(result).toBe(null);
         }');
@@ -264,13 +239,12 @@ describe('DataVisualizer', () => {
                 { x: 'A', y: '2', value: 15 },
                 { x: 'B', y: '2', value: 25 }
             ];
-            const visualization = dataVisualizer.createHeatmap('test-heatmap', testData, {);
-            expect(visualization).toBeDefined();
-            expect(visualization.type').toBe('heatmap'');
-            expect(dataVisualizer.visualizations.has('test-heatmap').toBe(true);
-            expect(mockD3.scaleBand).toHaveBeenCalled();
-            expect(mockD3.scaleSequential).toHaveBeenCalled();
-        }');
+            const visualization = dataVisualizer.createHeatmap('test-heatmap', testData, {),
+            expect(visualization).toBeDefined(),
+            expect(visualization.type').toBe('heatmap'),
+            expect(dataVisualizer.visualizations.has('test-heatmap').toBe(true),
+            expect(mockD3.scaleBand).toHaveBeenCalled(),
+            expect(mockD3.scaleSequential).toHaveBeenCalled() }');
         test('カラースケールが正しく設定される', (') => {
             const testData = [{ x: 'A', y: '1', value: 10 }];
             
@@ -295,7 +269,7 @@ describe('DataVisualizer', () => {
             };
             const visualization = dataVisualizer.createNetworkDiagram('test-network', testData, config);
             expect(visualization).toBeDefined();
-            expect(visualization.type').toBe('network'');
+            expect(visualization.type').toBe('network');
             expect(dataVisualizer.visualizations.has('test-network').toBe(true);
             expect(mockD3.forceSimulation).toHaveBeenCalledWith(testData.nodes);
         }');
@@ -320,7 +294,7 @@ describe('DataVisualizer', () => {
             };
             const visualization = dataVisualizer.createTimeSeriesChart('test-timeseries', testData, config);
             expect(visualization).toBeDefined();
-            expect(visualization.type').toBe('timeseries'');
+            expect(visualization.type').toBe('timeseries');
             expect(dataVisualizer.visualizations.has('test-timeseries').toBe(true);
             expect(mockD3.scaleTime).toHaveBeenCalled();
             expect(mockD3.line).toHaveBeenCalled();
@@ -333,10 +307,9 @@ describe('DataVisualizer', () => {
             ];
             dataVisualizer.createTimeSeriesChart('preprocessing-test', testData);
             // 数値変換が行われることを確認
-            testData.forEach(d => {);
-                expect(typeof d.value').toBe('number');
-                expect(d.date).toBeInstanceOf(Date);
-            });
+            testData.forEach(d => {),
+                expect(typeof d.value').toBe('number'),
+                expect(d.date).toBeInstanceOf(Date) });
         }
     }');
     describe('SVG作成', (') => {
@@ -349,47 +322,42 @@ describe('DataVisualizer', () => {
         test('既存のSVGを削除してから作成する', () => {
             const mockSelectChain = {
                 select: jest.fn(() => ({
-                    remove: jest.fn(),
-    }))),
+                    remove: jest.fn()),
                 append: jest.fn(() => ({
                     attr: jest.fn(() => ({
                         attr: jest.fn(() => ({
                             append: jest.fn(() => ({
-                                attr: jest.fn(),
-    })))
-                        )))
-                    )));
+                                attr: jest.fn())
+                        ))
+                    ));
                 });
             };
             
             mockD3.select.mockReturnValue(mockSelectChain');
-            dataVisualizer.createSVG('cleanup-test', {);
-            expect(mockSelectChain.select').toHaveBeenCalledWith('svg');
-        }');
+            dataVisualizer.createSVG('cleanup-test', {),
+            expect(mockSelectChain.select').toHaveBeenCalledWith('svg') }');
     }
     describe('インタラクティブ機能', (') => {
         test('インタラクティブ機能が有効な場合、イベントリスナーが追加される', () => {
-            dataVisualizer.options.enableInteractivity = true;
+            dataVisualizer.options.enableInteractivity = true,
             
             const mockSelection = {
                 on: jest.fn(() => mockSelection));
-    });
             dataVisualizer.addInteractivity(mockSelection, {)});
             expect(mockSelection.on').toHaveBeenCalledWith('mouseover', expect.any(Function);
             expect(mockSelection.on').toHaveBeenCalledWith('mouseout', expect.any(Function);
             expect(mockSelection.on').toHaveBeenCalledWith('click', expect.any(Function);
         }');
         test('インタラクティブ機能が無効な場合、何も追加されない', () => {
-            dataVisualizer.options.enableInteractivity = false;
+            dataVisualizer.options.enableInteractivity = false,
             
             const mockSelection = {
-                on: jest.fn(),
-            };
+                on: jest.fn( };
             dataVisualizer.addInteractivity(mockSelection, {});
             expect(mockSelection.on).not.toHaveBeenCalled();
         }');
         test('カスタムツールチップフォーマッターが使用される', () => {
-            dataVisualizer.options.enableInteractivity = true;
+            dataVisualizer.options.enableInteractivity = true,
             
             const mockSelection = {
                 on: jest.fn((event, callback') => {
@@ -409,18 +377,16 @@ describe('DataVisualizer', () => {
             const mockTooltip = {
                 transition: jest.fn(() => ({
                     duration: jest.fn(() => ({
-                        style: jest.fn(),
-    })))
-                ))),
+                        style: jest.fn())
+                )),
                 html: jest.fn(() => mockTooltip);
                 style: jest.fn(() => mockTooltip);
-    });
-            mockD3.select.mockReturnValue({);
+    );
+            mockD3.select.mockReturnValue({),
                 append: jest.fn(() => ({
                     attr: jest.fn(() => ({
-                        style: jest.fn(() => mockTooltip));
-    })))
-                )));
+                        style: jest.fn(() => mockTooltip))))
+                ));
             });
             dataVisualizer.addInteractivity(mockSelection, config);
             expect(mockSelection.on').toHaveBeenCalledWith('mouseover', expect.any(Function);
@@ -434,16 +400,14 @@ describe('DataVisualizer', () => {
             // updateScatterPlotメソッドをモック
             dataVisualizer.updateScatterPlot = jest.fn(() => true);
             const newData = [{ x: 2, y: 3 ), { x: 4, y: 5 ')],
-            const result = dataVisualizer.updateVisualization('update-test', newData);
-            expect(result).toBe(true);
-            expect(dataVisualizer.updateScatterPlot').toHaveBeenCalledWith('update-test', newData, {);
-        }');
+            const result = dataVisualizer.updateVisualization('update-test', newData),
+            expect(result).toBe(true),
+            expect(dataVisualizer.updateScatterPlot').toHaveBeenCalledWith('update-test', newData, {) }');
         test('存在しない可視化の更新は失敗する', (') => {
-            const result = dataVisualizer.updateVisualization('non-existent', []);
-            expect(result).toBe(false);
-        }');
+            const result = dataVisualizer.updateVisualization('non-existent', []),
+            expect(result).toBe(false) }');
         test('サポートされていない可視化タイプの警告', (') => {
-            const consoleSpy = jest.spyOn(console, 'warn').mockImplementation(');
+            const consoleSpy = jest.spyOn(console, 'warn').mockImplementation('),
             // 未サポートのタイプを設定
             dataVisualizer.visualizations.set('unsupported-test', { type: 'unknown' }');
             const result = dataVisualizer.updateVisualization('unsupported-test', []);
@@ -455,20 +419,18 @@ describe('DataVisualizer', () => {
     }
     describe('寸法とコンテナ管理', (') => {
         test('デフォルト寸法を取得できる', () => {
-            const dimensions = dataVisualizer.getDimensions();
-            expect(dimensions.width).toBe(400);
-            expect(dimensions.height).toBe(300);
-        }');
+            const dimensions = dataVisualizer.getDimensions(),
+            expect(dimensions.width).toBe(400),
+            expect(dimensions.height).toBe(300) }');
         test('カスタム寸法を取得できる', () => {
             const dimensions = dataVisualizer.getDimensions({ width: 600, height: 500 });
             expect(dimensions.width).toBe(600);
             expect(dimensions.height).toBe(500);
         }');
         test('コンテナ要素を取得できる', (') => {
-            const container = dataVisualizer.getContainer('test-container');
-            expect(document.getElementById').toHaveBeenCalledWith('test-container');
-            expect(container).toBe(mockContainer);
-        }');
+            const container = dataVisualizer.getContainer('test-container'),
+            expect(document.getElementById').toHaveBeenCalledWith('test-container'),
+            expect(container).toBe(mockContainer) }');
     }
     describe('統計機能', (') => {
         test('可視化統計を取得できる', (') => {
@@ -476,10 +438,9 @@ describe('DataVisualizer', () => {
             dataVisualizer.createHeatmap('stats-heatmap', [{ x: 'A', y: '1', value: 10 }]);
             const stats = dataVisualizer.getVisualizationStatistics();
             expect(stats.totalVisualizations).toBe(2);
-            expect(stats.visualizationTypes).toEqual({ scatter: 1, heatmap: 1 ),
-            expect(stats.d3Available).toBe(true);
-            expect(stats.memoryEstimate).toBeDefined();
-        }');
+            expect(stats.visualizationTypes).toEqual({ scatter: 1, heatmap: 1 ,
+            expect(stats.d3Available).toBe(true),
+            expect(stats.memoryEstimate).toBeDefined() }');
         test('メモリ使用量を推定できる', (') => {
             dataVisualizer.createScatterPlot('memory-test', [{ x: 1, y: 2 }]);
             const memoryUsage = dataVisualizer.estimateMemoryUsage();
@@ -492,7 +453,7 @@ describe('DataVisualizer', () => {
         test('個別の可視化を削除できる', (') => {
             dataVisualizer.createScatterPlot('destroy-test', [{ x: 1, y: 2 }]');
             expect(dataVisualizer.visualizations.has('destroy-test').toBe(true');
-            dataVisualizer.destroyVisualization('destroy-test'');
+            dataVisualizer.destroyVisualization('destroy-test');
             expect(dataVisualizer.visualizations.has('destroy-test').toBe(false);
         }');
         test('ネットワーク図のシミュレーションを停止する', (') => {
@@ -518,8 +479,7 @@ describe('DataVisualizer', () => {
         }');
         test('ツールチップを削除する', () => {
             const mockSelectAll = jest.fn(() => ({
-                remove: jest.fn(),
-    })));
+                remove: jest.fn());
             mockD3.selectAll = mockSelectAll;
             dataVisualizer.d3 = mockD3;
             dataVisualizer.destroy();
@@ -528,16 +488,14 @@ describe('DataVisualizer', () => {
     )');
     describe('エラーハンドリング', (') => {
         test('可視化更新中のエラーを適切に処理する', (') => {
-            const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
+            const consoleSpy = jest.spyOn(console, 'error').mockImplementation(),
             // エラーを投げるupdateScatterPlotをモック
             dataVisualizer.updateScatterPlot = jest.fn((') => {
-                throw new Error('Update failed');
-            )');
-            dataVisualizer.visualizations.set('error-test', { type: 'scatter' )'),
-            const result = dataVisualizer.updateVisualization('error-test', []);
-            expect(result).toBe(false);
-            expect(consoleSpy').toHaveBeenCalledWith('Visualization update failed:', expect.any(Error);
-            consoleSpy.mockRestore();
-        });
+                throw new Error('Update failed'))'),
+            dataVisualizer.visualizations.set('error-test', { type: 'scatter' )',
+            const result = dataVisualizer.updateVisualization('error-test', []),
+            expect(result).toBe(false),
+            expect(consoleSpy').toHaveBeenCalledWith('Visualization update failed:', expect.any(Error),
+            consoleSpy.mockRestore() });
     }
 }');

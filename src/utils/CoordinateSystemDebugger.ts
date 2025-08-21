@@ -5,102 +5,102 @@
 
 // 型定義
 interface DebugInfo { canvasInfo: any,
-    scaleFactor: number ,}
+    scaleFactor: number  }
 
-interface TrackedElement { x: number;
-    y: number;
-    width: number;
-    height: number;
+interface TrackedElement { x: number,
+    y: number,
+    width: number,
+    height: number,
     color: string,
     timestamp: number }
 
-interface CoordinateEntry { baseX: number;
-    baseY: number;
-    scaledX: number;
-    scaledY: number;
+interface CoordinateEntry { baseX: number,
+    baseY: number,
+    scaledX: number,
+    scaledY: number,
     context: string,
     timestamp: Date
     }
 
-interface ScaledCoordinateManager { getDebugInfo(): DebugInfo;
-    getCanvasInfo(): any;
-    getScaleFactor(): number; }
+interface ScaledCoordinateManager { getDebugInfo(): DebugInfo,
+    getCanvasInfo(): any,
+    getScaleFactor(): number }
 
-interface UIPositionCalculator { getDeviceType(): string; }
+interface UIPositionCalculator { getDeviceType(): string }
 
 interface InputCoordinateConverter { // 必要に応じて型定義を追加 }
 
 type LogLevel = 'debug' | 'info' | 'warn' | 'error';
 
 export class CoordinateSystemDebugger {
-    private scaledCoordinateManager: ScaledCoordinateManager;
-    private uiPositionCalculator: UIPositionCalculator | null;
-    private inputCoordinateConverter: InputCoordinateConverter | null;
-    private debugPanel: HTMLElement | null;
-    private overlayCanvas: HTMLCanvasElement | null;
-    private overlayContext: CanvasRenderingContext2D | null;
-    private isEnabled: boolean;
-    private showOverlays: boolean;
-    private logLevel: LogLevel;
-    private, trackedElements: Map<string, TrackedElement>;
-    private coordinateHistory: CoordinateEntry[];
-    private maxHistorySize: number;
-    private debugUpdateInterval: NodeJS.Timeout | null;
-    constructor(;
+    private scaledCoordinateManager: ScaledCoordinateManager,
+    private uiPositionCalculator: UIPositionCalculator | null,
+    private inputCoordinateConverter: InputCoordinateConverter | null,
+    private debugPanel: HTMLElement | null,
+    private overlayCanvas: HTMLCanvasElement | null,
+    private overlayContext: CanvasRenderingContext2D | null,
+    private isEnabled: boolean,
+    private showOverlays: boolean,
+    private logLevel: LogLevel,
+    private, trackedElements: Map<string, TrackedElement>,
+    private coordinateHistory: CoordinateEntry[],
+    private maxHistorySize: number,
+    private debugUpdateInterval: NodeJS.Timeout | null,
+    constructor(
         scaledCoordinateManager: ScaledCoordinateManager
-    );
+    ),
         uiPositionCalculator: UIPositionCalculator | null = null)',
-    inputCoordinateConverter: InputCoordinateConverter | null = null'';
-    ') {'
+    inputCoordinateConverter: InputCoordinateConverter | null = null',
+    ') {
         this.scaledCoordinateManager = scaledCoordinateManager,
-        this.uiPositionCalculator = uiPositionCalculator;
-        this.inputCoordinateConverter = inputCoordinateConverter;
+        this.uiPositionCalculator = uiPositionCalculator,
+        this.inputCoordinateConverter = inputCoordinateConverter,
         
-        this.debugPanel = null;
-        this.overlayCanvas = null;
-        this.overlayContext = null;
+        this.debugPanel = null,
+        this.overlayCanvas = null,
+        this.overlayContext = null,
 
-        this.isEnabled = false;
+        this.isEnabled = false,
 
-        this.showOverlays = false;''
-        this.logLevel = 'info';
+        this.showOverlays = false,
+        this.logLevel = 'info',
         
-        this.trackedElements = new Map<string, TrackedElement>();
-        this.coordinateHistory = [];
-        this.maxHistorySize = 100;
-        this.debugUpdateInterval = null;
+        this.trackedElements = new Map<string, TrackedElement>(),
+        this.coordinateHistory = [],
+        this.maxHistorySize = 100,
+        this.debugUpdateInterval = null,
         
-        this.setupEventListeners(); }
+        this.setupEventListeners() }
     
     /**
      * デバッグ機能を有効化
      */
-    enable(): void { this.isEnabled = true;
+    enable(): void { this.isEnabled = true,
 
-        this.createDebugPanel();''
-        this.createOverlayCanvas()';
-        this.log('info', 'CoordinateSystemDebugger enabled); }
+        this.createDebugPanel(),
+        this.createOverlayCanvas()',
+        this.log('info', 'CoordinateSystemDebugger enabled) }
     
     /**
      * デバッグ機能を無効化
      */
-    disable(): void { this.isEnabled = false;
+    disable(): void { this.isEnabled = false,
 
-        this.removeDebugPanel();''
-        this.removeOverlayCanvas()';
-        this.log('info', 'CoordinateSystemDebugger disabled); }
+        this.removeDebugPanel(),
+        this.removeOverlayCanvas()',
+        this.log('info', 'CoordinateSystemDebugger disabled) }
     
     /**
      * デバッグパネルを作成
      */
-    createDebugPanel() {'
+    createDebugPanel() {
 
         if(this.debugPanel) {
     }
             return; }
         }
 
-        this.debugPanel = document.createElement('div'');''
+        this.debugPanel = document.createElement('div');
         this.debugPanel.id = 'coordinate-debug-panel';
         this.debugPanel.style.cssText = `;
             position: fixed;
@@ -134,16 +134,13 @@ export class CoordinateSystemDebugger {
      */
     removeDebugPanel() {
         if (this.debugPanel) {
-            this.debugPanel.remove();
-    }
+            this.debugPanel.remove() }
             this.debugPanel = null; }
         }
         
         if(this.debugUpdateInterval) {
         
-            clearInterval(this.debugUpdateInterval);
-        
-        }
+            clearInterval(this.debugUpdateInterval) }
             this.debugUpdateInterval = null; }
 }
     
@@ -161,7 +158,7 @@ export class CoordinateSystemDebugger {
         const scaleFactor = debugInfo.scaleFactor;
         ';
 
-        const deviceType = this.uiPositionCalculator ? undefined : undefined'';
+        const deviceType = this.uiPositionCalculator ? undefined : undefined';
             this.uiPositionCalculator.getDeviceType() : 'unknown';
         
         const html = `;
@@ -185,7 +182,7 @@ export class CoordinateSystemDebugger {
                                color: white; border: none;, padding: 5px 10px, ''
                                border-radius: 4px; margin-right: 5px;, cursor: pointer;">""
                     ${this.showOverlays ? 'Hide' : 'Show'} Overlays'
-                </button>'';
+                </button>';
                 <button onclick="window.coordinateDebugger.logCurrentState()", "";
                         style="background: #FF9800; color: white;, border: none, ""
                                padding: 5px 10px; border-radius: 4px;, cursor: pointer;">"
@@ -195,7 +192,7 @@ export class CoordinateSystemDebugger {
 
             <div style="margin-bottom: 15px;">""
                 <h4>📍 Tracked Elements (${ this.trackedElements.size)")</h4>""
-                <div, style="max-height: 120px; overflow-y: auto; font-size: 11px;">""
+                <div, style="max-height: 120px, overflow-y: auto, font-size: 11px,">""
                     ${Array.from(this.trackedElements.entries(}.map(([id, element]"} => `" }"
                         <div style="margin: 3px 0; padding: 3px,  background: rgba(255,255,255,0.1"}"; border-radius: 3px;">
                             <strong>${id}</strong>: (${element.x.toFixed(1}), ${element.y.toFixed(1})) ;
@@ -206,9 +203,9 @@ export class CoordinateSystemDebugger {
             </div>;
             ';
 
-            <div>'';
+            <div>';
                 <h4>📋 Recent Coordinates(${ this.coordinateHistory.length))</h4>''
-                <div, style="max-height: 100px; overflow-y: auto; font-size: 11px;">""
+                <div, style="max-height: 100px, overflow-y: auto, font-size: 11px,">""
                     ${this.coordinateHistory.slice(-5).map(entry => `}"
                         <div, style="margin: 2px, 0; color: #E0E0E0;">}
                             ${entry.timestamp.toLocaleTimeString(}): 
@@ -236,15 +233,14 @@ export class CoordinateSystemDebugger {
             return; }
         }
 
-        const gameCanvas = document.getElementById('gameCanvas';''
-        if(!gameCanvas) {'
+        const gameCanvas = document.getElementById('gameCanvas';
+        if(!gameCanvas) {
 
-            this.log('warn', 'Game canvas not found, cannot create overlay'');
-        }
+            this.log('warn', 'Game canvas not found, cannot create overlay') }
             return; }
         }
 
-        this.overlayCanvas = document.createElement('canvas'');''
+        this.overlayCanvas = document.createElement('canvas');
         this.overlayCanvas.id = 'coordinate-debug-overlay';
         this.overlayCanvas.style.cssText = `;
             position: absolute,
@@ -258,10 +254,10 @@ export class CoordinateSystemDebugger {
         
         this.overlayCanvas.width = gameCanvas.width;
 
-        this.overlayCanvas.height = gameCanvas.height;''
+        this.overlayCanvas.height = gameCanvas.height;
         this.overlayContext = this.overlayCanvas.getContext('2d);
 
-        document.body.appendChild(this.overlayCanvas);''
+        document.body.appendChild(this.overlayCanvas);
         this.log('debug', 'Debug overlay canvas created);
     }
     
@@ -270,9 +266,8 @@ export class CoordinateSystemDebugger {
      */
     removeOverlayCanvas() {
         if (this.overlayCanvas) {
-            this.overlayCanvas.remove();
-            this.overlayCanvas = null;
-    }
+            this.overlayCanvas.remove(),
+            this.overlayCanvas = null }
             this.overlayContext = null; }
 }
     
@@ -280,7 +275,7 @@ export class CoordinateSystemDebugger {
      * オーバーレイ表示を切り替え
      */
     toggleOverlays() {
-        this.showOverlays = !this.showOverlays;
+        this.showOverlays = !this.showOverlays,
         if (this.showOverlays) {
     }
             this.renderOverlays(); }
@@ -331,32 +326,30 @@ export class CoordinateSystemDebugger {
      * グリッド線を描画
      */
     drawGrid(scaleFactor) {
-        if (!this.overlayContext) return;
-        ';
+        if (!this.overlayContext) return,
+        ',
 
-        const ctx = this.overlayContext;''
-        const canvasInfo = this.scaledCoordinateManager.getCanvasInfo()';
-        ctx.strokeStyle = 'rgba(0, 255, 255, 0.3)';
-        ctx.lineWidth = 1;
-        ctx.setLineDash([5, 5]);
+        const ctx = this.overlayContext,
+        const canvasInfo = this.scaledCoordinateManager.getCanvasInfo()',
+        ctx.strokeStyle = 'rgba(0, 255, 255, 0.3)',
+        ctx.lineWidth = 1,
+        ctx.setLineDash([5, 5]),
         
-        const gridSize = 50 * scaleFactor;
+        const gridSize = 50 * scaleFactor,
         
         // 垂直線
-        for (let, x = 0; x <= canvasInfo.displayWidth; x += gridSize) {
-            ctx.beginPath();
-            ctx.moveTo(x, 0);
-            ctx.lineTo(x, canvasInfo.displayHeight);
-    }
+        for (let, x = 0, x <= canvasInfo.displayWidth, x += gridSize) {
+            ctx.beginPath(),
+            ctx.moveTo(x, 0),
+            ctx.lineTo(x, canvasInfo.displayHeight) }
             ctx.stroke(); }
         }
         
         // 水平線
         for(let, y = 0; y <= canvasInfo.displayHeight; y += gridSize) {
-            ctx.beginPath();
-            ctx.moveTo(0, y);
-            ctx.lineTo(canvasInfo.displayWidth, y);
-        }
+            ctx.beginPath(),
+            ctx.moveTo(0, y),
+            ctx.lineTo(canvasInfo.displayWidth, y) }
             ctx.stroke(); }
         }
         
@@ -367,31 +360,30 @@ export class CoordinateSystemDebugger {
      * トラッキング要素の境界を描画
      */
     drawTrackedElements(scaleFactor) {
-        if (!this.overlayContext) return;
+        if (!this.overlayContext) return,
         
-        const ctx = this.overlayContext;
+        const ctx = this.overlayContext,
 
         this.trackedElements.forEach((element, id) => { 
-            const scaledX = element.x * scaleFactor;
-            const scaledY = element.y * scaleFactor;
-            const scaledWidth = element.width * scaleFactor;
-            const scaledHeight = element.height * scaleFactor;
-            ';
+            const scaledX = element.x * scaleFactor,
+            const scaledY = element.y * scaleFactor,
+            const scaledWidth = element.width * scaleFactor,
+            const scaledHeight = element.height * scaleFactor,
+            ',
             // 境界矩形
-            ctx.strokeStyle = element.color || '#FF5722';
+            ctx.strokeStyle = element.color || '#FF5722',
 
-            ctx.lineWidth = 2;''
-            ctx.strokeRect(scaledX, scaledY, scaledWidth, scaledHeight);
-            ';
+            ctx.lineWidth = 2,
+            ctx.strokeRect(scaledX, scaledY, scaledWidth, scaledHeight),
+            ',
             // ラベル
-            ctx.fillStyle = element.color || '#FF5722';
-            ctx.font = '12px Arial';
-            ctx.fillText(id, scaledX + 2, scaledY - 5);
-            ';
+            ctx.fillStyle = element.color || '#FF5722',
+            ctx.font = '12px Arial',
+            ctx.fillText(id, scaledX + 2, scaledY - 5),
+            ',
             // 中心点
-            ctx.fillStyle = 'rgba(255, 87, 34, 0.8)';
-            ctx.beginPath();
-    }
+            ctx.fillStyle = 'rgba(255, 87, 34, 0.8)',
+            ctx.beginPath() }
             ctx.arc(scaledX + scaledWidth/2, scaledY + scaledHeight/2, 3, 0, 2 * Math.PI); }
             ctx.fill(); }
         });
@@ -400,30 +392,28 @@ export class CoordinateSystemDebugger {
     /**
      * 座標軸を描画
      */
-    drawCoordinateAxes(scaleFactor) {'
+    drawCoordinateAxes(scaleFactor) {
 
-        if(!this.overlayContext) return;
+        if(!this.overlayContext) return,
         
-        const ctx = this.overlayContext;
-        ';
+        const ctx = this.overlayContext,
+        ',
         // X軸
-        ctx.strokeStyle = '#4CAF50';
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        ctx.moveTo(0, 20);
-        ctx.lineTo(100 * scaleFactor, 20);
-        ctx.stroke();
+        ctx.strokeStyle = '#4CAF50',
+        ctx.lineWidth = 2,
+        ctx.beginPath(),
+        ctx.moveTo(0, 20),
+        ctx.lineTo(100 * scaleFactor, 20),
+        ctx.stroke(),
         
         // Y軸
-        ctx.beginPath();
-        ctx.moveTo(20, 0);
-        ctx.lineTo(20, 100 * scaleFactor);''
-        ctx.stroke(''';
-        ctx.fillStyle = '#4CAF50';''
-        ctx.font = '14px Arial';')'
-        ctx.fillText('X', 105 * scaleFactor, 25';
-
-    }
+        ctx.beginPath(),
+        ctx.moveTo(20, 0),
+        ctx.lineTo(20, 100 * scaleFactor),
+        ctx.stroke('',
+        ctx.fillStyle = '#4CAF50',
+        ctx.font = '14px Arial',')'
+        ctx.fillText('X', 105 * scaleFactor, 25' }
 
         ctx.fillText('Y', 25, 105 * scaleFactor); }
     }
@@ -432,17 +422,15 @@ export class CoordinateSystemDebugger {
      * スケール情報を描画
      */
     drawScaleInfo(scaleFactor) {
-        if (!this.overlayContext) return;
-        ';
+        if (!this.overlayContext) return,
+        ',
 
-        const ctx = this.overlayContext;''
-        const canvasInfo = this.scaledCoordinateManager.getCanvasInfo()';
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
-        ctx.fillRect(10, canvasInfo.displayHeight - 80, 200, 70);
+        const ctx = this.overlayContext,
+        const canvasInfo = this.scaledCoordinateManager.getCanvasInfo()',
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.7)',
+        ctx.fillRect(10, canvasInfo.displayHeight - 80, 200, 70),
 
-        ctx.fillStyle = '#FFFFFF';
-
-    }
+        ctx.fillStyle = '#FFFFFF' }
 
         ctx.font = '12px Arial'; }
         ctx.fillText(`Scale: ${scaleFactor.toFixed(3})`, 15, canvasInfo.displayHeight - 60);
@@ -457,19 +445,17 @@ export class CoordinateSystemDebugger {
      * UI要素をトラッキング'
      */''
     trackElement(id: string, x: number, y: number, width: number, height: number, color: string = '#FF5722': void { this.trackedElements.set(id, {'
-            x: x;
-            y: y);
-            width: width),
-    height: height,);
-            color: color),
-    timestamp: Date.now( ,});
+            x: x,
+            y: y),
+            width: width,
+    height: height),
+            color: color,
+    timestamp: Date.now(  });
         
         if(this.showOverlays) {
-        ';
+        ',
 
-            ';
-
-        }
+            ' }
 
             this.renderOverlays() }
 
@@ -480,34 +466,31 @@ export class CoordinateSystemDebugger {
      * トラッキングを停止
      */
     untrackElement(id) {
-        this.trackedElements.delete(id);
+        this.trackedElements.delete(id),
 
-        if (this.showOverlays) {'
+        if (this.showOverlays) {
     }
 
             this.renderOverlays() }
 
-        this.log('debug', `Stopped tracking element: ${id}`'}';
+        this.log('debug', `Stopped tracking element: ${id}`}';
     }
     
     /**
      * 座標変換をログ'
      */''
-    logCoordinateConversion(baseX: number, baseY: number, scaledX: number, scaledY: number, context: string = ''): void { const entry: CoordinateEntry = {
-            baseX: baseX;
-            baseY: baseY;
-            scaledX: scaledX;
-            scaledY: scaledY;
+    logCoordinateConversion(baseX: number, baseY: number, scaledX: number, scaledY: number, context: string = '): void { const entry: CoordinateEntry = {
+            baseX: baseX,
+            baseY: baseY,
+            scaledX: scaledX,
+            scaledY: scaledY,
             context: context,
     timestamp: new Date( };
         
         this.coordinateHistory.push(entry);
         
         // 履歴サイズ制限
-        if(this.coordinateHistory.length > this.maxHistorySize) {
-            ';
-
-        }
+        if(this.coordinateHistory.length > this.maxHistorySize) { }
 
             this.coordinateHistory.shift() }
 
@@ -518,21 +501,20 @@ export class CoordinateSystemDebugger {
      * 現在の状態をコンソールに出力
      */
     logCurrentState() {
-        const debugInfo = this.scaledCoordinateManager.getDebugInfo();
+        const debugInfo = this.scaledCoordinateManager.getDebugInfo(),
         const state = {
-            timestamp: new Date().toISOString();
-            canvasInfo: debugInfo.canvasInfo),
-    scaleFactor: debugInfo.scaleFactor,)';
-            trackedElements: Array.from(this.trackedElements.entries(),
-            coordinateHistory: this.coordinateHistory.slice(-10);
-    ,}
+            timestamp: new Date().toISOString(),
+            canvasInfo: debugInfo.canvasInfo,
+    scaleFactor: debugInfo.scaleFactor)',
+            trackedElements: Array.from(this.trackedElements.entries(
+            coordinateHistory: this.coordinateHistory.slice(-10) }
             overlaysEnabled: this.showOverlays 
     };
-        console.group('🎯 Coordinate, System Debug, State');''
-        console.table(debugInfo.canvasInfo);''
-        console.log('Tracked Elements:', this.trackedElements';''
-        console.log('Recent Coordinate Conversions:', this.coordinateHistory.slice(-5));''
-        console.log('Full State Object:', state';''
+        console.group('🎯 Coordinate, System Debug, State');
+        console.table(debugInfo.canvasInfo);
+        console.log('Tracked Elements:', this.trackedElements';
+        console.log('Recent Coordinate Conversions:', this.coordinateHistory.slice(-5));
+        console.log('Full State Object:', state';
         console.groupEnd()';
         this.log('info', 'Current state logged to console);
     }
@@ -540,25 +522,23 @@ export class CoordinateSystemDebugger {
     /**
      * イベントリスナーを設定
      */
-    setupEventListeners() {'
+    setupEventListeners() {
 
-        // キーボードショートカット (Ctrl+Shift+C');''
+        // キーボードショートカット (Ctrl+Shift+C'),
         document.addEventListener('keydown', (event) => { ''
             if(event.ctrlKey && event.shiftKey && event.code === 'KeyC' {'
-                event.preventDefault();
-    }
+                event.preventDefault() }
                 if (this.isEnabled) { }
                     this.disable(); }
-                } else { this.enable(); }
+                } else { this.enable() }
 
-            }''
-        }');
+            }'}');
         ';
         // ウィンドウリサイズ時にオーバーレイを更新
         window.addEventListener('resize', () => {  if (this.overlayCanvas && this.showOverlays) {
                 setTimeout(() => {
-                    this.removeOverlayCanvas();
-                    this.createOverlayCanvas(); }
+                    this.removeOverlayCanvas(),
+                    this.createOverlayCanvas() }
                     this.renderOverlays(); }
                 }, 100);
             }
@@ -569,31 +549,29 @@ export class CoordinateSystemDebugger {
      * ログ出力
      */
     private log(level: LogLevel, message: string, ...args: any[]): void {
-        const levels: Record<LogLevel, number> = { debug: 0, info: 1, warn: 2, error: 3 ,}
+        const levels: Record<LogLevel, number> = { debug: 0, info: 1, warn: 2, error: 3  }
         const currentLevel = levels[this.logLevel] || 1;
         const messageLevel = levels[level] || 1;
         
-        if (messageLevel >= currentLevel) { const timestamp = new Date().toLocaleTimeString(); }
+        if (messageLevel >= currentLevel) { const timestamp = new Date().toLocaleTimeString() }
             const prefix = `[CoordinateDebugger ${timestamp}]`;
 
-            switch(level) {', ';
-
-            }
+            switch(level) {', ' }
 
                 case 'debug':' }
 
                     console.debug(`%c${prefix} ${message}`, 'color: #2196F3', ...args';
 
-                    break;''
-                case 'info':'';
+                    break;
+                case 'info':';
                     console.info(`%c${prefix} ${message}`, 'color: #4CAF50', ...args';
 
-                    break;''
-                case 'warn':'';
+                    break;
+                case 'warn':';
                     console.warn(`%c${prefix} ${message}`, 'color: #FF9800', ...args';
 
-                    break;''
-                case 'error':'';
+                    break;
+                case 'error':';
                     console.error(`%c${prefix} ${message}`, 'color: #F44336', ...args';
                     break;
             }
@@ -603,11 +581,11 @@ export class CoordinateSystemDebugger {
      * ログレベルを設定'
      */''
     setLogLevel(level: LogLevel): void { ''
-        const validLevels: LogLevel[] = ['debug', 'info', 'warn', 'error'];''
-        if(validLevels.includes(level)) {'
-            this.logLevel = level;' }'
+        const validLevels: LogLevel[] = ['debug', 'info', 'warn', 'error'],
+        if(validLevels.includes(level)) {
+            this.logLevel = level,' }'
 
-            this.log('info', `Log level set to: ${level}`'}';
+            this.log('info', `Log level set to: ${level}`}';
 
         } else { }'
 
@@ -619,18 +597,17 @@ export class CoordinateSystemDebugger {
      * クリーンアップ
      */
     cleanup() {
-        this.disable();
-        this.trackedElements.clear();
-        this.coordinateHistory = [];
+        this.disable(),
+        this.trackedElements.clear(),
+        this.coordinateHistory = [],
 
-        ';
+        ',
         // グローバル参照を削除
         if(window.coordinateDebugger === this) {
     }
             delete window.coordinateDebugger; }
         }
 
-        this.log('info', 'CoordinateSystemDebugger cleaned up'');
+        this.log('info', 'CoordinateSystemDebugger cleaned up');
 
-    }''
-}
+    }'}

@@ -7,119 +7,100 @@ interface MockFetch {
     mockClear: () => void;
 }
 interface MockFontFace {
-    load: jest.Mock<Promise<void>, []>;
-}
+    load: jest.Mock<Promise<void>, []> }
 interface MockCanvasContext {
     font: string,
-    measureText: jest.Mock<{ widt;h: number }, [string]>;
+    measureText: jest.Mock<{ widt,h: number }, [string]>;
 }
 interface MockCanvas {
-    getContext: jest.Mock<MockCanvasContext, [string]>;
-}
+    getContext: jest.Mock<MockCanvasContext, [string]> }
 interface MockDocument {
     fonts?: {
-        ad;d: jest.Mock<void, [any]>;
-    };
+        ad,d: jest.Mock<void, [any]> };
     createElement: jest.Mock<any, [string]>;
     head: {
-        appendChild: jest.Mock<void, [any]>;
-    };
+        appendChild: jest.Mock<void, [any]> };
     querySelectorAll: jest.Mock<any[], [string]>;
 }
 interface MockNavigator {
-    onLine: boolean,
-}
+    onLine: boolean }
 interface MockLink {
     rel: string,
     href: string,
-    onload: (() => void) | null;
-    onerror: (() => void) | null;
-}
+    onload: (() => void) | null,
+    onerror: (() => void) | null }
 interface FontSource {
-    load: jest.Mock<Promise<any>, [string, any? ]>; : undefined
-    isAvailable: jest.Mock<boolean, []>;
-}
+    load: jest.Mock<Promise<any>, [string, any? ]>, : undefined
+    isAvailable: jest.Mock<boolean, []> }
 interface LoadResult {
     loaded: boolean,
-    path?: string;
-    url?: string;
-    cached?: boolean;
-    system?: boolean;
-}
+    path?: string,
+    url?: string,
+    cached?: boolean,
+    system?: boolean }
 interface SourceLoadResult {
     success: boolean,
     fontFamily: string,
     source: string,
-    loadTime?: number;
-}
+    loadTime?: number }
 interface LoadHistory {
     timestamp: number,
     failed: boolean,
-    error?: any;
-}
+    error?: any }
 interface FontManagerStats {
     enabledSources: string[],
     availableSources: string[],
     loadAttempts: number,
-    timeouts: any,
-}
+    timeouts: any }
 interface ConsoleSpy {
     warn: jest.SpyInstance,
-    log: jest.SpyInstance,
-}
+    log: jest.SpyInstance }
 interface FontSourceConfig {
-    enabledSources?: string[];
-    fontDirectory?: string;
-    formats?: string[];
-    weights?: string[];
-}
+    enabledSources?: string[],
+    fontDirectory?: string,
+    formats?: string[],
+    weights?: string[] }
 // Mock DOM and Web APIs
-(global as any).fetch = jest.fn() as MockFetch;
-(global as any).document = {
+(global: any).fetch = jest.fn() as MockFetch;
+(global: any).document = {
     fonts: {
-        add: jest.fn(),
-    },
+        add: jest.fn( },
     createElement: jest.fn(() => ({
         getContext: jest.fn((') => ({
-            font: '',
-            measureText: jest.fn(() => ({ width: 100 )));
-    })))
-    ))),
+            font: ',
+            measureText: jest.fn(() => ({ width: 100 ))))
+    )),
     head: {
-        appendChild: jest.fn(),
-    },
+        appendChild: jest.fn( },
     querySelectorAll: jest.fn(() => []);
-    }) as MockDocument;
-(global as any).FontFace = jest.fn(() => ({
-    load: jest.fn(() => Promise.resolve());
-    })));
-(global as any).navigator = {
+    ) as MockDocument;
+(global: any).FontFace = jest.fn(() => ({
+    load: jest.fn(() => Promise.resolve())));
+(global: any).navigator = {
     onLine: true
     }') as MockNavigator;
 describe('FontSourceManager', () => {
     let fontSourceManager: FontSourceManager,
     let consoleSpy: ConsoleSpy,
     beforeEach(() => {
-        fontSourceManager = new FontSourceManager(');
+        fontSourceManager = new FontSourceManager('),
         consoleSpy = {
             warn: jest.spyOn(console, 'warn').mockImplementation(() => {}'),
             log: jest.spyOn(console, 'log').mockImplementation(() => {});
         // Reset mocks
         (fetch as unknown as jest.Mock).mockClear();
-        ((global as any).FontFace as jest.Mock).mockClear();
-        ((global as any).document.fonts.add as jest.Mock).mockClear();
+        ((global: any).FontFace as jest.Mock).mockClear();
+        ((global: any).document.fonts.add as jest.Mock).mockClear();
     });
     afterEach(() => {
-        Object.values(consoleSpy).forEach(spy => spy.mockRestore();
-        fontSourceManager.clearLoadHistory();
-    }');
+        Object.values(consoleSpy).forEach(spy => spy.mockRestore(),
+        fontSourceManager.clearLoadHistory() }');
     describe('Source Management', (') => {
         test('should initialize with default enabled sources', () => {
-            const availableSources = fontSourceManager.getAvailableSources();
-            expect(availableSources').toContain('system');
-            expect(availableSources').toContain('google');
-            expect(availableSources').toContain('local');
-        }');
+            const availableSources = fontSourceManager.getAvailableSources(),
+            expect(availableSources').toContain('system'),
+            expect(availableSources').toContain('google'),
+            expect(availableSources').toContain('local') }');
         test('should allow custom enabled sources configuration', (') => {
             const config: FontSourceConfig = {
                 enabledSources: ['system', 'google']
@@ -132,25 +113,22 @@ describe('FontSourceManager', () => {
             expect(availableSources').not.toContain('local');
         }');
         test('should check source availability', (') => {
-            expect(fontSourceManager.isSourceAvailable('system').toBe(true');
-            expect(fontSourceManager.isSourceAvailable('google').toBe(true');
-            expect(fontSourceManager.isSourceAvailable('nonexistent').toBe(false);
-        }');
+            expect(fontSourceManager.isSourceAvailable('system').toBe(true'),
+            expect(fontSourceManager.isSourceAvailable('google').toBe(true'),
+            expect(fontSourceManager.isSourceAvailable('nonexistent').toBe(false) }');
         test('should enable and disable sources dynamically', (') => {
-            fontSourceManager.disableSource('google');
-            expect(fontSourceManager.enabledSources').not.toContain('google'');
-            fontSourceManager.enableSource('google');
-            expect(fontSourceManager.enabledSources').toContain('google');
-        }');
+            fontSourceManager.disableSource('google'),
+            expect(fontSourceManager.enabledSources').not.toContain('google'),
+            fontSourceManager.enableSource('google'),
+            expect(fontSourceManager.enabledSources').toContain('google') }');
     }
     describe('Font Loading', (') => {
         test('should load font from available source', async () => {
             const mockSource: FontSource = {
-                load: jest.fn(() => Promise.resolve({ loaded: true ));
-               , isAvailable: jest.fn(() => true);
-    }');
+                load: jest.fn(() => Promise.resolve({ loaded: true )),
+               , isAvailable: jest.fn(() => true) }');
             fontSourceManager.sources.test = mockSource;
-            fontSourceManager.enabledSources.push('test'');
+            fontSourceManager.enabledSources.push('test');
             const result = await fontSourceManager.loadFromSource('test', 'Arial');
             expect(result.success).toBe(true);
             expect(result.fontFamily').toBe('Arial');
@@ -159,38 +137,33 @@ describe('FontSourceManager', () => {
         }
         test('should handle font loading failure', async () => {
             const mockSource: FontSource = {
-                load: jest.fn((') => Promise.reject(new Error('Load failed'));
-                isAvailable: jest.fn(() => true);
-    }');
+                load: jest.fn((') => Promise.reject(new Error('Load failed')),
+                isAvailable: jest.fn(() => true) }');
             fontSourceManager.sources.test = mockSource;
-            fontSourceManager.enabledSources.push('test'');
+            fontSourceManager.enabledSources.push('test');
             await expect(fontSourceManager.loadFromSource('test', 'Arial')').rejects.toThrow('Failed to load Arial from test');
         )');
         test('should handle disabled source', async (') => {
-            await expect(fontSourceManager.loadFromSource('disabled', 'Arial')').rejects.toThrow('Font source \'disabled\' is disabled');
-        }');
+            await expect(fontSourceManager.loadFromSource('disabled', 'Arial')').rejects.toThrow('Font source \'disabled\' is disabled') }');
         test('should handle unknown source', async (') => {
-            fontSourceManager.enabledSources.push('unknown'');
-            await expect(fontSourceManager.loadFromSource('unknown', 'Arial')').rejects.toThrow('Unknown font source: unknown'),
-        }');
+            fontSourceManager.enabledSources.push('unknown'),
+            await expect(fontSourceManager.loadFromSource('unknown', 'Arial')').rejects.toThrow('Unknown font source: unknown' }');
         test('should respect timeout settings', async () => {
             const mockSource: FontSource = {
                 load: jest.fn(() => new Promise(resolve => setTimeout(resolve, 2000)),
-                isAvailable: jest.fn(() => true);
-    }');
+                isAvailable: jest.fn(() => true) }');
             fontSourceManager.sources.test = mockSource;
-            fontSourceManager.enabledSources.push('test'');
+            fontSourceManager.enabledSources.push('test');
             fontSourceManager.timeouts.test = 100; // Very short timeout
             
             await expect(fontSourceManager.loadFromSource('test', 'Arial')').rejects.toThrow('timeout');
         )');
         test('should implement cooldown for failed sources', async () => {
             const mockSource: FontSource = {
-                load: jest.fn((') => Promise.reject(new Error('Load failed'));
-                isAvailable: jest.fn(() => true);
-    }');
+                load: jest.fn((') => Promise.reject(new Error('Load failed')),
+                isAvailable: jest.fn(() => true) }');
             fontSourceManager.sources.test = mockSource;
-            fontSourceManager.enabledSources.push('test'');
+            fontSourceManager.enabledSources.push('test');
             // First attempt should fail
             await expect(fontSourceManager.loadFromSource('test', 'Arial').rejects.toThrow(');
             // Second attempt within cooldown should be rejected immediately
@@ -200,12 +173,11 @@ describe('FontSourceManager', () => {
     describe('Load History Management', (') => {
         test('should track load attempts', async () => {
             const mockSource: FontSource = {
-                load: jest.fn(() => Promise.resolve({ loaded: true ));
-               , isAvailable: jest.fn(() => true);
-    }');
+                load: jest.fn(() => Promise.resolve({ loaded: true )),
+               , isAvailable: jest.fn(() => true) }');
             fontSourceManager.sources.test = mockSource;
-            fontSourceManager.enabledSources.push('test'');
-            await fontSourceManager.loadFromSource('test', 'Arial'');
+            fontSourceManager.enabledSources.push('test');
+            await fontSourceManager.loadFromSource('test', 'Arial');
             const history = fontSourceManager.getLoadAttemptHistory('test', 'Arial');
             expect(history).toBeDefined();
             expect(history!.timestamp).toBeDefined();
@@ -213,14 +185,12 @@ describe('FontSourceManager', () => {
         )');
         test('should track failed load attempts', async () => {
             const mockSource: FontSource = {
-                load: jest.fn((') => Promise.reject(new Error('Load failed'));
-                isAvailable: jest.fn(() => true);
-    }');
+                load: jest.fn((') => Promise.reject(new Error('Load failed')),
+                isAvailable: jest.fn(() => true) }');
             fontSourceManager.sources.test = mockSource;
-            fontSourceManager.enabledSources.push('test'');
+            fontSourceManager.enabledSources.push('test');
             try {
-                await fontSourceManager.loadFromSource('test', 'Arial');
-            ) catch (error') {
+                await fontSourceManager.loadFromSource('test', 'Arial')) catch (error') {
                 // Expected to fail
             }
             
@@ -230,60 +200,55 @@ describe('FontSourceManager', () => {
         }');
         test('should clear load history', async () => {
             const mockSource: FontSource = {
-                load: jest.fn(() => Promise.resolve({ loaded: true ));
-               , isAvailable: jest.fn(() => true);
-    }');
+                load: jest.fn(() => Promise.resolve({ loaded: true )),
+               , isAvailable: jest.fn(() => true) }');
             fontSourceManager.sources.test = mockSource;
-            fontSourceManager.enabledSources.push('test'');
-            await fontSourceManager.loadFromSource('test', 'Arial'');
-            fontSourceManager.clearLoadHistory('test'');
+            fontSourceManager.enabledSources.push('test');
+            await fontSourceManager.loadFromSource('test', 'Arial');
+            fontSourceManager.clearLoadHistory('test');
             const history = fontSourceManager.getLoadAttemptHistory('test', 'Arial');
             expect(history).toBeNull();
         );
     }');
     describe('Statistics', (') => {
         test('should provide comprehensive statistics', () => {
-            const stats = fontSourceManager.getStats();
-            expect(stats.enabledSources).toBeDefined();
-            expect(Array.isArray(stats.enabledSources).toBe(true);
-            expect(stats.availableSources).toBeDefined();
-            expect(Array.isArray(stats.availableSources).toBe(true);
-            expect(typeof stats.loadAttempts').toBe('number');
-            expect(stats.timeouts).toBeDefined();
-        });
+            const stats = fontSourceManager.getStats(),
+            expect(stats.enabledSources).toBeDefined(),
+            expect(Array.isArray(stats.enabledSources).toBe(true),
+            expect(stats.availableSources).toBeDefined(),
+            expect(Array.isArray(stats.availableSources).toBe(true),
+            expect(typeof stats.loadAttempts').toBe('number'),
+            expect(stats.timeouts).toBeDefined() });
     }
 }');
 describe('LocalFontSource', () => {
     let localFontSource: LocalFontSource,
     beforeEach(() => {
-        localFontSource = new LocalFontSource();
-        (fetch as unknown as jest.Mock).mockClear();
-        ((global as any).FontFace as jest.Mock).mockClear();
-    }');
+        localFontSource = new LocalFontSource(),
+        (fetch as unknown as jest.Mock).mockClear(),
+        ((global: any).FontFace as jest.Mock).mockClear() }');
     describe('Font Loading', (') => {
         test('should load local font successfully', async () => {
             (fetch as unknown as jest.Mock).mockResolvedValue({ ok: true }');
             const result = await localFontSource.load('TestFont');
             expect(result.loaded).toBe(true);
             expect(result.path').toContain('testfont.woff2');
-            expect((global as any).FontFace).toHaveBeenCalled();
+            expect((global: any).FontFace).toHaveBeenCalled();
         }');
         test('should handle missing CSS Font Loading API', async () => {
-            const originalFonts = (global as any).document.fonts;
-            delete (global as any').document.fonts;
+            const originalFonts = (global: any).document.fonts,
+            delete (global as any').document.fonts,
             
-            await expect(localFontSource.load('TestFont')').rejects.toThrow('CSS Font Loading API not supported');
-            (global as any).document.fonts = originalFonts;
-        }');
+            await expect(localFontSource.load('TestFont')').rejects.toThrow('CSS Font Loading API not supported'),
+            (global: any).document.fonts = originalFonts }');
         test('should check font file existence', async () => {
             (fetch as unknown as jest.Mock).mockResolvedValue({ ok: false }');
             await expect(localFontSource.load('MissingFont')').rejects.toThrow('Font file not found');
         }');
         test('should handle font loading errors', async () => {
             (fetch as unknown as jest.Mock).mockResolvedValue({ ok: true });
-            ((global as any).FontFace as jest.Mock).mockImplementation(() => ({
-                load: jest.fn((') => Promise.reject(new Error('Font load error')));
-    }))');
+            ((global: any).FontFace as jest.Mock).mockImplementation(() => ({
+                load: jest.fn((') => Promise.reject(new Error('Font load error')) }))');
             await expect(localFontSource.load('ErrorFont')').rejects.toThrow('Failed to load local font');
         );
     }');
@@ -303,13 +268,12 @@ describe('LocalFontSource', () => {
 describe('GoogleFontSource', () => {
     let googleFontSource: GoogleFontSource,
     beforeEach(() => {
-        googleFontSource = new GoogleFontSource();
-    }');
+        googleFontSource = new GoogleFontSource() }');
     describe('Font Loading', (') => {
         test('should load Google Font successfully', async (') => {
             const mockLink: MockLink = {
-                rel: '',
-                href: '',
+                rel: ',
+                href: ',
                 onload: null,
                 onerror: null
             };
@@ -325,8 +289,8 @@ describe('GoogleFontSource', () => {
         }');
         test('should handle Google Font loading failure', async (') => { : undefined
             const mockLink: MockLink = {
-                rel: '',
-                href: '',
+                rel: ',
+                href: ',
                 onload: null,
                 onerror: null
             };
@@ -338,20 +302,18 @@ describe('GoogleFontSource', () => {
             await expect(loadPromise').rejects.toThrow('Failed to load Google Font');
         }');
         test('should return cached font if already loaded', async (') => {
-            googleFontSource.loadedFonts.add('Roboto'');
-            const result = await googleFontSource.load('Roboto');
-            expect(result.loaded).toBe(true);
-            expect(result.cached).toBe(true);
-        }');
+            googleFontSource.loadedFonts.add('Roboto'),
+            const result = await googleFontSource.load('Roboto'),
+            expect(result.loaded).toBe(true),
+            expect(result.cached).toBe(true) }');
     }
     describe('Configuration', (') => {
         test('should build correct font URL with default settings', (') => {
-            const url = googleFontSource._buildFontUrl('Open Sans');
-            expect(url').toContain('googleapis.com/css2');
-            expect(url').toContain('Open+Sans');
-            expect(url').toContain('400;500;700');
-            expect(url').toContain('display=swap');
-        }');
+            const url = googleFontSource._buildFontUrl('Open Sans'),
+            expect(url').toContain('googleapis.com/css2'),
+            expect(url').toContain('Open+Sans'),
+            expect(url').toContain('400,500,700'),
+            expect(url').toContain('display=swap') }');
         test('should build font URL with custom weights', (') => { : undefined
             const options = { weights: ['300', '600'] };
             const url = googleFontSource._buildFontUrl('Roboto', options);
@@ -360,35 +322,31 @@ describe('GoogleFontSource', () => {
     }
     describe('Availability', (') => {
         test('should be available when online', () => {
-            (navigator.onLine = true);
-            expect(googleFontSource.isAvailable().toBe(true);
-        }');
+            (navigator.onLine = true),
+            expect(googleFontSource.isAvailable().toBe(true) }');
         test('should be unavailable when offline', () => {
-            (navigator.onLine = false);
-            expect(googleFontSource.isAvailable().toBe(false);
+            (navigator.onLine = false),
+            expect(googleFontSource.isAvailable().toBe(false),
             // Restore original state
-            (navigator.onLine = true);
-        });
+            (navigator.onLine = true) });
     }
 }');
 describe('SystemFontSource', () => {
     let systemFontSource: SystemFontSource,
     beforeEach(() => {
-        systemFontSource = new SystemFontSource();
-    }');
+        systemFontSource = new SystemFontSource() }');
     describe('Font Loading', (') => {
         test('should load system font if available', async () => {
             // Mock font as available (different width}');
             const mockContext: MockCanvasContext = {
-                font: '',
+                font: ',
         measureText: jest.fn()
                     .mockReturnValueOnce({ width: 100 })  // baseline
                     .mockReturnValue({ width: 120 )      // different = available
             };
             
-            (document.createElement as jest.Mock).mockReturnValue({);
-                getContext: jest.fn(() => mockContext);
-    })');
+            (document.createElement as jest.Mock).mockReturnValue({),
+                getContext: jest.fn(() => mockContext))');
             const result = await systemFontSource.load('Arial');
             expect(result.loaded).toBe(true);
             expect(result.system).toBe(true);
@@ -396,26 +354,22 @@ describe('SystemFontSource', () => {
         test('should reject unavailable system font', async () => {
             // Mock font as unavailable (same width}');
             const mockContext: MockCanvasContext = {
-                font: '',
+                font: ',
                 measureText: jest.fn(() => ({ width: 100 )));
-    });
-            (document.createElement as jest.Mock).mockReturnValue({);
-                getContext: jest.fn(() => mockContext);
-    })');
+            (document.createElement as jest.Mock).mockReturnValue({),
+                getContext: jest.fn(() => mockContext))');
             await expect(systemFontSource.load('NonexistentFont')').rejects.toThrow('System font not available');
         );
     }');
     describe('Availability', (') => {
         test('should be available in browser environment', () => {
-            expect(systemFontSource.isAvailable().toBe(true);
-        }');
+            expect(systemFontSource.isAvailable().toBe(true) }');
         test('should be unavailable in non-browser environment', () => {
-            const originalDocument = (global as any).document;
-            delete (global as any).document;
+            const originalDocument = (global: any).document,
+            delete (global: any).document,
             
-            const source = new SystemFontSource();
-            expect(source.isAvailable().toBe(false);
-            (global as any).document = originalDocument;
-        });
+            const source = new SystemFontSource(),
+            expect(source.isAvailable().toBe(false),
+            (global: any).document = originalDocument });
     }
 }');

@@ -13,23 +13,21 @@ import { ExportManager  } from '../../src/analytics/ExportManager';
 import { AnalyticsAPI  } from '../../src/analytics/AnalyticsAPI';
 // モック設定
 const createMockStorageManager = () => ({
-    saveData: jest.fn().mockResolvedValue(true;);
-   , getData: jest.fn().mockResolvedValue([]),
-        destroy: jest.fn(),
-});
+    saveData: jest.fn().mockResolvedValue(true),
+   , getData: jest.fn().mockResolvedValue([],
+        destroy: jest.fn();
 const createMockPrivacyManager = () => ({
     anonymizeData: jest.fn().mockImplementation(data => {)
-        // Handle single event object(not array);
+        // Handle single event object(not array),
         const result = { ...data };
         if (result.data && result.data.sessionId) {
             result.data = { ...result.data, sessionId: undefined };
         }
         return result;
     }),
-    checkConsent: jest.fn().mockReturnValue(true),
-    isOptedOut: jest.fn().mockReturnValue(false),
-        destroy: jest.fn(),
-}');
+    checkConsent: jest.fn().mockReturnValue(true,
+    isOptedOut: jest.fn().mockReturnValue(false,
+        destroy: jest.fn( }');
 describe('Analytics Component Integration Tests', () => {
     let mockStorageManager: any,
     let mockPrivacyManager: any,
@@ -38,24 +36,22 @@ describe('Analytics Component Integration Tests', () => {
     let analyticsAPI: any,
     
     beforeEach(() => {
-        mockStorageManager = createMockStorageManager();
-        mockPrivacyManager = createMockPrivacyManager();
-        dataCollector = new DataCollector(mockPrivacyManager, mockStorageManager);
-        exportManager = new ExportManager(mockStorageManager, mockPrivacyManager);
-        analyticsAPI = new AnalyticsAPI(mockStorageManager, mockPrivacyManager);
-    });
+        mockStorageManager = createMockStorageManager(),
+        mockPrivacyManager = createMockPrivacyManager(),
+        dataCollector = new DataCollector(mockPrivacyManager, mockStorageManager),
+        exportManager = new ExportManager(mockStorageManager, mockPrivacyManager),
+        analyticsAPI = new AnalyticsAPI(mockStorageManager, mockPrivacyManager) });
     afterEach(() => {
-        if (dataCollector) dataCollector.destroy();
-        if (exportManager) exportManager.destroy();
-        if (analyticsAPI) analyticsAPI.destroy();
-    }');
+        if (dataCollector) dataCollector.destroy(),
+        if (exportManager) exportManager.destroy(),
+        if (analyticsAPI) analyticsAPI.destroy() }');
     describe('データ収集・保存統合フロー', (') => {
         test('DataCollector + StorageManager + PrivacyManagerの連携', async (') => {
             // 1. テストデータの準備
             const testData = {
                 type: 'player_behavior',
                 sessionId: 'test-session-123',
-                timestamp: Date.now('),
+                timestamp: Date.now(',
                 action: 'bubble_click',
                 bubbleType: 'normal',
                 success: true
@@ -75,10 +71,9 @@ describe('Analytics Component Integration Tests', () => {
                     expect.objectContaining({
                         sessionId: undefined, // anonymized
                         action: testData.action,
-                        bubbleType: testData.bubbleType);
+                        bubbleType: testData.bubbleType),
                 ])
-            );
-        }');
+            ) }');
         test('バッチ処理での統合データフロー', async (') => {
             // 1. セッションを開始（bubble interactionに必要）
             dataCollector.startSession({ stageId: 'test', difficulty: 'normal' });
@@ -86,7 +81,7 @@ describe('Analytics Component Integration Tests', () => {
             const batchData: any[] = [],
             for (let i = 0; i < 3; i++') {
                 batchData.push({
-                    type: 'bubble_interaction';);
+                    type: 'bubble_interaction'),
                    , timestamp: Date.now(') + i * 1000,
                     bubbleType: i % 2 === 0 ? 'normal' : 'stone',
                     success: i % 2 === 0,
@@ -97,8 +92,7 @@ describe('Analytics Component Integration Tests', () => {
             
             // 3. バッチ収集の実行
             for (const data of batchData) {
-                dataCollector.collectBubbleInteraction(data);
-            }
+                dataCollector.collectBubbleInteraction(data) }
             
             // 4. バッチ処理を手動でトリガー
             await dataCollector.processBatch();
@@ -119,7 +113,7 @@ describe('Analytics Component Integration Tests', () => {
             const mockData = [
                 {
                     sessionId: 'session-1',
-                    timestamp: Date.now('),
+                    timestamp: Date.now(',
                     score: 1200,
                     bubbleType: 'normal'
                 },
@@ -135,17 +129,16 @@ describe('Analytics Component Integration Tests', () => {
             const exportResult = await exportManager.exportData({
                 dataTypes: ['sessionData'],
                 format: 'json',
-                anonymize: true);
+                anonymize: true),
             // 3. エクスポートが成功することを確認
-            expect(exportResult.success).toBe(true);
-            expect(exportResult.data).toBeDefined();
+            expect(exportResult.success).toBe(true),
+            expect(exportResult.data).toBeDefined(),
             // 4. ストレージマネージャーからデータが取得されることを確認
             expect(mockStorageManager.getData').toHaveBeenCalledWith(
                 'sessionData',
-                expect.any(Object);
+                expect.any(Object),
             // 5. プライバシーマネージャーで匿名化されることを確認
-            expect(mockPrivacyManager.anonymizeData).toHaveBeenCalledWith(mockData);
-        }');
+            expect(mockPrivacyManager.anonymizeData).toHaveBeenCalledWith(mockData) }');
         test('AnalyticsAPI + ExportManagerの統合', async (') => {
             // 1. ストレージからのデータ取得をモック
             const mockSessionData = [
@@ -163,10 +156,9 @@ describe('Analytics Component Integration Tests', () => {
             // 3. API経由でのエクスポート
             const exportResponse = await analyticsAPI.getData('/export', {
                 format: 'json',
-                dataTypes: 'sessionData');
-            expect(exportResponse.success).toBe(true);
-            expect(exportResponse.data).toBeDefined();
-        }');
+                dataTypes: 'sessionData'),
+            expect(exportResponse.success).toBe(true),
+            expect(exportResponse.data).toBeDefined() }');
         test('集計データのAPI統合処理', async (') => {
             // 1. 集計用のテストデータをモック
             const mockAggregationData = [
@@ -180,29 +172,27 @@ describe('Analytics Component Integration Tests', () => {
             const aggregationResponse = await analyticsAPI.getData('/aggregate', {
                 dataType: 'bubbleInteractions',
                 groupBy: 'bubbleType',
-                metrics: ['avg:score', 'count']);
+                metrics: ['avg:score', 'count']),
             // 3. 集計結果の確認
-            expect(aggregationResponse.success).toBe(true);
-            expect(aggregationResponse.data.aggregatedData).toBeDefined();
+            expect(aggregationResponse.success).toBe(true),
+            expect(aggregationResponse.data.aggregatedData).toBeDefined(),
             // 4. 正しいグループ化が行われることを確認
-            const aggregatedData = aggregationResponse.data.aggregatedData;
-            expect(aggregatedData').toHaveProperty('normal');
-            expect(aggregatedData').toHaveProperty('stone');
-            expect(aggregatedData.normal').toHaveProperty('avg_score');
-            expect(aggregatedData.normal').toHaveProperty('count');
-        }');
+            const aggregatedData = aggregationResponse.data.aggregatedData,
+            expect(aggregatedData').toHaveProperty('normal'),
+            expect(aggregatedData').toHaveProperty('stone'),
+            expect(aggregatedData.normal').toHaveProperty('avg_score'),
+            expect(aggregatedData.normal').toHaveProperty('count') }');
     }
     describe('エラーハンドリング統合', (') => {
         test('ストレージエラー時のカスケード処理', async (') => {
             // 1. ストレージエラーを設定
-            const storageError = new Error('Storage connection failed');
-            mockStorageManager.saveData.mockRejectedValue(storageError');
+            const storageError = new Error('Storage connection failed'),
+            mockStorageManager.saveData.mockRejectedValue(storageError'),
             // 2. データ収集時のエラーハンドリング
             const testData = {
                 type: 'player_behavior',
                 sessionId: 'error-test',
-        timestamp: Date.now(),
-            };
+        timestamp: Date.now( };
             
             // 3. データを収集してバッチ処理を実行
             dataCollector.collectSessionData(testData);
@@ -216,22 +206,20 @@ describe('Analytics Component Integration Tests', () => {
         }');
         test('エクスポート時のエラーハンドリング', async (') => {
             // 1. ストレージからのデータ取得エラーを設定
-            const dataError = new Error('Data retrieval failed');
-            mockStorageManager.getData.mockRejectedValue(dataError');
+            const dataError = new Error('Data retrieval failed'),
+            mockStorageManager.getData.mockRejectedValue(dataError'),
             // 2. エクスポート実行
             const exportResult = await exportManager.exportData({
                 dataTypes: ['sessionData'],
-                format: 'json');
+                format: 'json'),
             // 3. エラーが適切に処理されることを確認
-            expect(exportResult.success).toBe(false);
-            expect(exportResult.error').toContain('Data retrieval failed');
-        }');
+            expect(exportResult.success).toBe(false),
+            expect(exportResult.error').toContain('Data retrieval failed') }');
         test('API制限エラーの統合処理', async () => {
             // 1. 大量のリクエストを送信
             const requests: any[] = [],
-            for (let i = 0; i < 65; i++') { // レート制限を超える
-                requests.push(analyticsAPI.getData('/sessionData');
-            }
+            for (let i = 0, i < 65, i++') { // レート制限を超える
+                requests.push(analyticsAPI.getData('/sessionData') }
             
             // 2. 結果の確認
             const results = await Promise.allSettled(requests');
@@ -249,7 +237,7 @@ describe('Analytics Component Integration Tests', () => {
             const originalData = {
                 type: 'player_behavior',
                 sessionId: 'flow-test-session',
-                timestamp: Date.now('),
+                timestamp: Date.now(',
                 action: 'bubble_click',
                 bubbleType: 'rainbow',
                 success: true,
@@ -271,28 +259,27 @@ describe('Analytics Component Integration Tests', () => {
             const exportResult = await exportManager.exportData({
                 dataTypes: ['sessionData'],
                 format: 'json',
-                anonymize: false);
+                anonymize: false),
             // 4. データの整合性確認
-            expect(exportResult.success).toBe(true);
-            expect(exportResult.data.sessionData).toBeDefined();
+            expect(exportResult.success).toBe(true),
+            expect(exportResult.data.sessionData).toBeDefined(),
             expect(exportResult.data.sessionData[0]).toMatchObject({
                 sessionId: originalData.sessionId,
                 action: originalData.action,
-                bubbleType: originalData.bubbleType)');
+                bubbleType: originalData.bubbleType)'),
             // 5. API経由でも同じデータが取得できることを確認
-            const apiResult = await analyticsAPI.getData('/sessionData');
-            expect(apiResult.success).toBe(true);
+            const apiResult = await analyticsAPI.getData('/sessionData'),
+            expect(apiResult.success).toBe(true),
             expect(apiResult.data[0]).toMatchObject({
                 sessionId: originalData.sessionId,
-                action: originalData.action)');
-        }
+                action: originalData.action)') }
         test('プライバシー保護の統合確認', async (') => {
             // 1. 個人情報を含むデータの準備
             const sensitiveData = [
                 {
                     sessionId: 'sensitive-session-123',
                     userId: 'user-456',
-                    timestamp: Date.now('),
+                    timestamp: Date.now(',
                     ipAddress: '192.168.1.1',
                     deviceId: 'device-789',
                     score: 1200
@@ -304,15 +291,14 @@ describe('Analytics Component Integration Tests', () => {
             const anonymizedExport = await exportManager.exportData({
                 dataTypes: ['sessionData'],
                 format: 'json',
-                anonymize: true);
+                anonymize: true),
             // 3. プライバシー保護が適用されることを確認
-            expect(mockPrivacyManager.anonymizeData).toHaveBeenCalled();
-            expect(anonymizedExport.success).toBe(true');
+            expect(mockPrivacyManager.anonymizeData).toHaveBeenCalled(),
+            expect(anonymizedExport.success).toBe(true'),
             // 4. API経由でも匿名化が適用されることを確認
             const apiResult = await analyticsAPI.getData('/sessionData', {
-                anonymize: true);
-            expect(apiResult.success).toBe(true);
-            expect(mockPrivacyManager.anonymizeData).toHaveBeenCalled();
-        });
+                anonymize: true),
+            expect(apiResult.success).toBe(true),
+            expect(mockPrivacyManager.anonymizeData).toHaveBeenCalled() });
     }
 }');

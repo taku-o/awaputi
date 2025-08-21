@@ -3,86 +3,85 @@ import { getErrorHandler  } from '../utils/ErrorHandler.js';
 export interface KeyboardCustomization { shortcuts: Map<string, any>,
     conflicts: Map<string, any>,
     profiles: Map<string, any>,
-    currentProfile: string ,}
+    currentProfile: string  }
 ';
 
 export interface KeyboardConfig { allowCustomization: boolean,''
-    conflictResolution: 'block' | 'warn' | 'override';
-    saveToLocalStorage: boolean;
+    conflictResolution: 'block' | 'warn' | 'override',
+    saveToLocalStorage: boolean,
     maxShortcutsPerAction: number,
     reservedKeys: Set<string>
-    ,}
+     }
 
-export interface KeyboardState { isRecording: boolean;
-    recordingAction: string | null;
+export interface KeyboardState { isRecording: boolean,
+    recordingAction: string | null,
     recordingKeys: string[],
     pendingChanges: Map<string, any>,
-    lastConflictCheck: number | null ,}
+    lastConflictCheck: number | null  }
 
-export interface ConflictInfo { action: string;
-    keys: string;
+export interface ConflictInfo { action: string,
+    keys: string,
     priority: string,
     category: string }
 
 export interface UsageStatistics {
-    mostUsed: Array<{ nam;e: string; usageCount: number;, lastUsed: number }>,
-    leastUsed: Array<{ name: string; usageCount: number;, lastUsed: number }>,
-    recentlyModified: Array<{ name: string;, modifiedAt: number }>,
+    mostUsed: Array<{ nam,e: string, usageCount: number,, lastUsed: number }>,
+    leastUsed: Array<{ name: string, usageCount: number,, lastUsed: number }>,
+    recentlyModified: Array<{ name: string,, modifiedAt: number }>,
     totalUsage: number;
 }
 
 export interface KeyboardReport { totalShortcuts: number,
-    customizedShortcuts: number;
-    currentProfile: string;
-    availableProfiles: number;
-    conflictsCount: number;
+    customizedShortcuts: number,
+    currentProfile: string,
+    availableProfiles: number,
+    conflictsCount: number,
     lastConflictCheck: number | null,
     usageStatistics: UsageStatistics
-    ,}
+     }
 
 /**
  * キーボードアクセシビリティ管理クラス
  * 既存のKeyboardShortcutManagerを拡張し、アクセシビリティ機能を強化
  */
 export class KeyboardAccessibilityManager {
-    private accessibilityManager: any;
-    private gameEngine: any;
-    private keyboardManager: any;
-    private customizations: KeyboardCustomization;
-    private config: KeyboardConfig;
-    private state: KeyboardState;
-    private, eventListeners: Map<string, Set<Function>>;
+    private accessibilityManager: any,
+    private gameEngine: any,
+    private keyboardManager: any,
+    private customizations: KeyboardCustomization,
+    private config: KeyboardConfig,
+    private state: KeyboardState,
+    private, eventListeners: Map<string, Set<Function>>,
 
     constructor(accessibilityManager: any, existingKeyboardManager: any) {
 
-        this.accessibilityManager = accessibilityManager;
-        this.gameEngine = accessibilityManager.gameEngine;
-        this.keyboardManager = existingKeyboardManager;
+        this.accessibilityManager = accessibilityManager,
+        this.gameEngine = accessibilityManager.gameEngine,
+        this.keyboardManager = existingKeyboardManager,
         
         // カスタマイズ設定
         this.customizations = {
-            shortcuts: new Map(),
-    conflicts: new Map(),
-            profiles: new Map(''
-    ,}
+            shortcuts: new Map(
+    conflicts: new Map(
+            profiles: new Map('}
 
             currentProfile: 'default' 
     };
         // 設定管理
         this.config = { allowCustomization: true,''
-            conflictResolution: 'warn', // 'block', 'warn', 'override';
-            saveToLocalStorage: true);
-            maxShortcutsPerAction: 3'',
-    reservedKeys: new Set([']';
-                'F1', 'F5', 'F11', 'F12', 'Alt+Tab', 'Ctrl+Alt+Delete']);
-            ]); };
+            conflictResolution: 'warn', // 'block', 'warn', 'override',
+            saveToLocalStorage: true),
+            maxShortcutsPerAction: 3',
+    reservedKeys: new Set([']',
+                'F1', 'F5', 'F11', 'F12', 'Alt+Tab', 'Ctrl+Alt+Delete']),
+            ]) };
         
         // 状態管理
         this.state = { isRecording: false,
-            recordingAction: null;
-            recordingKeys: [];
-            pendingChanges: new Map(),
-    lastConflictCheck: null ,};
+            recordingAction: null,
+            recordingKeys: [],
+            pendingChanges: new Map(
+    lastConflictCheck: null  };
         ;
         // イベントリスナー
         this.eventListeners = new Map()';
@@ -95,22 +94,23 @@ export class KeyboardAccessibilityManager {
      */
     private initialize(): void { try {
             // 既存ショートカットの拡張
-            this.enhanceExistingShortcuts();
+            this.enhanceExistingShortcuts(),
             
             // カスタマイズショートカットの追加
-            this.addCustomizationShortcuts();
+            this.addCustomizationShortcuts(),
             
             // 設定の読み込み
-            this.loadConfiguration();
+            this.loadConfiguration(),
             
             // イベントリスナーの設定
-            this.setupEventListeners();
+            this.setupEventListeners(),
             // 競合チェック
-            this.checkShortcutConflicts()';
-            console.log('KeyboardAccessibilityManager, initialized successfully'); }'
+            this.checkShortcutConflicts()',
+            console.log('KeyboardAccessibilityManager, initialized successfully') }'
 
         } catch (error) { getErrorHandler().handleError(error, 'KEYBOARD_ACCESSIBILITY_ERROR', {''
-                operation: 'initialize' ,}';
+                operation: 'initialize'
+            }';
         }
     }
     
@@ -118,10 +118,9 @@ export class KeyboardAccessibilityManager {
      * 既存ショートカットの拡張
      */'
     private enhanceExistingShortcuts(): void { ''
-        if(!this.keyboardManager) {'
+        if(!this.keyboardManager) {
 
-            console.warn('No, existing keyboard, manager found);
-        }
+            console.warn('No, existing keyboard, manager found) }
             return; }
         }
         
@@ -131,10 +130,10 @@ export class KeyboardAccessibilityManager {
         Object.entries(existingShortcuts).forEach(([name, shortcut]) => {  // カスタマイズ可能かどうかの設定
             const enhanced = {
                 ...shortcut,
-                customizable: !this.config.reservedKeys.has(shortcut.keys[0]);
-                originalKeys: [...shortcut.keys];
-                category: this.categorizeShortcut(name);
-                priority: this.getShortcutPriority(name),
+                customizable: !this.config.reservedKeys.has(shortcut.keys[0]),
+                originalKeys: [...shortcut.keys],
+                category: this.categorizeShortcut(name),
+                priority: this.getShortcutPriority(name,
     accessibility: {
                     screenReaderFriendly: true,
     hasVisualFeedback: false }
@@ -155,13 +154,13 @@ export class KeyboardAccessibilityManager {
             accessibility: ['highContrast', 'largeText', 'reducedMotion', 'toggleScreenReader'],
             audio: ['mute', 'volumeUp', 'volumeDown'],
             display: ['fullscreen', 'debug', 'debugToggle'],
-            custom: [] ,};
+            custom: []  };
         for(const [category, shortcuts] of Object.entries(categories) {
-        ';
+        ',
 
             if(shortcuts.includes(name)) {
-        
-        }
+    
+}
                 return category;
 
         return 'custom';
@@ -176,11 +175,11 @@ export class KeyboardAccessibilityManager {
             low: ['debug', 'debugToggle] };
         
         for(const [priority, shortcuts] of Object.entries(priorities) {
-        ';
+        ',
 
             if(shortcuts.includes(name)) {
-        
-        }
+    
+}
                 return priority;
 
         return 'medium';
@@ -191,35 +190,35 @@ export class KeyboardAccessibilityManager {
      */''
     private addCustomizationShortcuts('''
             ['showShortcutHelp', { ]'
-                keys: ['Ctrl+Alt+? ], : undefined'';
+                keys: ['Ctrl+Alt+? ], : undefined',
                 callback: () => this.showShortcutHelp('''
-                description: 'ショートカット一覧を表示','';
-                category: 'accessibility'),
-    customizable: false ,}
+                description: 'ショートカット一覧を表示',',
+                category: 'accessibility',
+    customizable: false  }
 
             }],''
             ['openShortcutCustomizer', { ]'
-                keys: ['Ctrl+Alt+K],')';
+                keys: ['Ctrl+Alt+K],')',
                 callback: () => this.openShortcutCustomizer('''
-                description: 'ショートカットカスタマイザーを開く','';
-                category: 'accessibility'),
-    customizable: false ,}
+                description: 'ショートカットカスタマイザーを開く',',
+                category: 'accessibility',
+    customizable: false  }
 
             }],''
             ['resetShortcuts', { ]'
-                keys: ['Ctrl+Alt+Shift+R],')';
+                keys: ['Ctrl+Alt+Shift+R],')',
                 callback: () => this.resetToDefaults('''
-                description: 'ショートカットをデフォルトに戻す','';
-                category: 'accessibility'),
-    customizable: false ,}
+                description: 'ショートカットをデフォルトに戻す',',
+                category: 'accessibility',
+    customizable: false  }
 
             }],''
             ['toggleRecording', { ]'
-                keys: ['Ctrl+Alt+R],')';
+                keys: ['Ctrl+Alt+R],')',
                 callback: () => this.toggleShortcutRecording('''
-                description: 'ショートカット記録の切り替え','';
-                category: 'accessibility'),
-    customizable: false ,}
+                description: 'ショートカット記録の切り替え',',
+                category: 'accessibility',
+    customizable: false  }
             }])
         ]';
         ';
@@ -233,8 +232,9 @@ export class KeyboardAccessibilityManager {
             
             // 内部管理にも追加
             this.customizations.shortcuts.set(name, { ...shortcut)
-                originalKeys: [...shortcut.keys],')';
-                priority: 'high');' ,}
+                originalKeys: [...shortcut.keys],')',
+                priority: 'high'),'
+            }
 
         }');
 
@@ -245,13 +245,13 @@ export class KeyboardAccessibilityManager {
      * 設定の読み込み
      */'
     private loadConfiguration(): void { ''
-        if(!this.config.saveToLocalStorage) return;
-        ';
+        if(!this.config.saveToLocalStorage) return,
+        ',
 
         try {'
-            const savedConfig = localStorage.getItem('keyboardAccessibilityConfig);
+            const savedConfig = localStorage.getItem('keyboardAccessibilityConfig),
             if(savedConfig) {
-                const config = JSON.parse(savedConfig);
+                const config = JSON.parse(savedConfig),
                 
                 // カスタムショートカットの復元
                 if (config.customShortcuts) {
@@ -269,14 +269,12 @@ export class KeyboardAccessibilityManager {
                 
                 // 現在のプロファイル
                 if(config.currentProfile) {
-                    this.customizations.currentProfile = config.currentProfile;
-
-                }
+                    this.customizations.currentProfile = config.currentProfile }
 
                     this.applyProfile(config.currentProfile); }
                 }
 
-                console.log('Keyboard, accessibility configuration, loaded');''
+                console.log('Keyboard, accessibility configuration, loaded');
             } catch (error) { console.warn('Failed to load keyboard accessibility configuration:', error }
     }
     
@@ -284,7 +282,7 @@ export class KeyboardAccessibilityManager {
      * 設定の保存
      */'
     private saveConfiguration(): void { ''
-        if(!this.config.saveToLocalStorage) return;
+        if(!this.config.saveToLocalStorage) return,
         
         try {
             const config = { }
@@ -303,20 +301,19 @@ export class KeyboardAccessibilityManager {
                 if(name !== 'default' { }'
                     config.profiles[name] = profile; }
 
-                }''
-            }');
+                }'}');
 
-            localStorage.setItem('keyboardAccessibilityConfig', JSON.stringify(config));''
-            console.log('Keyboard, accessibility configuration, saved');''
+            localStorage.setItem('keyboardAccessibilityConfig', JSON.stringify(config));
+            console.log('Keyboard, accessibility configuration, saved');
         } catch (error) { console.warn('Failed to save keyboard accessibility configuration:', error }
     }
     
     /**
      * イベントリスナーの設定
      */
-    setupEventListeners() {'
+    setupEventListeners() {
         // キーボードマネージャーのイベントを監視
-        if(this.keyboardManager.addEventListener) {'
+        if(this.keyboardManager.addEventListener) {
     }
 
             this.keyboardManager.addEventListener('shortcutTriggered', (name, keyCombo) => {  }
@@ -327,7 +324,7 @@ export class KeyboardAccessibilityManager {
         }
         ';
         // ウィンドウフォーカス変更
-        window.addEventListener('focus', () => { this.checkShortcutConflicts();' }
+        window.addEventListener('focus', () => { this.checkShortcutConflicts(),' }
 
         }');
 
@@ -339,25 +336,22 @@ export class KeyboardAccessibilityManager {
      */
     handleShortcutTriggered(name keyCombo) {
         // 使用統計の更新
-        this.updateUsageStatistics(name');
+        this.updateUsageStatistics(name'),
         // アクセシビリティフィードバック
-        this.provideAccessibilityFeedback(name, keyCombo');
-        
-    }
+        this.provideAccessibilityFeedback(name, keyCombo') }
 
         // イベント発行' }'
 
-        this.emit('shortcutExecuted', { name, keyCombo, timestamp: Date.now( ,});
+        this.emit('shortcutExecuted', { name, keyCombo, timestamp: Date.now(  });
     }
     
     /**
      * 使用統計の更新
      */
     updateUsageStatistics(name) {
-        const shortcut = this.customizations.shortcuts.get(name);
+        const shortcut = this.customizations.shortcuts.get(name),
         if (shortcut) {
-            shortcut.usageCount = (shortcut.usageCount || 0) + 1;
-    }
+            shortcut.usageCount = (shortcut.usageCount || 0) + 1 }
             shortcut.lastUsed = Date.now(); }
 }
     
@@ -365,8 +359,8 @@ export class KeyboardAccessibilityManager {
      * アクセシビリティフィードバック
      */
     provideAccessibilityFeedback(name, keyCombo) {
-        const shortcut = this.customizations.shortcuts.get(name);
-        if (!shortcut) return;
+        const shortcut = this.customizations.shortcuts.get(name),
+        if (!shortcut) return,
         
         // スクリーンリーダーへの通知
     }
@@ -376,83 +370,81 @@ export class KeyboardAccessibilityManager {
         }
         
         // 視覚的フィードバック（設定に応じて）
-        if (shortcut.accessibility?.hasVisualFeedback) { this.showVisualFeedback(name); }
+        if (shortcut.accessibility?.hasVisualFeedback) { this.showVisualFeedback(name) }
         
         // 音声フィードバック（設定に応じて）
-        if (shortcut.accessibility?.hasAudioFeedback) { this.playAudioFeedback(name); }
+        if (shortcut.accessibility?.hasAudioFeedback) { this.playAudioFeedback(name) }
     }
     
     /**
      * カスタムショートカットの設定
      */ : undefined
-    setCustomShortcut(actionName: string, newKeys: string[], save: boolean = true): boolean { const shortcut = this.customizations.shortcuts.get(actionName);
+    setCustomShortcut(actionName: string, newKeys: string[], save: boolean = true): boolean { const shortcut = this.customizations.shortcuts.get(actionName),
         if (!shortcut) { }
             throw new Error(`Shortcut, not found: ${actionName}`});
         }
         
         if(!shortcut.customizable) {
-        
-            
-        
-        }
+    
+}
             throw new Error(`Shortcut, not customizable: ${actionName}`});
         }
         
         // 競合チェック
         const conflicts = this.checkForConflicts(newKeys, actionName);
         if(conflicts.length > 0) {
-            const shouldProceed = this.handleConflicts(conflicts, actionName, newKeys);
+            const shouldProceed = this.handleConflicts(conflicts, actionName, newKeys),
             if (!shouldProceed) {
         }
                 return false;
         ;
         try { // 既存のショートカットを削除
-            this.keyboardManager.removeShortcut(actionName);
+            this.keyboardManager.removeShortcut(actionName),
             
             // 新しいショートカットを追加
             this.keyboardManager.addShortcut(actionName, newKeys, shortcut.callback, {)
-                description: shortcut.description,')';
-                context: shortcut.context || 'global');
+                description: shortcut.description,')',
+                context: shortcut.context || 'global'),
             // 内部管理を更新
-            shortcut.keys = [...newKeys];
-            shortcut.modified = true;
-            shortcut.modifiedAt = Date.now();
-            ' ,}'
+            shortcut.keys = [...newKeys],
+            shortcut.modified = true,
+            shortcut.modifiedAt = Date.now(),
+            '
+            }'
 
             console.log(`Custom shortcut set: ${actionName} = ${newKeys.join(', '})`);
             
             // 設定を保存
-            if(save) {'
+            if(save) {
 
-                this.saveConfiguration(''';
-            this.emit('shortcutChanged', {)
-                action: actionName),
-    oldKeys: shortcut.originalKeys,);
-                newKeys: newKeys);
-            ,}
+                this.saveConfiguration('',
+            this.emit('shortcutChanged', {
+                action: actionName,
+    oldKeys: shortcut.originalKeys),
+                newKeys: newKeys) })
             return true; catch (error) {
             getErrorHandler().handleError(error, 'KEYBOARD_ACCESSIBILITY_ERROR', {''
-                operation: 'setCustomShortcut');
-                actionName,);
-                newKeys); }';
+                operation: 'setCustomShortcut'),
+                actionName),
+                newKeys }';
             return false;
     
     /**
      * 競合チェック'
      */''
-    private checkForConflicts(keys: string[], excludeAction: string | null = null): ConflictInfo[] { const conflicts = [];''
-        const keyCombo = keys.join('+);
+    private checkForConflicts(keys: string[], excludeAction: string | null = null): ConflictInfo[] { const conflicts = [],
+        const keyCombo = keys.join('+),
         
         this.customizations.shortcuts.forEach((shortcut, name) => { 
-            if (name === excludeAction) return;
+            if (name === excludeAction) return,
             
-            shortcut.keys.forEach(existingKeyCombo => {);
+            shortcut.keys.forEach(existingKeyCombo => {),
                 if(existingKeyCombo === keyCombo) {
                     conflicts.push({
-                        action: name),
+                        action: name,
     keys: existingKeyCombo)
-                ,}
-                        priority: shortcut.priority,) }
+                 }
+                        priority: shortcut.priority) }
                         category: shortcut.category); 
     });
                 }
@@ -465,23 +457,23 @@ export class KeyboardAccessibilityManager {
     /**
      * 競合の処理
      */
-    handleConflicts(conflicts, actionName, newKeys) {'
+    handleConflicts(conflicts, actionName, newKeys) {
 
         switch(this.config.conflictResolution) {''
-            case 'block':'';
-                console.warn(`Shortcut, conflict blocked, for ${actionName):`, conflicts');
-                return, false;
+            case 'block':',
+                console.warn(`Shortcut, conflict blocked, for ${actionName):`, conflicts'),
+                return, false,
 
-            case 'warn':;
+            case 'warn':,
                 console.warn(`Shortcut, conflict, detected, for ${actionName):`, conflicts};
 
                 // ユーザーに確認を求める
                 return this.confirmConflictResolution(conflicts, actionName, newKeys}
 
-            case 'override': ;
+            case 'override':
                 // 既存のショートカットを無効化
     }
-                conflicts.forEach(conflict => {); }
+                conflicts.forEach(conflict => {) }
                     this.removeShortcut(conflict.action, conflict.keys});
                 });
                 return true;
@@ -491,12 +483,9 @@ export class KeyboardAccessibilityManager {
     /**
      * 競合解決の確認
      */
-    confirmConflictResolution(conflicts, actionName, newKeys) {
-        ';
+    confirmConflictResolution(conflicts, actionName, newKeys) { }
 
-    }
-
-        const conflictNames = conflicts.map(c => c.action).join(', '');' }
+        const conflictNames = conflicts.map(c => c.action).join(', ');' }
 
         const message = `ショートカット「${newKeys.join('+'})」は既に「${conflictNames}」で使用されています。続行しますか？`;
         
@@ -507,12 +496,11 @@ export class KeyboardAccessibilityManager {
      * ショートカット競合の全体チェック
      */
     checkShortcutConflicts() {
-        const allConflicts = new Map();
+        const allConflicts = new Map(),
         
         this.customizations.shortcuts.forEach((shortcut, name) => { 
-            shortcut.keys.forEach(keyCombo => {);
-                const conflicts = this.checkForConflicts([keyCombo], name);
-    }
+            shortcut.keys.forEach(keyCombo => {),
+                const conflicts = this.checkForConflicts([keyCombo], name) }
                 if (conflicts.length > 0) { }
                     allConflicts.set(name, conflicts); }
 });
@@ -521,9 +509,7 @@ export class KeyboardAccessibilityManager {
         this.customizations.conflicts = allConflicts;
         this.state.lastConflictCheck = Date.now();
 
-        if(allConflicts.size > 0) {', ';
-
-        }
+        if(allConflicts.size > 0) {', ' }
 
             console.warn('Shortcut conflicts detected:', Object.fromEntries(allConflicts); }
         }
@@ -535,23 +521,23 @@ export class KeyboardAccessibilityManager {
      * ショートカット記録の開始/停止
      */
     toggleShortcutRecording(actionName: string | null = null): void { if (this.state.isRecording) {
-            this.stopShortcutRecording(); } else { this.startShortcutRecording(actionName); }
+            this.stopShortcutRecording() } else { this.startShortcutRecording(actionName) }
     }
     
     /**
      * ショートカット記録の開始'
      */''
     startShortcutRecording(actionName = null) {
-        this.state.isRecording = true;
-        this.state.recordingAction = actionName;
-        this.state.recordingKeys = [];
-        ';
+        this.state.isRecording = true,
+        this.state.recordingAction = actionName,
+        this.state.recordingKeys = [],
+        ',
         // 記録用のイベントリスナーを追加
-        document.addEventListener('keydown', this.handleRecordingKeyDown.bind(this), true');''
-        document.addEventListener('keyup', this.handleRecordingKeyUp.bind(this), true');
+        document.addEventListener('keydown', this.handleRecordingKeyDown.bind(this), true'),
+        document.addEventListener('keyup', this.handleRecordingKeyUp.bind(this), true'),
 
-        console.log('Shortcut recording started', actionName ? `for ${actionName'` : '''};''
-        this.announceToScreenReader('ショートカット記録を開始しました。キーを押してください。''}
+        console.log('Shortcut recording started', actionName ? `for ${actionName'` : ''};
+        this.announceToScreenReader('ショートカット記録を開始しました。キーを押してください。'}
 
         ' }'
 
@@ -562,7 +548,7 @@ export class KeyboardAccessibilityManager {
      * ショートカット記録の停止'
      */''
     stopShortcutRecording()';
-        document.removeEventListener('keydown', this.handleRecordingKeyDown, true';''
+        document.removeEventListener('keydown', this.handleRecordingKeyDown, true';
         document.removeEventListener('keyup', this.handleRecordingKeyUp, true';
         
         const recordedKeys = [...this.state.recordingKeys];
@@ -576,36 +562,34 @@ export class KeyboardAccessibilityManager {
         
         // 記録されたキーが有効な場合は設定
         if(recordedKeys.length > 0 && actionName) {
-            const success = this.setCustomShortcut(actionName, recordedKeys);
+            const success = this.setCustomShortcut(actionName, recordedKeys) }
 
-        }
+            if(success) { }'
 
-            if(success) {' }'
-
-                this.announceToScreenReader(`ショートカット記録完了: ${recordedKeys.join('+'}'が${actionName}に設定されました`');
+                this.announceToScreenReader(`ショートカット記録完了: ${recordedKeys.join('+'}'が${actionName}に設定されました`);
 
             } else { }'
 
-                this.announceToScreenReader('ショートカット記録に失敗しました''); }
+                this.announceToScreenReader('ショートカット記録に失敗しました'); }
 } else { }'
 
-            this.announceToScreenReader('ショートカット記録をキャンセルしました''); }
+            this.announceToScreenReader('ショートカット記録をキャンセルしました'); }
         }
 
-        this.emit('recordingStopped', { actionName, recordedKeys ); }
+        this.emit('recordingStopped', { actionName, recordedKeys ) }
     
     /**
      * 記録中のキーダウン処理
      */
-    handleRecordingKeyDown(event) {'
-        event.preventDefault();''
-        event.stopPropagation()';
+    handleRecordingKeyDown(event) {
+        event.preventDefault(),
+        event.stopPropagation()',
         if(event.key === 'Escape' {''
-            this.stopShortcutRecording()';
-        if (event.ctrlKey && event.key !== 'Control'') keys.push('Ctrl'');''
-        if (event.altKey && event.key !== 'Alt'') keys.push('Alt'');''
-        if (event.shiftKey && event.key !== 'Shift'') keys.push('Shift'');''
-        if (event.metaKey && event.key !== 'Meta'') keys.push('Meta'');
+            this.stopShortcutRecording()',
+        if (event.ctrlKey && event.key !== 'Control') keys.push('Ctrl'),
+        if (event.altKey && event.key !== 'Alt') keys.push('Alt'),
+        if (event.shiftKey && event.key !== 'Shift') keys.push('Shift'),
+        if (event.metaKey && event.key !== 'Meta') keys.push('Meta'),
 
         if(!['Control', 'Alt', 'Shift', 'Meta].includes(event.key) {
     }
@@ -613,8 +597,8 @@ export class KeyboardAccessibilityManager {
         }
 
         if(keys.length > 0) {
-            this.state.recordingKeys = keys;
-            ';
+            this.state.recordingKeys = keys,
+            ',
 
             // リアルタイムフィードバック
         }
@@ -627,7 +611,7 @@ export class KeyboardAccessibilityManager {
     /**
      * 記録中のキーアップ処理'
      */''
-    handleRecordingKeyUp(event) {'
+    handleRecordingKeyUp(event) {
         // Enter キーで記録完了
         if (event.key === 'Enter' && this.state.recordingKeys.length > 0) {
     }
@@ -637,17 +621,17 @@ export class KeyboardAccessibilityManager {
     /**
      * プロファイル管理
      */'
-    createProfile(profileName: string, description?: string): any { if(this.customizations.profiles.has(profileName) {' }'
+    createProfile(profileName: string, description?: string): any { if(this.customizations.profiles.has(profileName) { }'
 
-            throw new Error(`Profile, already exists: ${profileName}`'}';
+            throw new Error(`Profile, already exists: ${profileName}`}';
         }
         ';
 
         const profile = { name: profileName,''
-            description: description || '';
-            shortcuts: new Map();
-            createdAt: Date.now(),
-    modifiedAt: Date.now( ,};
+            description: description || ',
+            shortcuts: new Map(),
+            createdAt: Date.now(
+    modifiedAt: Date.now(  };
         
         // 現在のカスタマイズ状態を保存
         this.customizations.shortcuts.forEach((shortcut, name) => {  if (shortcut.modified) { }
@@ -658,7 +642,7 @@ export class KeyboardAccessibilityManager {
         this.customizations.profiles.set(profileName, profile);
         this.saveConfiguration();
 
-        console.log(`Profile created: ${ profileName}`'},' }
+        console.log(`Profile created: ${ profileName}`},' }
 
         this.emit('profileCreated', { profileName, profile });
         
@@ -668,7 +652,7 @@ export class KeyboardAccessibilityManager {
     /**
      * プロファイルの適用
      */
-    applyProfile(profileName: string): boolean { const profile = this.customizations.profiles.get(profileName);
+    applyProfile(profileName: string): boolean { const profile = this.customizations.profiles.get(profileName),
         if (!profile) { }
             throw new Error(`Profile, not found: ${profileName}`});
         }
@@ -683,7 +667,7 @@ export class KeyboardAccessibilityManager {
             ';
 
             console.log(`Profile, applied: ${ profileName)`),''
-            this.announceToScreenReader(`プロファイル「${profileName}」を適用しました`'};
+            this.announceToScreenReader(`プロファイル「${profileName}」を適用しました`};
 
             ' }'
 
@@ -692,8 +676,8 @@ export class KeyboardAccessibilityManager {
 
         } catch (error) {
             getErrorHandler().handleError(error, 'KEYBOARD_ACCESSIBILITY_ERROR', {''
-                operation: 'applyProfile',);
-                profileName); }';
+                operation: 'applyProfile'),
+                profileName }';
             return false;
     
     /**
@@ -707,11 +691,11 @@ export class KeyboardAccessibilityManager {
             this.customizations.shortcuts.forEach((shortcut, name) => { 
                 if(shortcut.modified) {
                     // 既存のショートカットを削除
-                    this.keyboardManager.removeShortcut(name);
+                    this.keyboardManager.removeShortcut(name),
                     
                     // デフォルトに戻す
                     this.keyboardManager.addShortcut(name, shortcut.originalKeys, shortcut.callback, {
-                })
+            });
                         description: shortcut.description,') }'
 
                         context: shortcut.context || 'global'); 
@@ -721,45 +705,45 @@ export class KeyboardAccessibilityManager {
                     shortcut.keys = [...shortcut.originalKeys];
                     shortcut.modified = false;
                     delete shortcut.modifiedAt;
-                }''
-            }');
+                }'}');
             ';
             // プロファイルをデフォルトに
             this.customizations.currentProfile = 'default';
             ';
             // 設定を保存
             this.saveConfiguration()';
-            console.log('Shortcuts, reset to, defaults'');''
-            this.announceToScreenReader('すべてのショートカットをデフォルト設定に戻しました'');
+            console.log('Shortcuts, reset to, defaults');
+            this.announceToScreenReader('すべてのショートカットをデフォルト設定に戻しました');
 
             this.emit('shortcutsReset);
             return true;
 
         } catch (error) { getErrorHandler().handleError(error, 'KEYBOARD_ACCESSIBILITY_ERROR', {''
-                operation: 'resetToDefaults' ,}';
+                operation: 'resetToDefaults'
+            }';
             return false;
     
     /**
      * ショートカットヘルプの表示
      */'
     showShortcutHelp(): any { ''
-        const help = this.generateShortcutHelp()';
-        console.group('Keyboard, Shortcuts Help);
+        const help = this.generateShortcutHelp()',
+        console.group('Keyboard, Shortcuts Help),
         Object.entries(help.categories).forEach(([category, shortcuts]) => { 
-            console.group(category); }
-            shortcuts.forEach(shortcut => {); }
+            console.group(category) }
+            shortcuts.forEach(shortcut => {) }
                 console.log(`${shortcut.keys}: ${shortcut.description}`);
             });
             console.groupEnd();
 
-        }');''
+        }');
         console.groupEnd()';
-        this.announceToScreenReader('ショートカットヘルプをコンソールに表示しました。F12キーでデベロッパーツールを開いて確認してください。'');
+        this.announceToScreenReader('ショートカットヘルプをコンソールに表示しました。F12キーでデベロッパーツールを開いて確認してください。');
         ';
         // イベント発行
-        this.emit('helpShown', { help ';
+        this.emit('helpShown', { help ',
         
-        return help; }
+        return help }
     
     /**
      * ショートカットヘルプの生成'
@@ -772,36 +756,35 @@ export class KeyboardAccessibilityManager {
             '表示': [],
             'カスタム': [];
         };
-        '';
+        ';
         this.customizations.shortcuts.forEach((shortcut, name) => {  ''
-            const categoryName = this.getCategoryDisplayName(shortcut.category);
+            const categoryName = this.getCategoryDisplayName(shortcut.category),
             const helpEntry = {'
                 name: name,
-                keys: shortcut.keys.join(' または ');
+                keys: shortcut.keys.join(' または '),
                 description: shortcut.description || name,
-    customizable: shortcut.customizable, }
+    customizable: shortcut.customizable }
                 modified: shortcut.modified || false 
     };
-            if (categories[categoryName]) { categories[categoryName].push(helpEntry); }
+            if (categories[categoryName]) { categories[categoryName].push(helpEntry) }
         });
         
         return { categories,
             totalShortcuts: this.customizations.shortcuts.size,
-    customizedShortcuts: Array.from(this.customizations.shortcuts.values().filter(s = > s.modified).length ,};
+    customizedShortcuts: Array.from(this.customizations.shortcuts.values().filter(s = > s.modified).length  };
             currentProfile: this.customizations.currentProfile 
     }
     
     /**'
      * カテゴリ表示名の取得'
      */''
-    getCategoryDisplayName(category) {'
+    getCategoryDisplayName(category) {
         const displayNames = {''
             game: 'ゲーム操作',
             navigation: 'ナビゲーション',
             accessibility: 'アクセシビリティ',
             audio: '音声',
-            display: '表示';
-    ,}
+            display: '表示' }
 
             custom: 'カスタム' 
     };
@@ -815,26 +798,26 @@ export class KeyboardAccessibilityManager {
         console.log('Opening, shortcut customizer...';
         
         // 簡易版：プロンプトベースのカスタマイザー
-        const actions = Array.from(this.customizations.shortcuts.keys()'';
+        const actions = Array.from(this.customizations.shortcuts.keys()';
             .filter(name => this.customizations.shortcuts.get(name).customizable);
 
-        const actionName = prompt(`カスタマイズしたいアクション名を入力してください:\n${actions.join(', '})`';
+        const actionName = prompt(`カスタマイズしたいアクション名を入力してください:\n${actions.join(', '})`;
 
         ';
 
-        if(actionName && actions.includes(actionName) { this.startShortcutRecording(actionName);' }'
+        if(actionName && actions.includes(actionName) { this.startShortcutRecording(actionName),' }'
 
         } else if(actionName) { ''
-            alert('無効なアクション名です'; }'
+            alert('無効なアクション名です' }'
     }
     
     /**
      * スクリーンリーダーへの通知'
      */''
-    announceToScreenReader(message) {'
+    announceToScreenReader(message) {
         try {'
-            const screenReaderManager = this.accessibilityManager.getManager('screenReader';''
-            if(screenReaderManager && screenReaderManager.announce) {'
+            const screenReaderManager = this.accessibilityManager.getManager('screenReader',
+            if(screenReaderManager && screenReaderManager.announce) {
     }
 
                 screenReaderManager.announce(message, 'polite'; }'
@@ -847,56 +830,54 @@ export class KeyboardAccessibilityManager {
     /**
      * ARIA Live領域での通知'
      */''
-    announceViaAriaLive(message) {'
+    announceViaAriaLive(message) {
 
-        let liveRegion = document.getElementById('keyboard-accessibility-announcements);
+        let liveRegion = document.getElementById('keyboard-accessibility-announcements),
 
         if(!liveRegion) {''
-            liveRegion = document.createElement('div'');''
-            liveRegion.id = 'keyboard-accessibility-announcements';
-            liveRegion.setAttribute('aria-live', 'polite'');''
-            liveRegion.setAttribute('aria-atomic', 'true'');''
-            liveRegion.className = 'sr-only';
-
-    }
+            liveRegion = document.createElement('div'),
+            liveRegion.id = 'keyboard-accessibility-announcements',
+            liveRegion.setAttribute('aria-live', 'polite'),
+            liveRegion.setAttribute('aria-atomic', 'true'),
+            liveRegion.className = 'sr-only' }
 
             document.body.appendChild(liveRegion); }
         }
         ';
         // 前のメッセージをクリア
-        liveRegion.textContent = '';
+        liveRegion.textContent = ';
         
         // 新しいメッセージを設定
-        setTimeout(() => { liveRegion.textContent = message; }, 100);
+        setTimeout(() => { liveRegion.textContent = message }, 100);
     }
     
     /**
      * 視覚的フィードバック
      */''
-    showVisualFeedback(actionName) {'
+    showVisualFeedback(actionName) {
         // 簡易版：画面上部にフラッシュ表示
-        const flashElement = document.createElement('div'');
-        flashElement.style.cssText = `;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
+        const flashElement = document.createElement('div'),
+        flashElement.style.cssText = `,
+            position: fixed,
+            top: 0,
+            left: 0,
+            width: 100%,
             height: 4px,
-    background: #4A90E2;
+    background: #4A90E2,
             z-index: 10000,
-            animation: shortcut-flash 0.3s ease-out;
-        `;
-        ';
+            animation: shortcut-flash 0.3s ease-out,
+        `,
+        ',
         // CSSアニメーションを追加
         if(!document.getElementById('shortcut-flash-styles)' {''
-            const style = document.createElement('style'');''
-            style.id = 'shortcut-flash-styles';
-            style.textContent = `;
-    ,}
+            const style = document.createElement('style'),
+            style.id = 'shortcut-flash-styles',
+            style.textContent = `,
+     }
                 @keyframes shortcut-flash { }
-                    0% { opacity: 0;, transform: scaleX(0), }
-                    50% { opacity: 1;, transform: scaleX(1), }
-                    100% { opacity: 0;, transform: scaleX(1 }
+                    0% { opacity: 0,, transform: scaleX(0) }
+                    50% { opacity: 1,, transform: scaleX(1) }
+                    100% { opacity: 0,, transform: scaleX(1 }
             `;
             document.head.appendChild(style);
         }
@@ -914,23 +895,22 @@ export class KeyboardAccessibilityManager {
     playAudioFeedback(actionName) {
         // Web Audio APIを使用した簡易音声フィードバック
         try {
-            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            const oscillator = audioContext.createOscillator();
-            const gainNode = audioContext.createGain();
-            ';
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)(),
+            const oscillator = audioContext.createOscillator(),
+            const gainNode = audioContext.createGain(),
+            ',
 
-            oscillator.connect(gainNode);''
-            gainNode.connect(audioContext.destination);
-            ';
+            oscillator.connect(gainNode),
+            gainNode.connect(audioContext.destination),
+            ',
 
-            oscillator.frequency.value = 800;''
-            oscillator.type = 'sine';
+            oscillator.frequency.value = 800,
+            oscillator.type = 'sine',
             
-            gainNode.gain.value = 0.1;
-            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+            gainNode.gain.value = 0.1,
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1),
             
-            oscillator.start();
-    }
+            oscillator.start() }
 
             oscillator.stop(audioContext.currentTime + 0.1);' }'
 
@@ -940,8 +920,8 @@ export class KeyboardAccessibilityManager {
     /**
      * 設定の適用
      */
-    applyConfig(config) {'
-        if (config.keyboard) {'
+    applyConfig(config) {
+        if (config.keyboard) {
     }
 
             Object.assign(this.config, config.keyboard); }
@@ -957,7 +937,7 @@ export class KeyboardAccessibilityManager {
         if(this.eventListeners.has(event) {
             this.eventListeners.get(event).forEach(callback => { )
     }
-                try {); }
+                try {) }
                     callback(data); }
                 } catch (error) {
                     console.error(`Error in KeyboardAccessibilityManager event listener for ${event}:`, error);
@@ -967,25 +947,25 @@ export class KeyboardAccessibilityManager {
     }
     
     addEventListener(event: string, callback: Function): void { if(!this.eventListeners.has(event) {
-            this.eventListeners.set(event, new Set(); }
+            this.eventListeners.set(event, new Set() }
         this.eventListeners.get(event).add(callback);
     }
     
     removeEventListener(event: string, callback: Function): void { if(this.eventListeners.has(event) {
-            this.eventListeners.get(event).delete(callback); }
+            this.eventListeners.get(event).delete(callback) }
     }
     
     /**
      * レポート生成
      */
-    generateReport(): KeyboardReport { const customizedShortcuts = Array.from(this.customizations.shortcuts.values().filter(s => s.modified);
+    generateReport(): KeyboardReport { const customizedShortcuts = Array.from(this.customizations.shortcuts.values().filter(s => s.modified),
         
         return { totalShortcuts: this.customizations.shortcuts.size,
-            customizedShortcuts: customizedShortcuts.length;
-            currentProfile: this.customizations.currentProfile;
-            availableProfiles: this.customizations.profiles.size;
+            customizedShortcuts: customizedShortcuts.length,
+            currentProfile: this.customizations.currentProfile,
+            availableProfiles: this.customizations.profiles.size,
             conflictsCount: this.customizations.conflicts.size,
-    lastConflictCheck: this.state.lastConflictCheck, };
+    lastConflictCheck: this.state.lastConflictCheck };
             usageStatistics: this.getUsageStatistics(); 
     }
     
@@ -993,8 +973,8 @@ export class KeyboardAccessibilityManager {
      * 使用統計の取得
      */
     private getUsageStatistics(): UsageStatistics { const stats = {
-            mostUsed: [];
-            leastUsed: [];
+            mostUsed: [],
+            leastUsed: [],
             recentlyModified: [],
     totalUsage: 0 };
         const shortcuts = Array.from(this.customizations.shortcuts.entries();
@@ -1005,8 +985,8 @@ export class KeyboardAccessibilityManager {
             .sort(([, a], [, b]) => (b.usageCount || 0) - (a.usageCount || 0));
         
         stats.mostUsed = byUsage.slice(0, 5).map(([name, shortcut]) => ({ name,
-            usageCount: shortcut.usageCount),
-    lastUsed: shortcut.lastUsed ,});
+            usageCount: shortcut.usageCount,
+    lastUsed: shortcut.lastUsed  });
         stats.totalUsage = shortcuts.reduce((sum, [, shortcut]) => sum + (shortcut.usageCount || 0), 0);
         
         // 最近変更されたもの
@@ -1014,7 +994,8 @@ export class KeyboardAccessibilityManager {
             .filter(([, shortcut]) => shortcut.modified && shortcut.modifiedAt);
             .sort(([, a], [, b]) => (b.modifiedAt || 0) - (a.modifiedAt || 0));
             .slice(0 5);
-            .map(([name shortcut]) => ({ name)
+            .map(([name shortcut]) => ({
+                name
                 modifiedAt: shortcut.modifiedAt }');
         return stats;
     }
@@ -1023,7 +1004,7 @@ export class KeyboardAccessibilityManager {
      * 有効状態の設定
      */
     setEnabled(enabled: boolean): void { if (this.keyboardManager && this.keyboardManager.setEnabled') {''
-            this.keyboardManager.setEnabled(enabled); }
+            this.keyboardManager.setEnabled(enabled) }
 
         }''
         console.log(`KeyboardAccessibilityManager ${enabled ? 'enabled' : 'disabled}`}';
@@ -1036,7 +1017,7 @@ export class KeyboardAccessibilityManager {
         console.log('Destroying, KeyboardAccessibilityManager...);
         
         // 記録中の場合は停止
-        if (this.state.isRecording) { this.stopShortcutRecording(); }
+        if (this.state.isRecording) { this.stopShortcutRecording() }
         
         // 設定を保存
         this.saveConfiguration();
@@ -1046,19 +1027,17 @@ export class KeyboardAccessibilityManager {
         
         // データのクリア
         this.customizations.shortcuts.clear();
-        this.customizations.conflicts.clear();''
+        this.customizations.conflicts.clear();
         this.customizations.profiles.clear()';
         const liveRegion = document.getElementById('keyboard-accessibility-announcements);
-        if(liveRegion) {'
+        if(liveRegion) {
 
-            liveRegion.remove()';
-        const flashStyles = document.getElementById('shortcut-flash-styles);
+            liveRegion.remove()',
+        const flashStyles = document.getElementById('shortcut-flash-styles),
 
         if (flashStyles) {''
-            flashStyles.remove();
-        }
+            flashStyles.remove() }
 
-        console.log('KeyboardAccessibilityManager, destroyed''); }
+        console.log('KeyboardAccessibilityManager, destroyed'); }
 
-    }''
-}
+    }'}

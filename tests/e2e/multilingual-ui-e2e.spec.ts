@@ -8,32 +8,30 @@ import { test, expect } from '@playwright/test';
 
 test.describe('Multi-language UI Operations E2E Tests', () => {
   test.beforeEach(async ({ page }') => {
-    await page.goto('/'');
-    await page.waitForSelector('#gameCanvas');
-    await page.waitForFunction(() => window.gameEngine !== undefined);
+    await page.goto('/'),
+    await page.waitForSelector('#gameCanvas'),
+    await page.waitForFunction(() => window.gameEngine !== undefined),
     await page.waitForFunction(() => {
-      return window.gameEngine.localizationManager !== undefined;
-    });
+      return window.gameEngine.localizationManager !== undefined });
   }');
 
   test('should navigate menu in Japanese', async ({ page }') => {
     // Ensure we're in Japanese
     await page.evaluate((') => {
-      return window.gameEngine.localizationManager.setLanguage('ja');
-    });
+      return window.gameEngine.localizationManager.setLanguage('ja') });
     
     await page.waitForTimeout(500);
     
     // Test menu navigation
     const menuTest = await page.evaluate((') => {
-      const gameEngine = window.gameEngine;
-      const lm = gameEngine.localizationManager;
+      const gameEngine = window.gameEngine,
+      const lm = gameEngine.localizationManager,
       
       // Get Japanese menu texts
       const menuTexts = {
-        title: lm.t('menu.title''),
-        start: lm.t('menu.start''),
-        settings: lm.t('menu.settings''),
+        title: lm.t('menu.title',
+        start: lm.t('menu.start',
+        settings: lm.t('menu.settings',
         userInfo: lm.t('menu.userInfo'};
       };
       )
@@ -48,19 +46,18 @@ test.describe('Multi-language UI Operations E2E Tests', () => {
   test('should navigate menu in English', async ({ page ) => {
     // Switch to English
     await page.evaluate((') => {
-      return window.gameEngine.localizationManager.setLanguage('en');
-    });
+      return window.gameEngine.localizationManager.setLanguage('en') });
     
     await page.waitForTimeout(500);
     
     const menuTest = await page.evaluate((') => {
-      const gameEngine = window.gameEngine;
-      const lm = gameEngine.localizationManager;
+      const gameEngine = window.gameEngine,
+      const lm = gameEngine.localizationManager,
       
       const menuTexts = {
-        title: lm.t('menu.title''),
-        start: lm.t('menu.start''),
-        settings: lm.t('menu.settings''),
+        title: lm.t('menu.title',
+        start: lm.t('menu.start',
+        settings: lm.t('menu.settings',
         userInfo: lm.t('menu.userInfo'};
       };
       )
@@ -75,14 +72,14 @@ test.describe('Multi-language UI Operations E2E Tests', () => {
   test('should display game UI elements in correct language', async ({ page ) => {
     // Test game UI in Japanese
     const japaneseGameUI = await page.evaluate((') => {
-      const lm = window.gameEngine.localizationManager;
+      const lm = window.gameEngine.localizationManager,
       
       return {
-        score: lm.t('game.score''),
-        hp: lm.t('game.hp''),
-        time: lm.t('game.time''),
-        combo: lm.t('game.combo''),
-        pause: lm.t('game.pause''),
+        score: lm.t('game.score',
+        hp: lm.t('game.hp',
+        time: lm.t('game.time',
+        combo: lm.t('game.combo',
+        pause: lm.t('game.pause',
         gameOver: lm.t('game.gameOver'})
       };);
     
@@ -95,20 +92,19 @@ test.describe('Multi-language UI Operations E2E Tests', () => {
     
     // Switch to English and test
     await page.evaluate((') => {
-      return window.gameEngine.localizationManager.setLanguage('en');
-    });
+      return window.gameEngine.localizationManager.setLanguage('en') });
     
     await page.waitForTimeout(500);
     
     const englishGameUI = await page.evaluate((') => {
-      const lm = window.gameEngine.localizationManager;
+      const lm = window.gameEngine.localizationManager,
       
       return {
-        score: lm.t('game.score''),
-        hp: lm.t('game.hp''),
-        time: lm.t('game.time''),
-        combo: lm.t('game.combo''),
-        pause: lm.t('game.pause''),
+        score: lm.t('game.score',
+        hp: lm.t('game.hp',
+        time: lm.t('game.time',
+        combo: lm.t('game.combo',
+        pause: lm.t('game.pause',
         gameOver: lm.t('game.gameOver'})
       };);
     
@@ -123,16 +119,16 @@ test.describe('Multi-language UI Operations E2E Tests', () => {
   test('should display settings UI in correct language', async ({ page ) => {
     // Test settings UI in Japanese
     const japaneseSettingsUI = await page.evaluate((') => {
-      const lm = window.gameEngine.localizationManager;
+      const lm = window.gameEngine.localizationManager,
       
       return {
-        title: lm.t('settings.title''),
-        audio: lm.t('settings.audio''),
-        masterVolume: lm.t('settings.masterVolume''),
-        language: lm.t('settings.language''),
-        quality: lm.t('settings.quality''),
-        accessibility: lm.t('settings.accessibility''),
-        back: lm.t('settings.back''),
+        title: lm.t('settings.title',
+        audio: lm.t('settings.audio',
+        masterVolume: lm.t('settings.masterVolume',
+        language: lm.t('settings.language',
+        quality: lm.t('settings.quality',
+        accessibility: lm.t('settings.accessibility',
+        back: lm.t('settings.back',
         apply: lm.t('settings.apply'})
       };);
     
@@ -147,22 +143,21 @@ test.describe('Multi-language UI Operations E2E Tests', () => {
     
     // Switch to English
     await page.evaluate((') => {
-      return window.gameEngine.localizationManager.setLanguage('en');
-    });
+      return window.gameEngine.localizationManager.setLanguage('en') });
     
     await page.waitForTimeout(500);
     
     const englishSettingsUI = await page.evaluate((') => {
-      const lm = window.gameEngine.localizationManager;
+      const lm = window.gameEngine.localizationManager,
       
       return {
-        title: lm.t('settings.title''),
-        audio: lm.t('settings.audio''),
-        masterVolume: lm.t('settings.masterVolume''),
-        language: lm.t('settings.language''),
-        quality: lm.t('settings.quality''),
-        accessibility: lm.t('settings.accessibility''),
-        back: lm.t('settings.back''),
+        title: lm.t('settings.title',
+        audio: lm.t('settings.audio',
+        masterVolume: lm.t('settings.masterVolume',
+        language: lm.t('settings.language',
+        quality: lm.t('settings.quality',
+        accessibility: lm.t('settings.accessibility',
+        back: lm.t('settings.back',
         apply: lm.t('settings.apply'})
       };);
     
@@ -179,16 +174,16 @@ test.describe('Multi-language UI Operations E2E Tests', () => {
   test('should display user info UI in correct language', async ({ page ) => {
     // Test user info UI in Japanese
     const japaneseUserInfoUI = await page.evaluate((') => {
-      const lm = window.gameEngine.localizationManager;
+      const lm = window.gameEngine.localizationManager,
       
       return {
-        title: lm.t('userInfo.title''),
-        playerName: lm.t('userInfo.playerName''),
-        ap: lm.t('userInfo.ap''),
-        tap: lm.t('userInfo.tap''),
-        unlockedStages: lm.t('userInfo.unlockedStages''),
-        ownedItems: lm.t('userInfo.ownedItems''),
-        highScores: lm.t('userInfo.highScores''),
+        title: lm.t('userInfo.title',
+        playerName: lm.t('userInfo.playerName',
+        ap: lm.t('userInfo.ap',
+        tap: lm.t('userInfo.tap',
+        unlockedStages: lm.t('userInfo.unlockedStages',
+        ownedItems: lm.t('userInfo.ownedItems',
+        highScores: lm.t('userInfo.highScores',
         noRecords: lm.t('userInfo.noRecords'})
       };);
     
@@ -203,22 +198,21 @@ test.describe('Multi-language UI Operations E2E Tests', () => {
     
     // Switch to English
     await page.evaluate((') => {
-      return window.gameEngine.localizationManager.setLanguage('en');
-    });
+      return window.gameEngine.localizationManager.setLanguage('en') });
     
     await page.waitForTimeout(500);
     
     const englishUserInfoUI = await page.evaluate((') => {
-      const lm = window.gameEngine.localizationManager;
+      const lm = window.gameEngine.localizationManager,
       
       return {
-        title: lm.t('userInfo.title''),
-        playerName: lm.t('userInfo.playerName''),
-        ap: lm.t('userInfo.ap''),
-        tap: lm.t('userInfo.tap''),
-        unlockedStages: lm.t('userInfo.unlockedStages''),
-        ownedItems: lm.t('userInfo.ownedItems''),
-        highScores: lm.t('userInfo.highScores''),
+        title: lm.t('userInfo.title',
+        playerName: lm.t('userInfo.playerName',
+        ap: lm.t('userInfo.ap',
+        tap: lm.t('userInfo.tap',
+        unlockedStages: lm.t('userInfo.unlockedStages',
+        ownedItems: lm.t('userInfo.ownedItems',
+        highScores: lm.t('userInfo.highScores',
         noRecords: lm.t('userInfo.noRecords'})
       };);
     
@@ -235,14 +229,14 @@ test.describe('Multi-language UI Operations E2E Tests', () => {
   test('should display help content in correct language', async ({ page ) => {
     // Test help content in Japanese
     const japaneseHelp = await page.evaluate((') => {
-      const lm = window.gameEngine.localizationManager;
+      const lm = window.gameEngine.localizationManager,
       
       return {
-        title: lm.t('help.title''),
-        basicControls: lm.t('help.basicControls''),
-        gameTips: lm.t('help.gameTips''),
-        bubbleTypes: lm.t('help.bubbleTypes''),
-        controls: lm.ta('help.controls''),
+        title: lm.t('help.title',
+        basicControls: lm.t('help.basicControls',
+        gameTips: lm.t('help.gameTips',
+        bubbleTypes: lm.t('help.bubbleTypes',
+        controls: lm.ta('help.controls',
         tips: lm.ta('help.tips'})
       };);
     
@@ -256,20 +250,19 @@ test.describe('Multi-language UI Operations E2E Tests', () => {
     
     // Switch to English
     await page.evaluate((') => {
-      return window.gameEngine.localizationManager.setLanguage('en');
-    });
+      return window.gameEngine.localizationManager.setLanguage('en') });
     
     await page.waitForTimeout(500);
     
     const englishHelp = await page.evaluate((') => {
-      const lm = window.gameEngine.localizationManager;
+      const lm = window.gameEngine.localizationManager,
       
       return {
-        title: lm.t('help.title''),
-        basicControls: lm.t('help.basicControls''),
-        gameTips: lm.t('help.gameTips''),
-        bubbleTypes: lm.t('help.bubbleTypes''),
-        controls: lm.ta('help.controls''),
+        title: lm.t('help.title',
+        basicControls: lm.t('help.basicControls',
+        gameTips: lm.t('help.gameTips',
+        bubbleTypes: lm.t('help.bubbleTypes',
+        controls: lm.ta('help.controls',
         tips: lm.ta('help.tips'})
       };);
     
@@ -285,13 +278,13 @@ test.describe('Multi-language UI Operations E2E Tests', () => {
   test('should display error messages in correct language', async ({ page ) => {
     // Test error messages in Japanese
     const japaneseErrors = await page.evaluate((') => {
-      const lm = window.gameEngine.localizationManager;
+      const lm = window.gameEngine.localizationManager,
       
       return {
-        generic: lm.t('error.generic''),
-        reload: lm.t('error.reload''),
-        canvasNotSupported: lm.t('error.canvasNotSupported''),
-        audioNotSupported: lm.t('error.audioNotSupported''),
+        generic: lm.t('error.generic',
+        reload: lm.t('error.reload',
+        canvasNotSupported: lm.t('error.canvasNotSupported',
+        audioNotSupported: lm.t('error.audioNotSupported',
         storageNotSupported: lm.t('error.storageNotSupported'})
       };);
     
@@ -303,19 +296,18 @@ test.describe('Multi-language UI Operations E2E Tests', () => {
     
     // Switch to English
     await page.evaluate((') => {
-      return window.gameEngine.localizationManager.setLanguage('en');
-    });
+      return window.gameEngine.localizationManager.setLanguage('en') });
     
     await page.waitForTimeout(500);
     
     const englishErrors = await page.evaluate((') => {
-      const lm = window.gameEngine.localizationManager;
+      const lm = window.gameEngine.localizationManager,
       
       return {
-        generic: lm.t('error.generic''),
-        reload: lm.t('error.reload''),
-        canvasNotSupported: lm.t('error.canvasNotSupported''),
-        audioNotSupported: lm.t('error.audioNotSupported''),
+        generic: lm.t('error.generic',
+        reload: lm.t('error.reload',
+        canvasNotSupported: lm.t('error.canvasNotSupported',
+        audioNotSupported: lm.t('error.audioNotSupported',
         storageNotSupported: lm.t('error.storageNotSupported'})
       };);
     
@@ -329,12 +321,12 @@ test.describe('Multi-language UI Operations E2E Tests', () => {
   test('should display confirmation dialogs in correct language', async ({ page ) => {
     // Test confirmation dialogs in Japanese
     const japaneseConfirms = await page.evaluate((') => {
-      const lm = window.gameEngine.localizationManager;
+      const lm = window.gameEngine.localizationManager,
       
       return {
-        yes: lm.t('confirm.yes''),
-        no: lm.t('confirm.no''),
-        ok: lm.t('confirm.ok''),
+        yes: lm.t('confirm.yes',
+        no: lm.t('confirm.no',
+        ok: lm.t('confirm.ok',
         cancel: lm.t('confirm.cancel'})
       };);
     });
@@ -346,18 +338,17 @@ test.describe('Multi-language UI Operations E2E Tests', () => {
     
     // Switch to English
     await page.evaluate((') => {
-      return window.gameEngine.localizationManager.setLanguage('en');
-    });
+      return window.gameEngine.localizationManager.setLanguage('en') });
     
     await page.waitForTimeout(500);
     
     const englishConfirms = await page.evaluate((') => {
-      const lm = window.gameEngine.localizationManager;
+      const lm = window.gameEngine.localizationManager,
       
       return {
-        yes: lm.t('confirm.yes''),
-        no: lm.t('confirm.no''),
-        ok: lm.t('confirm.ok''),
+        yes: lm.t('confirm.yes',
+        no: lm.t('confirm.no',
+        ok: lm.t('confirm.ok',
         cancel: lm.t('confirm.cancel'})
       };);
     });
@@ -371,13 +362,13 @@ test.describe('Multi-language UI Operations E2E Tests', () => {
   test('should display special effects text in correct language', async ({ page ) => {
     // Test special effects in Japanese
     const japaneseEffects = await page.evaluate((') => {
-      const lm = window.gameEngine.localizationManager;
+      const lm = window.gameEngine.localizationManager,
       
       return {
-        bonusTime: lm.t('effect.bonusTime''),
-        timeStop: lm.t('effect.timeStop''),
-        electric: lm.t('effect.electric''),
-        operationDisabled: lm.t('effect.operationDisabled''),
+        bonusTime: lm.t('effect.bonusTime',
+        timeStop: lm.t('effect.timeStop',
+        electric: lm.t('effect.electric',
+        operationDisabled: lm.t('effect.operationDisabled',
         scoreDouble: lm.t('effect.scoreDouble'})
       };);
     
@@ -389,19 +380,18 @@ test.describe('Multi-language UI Operations E2E Tests', () => {
     
     // Switch to English
     await page.evaluate((') => {
-      return window.gameEngine.localizationManager.setLanguage('en');
-    });
+      return window.gameEngine.localizationManager.setLanguage('en') });
     
     await page.waitForTimeout(500);
     
     const englishEffects = await page.evaluate((') => {
-      const lm = window.gameEngine.localizationManager;
+      const lm = window.gameEngine.localizationManager,
       
       return {
-        bonusTime: lm.t('effect.bonusTime''),
-        timeStop: lm.t('effect.timeStop''),
-        electric: lm.t('effect.electric''),
-        operationDisabled: lm.t('effect.operationDisabled''),
+        bonusTime: lm.t('effect.bonusTime',
+        timeStop: lm.t('effect.timeStop',
+        electric: lm.t('effect.electric',
+        operationDisabled: lm.t('effect.operationDisabled',
         scoreDouble: lm.t('effect.scoreDouble'})
       };);
     
@@ -415,14 +405,14 @@ test.describe('Multi-language UI Operations E2E Tests', () => {
   test('should handle data clear dialog in correct language', async ({ page ) => {
     // Test data clear dialog in Japanese
     const japaneseDataClear = await page.evaluate((') => {
-      const lm = window.gameEngine.localizationManager;
+      const lm = window.gameEngine.localizationManager,
       
       return {
-        title: lm.t('dataClear.title''),
-        warning: lm.t('dataClear.warning''),
-        irreversible: lm.t('dataClear.irreversible''),
-        items: lm.ta('dataClear.items''),
-        execute: lm.t('dataClear.execute''),
+        title: lm.t('dataClear.title',
+        warning: lm.t('dataClear.warning',
+        irreversible: lm.t('dataClear.irreversible',
+        items: lm.ta('dataClear.items',
+        execute: lm.t('dataClear.execute',
         cancel: lm.t('dataClear.cancel'})
       };);
     
@@ -436,20 +426,19 @@ test.describe('Multi-language UI Operations E2E Tests', () => {
     
     // Switch to English
     await page.evaluate((') => {
-      return window.gameEngine.localizationManager.setLanguage('en');
-    });
+      return window.gameEngine.localizationManager.setLanguage('en') });
     
     await page.waitForTimeout(500);
     
     const englishDataClear = await page.evaluate((') => {
-      const lm = window.gameEngine.localizationManager;
+      const lm = window.gameEngine.localizationManager,
       
       return {
-        title: lm.t('dataClear.title''),
-        warning: lm.t('dataClear.warning''),
-        irreversible: lm.t('dataClear.irreversible''),
-        items: lm.ta('dataClear.items''),
-        execute: lm.t('dataClear.execute''),
+        title: lm.t('dataClear.title',
+        warning: lm.t('dataClear.warning',
+        irreversible: lm.t('dataClear.irreversible',
+        items: lm.ta('dataClear.items',
+        execute: lm.t('dataClear.execute',
         cancel: lm.t('dataClear.cancel'})
       };);
     
@@ -465,14 +454,14 @@ test.describe('Multi-language UI Operations E2E Tests', () => {
   test('should handle username registration dialog in correct language', async ({ page ) => {
     // Test username registration in Japanese
     const japaneseUsername = await page.evaluate((') => {
-      const lm = window.gameEngine.localizationManager;
+      const lm = window.gameEngine.localizationManager,
       
       return {
-        register: lm.t('username.register''),
-        change: lm.t('username.change''),
-        prompt: lm.t('username.prompt''),
-        inputHelp: lm.t('username.inputHelp''),
-        ok: lm.t('username.ok''),
+        register: lm.t('username.register',
+        change: lm.t('username.change',
+        prompt: lm.t('username.prompt',
+        inputHelp: lm.t('username.inputHelp',
+        ok: lm.t('username.ok',
         cancel: lm.t('username.cancel'})
       };);
     
@@ -485,20 +474,19 @@ test.describe('Multi-language UI Operations E2E Tests', () => {
     
     // Switch to English
     await page.evaluate((') => {
-      return window.gameEngine.localizationManager.setLanguage('en');
-    });
+      return window.gameEngine.localizationManager.setLanguage('en') });
     
     await page.waitForTimeout(500);
     
     const englishUsername = await page.evaluate((') => {
-      const lm = window.gameEngine.localizationManager;
+      const lm = window.gameEngine.localizationManager,
       
       return {
-        register: lm.t('username.register''),
-        change: lm.t('username.change''),
-        prompt: lm.t('username.prompt''),
-        inputHelp: lm.t('username.inputHelp''),
-        ok: lm.t('username.ok''),
+        register: lm.t('username.register',
+        change: lm.t('username.change',
+        prompt: lm.t('username.prompt',
+        inputHelp: lm.t('username.inputHelp',
+        ok: lm.t('username.ok',
         cancel: lm.t('username.cancel'})
       };);
     
@@ -513,15 +501,15 @@ test.describe('Multi-language UI Operations E2E Tests', () => {
   test('should display keyboard shortcuts in correct language', async ({ page ) => {
     // Test keyboard shortcuts in Japanese
     const japaneseShortcuts = await page.evaluate((') => {
-      const lm = window.gameEngine.localizationManager;
+      const lm = window.gameEngine.localizationManager,
       
       return {
-        title: lm.t('shortcuts.title''),
-        pause: lm.t('shortcuts.pause''),
-        menu: lm.t('shortcuts.menu''),
-        fullscreen: lm.t('shortcuts.fullscreen''),
-        mute: lm.t('shortcuts.mute''),
-        settings: lm.t('shortcuts.settings''),
+        title: lm.t('shortcuts.title',
+        pause: lm.t('shortcuts.pause',
+        menu: lm.t('shortcuts.menu',
+        fullscreen: lm.t('shortcuts.fullscreen',
+        mute: lm.t('shortcuts.mute',
+        settings: lm.t('shortcuts.settings',
         help: lm.t('shortcuts.help'})
       };);
     
@@ -535,21 +523,20 @@ test.describe('Multi-language UI Operations E2E Tests', () => {
     
     // Switch to English
     await page.evaluate((') => {
-      return window.gameEngine.localizationManager.setLanguage('en');
-    });
+      return window.gameEngine.localizationManager.setLanguage('en') });
     
     await page.waitForTimeout(500);
     
     const englishShortcuts = await page.evaluate((') => {
-      const lm = window.gameEngine.localizationManager;
+      const lm = window.gameEngine.localizationManager,
       
       return {
-        title: lm.t('shortcuts.title''),
-        pause: lm.t('shortcuts.pause''),
-        menu: lm.t('shortcuts.menu''),
-        fullscreen: lm.t('shortcuts.fullscreen''),
-        mute: lm.t('shortcuts.mute''),
-        settings: lm.t('shortcuts.settings''),
+        title: lm.t('shortcuts.title',
+        pause: lm.t('shortcuts.pause',
+        menu: lm.t('shortcuts.menu',
+        fullscreen: lm.t('shortcuts.fullscreen',
+        mute: lm.t('shortcuts.mute',
+        settings: lm.t('shortcuts.settings',
         help: lm.t('shortcuts.help'})
       };);
     
@@ -565,21 +552,20 @@ test.describe('Multi-language UI Operations E2E Tests', () => {
 
 test.describe('Regional Localization Features E2E Tests', () => {
   test.beforeEach(async ({ page }') => {
-    await page.goto('/'');
-    await page.waitForSelector('#gameCanvas');
-    await page.waitForFunction(() => window.gameEngine !== undefined);
-  }');
+    await page.goto('/'),
+    await page.waitForSelector('#gameCanvas'),
+    await page.waitForFunction(() => window.gameEngine !== undefined) }');
 
   test('should format numbers according to locale', async ({ page }) => {
     const numberFormatTest = await page.evaluate((') => {
-      const lm = window.gameEngine.localizationManager;
+      const lm = window.gameEngine.localizationManager,
       
-      const testNumber = 12345.67;
+      const testNumber = 12345.67,
       
       return {
-        japanese: lm.formatNumber(testNumber, 'ja''),
-        english: lm.formatNumber(testNumber, 'en''),
-        englishGB: lm.formatNumber(testNumber, 'en-GB''),
+        japanese: lm.formatNumber(testNumber, 'ja'),
+        english: lm.formatNumber(testNumber, 'en'),
+        englishGB: lm.formatNumber(testNumber, 'en-GB'),
         german: lm.formatNumber(testNumber, 'de'})
       };);
     
@@ -592,14 +578,14 @@ test.describe('Regional Localization Features E2E Tests', () => {
 
   test('should format dates according to locale', async ({ page ) => {
     const dateFormatTest = await page.evaluate((') => {
-      const lm = window.gameEngine.localizationManager;
+      const lm = window.gameEngine.localizationManager,
       
-      const testDate = new Date('2025-01-15T10: 30:00Z''),
+      const testDate = new Date('2025-01-15T10: 30:00Z',
       
       return {
-        japanese: lm.formatDate(testDate, 'ja''),
-        english: lm.formatDate(testDate, 'en''),
-        englishGB: lm.formatDate(testDate, 'en-GB''),
+        japanese: lm.formatDate(testDate, 'ja'),
+        english: lm.formatDate(testDate, 'en'),
+        englishGB: lm.formatDate(testDate, 'en-GB'),
         german: lm.formatDate(testDate, 'de'});
       };);
     
@@ -616,14 +602,14 @@ test.describe('Regional Localization Features E2E Tests', () => {
 
   test('should format currency according to locale', async ({ page ) => {
     const currencyFormatTest = await page.evaluate((') => {
-      const lm = window.gameEngine.localizationManager;
+      const lm = window.gameEngine.localizationManager,
       
-      const amount = 1234.56;
+      const amount = 1234.56,
       
       return {
-        usdJapanese: lm.formatCurrency(amount, 'ja', 'USD''),
-        usdEnglish: lm.formatCurrency(amount, 'en', 'USD''),
-        jpyJapanese: lm.formatCurrency(amount, 'ja', 'JPY''),
+        usdJapanese: lm.formatCurrency(amount, 'ja', 'USD'),
+        usdEnglish: lm.formatCurrency(amount, 'en', 'USD'),
+        jpyJapanese: lm.formatCurrency(amount, 'ja', 'JPY'),
         eurGerman: lm.formatCurrency(amount, 'de', 'EUR'})
       };);
     
@@ -636,12 +622,12 @@ test.describe('Regional Localization Features E2E Tests', () => {
 
   test('should provide correct regional settings', async ({ page ) => {
     const regionalSettingsTest = await page.evaluate((') => {
-      const lm = window.gameEngine.localizationManager;
+      const lm = window.gameEngine.localizationManager,
       
       return {
-        japanese: lm.getRegionalSettings('ja''),
-        english: lm.getRegionalSettings('en''),
-        englishGB: lm.getRegionalSettings('en-gb''),
+        japanese: lm.getRegionalSettings('ja',
+        english: lm.getRegionalSettings('en',
+        englishGB: lm.getRegionalSettings('en-gb',
         german: lm.getRegionalSettings('de'})
       };);
     
@@ -664,4 +650,4 @@ test.describe('Regional Localization Features E2E Tests', () => {
     expect(regionalSettingsTest.german.locale').toBe('de-DE');
   });
 }');
-}}}}}}}}}}}}))))
+}}}}}}}})))

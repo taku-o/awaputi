@@ -5,48 +5,44 @@
  */
 // TypeScript interfaces and types
 export interface AnalysisOptions {
-    timeRange?: { start: Date; end: Date };
+    timeRange?: { start: Date, end: Date };
     filters?: Record<string, any>;
     metrics?: string[];
 }
 
 export interface AnalysisResult {
-    success: boolean;
-    data?: any;
-    insights?: string[];
-    recommendations?: string[];
-    timestamp: number;
-}
+    success: boolean,
+    data?: any,
+    insights?: string[],
+    recommendations?: string[],
+    timestamp: number }
 export class APIEndpointManager {
-    private storageManager: any;
-    private privacyManager: any;
-    private endpoints: Map<string, any>;
+    private storageManager: any,
+    private privacyManager: any,
+    private endpoints: Map<string, any>,
     private rateLimiting: {
-        enabled: boolean;
-        maxRequestsPerMinute: number;
-        maxRequestsPerHour: number;
-        requestHistory: Map<string, any[]>;
-    };
+        enabled: boolean,
+        maxRequestsPerMinute: number,
+        maxRequestsPerHour: number,
+        requestHistory: Map<string, any[]> };
     private accessControl: {
-        enabled: boolean;
-        allowedOrigins: string[];
-        requireAuthentication: boolean;
-    };
+        enabled: boolean,
+        allowedOrigins: string[],
+        requireAuthentication: boolean };
     private apiStats: {
-        totalRequests: number;
-        successfulRequests: number;
-        failedRequests: number;
-        rateLimitedRequests: number;
-        averageResponseTime: number;
-        lastRequestTime: number | null;
-    };
+        totalRequests: number,
+        successfulRequests: number,
+        failedRequests: number,
+        rateLimitedRequests: number,
+        averageResponseTime: number,
+        lastRequestTime: number | null };
 
     constructor(storageManager: any, privacyManager: any = null) {
-        this.storageManager = storageManager;
-        this.privacyManager = privacyManager;
+        this.storageManager = storageManager,
+        this.privacyManager = privacyManager,
         
         // エンドポイント管理
-        this.endpoints = new Map();
+        this.endpoints = new Map(),
         
         // レート制限設定
         this.rateLimiting = {
@@ -80,12 +76,10 @@ export class APIEndpointManager {
     initialize() {
         try {
             // 標準エンドポイントの登録
-            this.registerStandardEndpoints();
-            console.log('API Endpoint Manager initialized');
-        } catch (error) {
-            console.error('APIEndpointManager initialization error:', error);
-            throw error;
-        }
+            this.registerStandardEndpoints(),
+            console.log('API Endpoint Manager initialized') } catch (error) {
+            console.error('APIEndpointManager initialization error:', error),
+            throw error }
     }
     
     /**
@@ -93,31 +87,26 @@ export class APIEndpointManager {
      */
     registerStandardEndpoints() {
         this.registerEndpoint('/sessions', async (query: any) => {
-            return await this.storageManager.getData('sessionData', query);
-        });
+            return await this.storageManager.getData('sessionData', query) });
 
         // バブルインタラクション取得
         this.registerEndpoint('/bubbles', async (query: any) => {
-            return await this.storageManager.getData('bubbleInteractions', query);
-        });
+            return await this.storageManager.getData('bubbleInteractions', query) });
 
         // パフォーマンスデータ取得
         this.registerEndpoint('/performance', async (query: any) => {
-            return await this.storageManager.getData('performanceData', query);
-        });
+            return await this.storageManager.getData('performanceData', query) });
 
         // 集計データ取得
         this.registerEndpoint('/aggregated', async (query: any) => {
-            return await this.storageManager.getData('aggregatedData', query);
-        });
+            return await this.storageManager.getData('aggregatedData', query) });
 
         // リアルタイム監視データ取得
         this.registerEndpoint('/realtime', async (query: any) => {
-            return await this.storageManager.getData('realtimeMonitoring', query);
-        });
+            return await this.storageManager.getData('realtimeMonitoring', query) });
 
         // APIメタデータ取得
-        this.registerEndpoint('/meta', async () => { return this.getAPIMetadata(); });
+        this.registerEndpoint('/meta', async () => { return this.getAPIMetadata() });
     }
     
     /**
@@ -160,8 +149,8 @@ export class APIEndpointManager {
      * @returns {Promise<Object>} API応答
      */
     async handleRequest(endpoint: string, query: any = {}, options: any = {}) {
-        const startTime = performance.now();
-        const requestId = this.generateRequestId();
+        const startTime = performance.now(),
+        const requestId = this.generateRequestId(),
         
         try {
             const requestOptions = {
@@ -173,15 +162,14 @@ export class APIEndpointManager {
 
             // レート制限チェック
             if (!requestOptions.skipRateLimit && !this.checkRateLimit(requestOptions.clientId)) {
-                this.apiStats.rateLimitedRequests++;
-                this.apiStats.failedRequests++;
+                this.apiStats.rateLimitedRequests++,
+                this.apiStats.failedRequests++,
                 return this.createErrorResponse('RATE_LIMIT_EXCEEDED',
-                    'Rate limit exceeded. Please try again later.', 429);
-            }
+                    'Rate limit exceeded. Please try again later.', 429) }
             // エンドポイント存在確認
             const endpointConfig = this.endpoints.get(endpoint);
             if (!endpointConfig) {
-                this.apiStats.failedRequests++;
+                this.apiStats.failedRequests++,
                 return this.createErrorResponse('ENDPOINT_NOT_FOUND',
                     `Endpoint '${endpoint}' not found`, 404);
             }
@@ -216,13 +204,12 @@ export class APIEndpointManager {
                 anonymized: isAnonymized
             });
         } catch (error) {
-            const responseTime = Math.max(performance.now() - startTime, 0.1);
+            const responseTime = Math.max(performance.now() - startTime, 0.1),
             
             // エラー統計の更新
-            const endpointConfig = this.endpoints.get(endpoint);
+            const endpointConfig = this.endpoints.get(endpoint),
             if (endpointConfig) {
-                this.updateRequestStats(endpointConfig, false, responseTime);
-            }
+                this.updateRequestStats(endpointConfig, false, responseTime) }
             this.updateAPIStats(false, responseTime);
 
             console.error(`API request failed for ${endpoint}:`, error);
@@ -241,22 +228,19 @@ export class APIEndpointManager {
 
         // 日付文字列をタイムスタンプに変換
         if (processedQuery.startDate && typeof processedQuery.startDate === 'string') {
-            processedQuery.startDate = new Date(processedQuery.startDate).getTime();
-        }
+            processedQuery.startDate = new Date(processedQuery.startDate).getTime() }
         if (processedQuery.endDate && typeof processedQuery.endDate === 'string') {
-            processedQuery.endDate = new Date(processedQuery.endDate).getTime();
-        }
+            processedQuery.endDate = new Date(processedQuery.endDate).getTime() }
         // 制限値の設定
         if (processedQuery.limit) {
-            processedQuery.limit = Math.min(parseInt(processedQuery.limit), 10000); // 最大10,000件
+            processedQuery.limit = Math.min(parseInt(processedQuery.limit), 10000), // 最大10,000件
         }
         
         // ソート設定の検証
         if (processedQuery.sortBy) {
-            const allowedSortFields = ['timestamp', 'sessionId', 'bubbleType', 'score', 'duration'];
+            const allowedSortFields = ['timestamp', 'sessionId', 'bubbleType', 'score', 'duration'],
             if (!allowedSortFields.includes(processedQuery.sortBy)) {
-                delete processedQuery.sortBy;
-            }
+                delete processedQuery.sortBy }
         }
         
         return processedQuery;
@@ -269,8 +253,7 @@ export class APIEndpointManager {
      */
     checkRateLimit(clientId: string) {
         if (!this.rateLimiting.enabled) {
-            return true;
-        }
+            return true }
         const now = Date.now();
         const requests = this.rateLimiting.requestHistory.get(clientId) || [];
         
@@ -280,12 +263,10 @@ export class APIEndpointManager {
         // 1分間の制限確認
         const lastMinuteRequests = recentRequests.filter((time: number) => now - time < 60 * 1000);
         if (lastMinuteRequests.length >= this.rateLimiting.maxRequestsPerMinute) {
-            return false;
-        }
+            return false }
         // 1時間の制限確認
         if (recentRequests.length >= this.rateLimiting.maxRequestsPerHour) {
-            return false;
-        }
+            return false }
         // リクエスト履歴を更新
         recentRequests.push(now);
         this.rateLimiting.requestHistory.set(clientId, recentRequests);
@@ -374,13 +355,11 @@ export class APIEndpointManager {
      * @param {number} responseTime - レスポンス時間
      */
     updateRequestStats(endpointConfig: any, success: boolean, responseTime: number) {
-        endpointConfig.stats.callCount++;
+        endpointConfig.stats.callCount++,
         
         if (success) {
-            endpointConfig.stats.successCount++;
-        } else {
-            endpointConfig.stats.errorCount++;
-        }
+            endpointConfig.stats.successCount++ } else {
+            endpointConfig.stats.errorCount++ }
         // 平均レスポンス時間の更新
         const totalTime = endpointConfig.stats.averageResponseTime * (endpointConfig.stats.callCount - 1) + responseTime;
         endpointConfig.stats.averageResponseTime = totalTime / endpointConfig.stats.callCount;
@@ -392,12 +371,10 @@ export class APIEndpointManager {
      * @param {number} responseTime - レスポンス時間
      */
     updateAPIStats(success: boolean, responseTime: number) {
-        this.apiStats.totalRequests++;
+        this.apiStats.totalRequests++,
         if (success) {
-            this.apiStats.successfulRequests++;
-        } else {
-            this.apiStats.failedRequests++;
-        }
+            this.apiStats.successfulRequests++ } else {
+            this.apiStats.failedRequests++ }
         // 平均レスポンス時間の更新
         const totalTime = this.apiStats.averageResponseTime * (this.apiStats.totalRequests - 1) + responseTime;
         this.apiStats.averageResponseTime = totalTime / this.apiStats.totalRequests;
@@ -410,15 +387,14 @@ export class APIEndpointManager {
      * @returns {Array} エンドポイントリスト
      */
     getEndpoints() {
-        return Array.from(this.endpoints.keys());
-    }
+        return Array.from(this.endpoints.keys()) }
     /**
      * エンドポイント統計の取得
      * @param {string} endpoint - エンドポイントパス
      * @returns {Object} エンドポイント統計
      */
     getEndpointStats(endpoint: string) {
-        const config = this.endpoints.get(endpoint);
+        const config = this.endpoints.get(endpoint),
         return config ? { ...config.stats } : null;
     }
     
@@ -448,8 +424,7 @@ export class APIEndpointManager {
      * リソースの解放
      */
     destroy() {
-        this.endpoints.clear();
-        this.rateLimiting.requestHistory.clear();
-        console.log('API Endpoint Manager destroyed');
-    }
+        this.endpoints.clear(),
+        this.rateLimiting.requestHistory.clear(),
+        console.log('API Endpoint Manager destroyed') }
 }

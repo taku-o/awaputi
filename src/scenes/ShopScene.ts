@@ -6,33 +6,31 @@ import type { ItemDefinition, ItemInfo } from '../types/game';
  * ショップシーン
  */
 export class ShopScene extends Scene { private selectedItemIndex: number = 0
-    private scrollOffset: number = 0;
-    private maxVisibleItems: number = 6;
-    private, availableItems: ItemDefinition[] = [];
+    private scrollOffset: number = 0,
+    private maxVisibleItems: number = 6,
+    private, availableItems: ItemDefinition[] = [],
     constructor(gameEngine: any) {
     
-        super(gameEngine);
-        this.selectedItemIndex = 0;
-        this.scrollOffset = 0;
-        this.maxVisibleItems = 6;
-    
-    }
+        super(gameEngine),
+        this.selectedItemIndex = 0,
+        this.scrollOffset = 0,
+        this.maxVisibleItems = 6 }
         this.availableItems = []; }
     }
     
     /**
      * シーン開始時の処理
      */
-    enter(): void { this.updateItemList();
-        this.selectedItemIndex = 0;
-        this.scrollOffset = 0; }
+    enter(): void { this.updateItemList(),
+        this.selectedItemIndex = 0,
+        this.scrollOffset = 0 }
     
     /**
      * アイテムリストを更新
      */
-    updateItemList(): void { this.availableItems = this.gameEngine.itemManager.getAvailableItems();
+    updateItemList(): void { this.availableItems = this.gameEngine.itemManager.getAvailableItems(),
         // リセットアイテムを最後に追加
-        this.availableItems.push(ITEM_DEFINITIONS.reset); }
+        this.availableItems.push(ITEM_DEFINITIONS.reset) }
     
     /**
      * 更新処理
@@ -42,46 +40,46 @@ export class ShopScene extends Scene { private selectedItemIndex: number = 0
     /**
      * 描画処理
      */''
-    render(context: CanvasRenderingContext2D): void { const canvas = this.gameEngine.canvas;
-        ';
+    render(context: CanvasRenderingContext2D): void { const canvas = this.gameEngine.canvas,
+        ',
         // 背景
-        context.fillStyle = '#001122';
-        context.fillRect(0, 0, canvas.width, canvas.height);
-        ';
+        context.fillStyle = '#001122',
+        context.fillRect(0, 0, canvas.width, canvas.height),
+        ',
         // タイトル
-        context.save(''';
-        context.fillStyle = '#FFFFFF';
-        context.font = 'bold, 32px Arial';
-        context.textAlign = 'center';''
-        context.textBaseline = 'top';')'
-        context.fillText('アイテムショップ', canvas.width / 2, 20);
-        context.restore();
+        context.save('',
+        context.fillStyle = '#FFFFFF',
+        context.font = 'bold, 32px Arial',
+        context.textAlign = 'center',
+        context.textBaseline = 'top',')'
+        context.fillText('アイテムショップ', canvas.width / 2, 20),
+        context.restore(),
         
         // プレイヤー情報
-        this.renderPlayerInfo(context);
+        this.renderPlayerInfo(context),
         
         // アイテムリスト
-        this.renderItemList(context);
+        this.renderItemList(context),
         
         // 操作説明
-        this.renderControls(context); }
+        this.renderControls(context) }
     
     /**
      * プレイヤー情報を描画
      */
-    private renderPlayerInfo(context: CanvasRenderingContext2D): void { const canvas = this.gameEngine.canvas;
-        const playerData = this.gameEngine.playerData;
+    private renderPlayerInfo(context: CanvasRenderingContext2D): void { const canvas = this.gameEngine.canvas,
+        const playerData = this.gameEngine.playerData,
 
-        context.save(''';
-        context.fillStyle = '#CCCCCC';
-        context.font = '18px, Arial';
-        context.textAlign = 'left';
-        context.textBaseline = 'top';
-        '';
-        const infoY = 70;')'
-        context.fillText(`プレイヤー: ${playerData.username || '名無し)`, 20, infoY);
-        context.fillText(`所持AP: ${playerData.ap)`, 20, infoY + 25);
-        context.fillText(`総TAP: ${playerData.tap,}`, 20, infoY + 50}
+        context.save('',
+        context.fillStyle = '#CCCCCC',
+        context.font = '18px, Arial',
+        context.textAlign = 'left',
+        context.textBaseline = 'top',
+        ',
+        const infoY = 70,')'
+        context.fillText(`プレイヤー: ${playerData.username || '名無し)`, 20, infoY),
+        context.fillText(`所持AP: ${playerData.ap)`, 20, infoY + 25),
+        context.fillText(`総TAP: ${playerData.tap }`, 20, infoY + 50}
          }
         context.restore(});
     }
@@ -89,45 +87,43 @@ export class ShopScene extends Scene { private selectedItemIndex: number = 0
     /**
      * アイテムリストを描画
      */
-    private renderItemList(context: CanvasRenderingContext2D): void { const canvas = this.gameEngine.canvas;
-        const startY = 150;
-        const itemHeight = 80;
-        const itemWidth = canvas.width - 40;
-        const itemX = 20;
+    private renderItemList(context: CanvasRenderingContext2D): void { const canvas = this.gameEngine.canvas,
+        const startY = 150,
+        const itemHeight = 80,
+        const itemWidth = canvas.width - 40,
+        const itemX = 20,
         
-        let currentY = startY;
+        let currentY = startY,
         
-        for (let i = this.scrollOffset; i < Math.min(this.scrollOffset + this.maxVisibleItems, this.availableItems.length); i++) {
-            const item = this.availableItems[i];
-            const isSelected = i === this.selectedItemIndex;
-            const itemInfo = this.gameEngine.itemManager.getItemInfo(item.id);
+        for (let i = this.scrollOffset, i < Math.min(this.scrollOffset + this.maxVisibleItems, this.availableItems.length), i++) {
+            const item = this.availableItems[i],
+            const isSelected = i === this.selectedItemIndex,
+            const itemInfo = this.gameEngine.itemManager.getItemInfo(item.id),
             
-            this.renderItemCard(context, itemInfo, itemX, currentY, itemWidth, itemHeight, isSelected);
-            currentY += itemHeight + 10; }
+            this.renderItemCard(context, itemInfo, itemX, currentY, itemWidth, itemHeight, isSelected),
+            currentY += itemHeight + 10 }
     }
     
     /**
      * アイテムカードを描画
      */'
     private renderItemCard(context: CanvasRenderingContext2D, itemInfo: ItemInfo, x: number, y: number, width: number, height: number, isSelected: boolean): void { ''
-        context.save()';
-        let bgColor = '#333333';')'
-        if(isSelected) {', ';
+        context.save()',
+        let bgColor = '#333333',')'
+        if(isSelected) {', ' }
 
-        }
-
-            bgColor = itemInfo.canPurchase ? '#0066CC' : '#CC6600';' 
+            bgColor = itemInfo.canPurchase ? '#0066CC' : '#CC6600'; 
     } else if(!itemInfo.canPurchase) { ''
-            bgColor = '#222222'; }
+            bgColor = '#222222' }
         
         // 背景
-        context.fillStyle = bgColor;''
+        context.fillStyle = bgColor;
         context.fillRect(x, y, width, height);
         ';
         // 枠線
         context.strokeStyle = isSelected ? '#FFFFFF' : '#666666';
 
-        context.lineWidth = 2;''
+        context.lineWidth = 2;
         context.strokeRect(x, y, width, height);
         ';
         // アイテム名
@@ -138,14 +134,12 @@ export class ShopScene extends Scene { private selectedItemIndex: number = 0
         
         let itemName = itemInfo.name;
         if(itemInfo.currentLevel > 0) {
-            
-        }
+    
+}
             itemName += ` (Lv.${itemInfo.currentLevel})`;
 
         }''
-        if(itemInfo.isMaxLevel) {', ';
-
-        }
+        if(itemInfo.isMaxLevel) {', ' }
 
             itemName += ' [MAX]'; }
         }
@@ -158,76 +152,71 @@ export class ShopScene extends Scene { private selectedItemIndex: number = 0
         context.fillText(itemInfo.description, x + 15, y + 35);
         ';
         // コスト表示
-        if(!itemInfo.isMaxLevel) {'
+        if(!itemInfo.isMaxLevel) {
 
-            context.font = 'bold 16px Arial';
-            context.textAlign = 'right';
+            context.font = 'bold 16px Arial',
+            context.textAlign = 'right' }
 
-        }
-
-            context.fillStyle = itemInfo.canPurchase ? '#00FF00' : '#FF6666';' }
+            context.fillStyle = itemInfo.canPurchase ? '#00FF00' : '#FF6666'; }
 
             context.fillText(`${itemInfo.cost} AP`, x + width - 15, y + 10'}';
 
         } else {
-            context.font = 'bold 16px Arial';
-            context.textAlign = 'right';
-            context.fillStyle = '#FFD700';' }
+            context.font = 'bold 16px Arial',
+            context.textAlign = 'right',
+            context.fillStyle = '#FFD700',' }
 
             context.fillText('購入済み', x + width - 15, y + 10'; }
         }
         ';
         // 最大レベル表示
-        if(itemInfo.maxLevel > 1) {'
+        if(itemInfo.maxLevel > 1) {
 
-            context.font = '12px Arial';
-            context.textAlign = 'right';
-
-        }
+            context.font = '12px Arial',
+            context.textAlign = 'right' }
 
             context.fillStyle = '#AAAAAA'; }
             context.fillText(`最大Lv.${itemInfo.maxLevel}`, x + width - 15, y + height - 20});
         }
         ';
         // 効果値表示（現在のレベルでの効果）
-        if(itemInfo.currentLevel > 0) {'
+        if(itemInfo.currentLevel > 0) {
 
-            context.font = '12px Arial';
-            context.textAlign = 'left';
-            context.fillStyle = '#00CCFF';
+            context.font = '12px Arial',
+            context.textAlign = 'left',
+            context.fillStyle = '#00CCFF',
 
-            let effectText = '';
+            let effectText = ',
             switch(itemInfo.effect.type) {''
-                case 'scoreMultiplier':';
-        }
+                case 'scoreMultiplier':' }
 
-                    const multiplier = this.gameEngine.itemManager.getEffectValue('scoreMultiplier';' }
+                    const multiplier = this.gameEngine.itemManager.getEffectValue('scoreMultiplier'; }
 
                     effectText = `現在の倍率: x${multiplier.toFixed(1'}'`;
 
-                    break;''
-                case 'revival':'';
-                    const revivalCount = this.gameEngine.itemManager.getEffectValue('revival'');
+                    break;
+                case 'revival':';
+                    const revivalCount = this.gameEngine.itemManager.getEffectValue('revival');
                     effectText = `残り復活回数: ${revivalCount}`;
 
-                    break;''
-                case 'rareRate':'';
-                    const rareRate = this.gameEngine.itemManager.getEffectValue('rareRate';''
+                    break;
+                case 'rareRate':';
+                    const rareRate = this.gameEngine.itemManager.getEffectValue('rareRate';
                     effectText = `現在のレア率: x${rareRate.toFixed(1'}'`;
 
-                    break;''
-                case 'hpBoost':'';
-                    const hpBoost = this.gameEngine.itemManager.getEffectValue('hpBoost'');
+                    break;
+                case 'hpBoost':';
+                    const hpBoost = this.gameEngine.itemManager.getEffectValue('hpBoost');
                     effectText = `現在のHP増加: +${hpBoost}`;
 
-                    break;''
-                case 'timeExtension':'';
+                    break;
+                case 'timeExtension':';
                     const timeExt = this.gameEngine.itemManager.getEffectValue('timeExtension);
                     effectText = `現在の時間延長: +${timeExt / 1000}秒`;
                     break;
             }
             
-            if (effectText) { context.fillText(effectText, x + 15, y + height - 20); }
+            if (effectText) { context.fillText(effectText, x + 15, y + height - 20) }
         }
         
         context.restore();
@@ -236,72 +225,68 @@ export class ShopScene extends Scene { private selectedItemIndex: number = 0
     /**
      * 操作説明を描画
      */
-    private renderControls(context: CanvasRenderingContext2D): void { const canvas = this.gameEngine.canvas;
+    private renderControls(context: CanvasRenderingContext2D): void { const canvas = this.gameEngine.canvas,
 
-        context.save(''';
-        context.fillStyle = '#AAAAAA';
-        context.font = '14px, Arial';
-        context.textAlign = 'center';
-        context.textBaseline = 'bottom';
-        '';
-        const controlsY = canvas.height - 40;')'
-        context.fillText('↑↓: 選択  Enter: 購入  H: ヘルプ , ESC: 戻る', canvas.width / 2, controlsY';''
-        context.fillText('クリックでも操作できます', canvas.width / 2, controlsY + 20);
+        context.save('',
+        context.fillStyle = '#AAAAAA',
+        context.font = '14px, Arial',
+        context.textAlign = 'center',
+        context.textBaseline = 'bottom',
+        ',
+        const controlsY = canvas.height - 40,')'
+        context.fillText('↑↓: 選択  Enter: 購入  H: ヘルプ , ESC: 戻る', canvas.width / 2, controlsY',
+        context.fillText('クリックでも操作できます', canvas.width / 2, controlsY + 20),
         
-        context.restore(); }
+        context.restore() }
     
     /**
      * 入力処理'
      */''
     handleInput(event: Event): void { ''
         if(event.type === 'keydown' {'
-            const keyEvent = event as KeyboardEvent;''
+            const keyEvent = event as KeyboardEvent,
             switch(keyEvent.code) {''
-                case 'ArrowUp':'';
-                    this.moveSelection(-1);
+                case 'ArrowUp':',
+                    this.moveSelection(-1),
 
-                    break;''
-                case 'ArrowDown':'';
-                    this.moveSelection(1);
+                    break,
+                case 'ArrowDown':',
+                    this.moveSelection(1),
 
-                    break;''
-                case 'Enter':'';
-                    this.purchaseSelectedItem()';
-                case 'KeyH':')';
-                    this.gameEngine.sceneManager.switchScene('help'');
+                    break,
+                case 'Enter':',
+                    this.purchaseSelectedItem()',
+                case 'KeyH':')',
+                    this.gameEngine.sceneManager.switchScene('help'),
 
-                    break;''
-                case 'Escape':'';
-                    this.sceneManager.switchScene('stageSelect'');
-        }
+                    break,
+                case 'Escape':',
+                    this.sceneManager.switchScene('stageSelect') }
                     break; }
 
-            }''
-        } else if(event.type === 'click) { this.handleClick(event, as MouseEvent); }'
+            }'} else if(event.type === 'click) { this.handleClick(event, as MouseEvent) }'
     }
     
     /**
      * クリック処理
      */
-    private handleClick(event: MouseEvent): void { const canvas = this.gameEngine.canvas;
-        const rect = canvas.getBoundingClientRect();
-        const x = event.clientX - rect.left;
-        const y = event.clientY - rect.top;
+    private handleClick(event: MouseEvent): void { const canvas = this.gameEngine.canvas,
+        const rect = canvas.getBoundingClientRect(),
+        const x = event.clientX - rect.left,
+        const y = event.clientY - rect.top,
         
-        const startY = 150;
-        const itemHeight = 80;
-        const itemSpacing = 10;
+        const startY = 150,
+        const itemHeight = 80,
+        const itemSpacing = 10,
         
         // クリックされたアイテムを特定
-        for (let i = this.scrollOffset; i < Math.min(this.scrollOffset + this.maxVisibleItems, this.availableItems.length); i++) {
-            const itemY = startY + (i - this.scrollOffset) * (itemHeight + itemSpacing);
+        for (let i = this.scrollOffset, i < Math.min(this.scrollOffset + this.maxVisibleItems, this.availableItems.length), i++) {
+            const itemY = startY + (i - this.scrollOffset) * (itemHeight + itemSpacing),
             
             if(y >= itemY && y <= itemY + itemHeight) {
             
-                this.selectedItemIndex = i;
-                this.purchaseSelectedItem();
-            
-            }
+                this.selectedItemIndex = i,
+                this.purchaseSelectedItem() }
                 break; }
 }
     }
@@ -309,18 +294,16 @@ export class ShopScene extends Scene { private selectedItemIndex: number = 0
     /**
      * 選択を移動
      */
-    private moveSelection(direction: number): void { this.selectedItemIndex += direction;
+    private moveSelection(direction: number): void { this.selectedItemIndex += direction,
         
         if(this.selectedItemIndex < 0) {
-        
-            
-        
-        }
+    
+}
             this.selectedItemIndex = 0; }
-        } else if (this.selectedItemIndex >= this.availableItems.length) { this.selectedItemIndex = this.availableItems.length - 1; }
+        } else if (this.selectedItemIndex >= this.availableItems.length) { this.selectedItemIndex = this.availableItems.length - 1 }
         
         // スクロール調整
-        if (this.selectedItemIndex < this.scrollOffset) { this.scrollOffset = this.selectedItemIndex; } else if (this.selectedItemIndex >= this.scrollOffset + this.maxVisibleItems) { this.scrollOffset = this.selectedItemIndex - this.maxVisibleItems + 1; }
+        if (this.selectedItemIndex < this.scrollOffset) { this.scrollOffset = this.selectedItemIndex } else if (this.selectedItemIndex >= this.scrollOffset + this.maxVisibleItems) { this.scrollOffset = this.selectedItemIndex - this.maxVisibleItems + 1 }
     }
     
     /**
@@ -328,14 +311,13 @@ export class ShopScene extends Scene { private selectedItemIndex: number = 0
      */
     private purchaseSelectedItem(): void { ''
         if(this.selectedItemIndex >= 0 && this.selectedItemIndex < this.availableItems.length) {
-            const selectedItem = this.availableItems[this.selectedItemIndex];
+            const selectedItem = this.availableItems[this.selectedItemIndex],
 
             if(selectedItem.id === 'reset' {'
                 // リセットアイテムの場合
                 if(this.gameEngine.itemManager.resetAllItems()) {''
-                    console.log('All, items have, been reset');''
-                    this.updateItemList();
-        }
+                    console.log('All, items have, been reset'),
+                    this.updateItemList() }
 
                     console.log('Failed, to reset, items (not, enough AP)'); }'
 } else {  // 通常アイテムの場合
@@ -344,9 +326,8 @@ export class ShopScene extends Scene { private selectedItemIndex: number = 0
                     this.updateItemList(}); // リストを更新
                 } else { }'
 
-                    console.log(`Failed, to purchase ${selectedItem.name}`'}';
+                    console.log(`Failed, to purchase ${selectedItem.name}`}';
                 }
 }
 
-    }''
-}
+    }'}

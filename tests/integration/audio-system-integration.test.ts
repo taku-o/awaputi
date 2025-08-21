@@ -11,18 +11,16 @@ import { VibrationManager  } from '../../src/core/VibrationManager';
 import { getConfigurationManager  } from '../../src/core/ConfigurationManager';
 // モック関数ユーティリティ
 const mockFn = (returnValue) => {
-    let calls = [];
+    let calls = [],
     const fn = (...args) => {
-        calls.push(args);
-        return returnValue;
-    };
-    fn.mockReturnValue = (value) => { returnValue = value; return fn; };
+        calls.push(args),
+        return returnValue };
+    fn.mockReturnValue = (value) => { returnValue = value, return fn };
     fn.mockImplementation = (impl) => { 
-        const originalFn = fn;
+        const originalFn = fn,
         const newFn = (...args) => {
-            calls.push(args);
-            return impl(...args');
-        };
+            calls.push(args),
+            return impl(...args') };
         newFn.calls = calls;
         return newFn;
     };
@@ -41,84 +39,74 @@ describe('音響システム統合テスト', () => {
                 createGain: () => ({
                     gain: { 
                         value: 1,
-                        setValueAtTime: mockFn(),
+                        setValueAtTime: mockFn(
                         exponentialRampToValueAtTime: mockFn(}
                     },
-                    connect: mockFn(),
-        disconnect: mockFn(),
-                }),
+                    connect: mockFn(
+        disconnect: mockFn( }),
                 createAnalyser: () => ({
                     fftSize: 256,
                     frequencyBinCount: 128,
                     smoothingTimeConstant: 0.8,
-                    getFloatFrequencyData: mockFn(),
-                    getByteFrequencyData: mockFn(),
-                    connect: mockFn(),
-        disconnect: mockFn(),
-                }),
+                    getFloatFrequencyData: mockFn(
+                    getByteFrequencyData: mockFn(
+                    connect: mockFn(
+        disconnect: mockFn( }),
                 createBiquadFilter: (') => ({
                     type: 'lowpass',
                     frequency: { value: 350 };
                     Q: { value: 1 };
                     gain: { value: 0 };
-                    connect: mockFn(),
-        disconnect: mockFn(),
-                }),
+                    connect: mockFn(
+        disconnect: mockFn( }),
                 createDynamicsCompressor: () => ({
                     threshold: { value: -24 };
                     knee: { value: 30 };
                     ratio: { value: 12 };
                     attack: { value: 0.003 };
                     release: { value: 0.25 },
-                    connect: mockFn(),
-        disconnect: mockFn(),
-                }),
+                    connect: mockFn(
+        disconnect: mockFn( }),
                 createConvolver: () => ({
                     buffer: null,
                     normalize: true,
-                    connect: mockFn(),
-        disconnect: mockFn(),
-                }),
+                    connect: mockFn(
+        disconnect: mockFn( }),
                 createBufferSource: () => ({
                     buffer: null,
                     loop: false,
                     loopStart: 0,
                     loopEnd: 0,
                     playbackRate: { value: 1 },
-                    start: mockFn(),
-                    stop: mockFn(),
-                    connect: mockFn(),
-                    disconnect: mockFn(),
-                    addEventListener: mockFn(),
-        removeEventListener: mockFn(),
-                }),
+                    start: mockFn(
+                    stop: mockFn(
+                    connect: mockFn(
+                    disconnect: mockFn(
+                    addEventListener: mockFn(
+        removeEventListener: mockFn( }),
                 createOscillator: (') => ({
                     type: 'sine',
                     frequency: { value: 440 };
                     detune: { value: 0 };
-                    start: mockFn(),
-                    stop: mockFn(),
-                    connect: mockFn(),
-                    disconnect: mockFn(),
-        addEventListener: mockFn(),
-                }),
+                    start: mockFn(
+                    stop: mockFn(
+                    connect: mockFn(
+                    disconnect: mockFn(
+        addEventListener: mockFn( }),
                 createStereoPanner: () => ({
                     pan: { value: 0 };
-                    connect: mockFn(),
-        disconnect: mockFn(),
-                }),
+                    connect: mockFn(
+        disconnect: mockFn( }),
                 createBuffer: mockFn(() => ({
                     length: 44100,
                     sampleRate: 44100,
                     numberOfChannels: 2,
-                    getChannelData: mockFn(() => new Float32Array(44100);
-                }),
+                    getChannelData: mockFn(() => new Float32Array(44100) }),
                 decodeAudioData: mockFn(Promise.resolve({
                     length: 44100,
                     sampleRate: 44100,
-                    numberOfChannels: 2;);
-                   , getChannelData: mockFn(() => new Float32Array(44100);
-                })'),
+                    numberOfChannels: 2),
+                   , getChannelData: mockFn(() => new Float32Array(44100) })'),
                 destination: {
                     channelCount: 2,
                     channelCountMode: 'explicit',
@@ -140,84 +128,76 @@ describe('音響システム統合テスト', () => {
                 state: 'running',
                 baseLatency: 0.01,
                 outputLatency: 0.02,
-                resume: mockFn(Promise.resolve(),
-                suspend: mockFn(Promise.resolve(),
-                close: mockFn(Promise.resolve(),
-                addEventListener: mockFn(),
-        removeEventListener: mockFn('),
-            };
+                resume: mockFn(Promise.resolve(
+                suspend: mockFn(Promise.resolve(
+                close: mockFn(Promise.resolve(
+                addEventListener: mockFn(
+        removeEventListener: mockFn(' };
         };
         
         global.webkitAudioContext = global.AudioContext;
         // Navigator APIs のモック
         global.navigator = {
-            userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7') AppleWebKit/537.36',
+            userAgent: 'Mozilla/5.0 (Macintosh, Intel Mac OS X 10_15_7') AppleWebKit/537.36',
             platform: 'MacIntel',
             deviceMemory: 8,
             hardwareConcurrency: 8,
             vibrate: mockFn(true,
-            getGamepads: mockFn([]),
+            getGamepads: mockFn([],
             getBattery: mockFn(Promise.resolve({
                 level: 0.8,
                 charging: false,
                 chargingTime: Infinity,
-                dischargingTime: 3600;);
-       , addEventListener: mockFn(),
-            });
+                dischargingTime: 3600),
+       , addEventListener: mockFn( });
         };
         // DOM APIs のモック
         global.document = {
             createElement: mockFn((tag) => ({
-                tagName: tag.toUpperCase('),
-                className: '',
+                tagName: tag.toUpperCase(',
+                className: ',
                 style: {};
-                appendChild: mockFn(),
-                setAttribute: mockFn(),
-                getAttribute: mockFn(),
-                addEventListener: mockFn(),
-                removeEventListener: mockFn(),
-                querySelector: mockFn(),
-                remove: mockFn(),
+                appendChild: mockFn(
+                setAttribute: mockFn(
+                getAttribute: mockFn(
+                addEventListener: mockFn(
+                removeEventListener: mockFn(
+                querySelector: mockFn(
+                remove: mockFn(
                 parentNode: null
             }),
             getElementById: mockFn(null,
             querySelector: mockFn(null,
-            querySelectorAll: mockFn([]),
+            querySelectorAll: mockFn([],
             body: {
-                appendChild: mockFn(),
-        removeChild: mockFn(),
-            },
+                appendChild: mockFn(
+        removeChild: mockFn( },
             head: {
-                appendChild: mockFn(),
-        removeChild: mockFn(),
-            },
+                appendChild: mockFn(
+        removeChild: mockFn( },
             hidden: false,
-            addEventListener: mockFn(),
-        removeEventListener: mockFn(),
-        };
+            addEventListener: mockFn(
+        removeEventListener: mockFn( };
         global.window = {
-            addEventListener: mockFn(),
-        removeEventListener: mockFn(),
-        };
+            addEventListener: mockFn(
+        removeEventListener: mockFn( };
         // LocalStorage のモック
         global.localStorage = {
             getItem: mockFn(null,
-            setItem: mockFn(),
-            removeItem: mockFn(),
-        clear: mockFn(),
-        };
+            setItem: mockFn(
+            removeItem: mockFn(
+        clear: mockFn( };
         // コンソールのモック
         global.console = {
-            log: mockFn(),
-            warn: mockFn(),
-            error: mockFn(),
-        info: mockFn(),
-        };
+            log: mockFn(
+            warn: mockFn(
+            error: mockFn(
+        info: mockFn( };
     });
     beforeEach(() => {
         // 新しいインスタンスを作成
-        configManager = getConfigurationManager();
-        audioManager = new AudioManager();
+        configManager = getConfigurationManager(),
+        audioManager = new AudioManager(),
         // AudioAccessibilitySupportの初期化には時間がかかる場合があるので、
         // 実際のコンストラクタではなくモックを使用
         audioAccessibilitySupport = {
@@ -230,11 +210,11 @@ describe('音響システム統合テスト', () => {
                 hapticFeedback: false,
                 vibrationIntensity: 0.8
             },
-            triggerAudioEvent: mockFn(),
-            triggerHapticFeedback: mockFn(),
-            synchronizeWithBGMRhythm: mockFn(),
-            triggerSpecialEffectVibration: mockFn(),
-            updateHapticSettings: mockFn(),
+            triggerAudioEvent: mockFn(
+            triggerHapticFeedback: mockFn(
+            synchronizeWithBGMRhythm: mockFn(
+            triggerSpecialEffectVibration: mockFn(
+            updateHapticSettings: mockFn(
             getStatistics: mockFn({
                 settings: {};
                 hapticSettings: {};
@@ -242,30 +222,25 @@ describe('音響システム統合テスト', () => {
                 eventCounts: {};
                 vibrationManager: { available: false, enabled: false }
             ),
-        dispose: mockFn(),
-        };
+        dispose: mockFn( };
         vibrationManager = {
             config: { enabled: false, globalIntensity: 1.0 },
             deviceInfo: { hasVibration: true };
-            triggerVibration: mockFn(),
-            setEnabled: mockFn(),
-            setGlobalIntensity: mockFn(),
-            getDeviceInfo: mockFn({ hasVibration: true ),
-            generateReport: mockFn({),
-        destroy: mockFn(),
-        };
+            triggerVibration: mockFn(
+            setEnabled: mockFn(
+            setGlobalIntensity: mockFn(
+            getDeviceInfo: mockFn({ hasVibration: true ,
+            generateReport: mockFn({,
+        destroy: mockFn( };
     });
     afterEach((') => {
         // リソースのクリーンアップ
         if (audioManager && typeof audioManager.dispose === 'function') {
-            audioManager.dispose(');
-        }
+            audioManager.dispose(') }
         if (audioAccessibilitySupport && typeof audioAccessibilitySupport.dispose === 'function') {
-            audioAccessibilitySupport.dispose(');
-        }
+            audioAccessibilitySupport.dispose(') }
         if (vibrationManager && typeof vibrationManager.destroy === 'function') {
-            vibrationManager.destroy();
-        }
+            vibrationManager.destroy() }
     }');
     describe('BGMとSFXの同時再生テスト', (') => {
         test('BGMとSFXが同時に再生できること', async (') => {
@@ -281,9 +256,9 @@ describe('音響システム統合テスト', () => {
         }');
         test('複数のSFXが同時に再生できること', (') => {
             // 複数の効果音を同時再生
-            const sounds = ['bubblePop', 'comboAchieved', 'achievementUnlocked'];
+            const sounds = ['bubblePop', 'comboAchieved', 'achievementUnlocked'],
             
-            sounds.forEach(sound => {);
+            sounds.forEach(sound => {),
                 const result = audioManager.playSound(sound, { volume: 0.3 });
                 expect(result.toBeTruthy();
             });
@@ -291,10 +266,10 @@ describe('音響システム統合テスト', () => {
             expect(status.activeSounds).toBeGreaterThanOrEqual(sounds.length);
         }');
         test('同時再生数制限が正しく動作すること', () => {
-            const maxConcurrentSounds = 20;
+            const maxConcurrentSounds = 20,
             
             // 制限を超える数の音を再生しようとする
-            for (let i = 0; i < maxConcurrentSounds + 5; i++') {
+            for (let i = 0, i < maxConcurrentSounds + 5, i++') {
                 audioManager.playSound('bubblePop', { volume: 0.1 });
             }
             const status = audioManager.getStatus();
@@ -304,13 +279,12 @@ describe('音響システム統合テスト', () => {
     describe('シーン遷移時の音響切り替えテスト', (') => {
         test('シーン変更時にBGMが正しく切り替わること', async (') => {
             // 初期シーンのBGM再生
-            audioManager.playBGM('mainMenu'');
+            audioManager.playBGM('mainMenu'),
             // シーン切り替え
-            audioManager.setScene('gamePlay');
+            audioManager.setScene('gamePlay'),
             // BGMが変更されていることを確認
-            const status = audioManager.getStatus();
-            expect(status.currentBGM).toBeDefined();
-        }');
+            const status = audioManager.getStatus(),
+            expect(status.currentBGM).toBeDefined() }');
         test('シーン切り替え時の音響フェード機能', async (') => {
             audioManager.playBGM('mainMenu', { volume: 0.8 });
             // フェード付きでシーン切り替え
@@ -323,60 +297,54 @@ describe('音響システム統合テスト', () => {
         }');
         test('シーン遷移時に不要なSFXが停止されること', (') => {
             // ゲーム内SFXを再生
-            audioManager.playSound('bubblePop'');
-            audioManager.playSound('comboAchieved'');
+            audioManager.playSound('bubblePop'),
+            audioManager.playSound('comboAchieved'),
             // メニューシーンに移行
-            audioManager.setScene('mainMenu');
+            audioManager.setScene('mainMenu'),
             // ゲーム関連のSFXが停止されていることを確認
-            const status = audioManager.getStatus();
-            expect(status.sceneSpecificSounds).toBeDefined();
-        }');
+            const status = audioManager.getStatus(),
+            expect(status.sceneSpecificSounds).toBeDefined() }');
     }
     describe('設定変更の即座反映テスト', (') => {
         test('マスター音量変更が即座に反映されること', (') => {
             // BGMとSFXを再生
-            audioManager.playBGM('test-bgm'');
-            audioManager.playSound('bubblePop'');
+            audioManager.playBGM('test-bgm'),
+            audioManager.playSound('bubblePop'),
             // マスター音量を変更
-            audioManager.setVolume('master', 0.5);
+            audioManager.setVolume('master', 0.5),
             // 設定が即座に反映されていることを確認
-            const status = audioManager.getStatus();
-            expect(status.masterVolume).toBe(0.5);
-        }');
+            const status = audioManager.getStatus(),
+            expect(status.masterVolume).toBe(0.5) }');
         test('BGM音量変更が即座に反映されること', (') => {
-            audioManager.playBGM('test-bgm'');
-            audioManager.setVolume('bgm', 0.3);
-            const status = audioManager.getStatus();
-            expect(status.bgmVolume).toBe(0.3);
-        }');
+            audioManager.playBGM('test-bgm'),
+            audioManager.setVolume('bgm', 0.3),
+            const status = audioManager.getStatus(),
+            expect(status.bgmVolume).toBe(0.3) }');
         test('SFX音量変更が即座に反映されること', (') => {
-            audioManager.playSound('bubblePop'');
-            audioManager.setVolume('sfx', 0.7);
-            const status = audioManager.getStatus();
-            expect(status.sfxVolume).toBe(0.7);
-        }');
+            audioManager.playSound('bubblePop'),
+            audioManager.setVolume('sfx', 0.7),
+            const status = audioManager.getStatus(),
+            expect(status.sfxVolume).toBe(0.7) }');
         test('ミュート切り替えが即座に反映されること', (') => {
-            audioManager.playBGM('test-bgm'');
-            audioManager.playSound('bubblePop');
-            const initialMuted = audioManager.isMuted();
-            audioManager.toggleMute();
-            const status = audioManager.getStatus();
-            expect(status.isMuted).toBe(!initialMuted);
-        }');
+            audioManager.playBGM('test-bgm'),
+            audioManager.playSound('bubblePop'),
+            const initialMuted = audioManager.isMuted(),
+            audioManager.toggleMute(),
+            const status = audioManager.getStatus(),
+            expect(status.isMuted).toBe(!initialMuted) }');
         test('音響効果の有効/無効が即座に反映されること', (') => {
-            audioManager.setAudioEffect('reverb', true');
-            expect(audioManager.getAudioEffectStatus('reverb').toBe(true');
-            audioManager.setAudioEffect('reverb', false');
-            expect(audioManager.getAudioEffectStatus('reverb').toBe(false);
-        }');
+            audioManager.setAudioEffect('reverb', true'),
+            expect(audioManager.getAudioEffectStatus('reverb').toBe(true'),
+            audioManager.setAudioEffect('reverb', false'),
+            expect(audioManager.getAudioEffectStatus('reverb').toBe(false) }');
     }
     describe('アクセシビリティ機能統合テスト', (') => {
         test('音響イベントがアクセシビリティシステムに通知されること', (') => {
             // アクセシビリティ支援を有効化
-            audioAccessibilitySupport.settings.visualFeedback = true;
+            audioAccessibilitySupport.settings.visualFeedback = true,
             
             // 音響イベントを発生
-            audioManager.playSound('bubblePop'');
+            audioManager.playSound('bubblePop'),
             audioAccessibilitySupport.triggerAudioEvent('bubblePop', {
                 bubbleType: 'normal',
                 comboLevel: 1,
@@ -387,19 +355,18 @@ describe('音響システム統合テスト', () => {
         }');
         test('触覚フィードバックが音響イベントと連動すること', (') => {
             // 触覚フィードバックを有効化
-            audioAccessibilitySupport.settings.hapticFeedback = true;
+            audioAccessibilitySupport.settings.hapticFeedback = true,
             
             // 音響イベントと触覚フィードバックを連動
-            audioManager.playSound('comboAchieved'');
+            audioManager.playSound('comboAchieved'),
             audioAccessibilitySupport.triggerHapticFeedback('comboAchieved', {
                 comboLevel: 'great',
-                comboCount: 5);
+                comboCount: 5),
             // 触覚フィードバックが発動したことを確認
-            expect(audioAccessibilitySupport.triggerHapticFeedback.calls.length).toBeGreaterThan(0);
-        }');
+            expect(audioAccessibilitySupport.triggerHapticFeedback.calls.length).toBeGreaterThan(0) }');
         test('視覚的通知が音響レベルと連動すること', (') => {
-            audioAccessibilitySupport.settings.visualFeedback = true;
-            audioAccessibilitySupport.settings.colorIndication = true;
+            audioAccessibilitySupport.settings.visualFeedback = true,
+            audioAccessibilitySupport.settings.colorIndication = true,
             
             // 高音量の音響を再生
             audioManager.playSound('explosion', { volume: 0.9 });
@@ -408,7 +375,7 @@ describe('音響システム統合テスト', () => {
             expect(stats.toBeDefined();
         }');
         test('BGMリズムと触覚フィードバックが同期すること', () => {
-            audioAccessibilitySupport.settings.hapticFeedback = true;
+            audioAccessibilitySupport.settings.hapticFeedback = true,
             
             // BGMのリズムデータをシミュレート
             const rhythmData = {
@@ -425,31 +392,29 @@ describe('音響システム統合テスト', () => {
     describe('エラーハンドリングとフォールバック', (') => {
         test('Web Audio API未対応時のフォールバック', () => {
             // Web Audio APIを無効化
-            const originalAudioContext = global.AudioContext;
-            global.AudioContext = undefined;
-            global.webkitAudioContext = undefined;
+            const originalAudioContext = global.AudioContext,
+            global.AudioContext = undefined,
+            global.webkitAudioContext = undefined,
             
             // AudioManager を再初期化
-            const fallbackAudioManager = new AudioManager();
+            const fallbackAudioManager = new AudioManager(),
             // フォールバックが動作することを確認
-            expect(fallbackAudioManager.toBeDefined();
-            expect(fallbackAudioManager.getStatus().webAudioSupported).toBe(false);
+            expect(fallbackAudioManager.toBeDefined(),
+            expect(fallbackAudioManager.getStatus().webAudioSupported).toBe(false),
             // 元の設定を復元
-            global.AudioContext = originalAudioContext;
-            global.webkitAudioContext = originalAudioContext;
-        }');
+            global.AudioContext = originalAudioContext,
+            global.webkitAudioContext = originalAudioContext }');
         test('音響ファイル読み込み失敗時のエラーハンドリング', async (') => {
             // 存在しない音響ファイルを再生しようとする
-            const result = audioManager.playSound('nonexistent-sound');
+            const result = audioManager.playSound('nonexistent-sound'),
             // エラーが適切に処理されること
-            expect(result.toBeFalsy();
+            expect(result.toBeFalsy(),
             // AudioManager が正常な状態を維持していること  
-            const status = audioManager.getStatus();
-            expect(status.errors).toBeDefined();
-        }');
+            const status = audioManager.getStatus(),
+            expect(status.errors).toBeDefined() }');
         test('触覚フィードバック未対応時のフォールバック', (') => {
             // 振動APIを無効化
-            global.navigator.vibrate = undefined;
+            global.navigator.vibrate = undefined,
             
             // 触覚フィードバックを試行
             audioAccessibilitySupport.triggerHapticFeedback('bubblePop', {});
@@ -458,7 +423,7 @@ describe('音響システム統合テスト', () => {
         }');
         test('メモリ不足時の音響キューイング制限', () => {
             // 大量の音響を同時再生しようとする
-            for (let i = 0; i < 100; i++') {
+            for (let i = 0, i < 100, i++') {
                 audioManager.playSound('bubblePop', { volume: 0.01 });
             }
             
@@ -471,10 +436,9 @@ describe('音響システム統合テスト', () => {
     describe('パフォーマンス統合テスト', (') => {
         test('音響処理のCPU使用率が制限内であること', () => {
             // 高負荷の音響処理をシミュレート
-            for (let i = 0; i < 10; i++') {
-                audioManager.playSound('explosion'');
-                audioManager.setAudioEffect('reverb', i % 2 === 0);
-            }
+            for (let i = 0, i < 10, i++') {
+                audioManager.playSound('explosion'),
+                audioManager.setAudioEffect('reverb', i % 2 === 0) }
             
             const performanceData = audioManager.getPerformanceMetrics();
             expect(performanceData.cpuUsage).toBeLessThan(0.7); // 70%未満
@@ -484,27 +448,26 @@ describe('音響システム統合テスト', () => {
             audioManager.preloadSounds([
                 'bubblePop', 'comboAchieved', 'achievementUnlocked',
                 'explosion', 'freeze', 'electric')
-            ]);
-            const performanceData = audioManager.getPerformanceMetrics();
-            expect(performanceData.memoryUsage).toBeLessThan(50 * 1024 * 1024); // 50MB未満
+            ]),
+            const performanceData = audioManager.getPerformanceMetrics(),
+            expect(performanceData.memoryUsage).toBeLessThan(50 * 1024 * 1024), // 50MB未満
         }');
         test('音響遅延が許容範囲内であること', async () => {
-            const startTime = Date.now(');
+            const startTime = Date.now('),
             // 音響再生のレスポンス時間を測定
-            audioManager.playSound('bubblePop');
-            const endTime = Date.now();
-            const latency = endTime - startTime;
+            audioManager.playSound('bubblePop'),
+            const endTime = Date.now(),
+            const latency = endTime - startTime,
             
-            expect(latency.toBeLessThan(100); // 100ms未満
+            expect(latency.toBeLessThan(100), // 100ms未満
         }');
         test('長時間実行でのメモリリークがないこと', async () => {
-            const initialMemory = audioManager.getPerformanceMetrics().memoryUsage;
+            const initialMemory = audioManager.getPerformanceMetrics().memoryUsage,
             
             // 長時間の音響処理をシミュレート
-            for (let i = 0; i < 100; i++') {
-                audioManager.playSound('bubblePop');
-                await new Promise(resolve => setTimeout(resolve, 10);
-            }
+            for (let i = 0, i < 100, i++') {
+                audioManager.playSound('bubblePop'),
+                await new Promise(resolve => setTimeout(resolve, 10) }
             
             // ガベージコレクションをシミュレート
             audioManager.garbageCollect? .();
@@ -517,53 +480,51 @@ describe('音響システム統合テスト', () => {
     describe('システム全体統合テスト', (') => {
         test('ゲームシナリオ全体での音響システム動作', async (') => {
             // ゲーム開始
-            audioManager.setScene('gameStart''); : undefined
+            audioManager.setScene('gameStart'), : undefined
             audioManager.playBGM('gameMusic', { loop: true }');
             // プレイヤーアクション
-            audioManager.playSound('bubblePop'');
+            audioManager.playSound('bubblePop');
             audioAccessibilitySupport.triggerAudioEvent('bubblePop', {
-                bubbleType: 'normal')');
+                bubbleType: 'normal')'),
             // コンボ達成
-            audioManager.playSound('comboAchieved'');
+            audioManager.playSound('comboAchieved'),
             audioAccessibilitySupport.triggerHapticFeedback('comboAchieved', {
-                comboCount: 5)');
+                comboCount: 5)'),
             // 実績解除
-            audioManager.playSound('achievementUnlocked'');
+            audioManager.playSound('achievementUnlocked'),
             audioAccessibilitySupport.triggerAudioEvent('achievementUnlocked', {
                 achievementName: 'Test Achievement',
-                rarity: 'rare');
+                rarity: 'rare'),
             // ゲーム終了
-            audioManager.fadeOutBGM(1000');
-            audioManager.setScene('gameOver');
+            audioManager.fadeOutBGM(1000'),
+            audioManager.setScene('gameOver'),
             // 全ての処理が正常に実行されたことを確認
-            const audioStatus = audioManager.getStatus();
-            const accessibilityStats = audioAccessibilitySupport.getStatistics();
-            expect(audioStatus.toBeDefined();
-            expect(accessibilityStats.toBeDefined();
-            expect(audioAccessibilitySupport.triggerAudioEvent.calls.length).toBeGreaterThan(0);
-        }');
+            const audioStatus = audioManager.getStatus(),
+            const accessibilityStats = audioAccessibilitySupport.getStatistics(),
+            expect(audioStatus.toBeDefined(),
+            expect(accessibilityStats.toBeDefined(),
+            expect(audioAccessibilitySupport.triggerAudioEvent.calls.length).toBeGreaterThan(0) }');
         test('設定変更がシステム全体に即座に反映されること', (') => {
             // 各種設定を変更
-            audioManager.setVolume('master', 0.6');
-            audioManager.setVolume('bgm', 0.4');
-            audioManager.setVolume('sfx', 0.8');
-            audioManager.setAudioEffect('reverb', true);
+            audioManager.setVolume('master', 0.6'),
+            audioManager.setVolume('bgm', 0.4'),
+            audioManager.setVolume('sfx', 0.8'),
+            audioManager.setAudioEffect('reverb', true),
             // アクセシビリティ設定変更
             audioAccessibilitySupport.updateHapticSettings({
                 enabled: true,
-                vibrationIntensity: 0.9)');
+                vibrationIntensity: 0.9)'),
             // BGMとSFXを再生して設定が反映されることを確認
-            audioManager.playBGM('test-bgm'');
-            audioManager.playSound('bubblePop');
-            const status = audioManager.getStatus();
-            expect(status.masterVolume).toBe(0.6);
-            expect(status.bgmVolume).toBe(0.4);
-            expect(status.sfxVolume).toBe(0.8);
-            expect(audioAccessibilitySupport.updateHapticSettings.calls.length).toBeGreaterThan(0);
-        }');
+            audioManager.playBGM('test-bgm'),
+            audioManager.playSound('bubblePop'),
+            const status = audioManager.getStatus(),
+            expect(status.masterVolume).toBe(0.6),
+            expect(status.bgmVolume).toBe(0.4),
+            expect(status.sfxVolume).toBe(0.8),
+            expect(audioAccessibilitySupport.updateHapticSettings.calls.length).toBeGreaterThan(0) }');
         test('エラー発生時でもシステムが継続動作すること', (') => {
             // 意図的にエラーを発生
-            audioManager.playSound('invalid-sound'');
+            audioManager.playSound('invalid-sound'),
             audioAccessibilitySupport.triggerHapticFeedback('invalid-event', {}');
             // システムが正常に動作を続けることを確認
             const validResult = audioManager.playSound('bubblePop');

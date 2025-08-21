@@ -16,24 +16,23 @@ import { DataCollector  } from '../../src/analytics/DataCollector';
 import { ExportManager  } from '../../src/analytics/ExportManager';
 import { AnalyticsAPI  } from '../../src/analytics/AnalyticsAPI';
 // モック設定
-(global as any).indexedDB = {
+(global: any).indexedDB = {
     open: jest.fn(() => ({
         onsuccess: null,
         onerror: null,
         result: {
-            createObjectStore: jest.fn(),
+            createObjectStore: jest.fn(
             transaction: jest.fn(() => ({
                 objectStore: jest.fn(() => ({
-                    add: jest.fn(),
-                    get: jest.fn(),
-                    getAll: jest.fn(() => ({ onsuccess: null, result: [] ))),
-                    put: jest.fn(),
-        delete: jest.fn()))
-            )));
-        }
-    });
+                    add: jest.fn(
+                    get: jest.fn(
+                    getAll: jest.fn(() => ({ onsuccess: null, result: [] )),
+                    put: jest.fn(
+        delete: jest.fn())
+            )) }
+    );
 };
-(global as any).Chart = class {
+(global: any).Chart = class {
     constructor() {
         this.data = { datasets: [{ data: [] }] };
         this.options = {};
@@ -53,27 +52,24 @@ describe('Analytics System Integration Tests', () => {
     
     beforeEach(async () => {
         // 各コンポーネントの初期化
-        storageManager = new IndexedDBStorageManager();
-        privacyManager = new PrivacyManager();
-        dataCollector = new DataCollector(storageManager, privacyManager);
-        exportManager = new ExportManager(storageManager, privacyManager);
-        analyticsAPI = new AnalyticsAPI(storageManager, privacyManager);
+        storageManager = new IndexedDBStorageManager(),
+        privacyManager = new PrivacyManager(),
+        dataCollector = new DataCollector(storageManager, privacyManager),
+        exportManager = new ExportManager(storageManager, privacyManager),
+        analyticsAPI = new AnalyticsAPI(storageManager, privacyManager),
         // ストレージマネージャーの初期化完了を待つ
-        await new Promise(resolve => setTimeout(resolve, 50);
-    }, 15000); // 15秒のタイムアウト
+        await new Promise(resolve => setTimeout(resolve, 50) }, 15000); // 15秒のタイムアウト
     
     afterEach(async () => {
         // リソースクリーンアップ
         try {
-            if (dataCollector) dataCollector.destroy();
-            if (exportManager) exportManager.destroy();
-            if (analyticsAPI) analyticsAPI.destroy();
-            if (storageManager) storageManager.destroy();
-            if (privacyManager) privacyManager.destroy();
-        } catch (error') {
+            if (dataCollector) dataCollector.destroy(),
+            if (exportManager) exportManager.destroy(),
+            if (analyticsAPI) analyticsAPI.destroy(),
+            if (storageManager) storageManager.destroy(),
+            if (privacyManager) privacyManager.destroy() } catch (error') {
             // クリーンアップエラーは無視
-            console.warn('Cleanup error:', error.message);
-        }
+            console.warn('Cleanup error:', error.message) }
     }');
     describe('データ収集・保存フロー統合テスト', (') => {
         test('データ収集からストレージまでの基本フロー', async (') => {
@@ -81,7 +77,7 @@ describe('Analytics System Integration Tests', () => {
             const testData = {
                 type: 'player_behavior',
                 sessionId: 'test-session-123',
-                timestamp: Date.now('),
+                timestamp: Date.now(',
                 action: 'bubble_click',
                 bubbleType: 'normal',
                 success: true
@@ -100,9 +96,9 @@ describe('Analytics System Integration Tests', () => {
         test('バッチデータ処理の統合フロー', async () => {
             // 1. 複数のテストデータ準備
             const batchData: any[] = [],
-            for (let i = 0; i < 5; i++') {
+            for (let i = 0, i < 5, i++') {
                 batchData.push({
-                    type: 'bubble_interaction';);
+                    type: 'bubble_interaction'),
                    , timestamp: Date.now(') + i * 1000,
                     bubbleType: i % 2 === 0 ? 'normal' : 'stone',
                     success: i % 3 !== 0,
@@ -123,7 +119,7 @@ describe('Analytics System Integration Tests', () => {
             // 1. テストデータの収集
             const testData = {
                 sessionId: 'integration-test-session',
-                timestamp: Date.now('),
+                timestamp: Date.now(',
                 score: 1250,
                 playTime: 380,
                 bubbleType: 'normal'
@@ -135,16 +131,15 @@ describe('Analytics System Integration Tests', () => {
             const exportResult = await exportManager.exportData({
                 dataTypes: ['sessionData'],
                 format: 'json',
-                anonymize: true);
-            expect(exportResult.success).toBe(true);
-            expect(exportResult.data).toBeDefined();
-            expect(exportResult.format').toBe('json');
-        }');
+                anonymize: true),
+            expect(exportResult.success).toBe(true),
+            expect(exportResult.data).toBeDefined(),
+            expect(exportResult.format').toBe('json') }');
         test('API経由でのデータアクセス統合', async (') => {
             // 1. テストデータの準備と保存
             const testData = {
                 sessionId: 'api-test-session',
-                timestamp: Date.now('),
+                timestamp: Date.now(',
                 score: 1800,
                 bubbleType: 'stone'
             };
@@ -157,25 +152,21 @@ describe('Analytics System Integration Tests', () => {
             // 3. API経由でのエクスポート
             const exportResponse = await analyticsAPI.getData('/export', {
                 format: 'json',
-                dataTypes: 'sessionData');
-            expect(exportResponse.success).toBe(true);
-            expect(exportResponse.data).toBeDefined();
-        }');
+                dataTypes: 'sessionData'),
+            expect(exportResponse.success).toBe(true),
+            expect(exportResponse.data).toBeDefined() }');
     }
     describe('エラーハンドリング統合テスト', (') => {
         test('基本的なエラーハンドリング', async () => {
             // 1. 無効なデータでのエラーハンドリング
             try {
-                await dataCollector.collectPlayerBehavior(null);
-            } catch (error) {
-                expect(error).toBeDefined();
-            }
+                await dataCollector.collectPlayerBehavior(null) } catch (error) {
+                expect(error).toBeDefined() }
             
             // 2. API制限のテスト
             const promises: any[] = [],
             for (let i = 0; i < 65; i++') { // レート制限を超える
-                promises.push(analyticsAPI.getData('/sessionData');
-            }
+                promises.push(analyticsAPI.getData('/sessionData') }
             
             const results = await Promise.allSettled(promises');
             const rateLimitedRequests = results.filter(r => 

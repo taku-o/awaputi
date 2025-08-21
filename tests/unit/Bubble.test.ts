@@ -18,45 +18,42 @@ describe('Bubble Class Tests', () => {
     beforeEach(() => {
         // Mock context
         mockContext = {
-            arc: jest.fn(),
-            fill: jest.fn(),
-            stroke: jest.fn(),
-            fillText: jest.fn(),
-            strokeText: jest.fn(),
-            save: jest.fn(),
-            restore: jest.fn(),
-            translate: jest.fn(),
-            scale: jest.fn(),
-            rotate: jest.fn(),
-            beginPath: jest.fn(),
-            closePath: jest.fn(),
+            arc: jest.fn(
+            fill: jest.fn(
+            stroke: jest.fn(
+            fillText: jest.fn(
+            strokeText: jest.fn(
+            save: jest.fn(
+            restore: jest.fn(
+            translate: jest.fn(
+            scale: jest.fn(
+            rotate: jest.fn(
+            beginPath: jest.fn(
+            closePath: jest.fn(
             createLinearGradient: jest.fn(() => ({
-                addColorStop: jest.fn(),
-    }))),
+                addColorStop: jest.fn()),
             createRadialGradient: jest.fn(() => ({
-                addColorStop: jest.fn(),
-    }))'),
-            fillStyle: '',
-            strokeStyle: '',
+                addColorStop: jest.fn())'),
+            fillStyle: ',
+            strokeStyle: ',
             lineWidth: 1,
-            font: '',
+            font: ',
             textAlign: 'start' as CanvasTextAlign,
             textBaseline: 'alphabetic' as CanvasTextBaseline,
             globalAlpha: 1,
-            shadowColor: '',
+            shadowColor: ',
             shadowBlur: 0,
             shadowOffsetX: 0,
             shadowOffsetY: 0
     });
         // Mock GameEngine
         mockGameEngine = {
-            canvas: { width: 800, height: 600 '),
+            canvas: { width: 800, height: 600 ',
             ctx: mockContext,
             currentStage: { name: 'normal' };
             getInputManager: jest.fn(() => ({
-                isMousePressed: jest.fn(() => false);
-                getMousePosition: jest.fn(() => ({ x: 0, y: 0 ))),
-    })))
+                isMousePressed: jest.fn(() => false),
+                getMousePosition: jest.fn(() => ({ x: 0, y: 0 ))))
         );
         jest.clearAllMocks();
     }');
@@ -74,7 +71,7 @@ describe('Bubble Class Tests', () => {
         test('should initialize with type-specific configuration', (') => {
             const position: Position = { x: 100, y: 100 };
             const normalBubble = new Bubble('normal', position);
-            const config: BubbleConfig = normalBubble.getTypeConfig(),
+            const config: BubbleConfig = normalBubble.getTypeConfig(
             // 基本プロパティの存在確認
             expect(config').toHaveProperty('health');
             expect(config').toHaveProperty('score');
@@ -260,7 +257,7 @@ describe('Bubble Class Tests', () => {
             'spiky', 'rainbow', 'clock', 'score', 'electric', 'escaping',
             'cracked', 'boss', 'golden', 'frozen', 'magnetic', 'explosive',
             'phantom', 'multiplier'
-        ];
+        ],
         
         test.each(bubbleTypes')('%s bubble should have valid configuration', (type) => {
             const position: Position = { x: 100, y: 100 };

@@ -8,23 +8,22 @@ import { test, expect } from '@playwright/test';
 
 test.describe('Localization Features E2E Tests', () => {
   test.beforeEach(async ({ page }') => {
-    await page.goto('/'');
-    await page.waitForSelector('#gameCanvas');
-    await page.waitForFunction(() => window.gameEngine !== undefined);
+    await page.goto('/'),
+    await page.waitForSelector('#gameCanvas'),
+    await page.waitForFunction(() => window.gameEngine !== undefined),
     await page.waitForFunction(() => {
-      return window.gameEngine.localizationManager !== undefined;
-    });
+      return window.gameEngine.localizationManager !== undefined });
   }');
 
   test('should handle RTL language detection and setup', async ({ page }) => {
     const rtlTest = await page.evaluate((') => {
-      const lm = window.gameEngine.localizationManager;
+      const lm = window.gameEngine.localizationManager,
       
       // Test RTL language detection
-      const arabicCultural = lm.getCulturalAdaptation('ar'');
-      const hebrewCultural = lm.getCulturalAdaptation('he'');
-      const japaneseCultural = lm.getCulturalAdaptation('ja'');
-      const englishCultural = lm.getCulturalAdaptation('en');
+      const arabicCultural = lm.getCulturalAdaptation('ar'),
+      const hebrewCultural = lm.getCulturalAdaptation('he'),
+      const japaneseCultural = lm.getCulturalAdaptation('ja'),
+      const englishCultural = lm.getCulturalAdaptation('en'),
       
       return { arabic: { }
           isRTL: arabicCultural.isRTL,
@@ -57,12 +56,12 @@ test.describe('Localization Features E2E Tests', () => {
 
   test('should provide cultural color meanings', async ({ page ) => {
     const colorMeaningsTest = await page.evaluate((') => {
-      const lm = window.gameEngine.localizationManager;
+      const lm = window.gameEngine.localizationManager,
       
       return {
-        japanese: lm.getColorMeanings('ja''),
-        english: lm.getColorMeanings('en''),
-        chinese: lm.getColorMeanings('zh''),
+        japanese: lm.getColorMeanings('ja',
+        english: lm.getColorMeanings('en',
+        chinese: lm.getColorMeanings('zh',
         fallback: lm.getColorMeanings('unknown'})
       };);
     
@@ -88,12 +87,12 @@ test.describe('Localization Features E2E Tests', () => {
 
   test('should provide cultural gesture conventions', async ({ page ) => {
     const gestureTest = await page.evaluate((') => {
-      const lm = window.gameEngine.localizationManager;
+      const lm = window.gameEngine.localizationManager,
       
       return {
-        japanese: lm.getGestureConventions('ja''),
-        english: lm.getGestureConventions('en''),
-        arabic: lm.getGestureConventions('ar''),
+        japanese: lm.getGestureConventions('ja',
+        english: lm.getGestureConventions('en',
+        arabic: lm.getGestureConventions('ar',
         fallback: lm.getGestureConventions('unknown'})
       };);
     
@@ -116,14 +115,14 @@ test.describe('Localization Features E2E Tests', () => {
 
   test('should handle numeral system formatting', async ({ page ) => {
     const numeralSystemTest = await page.evaluate((') => {
-      const lm = window.gameEngine.localizationManager;
+      const lm = window.gameEngine.localizationManager,
       
       return {
-        arabic: lm.getNumeralSystem('ar''),
-        persian: lm.getNumeralSystem('fa''),
-        thai: lm.getNumeralSystem('th''),
-        hindi: lm.getNumeralSystem('hi''),
-        english: lm.getNumeralSystem('en''),
+        arabic: lm.getNumeralSystem('ar',
+        persian: lm.getNumeralSystem('fa',
+        thai: lm.getNumeralSystem('th',
+        hindi: lm.getNumeralSystem('hi',
+        english: lm.getNumeralSystem('en',
         japanese: lm.getNumeralSystem('ja'})
       };);
     
@@ -137,14 +136,14 @@ test.describe('Localization Features E2E Tests', () => {
 
   test('should provide correct date format patterns', async ({ page ) => {
     const dateFormatTest = await page.evaluate((') => {
-      const lm = window.gameEngine.localizationManager;
+      const lm = window.gameEngine.localizationManager,
       
       return {
-        japanese: lm.getDateFormat('ja''),
-        english: lm.getDateFormat('en''),
-        englishGB: lm.getDateFormat('en-GB''),
-        german: lm.getDateFormat('de''),
-        french: lm.getDateFormat('fr''),
+        japanese: lm.getDateFormat('ja',
+        english: lm.getDateFormat('en',
+        englishGB: lm.getDateFormat('en-GB',
+        german: lm.getDateFormat('de',
+        french: lm.getDateFormat('fr',
         unknown: lm.getDateFormat('unknown'})
       };);
     
@@ -158,14 +157,14 @@ test.describe('Localization Features E2E Tests', () => {
 
   test('should handle calendar system detection', async ({ page ) => {
     const calendarSystemTest = await page.evaluate((') => {
-      const lm = window.gameEngine.localizationManager;
+      const lm = window.gameEngine.localizationManager,
       
       return {
-        japanese: lm.getCalendarSystem('ja''),
-        arabic: lm.getCalendarSystem('ar''),
-        hebrew: lm.getCalendarSystem('he''),
-        thai: lm.getCalendarSystem('th''),
-        english: lm.getCalendarSystem('en''),
+        japanese: lm.getCalendarSystem('ja',
+        arabic: lm.getCalendarSystem('ar',
+        hebrew: lm.getCalendarSystem('he',
+        thai: lm.getCalendarSystem('th',
+        english: lm.getCalendarSystem('en',
         german: lm.getCalendarSystem('de'})
       };);
     
@@ -179,14 +178,14 @@ test.describe('Localization Features E2E Tests', () => {
 
   test('should provide correct timezone mapping', async ({ page ) => {
     const timezoneTest = await page.evaluate((') => {
-      const lm = window.gameEngine.localizationManager;
+      const lm = window.gameEngine.localizationManager,
       
       return {
-        japanese: lm.getTimeZone('ja''),
-        english: lm.getTimeZone('en''),
-        englishGB: lm.getTimeZone('en-gb''),
-        german: lm.getTimeZone('de''),
-        french: lm.getTimeZone('fr''),
+        japanese: lm.getTimeZone('ja',
+        english: lm.getTimeZone('en',
+        englishGB: lm.getTimeZone('en-gb',
+        german: lm.getTimeZone('de',
+        french: lm.getTimeZone('fr',
         unknown: lm.getTimeZone('unknown'})
       };);
     
@@ -200,14 +199,14 @@ test.describe('Localization Features E2E Tests', () => {
 
   test('should provide correct week start day', async ({ page ) => {
     const weekStartTest = await page.evaluate((') => {
-      const lm = window.gameEngine.localizationManager;
+      const lm = window.gameEngine.localizationManager,
       
       return {
-        english: lm.getWeekStart('en''),
-        englishGB: lm.getWeekStart('en-gb''),
-        german: lm.getWeekStart('de''),
-        french: lm.getWeekStart('fr''),
-        japanese: lm.getWeekStart('ja''),
+        english: lm.getWeekStart('en',
+        englishGB: lm.getWeekStart('en-gb',
+        german: lm.getWeekStart('de',
+        french: lm.getWeekStart('fr',
+        japanese: lm.getWeekStart('ja',
         unknown: lm.getWeekStart('unknown'})
       };);
     
@@ -221,25 +220,23 @@ test.describe('Localization Features E2E Tests', () => {
 
   test('should handle cultural text formatting', async ({ page ) => {
     const culturalFormattingTest = await page.evaluate((') => {
-      const lm = window.gameEngine.localizationManager;
+      const lm = window.gameEngine.localizationManager,
       
-      const testNumber = 1234.56;
-      const testDate = new Date('2025-01-15'');
-      const testCurrency = 999.99;
+      const testNumber = 1234.56,
+      const testDate = new Date('2025-01-15'),
+      const testCurrency = 999.99,
       
       return { japanese: { }
-          number: lm.formatCulturalText(testNumber, 'number', 'ja''),
-          date: lm.formatCulturalText(testDate, 'date', 'ja''),
+          number: lm.formatCulturalText(testNumber, 'number', 'ja'),
+          date: lm.formatCulturalText(testDate, 'date', 'ja'),
           currency: lm.formatCulturalText(testCurrency, 'currency', 'ja'})
         '),
         english: {
-          number: lm.formatCulturalText(testNumber, 'number', 'en''),
-          date: lm.formatCulturalText(testDate, 'date', 'en''),
-          currency: lm.formatCulturalText(testCurrency, 'currency', 'en'');
-        },
+          number: lm.formatCulturalText(testNumber, 'number', 'en'),
+          date: lm.formatCulturalText(testDate, 'date', 'en'),
+          currency: lm.formatCulturalText(testCurrency, 'currency', 'en') },
         unknown: {
-          text: lm.formatCulturalText('unchanged', 'unknown', 'ja');
-        }
+          text: lm.formatCulturalText('unchanged', 'unknown', 'ja') }
       };
     });
     
@@ -257,11 +254,11 @@ test.describe('Localization Features E2E Tests', () => {
 
   test('should provide complete regional settings', async ({ page ) => {
     const completeRegionalTest = await page.evaluate((') => {
-      const lm = window.gameEngine.localizationManager;
+      const lm = window.gameEngine.localizationManager,
       
       return {
-        japanese: lm.getRegionalSettings('ja''),
-        english: lm.getRegionalSettings('en''),
+        japanese: lm.getRegionalSettings('ja',
+        english: lm.getRegionalSettings('en',
         german: lm.getRegionalSettings('de'})
       };);
     });
@@ -293,17 +290,16 @@ test.describe('Localization Features E2E Tests', () => {
 
   test('should handle accessibility translations correctly', async ({ page ) => {
     const accessibilityTest = await page.evaluate((') => {
-      const lm = window.gameEngine.localizationManager;
+      const lm = window.gameEngine.localizationManager,
       
       // Test adding accessibility translations
       const addResult = lm.addAccessibilityTranslations('test-lang', {
-        'test.accessibility.key': 'Test accessibility value',);
-        'test.nested.key': 'Nested value');
-      }');
+        'test.accessibility.key': 'Test accessibility value'),
+        'test.nested.key': 'Nested value') }');
       
       // Test retrieving accessibility translations
-      const retrievedTranslation = lm.getAccessibilityTranslation('test.accessibility.key', 'test-lang'');
-      const nestedTranslation = lm.getAccessibilityTranslation('test.nested.key', 'test-lang'');
+      const retrievedTranslation = lm.getAccessibilityTranslation('test.accessibility.key', 'test-lang');
+      const nestedTranslation = lm.getAccessibilityTranslation('test.nested.key', 'test-lang');
       const nonExistentTranslation = lm.getAccessibilityTranslation('non.existent', 'test-lang');
       
       // Test accessibility stats
@@ -329,28 +325,27 @@ test.describe('Localization Features E2E Tests', () => {
 
   test('should handle accessibility-specific translation method', async ({ page ) => {
     const a11yTranslationTest = await page.evaluate((') => {
-      const lm = window.gameEngine.localizationManager;
+      const lm = window.gameEngine.localizationManager,
       
       // Test existing accessibility translations in Japanese
       const japaneseA11y = {
-        managerTitle: lm.ta11y('accessibility.manager.title''),
-        keyboardTitle: lm.ta11y('accessibility.keyboard.title''),
-        screenReaderTitle: lm.ta11y('accessibility.screenReader.title''),
+        managerTitle: lm.ta11y('accessibility.manager.title',
+        keyboardTitle: lm.ta11y('accessibility.keyboard.title',
+        screenReaderTitle: lm.ta11y('accessibility.screenReader.title',
         visualTitle: lm.ta11y('accessibility.visual.title'});
       ');
       
       // Switch to English and test
-      lm.setLanguage('en'');
+      lm.setLanguage('en');
       
       const englishA11y = {
-        managerTitle: lm.ta11y('accessibility.manager.title''),
-        keyboardTitle: lm.ta11y('accessibility.keyboard.title''),
-        screenReaderTitle: lm.ta11y('accessibility.screenReader.title''),
-        visualTitle: lm.ta11y('accessibility.visual.title''),
-      };
+        managerTitle: lm.ta11y('accessibility.manager.title',
+        keyboardTitle: lm.ta11y('accessibility.keyboard.title',
+        screenReaderTitle: lm.ta11y('accessibility.screenReader.title',
+        visualTitle: lm.ta11y('accessibility.visual.title' };
       
       // Test with parameters
-      const withParams = lm.ta11y('accessibility.announcements.profileActivated', { profileName: 'Test Profile');
+      const withParams = lm.ta11y('accessibility.announcements.profileActivated', { profileName: 'Test Profile'),
       
       return { }
         japaneseA11y,
@@ -377,14 +372,13 @@ test.describe('Localization Features E2E Tests', () => {
 
   test('should provide comprehensive localization statistics', async ({ page ) => {
     const statsTest = await page.evaluate((') => {
-      const lm = window.gameEngine.localizationManager;
+      const lm = window.gameEngine.localizationManager,
       
       // Add some test accessibility translations
       lm.addAccessibilityTranslations('stats-test', {
         'test1': 'value1',
-        'test2': 'value2',)
-        'test3': 'value3');
-      });
+        'test2': 'value2')
+        'test3': 'value3') });
       
       const regularStats = lm.getStats();
       const accessibilityStats = lm.getAccessibilityStats(');
@@ -419,21 +413,21 @@ test.describe('Localization Features E2E Tests', () => {
 
   test('should handle font loading and management', async ({ page ) => {
     const fontTest = await page.evaluate(async (') => {
-      const lm = window.gameEngine.localizationManager;
+      const lm = window.gameEngine.localizationManager,
       
       try {
         // Test font loading for current language
-        const loadResult = await lm.loadFontsForLanguage('ja'');
+        const loadResult = await lm.loadFontsForLanguage('ja'),
         
         // Test font stack retrieval
-        const primaryFontStack = lm.getFontStack('primary'');
-        const secondaryFontStack = lm.getFontStack('secondary');
+        const primaryFontStack = lm.getFontStack('primary'),
+        const secondaryFontStack = lm.getFontStack('secondary'),
         
         // Test font loading status
-        const fontStatus = lm.getFontLoadingStatus(');
+        const fontStatus = lm.getFontLoadingStatus('),
         
         // Test preloading fonts
-        const preloadResult = await lm.preloadFonts(['ja', 'en']');
+        const preloadResult = await lm.preloadFonts(['ja', 'en']'),
         
         return {
           success: true,
@@ -452,22 +446,20 @@ test.describe('Localization Features E2E Tests', () => {
     });
     
     if (fontTest.success) {
-      expect(typeof fontTest.loadResult').toBe('boolean');
-      expect(typeof fontTest.primaryFontStack').toBe('string');
-      expect(typeof fontTest.secondaryFontStack').toBe('string');
-      expect(fontTest.fontStatus).toBe(true);
-      expect(fontTest.preloadResult).toBe(true);
-    } else {
+      expect(typeof fontTest.loadResult').toBe('boolean'),
+      expect(typeof fontTest.primaryFontStack').toBe('string'),
+      expect(typeof fontTest.secondaryFontStack').toBe('string'),
+      expect(fontTest.fontStatus).toBe(true),
+      expect(fontTest.preloadResult).toBe(true) } else {
       // Font loading may fail in test environment, which is acceptable
-      expect(typeof fontTest.error').toBe('string');
-    }
+      expect(typeof fontTest.error').toBe('string') }
   }');
 
   test('should handle language change listeners properly', async ({ page ) => {
     const listenerTest = await page.evaluate(() => {
-      const lm = window.gameEngine.localizationManager;
+      const lm = window.gameEngine.localizationManager,
       
-      let eventsFired = [];
+      let eventsFired = [],
       
       // Add test listeners
       const listener1 = (newLang, oldLang) => {
@@ -480,14 +472,14 @@ test.describe('Localization Features E2E Tests', () => {
       
       const addResult1 = lm.addLanguageChangeListener(listener1);
       const addResult2 = lm.addLanguageChangeListener(listener2');
-      const addResult3 = lm.addLanguageChangeListener('invalid''); // Should fail
+      const addResult3 = lm.addLanguageChangeListener('invalid'); // Should fail
       
       // Trigger language change
       lm.notifyLanguageChange('en', 'ja');
       
       // Remove one listener
       const removeResult1 = lm.removeLanguageChangeListener(listener1');
-      const removeResult2 = lm.removeLanguageChangeListener('invalid''); // Should fail
+      const removeResult2 = lm.removeLanguageChangeListener('invalid'); // Should fail
       
       // Trigger another change
       lm.notifyLanguageChange('ja', 'en');
@@ -521,12 +513,11 @@ test.describe('Localization Features E2E Tests', () => {
 
   test('should clean up resources properly', async ({ page ) => {
     const cleanupTest = await page.evaluate((') => {
-      const lm = window.gameEngine.localizationManager;
+      const lm = window.gameEngine.localizationManager,
       
       // Add some test data
-      lm.addAccessibilityTranslations('cleanup-test', {)
-        'test.key': 'test value');
-      });
+      lm.addAccessibilityTranslations('cleanup-test', {
+                'test.key': 'test value') }));
       
       const listener = () => {};
       lm.addLanguageChangeListener(listener');
@@ -534,8 +525,7 @@ test.describe('Localization Features E2E Tests', () => {
       // Verify data exists
       const beforeCleanup = {
         hasAccessibilityTranslations: lm.getAccessibilityTranslation('test.key', 'cleanup-test') !== null,
-        fontStats: lm.getFontLoadingStatus(),
-      };
+        fontStats: lm.getFontLoadingStatus( };
       
       // Perform cleanup
       lm.cleanup(');
@@ -543,8 +533,7 @@ test.describe('Localization Features E2E Tests', () => {
       // Verify cleanup
       const afterCleanup = {
         hasAccessibilityTranslations: lm.getAccessibilityTranslation('test.key', 'cleanup-test') !== null,
-        fontStatsAfterCleanup: lm.getFontLoadingStatus(),
-      };
+        fontStatsAfterCleanup: lm.getFontLoadingStatus( };
       
       return {
         beforeCleanup,
@@ -558,4 +547,4 @@ test.describe('Localization Features E2E Tests', () => {
     expect(typeof cleanupTest.afterCleanup.fontStatsAfterCleanup').toBe('object');
   });
 }');
-}}}}}}}}}}}}
+}}}}}}}}

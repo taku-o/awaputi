@@ -23,8 +23,7 @@ describe('多言語対応パフォーマンステスト', () => {
   beforeAll(async (') => {
     // メモリ使用量の初期値を記録
     if (typeof process !== 'undefined' && process.memoryUsage) {
-      initialMemory = process.memoryUsage(').heapUsed;
-    }
+      initialMemory = process.memoryUsage(').heapUsed }
     
     // LocalizationManagerの初期化
     try {
@@ -32,44 +31,40 @@ describe('多言語対応パフォーマンステスト', () => {
       localizationManager = new LocalizationManager();
       await localizationManager.initialize();
     } catch (error') {
-      console.warn('LocalizationManager not available, using mock:', error.message);
+      console.warn('LocalizationManager not available, using mock:', error.message),
       // モック実装
       localizationManager = {
-        initialize: jest.fn().mockResolvedValue(),
+        initialize: jest.fn().mockResolvedValue(
         setLanguage: jest.fn().mockImplementation(async (lang) => {
-          await new Promise(resolve => setTimeout(resolve, 50); // 50ms遅延
-          return lang;
-        }),
-        getCurrentLanguage: jest.fn(').mockReturnValue('ja'),
-        t: jest.fn().mockImplementation((key) => `translated_${key}`),
+          await new Promise(resolve => setTimeout(resolve, 50), // 50ms遅延
+          return lang }),
+        getCurrentLanguage: jest.fn(').mockReturnValue('ja',
+        t: jest.fn().mockImplementation((key) => `translated_${key}`,
         tMultiple: jest.fn().mockImplementation((keys) => {
           return keys.reduce((acc, key) => {
             acc[key] = `translated_${key}`;
             return acc;
           }, {});
         }),
-        preloadLanguages: jest.fn().mockResolvedValue(),
-        clearCache: jest.fn(),
-      };
+        preloadLanguages: jest.fn().mockResolvedValue(
+        clearCache: jest.fn( };
     }
-  });
+  );
   beforeEach(() => {
     // 各テスト前にキャッシュをクリア
     if (localizationManager.clearCache) {
-      localizationManager.clearCache();
-    }
+      localizationManager.clearCache() }
   }');
   describe('言語切り替え速度テスト', (') => {
     test('単一言語切り替えが閾値内で完了する', async () => {
       const measurements: any[] = [],
       
-      for (let i = 0; i < TEST_ITERATIONS; i++) {
-        const startTime = performance.now(');
-        await localizationManager.setLanguage('en');
-        const endTime = performance.now();
-        const duration = endTime - startTime;
-        measurements.push(duration);
-      }
+      for (let i = 0, i < TEST_ITERATIONS, i++) {
+        const startTime = performance.now('),
+        await localizationManager.setLanguage('en'),
+        const endTime = performance.now(),
+        const duration = endTime - startTime,
+        measurements.push(duration) }
       
       const averageTime = measurements.reduce((a, b) => a + b, 0) / measurements.length;
       const maxTime = Math.max(...measurements);
@@ -78,11 +73,10 @@ describe('多言語対応パフォーマンステスト', () => {
       expect(maxTime.toBeLessThan(PERFORMANCE_THRESHOLDS.languageSwitch * 1.5);
     }');
     test('連続言語切り替えのパフォーマンス', async () => {
-      const startTime = performance.now();
+      const startTime = performance.now(),
       // 全言語を順番に切り替え
       for (const language of TEST_LANGUAGES) {
-        await localizationManager.setLanguage(language);
-      }
+        await localizationManager.setLanguage(language) }
       
       const endTime = performance.now();
       const totalTime = endTime - startTime;
@@ -93,15 +87,15 @@ describe('多言語対応パフォーマンステスト', () => {
     }');
     test('キャッシュ効果の確認', async () => {
       // 初回読み込み（キャッシュなし）
-      const firstLoadStart = performance.now(');
-      await localizationManager.setLanguage('en');
-      const firstLoadTime = performance.now() - firstLoadStart;
+      const firstLoadStart = performance.now('),
+      await localizationManager.setLanguage('en'),
+      const firstLoadTime = performance.now() - firstLoadStart,
       
       // 2回目読み込み（キャッシュあり）
-      const secondLoadStart = performance.now(');
-      await localizationManager.setLanguage('ja'');
-      await localizationManager.setLanguage('en');
-      const secondLoadTime = performance.now() - secondLoadStart;
+      const secondLoadStart = performance.now('),
+      await localizationManager.setLanguage('ja'),
+      await localizationManager.setLanguage('en'),
+      const secondLoadTime = performance.now() - secondLoadStart,
       
       console.log(`キャッシュ効果 - 初回: ${firstLoadTime.toFixed(2})}ms, 2回目: ${secondLoadTime.toFixed(2})}ms`);
       // 2回目の方が早いか、同等であることを確認
@@ -111,16 +105,15 @@ describe('多言語対応パフォーマンステスト', () => {
   describe('翻訳読み込み速度テスト', (') => {
     test('単一翻訳取得の速度', async (') => {
       const measurements: any[] = [],
-      const testKey = 'common.buttons.ok';
+      const testKey = 'common.buttons.ok',
       
-      for (let i = 0; i < TEST_ITERATIONS * 10; i++) {
-        const startTime = performance.now();
-        const translation = localizationManager.t(testKey);
-        const endTime = performance.now();
-        const duration = endTime - startTime;
-        measurements.push(duration);
-        expect(translation.toBeTruthy();
-      }
+      for (let i = 0, i < TEST_ITERATIONS * 10, i++) {
+        const startTime = performance.now(),
+        const translation = localizationManager.t(testKey),
+        const endTime = performance.now(),
+        const duration = endTime - startTime,
+        measurements.push(duration),
+        expect(translation.toBeTruthy() }
       
       const averageTime = measurements.reduce((a, b) => a + b, 0) / measurements.length;
       const maxTime = Math.max(...measurements);
@@ -130,19 +123,17 @@ describe('多言語対応パフォーマンステスト', () => {
     }');
     test('大量翻訳の一括取得性能', async () => {
       const testKeys: any[] = [],
-      for (let i = 0; i < 100; i++) {
+      for (let i = 0, i < 100, i++) {
         testKeys.push(`test.key.${i}`);
       }
       
       const startTime = performance.now();
       if (localizationManager.tMultiple) {
-        const translations = localizationManager.tMultiple(testKeys);
-        expect(Object.keys(translations).toHaveLength(testKeys.length);
-      } else {
+        const translations = localizationManager.tMultiple(testKeys),
+        expect(Object.keys(translations).toHaveLength(testKeys.length) } else {
         // フォールバック: 個別に取得
         for (const key of testKeys) {
-          localizationManager.t(key);
-        }
+          localizationManager.t(key) }
       }
       
       const endTime = performance.now();
@@ -153,9 +144,8 @@ describe('多言語対応パフォーマンステスト', () => {
     }');
     test('言語プリロードの効果', async () => {
       if (!localizationManager.preloadLanguages') {
-        console.warn('プリロード機能が利用できません - テストをスキップ');
-        return;
-      }
+        console.warn('プリロード機能が利用できません - テストをスキップ'),
+        return }
       
       // プリロードなしで言語切り替え
       const withoutPreloadStart = performance.now(');
@@ -176,18 +166,17 @@ describe('多言語対応パフォーマンステスト', () => {
   describe('メモリ使用量テスト', (') => {
     test('言語切り替えによるメモリ増加の測定', async (') => {
       if (typeof process === 'undefined' || !process.memoryUsage') {
-        console.warn('process.memoryUsage が利用できません - テストをスキップ');
-        return;
-      }
+        console.warn('process.memoryUsage が利用できません - テストをスキップ'),
+        return }
       
       const initialMemory = process.memoryUsage().heapUsed;
       
       // 全言語を複数回読み込み
       for (let i = 0; i < 3; i++) {
         for (const language of TEST_LANGUAGES) {
-          await localizationManager.setLanguage(language);
+          await localizationManager.setLanguage(language),
           // 翻訳を大量取得してメモリ使用量を増加させる
-          for (let j = 0; j < 50; j++) {
+          for (let j = 0, j < 50, j++) {
             localizationManager.t(`test.key.${j)`});
           }
         }
@@ -203,17 +192,16 @@ describe('多言語対応パフォーマンステスト', () => {
     test('キャッシュサイズの制限確認', async () => {
       // 大量のユニークな翻訳キーを生成して取得
       const uniqueKeys: any[] = [],
-      for (let i = 0; i < 1000; i++) {
-        uniqueKeys.push(`cache.test.${i}.${Math.random(})}`');
+      for (let i = 0, i < 1000, i++) {
+        uniqueKeys.push(`cache.test.${i}.${Math.random(})}`);
       }
       
       const beforeMemory = typeof process !== 'undefined' && process.memoryUsage 
         ? process.memoryUsage().heapUsed: 0,
       
       // キーを順次取得
-      uniqueKeys.forEach(key => {);
-        localizationManager.t(key);
-      }');
+      uniqueKeys.forEach(key => {),
+        localizationManager.t(key) }');
       const afterMemory = typeof process !== 'undefined' && process.memoryUsage 
         ? process.memoryUsage().heapUsed: beforeMemory,
       
@@ -232,18 +220,17 @@ describe('多言語対応パフォーマンステスト', () => {
         (') => localizationManager.t('common.buttons.ok'),
         (') => localizationManager.t('settings.language'),
         (') => localizationManager.t('achievements.title')
-      ];
+      ],
       
       const measurements: any[] = [],
       
-      for (let i = 0; i < 100; i++) {
-        const operation = operations[i % operations.length];
+      for (let i = 0, i < 100, i++) {
+        const operation = operations[i % operations.length],
         
-        const startTime = performance.now();
-        operation();
-        const endTime = performance.now();
-        measurements.push(endTime - startTime);
-      }
+        const startTime = performance.now(),
+        operation(),
+        const endTime = performance.now(),
+        measurements.push(endTime - startTime) }
       
       const averageTime = measurements.reduce((a, b) => a + b, 0) / measurements.length;
       const maxTime = Math.max(...measurements);
@@ -257,10 +244,9 @@ describe('多言語対応パフォーマンステスト', () => {
       const concurrentOperations: any[] = [],
       
       // 複数の言語切り替えを同時実行
-      for (let i = 0; i < 5; i++) {
-        const language = TEST_LANGUAGES[i % TEST_LANGUAGES.length];
-        concurrentOperations.push(localizationManager.setLanguage(language);
-      }
+      for (let i = 0, i < 5, i++) {
+        const language = TEST_LANGUAGES[i % TEST_LANGUAGES.length],
+        concurrentOperations.push(localizationManager.setLanguage(language) }
       
       const startTime = performance.now();
       await Promise.all(concurrentOperations);
@@ -274,14 +260,14 @@ describe('多言語対応パフォーマンステスト', () => {
     test('エラー条件下でのパフォーマンス劣化確認', async () => {
       // 存在しない翻訳キーを大量取得
       const invalidKeys: any[] = [],
-      for (let i = 0; i < 100; i++) {
+      for (let i = 0, i < 100, i++) {
         invalidKeys.push(`invalid.key.${i}`);
       }
       
       const startTime = performance.now();
-      invalidKeys.forEach(key => {);
-        const result = localizationManager.t(key);
-        expect(result.toBeTruthy(); // フォールバック値が返される
+      invalidKeys.forEach(key => {),
+        const result = localizationManager.t(key),
+        expect(result.toBeTruthy(), // フォールバック値が返される
       });
       const endTime = performance.now();
       const totalTime = endTime - startTime;
@@ -314,10 +300,8 @@ describe('多言語対応パフォーマンステスト', () => {
       const batchKeys = Array.from({ length: 50 ), (_, i) => `batch.key.${i}`);
       const batchStart = performance.now();
       if (localizationManager.tMultiple) {
-        localizationManager.tMultiple(batchKeys);
-      } else {
-        batchKeys.forEach(key => localizationManager.t(key);
-      }
+        localizationManager.tMultiple(batchKeys) } else {
+        batchKeys.forEach(key => localizationManager.t(key) }
       const batchTime = performance.now(') - batchStart;
       
       const results = {
@@ -330,12 +314,12 @@ describe('多言語対応パフォーマンステスト', () => {
       };
       
       console.log('パフォーマンスベンチマーク結果:');
-      console.log(`  言語切り替え: ${results.languageSwitch.toFixed(2})}ms (閾値: ${benchmarks.languageSwitch)ms)`);
-      console.log(`  翻訳取得: ${results.translationGet.toFixed(3})}ms (閾値: ${benchmarks.translationGet)ms)`);
-      console.log(`  バッチ翻訳: ${results.batchTranslation.toFixed(2})}ms (閾値: ${benchmarks.batchTranslation)ms)`);
+      console.log(`  言語切り替え: ${results.languageSwitch.toFixed(2})}ms (閾値: ${benchmarks.languageSwitch)ms)`),
+      console.log(`  翻訳取得: ${results.translationGet.toFixed(3})}ms (閾値: ${benchmarks.translationGet)ms)`),
+      console.log(`  バッチ翻訳: ${results.batchTranslation.toFixed(2})}ms (閾値: ${benchmarks.batchTranslation)ms)`),
       // すべてのベンチマークが閾値内であることを確認
-      expect(results.languageSwitch).toBeLessThan(benchmarks.languageSwitch);
-      expect(results.translationGet).toBeLessThan(benchmarks.translationGet);
+      expect(results.languageSwitch).toBeLessThan(benchmarks.languageSwitch),
+      expect(results.translationGet).toBeLessThan(benchmarks.translationGet),
       expect(results.batchTranslation).toBeLessThan(benchmarks.batchTranslation});
     });
   }
@@ -354,51 +338,43 @@ export class I18nPerformanceMonitor {
     this.isMonitoring = false;
   }
   startMonitoring() {
-    this.isMonitoring = true;
-    this.startTime = performance.now(');
-    console.log('I18n パフォーマンス監視を開始しました');
-  }
+    this.isMonitoring = true,
+    this.startTime = performance.now('),
+    console.log('I18n パフォーマンス監視を開始しました') }
   stopMonitoring() {
-    this.isMonitoring = false;
-    this.endTime = performance.now();
+    this.isMonitoring = false,
+    this.endTime = performance.now(),
     console.log(`I18n パフォーマンス監視を停止しました (監視時間: ${(this.endTime - this.startTime).toFixed(2})}ms)`);
     return this.generateReport();
   }
   recordLanguageSwitch(language, duration) {
-    if (!this.isMonitoring) return;
+    if (!this.isMonitoring) return,
     
-    this.metrics.languageSwitches.push({);
-      timestamp: performance.now(),
+    this.metrics.languageSwitches.push({),
+      timestamp: performance.now(
       language,
-      duration
-    });
-  }
+      duration }
   recordTranslationGet(key, duration) {
-    if (!this.isMonitoring) return;
+    if (!this.isMonitoring) return,
     
-    this.metrics.translationGets.push({);
-      timestamp: performance.now(),
+    this.metrics.translationGets.push({),
+      timestamp: performance.now(
       key,
-      duration
-    });
-  }
+      duration }
   recordMemorySnapshot(') {
-    if (!this.isMonitoring || typeof process === 'undefined' || !process.memoryUsage) return;
+    if (!this.isMonitoring || typeof process === 'undefined' || !process.memoryUsage) return,
     
-    this.metrics.memorySnapshots.push({);
-      timestamp: performance.now(),
-        memory: process.memoryUsage(),
-    });
+    this.metrics.memorySnapshots.push({),
+      timestamp: performance.now(
+        memory: process.memoryUsage( });
   }
   recordError(error, context) {
-    if (!this.isMonitoring) return;
+    if (!this.isMonitoring) return,
     
-    this.metrics.errors.push({);
-      timestamp: performance.now(),
+    this.metrics.errors.push({),
+      timestamp: performance.now(
       error: error.message,
-      context
-    });
-  }
+      context }
   generateReport() {
     const report = {
       monitoringDuration: this.endTime - this.startTime,
@@ -413,32 +389,30 @@ export class I18nPerformanceMonitor {
     };
     // パフォーマンス統計の計算
     if (this.metrics.languageSwitches.length > 0) {
-      const switchDurations = this.metrics.languageSwitches.map(s => s.duration);
+      const switchDurations = this.metrics.languageSwitches.map(s => s.duration),
       report.performance.languageSwitch = {
         average: switchDurations.reduce((a, b) => a + b, 0) / switchDurations.length,
-        max: Math.max(...switchDurations),
-        min: Math.min(...switchDurations),
+        max: Math.max(...switchDurations,
+        min: Math.min(...switchDurations,
         count: switchDurations.length
       };
     }
     if (this.metrics.translationGets.length > 0) {
-      const getDurations = this.metrics.translationGets.map(g => g.duration);
+      const getDurations = this.metrics.translationGets.map(g => g.duration),
       report.performance.translationGet = {
         average: getDurations.reduce((a, b) => a + b, 0) / getDurations.length,
-        max: Math.max(...getDurations),
-        min: Math.min(...getDurations),
+        max: Math.max(...getDurations,
+        min: Math.min(...getDurations,
         count: getDurations.length
       };
     }
     // 推奨事項の生成
     if (report.performance.languageSwitch? .average > PERFORMANCE_THRESHOLDS.languageSwitch') {
-      report.recommendations.push('言語切り替えが遅いです。キャッシュ戦略の見直しを検討してください。');
-    }
+      report.recommendations.push('言語切り替えが遅いです。キャッシュ戦略の見直しを検討してください。') }
     if (report.performance.translationGet?.average > 10') {
-      report.recommendations.push('翻訳取得が遅いです。翻訳キャッシュの最適化を検討してください。');
-    }
+      report.recommendations.push('翻訳取得が遅いです。翻訳キャッシュの最適化を検討してください。') }
     if (this.metrics.errors.length > 0) {
-      report.recommendations.push(`${this.metrics.errors.length)個のエラーが発生しました。エラーハンドリングの改善を検討してください。`'});
+      report.recommendations.push(`${this.metrics.errors.length)個のエラーが発生しました。エラーハンドリングの改善を検討してください。`});
     }
     return report;
   }

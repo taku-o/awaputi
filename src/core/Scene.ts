@@ -8,17 +8,17 @@ import type { Scene as IScene } from '../types/game';
  */
 export class Scene implements IScene { public gameEngine: any,
     public sceneManager: any,
-    public name?: string;
-    public isActive?: boolean;
-    public isLoaded?: boolean;
+    public name?: string,
+    public isActive?: boolean,
+    public isLoaded?: boolean,
 
     constructor(gameEngine: any) {
 
-        this.gameEngine = gameEngine;
-        this.sceneManager = null;
-        this.isActive = false;
+        this.gameEngine = gameEngine,
+        this.sceneManager = null,
+        this.isActive = false,
 
-    ,}
+     }
         this.isLoaded = false; }
     }
     
@@ -26,14 +26,14 @@ export class Scene implements IScene { public gameEngine: any,
      * シーンマネージャーを設定
      * SceneManagerによって呼び出され、シーンとマネージャーの関連を確立します
      */
-    setSceneManager(sceneManager: any): void { this.sceneManager = sceneManager; }
+    setSceneManager(sceneManager: any): void { this.sceneManager = sceneManager }
     
     /**
      * シーン開始時の処理
      * シーンがアクティブになる際に呼び出されます
      * 継承クラスでオーバーライドして具体的な初期化処理を実装します
      */
-    enter(): void { this.isActive = true;
+    enter(): void { this.isActive = true,
         // オーバーライド用 }
     
     /**
@@ -41,7 +41,7 @@ export class Scene implements IScene { public gameEngine: any,
      * シーンが非アクティブになる際に呼び出されます
      * 継承クラスでオーバーライドしてクリーンアップ処理を実装します
      */
-    exit(): void { this.isActive = false;
+    exit(): void { this.isActive = false,
         // オーバーライド用 }
     
     /**
@@ -71,14 +71,14 @@ export class Scene implements IScene { public gameEngine: any,
      * @returns 入力を処理した場合はtrue、それ以外はfalseまたはvoid
      */
     handleInput(_event: Event): boolean | void { // オーバーライド用
-        return false; }
+        return false }
     
     /**
      * 初期化処理（オプション）
      * 非同期の初期化処理が必要な場合に使用
      * 継承クラスでオーバーライドしてリソース読み込み等を実装します
      */
-    async init?(): Promise<void> { this.isLoaded = true;
+    async init?(): Promise<void> { this.isLoaded = true,
         // オーバーライド用 }
     
     /**
@@ -86,7 +86,6 @@ export class Scene implements IScene { public gameEngine: any,
      * シーンの破棄時に呼び出される
      * 継承クラスでオーバーライドしてリソース解放等を実装します
      */''
-    destroy?(): void { this.isActive = false;
-        this.isLoaded = false;
-        // オーバーライド用 }''
-}
+    destroy?(): void { this.isActive = false,
+        this.isLoaded = false,
+        // オーバーライド用 }'}

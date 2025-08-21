@@ -9,13 +9,13 @@ import { ErrorHandler  } from '../utils/ErrorHandler.js';
 
 class ValidationSystem { constructor() {
         // 検証ルール
-        this.rules = new Map();
+        this.rules = new Map(),
         
         // デフォルト値
-        this.defaultValues = new Map();
+        this.defaultValues = new Map(),
         
         // エラー履歴
-        this.validationErrors = [];
+        this.validationErrors = [],
         
         // 最大エラー履歴サイズ
     }
@@ -29,8 +29,7 @@ class ValidationSystem { constructor() {
      * @param {Object} rule - 検証ルール
      */
     setRule(category, key, rule) {
-        const ruleKey = this._getRuleKey(category, key);
-    }
+        const ruleKey = this._getRuleKey(category, key) }
         this.rules.set(ruleKey, rule); }
     }
     
@@ -52,8 +51,7 @@ class ValidationSystem { constructor() {
      * @param {*} defaultValue - デフォルト値
      */
     setDefaultValue(category, key, defaultValue) {
-        const defaultKey = this._getRuleKey(category, key);
-    }
+        const defaultKey = this._getRuleKey(category, key) }
         this.defaultValues.set(defaultKey, defaultValue); }
     }
     
@@ -77,23 +75,23 @@ class ValidationSystem { constructor() {
      */
     validate(category, key, value) {
         try {
-            const ruleKey = this._getRuleKey(category, key);
-            const rule = this.rules.get(ruleKey);
+            const ruleKey = this._getRuleKey(category, key),
+            const rule = this.rules.get(ruleKey),
             
             // ルールが存在しない場合は検証成功とする
             if (!rule) {
-                return { isValid: true ,}
-                    value: value, };
+                return { isValid: true  }
+                    value: value };
                     message: null 
     }
             
             // 型チェック
-            if (rule.type && typeof, value !== rule.type) { const defaultValue = this._getDefaultValue(category, key); }
-                const message = `型が不正: ${category}.${key} - 期待値: ${rule.type}, 実際: ${typeof, value}`;''
+            if (rule.type && typeof, value !== rule.type) { const defaultValue = this._getDefaultValue(category, key) }
+                const message = `型が不正: ${category}.${key} - 期待値: ${rule.type}, 実際: ${typeof, value}`;
                 this._recordError(category, key, value, message);
                 
                 return { isValid: false,
-                    value: defaultValue, };
+                    value: defaultValue };
                     message: message 
     }
             ';
@@ -103,21 +101,19 @@ class ValidationSystem { constructor() {
                     this._recordError(category, key, value, message);
                     
                     return { isValid: false,
-                        value: rule.min, };
+                        value: rule.min };
                         message: message 
     }
                 
                 if(rule.max !== undefined && value > rule.max) {
-                
-                    
-                
-                }
+    
+}
 
-                    const message = `値が最大値を上回る: ${category}.${key} - 最大値: ${rule.max}, 実際: ${value}`;''
+                    const message = `値が最大値を上回る: ${category}.${key} - 最大値: ${rule.max}, 実際: ${value}`;
                     this._recordError(category, key, value, message);
                     
                     return { isValid: false,
-                        value: rule.max, };
+                        value: rule.max };
                         message: message 
     }
             }
@@ -128,33 +124,31 @@ class ValidationSystem { constructor() {
                     this._recordError(category, key, value, message);
                     
                     return { isValid: false,
-                        value: this._getDefaultValue(category, key), };
+                        value: this._getDefaultValue(category, key) };
                         message: message 
     }
                 
                 if(rule.maxLength !== undefined && value.length > rule.maxLength) {
-                
-                    
-                
-                }
+    
+}
                     const message = `文字列が長すぎる: ${category}.${key} - 最大長: ${rule.maxLength}, 実際: ${value.length}`;
                     this._recordError(category, key, value, message);
                     
                     // 長すぎる場合は切り詰める
                     return { isValid: false,
-                        value: value.substring(0, rule.maxLength), };
+                        value: value.substring(0, rule.maxLength) };
                         message: message 
     }
                 
                 // パターンチェック
                 if(rule.pattern && !rule.pattern.test(value) {
-                    
-                }
+    
+}
                     const message = `パターンに一致しない: ${category}.${key}`;
                     this._recordError(category, key, value, message);
                     
                     return { isValid: false,
-                        value: this._getDefaultValue(category, key), };
+                        value: this._getDefaultValue(category, key) };
                         message: message 
     }
             }
@@ -165,27 +159,25 @@ class ValidationSystem { constructor() {
                     this._recordError(category, key, value, message);
                     
                     return { isValid: false,
-                        value: this._getDefaultValue(category, key), };
+                        value: this._getDefaultValue(category, key) };
                         message: message 
     }
                 
                 if(rule.maxLength !== undefined && value.length > rule.maxLength) {
-                
-                    
-                
-                }
+    
+}
                     const message = `配列が長すぎる: ${category}.${key} - 最大長: ${rule.maxLength}, 実際: ${value.length}`;
                     this._recordError(category, key, value, message);
                     
                     // 長すぎる場合は切り詰める
                     return { isValid: false,
-                        value: value.slice(0, rule.maxLength), };
+                        value: value.slice(0, rule.maxLength) };
                         message: message 
     }
             }
             ;
             // 列挙値チェック
-            if (rule.enum && Array.isArray(rule.enum) && !rule.enum.includes(value)) { ' }'
+            if (rule.enum && Array.isArray(rule.enum) && !rule.enum.includes(value)) { }'
 
                 const message = `列挙値に含まれない: ${category}.${key} - 許可値: ${rule.enum.join(', '}), 実際: ${value}`;
                 this._recordError(category, key, value, message);
@@ -193,49 +185,48 @@ class ValidationSystem { constructor() {
                 ';
 
                 return { isValid: false,''
-                    value: this._getDefaultValue(category, key), };
+                    value: this._getDefaultValue(category, key) };
                     message: message 
     }
             ';
             // カスタム検証関数
             if(rule.validator && typeof, rule.validator === 'function' {'
                 try {
-                    const validatorResult = rule.validator(value);
+                    const validatorResult = rule.validator(value),
 
                     if(validatorResult !== true) {''
-                        const message = typeof validatorResult === 'string' ;
-            }
+                        const message = typeof validatorResult === 'string'  }
                             ? validatorResult  }
                             : `カスタム検証に失敗: ${category}.${key}`;
                         
                         this._recordError(category, key, value, message);
                         
                         return { isValid: false,
-                            value: this._getDefaultValue(category, key), };
+                            value: this._getDefaultValue(category, key) };
                             message: message 
     } catch (validatorError) {
                     const message = `カスタム検証でエラー: ${category}.${key} - ${validatorError.message}`;
                     this._recordError(category, key, value, message);
                     
                     return { isValid: false,
-                        value: this._getDefaultValue(category, key), };
+                        value: this._getDefaultValue(category, key) };
                         message: message 
     }
             }
             
             // すべての検証をパスした場合
             return { isValid: true,
-                value: value, };
+                value: value };
                 message: null 
     } catch (error) { // 検証処理自体でエラーが発生した場合
             ErrorHandler.handleError(error, {''
-                context: 'ValidationSystem.validate);
-                category);
-                key,);
-                value); });
+                context: 'ValidationSystem.validate),
+                category,
+                key),
+                value });
             
-            return { isValid: false, };
-                value: this._getDefaultValue(category, key), }
+            return { isValid: false };
+                value: this._getDefaultValue(category, key) }
                 message: `検証処理でエラー: ${error.message}`
             }
     }
@@ -248,9 +239,7 @@ class ValidationSystem { constructor() {
      * @returns {*} 調整された値
      */
     validateAndAdjust(category, key, value) {
-        const result = this.validate(category, key, value);
-        
-    }
+        const result = this.validate(category, key, value) }
         if (!result.isValid && result.message) { }
             console.warn(`[ValidationSystem] ${result.message}`});
         }
@@ -262,12 +251,12 @@ class ValidationSystem { constructor() {
      * 検証エラー履歴を取得
      * @returns {Array} エラー履歴
      */
-    getValidationErrors() { return [...this.validationErrors];
+    getValidationErrors() { return [...this.validationErrors],
     
     /**
      * 検証エラー履歴をクリア
      */
-    clearValidationErrors() { this.validationErrors = []; }
+    clearValidationErrors() { this.validationErrors = [] }
     
     /**
      * デフォルト値を取得
@@ -277,7 +266,7 @@ class ValidationSystem { constructor() {
      * @private
      */
     _getDefaultValue(category, key) {
-        const defaultKey = this._getRuleKey(category, key);
+        const defaultKey = this._getRuleKey(category, key),
         
         if(this.defaultValues.has(defaultKey) {
     }
@@ -288,15 +277,13 @@ class ValidationSystem { constructor() {
         if(rule && rule.type) {
 
             switch(rule.type) {''
-                case 'string': return '';
-                case 'number': return 0;
+                case 'string': return ',
+                case 'number': return 0 }
 
-        }
+                case 'boolean': return false; }
 
-                case 'boolean': return false;' }
-
-                case 'object': return {};''
-                case 'function': return () => {};''
+                case 'object': return {};
+                case 'function': return () => {};
                 case 'undefined': return undefined;
                 default: return null;
         
@@ -311,8 +298,8 @@ class ValidationSystem { constructor() {
      * @private
      */
     _getRuleKey(category, key) {
-        
-    }
+    
+}
         return `${category}.${key}`;
     }
     
@@ -325,17 +312,16 @@ class ValidationSystem { constructor() {
      * @private
      */
     _recordError(category, key, value, message) {
-        this.validationErrors.push({);
-            timestamp: Date.now();
+        this.validationErrors.push({),
+            timestamp: Date.now(),
             category,
             key,
-            value,
-    }
+            value }
             message }
         });
         
         // 履歴が長くなりすぎないよう制限
-        if (this.validationErrors.length > this.maxErrorHistorySize) { this.validationErrors.splice(0, 10); }
+        if (this.validationErrors.length > this.maxErrorHistorySize) { this.validationErrors.splice(0, 10) }
 }
 
 // シングルトンインスタンス

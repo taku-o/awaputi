@@ -12,12 +12,11 @@ import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jes
 
 export class PWACrossDeviceTest {
     constructor() {
-        this.deviceProfiles = this.createDeviceProfiles();
-        this.browserProfiles = this.createBrowserProfiles();
-        this.testResults = new Map(');
+        this.deviceProfiles = this.createDeviceProfiles(),
+        this.browserProfiles = this.createBrowserProfiles(),
+        this.testResults = new Map('),
         
-        console.log('[PWACrossDeviceTest] クロスデバイステスト初期化完了');
-    }
+        console.log('[PWACrossDeviceTest] クロスデバイステスト初期化完了') }
     
     /**
      * デバイスプロファイル作成
@@ -51,7 +50,7 @@ export class PWACrossDeviceTest {
                 viewports: [
                     { width: 768, height: 1024, name: 'iPad' },
                     { width: 810, height: 1080, name: 'iPad Air' },
-                    { width: 1024, height: 1366, name: 'iPad Pro 12.9"' },
+                    { width: 1024, height: 1366, name: 'iPad Pro 12.9"},
                     { width: 800, height: 1280, name: 'Galaxy Tab' }
                 ],
                 features: {
@@ -159,7 +158,7 @@ export class PWACrossDeviceTest {
      * 全デバイス・ブラウザテスト実行
      */
     async runCrossDeviceTests(') {
-        console.log('[PWACrossDeviceTest] クロスデバイステスト開始');
+        console.log('[PWACrossDeviceTest] クロスデバイステスト開始'),
         
         const results = {
             summary: {
@@ -176,14 +175,14 @@ export class PWACrossDeviceTest {
         const currentDevice = this.detectCurrentDevice();
         const currentBrowser = this.detectCurrentBrowser();
         
-        console.log(`[PWACrossDeviceTest] 検出されたデバイス: ${currentDevice.type)`);
-        console.log(`[PWACrossDeviceTest] 検出されたブラウザ: ${currentBrowser.name)`);
+        console.log(`[PWACrossDeviceTest] 検出されたデバイス: ${currentDevice.type)`),
+        console.log(`[PWACrossDeviceTest] 検出されたブラウザ: ${currentBrowser.name)`),
         
         // デバイス別テスト
         for(const [deviceType, deviceProfile] of, Object.entries(this.deviceProfiles) {
             if (deviceType === currentDevice.type) {
-                const, deviceResults = await, this.runDeviceSpecificTests(deviceType, deviceProfile, currentDevice);
-                results.details.push(...deviceResults);
+                const, deviceResults = await, this.runDeviceSpecificTests(deviceType, deviceProfile, currentDevice),
+                results.details.push(...deviceResults),
                 results.summary.deviceResults[deviceType] = this.summarizeResults(deviceResults});
             }
         }
@@ -203,8 +202,8 @@ export class PWACrossDeviceTest {
         
         // 結果集計
         results.summary.totalTests = results.details.length;
-        results.summary.passedTests = results.details.filter(r => r.status === 'passed'').length;
-        results.summary.failedTests = results.details.filter(r => r.status === 'failed'').length;
+        results.summary.passedTests = results.details.filter(r => r.status === 'passed').length;
+        results.summary.failedTests = results.details.filter(r => r.status === 'failed').length;
         
         console.log('[PWACrossDeviceTest] クロスデバイステスト完了');
         
@@ -215,14 +214,14 @@ export class PWACrossDeviceTest {
      * デバイス固有テスト
      */
     async runDeviceSpecificTests(deviceType, deviceProfile, currentDevice) {
-        console.log(`[PWACrossDeviceTest] ${deviceProfile.name) テスト開始`);
+        console.log(`[PWACrossDeviceTest] ${deviceProfile.name) テスト開始`),
         
         const, results: any[] = [],
         
         // ビューポートテスト
-        for (const, viewport of, deviceProfile.viewports) {
+        for (const viewport of deviceProfile.viewports) {
             if(this.isViewportMatching(viewport, currentDevice) {
-                const, viewportResult = await, this.testViewport(viewport, deviceType);
+                const, viewportResult = await, this.testViewport(viewport, deviceType),
                 results.push(viewportResult});
             }
         }
@@ -242,13 +241,13 @@ export class PWACrossDeviceTest {
      * ブラウザ固有テスト
      */
     async runBrowserSpecificTests(browserName, browserProfile) {
-        console.log(`[PWACrossDeviceTest] ${browserProfile.name) テスト開始`);
+        console.log(`[PWACrossDeviceTest] ${browserProfile.name) テスト開始`),
         
         const, results: any[] = [],
         
         // ブラウザ機能サポートテスト
         for(const [feature, expected] of, Object.entries(browserProfile.features) {
-            const, featureResult = await, this.testBrowserFeature(feature, expected, browserName);
+            const, featureResult = await, this.testBrowserFeature(feature, expected, browserName),
             results.push(featureResult});
         }
         
@@ -267,7 +266,7 @@ export class PWACrossDeviceTest {
      * レスポンシブテスト
      */
     async runResponsiveTests(') {
-        console.log('[PWACrossDeviceTest] レスポンシブテスト開始'');
+        console.log('[PWACrossDeviceTest] レスポンシブテスト開始'),
         
         const results: any[] = [],
         const testViewports = [
@@ -278,9 +277,8 @@ export class PWACrossDeviceTest {
         ];
         
         for (const viewport of testViewports) {
-            const result = await this.testViewportAdaptation(viewport);
-            results.push(result');
-        }
+            const result = await this.testViewportAdaptation(viewport),
+            results.push(result') }
         
         return results;
     }
@@ -289,15 +287,14 @@ export class PWACrossDeviceTest {
      * インタラクションテスト
      */
     async runInteractionTests(currentDevice {
-        console.log('[PWACrossDeviceTest] インタラクションテスト開始');
+        console.log('[PWACrossDeviceTest] インタラクションテスト開始'),
         
         const results: any[] = [],
         
         // タッチテスト（タッチデバイスの場合）
         if (currentDevice.hasTouch) {
-            const touchResults = await this.runTouchTests();
-            results.push(...touchResults);
-        }
+            const touchResults = await this.runTouchTests(),
+            results.push(...touchResults) }
         
         // キーボードテスト
         const keyboardResults = await this.runKeyboardTests();
@@ -305,9 +302,8 @@ export class PWACrossDeviceTest {
         
         // マウステスト（デスクトップの場合）
         if (currentDevice.type === 'desktop') {
-            const mouseResults = await this.runMouseTests();
-            results.push(...mouseResults);
-        }
+            const mouseResults = await this.runMouseTests(),
+            results.push(...mouseResults) }
         
         return results;
     }
@@ -320,23 +316,23 @@ export class PWACrossDeviceTest {
         
         try {
             // 現在のビューポートサイズを確認
-            const currentWidth = window.innerWidth;
-            const currentHeight = window.innerHeight;
+            const currentWidth = window.innerWidth,
+            const currentHeight = window.innerHeight,
             
             // ビューポートが近似しているかチェック（±50px の誤差を許容）
-            const widthMatch = Math.abs(currentWidth - viewport.width) <= 50;
-            const heightMatch = Math.abs(currentHeight - viewport.height') <= 50;
+            const widthMatch = Math.abs(currentWidth - viewport.width) <= 50,
+            const heightMatch = Math.abs(currentHeight - viewport.height') <= 50,
             
             // PWA要素のサイズ適応をチェック
-            const gameCanvas = document.getElementById('gameCanvas');
+            const gameCanvas = document.getElementById('gameCanvas'),
             const isCanvasResponsive = gameCanvas && 
                 gameCanvas.offsetWidth <= currentWidth &&
-                gameCanvas.offsetHeight <= currentHeight;
+                gameCanvas.offsetHeight <= currentHeight,
             
-            const testPassed = (widthMatch || heightMatch) && isCanvasResponsive;
+            const testPassed = (widthMatch || heightMatch) && isCanvasResponsive,
             
             return {
-                id: `viewport-${viewport.name.toLowerCase(').replace(/\s+/g, '-''})}`,
+                id: `viewport-${viewport.name.toLowerCase(').replace(/\s+/g, '-'})}`,
                 name: testName,
                 status: testPassed ? 'passed' : 'failed',
                 deviceType: deviceType,
@@ -351,7 +347,7 @@ export class PWACrossDeviceTest {
             
         } catch (error) {
             return {
-                id: `viewport-${viewport.name.toLowerCase(').replace(/\s+/g, '-''})}`,
+                id: `viewport-${viewport.name.toLowerCase(').replace(/\s+/g, '-'})}`,
                 name: testName,
                 status: 'failed',
                 deviceType: deviceType,
@@ -368,13 +364,11 @@ export class PWACrossDeviceTest {
         
         // タッチ機能テスト
         if (features.touch) {
-            results.push(await this.testTouchSupport(deviceType);
-        }
+            results.push(await this.testTouchSupport(deviceType) }
         
         // 画面向き変更テスト
         if (features.orientation) {
-            results.push(await this.testOrientationSupport(deviceType);
-        }
+            results.push(await this.testOrientationSupport(deviceType) }
         
         // デバイスピクセル比テスト
         results.push(await this.testDevicePixelRatio(features.devicePixelRatio, deviceType)');
@@ -386,11 +380,11 @@ export class PWACrossDeviceTest {
      * タッチサポートテスト
      */
     async testTouchSupport(deviceType {
-        const testName = 'Touch Support Test';
+        const testName = 'Touch Support Test',
         
         try {
-            const hasTouchEvents = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-            const hasTouchPoints = navigator.maxTouchPoints > 0;
+            const hasTouchEvents = 'ontouchstart' in window || navigator.maxTouchPoints > 0,
+            const hasTouchPoints = navigator.maxTouchPoints > 0,
             
             return {
                 id: 'touch-support',
@@ -419,19 +413,17 @@ export class PWACrossDeviceTest {
      * 画面向き変更テスト
      */
     async testOrientationSupport(deviceType {
-        const testName = 'Orientation Support Test';
+        const testName = 'Orientation Support Test',
         
         try {
-            const hasOrientationAPI = 'orientation' in screen;
-            const hasOrientationEvent = 'onorientationchange' in window;
-            const hasScreenOrientationAPI = 'screen' in window && 'orientation' in screen;
+            const hasOrientationAPI = 'orientation' in screen,
+            const hasOrientationEvent = 'onorientationchange' in window,
+            const hasScreenOrientationAPI = 'screen' in window && 'orientation' in screen,
             
-            let currentOrientation = 'unknown';
+            let currentOrientation = 'unknown',
             if (hasScreenOrientationAPI') {
-                currentOrientation = screen.orientation.type;
-            } else if ('orientation' in window') {
-                currentOrientation = window.orientation;
-            }
+                currentOrientation = screen.orientation.type } else if ('orientation' in window') {
+                currentOrientation = window.orientation }
             
             const orientationSupported = hasOrientationAPI || hasOrientationEvent || hasScreenOrientationAPI;
             
@@ -464,12 +456,12 @@ export class PWACrossDeviceTest {
      * デバイスピクセル比テスト
      */
     async testDevicePixelRatio(expectedRatios, deviceType') {
-        const testName = 'Device Pixel Ratio Test';
+        const testName = 'Device Pixel Ratio Test',
         
         try {
-            const currentRatio = window.devicePixelRatio || 1;
+            const currentRatio = window.devicePixelRatio || 1,
             const ratioMatches = expectedRatios.includes(Math.floor(currentRatio) || 
-                               expectedRatios.includes(Math.ceil(currentRatio)');
+                               expectedRatios.includes(Math.ceil(currentRatio)'),
             
             return {
                 id: 'device-pixel-ratio',
@@ -501,36 +493,35 @@ export class PWACrossDeviceTest {
         const testName = `Browser Feature Test - ${feature}`;
         
         try {
-            let actual = false;
+            let actual = false,
             
             switch (feature') {
                 case 'serviceWorker':
-                    actual = 'serviceWorker' in navigator;
-                    break;
+                    actual = 'serviceWorker' in navigator,
+                    break,
                 case 'installPrompt':
-                    actual = 'BeforeInstallPromptEvent' in window;
-                    break;
+                    actual = 'BeforeInstallPromptEvent' in window,
+                    break,
                 case 'backgroundSync':
-                    actual = 'serviceWorker' in navigator && 'sync' in window.ServiceWorkerRegistration.prototype;
-                    break;
+                    actual = 'serviceWorker' in navigator && 'sync' in window.ServiceWorkerRegistration.prototype,
+                    break,
                 case 'pushNotifications':
-                    actual = 'PushManager' in window && 'Notification' in window;
-                    break;
+                    actual = 'PushManager' in window && 'Notification' in window,
+                    break,
                 case 'webShare':
-                    actual = 'share' in navigator;
-                    break;
+                    actual = 'share' in navigator,
+                    break,
                 case 'badgeAPI':
-                    actual = 'setAppBadge' in navigator;
-                    break;
-                default: actual = false,
-            }
+                    actual = 'setAppBadge' in navigator,
+                    break,
+                default: actual = false }
             
             const testPassed = actual === expected;
             
             return {
                 id: `browser-feature-${feature}`;
                 name: testName,
-                status: testPassed ? 'passed' : (expected ? 'failed' : 'info'),
+                status: testPassed ? 'passed' : (expected ? 'failed' : 'info',
                 browserName: browserName,
                 result: {
                     feature: feature,
@@ -558,22 +549,21 @@ export class PWACrossDeviceTest {
         const results: any[] = [],
         
         // 基本タッチイベントテスト
-        results.push(await this.testTouchEvents();
+        results.push(await this.testTouchEvents(),
         
         // マルチタッチテスト
-        results.push(await this.testMultiTouchSupport();
+        results.push(await this.testMultiTouchSupport(),
         
         // タッチジェスチャーテスト
-        results.push(await this.testTouchGestures();
+        results.push(await this.testTouchGestures(),
         
-        return results;
-    }
+        return results }
     
     /**
      * タッチイベントテスト
      */
     async testTouchEvents(') {
-        const testName = 'Touch Events Test';
+        const testName = 'Touch Events Test',
         
         try {
             const touchEvents = [
@@ -581,9 +571,9 @@ export class PWACrossDeviceTest {
                 'touchmove', 
                 'touchend',
                 'touchcancel'
-            ];
+            ],
             
-            const supportedEvents = touchEvents.filter(event => `on${event)` in, window'});
+            const supportedEvents = touchEvents.filter(event => `on${event)` in, window');
             const allSupported = supportedEvents.length === touchEvents.length;
             
             return {
@@ -614,28 +604,27 @@ export class PWACrossDeviceTest {
         const results: any[] = [],
         
         // 基本キーボードイベントテスト
-        results.push(await this.testKeyboardEvents();
+        results.push(await this.testKeyboardEvents(),
         
         // ショートカットキーテスト
-        results.push(await this.testKeyboardShortcuts();
+        results.push(await this.testKeyboardShortcuts(),
         
-        return results;
-    }
+        return results }
     
     /**
      * キーボードイベントテスト
      */
     async testKeyboardEvents(') {
-        const testName = 'Keyboard Events Test';
+        const testName = 'Keyboard Events Test',
         
         try {
             const keyboardEvents = [
                 'keydown',
                 'keyup',
                 'keypress'
-            ];
+            ],
             
-            const supportedEvents = keyboardEvents.filter(event => `on${event)` in, window'});
+            const supportedEvents = keyboardEvents.filter(event => `on${event)` in, window');
             const allSupported = supportedEvents.length >= 2; // keydown と keyup は最低限必要
             
             return {
@@ -663,18 +652,16 @@ export class PWACrossDeviceTest {
      * 現在のデバイス検出
      */
     detectCurrentDevice(') {
-        const userAgent = navigator.userAgent;
-        const width = window.innerWidth;
-        const height = window.innerHeight;
-        const hasTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+        const userAgent = navigator.userAgent,
+        const width = window.innerWidth,
+        const height = window.innerHeight,
+        const hasTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0,
         
-        let deviceType = 'desktop';
+        let deviceType = 'desktop',
         
         if (/Mobile|Android|iPhone/i.test(userAgent) || (width <= 768 && hasTouch)') {
-            deviceType = 'mobile';
-        } else if (/Tablet|iPad/i.test(userAgent) || (width <= 1024 && hasTouch)') {
-            deviceType = 'tablet';
-        }
+            deviceType = 'mobile' } else if (/Tablet|iPad/i.test(userAgent) || (width <= 1024 && hasTouch)') {
+            deviceType = 'tablet' }
         
         return {
             type: deviceType,
@@ -690,25 +677,20 @@ export class PWACrossDeviceTest {
      * 現在のブラウザ検出
      */
     detectCurrentBrowser(') {
-        const userAgent = navigator.userAgent;
+        const userAgent = navigator.userAgent,
         
-        let browserName = 'unknown';
+        let browserName = 'unknown',
         
         if (/Chrome/i.test(userAgent) && !/Edge/i.test(userAgent)') {
-            browserName = 'chrome';
-        } else if (/Firefox/i.test(userAgent)') {
-            browserName = 'firefox';
-        } else if (/Safari/i.test(userAgent) && !/Chrome/i.test(userAgent)') {
-            browserName = 'safari';
-        } else if (/Edge/i.test(userAgent)') {
-            browserName = 'edge';
-        }
+            browserName = 'chrome' } else if (/Firefox/i.test(userAgent)') {
+            browserName = 'firefox' } else if (/Safari/i.test(userAgent) && !/Chrome/i.test(userAgent)') {
+            browserName = 'safari' } else if (/Edge/i.test(userAgent)') {
+            browserName = 'edge' }
         
         return {
             name: browserName,
             userAgent: userAgent,
-            version: this.extractBrowserVersion(userAgent, browserName);
-        };
+            version: this.extractBrowserVersion(userAgent, browserName) };
     }
     
     /**
@@ -724,9 +706,8 @@ export class PWACrossDeviceTest {
         
         const pattern = patterns[browserName];
         if (pattern) {
-            const match = userAgent.match(pattern');
-            return match ? match[1] : 'unknown';
-        }
+            const match = userAgent.match(pattern'),
+            return match ? match[1] : 'unknown' }
         
         return 'unknown';
     }
@@ -735,20 +716,19 @@ export class PWACrossDeviceTest {
      * ビューポート一致確認
      */
     isViewportMatching(viewport, currentDevice) {
-        const tolerance = 100; // ±100px の誤差を許容
+        const tolerance = 100, // ±100px の誤差を許容
         
         return Math.abs(currentDevice.width - viewport.width) <= tolerance &&
-               Math.abs(currentDevice.height - viewport.height') <= tolerance;
-    }
+               Math.abs(currentDevice.height - viewport.height') <= tolerance }
     
     /**
      * 結果要約
      */
     summarizeResults(results {
-        const total = results.length;
-        const passed = results.filter(r => r.status === 'passed'').length;
-        const failed = results.filter(r => r.status === 'failed'').length;
-        const warnings = results.filter(r => r.status === 'warning').length;
+        const total = results.length,
+        const passed = results.filter(r => r.status === 'passed').length,
+        const failed = results.filter(r => r.status === 'failed').length,
+        const warnings = results.filter(r => r.status === 'warning').length,
         
         return {
             total: total,
@@ -775,8 +755,8 @@ export class PWACrossDeviceTest {
     /**
      * デバイス互換性分析
      */
-    analyzeDeviceCompatibility(results {);
-        const deviceAnalysis: Record<string, any> = {);
+    analyzeDeviceCompatibility(results {),
+        const deviceAnalysis: Record<string, any> = {),
         
         for (const [deviceType, deviceResult] of Object.entries(results.summary.deviceResults)') {
             deviceAnalysis[deviceType] = {
@@ -786,8 +766,7 @@ export class PWACrossDeviceTest {
                 score: deviceResult.successRate,
                 issues: results.details
                     .filter(r => r.deviceType === deviceType && r.status === 'failed')
-                    .map(r => r.name);
-            };
+                    .map(r => r.name) };
         }
         
         return deviceAnalysis;
@@ -797,7 +776,7 @@ export class PWACrossDeviceTest {
      * ブラウザ互換性分析
      */
     analyzeBrowserCompatibility(results {
-        const browserAnalysis: Record<string, any> = {);
+        const browserAnalysis: Record<string, any> = {),
         
         for (const [browserName, browserResult] of Object.entries(results.summary.browserResults)') {
             browserAnalysis[browserName] = {
@@ -812,8 +791,7 @@ export class PWACrossDeviceTest {
                 unsupportedFeatures: results.details
                     .filter(r => r.browserName === browserName && r.status === 'failed')
                     .map(r => r.result? .feature)
-                    .filter(f => f);
-            };
+                    .filter(f => f) };
         }
         
         return browserAnalysis;
@@ -827,7 +805,7 @@ export class PWACrossDeviceTest {
         
         // デバイス別推奨事項
         for (const [deviceType, analysis] of Object.entries(this.analyzeDeviceCompatibility(results)') {
-            if (analysis.compatibility === 'poor'') {
+            if (analysis.compatibility === 'poor') {
                 recommendations.push({
                     category: 'device-compatibility',
                     priority: 'high',
@@ -856,4 +834,4 @@ export class PWACrossDeviceTest {
 // グローバル関数として利用可能にする
 window.PWACrossDeviceTest = PWACrossDeviceTest;
 
-console.log('[PWACrossDeviceTest] PWAクロスデバイステスト読み込み完了'');
+console.log('[PWACrossDeviceTest] PWAクロスデバイステスト読み込み完了');

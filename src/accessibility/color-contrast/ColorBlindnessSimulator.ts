@@ -5,49 +5,50 @@
 
 // Interfaces for color blindness simulation
 interface SimulatorConfig { enableSimulation: boolean,
-    includePartialColorBlindness: boolean;
+    includePartialColorBlindness: boolean,
     generateSuggestions: boolean,
-    accurateSimulation: boolean ,}
+    accurateSimulation: boolean  }
 
-interface RGB { r: number;
+interface RGB { r: number,
     g: number,
     b: number }
 
 interface RGBA extends RGB { a: number }
 
-interface ColorBlindnessType { name: string;
-    description: string;
+interface ColorBlindnessType { name: string,
+    description: string,
     prevalence: string,
     matrix: number[][] }
 
-interface ColorBlindnessTypes { protanopia: ColorBlindnessType;
-    deuteranopia: ColorBlindnessType;
-    tritanopia: ColorBlindnessType;
-    protanomaly: ColorBlindnessType;
+interface ColorBlindnessTypes { protanopia: ColorBlindnessType,
+    deuteranopia: ColorBlindnessType,
+    tritanopia: ColorBlindnessType,
+    protanomaly: ColorBlindnessType,
     deuteranomaly: ColorBlindnessType,
     tritanomaly: ColorBlindnessType
     }
 
-interface SimulationPerformanceMetrics { simulationTimes: number[];
+interface SimulationPerformanceMetrics { simulationTimes: number[],
     cacheHitRate: number,
     totalSimulations: number }
 
-interface ColorDifference { foregroundDifference: number;
-    backgroundDifference: number;
+interface ColorDifference { foregroundDifference: number,
+    backgroundDifference: number,
     maxDifference: number,
     averageDifference: number }
 
 interface ImpactAssessment { originalColors: {
-        foregroun;d: RGB | RGBA | string,
+        foregroun,d: RGB | RGBA | string,
     background: RGB | RGBA | string };
     simulations: Record<string, { foreground: RGBA,
         background: RGBA,
     type: ColorBlindnessType
-    ,}>;
+     }>;
     impact: Record<string, { colorDifference: ColorDifference,
         significantChange: boolean,
     visibilityImpact: 'low' | 'medium' | 'high',
-        riskLevel: 'low' | 'medium' | 'high' | 'critical' ,}>;
+        riskLevel: 'low' | 'medium' | 'high' | 'critical'
+            }>;
 
     recommendations: any[],
     overallRisk: 'low' | 'medium' | 'high';
@@ -55,113 +56,113 @@ interface ImpactAssessment { originalColors: {
 
 interface AlternativeColorSuggestions { alternatives: any[],
     reasoning: any[],
-    confidence: number ,}
+    confidence: number  }
 
-interface AssessmentOptions { includeAllTypes?: boolean;
-    calculateDifferences?: boolean;
-    generateRecommendations?: boolean; }
+interface AssessmentOptions { includeAllTypes?: boolean,
+    calculateDifferences?: boolean,
+    generateRecommendations?: boolean }
 
-interface SuggestionOptions { maintainBranding?: boolean;
-    targetContrast?: number;
-    minimizeChange?: boolean;
-    includeMultipleOptions?: boolean; }
+interface SuggestionOptions { maintainBranding?: boolean,
+    targetContrast?: number,
+    minimizeChange?: boolean,
+    includeMultipleOptions?: boolean }
 
 interface PerformanceReport { totalSimulations: number,
-    averageSimulationTime: number;
+    averageSimulationTime: number,
     cacheHitRate: number,
-    cacheSize: number ,}
+    cacheSize: number  }
 ';
 
 interface ColorBlindnessRecommendation { category: string,''
-    priority: 'low' | 'medium' | 'high';
-    title: string;
+    priority: 'low' | 'medium' | 'high',
+    title: string,
     description: string,
-    actions: string[] ,}
+    actions: string[]  }
 
 interface ColorBlindnessIssue { hasIssues: boolean,
     affectedTypes: string[],
-    severity: 'low' | 'medium' | 'high' | 'critical';
+    severity: 'low' | 'medium' | 'high' | 'critical',
     description: string,
     colorPair: {
-        foregroun;d: string,
-    background: string ,}
+        foregroun,d: string,
+    background: string  }
 
 export class ColorBlindnessSimulator {
-    private config: SimulatorConfig;
-    private colorBlindnessTypes: ColorBlindnessTypes;
-    private, simulationCache: Map<string, RGBA>;
-    private cacheHits: number;
-    private cacheMisses: number;
-    private performanceMetrics: SimulationPerformanceMetrics;
-    private, initialized: boolean';
+    private config: SimulatorConfig,
+    private colorBlindnessTypes: ColorBlindnessTypes,
+    private, simulationCache: Map<string, RGBA>,
+    private cacheHits: number,
+    private cacheMisses: number,
+    private performanceMetrics: SimulationPerformanceMetrics,
+    private, initialized: boolean',
 
     constructor(config: Partial<SimulatorConfig> = {)) {
         this.config = {
-            enableSimulation: true;
-            includePartialColorBlindness: true;
+            enableSimulation: true,
+            includePartialColorBlindness: true,
             generateSuggestions: true,
-    accurateSimulation: true;
-            ...config;
+    accurateSimulation: true,
+            ...config,
 
         // 色覚異常の種類定義
         this.colorBlindnessTypes = { protanopia: {''
                 name: '第一色覚異常（赤色盲）',
                 description: '赤色の識別が困難',
                 prevalence: '男性1.3%、女性0.02%',
-    matrix: [;
+    matrix: [,
                     [0.567, 0.433, 0],
                     [0.558, 0.442, 0],
-                    [0, 0.242, 0.758];
+                    [0, 0.242, 0.758],
                 ] },
 
             deuteranopia: { ''
                 name: '第二色覚異常（緑色盲）',
                 description: '緑色の識別が困難',
                 prevalence: '男性1.2%、女性0.01%',
-    matrix: [;
+    matrix: [,
                     [0.625, 0.375, 0],
                     [0.7, 0.3, 0],
-                    [0, 0.3, 0.7];
+                    [0, 0.3, 0.7],
                 ] },
 
             tritanopia: { ''
                 name: '第三色覚異常（青色盲）',
                 description: '青色の識別が困難',
                 prevalence: '男女0.002%',
-    matrix: [;
+    matrix: [,
                     [0.95, 0.05, 0],
                     [0, 0.433, 0.567],
-                    [0, 0.475, 0.525];
+                    [0, 0.475, 0.525],
                 ] },
 
             protanomaly: { ''
                 name: '第一色覚異常（軽度）',
                 description: '赤色の識別が軽度困難',
                 prevalence: '男性1.0%、女性0.03%',
-    matrix: [;
+    matrix: [,
                     [0.817, 0.183, 0],
                     [0.333, 0.667, 0],
-                    [0, 0.125, 0.875];
+                    [0, 0.125, 0.875],
                 ] },
 
             deuteranomaly: { ''
                 name: '第二色覚異常（軽度）',
                 description: '緑色の識別が軽度困難',
                 prevalence: '男性4.9%、女性0.38%',
-    matrix: [;
+    matrix: [,
                     [0.8, 0.2, 0],
                     [0.258, 0.742, 0],
-                    [0, 0.142, 0.858];
+                    [0, 0.142, 0.858],
                 ] },
 
             tritanomaly: { ''
                 name: '第三色覚異常（軽度）',
                 description: '青色の識別が軽度困難',
                 prevalence: '男女0.01%',
-    matrix: [;
+    matrix: [,
                     [0.967, 0.033, 0],
                     [0, 0.733, 0.267],
-                    [0, 0.183, 0.817];
+                    [0, 0.183, 0.817],
                 ] }
         };
 
@@ -173,7 +174,7 @@ export class ColorBlindnessSimulator {
         // パフォーマンスメトリクス
         this.performanceMetrics = { simulationTimes: [],
             cacheHitRate: 0,
-    totalSimulations: 0 ,};
+    totalSimulations: 0  };
         this.initialized = false;
     }
 
@@ -181,27 +182,27 @@ export class ColorBlindnessSimulator {
      * Initialize simulator
      */
     initialize(): boolean { ''
-        if(this.initialized) return true;
+        if(this.initialized) return true,
 
-        console.log('ColorBlindnessSimulator: Initializing...'),
+        console.log('ColorBlindnessSimulator: Initializing...',
         
         try {
-            this.simulationCache.clear();''
-            this.resetPerformanceMetrics()';
+            this.simulationCache.clear(),
+            this.resetPerformanceMetrics()',
             console.log('ColorBlindnessSimulator: Initialized, successfully'),
-            return true;' }'
+            return true,' }'
 
         } catch (error) {
-            console.error('ColorBlindnessSimulator: Initialization, error:', error';
-            return false;
+            console.error('ColorBlindnessSimulator: Initialization, error:', error',
+            return false,
 
     /**
      * Simulate color blindness for a given color'
      */''
     simulateColorBlindness(color: RGB | RGBA | string, type: keyof ColorBlindnessTypes = 'deuteranopia': RGBA { ''
-        if(!this.initialized) {', ';
+        if(!this.initialized) {', ',
 
-        ,}
+         }
 
             throw new Error('ColorBlindnessSimulator, must be, initialized first'; }'
         }
@@ -209,20 +210,19 @@ export class ColorBlindnessSimulator {
         const startTime = performance.now();
 
         try { // キャッシュチェック
-            const cacheKey = this.generateCacheKey(color, type);
-            const cachedResult = this.simulationCache.get(cacheKey);
+            const cacheKey = this.generateCacheKey(color, type),
+            const cachedResult = this.simulationCache.get(cacheKey),
             if(cachedResult) {
-                this.cacheHits++;
-                this.updatePerformanceMetrics(performance.now() - startTime, true);
-            }
+                this.cacheHits++,
+                this.updatePerformanceMetrics(performance.now() - startTime, true) }
                 return cachedResult;
             this.cacheMisses++;
 
             // 色覚異常タイプの取得
             const colorBlindnessType = this.colorBlindnessTypes[type];
             if(!colorBlindnessType) {
-                
-            }
+    
+}
                 throw new Error(`Unknown, color blindness, type: ${type}`});
             }
 
@@ -237,30 +237,30 @@ export class ColorBlindnessSimulator {
             return simulatedColor;
 
         } catch (error) {
-            console.error('ColorBlindnessSimulator: Simulation, error:', error';
-            throw error; }
+            console.error('ColorBlindnessSimulator: Simulation, error:', error',
+            throw error }
     }
 
     /**
      * Transform colors using color blindness matrix'
      */''
-    transformColors(colors: (RGB | RGBA | string)[], type: keyof ColorBlindnessTypes = 'deuteranopia'): RGBA[] { return colors.map(color => this.simulateColorBlindness(color, type);
+    transformColors(colors: (RGB | RGBA | string)[], type: keyof ColorBlindnessTypes = 'deuteranopia'): RGBA[] { return colors.map(color => this.simulateColorBlindness(color, type),
 
     /**
      * Assess accessibility impact of color blindness
      */
-    assessAccessibilityImpact(;
-        foregroundColor: RGB | RGBA | string);
+    assessAccessibilityImpact(
+        foregroundColor: RGB | RGBA | string),
         backgroundColor: RGB | RGBA | string)',
-    options: AssessmentOptions = { ''', '): ImpactAssessment {'
+    options: AssessmentOptions = { '', '): ImpactAssessment {'
         const assessmentOptions: Required<AssessmentOptions> = {
-            includeAllTypes: true;
-            calculateDifferences: true;
-            generateRecommendations: true;
-            ...options;
+            includeAllTypes: true,
+            calculateDifferences: true,
+            generateRecommendations: true,
+            ...options,
 
         const, assessment: ImpactAssessment = {
-            originalColors: { foreground: foregroundColor, background: backgroundColor ,},
+            originalColors: { foreground: foregroundColor, background: backgroundColor  },
             simulations: {};
             impact: {};
             recommendations: [],
@@ -268,133 +268,128 @@ export class ColorBlindnessSimulator {
         },
 
         try { const typesToTest: (keyof, ColorBlindnessTypes)[] = assessmentOptions.includeAllTypes ''
-                ? Object.keys(this.colorBlindnessTypes) as(keyof, ColorBlindnessTypes)[]'';
-                : ['deuteranopia', 'protanopia']; // 最も一般的な色覚異常
+                ? Object.keys(this.colorBlindnessTypes) as(keyof, ColorBlindnessTypes)[]',
+                : ['deuteranopia', 'protanopia'], // 最も一般的な色覚異常
 
-            let totalImpact = 0;
-            let significantIssues = 0;
+            let totalImpact = 0,
+            let significantIssues = 0,
 
-            typesToTest.forEach(type => { );
-                const simulatedForeground = this.simulateColorBlindness(foregroundColor, type);
-                const simulatedBackground = this.simulateColorBlindness(backgroundColor, type);
+            typesToTest.forEach(type => { ),
+                const simulatedForeground = this.simulateColorBlindness(foregroundColor, type),
+                const simulatedBackground = this.simulateColorBlindness(backgroundColor, type),
 
                 assessment.simulations[type] = {
                     foreground: simulatedForeground,
-    background: simulatedBackground, }
+    background: simulatedBackground }
                     type: this.colorBlindnessTypes[type] 
     };
                 if(assessmentOptions.calculateDifferences) {
 
-                    const colorDifference = this.calculateColorDifference();
+                    const colorDifference = this.calculateColorDifference(),
                         this.normalizeColor(foregroundColor),
                         simulatedForeground,
                         this.normalizeColor(backgroundColor),
-                        simulatedBackground;
-                    );
+                        simulatedBackground),
 
                     assessment.impact[type] = {
                         colorDifference,
-                        significantChange: colorDifference.maxDifference > 20;
-                        visibilityImpact: this.calculateVisibilityImpact(colorDifference);
-                ,}
+                        significantChange: colorDifference.maxDifference > 20,
+                        visibilityImpact: this.calculateVisibilityImpact(colorDifference) }
                         riskLevel: this.determineRiskLevel(colorDifference); 
     };
 
                     totalImpact += colorDifference.maxDifference;
-                    if (colorDifference.maxDifference > 20) { significantIssues++; }
+                    if (colorDifference.maxDifference > 20) { significantIssues++ }
 });
 
             // 全体的なリスクレベルの決定
             assessment.overallRisk = this.calculateOverallRisk(totalImpact, significantIssues, typesToTest.length);
 
             // 推奨事項の生成
-            if (assessmentOptions.generateRecommendations) { assessment.recommendations = this.generateColorBlindnessRecommendations(assessment); }
+            if (assessmentOptions.generateRecommendations) { assessment.recommendations = this.generateColorBlindnessRecommendations(assessment) }
 
             return assessment;
 
         } catch (error) {
-            console.error('ColorBlindnessSimulator: Impact assessment, error:', error';
-            throw error; }
+            console.error('ColorBlindnessSimulator: Impact assessment, error:', error',
+            throw error }
     }
 
     /**
      * Analyze color pair for color blindness issues
      */'
     analyze(foreground: string, background: string): ColorBlindnessIssue | null { try {'
-            const assessment = this.assessAccessibilityImpact(foreground, background);
-            ';
+            const assessment = this.assessAccessibilityImpact(foreground, background),
+            ',
 
             const affectedTypes: string[] = [],
             let maxSeverity: ColorBlindnessIssue['severity] = 'low',
             
             Object.entries(assessment.impact).forEach(([type, impact]) => { 
-                if(impact.significantChange) {'
+                if(impact.significantChange) {
 
-                    affectedTypes.push(type);
+                    affectedTypes.push(type) }
 
-                }
+                    if (impact.riskLevel === 'critical' && maxSeverity !== 'critical') { }
 
-                    if (impact.riskLevel === 'critical' && maxSeverity !== 'critical'') {' }
+                        maxSeverity = 'critical'; }
 
-                        maxSeverity = 'critical';' }
+                    } else if (impact.riskLevel === 'high' && maxSeverity === 'low') { ''
+                        maxSeverity = 'high',' }
 
-                    } else if (impact.riskLevel === 'high' && maxSeverity === 'low'') { ''
-                        maxSeverity = 'high';' }
-
-                    } else if (impact.riskLevel === 'medium' && maxSeverity === 'low'') { ''
-                        maxSeverity = 'medium'; }
+                    } else if (impact.riskLevel === 'medium' && maxSeverity === 'low') { ''
+                        maxSeverity = 'medium' }
 });
 
-            if(affectedTypes.length === 0) { return null; }
+            if(affectedTypes.length === 0) { return null }
             
             return { hasIssues: true,
-                affectedTypes, };
+                affectedTypes };
 
                 severity: maxSeverity,' }'
 
                 description: `Color combination may be difficult to distinguish for users with ${affectedTypes.join(', '}'`,
-                colorPair: { foreground;
+                colorPair: { foreground,
                     background }
-};''
-        } catch (error) {
-            console.error('ColorBlindnessSimulator: Analysis, error:', error);
-            return null;
+};'} catch (error) {
+            console.error('ColorBlindnessSimulator: Analysis, error:', error),
+            return null,
 
     /**
      * Suggest alternative colors for better accessibility
      */
-    suggestAlternativeColors(;
-        originalColors: { foreground: RGB | RGBA | string,  background: RGB | RGBA | string ,})
+    suggestAlternativeColors(
+        originalColors: { foreground: RGB | RGBA | string,  background: RGB | RGBA | string  })
         options: SuggestionOptions = { ): AlternativeColorSuggestions {
         const suggestionOptions: Required<SuggestionOptions> = {
-            maintainBranding: true;
-            targetContrast: 4.5;
-            minimizeChange: true;
-            includeMultipleOptions: true;
-            ...options;
+            maintainBranding: true,
+            targetContrast: 4.5,
+            minimizeChange: true,
+            includeMultipleOptions: true,
+            ...options,
 
         const, suggestions: AlternativeColorSuggestions = { alternatives: [],
             reasoning: [],
-    confidence: 0 ,};
+    confidence: 0  };
         try { // 各色覚異常タイプでの問題を分析
-            const problemAreas = this.identifyProblemAreas(originalColors);
+            const problemAreas = this.identifyProblemAreas(originalColors),
 
             // 代替色の生成
-            const colorAlternatives = this.generateColorAlternatives(;
-                originalColors);
-                problemAreas, );
-                suggestionOptions);
+            const colorAlternatives = this.generateColorAlternatives(
+                originalColors,
+                problemAreas),
+                suggestionOptions,
 
-            suggestions.alternatives = colorAlternatives;
-            suggestions.reasoning = this.generateAlternativeReasoning(problemAreas, colorAlternatives);
-            suggestions.confidence = this.calculateSuggestionConfidence(colorAlternatives);
+            suggestions.alternatives = colorAlternatives,
+            suggestions.reasoning = this.generateAlternativeReasoning(problemAreas, colorAlternatives),
+            suggestions.confidence = this.calculateSuggestionConfidence(colorAlternatives),
 
-            return suggestions;
+            return suggestions,
 ' }'
 
         } catch (error) {
-            console.error('ColorBlindnessSimulator: Alternative color suggestion, error:', error);
-            throw error; }
+            console.error('ColorBlindnessSimulator: Alternative color suggestion, error:', error),
+            throw error }
     }
 
     // Private helper methods
@@ -414,7 +409,7 @@ export class ColorBlindnessSimulator {
         
         return { r: Math.round(Math.max(0, Math.min(255, newR * 255)),
             g: Math.round(Math.max(0, Math.min(255, newG * 255)),
-            b: Math.round(Math.max(0, Math.min(255, newB * 255)), };
+            b: Math.round(Math.max(0, Math.min(255, newB * 255)) };
             a }
         }
 
@@ -422,12 +417,12 @@ export class ColorBlindnessSimulator {
      * Normalize color input
      */''
     private normalizeColor(color: RGB | RGBA | string): RGBA { ''
-        if(typeof, color === 'object' && 'r' in, color' {' }
+        if(typeof, color === 'object' && 'r' in, color' { }
 
             return { r: color.r, g: color.g, b: color.b, a: 'a' in color ? color.a : 255 
-        if(typeof, color === 'string' {', ';
+        if(typeof, color === 'string' {', ',
 
-        ,}
+         }
 
             return this.parseColorString(color);
 
@@ -438,22 +433,20 @@ export class ColorBlindnessSimulator {
      * Parse color string to RGB'
      */''
     private parseColorString(colorStr: string): RGBA { // 簡略化された色文字列パーサー
-        const hex = colorStr.replace('#', '');
+        const hex = colorStr.replace('#', '),
         if(hex.length === 6) {
             return { r: parseInt(hex.substr(0, 2), 16),
-                g: parseInt(hex.substr(2, 2), 16),
-        }
-                b: parseInt(hex.substr(4, 2), 16), };
+                g: parseInt(hex.substr(2, 2), 16) }
+                b: parseInt(hex.substr(4, 2), 16) };
                 a: 255 
     }
         
         const rgbMatch = colorStr.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))? \)/);
         if(rgbMatch) {
             return { : undefined
-                r: parseInt(rgbMatch[1]),
-    g: parseInt(rgbMatch[2]);
-        ,}
-                b: parseInt(rgbMatch[3]), };
+                r: parseInt(rgbMatch[1],
+    g: parseInt(rgbMatch[2]) }
+                b: parseInt(rgbMatch[3]) };
                 a: rgbMatch[4] ? Math.round(parseFloat(rgbMatch[4]) * 255) : 255 
             }
         
@@ -463,68 +456,66 @@ export class ColorBlindnessSimulator {
     /**
      * Calculate color difference between original and simulated colors
      */
-    private calculateColorDifference(originalFg: RGBA, simulatedFg: RGBA, originalBg: RGBA, simulatedBg: RGBA): ColorDifference { const fgDiff = this.calculateRgbDifference(originalFg, simulatedFg);
-        const bgDiff = this.calculateRgbDifference(originalBg, simulatedBg);
+    private calculateColorDifference(originalFg: RGBA, simulatedFg: RGBA, originalBg: RGBA, simulatedBg: RGBA): ColorDifference { const fgDiff = this.calculateRgbDifference(originalFg, simulatedFg),
+        const bgDiff = this.calculateRgbDifference(originalBg, simulatedBg),
         
         return { foregroundDifference: fgDiff,
             backgroundDifference: bgDiff,
-    maxDifference: Math.max(fgDiff, bgDiff), };
+    maxDifference: Math.max(fgDiff, bgDiff) };
             averageDifference: (fgDiff + bgDiff) / 2 
     }
 
     /**
      * Calculate RGB color difference
      */
-    private calculateRgbDifference(color1: RGBA, color2: RGBA): number { const deltaR = color1.r - color2.r;
-        const deltaG = color1.g - color2.g;
-        const deltaB = color1.b - color2.b;
+    private calculateRgbDifference(color1: RGBA, color2: RGBA): number { const deltaR = color1.r - color2.r,
+        const deltaG = color1.g - color2.g,
+        const deltaB = color1.b - color2.b,
         
-        return Math.sqrt(deltaR * deltaR + deltaG * deltaG + deltaB * deltaB); }
+        return Math.sqrt(deltaR * deltaR + deltaG * deltaG + deltaB * deltaB) }
 
     /**
      * Calculate visibility impact'
      */''
     private calculateVisibilityImpact(colorDifference: ColorDifference): 'low' | 'medium' | 'high' { ''
-        if(colorDifference.maxDifference > 50) return 'high';
-        if(colorDifference.maxDifference > 20) return 'medium';
-        return 'low'; }
+        if(colorDifference.maxDifference > 50) return 'high',
+        if(colorDifference.maxDifference > 20) return 'medium',
+        return 'low' }
 
     /**
      * Determine risk level'
      */''
     private determineRiskLevel(colorDifference: ColorDifference): 'low' | 'medium' | 'high' | 'critical' { ''
-        if(colorDifference.maxDifference > 60) return 'critical';
-        if(colorDifference.maxDifference > 40) return 'high';
-        if(colorDifference.maxDifference > 20) return 'medium';
-        return 'low'; }
+        if(colorDifference.maxDifference > 60) return 'critical',
+        if(colorDifference.maxDifference > 40) return 'high',
+        if(colorDifference.maxDifference > 20) return 'medium',
+        return 'low' }
 
     /**
      * Calculate overall risk'
      */''
-    private calculateOverallRisk(totalImpact: number, significantIssues: number, totalTypes: number): 'low' | 'medium' | 'high' { const averageImpact = totalImpact / totalTypes;
-        const issueRatio = significantIssues / totalTypes;
+    private calculateOverallRisk(totalImpact: number, significantIssues: number, totalTypes: number): 'low' | 'medium' | 'high' { const averageImpact = totalImpact / totalTypes,
+        const issueRatio = significantIssues / totalTypes,
 
-        if(averageImpact > 40 || issueRatio > 0.5) return 'high';
-        if(averageImpact > 20 || issueRatio > 0.25) return 'medium';
-        return 'low'; }
+        if(averageImpact > 40 || issueRatio > 0.5) return 'high',
+        if(averageImpact > 20 || issueRatio > 0.25) return 'medium',
+        return 'low' }
 
     /**
      * Generate cache key
      */
-    private generateCacheKey(color: RGB | RGBA | string, type: string): string { const normalizedColor = this.normalizeColor(color); }
+    private generateCacheKey(color: RGB | RGBA | string, type: string): string { const normalizedColor = this.normalizeColor(color) }
         return `${normalizedColor.r},${normalizedColor.g},${normalizedColor.b},${normalizedColor.a}:${type}`;
     }
 
     /**
      * Update performance metrics
      */
-    private updatePerformanceMetrics(simulationTime: number, fromCache: boolean): void { this.performanceMetrics.totalSimulations++;
+    private updatePerformanceMetrics(simulationTime: number, fromCache: boolean): void { this.performanceMetrics.totalSimulations++,
         
         if(!fromCache) {
-        
-            
-        
-        }
+    
+}
             this.performanceMetrics.simulationTimes.push(simulationTime); }
         }
         
@@ -538,7 +529,7 @@ export class ColorBlindnessSimulator {
      * Reset performance metrics
      */
     private resetPerformanceMetrics(): void { this.performanceMetrics = {
-            simulationTimes: [];
+            simulationTimes: [],
             cacheHitRate: 0,
     totalSimulations: 0 };
         this.cacheHits = 0;
@@ -546,24 +537,23 @@ export class ColorBlindnessSimulator {
     }
 
     // Placeholder methods for complex features
-    private identifyProblemAreas(colors: any): any[] { return [], }
-    private generateColorAlternatives(colors: any, problems: any[], options: Required<SuggestionOptions>): any[] { return [], }
-    private generateAlternativeReasoning(problems: any[], alternatives: any[]): any[] { return [], }
-    private calculateSuggestionConfidence(alternatives: any[]): number { return 0.75, }
+    private identifyProblemAreas(colors: any): any[] { return [] }
+    private generateColorAlternatives(colors: any, problems: any[], options: Required<SuggestionOptions>): any[] { return [] }
+    private generateAlternativeReasoning(problems: any[], alternatives: any[]): any[] { return [] }
+    private calculateSuggestionConfidence(alternatives: any[]): number { return 0.75 }
 
     private generateColorBlindnessRecommendations(assessment: ImpactAssessment): ColorBlindnessRecommendation[] { const recommendations: ColorBlindnessRecommendation[] = [],
 
-        if(assessment.overallRisk === 'high'') {'
+        if(assessment.overallRisk === 'high') {
             recommendations.push({''
                 category: 'Critical',
                 priority: 'high',
-                title: 'Address color blindness accessibility issues','';
+                title: 'Address color blindness accessibility issues',',
                 description: 'High impact on color blind users detected')',
-    actions: ['';
+    actions: [',
                     'Use patterns or shapes in addition to color',
-                    'Increase contrast between colors',]';
-                    'Test with color blindness simulation tools')];
-        }
+                    'Increase contrast between colors',]',
+                    'Test with color blindness simulation tools')] }
                 ]); }
         }
         
@@ -574,7 +564,7 @@ export class ColorBlindnessSimulator {
      * Get supported color blindness types
      */
     getSupportedTypes(): Array<{ key: string } & ColorBlindnessType> { return Object.entries(this.colorBlindnessTypes).map(([key, type]) => ({
-            key);
+            key,
             ...type
         });
     }
@@ -582,13 +572,13 @@ export class ColorBlindnessSimulator {
     /**
      * Get performance report
      */
-    getPerformanceReport(): PerformanceReport { const times = this.performanceMetrics.simulationTimes;
-        const avgTime = times.length > 0 ;
+    getPerformanceReport(): PerformanceReport { const times = this.performanceMetrics.simulationTimes,
+        const avgTime = times.length > 0 ,
             ? times.reduce((a, b) => a + b, 0) / times.length: 0,
         
         return { totalSimulations: this.performanceMetrics.totalSimulations,
             averageSimulationTime: avgTime,
-    cacheHitRate: this.performanceMetrics.cacheHitRate, };
+    cacheHitRate: this.performanceMetrics.cacheHitRate };
             cacheSize: this.simulationCache.size 
     }
 
@@ -596,8 +586,8 @@ export class ColorBlindnessSimulator {
      * Clear simulation cache
      */'
     clearCache(): void { ''
-        this.simulationCache.clear()';
-        console.log('ColorBlindnessSimulator: Cache, cleared'), }'
+        this.simulationCache.clear()',
+        console.log('ColorBlindnessSimulator: Cache, cleared') }'
 
     /**
      * Update configuration'
@@ -606,16 +596,14 @@ export class ColorBlindnessSimulator {
             ...this.config,
             ...newConfig
 
-        };''
-        console.log('ColorBlindnessSimulator: Configuration, updated'),
-    }
+        };
+        console.log('ColorBlindnessSimulator: Configuration, updated') }
 
     /**
      * Destroy and cleanup
      */'
-    destroy(): void { this.clearCache();''
-        this.resetPerformanceMetrics()';
-        console.log('ColorBlindnessSimulator: Destroyed''), }
+    destroy(): void { this.clearCache(),
+        this.resetPerformanceMetrics()',
+        console.log('ColorBlindnessSimulator: Destroyed') }
 
-    }''
-}
+    }'}

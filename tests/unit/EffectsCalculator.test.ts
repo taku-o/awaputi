@@ -6,7 +6,7 @@ import { EffectsCalculator  } from '../../src/core/EffectsCalculator.js';
 // Effects configuration interfaces
 interface EffectsConfig {
     particles: {
-        maxCoun;t: number,
+        maxCoun,t: number,
         poolSize: number,
         quality: number,
         baseIntensity: number,
@@ -28,72 +28,59 @@ interface EffectsConfig {
         popIntensity: number,
         chainRadius: number,
         explosionScale: number,
-        trailLength: number,
-    };
+        trailLength: number };
 }
 interface ParticleModifiers {
-    countMultiplier?: number;
-    countBonus?: number;
-}
+    countMultiplier?: number,
+    countBonus?: number }
 interface AnimationModifiers {
-    durationMultiplier?: number;
-    durationBonus?: number;
-}
+    durationMultiplier?: number,
+    durationBonus?: number }
 interface IntensityModifier {
     type: string,
-    value?: number;
-    min?: number;
-    max?: number;
-}
+    value?: number,
+    min?: number,
+    max?: number }
 interface Position {
     x: number,
-    y: number,
-}
+    y: number }
 interface TrajectoryOptions {
     steps: number,
-    gravity?: number;
-    wind?: number;
-    randomness?: number;
-}
+    gravity?: number,
+    wind?: number,
+    randomness?: number }
 interface Color {
     r: number,
     g: number,
     b: number,
-    a: number,
-}
+    a: number }
 interface ScreenShake {
     amplitude: number,
     frequency: number,
     duration: number,
-    easing: string,
-}
+    easing: string }
 interface ShakeOptions {
-    easing?: string;
-}
+    easing?: string }
 interface EffectContext {
-    isCombo?: boolean;
-    comboCount?: number;
-    isBossStage?: boolean;
-    remainingTime?: number;
-}
+    isCombo?: boolean,
+    comboCount?: number,
+    isBossStage?: boolean,
+    remainingTime?: number }
 interface PerformanceMetrics {
     fps: number,
     particleCount: number,
     memoryUsage: number,
-    cpuUsage: number,
-}
+    cpuUsage: number }
 interface PerformanceOptimization {
     particleQuality: number,
     animationQuality: number,
     effectsEnabled: boolean,
     maxParticles: number,
-    skipFrames: number,
-}
+    skipFrames: number }
 interface DebugInfo {
     hasEffectsConfig: boolean,
     effectsConfig: EffectsConfig | null,
-    version: string,
-}
+    version: string }
 // モックEffectsConfig
 class MockEffectsConfig {
     getEffectsConfig('): EffectsConfig {
@@ -131,33 +118,28 @@ describe('EffectsCalculator', () => {
     let mockEffectsConfig: MockEffectsConfig,
     
     beforeEach(() => {
-        mockEffectsConfig = new MockEffectsConfig();
-        calculator = new EffectsCalculator(mockEffectsConfig);
-    }');
+        mockEffectsConfig = new MockEffectsConfig(),
+        calculator = new EffectsCalculator(mockEffectsConfig) }');
     describe('基本機能', (') => {
         test('should initialize correctly', () => {
-            expect(calculator).toBeInstanceOf(EffectsCalculator);
-            expect(calculator.getDebugInfo().hasEffectsConfig).toBe(true);
-        }');
+            expect(calculator).toBeInstanceOf(EffectsCalculator),
+            expect(calculator.getDebugInfo().hasEffectsConfig).toBe(true) }');
         test('should work without EffectsConfig', () => {
-            const calculatorWithoutConfig = new EffectsCalculator();
-            expect(calculatorWithoutConfig.getDebugInfo().hasEffectsConfig).toBe(false');
+            const calculatorWithoutConfig = new EffectsCalculator(),
+            expect(calculatorWithoutConfig.getDebugInfo().hasEffectsConfig).toBe(false'),
             // デフォルト設定で動作することを確認
-            const particleCount = calculatorWithoutConfig.calculateParticleCount('bubble_pop');
-            expect(particleCount).toBe(8);
-        }');
+            const particleCount = calculatorWithoutConfig.calculateParticleCount('bubble_pop'),
+            expect(particleCount).toBe(8) }');
     }
     describe('パーティクル数計算', (') => {
         test('should calculate particle count correctly', (') => {
-            expect(calculator.calculateParticleCount('bubble_pop').toBe(8');
-            expect(calculator.calculateParticleCount('bubble_chain').toBe(15');
-            expect(calculator.calculateParticleCount('bubble_explosion').toBe(25');
-            expect(calculator.calculateParticleCount('boss_damage').toBe(30);
-        }');
+            expect(calculator.calculateParticleCount('bubble_pop').toBe(8'),
+            expect(calculator.calculateParticleCount('bubble_chain').toBe(15'),
+            expect(calculator.calculateParticleCount('bubble_explosion').toBe(25'),
+            expect(calculator.calculateParticleCount('boss_damage').toBe(30) }');
         test('should apply intensity modifier', (') => {
-            expect(calculator.calculateParticleCount('bubble_pop', 0.5).toBe(4');
-            expect(calculator.calculateParticleCount('bubble_pop', 2.0).toBe(16);
-        }');
+            expect(calculator.calculateParticleCount('bubble_pop', 0.5).toBe(4'),
+            expect(calculator.calculateParticleCount('bubble_pop', 2.0).toBe(16) }');
         test('should apply quality modifier', () => {
             // 品質を0.5に設定したモック
             const lowQualityConfig = {
@@ -181,22 +163,22 @@ describe('EffectsCalculator', () => {
             expect(result).toBe(15); // (8 * 1.5) + 3
         }');
         test('should respect max count limit', (') => {
-            const result = calculator.calculateParticleCount('bubble_pop', 100); // 非常に高い強度
-            expect(result).toBeLessThanOrEqual(500); // maxCount制限
+            const result = calculator.calculateParticleCount('bubble_pop', 100), // 非常に高い強度
+            expect(result).toBeLessThanOrEqual(500), // maxCount制限
         }');
         test('should handle unknown effect type', (') => {
-            expect(calculator.calculateParticleCount('unknown_effect').toBe(10); // デフォルト値
+            expect(calculator.calculateParticleCount('unknown_effect').toBe(10), // デフォルト値
         }');
     }
     describe('アニメーション時間計算', (') => {
         test('should calculate animation duration correctly', (') => {
-            expect(calculator.calculateAnimationDuration('bubble_pop').toBe(300); // 300 * (0.5 + 1.0 * 0.5') = 300
-            expect(calculator.calculateAnimationDuration('bubble_chain').toBe(500); // 500 * (0.5 + 1.0 * 0.5') = 500
-            expect(calculator.calculateAnimationDuration('screen_shake').toBe(200); // 200 * (0.5 + 1.0 * 0.5) = 200
+            expect(calculator.calculateAnimationDuration('bubble_pop').toBe(300), // 300 * (0.5 + 1.0 * 0.5') = 300
+            expect(calculator.calculateAnimationDuration('bubble_chain').toBe(500), // 500 * (0.5 + 1.0 * 0.5') = 500
+            expect(calculator.calculateAnimationDuration('screen_shake').toBe(200), // 200 * (0.5 + 1.0 * 0.5) = 200
         }');
         test('should apply complexity modifier', (') => {
-            expect(calculator.calculateAnimationDuration('bubble_pop', 0.0).toBe(150'); // 300 * 0.5
-            expect(calculator.calculateAnimationDuration('bubble_pop', 1.0).toBe(300); // 300 * 1.0
+            expect(calculator.calculateAnimationDuration('bubble_pop', 0.0).toBe(150'), // 300 * 0.5
+            expect(calculator.calculateAnimationDuration('bubble_pop', 1.0).toBe(300), // 300 * 1.0
         }');
         test('should apply modifiers correctly', (') => {
             const modifiers: AnimationModifiers = {
@@ -216,8 +198,8 @@ describe('EffectsCalculator', () => {
             expect(shortResult).toBeGreaterThanOrEqual(50); // 最小時間制限
         }');
         test('should handle unknown effect type', (') => {
-            const result = calculator.calculateAnimationDuration('unknown_effect');
-            expect(result).toBe(300); // デフォルト設定の300 * (0.5 + 1.0 * 0.5) = 300
+            const result = calculator.calculateAnimationDuration('unknown_effect'),
+            expect(result).toBe(300), // デフォルト設定の300 * (0.5 + 1.0 * 0.5) = 300
         }');
     }
     describe('効果強度計算', (') => {
@@ -248,48 +230,45 @@ describe('EffectsCalculator', () => {
             expect(result).toBe(1.0); // 変更されない
         }');
         test('should respect final limits', () => {
-            const result = calculator.calculateEffectIntensity(15.0, []); // 範囲外の値
-            expect(result).toBeLessThanOrEqual(10); // 最大値制限
+            const result = calculator.calculateEffectIntensity(15.0, []), // 範囲外の値
+            expect(result).toBeLessThanOrEqual(10), // 最大値制限
             
-            const negativeResult = calculator.calculateEffectIntensity(-5.0, []);
-            expect(negativeResult).toBeGreaterThanOrEqual(0); // 最小値制限
+            const negativeResult = calculator.calculateEffectIntensity(-5.0, []),
+            expect(negativeResult).toBeGreaterThanOrEqual(0), // 最小値制限
         }');
     }
     describe('画面シェイク計算', (') => {
         test('should calculate screen shake correctly', (') => {
-            const shake: ScreenShake = calculator.calculateScreenShake('bubble_pop'),
-            expect(shake.amplitude).toBe(2);
-            expect(shake.frequency).toBe(8);
-            expect(shake.duration).toBe(150);
-            expect(shake.easing').toBe('easeOut');
-        }');
+            const shake: ScreenShake = calculator.calculateScreenShake('bubble_pop',
+            expect(shake.amplitude).toBe(2),
+            expect(shake.frequency).toBe(8),
+            expect(shake.duration).toBe(150),
+            expect(shake.easing').toBe('easeOut') }');
         test('should apply intensity modifier', (') => {
-            const shake: ScreenShake = calculator.calculateScreenShake('bubble_pop', 2.0);
-            expect(shake.amplitude).toBe(4); // 2 * 2.0 * 1.0
+            const shake: ScreenShake = calculator.calculateScreenShake('bubble_pop', 2.0),
+            expect(shake.amplitude).toBe(4), // 2 * 2.0 * 1.0
         }');
         test('should handle different shake types', (') => {
-            const explosionShake: ScreenShake = calculator.calculateScreenShake('explosion'),
-            expect(explosionShake.amplitude).toBe(12);
-            expect(explosionShake.duration).toBe(400');
-            const bossShake: ScreenShake = calculator.calculateScreenShake('boss_hit'),
-            expect(bossShake.amplitude).toBe(8);
-            expect(bossShake.duration).toBe(500);
-        }');
+            const explosionShake: ScreenShake = calculator.calculateScreenShake('explosion',
+            expect(explosionShake.amplitude).toBe(12),
+            expect(explosionShake.duration).toBe(400'),
+            const bossShake: ScreenShake = calculator.calculateScreenShake('boss_hit',
+            expect(bossShake.amplitude).toBe(8),
+            expect(bossShake.duration).toBe(500) }');
         test('should respect amplitude and duration limits', (') => {
-            const shake: ScreenShake = calculator.calculateScreenShake('explosion', 10.0); // 非常に高い強度
-            expect(shake.amplitude).toBeLessThanOrEqual(20); // 最大振幅制限
-            expect(shake.duration).toBeLessThanOrEqual(1000); // 最大時間制限
+            const shake: ScreenShake = calculator.calculateScreenShake('explosion', 10.0), // 非常に高い強度
+            expect(shake.amplitude).toBeLessThanOrEqual(20), // 最大振幅制限
+            expect(shake.duration).toBeLessThanOrEqual(1000), // 最大時間制限
         }');
         test('should handle custom easing', (') => {
             const shake: ScreenShake = calculator.calculateScreenShake('bubble_pop', 1.0, { easing: 'easeIn' });
             expect(shake.easing').toBe('easeIn');
         }');
         test('should handle unknown shake type', (') => {
-            const shake: ScreenShake = calculator.calculateScreenShake('unknown'),
-            expect(shake.amplitude).toBe(2); // デフォルト値
-            expect(shake.frequency).toBe(8);
-            expect(shake.duration).toBe(150);
-        }');
+            const shake: ScreenShake = calculator.calculateScreenShake('unknown',
+            expect(shake.amplitude).toBe(2), // デフォルト値
+            expect(shake.frequency).toBe(8),
+            expect(shake.duration).toBe(150) }');
     }
     describe('パーティクル軌道計算', (') => {
         test('should calculate linear trajectory', (') => {
@@ -299,12 +278,10 @@ describe('EffectsCalculator', () => {
                 steps: 4, 
                 gravity: 0.5, 
                 wind: 0, 
-                randomness: 0 // ランダム性を無効化),
-            });
+                randomness: 0 // ランダム性を無効化 });
             expect(trajectory).toHaveLength(5); // steps + 1
-            expect(trajectory[0]).toEqual({ x: 0, y: 0 ),
-            expect(trajectory[4]).toEqual({ x: 100, y: 110 ); // 重力効果込み (100 + 0.5 * 1 * 1 * 20 = 110');
-        }
+            expect(trajectory[0]).toEqual({ x: 0, y: 0 ,
+            expect(trajectory[4]).toEqual({ x: 100, y: 110 ), // 重力効果込み (100 + 0.5 * 1 * 1 * 20 = 110') }
         test('should calculate arc trajectory', (') => {
             const start: Position = { x: 0, y: 0 };
             const end: Position = { x: 100, y: 0 };
@@ -318,8 +295,7 @@ describe('EffectsCalculator', () => {
                 steps: 2, 
                 gravity: 0, 
                 wind: 0, 
-                randomness: 0 // ランダム性を無効化),
-            });
+                randomness: 0 // ランダム性を無効化 });
             expect(trajectory).toHaveLength(3);
             expect(trajectory[0].x).toBe(50);
             expect(trajectory[0].y).toBe(50);
@@ -332,8 +308,7 @@ describe('EffectsCalculator', () => {
             const trajectory: Position[] = calculator.calculateParticleTrajectory(start, end, 'linear', {
                 steps: 2,
                 gravity: 2.0,
-                wind: 1.0),
-            });
+                wind: 1.0 });
             // 重力で下に、風で横に移動
             expect(trajectory[2].y).toBeGreaterThan(0);
             expect(trajectory[2].x).toBeGreaterThan(0);
@@ -345,10 +320,9 @@ describe('EffectsCalculator', () => {
             const endColor: Color = { r: 255, g: 255, b: 255, a: 1 };
             
             const midColor: Color = calculator.calculateColorTransition(startColor, endColor, 0.5, 'linear');
-            expect(midColor).toEqual({ r: 127, g: 127, b: 127, a: 0.5 )'),
-            const endResult: Color = calculator.calculateColorTransition(startColor, endColor, 1.0, 'linear');
-            expect(endResult).toEqual({ r: 255, g: 255, b: 255, a: 1 )'),
-        }
+            expect(midColor).toEqual({ r: 127, g: 127, b: 127, a: 0.5 )',
+            const endResult: Color = calculator.calculateColorTransition(startColor, endColor, 1.0, 'linear'),
+            expect(endResult).toEqual({ r: 255, g: 255, b: 255, a: 1 )' }
         test('should handle ease_in blend mode', (') => {
             const startColor: Color = { r: 0, g: 0, b: 0, a: 0 };
             const endColor: Color = { r: 100, g: 100, b: 100, a: 1 };
@@ -377,18 +351,16 @@ describe('EffectsCalculator', () => {
             const endColor: Color = { r: 100, g: 100, b: 100, a: 1 };
             
             const overResult: Color = calculator.calculateColorTransition(startColor, endColor, 1.5, 'linear');
-            expect(overResult).toEqual({ r: 100, g: 100, b: 100, a: 1 )'),
-            const underResult: Color = calculator.calculateColorTransition(startColor, endColor, -0.5, 'linear');
-            expect(underResult).toEqual({ r: 0, g: 0, b: 0, a: 0 ),
-        }
+            expect(overResult).toEqual({ r: 100, g: 100, b: 100, a: 1 )',
+            const underResult: Color = calculator.calculateColorTransition(startColor, endColor, -0.5, 'linear'),
+            expect(underResult).toEqual({ r: 0, g: 0, b: 0, a: 0  }
     }');
     describe('エフェクト優先度計算', (') => {
         test('should calculate basic priority correctly', (') => {
-            expect(calculator.calculateEffectPriority('boss_damage').toBe(100');
-            expect(calculator.calculateEffectPriority('explosion').toBe(90');
-            expect(calculator.calculateEffectPriority('bubble_pop').toBe(40');
-            expect(calculator.calculateEffectPriority('background_ambient').toBe(10);
-        }');
+            expect(calculator.calculateEffectPriority('boss_damage').toBe(100'),
+            expect(calculator.calculateEffectPriority('explosion').toBe(90'),
+            expect(calculator.calculateEffectPriority('bubble_pop').toBe(40'),
+            expect(calculator.calculateEffectPriority('background_ambient').toBe(10) }');
         test('should apply combo bonus', (') => {
             const context: EffectContext = { isCombo: true, comboCount: 10 };
             const priority = calculator.calculateEffectPriority('bubble_pop', context);
@@ -415,7 +387,7 @@ describe('EffectsCalculator', () => {
             expect(priority).toBe(85); // 40 + 20 + 15 + 10
         }');
         test('should handle unknown effect type', (') => {
-            expect(calculator.calculateEffectPriority('unknown').toBe(50); // デフォルト値
+            expect(calculator.calculateEffectPriority('unknown').toBe(50), // デフォルト値
         }');
     }
     describe('パフォーマンス最適化', (') => {
@@ -424,8 +396,7 @@ describe('EffectsCalculator', () => {
                 fps: 60,
                 particleCount: 100,
                 memoryUsage: 0.3,
-                cpuUsage: 0.3),
-            });
+                cpuUsage: 0.3 });
             expect(optimization.particleQuality).toBe(1.0);
             expect(optimization.animationQuality).toBe(1.0);
             expect(optimization.effectsEnabled).toBe(true);
@@ -437,8 +408,7 @@ describe('EffectsCalculator', () => {
                 fps: 25,
                 particleCount: 300,
                 memoryUsage: 0.5,
-                cpuUsage: 0.5),
-            });
+                cpuUsage: 0.5 });
             expect(optimization.particleQuality).toBe(0.5);
             expect(optimization.animationQuality).toBe(0.7);
             expect(optimization.maxParticles).toBe(200);
@@ -449,8 +419,7 @@ describe('EffectsCalculator', () => {
                 fps: 60,
                 particleCount: 400,
                 memoryUsage: 0.9,
-                cpuUsage: 0.3),
-            });
+                cpuUsage: 0.3 });
             expect(optimization.maxParticles).toBe(300); // 500 * 0.6
             expect(optimization.particleQuality).toBe(0.8);
         }');
@@ -459,8 +428,7 @@ describe('EffectsCalculator', () => {
                 fps: 60,
                 particleCount: 200,
                 memoryUsage: 0.3,
-                cpuUsage: 0.9),
-            });
+                cpuUsage: 0.9 });
             expect(optimization.animationQuality).toBe(0.7);
             expect(optimization.skipFrames).toBe(1);
         }');
@@ -469,19 +437,17 @@ describe('EffectsCalculator', () => {
                 fps: 10,
                 particleCount: 500,
                 memoryUsage: 0.95,
-                cpuUsage: 0.95),
-            });
+                cpuUsage: 0.95 });
             expect(optimization.effectsEnabled).toBe(false);
         }');
     }
     describe('デバッグ機能', (') => {
         test('should provide debug information', () => {
-            const debugInfo: DebugInfo = calculator.getDebugInfo(),
-            expect(debugInfo').toHaveProperty('hasEffectsConfig');
-            expect(debugInfo').toHaveProperty('effectsConfig');
-            expect(debugInfo').toHaveProperty('version');
-            expect(debugInfo.hasEffectsConfig).toBe(true);
-            expect(debugInfo.version').toBe('1.0.0');
-        });
+            const debugInfo: DebugInfo = calculator.getDebugInfo(
+            expect(debugInfo').toHaveProperty('hasEffectsConfig'),
+            expect(debugInfo').toHaveProperty('effectsConfig'),
+            expect(debugInfo').toHaveProperty('version'),
+            expect(debugInfo.hasEffectsConfig).toBe(true),
+            expect(debugInfo.version').toBe('1.0.0') });
     }
 }');

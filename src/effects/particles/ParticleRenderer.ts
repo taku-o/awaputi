@@ -1,39 +1,39 @@
 // Particle Renderer types
 export interface Particle { isActive: boolean,
-    alpha: number;
-    x: number;
-    y: number;
-    rotation: number;
-    scale: number;
-    size: number;
-    color: string;
+    alpha: number,
+    x: number,
+    y: number,
+    rotation: number,
+    scale: number,
+    size: number,
+    color: string,
     type: ParticleType,
-    trail: TrailPoint[];
-    zIndex?: number ,}
+    trail: TrailPoint[],
+    zIndex?: number  }
 
-export interface TrailPoint { x: number;
+export interface TrailPoint { x: number,
     y: number,
     alpha: number }
 
-export interface Viewport { x: number;
-    y: number;
+export interface Viewport { x: number,
+    y: number,
     width: number,
     height: number }
 
-export interface RenderingStats { supportedTypes: string[];
+export interface RenderingStats { supportedTypes: string[],
     colorSets: number,
     renderingFeatures: string[] }
 
-export interface ColorSets { [key: string]: string[], }
+export interface ColorSets { [key: string]: string[] }
 
 export type ParticleType = ;
-    | 'circle', '';
-    | 'star', '';
-    | 'diamond', '';
-    | 'spike', '';
-    | 'lightning', '';
-    | 'cloud', '';
-    | 'ripple', '';
+    | 'circle', ';
+    | 'star', ';
+    | 'diamond', ';
+    | 'spike', ';
+    | 'lightning', ';
+    | 'cloud', ';
+    | 'ripple', ';
     | 'explosion';
 
 export type DrawFunction = (context: CanvasRenderingContext2D, particle: Particle) => void;
@@ -44,15 +44,15 @@ export type DrawFunction = (context: CanvasRenderingContext2D, particle: Particl
  */
 export class ParticleRenderer {
     // @ts-ignore 将来のパーティクル管理機能で使用予定
-    private __particleManager: any;
-    private quality?: number;
-    private customDrawFunctions?: Map<string, DrawFunction>;
+    private __particleManager: any,
+    private quality?: number,
+    private customDrawFunctions?: Map<string, DrawFunction>,
 
     constructor(particleManager: any) {
-        this.__particleManager = particleManager;
+        this.__particleManager = particleManager,
 
-        ';
-    ,}
+        ',
+     }
 
     }
 
@@ -64,20 +64,20 @@ export class ParticleRenderer {
      * @param {CanvasRenderingContext2D} context レンダリングコンテキスト
      * @param {Particle[]} particles パーティクル配列
      */
-    public render(context: CanvasRenderingContext2D, particles: Particle[]): void { context.save();
+    public render(context: CanvasRenderingContext2D, particles: Particle[]): void { context.save(),
         
-        particles.forEach(particle => { );
-            if (!particle.isActive) return;
+        particles.forEach(particle => { ),
+            if (!particle.isActive) return,
             
-            context.save();
-            context.globalAlpha = particle.alpha;
-            context.translate(particle.x, particle.y);
+            context.save(),
+            context.globalAlpha = particle.alpha,
+            context.translate(particle.x, particle.y),
             
             if (particle.rotation !== 0) { }
                 context.rotate(particle.rotation); }
             }
             
-            if (particle.scale !== 1) { context.scale(particle.scale, particle.scale); }
+            if (particle.scale !== 1) { context.scale(particle.scale, particle.scale) }
             
             // トレイル描画
             this.renderTrail(context, particle);
@@ -96,47 +96,46 @@ export class ParticleRenderer {
      * @param {CanvasRenderingContext2D} context レンダリングコンテキスト
      * @param {Particle} particle パーティクルオブジェクト
      */
-    private renderParticle(context: CanvasRenderingContext2D, particle: Particle): void { context.fillStyle = particle.color;
-        context.strokeStyle = particle.color;
+    private renderParticle(context: CanvasRenderingContext2D, particle: Particle): void { context.fillStyle = particle.color,
+        context.strokeStyle = particle.color,
 
-        switch(particle.type) {'
+        switch(particle.type) {
 
-            case 'circle':'';
-                this.drawCircle(context, particle.size);
-                break;
+            case 'circle':',
+                this.drawCircle(context, particle.size),
+                break,
 
-            case 'star':'';
-                this.drawStar(context, particle.size);
-                break;
+            case 'star':',
+                this.drawStar(context, particle.size),
+                break,
 
-            case 'diamond':'';
-                this.drawDiamond(context, particle.size);
-                break;
+            case 'diamond':',
+                this.drawDiamond(context, particle.size),
+                break,
 
-            case 'spike':'';
-                this.drawSpike(context, particle.size);
-                break;
+            case 'spike':',
+                this.drawSpike(context, particle.size),
+                break,
 
-            case 'lightning':'';
-                this.drawLightning(context, particle.size);
-                break;
+            case 'lightning':',
+                this.drawLightning(context, particle.size),
+                break,
 
-            case 'cloud':'';
-                this.drawCloud(context, particle.size);
-                break;
+            case 'cloud':',
+                this.drawCloud(context, particle.size),
+                break,
 
-            case 'ripple':'';
-                this.drawRipple(context, particle.size);
-                break;
+            case 'ripple':',
+                this.drawRipple(context, particle.size),
+                break,
 
-            case 'explosion':;
-                this.drawExplosion(context, particle.size);
-                break;
+            case 'explosion':,
+                this.drawExplosion(context, particle.size),
+                break,
                 
-            default:;
+            default:,
                 // デフォルトは円
-                this.drawCircle(context, particle.size);
-        }
+                this.drawCircle(context, particle.size) }
                 break; }
 }
 
@@ -146,25 +145,24 @@ export class ParticleRenderer {
      * @param {Particle} particle パーティクルオブジェクト
      */
     private renderTrail(context: CanvasRenderingContext2D, particle: Particle): void { ''
-        if(particle.trail.length < 2) return;
+        if(particle.trail.length < 2) return,
         
-        context.strokeStyle = particle.color;
+        context.strokeStyle = particle.color,
 
-        context.lineWidth = particle.size * 0.5;''
-        context.lineCap = 'round';
+        context.lineWidth = particle.size * 0.5,
+        context.lineCap = 'round',
         
-        context.beginPath();
-        context.moveTo(;
-            particle.trail[0].x - particle.x);
-            particle.trail[0].y - particle.y);
+        context.beginPath(),
+        context.moveTo(
+            particle.trail[0].x - particle.x),
+            particle.trail[0].y - particle.y),
         
-        for(let, i = 1; i < particle.trail.length; i++) {
+        for(let, i = 1, i < particle.trail.length, i++) {
         
-            const trailPoint = particle.trail[i];
-            context.globalAlpha = trailPoint.alpha * (i / particle.trail.length);
-            context.lineTo(;
-                trailPoint.x - particle.x);
-        }
+            const trailPoint = particle.trail[i],
+            context.globalAlpha = trailPoint.alpha * (i / particle.trail.length),
+            context.lineTo(
+                trailPoint.x - particle.x) }
                 trailPoint.y - particle.y); }
         }
         
@@ -176,30 +174,30 @@ export class ParticleRenderer {
      * @param {CanvasRenderingContext2D} context レンダリングコンテキスト
      * @param {number} size サイズ
      */
-    private drawCircle(context: CanvasRenderingContext2D, size: number): void { context.beginPath();
-        context.arc(0, 0, size, 0, Math.PI * 2);
-        context.fill(); }
+    private drawCircle(context: CanvasRenderingContext2D, size: number): void { context.beginPath(),
+        context.arc(0, 0, size, 0, Math.PI * 2),
+        context.fill() }
 
     /**
      * 星形描画
      * @param {CanvasRenderingContext2D} context レンダリングコンテキスト
      * @param {number} size サイズ
      */
-    private drawStar(context: CanvasRenderingContext2D, size: number): void { const spikes = 5;
-        const outerRadius = size;
-        const innerRadius = size * 0.5;
+    private drawStar(context: CanvasRenderingContext2D, size: number): void { const spikes = 5,
+        const outerRadius = size,
+        const innerRadius = size * 0.5,
         
-        context.beginPath();
-        for(let, i = 0; i < spikes * 2; i++) {
-            const angle = (i * Math.PI) / spikes;
+        context.beginPath(),
+        for(let, i = 0, i < spikes * 2, i++) {
+            const angle = (i * Math.PI) / spikes,
             const radius = i % 2 === 0 ? outerRadius: innerRadius,
-            const x = Math.cos(angle) * radius;
-            const y = Math.sin(angle) * radius;
+            const x = Math.cos(angle) * radius,
+            const y = Math.sin(angle) * radius,
             
             if (i === 0) {
         }
                 context.moveTo(x, y); }
-            } else { context.lineTo(x, y); }
+            } else { context.lineTo(x, y) }
         }
         context.closePath();
         context.fill();
@@ -210,69 +208,69 @@ export class ParticleRenderer {
      * @param {CanvasRenderingContext2D} context レンダリングコンテキスト
      * @param {number} size サイズ
      */
-    private drawDiamond(context: CanvasRenderingContext2D, size: number): void { context.beginPath();
-        context.moveTo(0, -size);
-        context.lineTo(size * 0.7, 0);
-        context.lineTo(0, size);
-        context.lineTo(-size * 0.7, 0);
+    private drawDiamond(context: CanvasRenderingContext2D, size: number): void { context.beginPath(),
+        context.moveTo(0, -size),
+        context.lineTo(size * 0.7, 0),
+        context.lineTo(0, size),
+        context.lineTo(-size * 0.7, 0),
 
-        context.closePath();''
-        context.fill(''';
-        context.strokeStyle = '#FFFFFF';)
-        context.lineWidth = 1;)
-        context.stroke(); }
+        context.closePath(),
+        context.fill('',
+        context.strokeStyle = '#FFFFFF')
+        context.lineWidth = 1)
+        context.stroke() }
 
     /**
      * スパイク描画
      * @param {CanvasRenderingContext2D} context レンダリングコンテキスト
      * @param {number} size サイズ
      */
-    private drawSpike(context: CanvasRenderingContext2D, size: number): void { context.beginPath();
-        context.moveTo(0, -size);
-        context.lineTo(size * 0.3, size * 0.3);
-        context.lineTo(-size * 0.3, size * 0.3);
-        context.closePath();
-        context.fill(); }
+    private drawSpike(context: CanvasRenderingContext2D, size: number): void { context.beginPath(),
+        context.moveTo(0, -size),
+        context.lineTo(size * 0.3, size * 0.3),
+        context.lineTo(-size * 0.3, size * 0.3),
+        context.closePath(),
+        context.fill() }
 
     /**
      * 稲妻描画
      * @param {CanvasRenderingContext2D} context レンダリングコンテキスト
      * @param {number} size サイズ'
      */''
-    private drawLightning(context: CanvasRenderingContext2D, size: number): void { context.lineWidth = size;''
-        context.lineCap = 'round';
+    private drawLightning(context: CanvasRenderingContext2D, size: number): void { context.lineWidth = size,
+        context.lineCap = 'round',
         
-        context.beginPath();
-        context.moveTo(-size, -size);
-        context.lineTo(size * 0.5, 0);
-        context.lineTo(-size * 0.5, size);
-        context.stroke(); }
+        context.beginPath(),
+        context.moveTo(-size, -size),
+        context.lineTo(size * 0.5, 0),
+        context.lineTo(-size * 0.5, size),
+        context.stroke() }
 
     /**
      * 雲描画
      * @param {CanvasRenderingContext2D} context レンダリングコンテキスト
      * @param {number} size サイズ
      */
-    private drawCloud(context: CanvasRenderingContext2D, size: number): void { context.globalAlpha *= 0.6;
+    private drawCloud(context: CanvasRenderingContext2D, size: number): void { context.globalAlpha *= 0.6,
         
-        context.beginPath();
-        context.arc(-size * 0.5, 0, size * 0.5, 0, Math.PI * 2);
-        context.arc(size * 0.5, 0, size * 0.5, 0, Math.PI * 2);
-        context.arc(0, -size * 0.3, size * 0.4, 0, Math.PI * 2);
-        context.fill(); }
+        context.beginPath(),
+        context.arc(-size * 0.5, 0, size * 0.5, 0, Math.PI * 2),
+        context.arc(size * 0.5, 0, size * 0.5, 0, Math.PI * 2),
+        context.arc(0, -size * 0.3, size * 0.4, 0, Math.PI * 2),
+        context.fill() }
 
     /**
      * 波紋描画
      * @param {CanvasRenderingContext2D} context レンダリングコンテキスト
      * @param {number} size サイズ
      */
-    private drawRipple(context: CanvasRenderingContext2D, size: number): void { context.strokeStyle = context.fillStyle;
-        context.lineWidth = 2;
-        context.globalAlpha *= 0.5;
+    private drawRipple(context: CanvasRenderingContext2D, size: number): void { context.strokeStyle = context.fillStyle,
+        context.lineWidth = 2,
+        context.globalAlpha *= 0.5,
         
-        context.beginPath();
-        context.arc(0, 0, size, 0, Math.PI * 2);
-        context.stroke(); }
+        context.beginPath(),
+        context.arc(0, 0, size, 0, Math.PI * 2),
+        context.stroke() }
 
     /**
      * 爆発描画
@@ -280,17 +278,17 @@ export class ParticleRenderer {
      * @param {number} size サイズ
      */
     private drawExplosion(context: CanvasRenderingContext2D, size: number): void { // 不規則な爆発形状
-        context.beginPath();
-        for(let, i = 0; i < 8; i++) {
-            const angle = (i * Math.PI * 2) / 8;
-            const radius = size * (0.8 + Math.random() * 0.4);
-            const x = Math.cos(angle) * radius;
-            const y = Math.sin(angle) * radius;
+        context.beginPath(),
+        for(let, i = 0, i < 8, i++) {
+            const angle = (i * Math.PI * 2) / 8,
+            const radius = size * (0.8 + Math.random() * 0.4),
+            const x = Math.cos(angle) * radius,
+            const y = Math.sin(angle) * radius,
             
             if (i === 0) {
         }
                 context.moveTo(x, y); }
-            } else { context.lineTo(x, y); }
+            } else { context.lineTo(x, y) }
         }
         context.closePath();
         context.fill();
@@ -324,12 +322,12 @@ export class ParticleRenderer {
      * レンダリング統計の取得
      * @returns {RenderingStats} レンダリング統計'
      */''
-    public getRenderingStats(''';
+    public getRenderingStats('';
                 'circle', 'star', 'diamond', 'spike', 'lightning',
                 'cloud', 'ripple', 'explosion';
             ]);
-            colorSets: 14'',
-    renderingFeatures: ['';
+            colorSets: 14',
+    renderingFeatures: [';
                 'Trail rendering',
                 'Multi-shape support',
                 'Alpha blending',
@@ -342,7 +340,7 @@ export class ParticleRenderer {
      * 描画品質の設定
      * @param {number} quality 品質レベル (0.1 - 1.0)
      */
-    public setRenderingQuality(quality: number): void { this.quality = Math.max(0.1, Math.min(1.0, quality); }
+    public setRenderingQuality(quality: number): void { this.quality = Math.max(0.1, Math.min(1.0, quality) }
         console.log(`[ParticleRenderer] Rendering, quality set, to: ${this.quality}`});
     }
 
@@ -352,14 +350,12 @@ export class ParticleRenderer {
      * @param {DrawFunction} drawFunction 描画関数'
      */''
     public registerCustomDrawFunction(type: string, drawFunction: DrawFunction): void { ''
-        if(typeof, drawFunction !== 'function'') {', ';
-
-        }
+        if(typeof, drawFunction !== 'function') {', ' }
 
             throw new Error('Draw, function must, be a, function'; }'
         }
         
-        if (!this.customDrawFunctions) { this.customDrawFunctions = new Map(); }
+        if (!this.customDrawFunctions) { this.customDrawFunctions = new Map() }
         
         this.customDrawFunctions.set(type, drawFunction);
         console.log(`[ParticleRenderer] Custom, draw function, registered for, type: ${type}`);
@@ -372,11 +368,10 @@ export class ParticleRenderer {
      * @returns {boolean} カスタム描画が実行されたか
      */
     public executeCustomDrawFunction(context: CanvasRenderingContext2D, particle: Particle): boolean { if(this.customDrawFunctions && this.customDrawFunctions.has(particle.type) {
-            const drawFunction = this.customDrawFunctions.get(particle.type);
+            const drawFunction = this.customDrawFunctions.get(particle.type),
             if(drawFunction) {
                 try {
-                    drawFunction(context, particle);
-            }
+                    drawFunction(context, particle) }
                     return true; catch (error) {
                     console.error(`[ParticleRenderer] Custom draw function error for type ${particle.type}:`, error);
                     return false;
@@ -389,25 +384,25 @@ export class ParticleRenderer {
      * @param {Particle[]} particles パーティクル配列
      * @param {Viewport | null} viewport ビューポート情報
      */
-    public renderOptimized(context: CanvasRenderingContext2D, particles: Particle[], viewport: Viewport | null = null): void { context.save();
+    public renderOptimized(context: CanvasRenderingContext2D, particles: Particle[], viewport: Viewport | null = null): void { context.save(),
         
         // ビューポートカリング
         const visibleParticles = viewport ? undefined : undefined
-            particles.filter(p => this.isParticleVisible(p, viewport) : ;
-            particles;
+            particles.filter(p => this.isParticleVisible(p, viewport) : ,
+            particles,
         
         // パーティクルタイプでソートして描画状態変更を最小化
-        const sortedParticles = this.sortParticlesForOptimalRendering(visibleParticles);
+        const sortedParticles = this.sortParticlesForOptimalRendering(visibleParticles),
         
         let currentType: string | null = null,
         
-        sortedParticles.forEach(particle => { );
-            if (!particle.isActive) return;
+        sortedParticles.forEach(particle => { ),
+            if (!particle.isActive) return,
             
             // タイプが変わった場合のみ描画状態をリセット
             if(particle.type !== currentType) {
-                
-            }
+    
+}
                 currentType = particle.type; }
                 this.prepareRenderingStateForType(context, currentType); }
             }
@@ -416,9 +411,9 @@ export class ParticleRenderer {
             context.globalAlpha = particle.alpha;
             context.translate(particle.x, particle.y);
             
-            if (particle.rotation !== 0) { context.rotate(particle.rotation); }
+            if (particle.rotation !== 0) { context.rotate(particle.rotation) }
             
-            if (particle.scale !== 1) { context.scale(particle.scale, particle.scale); }
+            if (particle.scale !== 1) { context.scale(particle.scale, particle.scale) }
             
             this.renderParticle(context, particle);
             context.restore();
@@ -433,11 +428,11 @@ export class ParticleRenderer {
      * @param {Viewport} viewport ビューポート
      * @returns {boolean} 見えるかどうか
      */
-    private isParticleVisible(particle: Particle, viewport: Viewport): boolean { const margin = particle.size * 2; // マージンを考慮
-        return particle.x + margin >= viewport.x &&;
-               particle.x - margin <= viewport.x + viewport.width &&;
-               particle.y + margin >= viewport.y &&;
-               particle.y - margin <= viewport.y + viewport.height; }
+    private isParticleVisible(particle: Particle, viewport: Viewport): boolean { const margin = particle.size * 2, // マージンを考慮
+        return particle.x + margin >= viewport.x &&,
+               particle.x - margin <= viewport.x + viewport.width &&,
+               particle.y + margin >= viewport.y &&,
+               particle.y - margin <= viewport.y + viewport.height }
 
     /**
      * 最適なレンダリングのためのパーティクルソート
@@ -459,22 +454,23 @@ export class ParticleRenderer {
      * @param {string} type パーティクルタイプ
      */
     private prepareRenderingStateForType(context: CanvasRenderingContext2D, type: string): void { // タイプ別の最適化された描画状態設定
-        switch(type) {'
+        switch(type) {
 
-            case 'lightning':'';
-                context.lineCap = 'round';
-                context.lineJoin = 'round';
+            case 'lightning':',
+                context.lineCap = 'round',
+                context.lineJoin = 'round',
 
-                break;''
-            case 'cloud':'';
-                context.globalCompositeOperation = 'multiply';
+                break,
+            case 'cloud':',
+                context.globalCompositeOperation = 'multiply',
 
-                break;''
-            case 'ripple':'';
-                context.globalCompositeOperation = 'screen';
+                break,
+            case 'ripple':',
+                context.globalCompositeOperation = 'screen',
 
-                break;''
-            default: context.globalCompositeOperation = 'source-over' ,}
+                break,
+            default: context.globalCompositeOperation = 'source-over'
+            }
                 break; }
 }
 
@@ -482,8 +478,7 @@ export class ParticleRenderer {
      * クリーンアップ
      */'
     public cleanup(): void { if (this.customDrawFunctions) {''
-            this.customDrawFunctions.clear()';
-        console.log('[ParticleRenderer] Cleanup, completed''); }
+            this.customDrawFunctions.clear()',
+        console.log('[ParticleRenderer] Cleanup, completed') }
 
-    }''
-}
+    }'}

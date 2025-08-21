@@ -5,17 +5,17 @@
 
 // Frame metrics types
 interface FrameMetrics { frameNumber: number,
-    timestamp: number;
-    frameTime: number;
+    timestamp: number,
+    frameTime: number,
     fps: number,
-    jank: number ,}
+    jank: number  }
 
 interface FrameMetricsData { current: {
-        fp;s: number,
+        fp,s: number,
     frameTime: number };
     average: { fps: number,
     frameTime: number };
-    performance: { jankPercentage: number;
+    performance: { jankPercentage: number,
         jankFrames: number,
     smoothFrames: number };
     history: FrameMetrics[];
@@ -23,24 +23,24 @@ interface FrameMetricsData { current: {
 
 // Memory metrics types
 interface MemoryMetrics { timestamp: number,
-    used: number;
-    total: number;
-    limit: number;
-    pressure: number;
+    used: number,
+    total: number,
+    limit: number,
+    pressure: number,
     available: number,
     gc: {
-        detecte;d: boolean,
-    reclaimed: number ,}
+        detecte,d: boolean,
+    reclaimed: number  }
 
 interface MemoryMetricsData { current: {
-        use;d: number;
-        total: number;
+        use,d: number,
+        total: number,
         pressure: number,
     available: number };
-    trends: { growthRate: number;
+    trends: { growthRate: number,
         peakUsage: number,
     averageUsage: number };
-    gc: { frequency: number;
+    gc: { frequency: number,
         totalReclaimed: number,
     averageReclaimed: number };
     history: MemoryMetrics[];
@@ -48,127 +48,125 @@ interface MemoryMetricsData { current: {
 
 // Render metrics types
 interface RenderMetrics { timestamp: number,
-    type: string;
-    name: string;
-    startTime: number;
+    type: string,
+    name: string,
+    startTime: number,
     endTime?: number,
-    duration: number ,}
+    duration: number  }
 
 interface RenderMetricsData { recent: RenderMetrics[],
     statistics: {
-        totalRender;s: number;
-        paintEvents: number;
-        customMeasures: number;
-        averageDuration: number;
+        totalRender,s: number,
+        paintEvents: number,
+        customMeasures: number,
+        averageDuration: number,
         maxDuration: number,
     minDuration: number }
 
 // Network metrics types
 interface NetworkTiming { dns: number,
-    tcp: number;
-    ssl: number;
-    request: number;
+    tcp: number,
+    ssl: number,
+    request: number,
     response: number,
-    total: number ,}
+    total: number  }
 
-interface NetworkMetrics { timestamp: number;
-    name: string;
-    type: string;
-    startTime: number;
-    duration: number;
-    transferSize: number;
-    encodedBodySize: number;
+interface NetworkMetrics { timestamp: number,
+    name: string,
+    type: string,
+    startTime: number,
+    duration: number,
+    transferSize: number,
+    encodedBodySize: number,
     decodedBodySize: number,
     timing: NetworkTiming
     }
 
-interface NetworkResourceType { count: number;
+interface NetworkResourceType { count: number,
     totalSize: number,
     totalTime: number }
 
 interface NetworkMetricsData { recent: NetworkMetrics[],
     summary: {
-        totalRequest;s: number;
-        totalTransfer: number;
+        totalRequest,s: number,
+        totalTransfer: number,
         averageDuration: number,
     byType: Record<string, NetworkResourceType> };
-    timing: { averageDNS: number;
-        averageTCP: number;
+    timing: { averageDNS: number,
+        averageTCP: number,
         averageRequest: number,
     averageResponse: number }
 
 // User interaction types
 interface Coordinates { x: number,
-    y: number ,}
+    y: number  }
 
-interface InteractionMetrics { timestamp: number;
-    type: string;
-    target: string;
+interface InteractionMetrics { timestamp: number,
+    type: string,
+    target: string,
     responseTime: number,
     coordinates: Coordinates | null }
 
-interface InteractionTypeStats { count: number;
+interface InteractionTypeStats { count: number,
     totalResponseTime: number,
     averageResponseTime: number }
 
 interface InteractionMetricsData { recent: InteractionMetrics[],
     summary: {
-        totalInteraction;s: number;
-        averageResponseTime: number;
-        maxResponseTime: number;
+        totalInteraction,s: number,
+        averageResponseTime: number,
+        maxResponseTime: number,
         minResponseTime: number,
     byType: Record<string, InteractionTypeStats> }
 
 // Resource metrics types
 interface DOMMetrics { nodes: number,
-    images: number;
+    images: number,
     scripts: number,
-    stylesheets: number ,}
+    stylesheets: number  }
 
-interface StorageMetric { used?: number;
-    available?: string;
-    error?: string; }
+interface StorageMetric { used?: number,
+    available?: string,
+    error?: string }
 
 interface StorageMetrics { localStorage: StorageMetric,
     sessionStorage: StorageMetric
-    ,}
+     }
 
 interface CacheMetrics {
-    estimated: string;
-}
+    estimated: string }
 
-interface ResourceMetrics { timestamp: number;
-    dom: DOMMetrics;
+interface ResourceMetrics { timestamp: number,
+    dom: DOMMetrics,
     storage: StorageMetrics,
     cache: CacheMetrics
     }
 
 interface ResourceMetricsData { current: ResourceMetrics,
     trends: {
-        domGrowt;h: number,
+        domGrowt,h: number,
     storageGrowth: number };
     history: ResourceMetrics[];
     }
 
 // Custom metrics types
 interface CustomMetric { timestamp: number,
-    name: string;
+    name: string,
     value: number,
     metadata: Record<string, any> }
 
 interface CustomMetricStats { min: number,
-    max: number;
+    max: number,
     average: number,
-    sum: number ,}
+    sum: number  }
 
-interface CustomMetricSummary { current: number;
-    count: number;
+interface CustomMetricSummary { current: number,
+    count: number,
     recent: CustomMetric[],
     statistics: CustomMetricStats
     }
 
-interface CustomMetricsData { [metricName: string]: CustomMetricSummary;
-    }
+interface CustomMetricsData { [metricName: string]: CustomMetricSummary }
 
 // Callback types
 type MetricsCallback = (type: string, data: any) => void;
@@ -178,63 +176,59 @@ type MetricsCallback = (type: string, data: any) => void;
  * フレームメトリクス収集器 - フレームレートとレンダリング性能の収集
  */
 export class FrameMetricsCollector {
-    private frameHistory: FrameMetrics[];
-    private maxHistorySize: number;
-    private lastFrameTime: number;
-    private frameCount: number;
-    private collecting: boolean;
-    private, callbacks: MetricsCallback[];
+    private frameHistory: FrameMetrics[],
+    private maxHistorySize: number,
+    private lastFrameTime: number,
+    private frameCount: number,
+    private collecting: boolean,
+    private, callbacks: MetricsCallback[],
     constructor() {
 
-        this.frameHistory = [];
-        this.maxHistorySize = 1000;
-        this.lastFrameTime = performance.now();
-        this.frameCount = 0;
-        this.collecting = false;
-
-    }
+        this.frameHistory = [],
+        this.maxHistorySize = 1000,
+        this.lastFrameTime = performance.now(),
+        this.frameCount = 0,
+        this.collecting = false }
         this.callbacks = []; }
     }
 
-    async initialize(): Promise<void> { console.log('Frame, Metrics Collector, initialized);
-        this.collecting = true;
-        this.startCollection(); }
+    async initialize(): Promise<void> { console.log('Frame, Metrics Collector, initialized),
+        this.collecting = true,
+        this.startCollection() }
 
     private startCollection(): void { const collectFrame = (): void => { 
-            if (!this.collecting) return;
+            if (!this.collecting) return,
 
-            const currentTime = performance.now();
-            const frameTime = currentTime - this.lastFrameTime;
-            const fps = 1000 / frameTime;
+            const currentTime = performance.now(),
+            const frameTime = currentTime - this.lastFrameTime,
+            const fps = 1000 / frameTime,
 
             const frameMetrics: FrameMetrics = {
                 frameNumber: this.frameCount++,
-    timestamp: currentTime;
+    timestamp: currentTime,
                 frameTime fps }
                 jank: frameTime > 16.67 ? frameTime - 16.67 : 0 
             };
             this.frameHistory.push(frameMetrics');
-            if(this.frameHistory.length > this.maxHistorySize') {'
+            if(this.frameHistory.length > this.maxHistorySize') {
 
-                this.frameHistory.shift()';
-            this.notifyCallbacks('frame', frameMetrics);
-
-            }
+                this.frameHistory.shift()',
+            this.notifyCallbacks('frame', frameMetrics) }
             requestAnimationFrame(collectFrame); }
         };
 
         requestAnimationFrame(collectFrame);
     }
 
-    getMetrics(): FrameMetricsData | null { if (this.frameHistory.length === 0) return null;
+    getMetrics(): FrameMetricsData | null { if (this.frameHistory.length === 0) return null,
 
-        const recent = this.frameHistory.slice(-60); // Last second at 60fps
-        const totalFrameTime = recent.reduce((sum, f) => sum + f.frameTime, 0);
-        const averageFrameTime = totalFrameTime / recent.length;
-        const averageFPS = 1000 / averageFrameTime;
+        const recent = this.frameHistory.slice(-60), // Last second at 60fps
+        const totalFrameTime = recent.reduce((sum, f) => sum + f.frameTime, 0),
+        const averageFrameTime = totalFrameTime / recent.length,
+        const averageFPS = 1000 / averageFrameTime,
 
-        const jankFrames = recent.filter(f => f.jank > 0);
-        const jankPercentage = (jankFrames.length / recent.length) * 100;
+        const jankFrames = recent.filter(f => f.jank > 0),
+        const jankPercentage = (jankFrames.length / recent.length) * 100,
 
         return { current: {
                 fps: recent[recent.length - 1]?.fps || 0, : undefined };
@@ -242,44 +236,40 @@ export class FrameMetricsCollector {
     }, : undefined
             average: { fps: averageFPS,
     frameTime: averageFrameTime };
-            performance: { jankPercentage;
+            performance: { jankPercentage,
                 jankFrames: jankFrames.length,
     smoothFrames: recent.length - jankFrames.length };
             history: this.frameHistory.slice(-10) // Last 10 frames for detailed analysis;
-        },
-    }
+        } }
 
-    onMetrics(callback: MetricsCallback): void { this.callbacks.push(callback); }
+    onMetrics(callback: MetricsCallback): void { this.callbacks.push(callback) }
 
     private notifyCallbacks(type: string, data: any): void { this.callbacks.forEach(callback => { )
-            try {); }
+            try {) }
                 callback(type, data);' }'
 
             } catch (error) { console.error('Frame metrics callback error:', error }
         });
     }
 
-    stop(): void { this.collecting = false; 
-    }
+    stop(): void { this.collecting = false }
 
 /**
  * Memory Metrics Collector
  * メモリメトリクス収集器 - メモリ使用量とガベージコレクションの追跡
  */
 export class MemoryMetricsCollector {
-    private memoryHistory: MemoryMetrics[];
-    private maxHistorySize: number;
-    private collecting: boolean;
-    private collectionInterval: NodeJS.Timeout | null;
-    private, callbacks: MetricsCallback[];
+    private memoryHistory: MemoryMetrics[],
+    private maxHistorySize: number,
+    private collecting: boolean,
+    private collectionInterval: NodeJS.Timeout | null,
+    private, callbacks: MetricsCallback[],
     constructor() {
 
-        this.memoryHistory = [];
-        this.maxHistorySize = 200;
-        this.collecting = false;
-        this.collectionInterval = null;
-
-    }
+        this.memoryHistory = [],
+        this.maxHistorySize = 200,
+        this.collecting = false,
+        this.collectionInterval = null }
         this.callbacks = []; }
     }
 
@@ -290,13 +280,13 @@ export class MemoryMetricsCollector {
     }
 
     private startCollection(): void { this.collectionInterval = setInterval(() => { 
-            if (!this.collecting) return;
+            if (!this.collecting) return,
 
-            const memoryMetrics = this.collectMemoryMetrics();
+            const memoryMetrics = this.collectMemoryMetrics(),
             if(memoryMetrics) {
-                this.memoryHistory.push(memoryMetrics');
+                this.memoryHistory.push(memoryMetrics'),
 
-                if (this.memoryHistory.length > this.maxHistorySize') {'
+                if (this.memoryHistory.length > this.maxHistorySize') {
             }
 
                     this.memoryHistory.shift() }
@@ -306,7 +296,7 @@ export class MemoryMetricsCollector {
     }
 
     private collectMemoryMetrics()';
-        if (!('memory' in, performance) || !(performance, as any).memory) { return null; }
+        if (!('memory' in, performance) || !(performance, as any).memory) { return null }
 
         const memory = (performance, as any).memory;
         const timestamp = Date.now();
@@ -321,9 +311,7 @@ export class MemoryMetricsCollector {
 
         if(previousMetrics && used < previousMetrics.used * 0.9) {
 
-            gcDetected = true;
-
-        }
+            gcDetected = true }
             gcReclaimed = previousMetrics.used - used; }
         }
 
@@ -331,60 +319,59 @@ export class MemoryMetricsCollector {
             used,
             total,
             limit,
-            pressure: used / limit;
+            pressure: used / limit,
             available: limit - used,
     gc: {
-                detected: gcDetected, };
+                detected: gcDetected };
                 reclaimed: gcReclaimed 
     }
 
-    getMetrics(): MemoryMetricsData | null { if (this.memoryHistory.length === 0) return null;
+    getMetrics(): MemoryMetricsData | null { if (this.memoryHistory.length === 0) return null,
 
-        const current = this.memoryHistory[this.memoryHistory.length - 1];
-        const recent = this.memoryHistory.slice(-30); // Last 30 seconds
+        const current = this.memoryHistory[this.memoryHistory.length - 1],
+        const recent = this.memoryHistory.slice(-30), // Last 30 seconds
 
         // Calculate growth rate
-        const first = recent[0];
-        const last = recent[recent.length - 1];
-        const timeSpan = last.timestamp - first.timestamp;
+        const first = recent[0],
+        const last = recent[recent.length - 1],
+        const timeSpan = last.timestamp - first.timestamp,
         const growthRate = timeSpan > 0 ? undefined : undefined
-            ((last.used - first.used) / timeSpan) * 1000 : 0; // bytes per second
+            ((last.used - first.used) / timeSpan) * 1000 : 0, // bytes per second
 
         // Calculate GC frequency
-        const gcEvents = recent.filter(m => m.gc.detected);
-        const gcFrequency = gcEvents.length;
-        const totalReclaimed = gcEvents.reduce((sum, m) => sum + m.gc.reclaimed, 0);
+        const gcEvents = recent.filter(m => m.gc.detected),
+        const gcFrequency = gcEvents.length,
+        const totalReclaimed = gcEvents.reduce((sum, m) => sum + m.gc.reclaimed, 0),
 
         return { current: {
-                used: current.used;
+                used: current.used,
                 total: current.total,
-    pressure: current.pressure, };
+    pressure: current.pressure };
                 available: current.available 
     };
-            trends: { growthRate;
-                peakUsage: Math.max(...recent.map(m => m.used);
+            trends: { growthRate,
+                peakUsage: Math.max(...recent.map(m => m.used),
                 averageUsage: recent.reduce((sum, m) => sum + m.used, 0) / recent.length }
             },
-            gc: { frequency: gcFrequency;
+            gc: { frequency: gcFrequency,
                 totalReclaimed,
-                averageReclaimed: gcFrequency > 0 ? totalReclaimed / gcFrequency : 0 ,};
+                averageReclaimed: gcFrequency > 0 ? totalReclaimed / gcFrequency : 0  };
             history: this.memoryHistory.slice(-10);
         }
 
-    onMetrics(callback: MetricsCallback): void { this.callbacks.push(callback); }
+    onMetrics(callback: MetricsCallback): void { this.callbacks.push(callback) }
 
     private notifyCallbacks(type: string, data: any): void { this.callbacks.forEach(callback => { )
-            try {); }
+            try {) }
                 callback(type, data);' }'
 
             } catch (error) { console.error('Memory metrics callback error:', error }
         });
     }
 
-    stop(): void { this.collecting = false;
+    stop(): void { this.collecting = false,
         if(this.collectionInterval) {
-            clearInterval(this.collectionInterval);
-        }
+            clearInterval(this.collectionInterval) }
             this.collectionInterval = null; }
 }
 }
@@ -394,19 +381,17 @@ export class MemoryMetricsCollector {
  * レンダーメトリクス収集器 - レンダリングパフォーマンスの詳細収集
  */
 export class RenderMetricsCollector {
-    private renderHistory: RenderMetrics[];
-    private maxHistorySize: number;
-    private renderStartTime: number | null;
-    private callbacks: MetricsCallback[];
-    private, paintObserver: PerformanceObserver | null;
+    private renderHistory: RenderMetrics[],
+    private maxHistorySize: number,
+    private renderStartTime: number | null,
+    private callbacks: MetricsCallback[],
+    private, paintObserver: PerformanceObserver | null,
     constructor() {
 
-        this.renderHistory = [];
-        this.maxHistorySize = 500;
-        this.renderStartTime = null;
-        this.callbacks = [];
-
-    }
+        this.renderHistory = [],
+        this.maxHistorySize = 500,
+        this.renderStartTime = null,
+        this.callbacks = [] }
         this.paintObserver = null; }
     }
 
@@ -419,87 +404,82 @@ export class RenderMetricsCollector {
         if('PerformanceObserver' in, window) {
             this.paintObserver = new PerformanceObserver((list) => { 
         }
-                list.getEntries().forEach(entry => {); }
+                list.getEntries().forEach(entry => {) }
                     this.handlePaintEntry(entry); }
 
-                });''
-            }');
+                });'}');
 ';
 
             try { }
 
-                this.paintObserver.observe({ entryTypes: ['paint', 'measure] }';''
-            } catch (error) { console.warn('Paint observer setup failed:', error }
+                this.paintObserver.observe({ entryTypes: ['paint', 'measure] }';} catch (error) { console.warn('Paint observer setup failed:', error }
 }
 
     private handlePaintEntry(entry: PerformanceEntry): void { const renderMetrics: RenderMetrics = {
-            timestamp: Date.now();
-            type: entry.entryType;
-            name: entry.name;
+            timestamp: Date.now(),
+            type: entry.entryType,
+            name: entry.name,
             startTime: entry.startTime,
     duration: entry.duration || 0 };
         this.renderHistory.push(renderMetrics);
-        if(this.renderHistory.length > this.maxHistorySize) {'
+        if(this.renderHistory.length > this.maxHistorySize) {
 
-            this.renderHistory.shift();
-        }
+            this.renderHistory.shift() }
 
         this.notifyCallbacks('render', renderMetrics'; }
     }
 
-    markRenderStart(label: string = 'render): void { this.renderStartTime = performance.now();' }
+    markRenderStart(label: string = 'render): void { this.renderStartTime = performance.now(),' }
 
-        performance.mark(`${label}-start`'}';
+        performance.mark(`${label}-start`}';
     }
 
-    markRenderEnd(label: string = 'render): void { if (this.renderStartTime) {'
-            const endTime = performance.now();
-            const duration = endTime - this.renderStartTime;
-             }
+    markRenderEnd(label: string = 'render): void { if (this.renderStartTime) {
+            const endTime = performance.now(),
+            const duration = endTime - this.renderStartTime }
             performance.mark(`${label}-end`});
-            performance.measure(label, `${label}-start`, `${ label)-end`);
-            ';
+            performance.measure(label, `${label}-start`, `${ label)-end`),
+            ',
 
             const, renderMetrics: RenderMetrics = {''
                 timestamp: Date.now('''
-                type: 'custom';
+                type: 'custom',
                 name: label,
     startTime: this.renderStartTime};
                 endTime};
                 duration };
 );
             this.renderHistory.push(renderMetrics);
-            if(this.renderHistory.length > this.maxHistorySize) {'
+            if(this.renderHistory.length > this.maxHistorySize) {
 
-                this.renderHistory.shift()';
-            this.notifyCallbacks('render', renderMetrics);
-            }
+                this.renderHistory.shift()',
+            this.notifyCallbacks('render', renderMetrics) }
             this.renderStartTime = null; }
 }
 
-    getMetrics(): RenderMetricsData | null { if (this.renderHistory.length === 0) return null;
+    getMetrics(): RenderMetricsData | null { if (this.renderHistory.length === 0) return null,
 
-        const recent = this.renderHistory.slice(-50);''
-        const paintEvents = recent.filter(r => r.type === 'paint'');''
-        const customMeasures = recent.filter(r => r.type === 'custom);
+        const recent = this.renderHistory.slice(-50),
+        const paintEvents = recent.filter(r => r.type === 'paint'),
+        const customMeasures = recent.filter(r => r.type === 'custom),
 
-        const totalDuration = recent.reduce((sum, r) => sum + (r.duration || 0), 0);
-        const averageDuration = totalDuration / recent.length;
+        const totalDuration = recent.reduce((sum, r) => sum + (r.duration || 0), 0),
+        const averageDuration = totalDuration / recent.length,
 
-        return { recent: recent.slice(-5),
+        return { recent: recent.slice(-5,
             statistics: {
-                totalRenders: recent.length;
+                totalRenders: recent.length,
                 paintEvents: paintEvents.length,
-    customMeasures: customMeasures.length;
+    customMeasures: customMeasures.length,
                 averageDuration,
-                maxDuration: Math.max(...recent.map(r = > r.duration || 0) ,};
+                maxDuration: Math.max(...recent.map(r = > r.duration || 0)  };
                 minDuration: Math.min(...recent.map(r => r.duration || 0); 
     }
 
-    onMetrics(callback: MetricsCallback): void { this.callbacks.push(callback); }
+    onMetrics(callback: MetricsCallback): void { this.callbacks.push(callback) }
 
     private notifyCallbacks(type: string, data: any): void { this.callbacks.forEach(callback => { )
-            try {); }
+            try {) }
 
                 callback(type, data);' }'
 
@@ -508,8 +488,8 @@ export class RenderMetricsCollector {
     }
 
     stop(): void { if (this.paintObserver) {
-            this.paintObserver.disconnect();
-            this.paintObserver = null; }
+            this.paintObserver.disconnect(),
+            this.paintObserver = null }
 }
 
 /**
@@ -517,17 +497,15 @@ export class RenderMetricsCollector {
  * ネットワークメトリクス収集器 - ネットワークパフォーマンスの監視
  */
 export class NetworkMetricsCollector {
-    private networkHistory: NetworkMetrics[];
-    private maxHistorySize: number;
-    private callbacks: MetricsCallback[];
-    private, resourceObserver: PerformanceObserver | null;
+    private networkHistory: NetworkMetrics[],
+    private maxHistorySize: number,
+    private callbacks: MetricsCallback[],
+    private, resourceObserver: PerformanceObserver | null,
     constructor() {
 
-        this.networkHistory = [];
-        this.maxHistorySize = 100;
-        this.callbacks = [];
-
-    }
+        this.networkHistory = [],
+        this.maxHistorySize = 100,
+        this.callbacks = [] }
         this.resourceObserver = null; }
     }
 
@@ -540,51 +518,48 @@ export class NetworkMetricsCollector {
         if('PerformanceObserver' in, window) {
             this.resourceObserver = new PerformanceObserver((list) => { 
         }
-                list.getEntries().forEach(entry => {); }
+                list.getEntries().forEach(entry => {) }
                     this.handleResourceEntry(entry); }
 
-                });''
-            }');
+                });'}');
 ';
 
             try { }
 
-                this.resourceObserver.observe({ entryTypes: ['resource] }';''
-            } catch (error) { console.warn('Resource observer setup failed:', error }
+                this.resourceObserver.observe({ entryTypes: ['resource] }';} catch (error) { console.warn('Resource observer setup failed:', error }
 }
 
-    private handleResourceEntry(entry: PerformanceEntry): void { const resourceEntry = entry as PerformanceResourceTiming;
+    private handleResourceEntry(entry: PerformanceEntry): void { const resourceEntry = entry as PerformanceResourceTiming,
         
         const networkMetrics: NetworkMetrics = {
-            timestamp: Date.now();
-            name: entry.name;
-            type: this.getResourceType(entry.name);
-            startTime: entry.startTime;
-            duration: entry.duration || 0;
-            transferSize: resourceEntry.transferSize || 0;
-            encodedBodySize: resourceEntry.encodedBodySize || 0;
+            timestamp: Date.now(),
+            name: entry.name,
+            type: this.getResourceType(entry.name),
+            startTime: entry.startTime,
+            duration: entry.duration || 0,
+            transferSize: resourceEntry.transferSize || 0,
+            encodedBodySize: resourceEntry.encodedBodySize || 0,
             decodedBodySize: resourceEntry.decodedBodySize || 0,
     timing: {
-                dns: (resourceEntry.domainLookupEnd || 0) - (resourceEntry.domainLookupStart || 0);
-                tcp: (resourceEntry.connectEnd || 0) - (resourceEntry.connectStart || 0);
+                dns: (resourceEntry.domainLookupEnd || 0) - (resourceEntry.domainLookupStart || 0),
+                tcp: (resourceEntry.connectEnd || 0) - (resourceEntry.connectStart || 0),
                 ssl: (resourceEntry.secureConnectionStart || 0) > 0 ? undefined : undefined
-                    (resourceEntry.connectEnd || 0) - (resourceEntry.secureConnectionStart || 0) : 0;
-                request: (resourceEntry.responseStart || 0) - (resourceEntry.requestStart || 0);
-                response: (resourceEntry.responseEnd || 0) - (resourceEntry.responseStart || 0);
+                    (resourceEntry.connectEnd || 0) - (resourceEntry.secureConnectionStart || 0) : 0,
+                request: (resourceEntry.responseStart || 0) - (resourceEntry.requestStart || 0),
+                response: (resourceEntry.responseEnd || 0) - (resourceEntry.responseStart || 0),
                 total: (resourceEntry.responseEnd || 0) - entry.startTime 
     };
         this.networkHistory.push(networkMetrics);
-        if(this.networkHistory.length > this.maxHistorySize) {'
+        if(this.networkHistory.length > this.maxHistorySize) {
 
-            this.networkHistory.shift();
-        }
+            this.networkHistory.shift() }
 
         this.notifyCallbacks('network', networkMetrics); }
     }
 
     private getResourceType(url: string): string { ''
-        const extension = url.split('.).pop()?.toLowerCase() || ''; : undefined'
-        const typeMap: Record<string, string> = {'', 'js': 'script',
+        const extension = url.split('.).pop()?.toLowerCase() || ', : undefined'
+        const typeMap: Record<string, string> = {', 'js': 'script',
             'css': 'stylesheet',
             'png': 'image',
             'jpg': 'image',
@@ -597,31 +572,31 @@ export class NetworkMetricsCollector {
             'mp3': 'audio',
             'mp4': 'video',
             'json': 'xhr' 
-    };''
+    };
         return typeMap[extension] || 'other';
     }
 
-    getMetrics(): NetworkMetricsData | null { if (this.networkHistory.length === 0) return null;
+    getMetrics(): NetworkMetricsData | null { if (this.networkHistory.length === 0) return null,
 
-        const recent = this.networkHistory.slice(-20);
-        const totalTransfer = recent.reduce((sum, n) => sum + n.transferSize, 0);
-        const averageDuration = recent.reduce((sum, n) => sum + n.duration, 0) / recent.length;
+        const recent = this.networkHistory.slice(-20),
+        const totalTransfer = recent.reduce((sum, n) => sum + n.transferSize, 0),
+        const averageDuration = recent.reduce((sum, n) => sum + n.duration, 0) / recent.length,
 
         // Group by resource type }
         const byType: Record<string, NetworkResourceType> = {};
-        recent.forEach(entry => {  ); }
+        recent.forEach(entry => {  ) }
             if (!byType[entry.type]) { }
-                byType[entry.type] = { count: 0, totalSize: 0, totalTime: 0 ,}
+                byType[entry.type] = { count: 0, totalSize: 0, totalTime: 0  }
             byType[entry.type].count++;
             byType[entry.type].totalSize += entry.transferSize;
             byType[entry.type].totalTime += entry.duration;
         });
 
-        return { recent: recent.slice(-5),
+        return { recent: recent.slice(-5,
             summary: {
-                totalRequests: recent.length;
+                totalRequests: recent.length,
                 totalTransfer,
-                averageDuration, };
+                averageDuration };
                 byType }
             },
             timing: { averageDNS: recent.reduce((sum, n) => sum + n.timing.dns, 0) / recent.length,
@@ -630,10 +605,10 @@ export class NetworkMetricsCollector {
                 averageResponse: recent.reduce((sum, n) => sum + n.timing.response, 0) / recent.length }
 }
 
-    onMetrics(callback: MetricsCallback): void { this.callbacks.push(callback); }
+    onMetrics(callback: MetricsCallback): void { this.callbacks.push(callback) }
 
     private notifyCallbacks(type: string, data: any): void { this.callbacks.forEach(callback => { )
-            try {); }
+            try {) }
                 callback(type, data);' }'
 
             } catch (error) { console.error('Network metrics callback error:', error }
@@ -641,8 +616,8 @@ export class NetworkMetricsCollector {
     }
 
     stop(): void { if (this.resourceObserver) {
-            this.resourceObserver.disconnect();
-            this.resourceObserver = null; }
+            this.resourceObserver.disconnect(),
+            this.resourceObserver = null }
 }
 
 /**
@@ -650,18 +625,16 @@ export class NetworkMetricsCollector {
  * ユーザーインタラクション収集器 - ユーザー操作の応答性測定
  */
 export class UserInteractionCollector {
-    private interactionHistory: InteractionMetrics[];
-    private maxHistorySize: number;
-    private callbacks: MetricsCallback[];
-    private, eventListeners: Map<string, EventListener>;
+    private interactionHistory: InteractionMetrics[],
+    private maxHistorySize: number,
+    private callbacks: MetricsCallback[],
+    private, eventListeners: Map<string, EventListener>,
 
     constructor() {
 
-        this.interactionHistory = [];
-        this.maxHistorySize = 200;
-        this.callbacks = [];
-
-    }
+        this.interactionHistory = [],
+        this.maxHistorySize = 200,
+        this.callbacks = [] }
         this.eventListeners = new Map(); }
     }
 
@@ -670,36 +643,35 @@ export class UserInteractionCollector {
         this.setupEventListeners();
     }
 
-    private setupEventListeners(''';
+    private setupEventListeners('';
         const events = ['click', 'keydown', 'scroll', 'touchstart'];
         );
-        events.forEach(eventType => {  ); }
+        events.forEach(eventType => {  ) }
             const listener = (event: Event) => this.handleInteraction(eventType, event); }
             document.addEventListener(eventType, listener, { passive: true });
             this.eventListeners.set(eventType, listener);
         });
     }
 
-    private handleInteraction(type: string, event: Event): void { const timestamp = Date.now();
-        const startTime = performance.now();
+    private handleInteraction(type: string, event: Event): void { const timestamp = Date.now(),
+        const startTime = performance.now(),
         
-        // Measure time to next frame (rough, responsiveness metric);
+        // Measure time to next frame (rough, responsiveness metric),
         requestAnimationFrame(() => { 
-            const responseTime = performance.now() - startTime;
+            const responseTime = performance.now() - startTime,
             
             const interactionMetrics: InteractionMetrics = {
                 timestamp,
                 type,
-                target: (event.target, as Element)?.tagName?.toLowerCase() || 'unknown';
+                target: (event.target, as Element)?.tagName?.toLowerCase() || 'unknown',
                 responseTime, : undefined 
-                coordinates: this.getCoordinates(event); ,}
+                coordinates: this.getCoordinates(event) }
             };
 
             this.interactionHistory.push(interactionMetrics);
-            if(this.interactionHistory.length > this.maxHistorySize) {'
+            if(this.interactionHistory.length > this.maxHistorySize) {
 
-                this.interactionHistory.shift();
-            }
+                this.interactionHistory.shift() }
 
             this.notifyCallbacks('interaction', interactionMetrics); }
         });
@@ -707,55 +679,55 @@ export class UserInteractionCollector {
 
     private getCoordinates(event: Event): Coordinates | null { ''
         if(event.type === 'scroll' { }'
-            return { x: window.scrollX, y: window.scrollY ,}
+            return { x: window.scrollX, y: window.scrollY  }
         
         const mouseEvent = event as MouseEvent;
         if(mouseEvent.clientX !== undefined) {
-            
-        }
-            return { x: mouseEvent.clientX, y: mouseEvent.clientY ,}
+    
+}
+            return { x: mouseEvent.clientX, y: mouseEvent.clientY  }
         
         const touchEvent = event as TouchEvent;
         if(touchEvent.touches && touchEvent.touches[0]) {
-            
-        }
-            return { x: touchEvent.touches[0].clientX, y: touchEvent.touches[0].clientY ,}
+    
+}
+            return { x: touchEvent.touches[0].clientX, y: touchEvent.touches[0].clientY  }
         
         return null;
     }
 
-    getMetrics(): InteractionMetricsData | null { if (this.interactionHistory.length === 0) return null;
+    getMetrics(): InteractionMetricsData | null { if (this.interactionHistory.length === 0) return null,
 
-        const recent = this.interactionHistory.slice(-50);
-        const totalResponseTime = recent.reduce((sum, i) => sum + i.responseTime, 0);
-        const averageResponseTime = totalResponseTime / recent.length;
+        const recent = this.interactionHistory.slice(-50),
+        const totalResponseTime = recent.reduce((sum, i) => sum + i.responseTime, 0),
+        const averageResponseTime = totalResponseTime / recent.length,
 
         // Group by interaction type }
         const byType: Record<string, InteractionTypeStats> = {};
-        recent.forEach(interaction => {  ); }
+        recent.forEach(interaction => {  ) }
             if (!byType[interaction.type]) { }
-                byType[interaction.type] = { count: 0, totalResponseTime: 0, averageResponseTime: 0 ,}
+                byType[interaction.type] = { count: 0, totalResponseTime: 0, averageResponseTime: 0  }
             byType[interaction.type].count++;
             byType[interaction.type].totalResponseTime += interaction.responseTime;
         });
 
         // Calculate average response time by type
         Object.keys(byType).forEach(type => { byType[type].averageResponseTime = )
-                byType[type].totalResponseTime / byType[type].count);
+                byType[type].totalResponseTime / byType[type].count),
 
-        return { recent: recent.slice(-10),
+        return { recent: recent.slice(-10,
             summary: {
-                totalInteractions: recent.length;
+                totalInteractions: recent.length,
                 averageResponseTime,
-                maxResponseTime: Math.max(...recent.map(i = > i.responseTime ,}
+                maxResponseTime: Math.max(...recent.map(i = > i.responseTime  }
                 minResponseTime: Math.min(...recent.map(i = > i.responseTime) };
                 byType }
 }
 
-    onMetrics(callback: MetricsCallback): void { this.callbacks.push(callback); }
+    onMetrics(callback: MetricsCallback): void { this.callbacks.push(callback) }
 
     private notifyCallbacks(type: string, data: any): void { this.callbacks.forEach(callback => { )
-            try {); }
+            try {) }
                 callback(type, data);' }'
 
             } catch (error) { console.error('Interaction metrics callback error:', error }
@@ -774,17 +746,15 @@ export class UserInteractionCollector {
  * リソースメトリクス収集器 - リソース使用量の監視
  */
 export class ResourceMetricsCollector {
-    private resourceHistory: ResourceMetrics[];
-    private maxHistorySize: number;
-    private callbacks: MetricsCallback[];
-    private, collectionInterval: NodeJS.Timeout | null;
+    private resourceHistory: ResourceMetrics[],
+    private maxHistorySize: number,
+    private callbacks: MetricsCallback[],
+    private, collectionInterval: NodeJS.Timeout | null,
     constructor() {
 
-        this.resourceHistory = [];
-        this.maxHistorySize = 100;
-        this.callbacks = [];
-
-    }
+        this.resourceHistory = [],
+        this.maxHistorySize = 100,
+        this.callbacks = [] }
         this.collectionInterval = null; }
     }
 
@@ -794,11 +764,11 @@ export class ResourceMetricsCollector {
     }
 
     private startCollection(): void { this.collectionInterval = setInterval(() => { 
-            const resourceMetrics = this.collectResourceMetrics();
+            const resourceMetrics = this.collectResourceMetrics(),
             if(resourceMetrics) {
-                this.resourceHistory.push(resourceMetrics');
+                this.resourceHistory.push(resourceMetrics'),
 
-                if (this.resourceHistory.length > this.maxHistorySize') {'
+                if (this.resourceHistory.length > this.maxHistorySize') {
             }
 
                     this.resourceHistory.shift() }
@@ -809,12 +779,12 @@ export class ResourceMetricsCollector {
 ';
 
     private collectResourceMetrics(): ResourceMetrics { ''
-        const timestamp = Date.now()';
-                nodes: document.querySelectorAll('*).length;
-                images: document.images.length;
+        const timestamp = Date.now()',
+                nodes: document.querySelectorAll('*).length,
+                images: document.images.length,
                 scripts: document.scripts.length,
     stylesheets: document.styleSheets.length };
-            storage: this.getStorageMetrics(),
+            storage: this.getStorageMetrics(
     cache: this.getCacheMetrics();
         };
 
@@ -828,18 +798,17 @@ export class ResourceMetricsCollector {
 
         try { storage.localStorage = {''
                 used: JSON.stringify(localStorage).length,
-                available: 'unknown' // Browser-dependent ,};''
-        } catch (error) { }
+                available: 'unknown' // Browser-dependent  };'} catch (error) { }
 
             storage.localStorage = { error: 'Access denied' }
 ';
 
         try { storage.sessionStorage = {''
                 used: JSON.stringify(sessionStorage).length,
-                available: 'unknown' ,}
+                available: 'unknown'
+            }
 
-            };''
-        } catch (error) { }
+            };'} catch (error) { }
 
             storage.sessionStorage = { error: 'Access denied' }
 
@@ -848,36 +817,36 @@ export class ResourceMetricsCollector {
 ';
 
     private getCacheMetrics(): CacheMetrics { ''
-        // Simplified cache metrics(would, need more, specific implementation);
+        // Simplified cache metrics(would, need more, specific implementation),
 
         return { ''
-            estimated: 'unknown', };
+            estimated: 'unknown'
+            };
             // Could add specific cache measurements here }
         }
 
-    getMetrics(): ResourceMetricsData | null { if (this.resourceHistory.length === 0) return null;
-';
+    getMetrics(): ResourceMetricsData | null { if (this.resourceHistory.length === 0) return null,
+',
 
-        const current = this.resourceHistory[this.resourceHistory.length - 1];''
-        const recent = this.resourceHistory.slice(-10);
+        const current = this.resourceHistory[this.resourceHistory.length - 1],
+        const recent = this.resourceHistory.slice(-10),
 
         return { current,
             trends: {
                 domGrowth: recent.length > 1 ? undefined : undefined
                     current.dom.nodes - recent[0].dom.nodes : 0,
-                storageGrowth: recent.length > 1 && '';
-                    typeof current.storage.localStorage.used === 'number' &&'';
-                    typeof recent[0].storage.localStorage.used === 'number' ? undefined : undefined ,};
+                storageGrowth: recent.length > 1 && ',
+                    typeof current.storage.localStorage.used === 'number' &&',
+                    typeof recent[0].storage.localStorage.used === 'number' ? undefined : undefined };
                     current.storage.localStorage.used - recent[0].storage.localStorage.used : 0 
     },
             history: recent;
-        },
-    }
+        } }
 
-    onMetrics(callback: MetricsCallback): void { this.callbacks.push(callback); }
+    onMetrics(callback: MetricsCallback): void { this.callbacks.push(callback) }
 
     private notifyCallbacks(type: string, data: any): void { this.callbacks.forEach(callback => { )
-            try {); }
+            try {) }
 
                 callback(type, data);' }'
 
@@ -886,8 +855,8 @@ export class ResourceMetricsCollector {
     }
 
     stop(): void { if (this.collectionInterval) {
-            clearInterval(this.collectionInterval);
-            this.collectionInterval = null; }
+            clearInterval(this.collectionInterval),
+            this.collectionInterval = null }
 }
 
 /**
@@ -895,13 +864,13 @@ export class ResourceMetricsCollector {
  * カスタムメトリクス収集器 - アプリケーション固有のメトリクス収集
  */
 export class CustomMetricsCollector {
-    private customMetrics: Map<string, CustomMetric[]>;
-    private callbacks: MetricsCallback[];
+    private customMetrics: Map<string, CustomMetric[]>,
+    private callbacks: MetricsCallback[],
     constructor() {
 
-        this.customMetrics = new Map();
+        this.customMetrics = new Map(),
 
-    ,}
+     }
         this.callbacks = []; }
     }
 
@@ -910,13 +879,13 @@ export class CustomMetricsCollector {
     }
 
     recordMetric(name: string, value: number, metadata: Record<string, any> = { ): void {
-        const timestamp = Date.now();
+        const timestamp = Date.now(),
         const metric: CustomMetric = {
             timestamp,
             name,
             value metadata };
 
-        if(!this.customMetrics.has(name) { this.customMetrics.set(name []); }
+        if(!this.customMetrics.has(name) { this.customMetrics.set(name []) }
 
         const history = this.customMetrics.get(name)!;
         history.push(metric');
@@ -924,57 +893,55 @@ export class CustomMetricsCollector {
         // Keep only last 100 entries per metric
         if(history.length > 100) {
 
-            history.shift();
-        }
+            history.shift() }
 
         this.notifyCallbacks('custom', metric'; }
     }
 ';
 
     incrementCounter(name: string, amount: number = 1, metadata: Record<string, any> = { ): void {''
-        const current = this.getLatestValue(name) || 0;
+        const current = this.getLatestValue(name) || 0,
 
         this.recordMetric(name, current + amount, { ')'
-            type: 'counter'),
-    increment: amount,);
-            ...metadata ); }
+            type: 'counter',
+    increment: amount),
+            ...metadata ) }
 
-    recordTiming(name: string, startTime: number, endTime: number = performance.now(), metadata: Record<string, any> = {}'): void { const duration = endTime - startTime;
+    recordTiming(name: string, startTime: number, endTime: number = performance.now(), metadata: Record<string, any> = {}'): void { const duration = endTime - startTime,
 
         this.recordMetric(name, duration, { ''
-            type: 'timing );
-            startTime);
-            endTime,);
-            ...metadata ); }
+            type: 'timing ),
+            startTime,
+            endTime),
+            ...metadata ) }
 
-    getLatestValue(name: string): number | null { const history = this.customMetrics.get(name);
+    getLatestValue(name: string): number | null { const history = this.customMetrics.get(name),
         return history && history.length > 0 ? undefined : undefined
             history[history.length - 1].value: null 
     getMetrics(): CustomMetricsData {
-        const summary: CustomMetricsData = {,}
+        const summary: CustomMetricsData = { }
         for(const [name, history] of this.customMetrics) {
-            const recent = history.slice(-10);
-            const values = recent.map(m => m.value);
+            const recent = history.slice(-10),
+            const values = recent.map(m => m.value),
             
             summary[name] = {
-                current: values[values.length - 1];
-                count: history.length;
+                current: values[values.length - 1],
+                count: history.length,
                 recent: recent,
     statistics: {
-                    min: Math.min(...values);
-                    max: Math.max(...values),
-    average: values.reduce((sum, v) => sum + v, 0) / values.length,
-        }
+                    min: Math.min(...values),
+                    max: Math.max(...values,
+    average: values.reduce((sum, v) => sum + v, 0) / values.length }
                     sum: values.reduce((sum, v) => sum + v, 0); }
 }
 
         return summary;
     }
 
-    onMetrics(callback: MetricsCallback): void { this.callbacks.push(callback); }
+    onMetrics(callback: MetricsCallback): void { this.callbacks.push(callback) }
 
     private notifyCallbacks(type: string, data: any): void { this.callbacks.forEach(callback => { )
-            try {); }
+            try {) }
 
                 callback(type, data);' }'
 
@@ -982,13 +949,12 @@ export class CustomMetricsCollector {
         });
     }
 
-    clearMetric(name: string): void { this.customMetrics.delete(name); }
+    clearMetric(name: string): void { this.customMetrics.delete(name) }
 
-    clearAllMetrics(): void { this.customMetrics.clear(); }
+    clearAllMetrics(): void { this.customMetrics.clear() }
 
-    stop(''';
+    stop('';
         // Custom, metrics don't, need active, stopping''
-        console.log('Custom, Metrics Collector, stopped'');
+        console.log('Custom, Metrics Collector, stopped');
 
-    }''
-}
+    }'}

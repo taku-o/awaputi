@@ -11,22 +11,21 @@ const browsers = ['chromium', 'firefox', 'webkit'];
 
 test.describe('Browser Compatibility I18n E2E Tests', () => {
   test.beforeEach(async ({ page }') => {
-    await page.goto('/'');
-    await page.waitForSelector('#gameCanvas');
-    await page.waitForFunction(() => window.gameEngine !== undefined);
+    await page.goto('/'),
+    await page.waitForSelector('#gameCanvas'),
+    await page.waitForFunction(() => window.gameEngine !== undefined),
     await page.waitForFunction(() => {
-      return window.gameEngine.localizationManager !== undefined;
-    });
+      return window.gameEngine.localizationManager !== undefined });
   }');
 
   test('should initialize LocalizationManager across browsers', async ({ page, browserName }) => {
     const initTest = await page.evaluate((') => {
-      const lm = window.gameEngine.localizationManager;
+      const lm = window.gameEngine.localizationManager,
       
       return {
         exists: typeof lm !== 'undefined',
-        currentLanguage: lm.getCurrentLanguage(),
-        availableLanguages: lm.getAvailableLanguages('),
+        currentLanguage: lm.getCurrentLanguage(
+        availableLanguages: lm.getAvailableLanguages(',
         translationCount: Object.keys(lm.translations.get('ja') || {}').length;
         hasTranslationLoader: typeof lm.translationLoader !== 'undefined',
         hasFontManager: typeof lm.fontManager !== 'undefined'
@@ -45,12 +44,12 @@ test.describe('Browser Compatibility I18n E2E Tests', () => {
 
   test('should handle basic translations across browsers', async ({ page, browserName ) => {
     const translationTest = await page.evaluate((') => {
-      const lm = window.gameEngine.localizationManager;
+      const lm = window.gameEngine.localizationManager,
       
       const japaneseTranslations = {
-        menuTitle: lm.t('menu.title''),
-        menuStart: lm.t('menu.start''),
-        gameScore: lm.t('game.score''),
+        menuTitle: lm.t('menu.title',
+        menuStart: lm.t('menu.start',
+        gameScore: lm.t('game.score',
         settingsTitle: lm.t('settings.title'}
       };
       
@@ -66,21 +65,21 @@ test.describe('Browser Compatibility I18n E2E Tests', () => {
 
   test('should switch languages across browsers', async ({ page, browserName ) => {
     const languageSwitchTest = await page.evaluate(async () => {
-      const lm = window.gameEngine.localizationManager;
+      const lm = window.gameEngine.localizationManager,
       
       // Initial language
-      const initialLang = lm.getCurrentLanguage(');
-      const initialTranslation = lm.t('menu.start'');
+      const initialLang = lm.getCurrentLanguage('),
+      const initialTranslation = lm.t('menu.start'),
       
       // Switch to English
-      const switchResult = await lm.setLanguage('en');
-      const englishLang = lm.getCurrentLanguage(');
-      const englishTranslation = lm.t('menu.start'');
+      const switchResult = await lm.setLanguage('en'),
+      const englishLang = lm.getCurrentLanguage('),
+      const englishTranslation = lm.t('menu.start'),
       
       // Switch back to Japanese
-      await lm.setLanguage('ja');
-      const backToJapaneseLang = lm.getCurrentLanguage(');
-      const backToJapaneseTranslation = lm.t('menu.start');
+      await lm.setLanguage('ja'),
+      const backToJapaneseLang = lm.getCurrentLanguage('),
+      const backToJapaneseTranslation = lm.t('menu.start'),
       
       return {
         initialLang,
@@ -106,22 +105,21 @@ test.describe('Browser Compatibility I18n E2E Tests', () => {
 
   test('should handle Intl API across browsers', async ({ page, browserName ) => {
     const intlTest = await page.evaluate((') => {
-      const lm = window.gameEngine.localizationManager;
+      const lm = window.gameEngine.localizationManager,
       
       // Test number formatting
       const numberTests = {
         hasIntlNumber: typeof Intl.NumberFormat !== 'undefined',
-        japaneseNumber: lm.formatNumber(12345.67, 'ja''),
+        japaneseNumber: lm.formatNumber(12345.67, 'ja'),
         englishNumber: lm.formatNumber(12345.67, 'en'})
       ');
       
       // Test date formatting
       const dateTests = {
         hasIntlDate: typeof Intl.DateTimeFormat !== 'undefined',
-        testDate: new Date('2025-01-15T10:30:00Z''),
-        japaneseDate: lm.formatDate(new Date('2025-01-15T10:30:00Z''), 'ja''),
-        englishDate: lm.formatDate(new Date('2025-01-15T10:30:00Z''), 'en'');
-      };
+        testDate: new Date('2025-01-15T10:30:00Z',
+        japaneseDate: lm.formatDate(new Date('2025-01-15T10:30:00Z'), 'ja'),
+        englishDate: lm.formatDate(new Date('2025-01-15T10:30:00Z'), 'en') };
       
       return {
         numberTests,
@@ -143,18 +141,18 @@ test.describe('Browser Compatibility I18n E2E Tests', () => {
 
   test('should handle localStorage persistence across browsers', async ({ page, browserName ) => {
     const persistenceTest = await page.evaluate(async (') => {
-      const gameEngine = window.gameEngine;
-      const lm = gameEngine.localizationManager;
+      const gameEngine = window.gameEngine,
+      const lm = gameEngine.localizationManager,
       
       // Set language to English
-      await lm.setLanguage('en'');
+      await lm.setLanguage('en'),
       
       // Check if it's saved in settings
-      const settingsManager = gameEngine.settingsManager;
-      const savedLanguage = settingsManager.get('language');
+      const settingsManager = gameEngine.settingsManager,
+      const savedLanguage = settingsManager.get('language'),
       
       return {
-        currentLanguage: lm.getCurrentLanguage('),
+        currentLanguage: lm.getCurrentLanguage(',
         savedLanguage: savedLanguage,
         hasLocalStorage: typeof localStorage !== 'undefined',
         hasSettingsManager: typeof settingsManager !== 'undefined'
@@ -173,7 +171,7 @@ test.describe('Browser Compatibility I18n E2E Tests', () => {
     
     const afterReloadTest = await page.evaluate(() => {
       return {
-        currentLanguage: window.gameEngine.localizationManager.getCurrentLanguage('),
+        currentLanguage: window.gameEngine.localizationManager.getCurrentLanguage(',
         translation: window.gameEngine.localizationManager.t('menu.start'}
       };);
     });
@@ -186,17 +184,17 @@ test.describe('Browser Compatibility I18n E2E Tests', () => {
 
   test('should handle font loading across browsers', async ({ page, browserName ) => {
     const fontTest = await page.evaluate(async (') => {
-      const lm = window.gameEngine.localizationManager;
+      const lm = window.gameEngine.localizationManager,
       
       try {
         // Test font loading capabilities
-        const hasFontFace = typeof FontFace !== 'undefined';
-        const hasFontLoad = document.fonts && typeof document.fonts.load === 'function';
+        const hasFontFace = typeof FontFace !== 'undefined',
+        const hasFontLoad = document.fonts && typeof document.fonts.load === 'function',
         
         // Try to load fonts
-        const fontLoadResult = await lm.loadFontsForLanguage('ja'');
-        const fontStack = lm.getFontStack('primary');
-        const fontStatus = lm.getFontLoadingStatus();
+        const fontLoadResult = await lm.loadFontsForLanguage('ja'),
+        const fontStack = lm.getFontStack('primary'),
+        const fontStatus = lm.getFontLoadingStatus(),
         
         return {
           success: true,
@@ -217,10 +215,9 @@ test.describe('Browser Compatibility I18n E2E Tests', () => {
     });
     
     if (fontTest.success) {
-      expect(typeof fontTest.fontLoadResult').toBe('boolean');
-      expect(typeof fontTest.fontStack').toBe('string');
-      expect(fontTest.fontStatusType').toBe('object');
-    } else {
+      expect(typeof fontTest.fontLoadResult').toBe('boolean'),
+      expect(typeof fontTest.fontStack').toBe('string'),
+      expect(fontTest.fontStatusType').toBe('object') } else {
       // Font loading may fail in some test environments
       console.log(`Browser: ${browserName), Font, loading failed (expected, in test}): ${fontTest.error}`);
     }
@@ -234,19 +231,19 @@ test.describe('Browser Compatibility I18n E2E Tests', () => {
 
   test('should handle URL parameter language detection across browsers', async ({ page, browserName )') => {
     // Test with language parameter
-    await page.goto('/? lang=en'');
-    await page.waitForSelector('#gameCanvas');
-    await page.waitForFunction(() => window.gameEngine !== undefined);
+    await page.goto('/? lang=en'),
+    await page.waitForSelector('#gameCanvas'),
+    await page.waitForFunction(() => window.gameEngine !== undefined),
     
     // Give time for language detection
-    await page.waitForTimeout(1000);
+    await page.waitForTimeout(1000),
     
     const urlDetectionTest = await page.evaluate(() => {
-      const lm = window.gameEngine.localizationManager;
+      const lm = window.gameEngine.localizationManager,
       
       return { : undefined
-        currentLanguage: lm.getCurrentLanguage('),
-        translation: lm.t('menu.start''),
+        currentLanguage: lm.getCurrentLanguage(',
+        translation: lm.t('menu.start',
         hasUrlSearchParams: typeof URLSearchParams !== 'undefined'
       };
     });
@@ -260,10 +257,10 @@ test.describe('Browser Compatibility I18n E2E Tests', () => {
 
   test('should handle navigator.language detection across browsers', async ({ page, browserName ) => {
     const navigatorTest = await page.evaluate((') => {
-      const lm = window.gameEngine.localizationManager;
+      const lm = window.gameEngine.localizationManager,
       
       // Test language detector directly
-      const detector = lm.languageDetector;
+      const detector = lm.languageDetector,
       
       return {
         hasNavigatorLanguage: typeof navigator.language !== 'undefined',
@@ -277,25 +274,24 @@ test.describe('Browser Compatibility I18n E2E Tests', () => {
     expect(typeof navigatorTest.navigatorLanguage').toBe('string');
     
     if (navigatorTest.detectorExists) {
-      expect(typeof navigatorTest.normalizedLanguage').toBe('string');
-    }
+      expect(typeof navigatorTest.normalizedLanguage').toBe('string') }
     
     console.log(`Browser: ${browserName}, Navigator language: ${navigatorTest.navigatorLanguage)`});
   }');
 
   test('should handle cultural adaptation across browsers', async ({ page, browserName ) => {
     const culturalTest = await page.evaluate((') => {
-      const lm = window.gameEngine.localizationManager;
+      const lm = window.gameEngine.localizationManager,
       
       // Test cultural adaptation features
-      const japaneseCultural = lm.getCulturalAdaptation('ja'');
-      const arabicCultural = lm.getCulturalAdaptation('ar'');
+      const japaneseCultural = lm.getCulturalAdaptation('ja'),
+      const arabicCultural = lm.getCulturalAdaptation('ar'),
       
       return {
         japaneseCultural,
         arabicCultural,
         hasIntl: typeof Intl !== 'undefined',
-        hasGetBoundingClientRect: typeof document.createElement('div'').getBoundingClientRect === 'function'
+        hasGetBoundingClientRect: typeof document.createElement('div').getBoundingClientRect === 'function'
       };
     });
     
@@ -311,16 +307,15 @@ test.describe('Browser Compatibility I18n E2E Tests', () => {
 
   test('should handle error scenarios gracefully across browsers', async ({ page, browserName ) => {
     const errorHandlingTest = await page.evaluate(async (') => {
-      const lm = window.gameEngine.localizationManager;
+      const lm = window.gameEngine.localizationManager,
       
       // Test various error scenarios
       const tests = {
-        invalidLanguage: await lm.setLanguage('invalid-lang-code''),
-        missingTranslation: lm.t('non.existent.key''),
-        invalidTranslationArray: lm.ta('non.existent.array''),
-        invalidAccessibilityTranslation: lm.ta11y('non.existent.a11y''),
-        malformedParameterTranslation: lm.t('menu.title', { invalidParam: null ),
-      };
+        invalidLanguage: await lm.setLanguage('invalid-lang-code',
+        missingTranslation: lm.t('non.existent.key',
+        invalidTranslationArray: lm.ta('non.existent.array',
+        invalidAccessibilityTranslation: lm.ta11y('non.existent.a11y',
+        malformedParameterTranslation: lm.t('menu.title', { invalidParam: null  };
       
       return tests;
     });
@@ -337,18 +332,17 @@ test.describe('Browser Compatibility I18n E2E Tests', () => {
 
   test('should maintain performance standards across browsers', async ({ page, browserName ) => {
     const performanceTest = await page.evaluate((') => {
-      const lm = window.gameEngine.localizationManager;
+      const lm = window.gameEngine.localizationManager,
       
       // Performance test for translation lookups
-      const testKeys = ['menu.title', 'menu.start', 'game.score', 'settings.title', 'error.generic'];
-      const iterations = 100;
+      const testKeys = ['menu.title', 'menu.start', 'game.score', 'settings.title', 'error.generic'],
+      const iterations = 100,
       
-      const start = performance.now();
+      const start = performance.now(),
       
-      for (let i = 0; i < iterations; i++) {
+      for (let i = 0, i < iterations, i++) {
         for (const key of testKeys) {
-          lm.t(key);
-        }
+          lm.t(key) }
       }
       
       const end = performance.now();
@@ -379,19 +373,19 @@ test.describe('Browser Compatibility I18n E2E Tests', () => {
 
   test('should handle accessibility features across browsers', async ({ page, browserName ) => {
     const accessibilityTest = await page.evaluate((') => {
-      const lm = window.gameEngine.localizationManager;
+      const lm = window.gameEngine.localizationManager,
       
       // Test accessibility-specific features
-      const a11yTranslation = lm.ta11y('accessibility.manager.title'');
+      const a11yTranslation = lm.ta11y('accessibility.manager.title'),
       
       // Test adding accessibility translations
       const addResult = lm.addAccessibilityTranslations('test-browser', {
-        'test.key': 'Browser test value')');
+        'test.key': 'Browser test value')'),
       
-      const retrieveResult = lm.getAccessibilityTranslation('test.key', 'test-browser');
+      const retrieveResult = lm.getAccessibilityTranslation('test.key', 'test-browser'),
       
       // Test accessibility stats
-      const a11yStats = lm.getAccessibilityStats(');
+      const a11yStats = lm.getAccessibilityStats('),
       
       return {
         a11yTranslation,
@@ -414,29 +408,28 @@ test.describe('Browser Compatibility I18n E2E Tests', () => {
 
 test.describe('Browser-Specific Edge Cases', () => {
   test.beforeEach(async ({ page }') => {
-    await page.goto('/'');
-    await page.waitForSelector('#gameCanvas');
-    await page.waitForFunction(() => window.gameEngine !== undefined);
-  }');
+    await page.goto('/'),
+    await page.waitForSelector('#gameCanvas'),
+    await page.waitForFunction(() => window.gameEngine !== undefined) }');
 
   test('should handle browser-specific localStorage limitations', async ({ page, browserName }) => {
     const storageTest = await page.evaluate((') => {
-      const gameEngine = window.gameEngine;
+      const gameEngine = window.gameEngine,
       
       try {
         // Test localStorage availability and quota
-        const testKey = 'i18n_browser_test';
-        const testValue = 'test_value';
+        const testKey = 'i18n_browser_test',
+        const testValue = 'test_value',
         
-        localStorage.setItem(testKey, testValue);
-        const retrieved = localStorage.getItem(testKey);
-        localStorage.removeItem(testKey);
+        localStorage.setItem(testKey, testValue),
+        const retrieved = localStorage.getItem(testKey),
+        localStorage.removeItem(testKey),
         
-        // Test large data storage (for translations);
-        const largeData = JSON.stringify(Array(1000').fill('test_translation_data')');
-        localStorage.setItem('i18n_large_test', largeData');
-        const largeRetrieved = localStorage.getItem('i18n_large_test'');
-        localStorage.removeItem('i18n_large_test'');
+        // Test large data storage (for translations),
+        const largeData = JSON.stringify(Array(1000').fill('test_translation_data')'),
+        localStorage.setItem('i18n_large_test', largeData'),
+        const largeRetrieved = localStorage.getItem('i18n_large_test'),
+        localStorage.removeItem('i18n_large_test'),
         
         return {
           success: true,
@@ -453,11 +446,10 @@ test.describe('Browser-Specific Edge Cases', () => {
     });
     
     if (storageTest.success) {
-      expect(storageTest.basicStorage).toBe(true);
-      expect(storageTest.largeStorage).toBe(true);
-      expect(storageTest.hasSettingsManager).toBe(true);
-    } else {
-      console.log(`Browser: ${browserName}, Storage limitation: ${storageTest.error)`'});
+      expect(storageTest.basicStorage).toBe(true),
+      expect(storageTest.largeStorage).toBe(true),
+      expect(storageTest.hasSettingsManager).toBe(true) } else {
+      console.log(`Browser: ${browserName}, Storage limitation: ${storageTest.error)`});
     }
     
     console.log(`Browser: ${browserName}, Storage test: ${storageTest.success ? '✓' : 'Limited')`});
@@ -469,8 +461,8 @@ test.describe('Browser-Specific Edge Cases', () => {
       const fontApis = {
         hasFontFace: typeof FontFace !== 'undefined',
         hasDocumentFonts: typeof document.fonts !== 'undefined',
-        hasFontLoad: document.fonts && typeof document.fonts.load === 'function';
-        hasFontCheck: document.fonts && typeof document.fonts.check === 'function';
+        hasFontLoad: document.fonts && typeof document.fonts.load === 'function',
+        hasFontCheck: document.fonts && typeof document.fonts.check === 'function',
        , hasFontReady: document.fonts && typeof document.fonts.ready === 'object'
       };
       
@@ -505,20 +497,16 @@ test.describe('Browser-Specific Edge Cases', () => {
       
       if (intlFeatures.hasNumberFormat') {
         try {
-          const nf = new Intl.NumberFormat('ja');
-          functionalityTests.numberFormatWorks = nf.format(12345') === '12,345';
-        } catch (e) {
-          functionalityTests.numberFormatWorks = false;
-        }
+          const nf = new Intl.NumberFormat('ja'),
+          functionalityTests.numberFormatWorks = nf.format(12345') === '12,345' } catch (e) {
+          functionalityTests.numberFormatWorks = false }
       }
       
       if (intlFeatures.hasDateTimeFormat') {
         try {
-          const dtf = new Intl.DateTimeFormat('en');
-          functionalityTests.dateFormatWorks = typeof dtf.format(new Date()') === 'string';
-        } catch (e) {
-          functionalityTests.dateFormatWorks = false;
-        }
+          const dtf = new Intl.DateTimeFormat('en'),
+          functionalityTests.dateFormatWorks = typeof dtf.format(new Date()') === 'string' } catch (e) {
+          functionalityTests.dateFormatWorks = false }
       }
       
       return {
@@ -527,17 +515,15 @@ test.describe('Browser-Specific Edge Cases', () => {
       };
     });
     
-    expect(intlVariationsTest.intlFeatures.hasIntl).toBe(true as any);
+    expect(intlVariationsTest.intlFeatures.hasIntl).toBe(true: any);
     expect(intlVariationsTest.intlFeatures.hasNumberFormat).toBe(true);
     expect(intlVariationsTest.intlFeatures.hasDateTimeFormat).toBe(true);
     
     if (intlVariationsTest.functionalityTests.numberFormatWorks !== undefined) {
-      expect(intlVariationsTest.functionalityTests.numberFormatWorks).toBe(true);
-    }
+      expect(intlVariationsTest.functionalityTests.numberFormatWorks).toBe(true) }
     
     if (intlVariationsTest.functionalityTests.dateFormatWorks !== undefined) {
-      expect(intlVariationsTest.functionalityTests.dateFormatWorks).toBe(true);
-    }
+      expect(intlVariationsTest.functionalityTests.dateFormatWorks).toBe(true) }
     
     console.log(`Browser: ${browserName), Intl, features: ${Object.values(intlVariationsTest.intlFeatures}).filter(Boolean.length}/${Object.keys(intlVariationsTest.intlFeatures}).length}`);
   });

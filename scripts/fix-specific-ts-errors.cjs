@@ -1,248 +1,220 @@
 const fs = require('fs');
+const path = require('path');
+const glob = require('glob');
 
-// 特定のTypeScriptエラーパターンの修正スクリプト
-async function fixSpecificTypeScriptErrors() {
-    console.log('特定のTypeScriptエラーパターンの修正を開始...');
-    
-    // APIEndpointManager.tsの修正
-    fixAPIEndpointManager();
-    
-    // DataAggregationProcessor.tsの修正
-    fixDataAggregationProcessor();
-    
-    // AccessibilityProfileManager.tsの修正
-    fixAccessibilityProfileManager();
-}
-
-function fixAPIEndpointManager() {
-    const filePath = '/Users/taku-o/Documents/workspaces/awaputi/src/analytics/analytics-api/APIEndpointManager.ts';
-    
-    try {
-        const content = fs.readFileSync(filePath, 'utf8');
-        let fixed = content;
-        let modifications = 0;
+// エラーパターンと修正方法の定義
+const fixPatterns = [
+  // 1. 構文エラー: (param as any) → (param: any)
+  {
+    name: 'parameter type syntax',
+    pattern: /\(([a-zA-Z_$][a-zA-Z0-9_$]*)\s+as\s+any\)/g,
+    replacement: '($1: any)'
+  },
+  
+  // 2. アロー関数パラメータ: async (query as any) => → async (query: any) =>
+  {
+    name: 'async arrow function parameter',
+    pattern: /async\s*\(([a-zA-Z_$][a-zA-Z0-9_$]*)\s+as\s+any\)\s*=>/g,
+    replacement: 'async ($1: any) =>'
+  },
+  
+  // 3. 不正な型注釈: key: any7121 → key: any
+  {
+    name: 'invalid type annotation',
+    pattern: /:\s*any\d+/g,
+    replacement: ': any'
+  },
+  
+  // 4. 構文エラー修正
+  {
+    name: 'syntax errors',
+    process: (content) => {
+      // 複数の修正を連鎖的に適用
+      return content
+        // 関数呼び出しの閉じ括弧が不足
+        .replace(/\.toISOString\(,/g, '.toISOString(),')
+        .replace(/\.keys\(\),/g, '.keys()),')
+        // オブジェクトリテラル内の不正なセミコロン
+        .replace(/(\{[^}]+);([^}]+\})/g, (match) => {
+          return match.replace(/;/g, ',');
+        })
+        // 不正な文字列終端
+        .replace(/error';'/g, "error';")
+        .replace(/error";"/g, 'error";')
+        // 不正な括弧
+        .replace(/\}\)/g, (match, offset, str) => {
+          const before = str.substring(Math.max(0, offset - 50), offset);
+          if (before.includes('jest.fn(') || before.includes('.then(') || before.includes('.filter(')) {
+            return ')';
+          }
+          return match;
+        })
+        // オブジェクトリテラルの終端
+        .replace(/,\s*}/g, ' }')
+        .replace(/,\s*\)/g, ')')
+        // 不正な代入
+        .replace(/\}\s*=\s*catch/g, '} catch')
+        // 引数の不正なカンマ
+        .replace(/\(,/g, '(')
+        .replace(/,\)/g, ')')
+        // オブジェクトプロパティの修正
+        .replace(/:\s*undefined\s*}/g, ': undefined }')
+        // 複数の閉じ括弧
+        .replace(/\)\)\)/g, '))')
+        .replace(/\}\}\}/g, '}}')
+        // for...of 構文修正
+        .replace(/for\s*\(\s*const,\s*([a-zA-Z_$][a-zA-Z0-9_$]*)\s+of,\s*/g, 'for (const $1 of ')
+        // 不正なプロパティアクセス
+        .replace(/\.\s*,/g, ',')
+        // 空のブロック
+        .replace(/\{\s*'\s*\}/g, '{ }')
+        .replace(/\{\s*"\s*\}/g, '{ }');
+    }
+  },
+  
+  // 5. 文字列リテラルの修正
+  {
+    name: 'string literal fixes',
+    process: (content) => {
+      const lines = content.split('\n');
+      const fixedLines = [];
+      
+      for (let i = 0; i < lines.length; i++) {
+        let line = lines[i];
         
-        // Fix: allowedOrigins: ['*], -> allowedOrigins: ['*'],
-        fixed = fixed.replace(/allowedOrigins:\s*\['[*]],/g, () => {
-            modifications++;
-            return "allowedOrigins: ['*'],";
-        });
+        // 文字列の不正な終端を修正
+        line = line
+          .replace(/';'/g, "';")
+          .replace(/'}'$/g, "' }")
+          .replace(/";"/g, '";')
+          .replace(/"}"$/g, '" }')
+          // 不正な文字列連結
+          .replace(/'\s*'/g, "''")
+          .replace(/"\s*"/g, '""');
         
-        // Fix: console.log('API Endpoint Manager initialized');'    }
-        // -> console.log('API Endpoint Manager initialized');
-        fixed = fixed.replace(/console\.log\(([^)]+)\);'\s*\}/g, (match, message) => {
-            modifications++;
-            return `console.log(${message});`;
-        });
-        
-        // Fix: const requestId = this.generateRequestId(''';
-        // -> const requestId = this.generateRequestId();
-        fixed = fixed.replace(/this\.generateRequestId\(['"]+';\s*$/gm, () => {
-            modifications++;
-            return 'this.generateRequestId();';
-        });
-        
-        // Fix: skipRateLimit: false);
-        // -> skipRateLimit: false,
-        fixed = fixed.replace(/(\w+):\s*(false|true)\);/g, (match, prop, value) => {
-            modifications++;
-            return `${prop}: ${value},`;
-        });
-        
-        // Fix: ...options }
-        // -> ...options
-        fixed = fixed.replace(/\.\.\.(\w+)\s*\}/g, (match, spread) => {
-            modifications++;
-            return `...${spread}`;
-        });
-        
-        // Fix: handler,
-        //      options: {
-        //      } (on same line)
-        fixed = fixed.replace(/(\w+),\s*(\w+):\s*\{[^}]*\}\s*\n\s*\}/g, (match) => {
-            if (match.includes('requireAuth') || match.includes('rateLimit')) {
-                modifications++;
-                return match.replace(/\}\s*\n\s*\}/, '},\n                }');
-            }
-            return match;
-        });
-        
-        // Fix: const allowedSortFields = ['timestamp', 'sessionId', 'bubbleType', 'score', 'duration];
-        // -> const allowedSortFields = ['timestamp', 'sessionId', 'bubbleType', 'score', 'duration'];
-        fixed = fixed.replace(/\[([^\]]+[^'\]])];/g, (match, content) => {
-            if (content.includes("'") && !content.endsWith("'")) {
-                modifications++;
-                return `[${content}'];`;
-            }
-            return match;
-        });
-        
-        // Fix: return Array.from(this.endpoints.keys(); }
-        // -> return Array.from(this.endpoints.keys()); }
-        fixed = fixed.replace(/return\s+Array\.from\([^)]+\);\s*\}/g, (match) => {
-            if (!match.includes('()')) {
-                modifications++;
-                return match.replace(/keys\(\);/, 'keys());');
-            }
-            return match;
-        });
-        
-        // Fix: stats: { ...this.apiStats },
-        // -> stats: { ...this.apiStats },
-        fixed = fixed.replace(/stats:\s*\{\s*\.\.\.this\.apiStats\s*\},/g, () => {
-            modifications++;
-            return 'stats: { ...this.apiStats },';
-        });
-        
-        if (modifications > 0) {
-            fs.writeFileSync(filePath, fixed);
-            console.log(`APIEndpointManager.ts: ${modifications}個の修正を実行`);
+        // 行末のセミコロン/カンマの修正
+        if (line.trim().endsWith(',;')) {
+          line = line.replace(/,;$/, ';');
+        }
+        if (line.trim().endsWith(';;')) {
+          line = line.replace(/;;$/, ';');
         }
         
-    } catch (error) {
-        console.error('APIEndpointManager.ts修正エラー:', error.message);
+        fixedLines.push(line);
+      }
+      
+      return fixedLines.join('\n');
     }
+  },
+  
+  // 6. 条件文・制御構文の修正
+  {
+    name: 'control flow fixes',
+    process: (content) => {
+      return content
+        // if文の修正
+        .replace(/if\s*\(\s*([^)]+)\s*\{\s*'\s*\}/g, "if ($1) { }")
+        .replace(/if\s*\(\s*([^)]+)\s*\{\s*"\s*\}/g, 'if ($1) { }')
+        // switch文の修正
+        .replace(/case\s+'([^']+)'\s*:\s*;/g, "case '$1':")
+        .replace(/case\s+"([^"]+)"\s*:\s*;/g, 'case "$1":')
+        // return文の修正
+        .replace(/return\s+([^;]+);'/g, "return $1;")
+        .replace(/return\s+([^;]+);"/g, 'return $1;');
+    }
+  },
+  
+  // 7. 関数定義の修正
+  {
+    name: 'function definition fixes',
+    process: (content) => {
+      return content
+        // メソッド定義の修正
+        .replace(/([a-zA-Z_$][a-zA-Z0-9_$]*)\s*\(\s*([^)]*)\s*\)\s*\{\s*};/g, '$1($2) { }')
+        // プロパティ定義の修正
+        .replace(/([a-zA-Z_$][a-zA-Z0-9_$]*)\s*:\s*([^,;]+)\s*,\s*}/g, '$1: $2 }')
+        // 空の関数本体
+        .replace(/\{\s*\n\s*\n\s*\}/g, '{\n    \n}');
+    }
+  }
+];
+
+// ファイルを修正する関数
+function fixFile(filePath) {
+  try {
+    let content = fs.readFileSync(filePath, 'utf8');
+    let modified = false;
+    const originalContent = content;
+
+    // 各パターンを適用
+    for (const fix of fixPatterns) {
+      if (fix.process) {
+        const newContent = fix.process(content);
+        if (newContent !== content) {
+          content = newContent;
+          modified = true;
+          console.log(`  Applied: ${fix.name}`);
+        }
+      } else if (fix.pattern && fix.replacement) {
+        const newContent = content.replace(fix.pattern, fix.replacement);
+        if (newContent !== content) {
+          content = newContent;
+          modified = true;
+          console.log(`  Applied: ${fix.name}`);
+        }
+      }
+    }
+
+    if (modified) {
+      fs.writeFileSync(filePath, content, 'utf8');
+      console.log(`✅ Fixed: ${filePath}`);
+      return true;
+    }
+
+    return false;
+  } catch (error) {
+    console.error(`❌ Error processing ${filePath}:`, error.message);
+    return false;
+  }
 }
 
-function fixDataAggregationProcessor() {
-    const filePath = '/Users/taku-o/Documents/workspaces/awaputi/src/analytics/analytics-api/DataAggregationProcessor.ts';
-    
-    try {
-        const content = fs.readFileSync(filePath, 'utf8');
-        let fixed = content;
-        let modifications = 0;
-        
-        // Fix: dataTypes = ['sessionData],
-        // -> dataTypes = ['sessionData'],
-        fixed = fixed.replace(/dataTypes\s*=\s*\[(['"][^'"]+['"])\],/g, (match, item) => {
-            modifications++;
-            return `dataTypes = [${item}],`;
-        });
-        
-        // Fix: const { period = 'last7d' } = query;
-        //      ';
-        fixed = fixed.replace(/(\{[^}]+\}\s*=\s*[^;]+);\s*';\s*$/gm, (match, statement) => {
-            modifications++;
-            return statement + ';';
-        });
-        
-        // Fix: await Promise.all([);]'
-        // -> await Promise.all([
-        fixed = fixed.replace(/await\s+Promise\.all\(\[\);]'/g, () => {
-            modifications++;
-            return 'await Promise.all([';
-        });
-        
-        // Fix: .then(r => r || []),''
-        // -> .then(r => r || []),
-        fixed = fixed.replace(/\.then\([^)]+\)\),\s*''/g, (match) => {
-            modifications++;
-            return match.replace(/,\s*''/, ',');
-        });
-        
-        // Fix return hash.toString(16);
-        //    return hash.toString(36}.substr(2, 9})`;
-        fixed = fixed.replace(/toString\((\d+)\}\.substr/g, (match, radix) => {
-            modifications++;
-            return `toString(${radix}).substr`;
-        });
-        
-        // Fix: if (values.length === 0') continue;
-        // -> if (values.length === 0) continue;
-        fixed = fixed.replace(/if\s*\(([^)]+)'\)\s*continue;/g, (match, condition) => {
-            modifications++;
-            return `if (${condition}) continue;`;
-        });
-        
-        if (modifications > 0) {
-            fs.writeFileSync(filePath, fixed);
-            console.log(`DataAggregationProcessor.ts: ${modifications}個の修正を実行`);
-        }
-        
-    } catch (error) {
-        console.error('DataAggregationProcessor.ts修正エラー:', error.message);
-    }
-}
+// メイン処理
+async function main() {
+  console.log('🔧 Fixing TypeScript syntax errors...\n');
 
-function fixAccessibilityProfileManager() {
-    const filePath = '/Users/taku-o/Documents/workspaces/awaputi/src/accessibility/AccessibilityProfileManager.ts';
+  const targetPatterns = [
+    'src/**/*.ts',
+    'test/**/*.ts',
+    'tests/**/*.ts'
+  ];
+
+  let totalFixed = 0;
+  let totalFiles = 0;
+  let totalErrors = 0;
+
+  for (const pattern of targetPatterns) {
+    const files = glob.sync(pattern, { nodir: true });
+    console.log(`\n📁 Processing ${pattern} (${files.length} files)...`);
     
-    try {
-        const content = fs.readFileSync(filePath, 'utf8');
-        let fixed = content;
-        let modifications = 0;
-        
-        // Fix: interface ProfileConfig { enabled: boolean,
-        // -> interface ProfileConfig { 
-        //      enabled: boolean;
-        fixed = fixed.replace(/interface\s+(\w+)\s*\{\s*(\w+):\s*(\w+),/g, (match, name, prop, type) => {
-            modifications++;
-            return `interface ${name} {\n    ${prop}: ${type};`;
-        });
-        
-        // Fix: profileAnalytics: boolean }
-        // -> profileAnalytics: boolean;
-        // }
-        fixed = fixed.replace(/(\w+):\s*(boolean|string|number)\s*\}\s*$/gm, (match, prop, type, offset, string) => {
-            // Check if this is the last property in interface
-            const beforeMatch = string.substring(0, offset);
-            if (beforeMatch.lastIndexOf('interface') > beforeMatch.lastIndexOf('}')) {
-                modifications++;
-                return `${prop}: ${type};\n}`;
-            }
-            return match;
-        });
-        
-        // Fix: textScaling?: number;''
-        // -> textScaling?: number;
-        fixed = fixed.replace(/(\w+\??:\s*[^;]+);''/g, (match, declaration) => {
-            modifications++;
-            return declaration + ';';
-        });
-        
-        // Fix: screenReaders: ['nvda', 'jaws', 'voiceOver],'';
-        // -> screenReaders: ['nvda', 'jaws', 'voiceOver'],
-        fixed = fixed.replace(/(\[[^\]]+)\],\s*'';/g, (match, arrayContent) => {
-            if (!arrayContent.includes("']")) {
-                modifications++;
-                return arrayContent + "'],";
-            }
-            return match;
-        });
-        
-        // Fix: console.log('ProfileManager initialization completed);' }
-        // -> console.log('ProfileManager initialization completed');
-        fixed = fixed.replace(/console\.(log|warn|error)\(([^)]+)\);'\s*\}/g, (match, method, message) => {
-            modifications++;
-            return `console.${method}(${message}');`;
-        });
-        
-        // Fix: createProfile(name: string, settings: ProfileSettings, category: AccessibilityProfile['category] = 'custom): 
-        // -> createProfile(name: string, settings: ProfileSettings, category: AccessibilityProfile['category'] = 'custom'):
-        fixed = fixed.replace(/AccessibilityProfile\['(\w+)\]/g, (match, prop) => {
-            modifications++;
-            return `AccessibilityProfile['${prop}']`;
-        });
-        
-        // Fix: const profileId = this.generateProfileId(''';
-        // -> const profileId = this.generateProfileId();
-        //     const profile = {
-        //         id: profileId,
-        //         name,
-        fixed = fixed.replace(/this\.generateProfileId\(['"]+';\s*$/gm, (match) => {
-            modifications++;
-            return 'this.generateProfileId();\n        const profile = {\n            id: profileId,\n            name,';
-        });
-        
-        if (modifications > 0) {
-            fs.writeFileSync(filePath, fixed);
-            console.log(`AccessibilityProfileManager.ts: ${modifications}個の修正を実行`);
+    for (const file of files) {
+      totalFiles++;
+      try {
+        if (fixFile(file)) {
+          totalFixed++;
         }
-        
-    } catch (error) {
-        console.error('AccessibilityProfileManager.ts修正エラー:', error.message);
+      } catch (error) {
+        totalErrors++;
+        console.error(`❌ Failed to process ${file}:`, error.message);
+      }
     }
+  }
+
+  console.log(`\n📊 Summary:`);
+  console.log(`Total files processed: ${totalFiles}`);
+  console.log(`Files fixed: ${totalFixed}`);
+  console.log(`Errors encountered: ${totalErrors}`);
+  console.log(`\n✅ Done!`);
 }
 
 // 実行
-fixSpecificTypeScriptErrors().catch(console.error);
+main().catch(console.error);

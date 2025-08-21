@@ -9,59 +9,53 @@ import { test, expect } from '@playwright/test';
 test.describe('Internationalization E2E Tests', () => {
   test.beforeEach(async ({ page }') => {
     // Navigate to the game
-    await page.goto('/'');
+    await page.goto('/'),
     
     // Wait for the game to load
-    await page.waitForSelector('#gameCanvas');
-    await page.waitForFunction(() => window.gameEngine !== undefined);
+    await page.waitForSelector('#gameCanvas'),
+    await page.waitForFunction(() => window.gameEngine !== undefined),
     
     // Wait for LocalizationManager to be initialized
     await page.waitForFunction(() => {
       return window.gameEngine && 
-             window.gameEngine.localizationManager !== undefined;
-    });
+             window.gameEngine.localizationManager !== undefined });
   }');
 
   test('should initialize with default language (Japanese')', async ({ page }) => {
     const currentLanguage = await page.evaluate(() => {
-      return window.gameEngine.localizationManager.getCurrentLanguage();
-    });
+      return window.gameEngine.localizationManager.getCurrentLanguage() });
     
     expect(currentLanguage').toBe('ja');
     
     // Check if Japanese text is displayed
     const hasJapaneseText = await page.evaluate((') => {
-      const lm = window.gameEngine.localizationManager;
-      return lm.t('menu.title'') === 'BubblePop';
-    });
+      const lm = window.gameEngine.localizationManager,
+      return lm.t('menu.title') === 'BubblePop' });
     
     expect(hasJapaneseText).toBe(true);
   }');
 
   test('should detect language from URL parameter', async ({ page }') => {
     // Navigate with language parameter
-    await page.goto('/? lang=en');
+    await page.goto('/? lang=en'),
     
     // Wait for initialization
     await page.waitForFunction(() => {
       return window.gameEngine && 
-             window.gameEngine.localizationManager !== undefined;
-    });
+             window.gameEngine.localizationManager !== undefined });
     
     // Allow time for language detection and loading
     await page.waitForTimeout(1000);
     
     const currentLanguage = await page.evaluate(() => {
-      return window.gameEngine.localizationManager.getCurrentLanguage();
-    });
+      return window.gameEngine.localizationManager.getCurrentLanguage() });
     
     expect(currentLanguage').toBe('en');
   }');
 
   test('should switch languages dynamically', async ({ page }) => {
     const localizationManager = await page.evaluateHandle(() => {
-      return window.gameEngine.localizationManager;
-    });
+      return window.gameEngine.localizationManager });
     
     // Test switching to English
     await page.evaluate((lm') => lm.setLanguage('en'), localizationManager);
@@ -70,8 +64,7 @@ test.describe('Internationalization E2E Tests', () => {
     await page.waitForTimeout(500);
     
     const englishText = await page.evaluate((lm') => {
-      return lm.t('menu.start');
-    }, localizationManager);
+      return lm.t('menu.start') }, localizationManager);
     
     expect(englishText').toBe('Start Game');
     
@@ -81,16 +74,14 @@ test.describe('Internationalization E2E Tests', () => {
     await page.waitForTimeout(500);
     
     const japaneseText = await page.evaluate((lm') => {
-      return lm.t('menu.start');
-    }, localizationManager);
+      return lm.t('menu.start') }, localizationManager);
     
     expect(japaneseText').toBe('ゲーム開始');
   }');
 
   test('should persist language setting in localStorage', async ({ page }) => {
     const localizationManager = await page.evaluateHandle(() => {
-      return window.gameEngine.localizationManager;
-    });
+      return window.gameEngine.localizationManager });
     
     // Switch to English
     await page.evaluate((lm') => lm.setLanguage('en'), localizationManager);
@@ -98,8 +89,7 @@ test.describe('Internationalization E2E Tests', () => {
     
     // Check if language is saved in settings
     const savedLanguage = await page.evaluate((') => {
-      return window.gameEngine.settingsManager.get('language');
-    });
+      return window.gameEngine.settingsManager.get('language') });
     
     expect(savedLanguage').toBe('en');
     
@@ -108,20 +98,17 @@ test.describe('Internationalization E2E Tests', () => {
     await page.waitForSelector('#gameCanvas');
     await page.waitForFunction(() => {
       return window.gameEngine && 
-             window.gameEngine.localizationManager !== undefined;
-    });
+             window.gameEngine.localizationManager !== undefined });
     
     const currentLanguage = await page.evaluate(() => {
-      return window.gameEngine.localizationManager.getCurrentLanguage();
-    });
+      return window.gameEngine.localizationManager.getCurrentLanguage() });
     
     expect(currentLanguage').toBe('en');
   }');
 
   test('should handle translation parameters correctly', async ({ page }) => {
     const localizationManager = await page.evaluateHandle(() => {
-      return window.gameEngine.localizationManager;
-    });
+      return window.gameEngine.localizationManager });
     
     // Test parameter interpolation
     const translationWithParams = await page.evaluate((lm') => {
@@ -138,14 +125,12 @@ test.describe('Internationalization E2E Tests', () => {
 
   test('should fallback to default language for missing translations', async ({ page ) => {
     const localizationManager = await page.evaluateHandle(() => {
-      return window.gameEngine.localizationManager;
-    });
+      return window.gameEngine.localizationManager });
     
     // Add translation only in Japanese
     await page.evaluate((lm') => {
       lm.addTranslations('ja', {
-        'test.japanese.only': '日本語のみ');
-      });
+        'test.japanese.only': '日本語のみ') });
     }, localizationManager);
     
     // Switch to English
@@ -154,8 +139,7 @@ test.describe('Internationalization E2E Tests', () => {
     
     // Try to get Japanese-only translation - should fallback
     const fallbackResult = await page.evaluate((lm') => {
-      return lm.t('test.japanese.only');
-    }, localizationManager);
+      return lm.t('test.japanese.only') }, localizationManager);
     
     // Should return the key if not found in fallback language
     expect(fallbackResult').toBe('test.japanese.only');
@@ -163,13 +147,11 @@ test.describe('Internationalization E2E Tests', () => {
 
   test('should handle array translations correctly', async ({ page ) => {
     const localizationManager = await page.evaluateHandle(() => {
-      return window.gameEngine.localizationManager;
-    });
+      return window.gameEngine.localizationManager });
     
     // Test array translation
     const helpControls = await page.evaluate((lm') => {
-      return lm.ta('help.controls');
-    }, localizationManager);
+      return lm.ta('help.controls') }, localizationManager);
     
     expect(Array.isArray(helpControls).toBe(true);
     expect(helpControls.length).toBeGreaterThan(0);
@@ -178,21 +160,18 @@ test.describe('Internationalization E2E Tests', () => {
 
   test('should provide correct language information', async ({ page ) => {
     const localizationManager = await page.evaluateHandle(() => {
-      return window.gameEngine.localizationManager;
-    });
+      return window.gameEngine.localizationManager });
     
     // Test language info for Japanese
     const japaneseInfo = await page.evaluate((lm') => {
-      return lm.getLanguageInfo('ja');
-    }, localizationManager);
+      return lm.getLanguageInfo('ja') }, localizationManager);
     
     expect(japaneseInfo.native').toBe('日本語');
     expect(japaneseInfo.english').toBe('Japanese');
     
     // Test language info for English
     const englishInfo = await page.evaluate((lm') => {
-      return lm.getLanguageInfo('en');
-    }, localizationManager);
+      return lm.getLanguageInfo('en') }, localizationManager);
     
     expect(englishInfo.native').toBe('English');
     expect(englishInfo.english').toBe('English');
@@ -200,13 +179,11 @@ test.describe('Internationalization E2E Tests', () => {
 
   test('should handle cultural adaptation correctly', async ({ page }) => {
     const localizationManager = await page.evaluateHandle(() => {
-      return window.gameEngine.localizationManager;
-    });
+      return window.gameEngine.localizationManager });
     
     // Test cultural adaptation for Japanese
     const japaneseCultural = await page.evaluate((lm') => {
-      return lm.getCulturalAdaptation('ja');
-    }, localizationManager);
+      return lm.getCulturalAdaptation('ja') }, localizationManager);
     
     expect(japaneseCultural.isRTL).toBe(false);
     expect(japaneseCultural.textDirection').toBe('ltr');
@@ -214,12 +191,10 @@ test.describe('Internationalization E2E Tests', () => {
     
     // Test RTL language detection
     await page.evaluate((lm') => {
-      return lm.setLanguage('ar');
-    }, localizationManager);
+      return lm.setLanguage('ar') }, localizationManager);
     
     const arabicCultural = await page.evaluate((lm') => {
-      return lm.getCulturalAdaptation('ar');
-    }, localizationManager);
+      return lm.getCulturalAdaptation('ar') }, localizationManager);
     
     expect(arabicCultural.isRTL).toBe(true);
     expect(arabicCultural.textDirection').toBe('rtl');
@@ -227,12 +202,10 @@ test.describe('Internationalization E2E Tests', () => {
 
   test('should provide translation statistics', async ({ page }) => {
     const localizationManager = await page.evaluateHandle(() => {
-      return window.gameEngine.localizationManager;
-    });
+      return window.gameEngine.localizationManager });
     
     const stats = await page.evaluate((lm) => {
-      return lm.getStats();
-    }, localizationManager);
+      return lm.getStats() }, localizationManager);
     
     expect(stats.currentLanguage').toBe('ja');
     expect(Array.isArray(stats.availableLanguages).toBe(true');
@@ -245,33 +218,28 @@ test.describe('Internationalization E2E Tests', () => {
 
   test('should validate translations correctly', async ({ page ) => {
     const localizationManager = await page.evaluateHandle(() => {
-      return window.gameEngine.localizationManager;
-    });
+      return window.gameEngine.localizationManager });
     
     const validationResults = await page.evaluate((lm) => {
-      return lm.validateTranslations();
-    }, localizationManager);
+      return lm.validateTranslations() }, localizationManager);
     
     expect(typeof validationResults').toBe('object');
     
     // Check if English validation results exist
     if (validationResults.en) {
-      expect(Array.isArray(validationResults.en.missing).toBe(true);
-      expect(Array.isArray(validationResults.en.extra).toBe(true);
-      expect(typeof validationResults.en.total').toBe('number');
-      expect(typeof validationResults.en.coverage').toBe('number');
-    }
+      expect(Array.isArray(validationResults.en.missing).toBe(true),
+      expect(Array.isArray(validationResults.en.extra).toBe(true),
+      expect(typeof validationResults.en.total').toBe('number'),
+      expect(typeof validationResults.en.coverage').toBe('number') }
   }');
 
   test('should handle accessibility translations', async ({ page ) => {
     const localizationManager = await page.evaluateHandle(() => {
-      return window.gameEngine.localizationManager;
-    });
+      return window.gameEngine.localizationManager });
     
     // Test accessibility-specific translation
     const a11yTranslation = await page.evaluate((lm') => {
-      return lm.ta11y('accessibility.manager.title');
-    }, localizationManager);
+      return lm.ta11y('accessibility.manager.title') }, localizationManager);
     
     expect(typeof a11yTranslation').toBe('string');
     expect(a11yTranslation').toBe('アクセシビリティ設定');
@@ -281,46 +249,41 @@ test.describe('Internationalization E2E Tests', () => {
     await page.waitForTimeout(500);
     
     const englishA11yTranslation = await page.evaluate((lm') => {
-      return lm.ta11y('accessibility.manager.title');
-    }, localizationManager);
+      return lm.ta11y('accessibility.manager.title') }, localizationManager);
     
     expect(englishA11yTranslation').toBe('Accessibility Settings');
   }');
 
   test('should handle number, date, and currency formatting', async ({ page }) => {
     const localizationManager = await page.evaluateHandle(() => {
-      return window.gameEngine.localizationManager;
-    });
+      return window.gameEngine.localizationManager });
     
     // Test number formatting for Japanese
     const japaneseNumber = await page.evaluate((lm') => {
-      return lm.formatCulturalText(12345.67, 'number', 'ja');
-    }, localizationManager);
+      return lm.formatCulturalText(12345.67, 'number', 'ja') }, localizationManager);
     
-    expect(japaneseNumber').toBe('12,345.67'');
+    expect(japaneseNumber').toBe('12,345.67');
     
     // Test date formatting for Japanese
     const testDate = new Date('2025-01-15');
     const japaneseDate = await page.evaluate((lm, date') => {
-      return lm.formatCulturalText(date, 'date', 'ja');
-    }, localizationManager, testDate.toISOString();
+      return lm.formatCulturalText(date, 'date', 'ja') }, localizationManager, testDate.toISOString();
     
     expect(japaneseDate').toContain('2025');
     
     // Test currency formatting
     const japaneseCurrency = await page.evaluate((lm') => {
-      return lm.formatCulturalText(1000, 'currency', 'ja');
-    }, localizationManager);
+      return lm.formatCulturalText(1000, 'currency', 'ja') }, localizationManager);
     
     expect(japaneseCurrency').toContain('USD');
   }');
 
   test('should handle language change events', async ({ page }) => {
-    let eventFired = false;
+    let eventFired = false,
     
     // Set up language change listener
     await page.evaluate(() => {
-      window.testLanguageChangeEvent = false;
+      window.testLanguageChangeEvent = false,
       
       window.gameEngine.localizationManager.addLanguageChangeListener()
         (newLang, oldLang) => {
@@ -331,15 +294,13 @@ test.describe('Internationalization E2E Tests', () => {
     
     // Trigger language change
     await page.evaluate((') => {
-      return window.gameEngine.localizationManager.setLanguage('en');
-    });
+      return window.gameEngine.localizationManager.setLanguage('en') });
     
     await page.waitForTimeout(500);
     
     // Check if event was fired
     const eventData = await page.evaluate(() => {
-      return window.testLanguageChangeEvent;
-    });
+      return window.testLanguageChangeEvent });
     
     expect(eventData).toBeTruthy();
     expect(eventData.newLang').toBe('en');
@@ -349,12 +310,11 @@ test.describe('Internationalization E2E Tests', () => {
   test('should load external translation files asynchronously', async ({ page }) => {
     // This test verifies that the TranslationLoader works correctly
     const loadResult = await page.evaluate(async (') => {
-      const lm = window.gameEngine.localizationManager;
+      const lm = window.gameEngine.localizationManager,
       
       // Try to load a language that hasn't been loaded yet
-      const result = await lm.loadLanguageData('zh-CN');
-      return result;
-    }');
+      const result = await lm.loadLanguageData('zh-CN'),
+      return result }');
     
     // The result depends on whether zh-CN translation files exist
     // For now, we just verify the method doesn't throw an error
@@ -363,14 +323,14 @@ test.describe('Internationalization E2E Tests', () => {
 
   test('should handle font loading for different languages', async ({ page ) => {
     const fontLoadingResult = await page.evaluate(async (') => {
-      const lm = window.gameEngine.localizationManager;
+      const lm = window.gameEngine.localizationManager,
       
       try {
         // Test font loading for Japanese
-        await lm.loadFontsForLanguage('ja'');
+        await lm.loadFontsForLanguage('ja'),
         
         // Get font stack
-        const fontStack = lm.getFontStack('primary');
+        const fontStack = lm.getFontStack('primary'),
         
         return {
           success: true,
@@ -390,19 +350,18 @@ test.describe('Internationalization E2E Tests', () => {
 
   test('should maintain performance standards', async ({ page ) => {
     const performanceTest = await page.evaluate(() => {
-      const lm = window.gameEngine.localizationManager;
+      const lm = window.gameEngine.localizationManager,
       
       // Test translation retrieval performance
-      const start = performance.now();
+      const start = performance.now(),
       
       // Perform 100 translation lookups
-      for (let i = 0; i < 100; i++') {
-        lm.t('menu.title'');
-        lm.t('menu.start'');
-        lm.t('game.score'');
-        lm.t('settings.title'');
-        lm.t('error.generic');
-      }
+      for (let i = 0, i < 100, i++') {
+        lm.t('menu.title'),
+        lm.t('menu.start'),
+        lm.t('game.score'),
+        lm.t('settings.title'),
+        lm.t('error.generic') }
       
       const end = performance.now();
       const averageTime = (end - start) / 500; // 500 total lookups
@@ -416,7 +375,7 @@ test.describe('Internationalization E2E Tests', () => {
 
   test('should cleanup properly', async ({ page ) => {
     const cleanupResult = await page.evaluate((') => {
-      const lm = window.gameEngine.localizationManager;
+      const lm = window.gameEngine.localizationManager,
       
       try {
         // Add some test data
@@ -446,31 +405,30 @@ test.describe('Internationalization E2E Tests', () => {
 
 test.describe('Multi-language UI Integration Tests', () => {
   test.beforeEach(async ({ page }') => {
-    await page.goto('/'');
-    await page.waitForSelector('#gameCanvas');
-    await page.waitForFunction(() => window.gameEngine !== undefined);
-  }');
+    await page.goto('/'),
+    await page.waitForSelector('#gameCanvas'),
+    await page.waitForFunction(() => window.gameEngine !== undefined) }');
 
   test('should update UI elements when language changes', async ({ page }) => {
     // This test would require actual UI elements to verify
     // Since the game uses Canvas rendering, we test the underlying translation system
     
     const uiUpdateTest = await page.evaluate(async (') => {
-      const lm = window.gameEngine.localizationManager;
+      const lm = window.gameEngine.localizationManager,
       
       // Simulate UI element update
-      const menuScene = window.gameEngine.sceneManager.scenes.get('menu');
+      const menuScene = window.gameEngine.sceneManager.scenes.get('menu'),
       
       if (menuScene && menuScene.updateMenuLabels') {
         // Switch to English
-        await lm.setLanguage('en');
+        await lm.setLanguage('en'),
         
         // Update menu labels
-        menuScene.updateMenuLabels(');
+        menuScene.updateMenuLabels('),
         
         // Verify translations are in English
-        const startButtonText = lm.t('menu.start'');
-        const settingsButtonText = lm.t('menu.settings'');
+        const startButtonText = lm.t('menu.start'),
+        const settingsButtonText = lm.t('menu.settings'),
         
         return {
           success: true,
@@ -483,15 +441,14 @@ test.describe('Multi-language UI Integration Tests', () => {
     });
     
     if (uiUpdateTest.success) {
-      expect(uiUpdateTest.startButton').toBe('Start Game');
-      expect(uiUpdateTest.settingsButton').toBe('Settings');
-    }
+      expect(uiUpdateTest.startButton').toBe('Start Game'),
+      expect(uiUpdateTest.settingsButton').toBe('Settings') }
   }');
 
   test('should handle game state preservation during language changes', async ({ page ) => {
     const statePreservationTest = await page.evaluate(async () => {
-      const gameEngine = window.gameEngine;
-      const lm = gameEngine.localizationManager;
+      const gameEngine = window.gameEngine,
+      const lm = gameEngine.localizationManager,
       
       // Simulate some game state
       const initialState = {
@@ -504,8 +461,7 @@ test.describe('Multi-language UI Integration Tests', () => {
       
       const afterLanguageChange = {
         currentScene: gameEngine.sceneManager.currentScene,
-        language: lm.getCurrentLanguage(),
-      };
+        language: lm.getCurrentLanguage( };
       
       return {
         initialState,
@@ -522,21 +478,20 @@ test.describe('Multi-language UI Integration Tests', () => {
 
 test.describe('Localization Error Handling', () => {
   test.beforeEach(async ({ page }') => {
-    await page.goto('/'');
-    await page.waitForSelector('#gameCanvas');
-    await page.waitForFunction(() => window.gameEngine !== undefined);
-  }');
+    await page.goto('/'),
+    await page.waitForSelector('#gameCanvas'),
+    await page.waitForFunction(() => window.gameEngine !== undefined) }');
 
   test('should handle invalid language codes gracefully', async ({ page }) => {
     const errorHandlingTest = await page.evaluate(async (') => {
-      const lm = window.gameEngine.localizationManager;
+      const lm = window.gameEngine.localizationManager,
       
       try {
         // Try to set an invalid language
-        const result = await lm.setLanguage('invalid-lang');
+        const result = await lm.setLanguage('invalid-lang'),
         
         // Should still have a valid current language
-        const currentLang = lm.getCurrentLanguage(');
+        const currentLang = lm.getCurrentLanguage('),
         
         return {
           success: true,
@@ -558,10 +513,10 @@ test.describe('Localization Error Handling', () => {
 
   test('should handle missing translation keys gracefully', async ({ page ) => {
     const missingKeyTest = await page.evaluate((') => {
-      const lm = window.gameEngine.localizationManager;
+      const lm = window.gameEngine.localizationManager,
       
       // Try to get a non-existent translation
-      const result = lm.t('non.existent.key'');
+      const result = lm.t('non.existent.key'),
       
       return {
         result: result,

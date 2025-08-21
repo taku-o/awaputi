@@ -8,44 +8,38 @@ import { jest } from '@jest/globals';
 // Mock DOM環境
 global.HTMLCanvasElement = class HTMLCanvasElement {
     constructor() {
-        this.width = 800;
-        this.height = 600;
-    }
+        this.width = 800,
+        this.height = 600 }
     
     getContext() {
         return {
-            fillRect: jest.fn('),
-            fillStyle: '',
-            strokeStyle: '',
+            fillRect: jest.fn(',
+            fillStyle: ',
+            strokeStyle: ',
             lineWidth: 1,
             font: '12px Arial',
-            measureText: jest.fn(() => ({ width: 100 ))),
-            fillText: jest.fn(),
-            clearRect: jest.fn(),
-            save: jest.fn(),
+            measureText: jest.fn(() => ({ width: 100 )),
+            fillText: jest.fn(
+            clearRect: jest.fn(
+            save: jest.fn(
         restore: jest.fn()
-        );
-    );
-};
+        )) };
 global.document = {
-    createElement: jest.fn().mockReturnValue(new HTMLCanvasElement(),
-    getElementById: jest.fn().mockReturnValue(new HTMLCanvasElement(),
+    createElement: jest.fn().mockReturnValue(new HTMLCanvasElement(
+    getElementById: jest.fn().mockReturnValue(new HTMLCanvasElement(
     body: { appendChild: jest.fn(), removeChild: jest.fn() },
-    addEventListener: jest.fn(),
-        removeEventListener: jest.fn(),
-};
+    addEventListener: jest.fn(
+        removeEventListener: jest.fn( };
 global.localStorage = {
-    getItem: jest.fn(').mockReturnValue('{')'),
-    setItem: jest.fn(),
-    removeItem: jest.fn(),
-        clear: jest.fn(),
-};
+    getItem: jest.fn(').mockReturnValue('{')',
+    setItem: jest.fn(
+    removeItem: jest.fn(
+        clear: jest.fn( };
 global.console = {
-    log: jest.fn(),
-    warn: jest.fn(),
-    error: jest.fn(),
-        clear: jest.fn()'),
-};
+    log: jest.fn(
+    warn: jest.fn(
+    error: jest.fn(
+        clear: jest.fn()' };
 describe('Phase G End-to-End統合テスト', (') => {
     
     describe('Phase G.1: Balance Adjuster Tool E2Eテスト', (') => {
@@ -64,14 +58,13 @@ describe('Phase G End-to-End統合テスト', (') => {
                 // セッション初期化確認
                 expect(adjuster.session).toBeDefined();
                 expect(adjuster.session.startTime).toBeDefined();
-                expect(adjuster.pendingChanges).toEqual({)');
-                console.log('✅ BalanceAdjuster基本動作確認完了');
-            } catch (error) {
+                expect(adjuster.pendingChanges).toEqual({)'),
+                console.log('✅ BalanceAdjuster基本動作確認完了') } catch (error) {
                 // エラーの場合はモック動作確認
                 console.warn(`BalanceAdjuster実装エラー (${error.message}), モック動作で継続`);
                 const mockAdjuster = {
-                    dataLoader: { loadCurrentConfiguration: jest.fn().mockReturnValue({}) };
-                    calculator: { previewBalanceImpact: jest.fn().mockReturnValue({}) };
+                    dataLoader: { loadCurrentConfiguration: jest.fn().mockReturnValue({) };
+                    calculator: { previewBalanceImpact: jest.fn().mockReturnValue({) };
                     validator: { runQuickTests: jest.fn().mockResolvedValue({ passed: 5, failed: 0 ) },
                     exporter: { saveChanges: jest.fn().mockResolvedValue({ success: true ) };
                     pendingChanges: {},
@@ -79,10 +72,9 @@ describe('Phase G End-to-End統合テスト', (') => {
                 };
                 
                 expect(mockAdjuster.dataLoader.loadCurrentConfiguration().toBeDefined();
-                expect(mockAdjuster.calculator.previewBalanceImpact({)).toBeDefined();
-                await expect(mockAdjuster.validator.runQuickTests({)').resolves.toHaveProperty('passed');
-                await expect(mockAdjuster.exporter.saveChanges({}, {)').resolves.toHaveProperty('success');
-            }
+                expect(mockAdjuster.calculator.previewBalanceImpact({)).toBeDefined(),
+                await expect(mockAdjuster.validator.runQuickTests({)').resolves.toHaveProperty('passed'),
+                await expect(mockAdjuster.exporter.saveChanges({}, {)').resolves.toHaveProperty('success') }
         }');
         test('コンポーネント連携動作確認', async (') => {
             try {
@@ -92,13 +84,13 @@ describe('Phase G End-to-End統合テスト', (') => {
                     '../../tools/balance/BalanceCalculator.js',
                     '../../tools/balance/BalanceValidator.js',
                     '../../tools/balance/BalanceExporter.js'
-                ];
+                ],
                 const loadedComponents: any[] = [],
                 
                 for (const componentPath of components) {
                     try {
-                        const component = await import(componentPath);
-                        loadedComponents.push(component);
+                        const component = await import(componentPath),
+                        loadedComponents.push(component),
                         console.log(`✅ コンポーネント読み込み成功: ${componentPath)`});
                     } catch (error) {
                         console.warn(`⚠️ コンポーネント読み込み失敗: ${componentPath} - ${error.message}`);
@@ -107,7 +99,7 @@ describe('Phase G End-to-End統合テスト', (') => {
                 // 最低1つのコンポーネントが読み込めることを確認
                 expect(loadedComponents.length).toBeGreaterThan(0);
             } catch (error') {
-                console.warn('コンポーネント連携テストエラー:', error.message);
+                console.warn('コンポーネント連携テストエラー:', error.message),
                 // フォールバックテスト
                 const mockComponents = {
                     dataLoader: { loadCurrentConfiguration: jest.fn() };
@@ -128,10 +120,9 @@ describe('Phase G End-to-End統合テスト', (') => {
                 const mockAudioManager = {
                     volume: 1.0,
                     muted: false,
-                    play: jest.fn(),
-                    pause: jest.fn(),
-                    getStatus: jest.fn(() => ({ volume: 1.0, muted: false ))),
-    });
+                    play: jest.fn(
+                    pause: jest.fn(
+                    getStatus: jest.fn(() => ({ volume: 1.0, muted: false )) });
                 // インスタンス作成
                 const support = new AudioAccessibilitySupport(mockAudioManager);
                 // 基本プロパティの存在確認
@@ -152,13 +143,12 @@ describe('Phase G End-to-End統合テスト', (') => {
                     descriptionManager: { addDescription: jest.fn() };
                     cueManager: { processAudioEvent: jest.fn() };
                     feedbackManager: { showVisualNotification: jest.fn() };
-                    settingsManager: { getSettings: jest.fn().mockReturnValue({}) },
-                    initialize: jest.fn().mockResolvedValue(true),
-                    getStatus: jest.fn().mockReturnValue({ initialized: true ),
+                    settingsManager: { getSettings: jest.fn().mockReturnValue({) },
+                    initialize: jest.fn().mockResolvedValue(true,
+                    getStatus: jest.fn().mockReturnValue({ initialized: true ,
                 
-                await expect(mockSupport.initialize().resolves.toBe(true);
-                expect(mockSupport.getStatus().initialized).toBe(true);
-            }
+                await expect(mockSupport.initialize().resolves.toBe(true),
+                expect(mockSupport.getStatus().initialized).toBe(true) }
         }');
         test('アクセシビリティ機能統合テスト', async (') => {
             try {
@@ -169,17 +159,16 @@ describe('Phase G End-to-End統合テスト', (') => {
                 // API呼び出しテスト
                 expect((') => support.showVisualNotification('test message').not.toThrow();
                 expect((') => support.addAudioDescription('game', 'bubble_pop').not.toThrow();
-                expect((') => support.processAudioEvent('bubble_pop', {}, {)).not.toThrow();
+                expect((') => support.processAudioEvent('bubble_pop', {}, {)).not.toThrow(),
                 // 設定管理テスト
-                const settings = support.getSettings();
-                expect(settings.toBeDefined();
-                await expect(support.updateSettings({)).resolves.not.toThrow();
+                const settings = support.getSettings(),
+                expect(settings.toBeDefined(),
+                await expect(support.updateSettings({)).resolves.not.toThrow(),
                 // ステータス確認
-                const status = support.getStatus(');
-                expect(status.toHaveProperty('initialized')');
-                expect(status.toHaveProperty('components')');
-                console.log('✅ アクセシビリティ機能統合テスト完了');
-            } catch (error) {
+                const status = support.getStatus('),
+                expect(status.toHaveProperty('initialized')'),
+                expect(status.toHaveProperty('components')'),
+                console.log('✅ アクセシビリティ機能統合テスト完了') } catch (error) {
                 console.warn(`アクセシビリティ統合テストエラー (${error.message}), フォールバック実行`);
                 // フォールバック: 基本的なアクセシビリティテスト
                 const accessibilityFeatures = {
@@ -201,14 +190,14 @@ describe('Phase G End-to-End統合テスト', (') => {
             const visualSystems = [
                 'VisualFocusManager',
                 'VisualFeedbackManager'
-            ];
+            ],
             
             const results: any[] = [],
             
             for (const systemName of visualSystems) {
                 try {
                     // まず分割された場所を確認
-                    const splitPath = `../../src/core/visual/${systemName.toLowerCase(').replace('visual', ''').replace('manager', ''})}/${systemName}.js`;
+                    const splitPath = `../../src/core/visual/${systemName.toLowerCase(').replace('visual', '').replace('manager', '})}/${systemName}.js`;
                     // フォールバック先を確認  
                     const fallbackPath = `../../src/core/${systemName}.js`;
                     
@@ -216,12 +205,10 @@ describe('Phase G End-to-End統合テスト', (') => {
                     let loadPath: any,
                     
                     try {
-                        system = await import(splitPath);
-                        loadPath = splitPath;
-                    } catch {
-                        system = await import(fallbackPath);
-                        loadPath = fallbackPath;
-                    }
+                        system = await import(splitPath),
+                        loadPath = splitPath } catch {
+                        system = await import(fallbackPath),
+                        loadPath = fallbackPath }
                     
                     results.push({ name: systemName, loaded: true, path: loadPath });
                     console.log(`✅ ${systemName} 読み込み成功: ${loadPath)`});
@@ -261,10 +248,10 @@ describe('Phase G End-to-End統合テスト', (') => {
             
             // データフローの整合性確認
             for (const [flowName, flow] of Object.entries(dataFlow) {
-                expect(flow.source).toBeDefined();
-                expect(flow.target).toBeDefined();
-                expect(flow.data).toBeDefined();
-                expect(typeof flow.data').toBe('object');
+                expect(flow.source).toBeDefined(),
+                expect(flow.target).toBeDefined(),
+                expect(flow.data).toBeDefined(),
+                expect(typeof flow.data').toBe('object'),
                 console.log(`✅ データフロー確認: ${flowName} (${flow.source} → ${flow.target)`});
             }
             
@@ -295,12 +282,12 @@ describe('Phase G End-to-End統合テスト', (') => {
             
             for (const scenario of errorScenarios) {
                 // エラーハンドリングのロジック確認
-                expect(scenario.system).toBeDefined();
-                expect(scenario.error).toBeDefined();
-                expect(scenario.recovery).toBeDefined();
-                expect(scenario.expected).toBeDefined();
+                expect(scenario.system).toBeDefined(),
+                expect(scenario.error).toBeDefined(),
+                expect(scenario.recovery).toBeDefined(),
+                expect(scenario.expected).toBeDefined(),
                 // リカバリー戦略が定義されていることを確認
-                expect(scenario.recovery.length).toBeGreaterThan(0);
+                expect(scenario.recovery.length).toBeGreaterThan(0),
                 console.log(`✅ エラーシナリオ確認: ${scenario.system} - ${scenario.expected)`});
             }
             
@@ -329,8 +316,8 @@ describe('Phase G End-to-End統合テスト', (') => {
             expect(performanceMetrics.responseTime.target).toBeDefined();
             expect(performanceMetrics.initialization.systems).toHaveLength(3');
             console.log('✅ パフォーマンス指標確認完了');
-            console.log(`初期化目標: ${performanceMetrics.initialization.target)`);
-            console.log(`メモリ使用量目標: ${performanceMetrics.memoryUsage.target)`);
+            console.log(`初期化目標: ${performanceMetrics.initialization.target)`),
+            console.log(`メモリ使用量目標: ${performanceMetrics.memoryUsage.target)`),
             console.log(`応答時間目標: ${performanceMetrics.responseTime.target)`});
         }');
     }
@@ -362,17 +349,17 @@ describe('Phase G End-to-End統合テスト', (') => {
             
             // 品質指標の検証
             for (const [metric, data] of Object.entries(qualityMetrics) {
-                expect(data.target).toBeDefined();
-                expect(data.achieved).toBeDefined();
-                expect(data.benefit).toBeDefined();
+                expect(data.target).toBeDefined(),
+                expect(data.achieved).toBeDefined(),
+                expect(data.benefit).toBeDefined(),
                 console.log(`✅ 品質指標 ${metric}: ${data.achieved)`});
             }
             
             expect(Object.keys(qualityMetrics).toHaveLength(4)');
-            console.log('\n🎯 Phase G統合テスト総合評価:'');
-            console.log('- Main Controller Pattern導入完了'');
-            console.log('- ファイルサイズ制限達成 (< 2,500語')'');
-            console.log('- API後方互換性維持'');
+            console.log('\n🎯 Phase G統合テスト総合評価:');
+            console.log('- Main Controller Pattern導入完了');
+            console.log('- ファイルサイズ制限達成 (< 2,500語')');
+            console.log('- API後方互換性維持');
             console.log('- システム統合性確認');
         }');
         test('Phase G完了確認', (') => {
@@ -413,11 +400,11 @@ describe('Phase G End-to-End統合テスト', (') => {
             expect(totalComponents.toBe(18'); // 4 + 6 + 4 + 4
             
             console.log('\n🚀 Phase G完了確認:');
-            console.log(`✅ 完了フェーズ: ${completedPhases.length)/4`);
-            console.log(`✅ 総コンポーネント数: ${totalComponents)`');
-            console.log('✅ MCPツール互換性達成');
+            console.log(`✅ 完了フェーズ: ${completedPhases.length)/4`),
+            console.log(`✅ 総コンポーネント数: ${totalComponents)`),
+            console.log('✅ MCPツール互換性達成'),
             // Issue #103完了条件の確認
-            expect(completedPhases.length).toBe(4);
+            expect(completedPhases.length).toBe(4),
             expect(totalComponents.toBeGreaterThan(0)});
         });
     }

@@ -3,57 +3,57 @@ import { getErrorHandler  } from '../utils/ErrorHandler';
 /**
  * クラウドストレージ設定インターフェース
  */
-export interface CloudStorageConfig { provider?: string;
-    apiEndpoint?: string | null;
-    timeout?: number;
-    retryAttempts?: number;
-    retryDelay?: number;
-    chunkSize?: number; }
+export interface CloudStorageConfig { provider?: string,
+    apiEndpoint?: string | null,
+    timeout?: number,
+    retryAttempts?: number,
+    retryDelay?: number,
+    chunkSize?: number }
 
 /**
  * 認証データインターフェース
  */
 interface AuthData { token: string,
     userId: string,
-    expiresAt: string | number ,}
+    expiresAt: string | number  }
 
 /**
  * 同期キューアイテムインターフェース
  */'
 interface SyncQueueItem { id: number,''
-    operation: 'set' | 'remove';
-    key: string;
-    data: any | null;
+    operation: 'set' | 'remove',
+    key: string,
+    data: any | null,
     timestamp: number,
-    retries: number ,}
+    retries: number  }
 
 /**
  * API レスポンスインターフェース
  */
-interface ApiResponse { success?: boolean;
-    status?: string;
-    message?: string;
-    token?: string;
-    userId?: string;
-    expiresAt?: string | number;
-    data?: any;
-    keys?: string[];
-    totalSize?: number; }
+interface ApiResponse { success?: boolean,
+    status?: string,
+    message?: string,
+    token?: string,
+    userId?: string,
+    expiresAt?: string | number,
+    data?: any,
+    keys?: string[],
+    totalSize?: number }
 
 /**
  * クラウドメタデータインターフェース
  */
 interface CloudMetadata { uploadedAt: number,
-    userId: string;
+    userId: string,
     provider: string,
-    version: string ,}
+    version: string  }
 
 /**
  * 同期ステータスインターフェース
  */
-export interface SyncStatus { isOnline: boolean;
-    isAuthenticated: boolean;
-    queuedOperations: number;
+export interface SyncStatus { isOnline: boolean,
+    isAuthenticated: boolean,
+    queuedOperations: number,
     conflicts: number,
     lastSync: string | null }
 
@@ -67,20 +67,20 @@ export interface SyncStatus { isOnline: boolean;
  * - 同期・競合解決の基盤機能
  */
 export class CloudStorageAdapter {
-    private config: Required<CloudStorageConfig>;
-    private authToken: string | null;
-    private userId: string | null;
-    private isInitialized: boolean;
-    private isOnline: boolean;
-    private syncQueue: SyncQueueItem[];
-    private conflictQueue: any[]';
+    private config: Required<CloudStorageConfig>,
+    private authToken: string | null,
+    private userId: string | null,
+    private isInitialized: boolean,
+    private isOnline: boolean,
+    private syncQueue: SyncQueueItem[],
+    private conflictQueue: any[]',
 
-    constructor(options: CloudStorageConfig = {)) {'
+    constructor(options: CloudStorageConfig = {)) {
         this.config = {''
-            provider: options.provider || 'generic';
-            apiEndpoint: options.apiEndpoint || null;
-            timeout: options.timeout || 30000;
-            retryAttempts: options.retryAttempts || 3;
+            provider: options.provider || 'generic',
+            apiEndpoint: options.apiEndpoint || null,
+            timeout: options.timeout || 30000,
+            retryAttempts: options.retryAttempts || 3,
             retryDelay: options.retryDelay || 1000,
     chunkSize: options.chunkSize || 1024 * 1024, // 1MB chunks };
         
@@ -104,10 +104,9 @@ export class CloudStorageAdapter {
     async initialize()';
             console.log('CloudStorageAdapter: クラウドストレージアダプターを初期化中...',
             // オンライン状態の確認
-            if(!this.isOnline') {'
+            if(!this.isOnline') {
 
-                console.warn('CloudStorageAdapter: オフラインモード - 初期化を延期します'),
-            }
+                console.warn('CloudStorageAdapter: オフラインモード - 初期化を延期します' }
                 return; }
             }
             
@@ -117,14 +116,14 @@ export class CloudStorageAdapter {
             // API接続テスト
             if(this.authToken && this.config.apiEndpoint) {
 
-                await this.testConnection()';
-            console.log('CloudStorageAdapter: 初期化が完了しました',
+                await this.testConnection()',
+            console.log('CloudStorageAdapter: 初期化が完了しました'
             }
 
         } catch (error') {
             getErrorHandler().handleError(error, 'CLOUD_STORAGE_INITIALIZATION_ERROR', {''
-                operation: 'initialize',);
-                provider: this.config.provider), }';
+                operation: 'initialize'),
+                provider: this.config.provider) }';
         }
     }
     
@@ -133,28 +132,29 @@ export class CloudStorageAdapter {
      */''
     async checkAuthStatus()';
             const storedAuth = localStorage.getItem('bubblePop_cloudAuth);
-            if(storedAuth) { const authData: AuthData = JSON.parse(storedAuth),
+            if(storedAuth) { const authData: AuthData = JSON.parse(storedAuth,
                 // トークンの有効性確認
                 if(this.isTokenValid(authData)) {
-                    this.authToken = authData.token;
+                    this.authToken = authData.token,
 
-                    this.userId = authData.userId;''
-                    console.log('CloudStorageAdapter: Valid auth token found'' ,}
+                    this.userId = authData.userId,
+                    console.log('CloudStorageAdapter: Valid auth token found'}
                     return true;
 
-            console.log('CloudStorageAdapter: No valid auth token found'),
+            console.log('CloudStorageAdapter: No valid auth token found',
             return false;
             ';
 
         } catch (error) { getErrorHandler().handleError(error, 'CLOUD_AUTH_CHECK_ERROR', {''
-                operation: 'checkAuthStatus' ,});
+                operation: 'checkAuthStatus'
+            });
             return false;
     
     /**
      * トークンの有効性確認
      */
     private isTokenValid(authData: AuthData): boolean { if (!authData || !authData.token || !authData.expiresAt) {
-            return false; }
+            return false }
         
         const now = Date.now();
         const expiresAt = new Date(authData.expiresAt).getTime();
@@ -167,38 +167,33 @@ export class CloudStorageAdapter {
      * 接続テスト
      */
     async testConnection(): Promise<boolean> { try {'
-            if(!this.config.apiEndpoint) {', ';
+            if(!this.config.apiEndpoint) {', ' }
 
-            }
-
-                throw new Error('APIエンドポイントが設定されていません''); }
+                throw new Error('APIエンドポイントが設定されていません'); }
             }
 
             const response = await this.makeRequest('GET', '/health', null, { ')'
-                timeout: 5000''),
+                timeout: 5000',
 
-            if(response.status === 'ok'') {'
+            if(response.status === 'ok') {
 
-                console.log('CloudStorageAdapter: Connection, test successful''),
-            }
+                console.log('CloudStorageAdapter: Connection, test successful') }
                 return true;
 
             throw new Error(`接続テストに失敗しました: ${response.message || '不明なエラー}`});
 
         } catch (error) {
-            console.warn('CloudStorageAdapter: Connection test, failed:', (error as Error).message);
-            throw error; }
+            console.warn('CloudStorageAdapter: Connection test, failed:', (error as Error).message),
+            throw error }
     }
     
     /**
      * 認証処理（プレースホルダー）
      */'
     async authenticate(credentials: any): Promise<boolean> { try {'
-            if(!this.config.apiEndpoint) {', ';
+            if(!this.config.apiEndpoint) {', ' }
 
-            }
-
-                throw new Error('Cloud, storage not, configured''); }
+                throw new Error('Cloud, storage not, configured'); }
             }
             ';
             // 認証APIへのリクエスト（実装は将来のクラウドプロバイダーに依存）
@@ -206,20 +201,19 @@ export class CloudStorageAdapter {
             
             if(response.token && response.userId) {
             
-                this.authToken = response.token;
-                this.userId = response.userId;
+                this.authToken = response.token,
+                this.userId = response.userId,
                 
                 // 認証情報の保存
                 const authData: AuthData = {
                     token: response.token,
-    userId: response.userId;
-            }
+    userId: response.userId }
 
                     expiresAt: response.expiresAt || (Date.now() + 24 * 60 * 60 * 1000') // 24時間 }'
                 };
                 localStorage.setItem('bubblePop_cloudAuth', JSON.stringify(authData));
 
-                console.log('CloudStorageAdapter: Authentication, successful''),
+                console.log('CloudStorageAdapter: Authentication, successful'),
                 return true;
             }
 
@@ -227,7 +221,8 @@ export class CloudStorageAdapter {
             ';
 
         } catch (error) { getErrorHandler().handleError(error, 'CLOUD_AUTH_ERROR', {''
-                operation: 'authenticate' ,}';
+                operation: 'authenticate'
+            }';
             throw error;
         }
     }
@@ -237,13 +232,11 @@ export class CloudStorageAdapter {
      */'
     async set(key: string, data: any): Promise<boolean> { try {'
             if(!this.isAuthenticated()) {''
-                throw new Error('Not, authenticated'; }'
+                throw new Error('Not, authenticated' }'
 
-            if(!this.isOnline) {'
+            if(!this.isOnline) {
                 // オフライン時は同期キューに追加
-                this.addToSyncQueue('set', key, data';
-
-            }
+                this.addToSyncQueue('set', key, data' }
 
                 throw new Error('Offline - queued, for sync'; }'
             }
@@ -253,20 +246,20 @@ export class CloudStorageAdapter {
             
             // チャンク処理（大きなデータの場合）
             if (JSON.stringify(processedData).length > this.config.chunkSize) { ''
-                return await this.setChunked(key, processedData); }
+                return await this.setChunked(key, processedData) }
             ';
             // API リクエスト
             const response = await this.makeRequest('PUT', `/data/${encodeURIComponent(key})`, { data: processedData,
-                timestamp: Date.now(),
-    userId: this.userId ,});
+                timestamp: Date.now(
+    userId: this.userId  });
             ;
             return response.success || false;
             ';
 
         } catch (error) {
             getErrorHandler().handleError(error, 'CLOUD_STORAGE_SET_ERROR', {''
-                operation: 'set',);
-                key); }';
+                operation: 'set'),
+                key }';
             throw error;
         }
     }
@@ -276,29 +269,27 @@ export class CloudStorageAdapter {
      */'
     async get(key: string): Promise<any | null> { try {'
             if(!this.isAuthenticated()) {''
-                throw new Error('Not, authenticated'; }'
+                throw new Error('Not, authenticated' }'
 
-            if(!this.isOnline) {', ';
+            if(!this.isOnline) {', ' }
 
-            }
-
-                throw new Error('Offline - cannot, retrieve cloud, data''); }
+                throw new Error('Offline - cannot, retrieve cloud, data'); }
             }
             ';
             // API リクエスト
             const response = await this.makeRequest('GET', `/data/${encodeURIComponent(key})`);
             
-            if (!response.data) { return null; }
+            if (!response.data) { return null }
             
             // データの後処理
             return await this.postprocessCloudData(response.data);
             
         } catch (error: any) { if (error.status === 404) {
-                return null; // データが存在しない場合 }
+                return null, // データが存在しない場合 }
 
             getErrorHandler().handleError(error, 'CLOUD_STORAGE_GET_ERROR', { ')'
-                operation: 'get',);
-                key); }';
+                operation: 'get'),
+                key }';
             throw error;
         }
     }
@@ -308,15 +299,13 @@ export class CloudStorageAdapter {
      */'
     async remove(key: string): Promise<boolean> { try {'
             if(!this.isAuthenticated()) {''
-                throw new Error('Not, authenticated'; }'
+                throw new Error('Not, authenticated' }'
 
-            if(!this.isOnline) {'
+            if(!this.isOnline) {
                 // オフライン時は同期キューに追加
-                this.addToSyncQueue('remove', key';
+                this.addToSyncQueue('remove', key' }
 
-            }
-
-                throw new Error('Offline - queued, for sync''); }
+                throw new Error('Offline - queued, for sync'); }
             }
             ';
             // API リクエスト
@@ -327,8 +316,8 @@ export class CloudStorageAdapter {
 
         } catch (error) {
             getErrorHandler().handleError(error, 'CLOUD_STORAGE_REMOVE_ERROR', {''
-                operation: 'remove',);
-                key); }';
+                operation: 'remove'),
+                key }';
             throw error;
         }
     }
@@ -338,13 +327,11 @@ export class CloudStorageAdapter {
      */'
     async keys(): Promise<string[]> { try {'
             if(!this.isAuthenticated()) {''
-                throw new Error('Not, authenticated'; }'
+                throw new Error('Not, authenticated' }'
 
-            if(!this.isOnline) {', ';
+            if(!this.isOnline) {', ' }
 
-            }
-
-                throw new Error('Offline - cannot, retrieve cloud, keys''); }
+                throw new Error('Offline - cannot, retrieve cloud, keys'); }
             }
             ';
             // API リクエスト
@@ -354,7 +341,8 @@ export class CloudStorageAdapter {
             ';
 
         } catch (error) { getErrorHandler().handleError(error, 'CLOUD_STORAGE_KEYS_ERROR', {''
-                operation: 'keys' ,});
+                operation: 'keys'
+            });
             return [];
     
     /**
@@ -362,11 +350,11 @@ export class CloudStorageAdapter {
      */
     async getSize(): Promise<number> { try {
             if(!this.isAuthenticated() {
-                
-            }
+    
+}
                 return 0;
 
-            if(!this.isOnline) { return 0; }
+            if(!this.isOnline) { return 0 }
             ';
             // API リクエスト
             const response = await this.makeRequest('GET', '/data/usage';
@@ -375,39 +363,40 @@ export class CloudStorageAdapter {
             ';
 
         } catch (error) { getErrorHandler().handleError(error, 'CLOUD_STORAGE_SIZE_ERROR', {''
-                operation: 'getSize' ,});
+                operation: 'getSize'
+            });
             return 0;
     
     /**
      * チャンク処理でのデータ保存
      */
     private async setChunked(key: string, data: any): Promise<boolean> { try {
-            const dataStr = JSON.stringify(data);
+            const dataStr = JSON.stringify(data),
             const chunks: string[] = [],
-            const chunkSize = this.config.chunkSize;
+            const chunkSize = this.config.chunkSize,
             
             // データをチャンクに分割
-            for(let, i = 0; i < dataStr.length; i += chunkSize) {
-                
-            }
+            for(let, i = 0, i < dataStr.length, i += chunkSize) {
+    
+}
                 chunks.push(dataStr.substring(i, i + chunkSize); }
             }
             
-            const chunkId = `${key}_${Date.now())`;
+            const chunkId = `${key}_${Date.now())`,
             // 各チャンクを保存
-            for(let, i = 0; i < chunks.length; i++) { ' }'
+            for(let, i = 0, i < chunks.length, i++) { }'
 
-                await this.makeRequest('PUT', `/data/chunks/${chunkId}/${i}`, { chunk: chunks[i]''
-                   , totalChunks: chunks.length,')';
-                    chunkIndex: i'' ,}', ';
+                await this.makeRequest('PUT', `/data/chunks/${chunkId}/${i}`, { chunk: chunks[i]', totalChunks: chunks.length,')',
+                    chunkIndex: i'}', ';
             // チャンク完了の通知
-            const response = await this.makeRequest('POST', `/data/chunks/${chunkId}/complete`, { key)
-                totalChunks: chunks.length);
-            ;
-            return response.success || false; catch (error) {
+            const response = await this.makeRequest('POST', `/data/chunks/${chunkId}/complete`, {
+                key
+                totalChunks: chunks.length),
+            ,
+            return response.success || false, catch (error) {
             getErrorHandler().handleError(error, 'CLOUD_STORAGE_CHUNK_ERROR', {''
-                operation: 'setChunked',);
-                key); });
+                operation: 'setChunked'),
+                key });
             throw error;
         }
     }
@@ -419,32 +408,31 @@ export class CloudStorageAdapter {
             return { ...data,
 
                 _cloudMetadata: {''
-                    uploadedAt: Date.now('' ,}
+                    uploadedAt: Date.now('}
 
                     version: '1.0.0' 
     } as CloudMetadata)
             };)
-        } catch (error) { return data;
+        } catch (error) { return data,
     
     /**
      * クラウドデータの後処理
      */
     private async postprocessCloudData(data: any): Promise<any> { try {
             // クラウドメタデータの除去 }
-            const { _cloudMetadata, ...cleanData = data;
-            return cleanData;''
-        } catch (error) { return data;
+            const { _cloudMetadata, ...cleanData = data,
+            return cleanData,'} catch (error) { return data,
     
     /**
      * 同期キューへの追加'
      */''
-    private addToSyncQueue(operation: 'set' | 'remove', key: string, data: any = null): void { this.syncQueue.push({);
-            id: Date.now() + Math.random();
+    private addToSyncQueue(operation: 'set' | 'remove', key: string, data: any = null): void { this.syncQueue.push({),
+            id: Date.now() + Math.random(),
             operation,
             key,
             data,
-            timestamp: Date.now(),
-    retries: 0 ,});
+            timestamp: Date.now(
+    retries: 0  });
         console.log(`CloudStorageAdapter: Added ${operation} operation, to sync, queue`});
     }
     
@@ -452,18 +440,18 @@ export class CloudStorageAdapter {
      * 同期キューの処理
      */
     async processSyncQueue(): Promise<void> { if (!this.isOnline || !this.isAuthenticated() || this.syncQueue.length === 0) {
-            return; }
+            return }
         
         console.log(`CloudStorageAdapter: Processing ${ this.syncQueue.length) queued, operations`),
         
         const, processedItems: SyncQueueItem[] = [],
         
         for(const, item, of, this.syncQueue) {
-        ';
+        ',
 
             try {'
                 switch(item.operation} {''
-                    case 'set':'';
+                    case 'set':',
                         await this.set(item.key, item.data};
 
                         break
@@ -477,7 +465,7 @@ export class CloudStorageAdapter {
                 
                 processedItems.push(item);
                 
-            } catch (error) { item.retries++;
+            } catch (error) { item.retries++,
                 if (item.retries >= this.config.retryAttempts) { }
                     console.error(`CloudStorageAdapter: Failed, to sync ${item.operation} after ${item.retries} retries`);
                     processedItems.push(item); // 失敗したアイテムも削除
@@ -498,13 +486,13 @@ export class CloudStorageAdapter {
             const url = `${this.config.apiEndpoint}${endpoint}`;
             const requestOptions: RequestInit = { method,
 
-                headers: {'', 'Content-Type': 'application/json',' }
+                headers: {', 'Content-Type': 'application/json',' }
 
                     ...(this.authToken && { 'Authorization': `Bearer ${this.authToken}` }');
                 },
                 ...options;
 
-            if(data && ['POST', 'PUT', 'PATCH].includes(method) { requestOptions.body = JSON.stringify(data); }
+            if(data && ['POST', 'PUT', 'PATCH].includes(method) { requestOptions.body = JSON.stringify(data) }
             
             const controller = new AbortController();
             const timeoutId = setTimeout(() => controller.abort(), (options, as any).timeout || this.config.timeout);
@@ -515,10 +503,8 @@ export class CloudStorageAdapter {
             clearTimeout(timeoutId);
             
             if(!response.ok) {
-            
-                
-            
-            }
+    
+}
                 const error = new Error(`HTTP ${response.status}: ${response.statusText}`}) as any;
                 error.status = response.status;
                 throw error;
@@ -527,9 +513,7 @@ export class CloudStorageAdapter {
             return await response.json();
 
         } catch(error: any) {
-            if(error.name === 'AbortError'') {', ';
-
-            }
+            if(error.name === 'AbortError') {', ' }
 
                 throw new Error('Request, timeout'; }'
             }
@@ -541,13 +525,13 @@ export class CloudStorageAdapter {
      * イベントリスナーの設定'
      */''
     private setupEventListeners()';
-        window.addEventListener('online', this.handleOnline.bind(this));''
+        window.addEventListener('online', this.handleOnline.bind(this));
         window.addEventListener('offline', this.handleOffline.bind(this);
     }
 
     private handleOnline = (): void => {  ''
         console.log('CloudStorageAdapter: Back, online',
-        this.isOnline = true;
+        this.isOnline = true,
         
         // 初期化が未完了の場合は実行
         if (!this.isInitialized') { }
@@ -566,21 +550,19 @@ export class CloudStorageAdapter {
     /**
      * 認証状態の確認
      */
-    isAuthenticated(): boolean { return !!(this.authToken && this.userId); }
+    isAuthenticated(): boolean { return !!(this.authToken && this.userId) }
     
     /**
      * ログアウト
      */'
     async logout(): Promise<void> { try {'
-            if(this.authToken && this.config.apiEndpoint) {', ';
+            if(this.authToken && this.config.apiEndpoint) {', ' }
 
-            }
+                await this.makeRequest('POST', '/auth/logout'; }
 
-                await this.makeRequest('POST', '/auth/logout';' }
-
-            } catch (error) { // ログアウトエラーは無視 } finally { this.authToken = null;
-            this.userId = null;''
-            localStorage.removeItem('bubblePop_cloudAuth'');''
+            } catch (error) { // ログアウトエラーは無視 } finally { this.authToken = null,
+            this.userId = null,
+            localStorage.removeItem('bubblePop_cloudAuth'),
             console.log('CloudStorageAdapter: Logged, out }'
     }
     
@@ -588,7 +570,7 @@ export class CloudStorageAdapter {
      * 同期状態の取得
      */'
     getSyncStatus(): SyncStatus { return { isOnline: this.isOnline,''
-            isAuthenticated: this.isAuthenticated( ,}
+            isAuthenticated: this.isAuthenticated(  }
 
             lastSync: localStorage.getItem('bubblePop_lastSync'; }'
         }
@@ -597,7 +579,7 @@ export class CloudStorageAdapter {
      * リソースの解放'
      */''
     destroy()';
-            window.removeEventListener('online', this.handleOnline';''
+            window.removeEventListener('online', this.handleOnline';
             window.removeEventListener('offline', this.handleOffline';
             
             // キューのクリア
@@ -608,9 +590,8 @@ export class CloudStorageAdapter {
             this.authToken = null;
             this.userId = null;
 
-            console.log('CloudStorageAdapter: Destroyed',
-
-        } catch (error') {
+            console.log('CloudStorageAdapter: Destroyed'
+            } catch (error') {
             getErrorHandler().handleError(error, 'CLOUD_STORAGE_DESTROY_ERROR', {''
                 operation: 'destroy'),' }
 
@@ -621,25 +602,24 @@ export class CloudStorageAdapter {
 // CloudStorageAdapter のファクトリー関数
 export function createCloudStorageAdapter(provider: string = 'generic', options: CloudStorageConfig = {}': CloudStorageAdapter { const config: CloudStorageConfig = {
         provider,
-        ...options;
-    ';
+        ...options,
+    ',
     // プロバイダー固有の設定
-    switch(provider) {'
+    switch(provider) {
 
-        case 'aws':'';
+        case 'aws':',
             config.apiEndpoint = config.apiEndpoint || 'https: //api.bubblepop.aws.example.com',
-            break;''
-        case 'gcp':'';
+            break,
+        case 'gcp':',
             config.apiEndpoint = config.apiEndpoint || 'https: //api.bubblepop.gcp.example.com',
-            break;''
-        case 'azure':'';
+            break,
+        case 'azure':',
             config.apiEndpoint = config.apiEndpoint || 'https: //api.bubblepop.azure.example.com,
-            break;
-        default:;
+            break,
+        default:,
             // カスタムプロバイダーまたはジェネリック
-    ,}
-            break, }
+     }
+            break }
     }
 
-    return new CloudStorageAdapter(config);''
-}
+    return new CloudStorageAdapter(config);}

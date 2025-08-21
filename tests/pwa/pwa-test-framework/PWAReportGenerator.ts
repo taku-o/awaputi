@@ -5,17 +5,16 @@
 
 export class PWAReportGenerator {
     constructor(mainFramework {
-        this.mainFramework = mainFramework;
+        this.mainFramework = mainFramework,
         
-        console.log('[PWAReportGenerator] Report generator component initialized');
-    }
+        console.log('[PWAReportGenerator] Report generator component initialized') }
     
     /**
      * Generate test report
      */
     generateTestReport() {
-        const endTime = Date.now();
-        const totalDuration = endTime - this.mainFramework.executor.state.startTime;
+        const endTime = Date.now(),
+        const totalDuration = endTime - this.mainFramework.executor.state.startTime,
         
         const report = {
             summary: {
@@ -45,11 +44,9 @@ export class PWAReportGenerator {
                 colorDepth: screen.colorDepth,
                 pixelDepth: screen.pixelDepth,
                 timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-                timestamp: new Date().toISOString(),
-            },
+                timestamp: new Date().toISOString() },
             
-            recommendations: this.generateRecommendations(),
-        };
+            recommendations: this.generateRecommendations( };
         
         return report;
     }
@@ -61,76 +58,68 @@ export class PWAReportGenerator {
         const recommendations: any[] = [],
         
         // Recommendations based on failed tests
-        const failedTests = this.mainFramework.testResults.filter(t => t.status === 'failed');
+        const failedTests = this.mainFramework.testResults.filter(t => t.status === 'failed'),
         
         for (const test of failedTests') {
-            if (test.id === 'manifest-exists'') {
+            if (test.id === 'manifest-exists') {
                 recommendations.push({
                     category: 'manifest',
                     priority: 'high',
-                    message: 'Create or fix App Manifest file')');
-            }
+                    message: 'Create or fix App Manifest file')') }
             
-            if (test.id === 'service-worker-registration'') {
+            if (test.id === 'service-worker-registration') {
                 recommendations.push({
                     category: 'service-worker',
                     priority: 'high',
-                    message: 'Check Service Worker registration')');
-            }
+                    message: 'Check Service Worker registration')') }
             
-            if (test.id === 'icon-loading-test'') {
+            if (test.id === 'icon-loading-test') {
                 recommendations.push({
                     category: 'icons',
                     priority: 'medium',
-                    message: 'Some icons failed to load. Check icon paths')');
-            }
+                    message: 'Some icons failed to load. Check icon paths')') }
             
-            if (test.id === 'cache-performance-test'') {
+            if (test.id === 'cache-performance-test') {
                 recommendations.push({
                     category: 'performance',
                     priority: 'medium',
-                    message: 'Cache performance needs improvement')');
-            }
+                    message: 'Cache performance needs improvement')') }
             
-            if (test.id === 'browser-feature-support'') {
+            if (test.id === 'browser-feature-support') {
                 recommendations.push({
                     category: 'compatibility',
                     priority: 'low',
-                    message: 'Consider polyfills for unsupported browser features');
-            }
+                    message: 'Consider polyfills for unsupported browser features') }
         }
         
         // Recommendations based on success rate
         if (this.mainFramework.executor.state.totalTests > 0) {
-            const successRate = (this.mainFramework.executor.state.passedTests / this.mainFramework.executor.state.totalTests) * 100;
+            const successRate = (this.mainFramework.executor.state.passedTests / this.mainFramework.executor.state.totalTests) * 100,
             
             if (successRate < 50') {
                 recommendations.push({
                     category: 'general',
                     priority: 'critical',
-                    message: 'Critical PWA functionality issues. Review basic configuration');
-            } else if (successRate < 80') {
+                    message: 'Critical PWA functionality issues. Review basic configuration') } else if (successRate < 80') {
                 recommendations.push({
                     category: 'general',
                     priority: 'medium',
-                    message: 'PWA functionality can be improved. Check failed tests');
-                });
+                    message: 'PWA functionality can be improved. Check failed tests') });
             } else if (successRate >= 95') {
                 recommendations.push({
                     category: 'general',
                     priority: 'info',
-                    message: 'PWA functionality is working well!');
-                });
+                    message: 'PWA functionality is working well!') });
             }
         }
         
         // Performance-specific recommendations
         const performanceTests = this.mainFramework.testResults.filter(t => ');
-            t.id.includes('performance'') || t.id.includes('latency');
+            t.id.includes('performance') || t.id.includes('latency');
         
         for (const test of performanceTests') {
             if (test.status === 'passed' && test.result') {
-                if (test.result.performance === 'poor'') {
+                if (test.result.performance === 'poor') {
                     recommendations.push({
                         category: 'performance',
                         priority: 'high',
@@ -146,7 +135,7 @@ export class PWAReportGenerator {
      * Generate HTML report
      */
     generateHTMLReport() {
-        const report = this.generateTestReport(');
+        const report = this.generateTestReport('),
         
         const html = `
         <!DOCTYPE html>
@@ -156,44 +145,44 @@ export class PWAReportGenerator {
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>PWA Test Report</title>
             <style>
-                body { font-family: Arial, sans-serif; margin: 20px;, background: #f5f5f5, }
-                .container { max-width: 1200px; margin: 0 auto; background: white;, padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-                .header { text-align: center; margin-bottom: 30px, }
-                .summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)"); gap: 20px; margin-bottom: 30px, }
-                .stat-card { background: #f8f9fa;, padding: 15px; border-radius: 6px; text-align: center, }
-                .stat-value { font-size: 2em; font-weight: bold; margin-bottom: 5px, }
-                .passed { color: #28a745, }
-                .failed { color: #dc3545, }
-                .skipped { color: #ffc107, }
-                .test-results { margin-bottom: 30px, }
-                .test-category { margin-bottom: 20px, }
-                .category-header { background: #e9ecef;, padding: 10px; margin-bottom: 10px; border-radius: 4px; font-weight: bold, }
-                .test-item { background: #f8f9fa; margin: 10px 0;, padding: 15px; border-radius: 6px; border-left: 4px solid #28a745, }
-                .test-item.failed { border-left-color: #dc3545, }
-                .test-name { font-weight: bold; margin-bottom: 10px, }
-                .test-duration { color: #666; font-size: 0.9em, }
-                .test-result { margin-top: 10px; padding: 10px;, background: #e7f3ff; border-radius: 4px; font-size: 0.9em, }
-                .error-details { background: #fee;, padding: 10px; border-radius: 4px; margin-top: 10px; font-family: monospace; font-size: 0.9em, }
-                .recommendations { margin-top: 30px, }
-                .recommendation { background: #e7f3ff; padding: 15px;, margin: 10px 0; border-radius: 6px; border-left: 4px solid #007bff, }
-                .recommendation.high { border-left-color: #dc3545;, background: #ffeaea, }
-                .recommendation.critical { border-left-color: #721c24;, background: #f8d7da, }
-                .recommendation.info { border-left-color: #28a745;, background: #d4edda, }
-                .environment { margin-top: 30px; background: #f8f9fa;, padding: 15px; border-radius: 6px, }
-                .environment pre { margin: 0; font-size: 0.9em; overflow-x: auto, }
-                .chart { margin: 20px 0, }
-                .progress-bar { background: #e9ecef; height: 20px; border-radius: 10px;, overflow: hidden, }
-                .progress-fill { background: #28a745; height: 100%;, transition: width 0.3s ease, }
-                .legend { display: flex;, gap: 20px; justify-content: center; margin-top: 10px, }
-                .legend-item { display: flex; align-items: center;, gap: 5px, }
-                .legend-color { width: 20px;, height: 20px; border-radius: 3px, }
+                body { font-family: Arial, sans-serif, margin: 20px,, background: #f5f5f5 }
+                .container { max-width: 1200px, margin: 0 auto, background: white,, padding: 20px, border-radius: 8px, box-shadow: 0 2px 10px rgba(0,0,0,0.1) }
+                .header { text-align: center, margin-bottom: 30px }
+                .summary { display: grid, grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)"), gap: 20px, margin-bottom: 30px }
+                .stat-card { background: #f8f9fa,, padding: 15px, border-radius: 6px, text-align: center }
+                .stat-value { font-size: 2em, font-weight: bold, margin-bottom: 5px }
+                .passed { color: #28a745 }
+                .failed { color: #dc3545 }
+                .skipped { color: #ffc107 }
+                .test-results { margin-bottom: 30px }
+                .test-category { margin-bottom: 20px }
+                .category-header { background: #e9ecef,, padding: 10px, margin-bottom: 10px, border-radius: 4px, font-weight: bold }
+                .test-item { background: #f8f9fa, margin: 10px 0,, padding: 15px, border-radius: 6px, border-left: 4px solid #28a745 }
+                .test-item.failed { border-left-color: #dc3545 }
+                .test-name { font-weight: bold, margin-bottom: 10px }
+                .test-duration { color: #666, font-size: 0.9em }
+                .test-result { margin-top: 10px, padding: 10px,, background: #e7f3ff, border-radius: 4px, font-size: 0.9em }
+                .error-details { background: #fee,, padding: 10px, border-radius: 4px, margin-top: 10px, font-family: monospace, font-size: 0.9em }
+                .recommendations { margin-top: 30px }
+                .recommendation { background: #e7f3ff, padding: 15px,, margin: 10px 0, border-radius: 6px, border-left: 4px solid #007bff }
+                .recommendation.high { border-left-color: #dc3545,, background: #ffeaea }
+                .recommendation.critical { border-left-color: #721c24,, background: #f8d7da }
+                .recommendation.info { border-left-color: #28a745,, background: #d4edda }
+                .environment { margin-top: 30px, background: #f8f9fa,, padding: 15px, border-radius: 6px }
+                .environment pre { margin: 0, font-size: 0.9em, overflow-x: auto }
+                .chart { margin: 20px 0 }
+                .progress-bar { background: #e9ecef, height: 20px, border-radius: 10px,, overflow: hidden }
+                .progress-fill { background: #28a745, height: 100%,, transition: width 0.3s ease }
+                .legend { display: flex,, gap: 20px, justify-content: center, margin-top: 10px }
+                .legend-item { display: flex, align-items: center,, gap: 5px }
+                .legend-color { width: 20px,, height: 20px, border-radius: 3px }
             </style>
         </head>
         <body>
             <div class="container">
                 <div class="header">
                     <h1>PWA Test Report</h1>
-                    <p>Execution Date: ${new, Date(report.environment.timestamp").toLocaleString('ja-JP''})}</p>
+                    <p>Execution Date: ${new, Date(report.environment.timestamp").toLocaleString('ja-JP'})}</p>
                 </div>
                 
                 <div class="summary">
@@ -247,7 +236,7 @@ export class PWAReportGenerator {
                         <div, class="recommendation ${rec.priority")">
                             <strong>[${rec.priority.toUpperCase(})}]</strong> ${rec.message}
                         </div>
-                    `").join(''')}
+                    `").join('')}
                 </div>
                 
                 <div class="environment">
@@ -267,19 +256,18 @@ export class PWAReportGenerator {
      */
     groupTestsByCategory(testDetails {
         const categories = {
-            'Basic PWA': testDetails.filter(t => t.id.includes('manifest'') || t.id.includes('meta'') || t.id.includes('display')'),
-            'Service Worker': testDetails.filter(t => t.id.includes('service-worker')'),
-            'Installation': testDetails.filter(t => t.id.includes('install')'),
-            'Offline': testDetails.filter(t => t.id.includes('offline'') || t.id.includes('cache-storage')'),
-            'Icons & UI': testDetails.filter(t => t.id.includes('icon'') || t.id.includes('favicon'') || t.id.includes('splash')'),
-            'Performance': testDetails.filter(t => t.id.includes('performance'') || t.id.includes('latency'') || t.id.includes('memory')'),
-            'Compatibility': testDetails.filter(t => t.id.includes('browser'') || t.id.includes('user-agent')');
-        };
+            'Basic PWA': testDetails.filter(t => t.id.includes('manifest') || t.id.includes('meta') || t.id.includes('display')',
+            'Service Worker': testDetails.filter(t => t.id.includes('service-worker')',
+            'Installation': testDetails.filter(t => t.id.includes('install')',
+            'Offline': testDetails.filter(t => t.id.includes('offline') || t.id.includes('cache-storage')',
+            'Icons & UI': testDetails.filter(t => t.id.includes('icon') || t.id.includes('favicon') || t.id.includes('splash')',
+            'Performance': testDetails.filter(t => t.id.includes('performance') || t.id.includes('latency') || t.id.includes('memory')',
+            'Compatibility': testDetails.filter(t => t.id.includes('browser') || t.id.includes('user-agent')') };
         
-        let html = '';
+        let html = ';
         
         for (const [category, tests] of Object.entries(categories) {
-            if (tests.length === 0') continue;
+            if (tests.length === 0') continue,
             
             html += `
                 <div class="test-category">
@@ -296,9 +284,9 @@ export class PWAReportGenerator {
                                 <div class="test-result">
                                     ${this.formatTestResult(test.result"})}
                                 </div> : undefined
-                            ` : ''}
+                            ` : '}
                         </div>
-                    `').join(''')}
+                    `).join('')}
                 </div>
             `;
         }
@@ -333,31 +321,28 @@ export class PWAReportGenerator {
      * Export report as JSON
      */
     exportJSON() {
-        const report = this.generateTestReport();
-        return JSON.stringify(report, null, 2);
-    }
+        const report = this.generateTestReport(),
+        return JSON.stringify(report, null, 2) }
     
     /**
      * Export report as CSV
      */
     exportCSV() {
-        const report = this.generateTestReport(');
+        const report = this.generateTestReport('),
         const rows = [
             ['Test ID', 'Test Name', 'Status', 'Duration (ms')', 'Error Message']
-        ];
+        ],
         
         for (const test of report.details) {
             rows.push([
                 test.id,
                 test.name,
-                test.status);
+                test.status),
                 test.duration.toFixed(2'),
-                test.error ? test.error.message : ''
-            ]);
-        }
+                test.error ? test.error.message : ']) }
         
         return rows.map(row => row.map(cell => ');
-            cell.includes(','') ? `"${cell}"` : cell
-        ").join(',')').join('\n'');
+            cell.includes(',') ? `"${cell}"` : cell
+        ").join(',')').join('\n');
     }
 }

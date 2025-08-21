@@ -12,18 +12,17 @@ describe('UsernameInputManager ResponsiveCanvasManager Integration', () => {
     beforeEach(() => {
         // Mock Canvas and Context
         context = {
-            save: jest.fn(),
-            restore: jest.fn(),
-            fillRect: jest.fn(),
-            strokeRect: jest.fn(),
-            fillText: jest.fn(),
-            scale: jest.fn(),
-        setTransform: jest.fn(),
-        };
+            save: jest.fn(
+            restore: jest.fn(
+            fillRect: jest.fn(
+            strokeRect: jest.fn(
+            fillText: jest.fn(
+            scale: jest.fn(
+        setTransform: jest.fn( };
         canvas = {
             width: 1256,
             height: 942,
-            getContext: jest.fn().mockReturnValue(context);
+            getContext: jest.fn().mockReturnValue(context),
         // Mock ResponsiveCanvasManager
         responsiveCanvasManager = {
             getCanvasInfo: jest.fn().mockReturnValue({
@@ -34,43 +33,40 @@ describe('UsernameInputManager ResponsiveCanvasManager Integration', () => {
                 actualHeight: 942,
                 pixelRatio: 2,
                 baseWidth: 800,
-                baseHeight: 600),
-            updateCanvasSize: jest.fn(),
-        handleResize: jest.fn()'),
-        };
+                baseHeight: 600,
+            updateCanvasSize: jest.fn(
+        handleResize: jest.fn()' };
         // Mock GameEngine
         gameEngine = {
             canvas: canvas,
             responsiveCanvasManager: responsiveCanvasManager,
             debug: false,
-        playerData: { username: '' }
+        playerData: { username: '}
         };
         // Mock UsernameInputManager(simplified version for integration testing
         );
         class TestUsernameInputManager {
             constructor(gameEngine {
-                this.gameEngine = gameEngine;
+                this.gameEngine = gameEngine,
                 this.errorHandler = { handleError: jest.fn(') };
-                this.usernameInput = '';
+                this.usernameInput = ';
                 this.isEditingUsername = false;
             }
             getCanvasInfo(') {
                 try {
-                    const responsiveCanvasManager = this.gameEngine.responsiveCanvasManager;
+                    const responsiveCanvasManager = this.gameEngine.responsiveCanvasManager,
                     if (responsiveCanvasManager && typeof responsiveCanvasManager.getCanvasInfo === 'function') {
-                        const canvasInfo = responsiveCanvasManager.getCanvasInfo(');
+                        const canvasInfo = responsiveCanvasManager.getCanvasInfo('),
                         if (canvasInfo && typeof canvasInfo.scale === 'number' && canvasInfo.scale > 0) {
-                            return canvasInfo;
-                        }
+                            return canvasInfo }
                     } catch (error) {
                     if (this.gameEngine.debug') {
-                        console.warn('ResponsiveCanvasManager access failed:', error);
-                    }
+                        console.warn('ResponsiveCanvasManager access failed:', error) }
                 }
                 return null;
             }
             transformCoordinates(baseX, baseY, canvasInfo) {
-                if (!canvasInfo) return null;
+                if (!canvasInfo) return null,
                 const { scale } = canvasInfo;
                 return {
                     x: baseX * scale,
@@ -78,7 +74,7 @@ describe('UsernameInputManager ResponsiveCanvasManager Integration', () => {
                 };
             }
             validateCoordinates(x, y, canvasInfo) {
-                if (!canvasInfo) return false;
+                if (!canvasInfo) return false,
                 const { actualWidth, actualHeight } = canvasInfo;
                 return x >= 0 && x <= actualWidth && y >= 0 && y <= actualHeight;
             }
@@ -100,7 +96,7 @@ describe('UsernameInputManager ResponsiveCanvasManager Integration', () => {
                 // Title rendering
                 const titleCoords = this.transformCoordinates(LAYOUT.title.x, LAYOUT.title.y, canvasInfo);
                 if (titleCoords && this.validateCoordinates(titleCoords.x, titleCoords.y, canvasInfo)') {
-                    context.fillStyle = '#FFFFFF';
+                    context.fillStyle = '#FFFFFF',
                     context.font = `bold ${32 * canvasInfo.scale}px Arial`;
                     context.textAlign = 'center';
                     context.textBaseline = 'middle';
@@ -114,33 +110,31 @@ describe('UsernameInputManager ResponsiveCanvasManager Integration', () => {
     }');
     describe('coordinate system consistency', (') => {
         it('should maintain coordinate consistency between ResponsiveCanvasManager and UsernameInputManager', () => {
-            const canvasInfo = usernameInputManager.getCanvasInfo();
-            expect(canvasInfo.toBeDefined();
-            expect(canvasInfo.scale).toBe(1.57);
-            expect(canvasInfo.actualWidth).toBe(1256);
-            expect(canvasInfo.actualHeight).toBe(942);
-            expect(canvasInfo.pixelRatio).toBe(2);
-        }');
+            const canvasInfo = usernameInputManager.getCanvasInfo(),
+            expect(canvasInfo.toBeDefined(),
+            expect(canvasInfo.scale).toBe(1.57),
+            expect(canvasInfo.actualWidth).toBe(1256),
+            expect(canvasInfo.actualHeight).toBe(942),
+            expect(canvasInfo.pixelRatio).toBe(2) }');
         it('should transform base coordinates consistently with canvas scale', () => {
-            const canvasInfo = usernameInputManager.getCanvasInfo();
+            const canvasInfo = usernameInputManager.getCanvasInfo(),
             // Center coordinates in base 800x600 system
-            const centerX = 400;
-            const centerY = 300;
+            const centerX = 400,
+            const centerY = 300,
             
-            const transformed = usernameInputManager.transformCoordinates(centerX, centerY, canvasInfo);
+            const transformed = usernameInputManager.transformCoordinates(centerX, centerY, canvasInfo),
             // Should scale to canvas coordinates
-            expect(transformed.x).toBeCloseTo(628, 1); // 400 * 1.57
-            expect(transformed.y).toBeCloseTo(471, 1); // 300 * 1.57
+            expect(transformed.x).toBeCloseTo(628, 1), // 400 * 1.57
+            expect(transformed.y).toBeCloseTo(471, 1), // 300 * 1.57
             
             // Should be within canvas bounds
-            expect(usernameInputManager.validateCoordinates(transformed.x, transformed.y, canvasInfo).toBe(true);
-        }');
+            expect(usernameInputManager.validateCoordinates(transformed.x, transformed.y, canvasInfo).toBe(true) }');
     }
     describe('canvas resize handling', (') => {
         it('should handle canvas resize and coordinate updates', () => {
             // Initial canvas info
-            let canvasInfo = usernameInputManager.getCanvasInfo();
-            const initialScale = canvasInfo.scale;
+            let canvasInfo = usernameInputManager.getCanvasInfo(),
+            const initialScale = canvasInfo.scale,
             
             // Simulate canvas resize
             responsiveCanvasManager.getCanvasInfo.mockReturnValue({
@@ -151,16 +145,15 @@ describe('UsernameInputManager ResponsiveCanvasManager Integration', () => {
                 actualHeight: 1200,
                 pixelRatio: 2,
                 baseWidth: 800,
-                baseHeight: 600);
+                baseHeight: 600),
             // Get updated canvas info
-            canvasInfo = usernameInputManager.getCanvasInfo();
-            expect(canvasInfo.scale).toBe(2.0);
-            expect(canvasInfo.scale).not.toBe(initialScale);
+            canvasInfo = usernameInputManager.getCanvasInfo(),
+            expect(canvasInfo.scale).toBe(2.0),
+            expect(canvasInfo.scale).not.toBe(initialScale),
             // Coordinates should update accordingly
-            const transformed = usernameInputManager.transformCoordinates(400, 300, canvasInfo);
-            expect(transformed.x).toBe(800);
-            expect(transformed.y).toBe(600);
-        }');
+            const transformed = usernameInputManager.transformCoordinates(400, 300, canvasInfo),
+            expect(transformed.x).toBe(800),
+            expect(transformed.y).toBe(600) }');
         it('should maintain coordinate validity after resize', () => {
             // Resize to smaller canvas
             responsiveCanvasManager.getCanvasInfo.mockReturnValue({
@@ -171,8 +164,7 @@ describe('UsernameInputManager ResponsiveCanvasManager Integration', () => {
                 actualHeight: 450,
                 pixelRatio: 1,
                 baseWidth: 800,
-                baseHeight: 600),
-            });
+                baseHeight: 600 });
             const canvasInfo = usernameInputManager.getCanvasInfo();
             const transformed = usernameInputManager.transformCoordinates(400, 300, canvasInfo);
             expect(transformed.x).toBe(300);
@@ -190,8 +182,7 @@ describe('UsernameInputManager ResponsiveCanvasManager Integration', () => {
                 actualHeight: 600,
                 pixelRatio: 1,
                 baseWidth: 800,
-                baseHeight: 600),
-            });
+                baseHeight: 600 });
             const canvasInfo = usernameInputManager.getCanvasInfo();
             const rendered = usernameInputManager.renderWithResponsiveCoordinates(context, canvasInfo);
             expect(rendered.toBe(true);
@@ -208,8 +199,7 @@ describe('UsernameInputManager ResponsiveCanvasManager Integration', () => {
                 actualHeight: 1200,
                 pixelRatio: 2,
                 baseWidth: 800,
-                baseHeight: 600),
-            });
+                baseHeight: 600 });
             const canvasInfo = usernameInputManager.getCanvasInfo();
             const rendered = usernameInputManager.renderWithResponsiveCoordinates(context, canvasInfo);
             expect(rendered.toBe(true);
@@ -224,8 +214,7 @@ describe('UsernameInputManager ResponsiveCanvasManager Integration', () => {
                 actualHeight: 1800,
                 pixelRatio: 3,
                 baseWidth: 800,
-                baseHeight: 600),
-            });
+                baseHeight: 600 });
             const canvasInfo = usernameInputManager.getCanvasInfo();
             const rendered = usernameInputManager.renderWithResponsiveCoordinates(context, canvasInfo);
             expect(rendered.toBe(true);
@@ -234,14 +223,13 @@ describe('UsernameInputManager ResponsiveCanvasManager Integration', () => {
     }
     describe('fallback behavior', (') => {
         it('should handle ResponsiveCanvasManager unavailable', () => {
-            gameEngine.responsiveCanvasManager = null;
+            gameEngine.responsiveCanvasManager = null,
             
-            const canvasInfo = usernameInputManager.getCanvasInfo();
-            expect(canvasInfo.toBeNull();
+            const canvasInfo = usernameInputManager.getCanvasInfo(),
+            expect(canvasInfo.toBeNull(),
             // Should not throw error when trying to transform coordinates
-            const result = usernameInputManager.transformCoordinates(400, 300, canvasInfo);
-            expect(result.toBeNull();
-        }');
+            const result = usernameInputManager.transformCoordinates(400, 300, canvasInfo),
+            expect(result.toBeNull() }');
         it('should handle ResponsiveCanvasManager method missing', () => {
             gameEngine.responsiveCanvasManager = {};
             
@@ -252,15 +240,13 @@ describe('UsernameInputManager ResponsiveCanvasManager Integration', () => {
             responsiveCanvasManager.getCanvasInfo.mockReturnValue({
                 scale: -1,
                 displayWidth: 800,
-                displayHeight: 600),
-            });
+                displayHeight: 600 });
             const canvasInfo = usernameInputManager.getCanvasInfo();
             expect(canvasInfo.toBeNull();
         }');
         it('should handle ResponsiveCanvasManager throwing error', () => {
             responsiveCanvasManager.getCanvasInfo.mockImplementation((') => {
-                throw new Error('Canvas info error');
-            });
+                throw new Error('Canvas info error') });
             const canvasInfo = usernameInputManager.getCanvasInfo();
             expect(canvasInfo.toBeNull();
         }');
@@ -275,8 +261,7 @@ describe('UsernameInputManager ResponsiveCanvasManager Integration', () => {
                 actualHeight: 1080,
                 pixelRatio: 1,
                 baseWidth: 800,
-                baseHeight: 600),
-            });
+                baseHeight: 600 });
             const canvasInfo = usernameInputManager.getCanvasInfo();
             const rendered = usernameInputManager.renderWithResponsiveCoordinates(context, canvasInfo);
             expect(rendered.toBe(true);
@@ -292,8 +277,7 @@ describe('UsernameInputManager ResponsiveCanvasManager Integration', () => {
                 actualHeight: 562,
                 pixelRatio: 2,
                 baseWidth: 800,
-                baseHeight: 600),
-            });
+                baseHeight: 600 });
             const canvasInfo = usernameInputManager.getCanvasInfo();
             const rendered = usernameInputManager.renderWithResponsiveCoordinates(context, canvasInfo);
             expect(rendered.toBe(true);
@@ -304,13 +288,12 @@ describe('UsernameInputManager ResponsiveCanvasManager Integration', () => {
     describe('performance considerations', (') => {
         it('should not call getCanvasInfo excessively', () => {
             // Reset mock call count
-            responsiveCanvasManager.getCanvasInfo.mockClear();
+            responsiveCanvasManager.getCanvasInfo.mockClear(),
             // Call getCanvasInfo multiple times
-            usernameInputManager.getCanvasInfo();
-            usernameInputManager.getCanvasInfo();
-            usernameInputManager.getCanvasInfo();
-            // Should call underlying method each time (no caching in this basic implementation);
-            expect(responsiveCanvasManager.getCanvasInfo).toHaveBeenCalledTimes(3);
-        });
+            usernameInputManager.getCanvasInfo(),
+            usernameInputManager.getCanvasInfo(),
+            usernameInputManager.getCanvasInfo(),
+            // Should call underlying method each time (no caching in this basic implementation),
+            expect(responsiveCanvasManager.getCanvasInfo).toHaveBeenCalledTimes(3) });
     }
 }');

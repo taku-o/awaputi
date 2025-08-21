@@ -7,59 +7,54 @@ import { describe, test, expect, beforeEach, afterEach, jest  } from '@jest/glob
 global.jest = {
     fn: (impl) => {
         const mockFn = function(...args) {
-            mockFn.mock.calls.push(args');
+            mockFn.mock.calls.push(args'),
             mockFn.mock.results.push({ type: 'return', value: impl ? impl(...args) : undefined });
             return impl ? impl(...args) : undefined;
         };
         mockFn.mock = { calls: [], results: [] };
         mockFn.mockReturnValue = function(value {
-            const newFn = global.jest.fn(() => value);
-            Object.setPrototypeOf(newFn, mockFn);
-            return newFn;
-        );
+            const newFn = global.jest.fn(() => value),
+            Object.setPrototypeOf(newFn, mockFn),
+            return newFn),
         mockFn.mockResolvedValue = function(value {
-            const newFn = global.jest.fn(() => Promise.resolve(value);
-            Object.setPrototypeOf(newFn, mockFn);
-            return newFn;
-        );
-        return mockFn;
-    )
-);
+            const newFn = global.jest.fn(() => Promise.resolve(value),
+            Object.setPrototypeOf(newFn, mockFn),
+            return newFn),
+        return mockFn)
+),
 // テスト用のモックCanvas作成
 function createMockCanvas() {
     return {
         width: 800,
         height: 600,
-        getContext: global.jest.fn(() => createMockContext();
-    });
+        getContext: global.jest.fn(() => createMockContext());
 )
 // テスト用のモックContext作成
 function createMockContext(') {
     return {
-        fillStyle: '',
-        strokeStyle: '',
-        font: '',
-        textAlign: '',
-        textBaseline: '',
+        fillStyle: ',
+        strokeStyle: ',
+        font: ',
+        textAlign: ',
+        textBaseline: ',
         lineWidth: 1,
-        fillRect: global.jest.fn(),
-        strokeRect: global.jest.fn(),
-        fillText: global.jest.fn(),
-        clearRect: global.jest.fn(),
-        save: global.jest.fn(),
-        restore: global.jest.fn(),
+        fillRect: global.jest.fn(
+        strokeRect: global.jest.fn(
+        fillText: global.jest.fn(
+        clearRect: global.jest.fn(
+        save: global.jest.fn(
+        restore: global.jest.fn(
         drawImage: global.jest.fn()
-    );
-}
+    ) }
 // モックGameEngine
 class MockGameEngine {
     constructor() {
-        this.canvas = createMockCanvas();
+        this.canvas = createMockCanvas(),
         this.statisticsManager = {
-            getDetailedStatistics: global.jest.fn(() => Promise.resolve({);
-                basic: { totalGamesPlayed: 10 ),
-                bubbles: { totalPopped: 1000 ),
-                combos: { maxCombo: 50 ),
+            getDetailedStatistics: global.jest.fn(() => Promise.resolve({),
+                basic: { totalGamesPlayed: 10 ,
+                bubbles: { totalPopped: 1000 ,
+                combos: { maxCombo: 50 ,
                 stages: { unlockedStages: 5 }
             });
         };
@@ -68,13 +63,12 @@ class MockGameEngine {
                 { id: 'test_achievement', unlocked: true, progress: 100,
         target: 100 )
             ])
-        );
+        ),
         this.playerData = {
-            getData: global.jest.fn((') => ({ username: 'TestUser' )));
-       , saveData: global.jest.fn();
+            getData: global.jest.fn((') => ({ username: 'TestUser' )),
+       , saveData: global.jest.fn(),
         this.errorHandler = {
-            handleError: global.jest.fn(),
-    }');
+            handleError: global.jest.fn( }');
         this.statisticsDashboard = null;
         this.chartRenderer = null;
     }
@@ -86,7 +80,7 @@ describe('UserInfoScene Components Integration', () => {
     
     beforeEach(async (') => {
         // モジュールのインポート
-        const { ComponentEventBus } = await import('../../src/scenes/components/ComponentEventBus.js'');
+        const { ComponentEventBus } = await import('../../src/scenes/components/ComponentEventBus.js');
         const { SceneState } = await import('../../src/scenes/components/SceneState.js');
         gameEngine = new MockGameEngine();
         eventBus = new ComponentEventBus();
@@ -101,18 +95,16 @@ describe('UserInfoScene Components Integration', () => {
             statisticsTab.initialize();
         }');
         test('should initialize with sub-components', () => {
-            expect(statisticsTab.filterUI).toBeDefined();
-            expect(statisticsTab.statisticsRenderer).toBeDefined();
-            expect(statisticsTab.dashboardRenderer).toBeDefined();
-        }');
+            expect(statisticsTab.filterUI).toBeDefined(),
+            expect(statisticsTab.statisticsRenderer).toBeDefined(),
+            expect(statisticsTab.dashboardRenderer).toBeDefined() }');
         test('should load statistics data on activation', async () => {
-            statisticsTab.activate();
-            await new Promise(resolve => setTimeout(resolve, 100);
-            expect(gameEngine.statisticsManager.getDetailedStatistics).toHaveBeenCalled();
-            expect(statisticsTab.statisticsData).toBeDefined();
-        }');
+            statisticsTab.activate(),
+            await new Promise(resolve => setTimeout(resolve, 100),
+            expect(gameEngine.statisticsManager.getDetailedStatistics).toHaveBeenCalled(),
+            expect(statisticsTab.statisticsData).toBeDefined() }');
         test('should handle filter changes via event bus', async () => {
-            statisticsTab.activate(');
+            statisticsTab.activate('),
             // フィルター変更イベントを発信
             eventBus.emit('statistics-filter-changed', { period: 'today' });
             await new Promise(resolve => setTimeout(resolve, 100);
@@ -120,29 +112,26 @@ describe('UserInfoScene Components Integration', () => {
             expect(gameEngine.statisticsManager.getDetailedStatistics').toHaveBeenCalledWith('today');
         }');
         test('should switch view modes', () => {
-            statisticsTab.activate(');
+            statisticsTab.activate('),
             // ダッシュボードモード
-            statisticsTab.setViewMode('dashboard');
-            expect(statisticsTab.statisticsViewMode').toBe('dashboard'');
+            statisticsTab.setViewMode('dashboard'),
+            expect(statisticsTab.statisticsViewMode').toBe('dashboard'),
             // チャートモード
-            statisticsTab.setViewMode('charts');
-            expect(statisticsTab.statisticsViewMode').toBe('charts'');
+            statisticsTab.setViewMode('charts'),
+            expect(statisticsTab.statisticsViewMode').toBe('charts'),
             // 詳細モード
-            statisticsTab.setViewMode('details');
-            expect(statisticsTab.statisticsViewMode').toBe('details');
-        }');
+            statisticsTab.setViewMode('details'),
+            expect(statisticsTab.statisticsViewMode').toBe('details') }');
         test('should render without errors', () => {
-            const context = createMockContext();
+            const context = createMockContext(),
             expect(() => {
-                statisticsTab.render(context, 0, 100, 800, 400);
-            }).not.toThrow(');
+                statisticsTab.render(context, 0, 100, 800, 400) }).not.toThrow(');
         }
         test('should handle click events', () => {
-            statisticsTab.activate();
+            statisticsTab.activate(),
             // フィルターエリアのクリック
-            const handled = statisticsTab.handleClick(150, 120);
-            expect(typeof handled').toBe('boolean');
-        }');
+            const handled = statisticsTab.handleClick(150, 120),
+            expect(typeof handled').toBe('boolean') }');
     }
     describe('AchievementsTab Component', () => {
         let achievementsTab: any,
@@ -153,26 +142,23 @@ describe('UserInfoScene Components Integration', () => {
             achievementsTab.initialize();
         }');
         test('should filter achievements by category', () => {
-            achievementsTab.activate(');
+            achievementsTab.activate('),
             // カテゴリフィルターを設定
-            achievementsTab.setCategoryFilter('basic');
-            expect(achievementsTab.categoryFilter').toBe('basic'');
-            achievementsTab.setCategoryFilter('all');
-            expect(achievementsTab.categoryFilter').toBe('all');
-        }');
+            achievementsTab.setCategoryFilter('basic'),
+            expect(achievementsTab.categoryFilter').toBe('basic'),
+            achievementsTab.setCategoryFilter('all'),
+            expect(achievementsTab.categoryFilter').toBe('all') }');
         test('should calculate achievement statistics', async () => {
-            achievementsTab.activate();
-            await new Promise(resolve => setTimeout(resolve, 100);
-            const stats = achievementsTab.getAchievementStats();
-            expect(stats.toBeDefined();
-            expect(stats.totalAchievements).toBeGreaterThanOrEqual(0);
-        }');
+            achievementsTab.activate(),
+            await new Promise(resolve => setTimeout(resolve, 100),
+            const stats = achievementsTab.getAchievementStats(),
+            expect(stats.toBeDefined(),
+            expect(stats.totalAchievements).toBeGreaterThanOrEqual(0) }');
         test('should render achievement list', () => {
-            const context = createMockContext();
-            achievementsTab.activate();
+            const context = createMockContext(),
+            achievementsTab.activate(),
             expect(() => {
-                achievementsTab.render(context, 0, 100, 800, 400);
-            }).not.toThrow();
+                achievementsTab.render(context, 0, 100, 800, 400) }).not.toThrow();
         }
     }');
     describe('ManagementTab Component', () => {
@@ -184,11 +170,10 @@ describe('UserInfoScene Components Integration', () => {
             managementTab.initialize();
         }');
         test('should display user information', () => {
-            managementTab.activate();
-            const context = createMockContext();
+            managementTab.activate(),
+            const context = createMockContext(),
             expect(() => {
-                managementTab.render(context, 0, 100, 800, 400);
-            }).not.toThrow();
+                managementTab.render(context, 0, 100, 800, 400) }).not.toThrow();
             // ユーザー名が表示される
             expect(context.fillText).toHaveBeenCalledWith(');
                 expect.stringContaining('TestUser'),
@@ -196,21 +181,19 @@ describe('UserInfoScene Components Integration', () => {
                 expect.any(Number);
         }');
         test('should handle export button click', () => {
-            managementTab.activate();
+            managementTab.activate(),
             // エクスポートボタンのクリック位置
-            const handled = managementTab.handleClick(400, 300');
+            const handled = managementTab.handleClick(400, 300'),
             // イベントが発信される
-            const exportEventFired = eventBus.hasListener('show-export-dialog');
-            expect(typeof handled').toBe('boolean');
-        }');
+            const exportEventFired = eventBus.hasListener('show-export-dialog'),
+            expect(typeof handled').toBe('boolean') }');
         test('should handle import button click', () => {
-            managementTab.activate();
+            managementTab.activate(),
             // インポートボタンのクリック位置
-            const handled = managementTab.handleClick(400, 350');
+            const handled = managementTab.handleClick(400, 350'),
             // イベントが発信される
-            const importEventFired = eventBus.hasListener('show-import-dialog');
-            expect(typeof handled').toBe('boolean');
-        }');
+            const importEventFired = eventBus.hasListener('show-import-dialog'),
+            expect(typeof handled').toBe('boolean') }');
     }
     describe('HelpTab Component', () => {
         let helpTab: any,
@@ -221,34 +204,31 @@ describe('UserInfoScene Components Integration', () => {
             helpTab.initialize();
         }');
         test('should display help sections', () => {
-            helpTab.activate();
-            expect(helpTab.sections).toBeDefined();
-            expect(helpTab.sections.length).toBeGreaterThan(0);
-        }');
+            helpTab.activate(),
+            expect(helpTab.sections).toBeDefined(),
+            expect(helpTab.sections.length).toBeGreaterThan(0) }');
         test('should navigate between help sections', () => {
-            helpTab.activate();
-            const initialSection = helpTab.currentSection;
+            helpTab.activate(),
+            const initialSection = helpTab.currentSection,
             
             // 次のセクションへ
-            helpTab.navigateSection(1);
-            expect(helpTab.currentSection).not.toBe(initialSection);
+            helpTab.navigateSection(1),
+            expect(helpTab.currentSection).not.toBe(initialSection),
             // 前のセクションへ
-            helpTab.navigateSection(-1);
-            expect(helpTab.currentSection).toBe(initialSection);
-        }');
+            helpTab.navigateSection(-1),
+            expect(helpTab.currentSection).toBe(initialSection) }');
         test('should render help content', () => {
-            const context = createMockContext();
-            helpTab.activate();
+            const context = createMockContext(),
+            helpTab.activate(),
             expect(() => {
-                helpTab.render(context, 0, 100, 800, 400);
-            }).not.toThrow();
+                helpTab.render(context, 0, 100, 800, 400) }).not.toThrow();
         }
     }');
     describe('Component Communication', () => {
-        let statisticsTab, achievementsTab;
+        let statisticsTab, achievementsTab,
         
         beforeEach(async (') => {
-            const { StatisticsTab } = await import('../../src/scenes/components/StatisticsTab.js'');
+            const { StatisticsTab } = await import('../../src/scenes/components/StatisticsTab.js');
             const { AchievementsTab } = await import('../../src/scenes/components/AchievementsTab.js');
             statisticsTab = new StatisticsTab(gameEngine, eventBus, sceneState);
             achievementsTab = new AchievementsTab(gameEngine, eventBus, sceneState);
@@ -257,18 +237,17 @@ describe('UserInfoScene Components Integration', () => {
         }');
         test('should share data through event bus', async () => {
             // 統計データの更新
-            statisticsTab.activate();
-            await new Promise(resolve => setTimeout(resolve, 100);
+            statisticsTab.activate(),
+            await new Promise(resolve => setTimeout(resolve, 100),
             // イベントバス経由でデータが共有される
-            const statisticsData = sceneState.statisticsData;
-            expect(statisticsData.toBeDefined();
+            const statisticsData = sceneState.statisticsData,
+            expect(statisticsData.toBeDefined(),
             // 実績タブでも同じデータが利用可能
-            achievementsTab.activate();
-            expect(sceneState.statisticsData).toBe(statisticsData);
-        }');
+            achievementsTab.activate(),
+            expect(sceneState.statisticsData).toBe(statisticsData) }');
         test('should synchronize filter settings', () => {
             // 統計タブでフィルターを設定
-            statisticsTab.activate(');
+            statisticsTab.activate('),
             eventBus.emit('statistics-filter-changed', { period: 'last30days' });
             // 共有状態に反映される
             expect(statisticsTab.currentPeriodFilter').toBe('last30days');
@@ -282,18 +261,16 @@ describe('UserInfoScene Components Integration', () => {
             dialogManager = new DialogManager(gameEngine, eventBus, sceneState);
         }');
         test('should open username dialog', (') => {
-            dialogManager.openDialog('username');
-            expect(dialogManager.currentDialog').toBe('username');
-            expect(dialogManager.isDialogOpen().toBe(true);
-        }');
+            dialogManager.openDialog('username'),
+            expect(dialogManager.currentDialog').toBe('username'),
+            expect(dialogManager.isDialogOpen().toBe(true) }');
         test('should close dialog', (') => {
-            dialogManager.openDialog('username');
-            dialogManager.closeDialog();
-            expect(dialogManager.currentDialog).toBeNull();
-            expect(dialogManager.isDialogOpen().toBe(false);
-        }');
+            dialogManager.openDialog('username'),
+            dialogManager.closeDialog(),
+            expect(dialogManager.currentDialog).toBeNull(),
+            expect(dialogManager.isDialogOpen().toBe(false) }');
         test('should handle dialog events', (') => {
-            dialogManager.openDialog('export'');
+            dialogManager.openDialog('export'),
             // ダイアログからのイベント
             eventBus.emit('export-data', { format: 'json' });
             // イベントが処理される
@@ -316,9 +293,8 @@ describe('UserInfoScene Components Integration', () => {
             const achievementsTab = new AchievementsTab(gameEngine, eventBus, sceneState);
             // 複数回のアクティブ化/非アクティブ化
             for (let i = 0; i < 10; i++) {
-                achievementsTab.activate();
-                achievementsTab.deactivate();
-            }
+                achievementsTab.activate(),
+                achievementsTab.deactivate() }
             
             // メモリリークがないことを確認
             achievementsTab.cleanup();
@@ -328,14 +304,13 @@ describe('UserInfoScene Components Integration', () => {
     describe('Error Handling', (') => {
         test('should handle component initialization errors', async () => {
             // エラーを発生させる
-            gameEngine.errorHandler.handleError = global.jest.fn(');
+            gameEngine.errorHandler.handleError = global.jest.fn('),
             const { StatisticsTab } = await import('../../src/scenes/components/StatisticsTab.js');
             // 不正なgameEngineでコンポーネントを作成
             const brokenGameEngine = null;
             
             expect(() => {
-                const tab = new StatisticsTab(brokenGameEngine, eventBus, sceneState);
-            }).toThrow(');
+                const tab = new StatisticsTab(brokenGameEngine, eventBus, sceneState) }).toThrow(');
         }
         test('should handle render errors gracefully', async (') => {
             const { HelpTab } = await import('../../src/scenes/components/HelpTab.js');
@@ -343,13 +318,9 @@ describe('UserInfoScene Components Integration', () => {
             const context = createMockContext();
             // fillRectをエラーにする
             context.fillRect = global.jest.fn((') => {
-                throw new Error('Render error');
-            ));
-            helpTab.activate();
+                throw new Error('Render error')),
+            helpTab.activate(),
             // エラーが発生してもクラッシュしない
             expect(() => {
-                helpTab.render(context, 0, 100, 800, 400);
-            )).not.toThrow();
-        );
-    }');
+                helpTab.render(context, 0, 100, 800, 400)).not.toThrow()) }');
 }

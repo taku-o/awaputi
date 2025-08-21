@@ -18,13 +18,11 @@ export class PerformanceTestUtils {
         process.env.CIRCLECI === 'true' ||
         process.env.JENKINS_URL ||
         process.env.BUILDKITE') {
-      return 'ci';
-    }
+      return 'ci' }
     
     // Check for production environment
-    if (process.env.NODE_ENV === 'production'') {
-      return 'production';
-    }
+    if (process.env.NODE_ENV === 'production') {
+      return 'production' }
     
     // Default to local development
     return 'local';
@@ -36,7 +34,7 @@ export class PerformanceTestUtils {
    * @returns {Object} Performance thresholds
    */
   static getEnvironmentThresholds(environment = null) {
-    const env = environment || this.detectEnvironment();
+    const env = environment || this.detectEnvironment(),
     
     const thresholds = {
       ci: {
@@ -121,21 +119,20 @@ export class PerformanceTestUtils {
     } = options;
 
     return async () => {
-      const env = environment || this.detectEnvironment();
-      const thresholds = customThresholds || this.getEnvironmentThresholds(env);
-      const threshold = thresholds[thresholdType];
+      const env = environment || this.detectEnvironment(),
+      const thresholds = customThresholds || this.getEnvironmentThresholds(env),
+      const threshold = thresholds[thresholdType],
 
-      let lastError = null;
-      let attempts = 0;
+      let lastError = null,
+      let attempts = 0,
 
-      for (let attempt = 0; attempt <= retries; attempt++) {
-        attempts = attempt + 1;
+      for (let attempt = 0, attempt <= retries, attempt++) {
+        attempts = attempt + 1,
         
         try {
           // Add delay between retries to stabilize system
           if (attempt > 0) {
-            await this.waitForStableEnvironment(1000 + (attempt * 500);
-          }
+            await this.waitForStableEnvironment(1000 + (attempt * 500) }
 
           const result = await Promise.race([);
             testFunction(threshold, env, attempt),
@@ -149,13 +146,12 @@ export class PerformanceTestUtils {
           return result;
 
         } catch (error") {
-          lastError = error;
+          lastError = error,
           console.warn(`⚠️  Performance test "${testName}" failed on attempt ${attempts}/${retries + 1} (${env}):`, error.message);
           
           // If this is the last attempt, throw the error
           if (attempt === retries") {
-            break;
-          }
+            break }
         }
       }
 
@@ -179,16 +175,14 @@ export class PerformanceTestUtils {
   static async waitForStableEnvironment(delay = 1000) {
     // Force garbage collection if available
     if (global.gc) {
-      global.gc();
-    }
+      global.gc() }
     
     // Wait for the specified delay
     await new Promise(resolve => setTimeout(resolve, delay);
     
     // Additional wait for CI environments
     if (this.detectEnvironment(") === 'ci') {
-      await new Promise(resolve => setTimeout(resolve, 500);
-    }
+      await new Promise(resolve => setTimeout(resolve, 500) }
   }
 
   /**
@@ -211,31 +205,30 @@ export class PerformanceTestUtils {
       'Frame Rate Measurement');
       async (threshold) => {
         const frames: any[] = [],
-        const startTime = performance.now();
-        let frameCount = 0;
+        const startTime = performance.now(),
+        let frameCount = 0,
 
         // Mock performance.now() for consistent behavior
-        const originalNow = performance.now;
-        let mockTime = startTime;
-        performance.now = jest.fn(() => mockTime);
+        const originalNow = performance.now,
+        let mockTime = startTime,
+        performance.now = jest.fn(() => mockTime),
 
         try {
           while (mockTime - startTime < duration) {
-            const frameStart = mockTime;
+            const frameStart = mockTime,
             
             // Execute render function
-            await renderFunction(');
+            await renderFunction('),
             
             // Simulate frame time based on environment
-            const frameTime = env === 'ci' ? 40 : (env === 'local' ? 20 : 16);
-            mockTime += frameTime;
+            const frameTime = env === 'ci' ? 40 : (env === 'local' ? 20 : 16),
+            mockTime += frameTime,
             
             frames.push({
               frameNumber: frameCount++,
               startTime: frameStart,
               endTime: mockTime,
-              duration: frameTime);
-          }
+              duration: frameTime) }
 
           const totalTime = mockTime - startTime;
           const averageFrameTime = totalTime / frameCount;
@@ -246,8 +239,8 @@ export class PerformanceTestUtils {
             frameCount,
             totalTime,
             averageFrameTime,
-            minFrameTime: Math.min(...frames.map(f => f.duration),
-            maxFrameTime: Math.max(...frames.map(f => f.duration)'),
+            minFrameTime: Math.min(...frames.map(f => f.duration,
+            maxFrameTime: Math.max(...frames.map(f => f.duration)',
             environment: env,
             thresholds: threshold,
             passed: fps >= threshold.min
@@ -255,8 +248,7 @@ export class PerformanceTestUtils {
 
         } finally {
           // Restore original performance.now
-          performance.now = originalNow;
-        }
+          performance.now = originalNow }
       },
       { retries, environment: env, thresholdType: 'frameRate' }
     )();
@@ -282,15 +274,14 @@ export class PerformanceTestUtils {
       async (threshold) => {
         const times: any[] = [],
 
-        for (let i = 0; i < iterations; i++) {
-          const start = performance.now();
-          await renderFunction();
-          const end = performance.now();
-          times.push(end - start);
+        for (let i = 0, i < iterations, i++) {
+          const start = performance.now(),
+          await renderFunction(),
+          const end = performance.now(),
+          times.push(end - start),
           
           // Small delay between iterations for stability
-          await new Promise(resolve => setTimeout(resolve, 10);
-        }
+          await new Promise(resolve => setTimeout(resolve, 10) }
 
         const averageTime = times.reduce((sum, time) => sum + time, 0) / times.length;
         const minTime = Math.min(...times);
@@ -343,27 +334,26 @@ export class PerformanceTestUtils {
         performance.memory = mockMemory;
 
         try {
-          const initialMemory = performance.memory.usedJSHeapSize;
+          const initialMemory = performance.memory.usedJSHeapSize,
           const measurements: any[] = [],
 
-          for (let i = 0; i < iterations; i++) {
-            const beforeMemory = performance.memory.usedJSHeapSize;
+          for (let i = 0, i < iterations, i++) {
+            const beforeMemory = performance.memory.usedJSHeapSize,
             
-            await testFunction(');
+            await testFunction('),
             
             // Simulate memory growth
-            const memoryGrowth = env === 'ci' ? 1024 * 1024 : 512 * 1024; // 1MB or 512KB
-            mockMemory.usedJSHeapSize += memoryGrowth;
+            const memoryGrowth = env === 'ci' ? 1024 * 1024 : 512 * 1024, // 1MB or 512KB
+            mockMemory.usedJSHeapSize += memoryGrowth,
             
-            const afterMemory = performance.memory.usedJSHeapSize;
+            const afterMemory = performance.memory.usedJSHeapSize,
             measurements.push({
               iteration: i,
               before: beforeMemory,
               after: afterMemory,
-              growth: afterMemory - beforeMemory);
+              growth: afterMemory - beforeMemory),
 
-            await new Promise(resolve => setTimeout(resolve, 50);
-          }
+            await new Promise(resolve => setTimeout(resolve, 50) }
 
           const finalMemory = performance.memory.usedJSHeapSize;
           const totalGrowth = finalMemory - initialMemory;
@@ -383,8 +373,7 @@ export class PerformanceTestUtils {
         } finally {
           // Restore original performance.memory
           if (originalMemory') {
-            performance.memory = originalMemory;
-          }
+            performance.memory = originalMemory }
         }
       },
       { retries, environment: env, thresholdType: 'memoryUsage' }
@@ -397,8 +386,8 @@ export class PerformanceTestUtils {
    * @returns {Object} Test configuration
    */
   static createPerformanceTestConfig(environment = null) {
-    const env = environment || this.detectEnvironment();
-    const thresholds = this.getEnvironmentThresholds(env');
+    const env = environment || this.detectEnvironment(),
+    const thresholds = this.getEnvironmentThresholds(env'),
 
     return {
       environment: env,
@@ -448,25 +437,25 @@ export class PerformanceTestUtils {
 
     switch (testType') {
       case 'frameRate':
-        validation.passed = results.fps >= thresholds.min;
+        validation.passed = results.fps >= thresholds.min,
         if (!validation.passed) {
-          validation.issues.push(`Frame rate ${results.fps.toFixed(2})} FPS below minimum ${thresholds.min} FPS`');
-          validation.recommendations.push('Consider reducing visual complexity or optimizing render pipeline'');
+          validation.issues.push(`Frame rate ${results.fps.toFixed(2})} FPS below minimum ${thresholds.min} FPS`);
+          validation.recommendations.push('Consider reducing visual complexity or optimizing render pipeline');
         }
         break;
 
       case 'renderTime':
         validation.passed = results.averageTime <= thresholds.max;
         if (!validation.passed) {
-          validation.issues.push(`Average render time ${results.averageTime.toFixed(2})}ms exceeds maximum ${thresholds.max}ms`');
-          validation.recommendations.push('Optimize rendering operations or reduce draw calls'');
+          validation.issues.push(`Average render time ${results.averageTime.toFixed(2})}ms exceeds maximum ${thresholds.max}ms`);
+          validation.recommendations.push('Optimize rendering operations or reduce draw calls');
         }
         break;
 
       case 'memoryUsage':
         validation.passed = results.totalGrowth <= thresholds.growth;
         if (!validation.passed) {
-          validation.issues.push(`Memory growth ${(results.totalGrowth / 1024 / 1024).toFixed(2})}MB exceeds limit ${(thresholds.growth / 1024 / 1024).toFixed(2})}MB`');
+          validation.issues.push(`Memory growth ${(results.totalGrowth / 1024 / 1024).toFixed(2})}MB exceeds limit ${(thresholds.growth / 1024 / 1024).toFixed(2})}MB`);
           validation.recommendations.push('Check for memory leaks or implement object pooling');
         }
         break;
@@ -485,8 +474,8 @@ export class PerformanceTestUtils {
    * @returns {string} Formatted report
    */
   static generatePerformanceReport(testResults, environment = null) {
-    const env = environment || this.detectEnvironment();
-    const timestamp = new Date().toISOString();
+    const env = environment || this.detectEnvironment(),
+    const timestamp = new Date().toISOString(),
     
     let report = `\n=== Performance Test Report (${env.toUpperCase(})}) ===\n`;
     report += `Timestamp: ${timestamp}\n`;
@@ -496,9 +485,9 @@ export class PerformanceTestUtils {
     let passedTests = 0;
 
     for (const [testName, result] of Object.entries(testResults) {
-      totalTests++;
-      const passed = result.passed || false;
-      if (passed') passedTests++;
+      totalTests++,
+      const passed = result.passed || false,
+      if (passed') passedTests++,
 
       report += `${passed ? '✅' : '❌'} ${testName}\n`;
       
@@ -526,10 +515,8 @@ export class PerformanceTestUtils {
 
 // Export default configuration helper
 export const createEnvironmentConfig = (environment) => {
-  return PerformanceTestUtils.createPerformanceTestConfig(environment);
-};
+  return PerformanceTestUtils.createPerformanceTestConfig(environment) };
 
 // Export threshold getter for easy access
 export const getPerformanceThresholds = (environment) => {
-  return PerformanceTestUtils.getEnvironmentThresholds(environment');
-};
+  return PerformanceTestUtils.getEnvironmentThresholds(environment') };

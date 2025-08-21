@@ -84,25 +84,23 @@ describe('Username Input Positioning Visual Regression Tests', (') => {
     beforeAll(async () => {
         // Mock browser instance
         browser = {
-            newPage: jest.fn(),
-        close: jest.fn(),
-        };
+            newPage: jest.fn(
+        close: jest.fn( };
         // Mock page instance
         page = {
-            setViewport: jest.fn(),
-            goto: jest.fn(),
-            screenshot: jest.fn(),
-            evaluate: jest.fn(),
-            waitForSelector: jest.fn(),
-            click: jest.fn(),
+            setViewport: jest.fn(
+            goto: jest.fn(
+            screenshot: jest.fn(
+            evaluate: jest.fn(
+            waitForSelector: jest.fn(
+            click: jest.fn(
             keyboard: { press: jest.fn() }
         };
         browser.newPage.mockResolvedValue(page);
     });
     afterAll(async () => {
         if (browser) {
-            await browser.close();
-        }
+            await browser.close() }
     }');
     describe('Username Input Form Centering', () => {
         testConfigurations.forEach((config) => {
@@ -111,10 +109,9 @@ describe('Username Input Positioning Visual Regression Tests', (') => {
                 await page.setViewport({
                     width: config.viewport.width,
                     height: config.viewport.height,
-                    deviceScaleFactor: config.deviceScaleFactor),
-                }');
+                    deviceScaleFactor: config.deviceScaleFactor }');
                 // Navigate to game and trigger username input
-                await page.goto('http: //localhost:8000'),
+                await page.goto('http: //localhost:8000',
                 // Mock the evaluation to return positioned elements
                 const mockEvaluationResult = {
                     title: {
@@ -161,16 +158,13 @@ describe('Username Input Positioning Visual Regression Tests', (') => {
                 // Check username input positioning
                 const result = await page.evaluate(() => {
                     if (!window.gameEngine || !window.gameEngine.sceneManager) {
-                        return null;
-                    }
+                        return null }
                     const currentScene = window.gameEngine.sceneManager.currentScene;
                     if (!currentScene || !currentScene.usernameInputManager) {
-                        return null;
-                    }
+                        return null }
                     const canvasInfo = currentScene.usernameInputManager.getCanvasInfo();
                     if (!canvasInfo) {
-                        return null;
-                    }
+                        return null }
                     // Calculate expected positions in base coordinate system
                     const BASE_LAYOUT = {
                         title: { x: 400, y: 200 },
@@ -242,14 +236,13 @@ describe('Username Input Positioning Visual Regression Tests', (') => {
         }
     }');
     describe('Zoom Level Tests', () => {
-        const zoomLevels = [0.5, 0.75, 1.0, 1.25, 1.5, 2.0];
+        const zoomLevels = [0.5, 0.75, 1.0, 1.25, 1.5, 2.0],
         zoomLevels.forEach((zoom) => {
             it(`should maintain centering at ${zoom * 100}% zoom level`, async () => {
                 await page.setViewport({
                     width: 1200,
                     height: 800,
-                    deviceScaleFactor: zoom),
-                });
+                    deviceScaleFactor: zoom });
                 // Mock centered positioning at different zoom levels
                 const mockResult = {
                     inputBox: {
@@ -297,8 +290,7 @@ describe('Username Input Positioning Visual Regression Tests', (') => {
                 await page.setViewport({
                     width: aspect.width,
                     height: aspect.height,
-                    deviceScaleFactor: 1),
-                });
+                    deviceScaleFactor: 1 });
                 const expectedCenterX = aspect.width / 2;
                 const expectedCenterY = aspect.height / 2;
                 page.evaluate.mockResolvedValue({
@@ -333,29 +325,25 @@ describe('Username Input Positioning Visual Regression Tests', (') => {
             page.screenshot.mockResolvedValue(mockScreenshotPath);
             const screenshotPath = await page.screenshot({
                 path: mockScreenshotPath,
-                fullPage: false),
-            });
+                fullPage: false });
             expect(page.screenshot).toHaveBeenCalledWith({
                 path: mockScreenshotPath,
-                fullPage: false);
-            expect(screenshotPath).toBe(mockScreenshotPath);
-        });
+                fullPage: false),
+            expect(screenshotPath).toBe(mockScreenshotPath) });
         testConfigurations.slice(0, 3).forEach((config) => {
             it(`should capture screenshot for ${config.name} configuration`, async () => {
                 await page.setViewport({
                     width: config.viewport.width,
                     height: config.viewport.height,
-                    deviceScaleFactor: config.deviceScaleFactor),
-                });
+                    deviceScaleFactor: config.deviceScaleFactor });
                 const screenshotPath = `/tmp/username-input-${config.name.toLowerCase(').replace(/\s+/g, '-'})}.png`;
                 page.screenshot.mockResolvedValue(screenshotPath);
                 const result = await page.screenshot({
                     path: screenshotPath,
-                    fullPage: false);
+                    fullPage: false),
                 expect(page.screenshot).toHaveBeenCalledWith({
                     path: screenshotPath,
-                    fullPage: false);
-            }
+                    fullPage: false) }
         }');
     }
     describe('Edge Case Scenarios', (') => {
@@ -363,8 +351,7 @@ describe('Username Input Positioning Visual Regression Tests', (') => {
             await page.setViewport({
                 width: 240,
                 height: 320,
-                deviceScaleFactor: 1),
-            });
+                deviceScaleFactor: 1 });
             page.evaluate.mockResolvedValue({
                 inputBox: {
                     x: 20, // Adjusted for small screen
@@ -393,8 +380,7 @@ describe('Username Input Positioning Visual Regression Tests', (') => {
             await page.setViewport({
                 width: 5120,
                 height: 2880,
-                deviceScaleFactor: 1),
-            });
+                deviceScaleFactor: 1 });
             const expectedCenterX = 2560;
             const expectedCenterY = 1440;
             page.evaluate.mockResolvedValue({

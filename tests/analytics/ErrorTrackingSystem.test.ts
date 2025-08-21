@@ -4,48 +4,47 @@ import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jes
  */
 import { ErrorTrackingSystem  } from '../../src/analytics/ErrorTrackingSystem';
 // DOM とブラウザ API のモック
-(global as any).XMLHttpRequest = jest.fn(() => ({
-    open: jest.fn(),
-    send: jest.fn(),
-    addEventListener: jest.fn('),
+(global: any).XMLHttpRequest = jest.fn(() => ({
+    open: jest.fn(
+    send: jest.fn(
+    addEventListener: jest.fn(',
     status: 200,
     statusText: 'OK'
-    })));
-(global as any).fetch = jest.fn(() => Promise.resolve()');
+    }));
+(global: any).fetch = jest.fn(() => Promise.resolve()');
 Object.defineProperty(global, 'localStorage', {
-    value: {),
-        getItem: jest.fn(),
-        setItem: jest.fn(),
-        removeItem: jest.fn(),
-        })
+    value: {,
+        getItem: jest.fn(
+        setItem: jest.fn(
+        removeItem: jest.fn();
 )');
 Object.defineProperty(window, 'performance', {
-    value: {),
-        now: jest.fn(() => Date.now();
-        timeOrigin: Date.now(),
+    value: {,
+        now: jest.fn(() => Date.now(),
+        timeOrigin: Date.now(
         navigation: { type: 0,
         redirectCount: 0 
     });
-        })
+            });
 )');
 Object.defineProperty(window, 'location', {
     value: {
         href: 'http://localhost:8000/test'
     })');
 Object.defineProperty(document, 'referrer', {
-    value: 'http://localhost:8000')');
+    value: 'http://localhost:8000')'),
 Object.defineProperty(document, 'visibilityState', {
-    value: 'visible')');
+    value: 'visible')'),
 Object.defineProperty(document, 'readyState', {
-    value: 'complete')');
+    value: 'complete')'),
 describe('ErrorTrackingSystem', () => {
     let errorTracker: any,
     let mockAddEventListener: any,
     let mockDispatchEvent: any,
     beforeEach(() => {
-        jest.clearAllMocks(');
-        mockAddEventListener = jest.spyOn(window, 'addEventListener'');
-        mockDispatchEvent = jest.spyOn(window, 'dispatchEvent');
+        jest.clearAllMocks('),
+        mockAddEventListener = jest.spyOn(window, 'addEventListener'),
+        mockDispatchEvent = jest.spyOn(window, 'dispatchEvent'),
         errorTracker = new ErrorTrackingSystem({
             enableContextCapture: true,
             enableUserActionTracking: true,
@@ -54,33 +53,29 @@ describe('ErrorTrackingSystem', () => {
     }
     afterEach(() => {
         if (errorTracker) {
-            errorTracker.destroy();
-        }
+            errorTracker.destroy() }
         mockAddEventListener.mockRestore();
         mockDispatchEvent.mockRestore();
     }');
     describe('初期化', (') => {
         test('正しく初期化される', () => {
-            expect(errorTracker).toBeDefined();
-            expect(errorTracker.errors).toEqual([]);
-            expect(errorTracker.sessionInfo).toBeDefined();
-            expect(errorTracker.errorStats).toBeDefined();
-        }');
+            expect(errorTracker).toBeDefined(),
+            expect(errorTracker.errors).toEqual([]),
+            expect(errorTracker.sessionInfo).toBeDefined(),
+            expect(errorTracker.errorStats).toBeDefined() }');
         test('セッション情報が正しく設定される', () => {
-            expect(errorTracker.sessionInfo.sessionId).toBeDefined();
-            expect(errorTracker.sessionInfo.startTime).toBeDefined();
-            expect(errorTracker.sessionInfo.userAgent).toBeDefined();
-            expect(errorTracker.sessionInfo.url').toBe('http: //localhost:8000/test'),
-        }');
+            expect(errorTracker.sessionInfo.sessionId).toBeDefined(),
+            expect(errorTracker.sessionInfo.startTime).toBeDefined(),
+            expect(errorTracker.sessionInfo.userAgent).toBeDefined(),
+            expect(errorTracker.sessionInfo.url').toBe('http: //localhost:8000/test' }');
         test('エラー統計が初期化される', () => {
-            expect(errorTracker.errorStats.totalErrors).toBe(0);
+            expect(errorTracker.errorStats.totalErrors).toBe(0),
             expect(errorTracker.errorStats.errorsByCategory).toEqual({});
             expect(errorTracker.errorStats.recoverableErrors).toBe(0);
         }');
         test('イベントリスナーが設定される', () => {
-            expect(mockAddEventListener').toHaveBeenCalledWith('error', expect.any(Function);
-            expect(mockAddEventListener').toHaveBeenCalledWith('unhandledrejection', expect.any(Function);
-        }');
+            expect(mockAddEventListener').toHaveBeenCalledWith('error', expect.any(Function),
+            expect(mockAddEventListener').toHaveBeenCalledWith('unhandledrejection', expect.any(Function) }');
     }
     describe('JavaScript エラー処理', (') => {
         test('JavaScript エラーを処理する', (') => {
@@ -89,10 +84,9 @@ describe('ErrorTrackingSystem', () => {
                 filename: 'test.js',
                 lineno: 10,
                 colno: 5,
-                error: new Error('Test error''),
+                error: new Error('Test error',
                 type: 'javascript_error',
-        timestamp: Date.now(),
-            };
+        timestamp: Date.now( };
             errorTracker.handleJavaScriptError(errorData);
             expect(errorTracker.errors).toHaveLength(1);
             expect(errorTracker.errors[0].message').toBe('Test error');
@@ -101,19 +95,18 @@ describe('ErrorTrackingSystem', () => {
             expect(errorTracker.errorStats.totalErrors).toBe(1);
         }');
         test('エラーの重要度を正しく判定する', (') => {
-            expect(errorTracker.determineErrorSeverity({ message: 'out of memory' })').toBe('fatal'');
-            expect(errorTracker.determineErrorSeverity({ message: 'undefined is not a function' })').toBe('error'');
+            expect(errorTracker.determineErrorSeverity({ message: 'out of memory' })').toBe('fatal');
+            expect(errorTracker.determineErrorSeverity({ message: 'undefined is not a function' })').toBe('error');
             expect(errorTracker.determineErrorSeverity({ message: 'deprecation warning' })').toBe('warning');
         }
     }');
     describe('Promise拒否処理', (') => {
         test('Promise拒否を処理する', (') => {
             const rejectionData = {
-                reason: new Error('Promise rejected'),
-                promise: Promise.reject('),
+                reason: new Error('Promise rejected',
+                promise: Promise.reject(',
                 type: 'unhandled_promise_rejection',
-        timestamp: Date.now(),
-            };
+        timestamp: Date.now( };
             errorTracker.handlePromiseRejection(rejectionData);
             expect(errorTracker.errors).toHaveLength(1);
             expect(errorTracker.errors[0].message').toBe('Promise rejected');
@@ -130,8 +123,7 @@ describe('ErrorTrackingSystem', () => {
                 statusText: 'Not Found',
                 duration: 1000,
                 type: 'network_error',
-        timestamp: Date.now(),
-            };
+        timestamp: Date.now( };
             errorTracker.handleNetworkError(errorData);
             expect(errorTracker.errors).toHaveLength(1);
             expect(errorTracker.errors[0].category').toBe('network');
@@ -140,7 +132,7 @@ describe('ErrorTrackingSystem', () => {
         }');
         test('ネットワークエラーの重要度を正しく判定する', () => {
             expect(errorTracker.determineNetworkErrorSeverity({ status: 500 })').toBe('error');
-            expect(errorTracker.determineNetworkErrorSeverity({ status: 404 })').toBe('warning'');
+            expect(errorTracker.determineNetworkErrorSeverity({ status: 404 })').toBe('warning');
             expect(errorTracker.determineNetworkErrorSeverity({ type: 'network_timeout' })').toBe('warning');
         }
     }');
@@ -160,14 +152,13 @@ describe('ErrorTrackingSystem', () => {
     }
     describe('コンテキスト収集', (') => {
         test('エラーコンテキストを収集する', () => {
-            const context = errorTracker.captureErrorContext();
-            expect(context.timestamp).toBeDefined();
-            expect(context.url').toBe('http: //localhost:8000/test'),
-            expect(context.userAgent).toBeDefined();
-            expect(context.viewport).toBeDefined();
-            expect(context.performance).toBeDefined();
-            expect(context.dom).toBeDefined();
-        }');
+            const context = errorTracker.captureErrorContext(),
+            expect(context.timestamp).toBeDefined(),
+            expect(context.url').toBe('http: //localhost:8000/test',
+            expect(context.userAgent).toBeDefined(),
+            expect(context.viewport).toBeDefined(),
+            expect(context.performance).toBeDefined(),
+            expect(context.dom).toBeDefined() }');
         test('ゲーム状態を収集する', () => {
             // モックゲーム状態を設定
             window.gameEngine = {
@@ -195,7 +186,7 @@ describe('ErrorTrackingSystem', () => {
         test('ユーザーアクションを記録する', (') => {
             const action = {
                 type: 'click',
-                timestamp: Date.now('),
+                timestamp: Date.now(',
                 target: {
                     tagName: 'BUTTON',
                     id: 'test-button'
@@ -207,10 +198,10 @@ describe('ErrorTrackingSystem', () => {
         }');
         test('最新100アクションのみ保持する', () => {
             // 150個のアクションを追加
-            for (let i = 0; i < 150; i++') {
+            for (let i = 0, i < 150, i++') {
                 errorTracker.recordUserAction({
-                    type: 'click';);
-                   , timestamp: Date.now(),
+                    type: 'click'),
+                   , timestamp: Date.now(
                     actionId: i
                 });
             }
@@ -218,10 +209,10 @@ describe('ErrorTrackingSystem', () => {
             expect(errorTracker.userActions[0].actionId).toBe(149); // 最新のアクション
         }');
         test('最近のユーザーアクションを取得する', () => {
-            for (let i = 0; i < 20; i++') {
+            for (let i = 0, i < 20, i++') {
                 errorTracker.recordUserAction({
-                    type: 'click';);
-                   , timestamp: Date.now(),
+                    type: 'click'),
+                   , timestamp: Date.now(
                     actionId: i
                 });
             }
@@ -246,15 +237,13 @@ describe('ErrorTrackingSystem', () => {
         }');
         test('復旧戦略を取得する', (') => {
             const referenceErrorStrategy = errorTracker.getRecoveryStrategy({
-                message: 'foo is not defined'),
-            });
+                message: 'foo is not defined' });
             expect(referenceErrorStrategy).toBeDefined(');
             const typeErrorStrategy = errorTracker.getRecoveryStrategy({
-                message: 'foo is not a function');
-            expect(typeErrorStrategy).toBeDefined(');
+                message: 'foo is not a function'),
+            expect(typeErrorStrategy).toBeDefined('),
             const networkErrorStrategy = errorTracker.getRecoveryStrategy({
-                category: 'network'),
-            });
+                category: 'network' });
             expect(networkErrorStrategy).toBeDefined();
         }');
     }
@@ -264,8 +253,7 @@ describe('ErrorTrackingSystem', () => {
                 category: 'javascript',
                 type: 'reference_error',
                 severity: 'error',
-        timestamp: Date.now(),
-            };
+        timestamp: Date.now( };
             errorTracker.updateErrorStats(errorInfo);
             expect(errorTracker.errorStats.totalErrors).toBe(1);
             expect(errorTracker.errorStats.errorsByCategory.javascript).toBe(1);
@@ -273,14 +261,14 @@ describe('ErrorTrackingSystem', () => {
         }');
         test('エラー統計を取得する', () => {
             // テストエラーを追加
-            for (let i = 0; i < 5; i++') {
+            for (let i = 0, i < 5, i++') {
                 errorTracker.recordError({
                     id: `error-${i}`;
                     category: 'javascript',
                     type: 'test_error',
                     severity: 'error',
                     message: `Test error ${i}`);
-                    timestamp: Date.now(),
+                    timestamp: Date.now(
                     recovery: { attempted: false, successful: false }
                 });
             }
@@ -292,7 +280,7 @@ describe('ErrorTrackingSystem', () => {
         }');
         test('エラータイムラインを生成する', () => {
             // 過去のエラーを追加
-            const now = Date.now();
+            const now = Date.now(),
             errorTracker.errors = [
                 { timestamp: now - 3600000 }, // 1時間前
                 { timestamp: now - 7200000 }, // 2時間前
@@ -314,7 +302,7 @@ describe('ErrorTrackingSystem', () => {
                     category: 'test',
                     type: 'test_error',
                     message: `Test error ${i}`);
-                    timestamp: Date.now(),
+                    timestamp: Date.now(
                     recovery: { attempted: false, successful: false }
                 });
             }
@@ -326,24 +314,23 @@ describe('ErrorTrackingSystem', () => {
             errorTracker.recordError({
                 id: 'error-1',
                 category: 'javascript',
-                severity: 'error';);
-               , timestamp: Date.now(),
+                severity: 'error'),
+               , timestamp: Date.now(
                 recovery: { attempted: false, successful: false }
             }');
             errorTracker.recordError({
                 id: 'error-2',
                 category: 'network',
-                severity: 'warning';);
-               , timestamp: Date.now(),
+                severity: 'warning'),
+               , timestamp: Date.now(
                 recovery: { attempted: false, successful: false }
             }');
-            const jsErrors = errorTracker.getErrorHistory({ category: 'javascript' ),
-            expect(jsErrors).toHaveLength(1);
-            expect(jsErrors[0].category').toBe('javascript'');
-            const errorSeverity = errorTracker.getErrorHistory({ severity: 'error' ),
-            expect(errorSeverity).toHaveLength(1);
-            expect(errorSeverity[0].severity').toBe('error');
-        }');
+            const jsErrors = errorTracker.getErrorHistory({ category: 'javascript' ,
+            expect(jsErrors).toHaveLength(1),
+            expect(jsErrors[0].category').toBe('javascript'),
+            const errorSeverity = errorTracker.getErrorHistory({ severity: 'error' ,
+            expect(errorSeverity).toHaveLength(1),
+            expect(errorSeverity[0].severity').toBe('error') }');
     }
     describe('レポート生成', (') => {
         test('エラーレポートを生成する', (') => {
@@ -352,8 +339,8 @@ describe('ErrorTrackingSystem', () => {
                 category: 'javascript',
                 type: 'test_error',
                 severity: 'error',
-                message: 'Test error';);
-               , timestamp: Date.now(),
+                message: 'Test error'),
+               , timestamp: Date.now(
                 recovery: { attempted: false, successful: false }
             });
             const report = errorTracker.generateErrorReport();
@@ -370,8 +357,8 @@ describe('ErrorTrackingSystem', () => {
                 category: 'javascript',
                 type: 'test_error',
                 severity: 'error',
-                message: 'Test error';);
-               , timestamp: Date.now(),
+                message: 'Test error'),
+               , timestamp: Date.now(
                 recovery: { attempted: false, successful: false }
             }');
             const csvReport = errorTracker.generateErrorReport('csv');
@@ -386,8 +373,8 @@ describe('ErrorTrackingSystem', () => {
                 id: 'test-error',
                 category: 'test',
                 type: 'test_error',
-                message: 'Test error';);
-               , timestamp: Date.now(),
+                message: 'Test error'),
+               , timestamp: Date.now(
                 recovery: { attempted: false, successful: false }
             });
             errorTracker.saveToLocalStorage();
@@ -399,8 +386,7 @@ describe('ErrorTrackingSystem', () => {
             const mockData = {
                 errors: [{ id: 'test-error', category: 'test' }],
                 stats: { totalErrors: 1 };
-        timestamp: Date.now(),
-            };
+        timestamp: Date.now( };
             localStorage.getItem.mockReturnValue(JSON.stringify(mockData);
             errorTracker.loadFromLocalStorage();
             expect(errorTracker.errors).toHaveLength(1);
@@ -414,7 +400,7 @@ describe('ErrorTrackingSystem', () => {
                 category: 'test',
                 type: 'test_error',
                 message: 'Test error',
-                timestamp: Date.now(),
+                timestamp: Date.now(
                 recovery: { attempted: false, successful: false }
             };
             errorTracker.recordError(errorInfo);
@@ -422,8 +408,7 @@ describe('ErrorTrackingSystem', () => {
                 expect.objectContaining({
                     type: 'error-tracked',
                     detail: expect.objectContaining({
-                        id: 'test-error');
-    }
+                        id: 'test-error') }
             );
         }');
     }
@@ -433,8 +418,8 @@ describe('ErrorTrackingSystem', () => {
                 id: 'test-error',
                 category: 'test',
                 type: 'test_error',
-                message: 'Test error';);
-               , timestamp: Date.now(),
+                message: 'Test error'),
+               , timestamp: Date.now(
                 recovery: { attempted: false, successful: false }
             });
             expect(errorTracker.errors).toHaveLength(1);
@@ -443,9 +428,8 @@ describe('ErrorTrackingSystem', () => {
             expect(errorTracker.errorStats.totalErrors).toBe(0);
         }');
         test('destroy(')でリソースを解放する', () => {
-            errorTracker.destroy();
-            expect(errorTracker.errors).toHaveLength(0);
-            expect(errorTracker.userActions).toHaveLength(0);
-        });
+            errorTracker.destroy(),
+            expect(errorTracker.errors).toHaveLength(0),
+            expect(errorTracker.userActions).toHaveLength(0) });
     }
 }');

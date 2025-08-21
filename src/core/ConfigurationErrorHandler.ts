@@ -20,72 +20,69 @@ export enum ConfigErrorType {;
     DEPENDENCY_ERROR = 'DEPENDENCY_ERROR' }
 
 interface RecoveryStrategy { maxAttempts: number,
-    strategy: (error: Error, context: any) => RecoveryResult ,}
+    strategy: (error: Error, context: any) => RecoveryResult  }
 }
 
 interface RecoveryResult { success: boolean,
-    value?: any;
-    message: string ,}
+    value?: any,
+    message: string  }
 
 interface ErrorStats { total: number,
-    byType: Map<string, number>;
-    recovered: number;
+    byType: Map<string, number>,
+    recovered: number,
     failed: number,
-    lastReset: number ,}
+    lastReset: number  }
 
-interface FallbackState { useDefaultValues: boolean;
-    disableValidation: boolean;
+interface FallbackState { useDefaultValues: boolean,
+    disableValidation: boolean,
     disableCache: boolean,
     safeMode: boolean }
 
 export class ConfigurationErrorHandler {
-    private errorTypes = ConfigErrorType;
-    private recoveryStrategies: Map<ConfigErrorType, RecoveryStrategy>;
-    private errorStats: ErrorStats;
-    private, recoveryAttempts: Map<string, number>;
-    private maxRecoveryAttempts: number = 3;
-    private fallbackState: FallbackState;
-    private, logger: any;
+    private errorTypes = ConfigErrorType,
+    private recoveryStrategies: Map<ConfigErrorType, RecoveryStrategy>,
+    private errorStats: ErrorStats,
+    private, recoveryAttempts: Map<string, number>,
+    private maxRecoveryAttempts: number = 3,
+    private fallbackState: FallbackState,
+    private, logger: any,
     constructor() {
 
-        this.recoveryStrategies = new Map();
+        this.recoveryStrategies = new Map(),
         this.errorStats = {
-            total: 0;
-            byType: new Map();
+            total: 0,
+            byType: new Map(),
             recovered: 0,
-    failed: 0;
-    ,}
+    failed: 0 }
             lastReset: Date.now(); 
     };
         this.recoveryAttempts = new Map();
         this.fallbackState = { useDefaultValues: false,
-            disableValidation: false;
+            disableValidation: false,
             disableCache: false,
-    safeMode: false ,};
+    safeMode: false  };
         this.logger = getLoggingSystem();
         this._initialize();
     }
 ';
 
-    private _initialize(): void { this._setupRecoveryStrategies();''
-        this._setupErrorMonitoring()';
-        this.logger.info('ConfigurationErrorHandler initialized', null, 'ConfigurationErrorHandler); }
+    private _initialize(): void { this._setupRecoveryStrategies(),
+        this._setupErrorMonitoring()',
+        this.logger.info('ConfigurationErrorHandler initialized', null, 'ConfigurationErrorHandler) }
 
     private _setupRecoveryStrategies(): void { // 設定アクセスエラーの復旧
-        this.recoveryStrategies.set(ConfigErrorType.CONFIGURATION_ACCESS, {)
-            maxAttempts: 3),
-    strategy: (error: Error, context: any) => { ,}
+        this.recoveryStrategies.set(ConfigErrorType.CONFIGURATION_ACCESS, {
+                maxAttempts: 3,
+    strategy: (error: Error, context: any) => {  })
                 const { category, key, defaultValue } = context;
                 
                 if(defaultValue !== undefined && defaultValue !== null) {
-                
-                    
-                
-                }
-                    this.logger.warn(`設定アクセスエラー、デフォルト値を使用: ${category}.${key}`, { error: error.message,)'
-                        defaultValue');' }
+    
+}
+                    this.logger.warn(`設定アクセスエラー、デフォルト値を使用: ${category}.${key}`, { error: error.message)'
+                        defaultValue'),' }
 
-                    }, 'ConfigurationErrorHandler'');
+                    }, 'ConfigurationErrorHandler');
                     
                     return { success: true,
 
@@ -97,8 +94,8 @@ export class ConfigurationErrorHandler {
                 const fallbackValue = this._generateFallbackValue(category, key);
                 
                 this.logger.warn(`設定アクセスエラー、フォールバック値を生成: ${category}.${key}`, { error: error.message)'
-                    fallbackValue''';
-                '), 'ConfigurationErrorHandler'');
+                    fallbackValue'',
+                '), 'ConfigurationErrorHandler'),
                 
                 return { success: true,
 
@@ -112,30 +109,29 @@ export class ConfigurationErrorHandler {
     private _setupErrorMonitoring(): void { // エラー監視の設定 }
 
     private _generateFallbackValue(category: string, key: string): any { // 基本的なフォールバック値の生成
-        if (key.includes('time'') || key.includes('interval)' {
-            return 1000; // 1秒 }''
-        if (key.includes('count'') || key.includes('max)' { return 10;''
-        if(key.includes('enabled' { return false; }'
+        if (key.includes('time') || key.includes('interval)' {
+            return 1000, // 1秒 }''
+        if (key.includes('count') || key.includes('max)' { return 10,
+        if(key.includes('enabled' { return false }'
         return null;
     }
 
     handleError(errorType: ConfigErrorType, error: Error, context: any = { ): RecoveryResult {
-        this.errorStats.total++;
+        this.errorStats.total++,
         
-        const typeCount = this.errorStats.byType.get(errorType) || 0;
-        this.errorStats.byType.set(errorType, typeCount + 1);
+        const typeCount = this.errorStats.byType.get(errorType) || 0,
+        this.errorStats.byType.set(errorType, typeCount + 1),
 
-        const strategy = this.recoveryStrategies.get(errorType);
+        const strategy = this.recoveryStrategies.get(errorType),
         if(strategy) {
             try {
-                const result = strategy.strategy(error, context);
+                const result = strategy.strategy(error, context),
                 if (result.success) {
         }
                     this.errorStats.recovered++; }
-                } else { this.errorStats.failed++; }
+                } else { this.errorStats.failed++ }
 
-                return result;''
-            } catch (recoveryError) { this.errorStats.failed++;
+                return result;} catch (recoveryError) { this.errorStats.failed++,
 
                 return { success: false,' };
 
@@ -151,13 +147,12 @@ export class ConfigurationErrorHandler {
     }
 
     getErrorStats(): ErrorStats {
-        return { ...this.errorStats;
-    }
+        return { ...this.errorStats }
 
     resetStats(): void { this.errorStats = {
-            total: 0;
-            byType: new Map();
-            recovered: 0;
+            total: 0,
+            byType: new Map(),
+            recovered: 0,
             failed: 0,
     lastReset: Date.now( 
     }

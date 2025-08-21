@@ -10,9 +10,9 @@ import { NavigationContextManager  } from '../../../src/core/navigation/Navigati
 // Functional mock game engine
 const createFunctionalGameEngine = () => ({
     sceneManager: {
-        switchScene: jest.fn().mockReturnValue(true;);
-       , getCurrentScene: jest.fn((') => ({ constructor: { name: 'MenuScene' ) )));
-        hasScene: jest.fn().mockReturnValue(true;');
+        switchScene: jest.fn().mockReturnValue(true),
+       , getCurrentScene: jest.fn((') => ({ constructor: { name: 'MenuScene' ) )),
+        hasScene: jest.fn().mockReturnValue(true,'),
        , currentScene: { constructor: { name: 'MenuScene' ) }
     },
     localizationManager: {
@@ -28,60 +28,51 @@ describe('KeyboardShortcutRouter Functional Tests', () => {
     let gameEngine: any,
     beforeEach(() => {
         // Reset environment
-        (global as any).window = undefined;
-        (global as any).document = undefined;
+        (global: any).window = undefined,
+        (global: any).document = undefined,
         
-        gameEngine = createFunctionalGameEngine();
-        shortcutRouter = new KeyboardShortcutRouter(gameEngine);
-    });
+        gameEngine = createFunctionalGameEngine(),
+        shortcutRouter = new KeyboardShortcutRouter(gameEngine) });
     afterEach((') => {
         if (shortcutRouter && typeof shortcutRouter.cleanup === 'function') {
-            shortcutRouter.cleanup();
-        }
+            shortcutRouter.cleanup() }
     }');
     describe('Core Functionality Verification', (') => {
         test('should initialize with correct shortcut mappings', (') => {
-            expect(shortcutRouter.shortcuts.has('KeyH').toBe(true');
-            expect(shortcutRouter.shortcuts.has('KeyS').toBe(true');
-            expect(shortcutRouter.shortcuts.has('F1').toBe(true');
-            expect(shortcutRouter.shortcuts.has('Escape').toBe(true');
-            const hShortcut = shortcutRouter.shortcuts.get('KeyH');
-            expect(hShortcut.action').toBe('help');
-            expect(hShortcut.scene').toBe('help');
-        }');
+            expect(shortcutRouter.shortcuts.has('KeyH').toBe(true'),
+            expect(shortcutRouter.shortcuts.has('KeyS').toBe(true'),
+            expect(shortcutRouter.shortcuts.has('F1').toBe(true'),
+            expect(shortcutRouter.shortcuts.has('Escape').toBe(true'),
+            const hShortcut = shortcutRouter.shortcuts.get('KeyH'),
+            expect(hShortcut.action').toBe('help'),
+            expect(hShortcut.scene').toBe('help') }');
         test('should successfully route help requests', (') => {
-            const success = shortcutRouter.handleHelpShortcut('MenuScene');
-            expect(success).toBe(true);
-            expect(gameEngine.sceneManager.switchScene').toHaveBeenCalledWith('help');
-        }');
+            const success = shortcutRouter.handleHelpShortcut('MenuScene'),
+            expect(success).toBe(true),
+            expect(gameEngine.sceneManager.switchScene').toHaveBeenCalledWith('help') }');
         test('should successfully route settings requests', (') => {
-            const success = shortcutRouter.handleSettingsShortcut('GameScene');
-            expect(success).toBe(true);
-            expect(gameEngine.sceneManager.switchScene').toHaveBeenCalledWith('settings');
-        }');
+            const success = shortcutRouter.handleSettingsShortcut('GameScene'),
+            expect(success).toBe(true),
+            expect(gameEngine.sceneManager.switchScene').toHaveBeenCalledWith('settings') }');
         test('should handle contextual help requests', (') => {
-            const success = shortcutRouter.handleContextualHelp('GameScene');
-            expect(success).toBe(true);
-            expect(gameEngine.sceneManager.switchScene').toHaveBeenCalledWith('help');
-        }');
+            const success = shortcutRouter.handleContextualHelp('GameScene'),
+            expect(success).toBe(true),
+            expect(gameEngine.sceneManager.switchScene').toHaveBeenCalledWith('help') }');
     }
     describe('Navigation Context Integration', (') => {
         test('should integrate with NavigationContextManager correctly', () => {
-            expect(shortcutRouter.navigationContext).toBeInstanceOf(NavigationContextManager);
-        }');
+            expect(shortcutRouter.navigationContext).toBeInstanceOf(NavigationContextManager) }');
         test('should handle navigation operations', (') => {
             // Push context through navigation
-            shortcutRouter.navigateToScene('help', 'MenuScene', 'keyboard_h');
-            expect(gameEngine.sceneManager.switchScene').toHaveBeenCalledWith('help');
-        }');
+            shortcutRouter.navigateToScene('help', 'MenuScene', 'keyboard_h'),
+            expect(gameEngine.sceneManager.switchScene').toHaveBeenCalledWith('help') }');
         test('should manage go back functionality', (') => {
             // Set up navigation context
-            shortcutRouter.navigationContext.pushContext('MenuScene', 'keyboard_h');
+            shortcutRouter.navigationContext.pushContext('MenuScene', 'keyboard_h'),
             // Test go back
-            const success = shortcutRouter.handleGoBack();
+            const success = shortcutRouter.handleGoBack(),
             // Should attempt to navigate back
-            expect(typeof success').toBe('boolean');
-        }');
+            expect(typeof success').toBe('boolean') }');
     }
     describe('Scene-Specific Behavior', (') => {
         test('should handle same-scene navigation (help')', (') => {
@@ -109,15 +100,13 @@ describe('KeyboardShortcutRouter Functional Tests', () => {
             };
             
             expect(() => {
-                shortcutRouter.updateConfig(newConfig);
-            }).not.toThrow();
+                shortcutRouter.updateConfig(newConfig) }).not.toThrow();
             expect(shortcutRouter.config.enableLogging).toBe(false);
             expect(shortcutRouter.config.debounceDelay).toBe(200);
         }');
         test('should handle active state changes', () => {
             expect(() => {
-                shortcutRouter.setActive(false);
-            }).not.toThrow();
+                shortcutRouter.setActive(false) }).not.toThrow();
             expect(shortcutRouter.state.isActive).toBe(false);
             shortcutRouter.setActive(true);
             expect(shortcutRouter.state.isActive).toBe(true);
@@ -132,8 +121,7 @@ describe('KeyboardShortcutRouter Functional Tests', () => {
             };
             
             expect((') => {
-                shortcutRouter.addShortcut('KeyT', newShortcut);
-            }).not.toThrow(');
+                shortcutRouter.addShortcut('KeyT', newShortcut) }).not.toThrow(');
             expect(shortcutRouter.shortcuts.has('KeyT').toBe(true');
             expect(shortcutRouter.shortcuts.get('KeyT').toEqual(newShortcut);
         }');
@@ -146,57 +134,50 @@ describe('KeyboardShortcutRouter Functional Tests', () => {
     }
     describe('Error Handling and Robustness', (') => {
         test('should handle null scene manager gracefully', () => {
-            gameEngine.sceneManager = null;
+            gameEngine.sceneManager = null,
             
             expect((') => {
-                shortcutRouter.handleHelpShortcut('MenuScene');
-            }).not.toThrow(');
+                shortcutRouter.handleHelpShortcut('MenuScene') }).not.toThrow(');
         }
         test('should handle scene switching failures', () => {
-            gameEngine.sceneManager.switchScene.mockReturnValue(false');
-            const result = shortcutRouter.handleSettingsShortcut('MenuScene');
-            expect(result).toBe(false);
-        }');
+            gameEngine.sceneManager.switchScene.mockReturnValue(false'),
+            const result = shortcutRouter.handleSettingsShortcut('MenuScene'),
+            expect(result).toBe(false) }');
         test('should handle invalid scene names', () => {
             expect((') => {
-                shortcutRouter.handleHelpShortcut('InvalidScene');
-            }).not.toThrow();
+                shortcutRouter.handleHelpShortcut('InvalidScene') }).not.toThrow();
         }
     }');
     describe('Debug and Introspection', (') => {
         test('should provide debug information', () => {
-            const debugInfo = shortcutRouter.getDebugInfo();
-            expect(debugInfo).toBeDefined();
-            expect(debugInfo.shortcuts).toBeDefined();
-            expect(debugInfo.state).toBeDefined();
-            expect(debugInfo.config).toBeDefined();
-            expect(debugInfo.navigationContext).toBeDefined();
-        }');
+            const debugInfo = shortcutRouter.getDebugInfo(),
+            expect(debugInfo).toBeDefined(),
+            expect(debugInfo.shortcuts).toBeDefined(),
+            expect(debugInfo.state).toBeDefined(),
+            expect(debugInfo.config).toBeDefined(),
+            expect(debugInfo.navigationContext).toBeDefined() }');
         test('should track state correctly', () => {
-            expect(shortcutRouter.state).toBeDefined();
-            expect(shortcutRouter.state.isActive).toBe(true);
-            expect(shortcutRouter.state.pressedKeys).toBeInstanceOf(Set);
-            expect(shortcutRouter.state.activeModifiers).toBeInstanceOf(Set);
-        }');
+            expect(shortcutRouter.state).toBeDefined(),
+            expect(shortcutRouter.state.isActive).toBe(true),
+            expect(shortcutRouter.state.pressedKeys).toBeInstanceOf(Set),
+            expect(shortcutRouter.state.activeModifiers).toBeInstanceOf(Set) }');
     }
     describe('Integration with NavigationContextManager', (') => {
         test('should use NavigationContextManager for return destinations', (') => {
             // Push multiple contexts
-            shortcutRouter.navigationContext.pushContext('MenuScene', 'menu_click'');
-            shortcutRouter.navigationContext.pushContext('GameScene', 'keyboard_g');
-            const returnDest1 = shortcutRouter.navigationContext.getReturnDestination();
-            expect(returnDest1').toBe('GameScene');
-            shortcutRouter.navigationContext.popContext();
-            const returnDest2 = shortcutRouter.navigationContext.getReturnDestination();
-            expect(returnDest2').toBe('MenuScene');
-        }');
+            shortcutRouter.navigationContext.pushContext('MenuScene', 'menu_click'),
+            shortcutRouter.navigationContext.pushContext('GameScene', 'keyboard_g'),
+            const returnDest1 = shortcutRouter.navigationContext.getReturnDestination(),
+            expect(returnDest1').toBe('GameScene'),
+            shortcutRouter.navigationContext.popContext(),
+            const returnDest2 = shortcutRouter.navigationContext.getReturnDestination(),
+            expect(returnDest2').toBe('MenuScene') }');
         test('should integrate navigation context in scene switching', (') => {
-            const success = shortcutRouter.navigateToScene('help', 'MenuScene', 'keyboard_h');
-            expect(success).toBe(true);
-            expect(gameEngine.sceneManager.switchScene').toHaveBeenCalledWith('help');
+            const success = shortcutRouter.navigateToScene('help', 'MenuScene', 'keyboard_h'),
+            expect(success).toBe(true),
+            expect(gameEngine.sceneManager.switchScene').toHaveBeenCalledWith('help'),
             // Verify context was pushed
-            const stackDepth = shortcutRouter.navigationContext.getStackDepth();
-            expect(stackDepth).toBe(1);
-        });
+            const stackDepth = shortcutRouter.navigationContext.getStackDepth(),
+            expect(stackDepth).toBe(1) });
     }
 }');

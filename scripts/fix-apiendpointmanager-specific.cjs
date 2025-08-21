@@ -1,121 +1,86 @@
-#!/usr/bin/env node
-
 const fs = require('fs');
 const path = require('path');
 
-// APIEndpointManager.tsとその他のファイルの特定パターンを修正
-const fixSpecificPatterns = (content, filePath) => {
-    let fixed = content;
-    let modifications = 0;
-    
-    // Pattern 1: セミコロンの代わりにカンマがある箇所を修正
-    // enabled: true; -> enabled: true,
-    fixed = fixed.replace(/^(\s*)(\w+):\s*([^,;\n]+);$/gm, (match, indent, key, value) => {
-        // オブジェクトプロパティのパターンの場合のみ
-        const nextLine = fixed.split('\n')[fixed.split('\n').indexOf(match) + 1];
-        if (nextLine && /^\s*\w+:/.test(nextLine)) {
-            modifications++;
-            return `${indent}${key}: ${value},`;
-        }
-        return match;
-    });
-    
-    // Pattern 2: catch (error') { -> catch (error) {
-    fixed = fixed.replace(/catch\s*\(\s*(\w+)'\s*\)\s*\{/g, (match, param) => {
-        modifications++;
-        return `catch (${param}) {`;
-    });
-    
-    // Pattern 3: console.log('message); -> console.log('message');
-    fixed = fixed.replace(/console\.(log|error|warn)\((['"])([^'"]*)\);/g, (match, method, quote, content) => {
-        if (!match.includes(quote, match.indexOf(content))) {
-            modifications++;
-            return `console.${method}(${quote}${content}${quote});`;
-        }
-        return match;
-    });
-    
-    // Pattern 4: オブジェクトプロパティの最後のカンマとセミコロンの修正
-    // , requestHistory: new Map() // clientId -> requests[]
-    // };
-    fixed = fixed.replace(/,\s*(\w+):\s*([^,\n]+)\s*\/\/[^\n]*\n\s*\};/g, (match, key, value, comment) => {
-        modifications++;
-        return `, ${key}: ${value}\n        };`;
-    });
-    
-    // Pattern 5: initialize() { の前の閉じブレースの修正
-    fixed = fixed.replace(/\}\s*\n(\s*\/\*\*[\s\S]*?\*\/\s*\n\s*initialize\(\)\s*\{)/g, (match, methodBlock) => {
-        modifications++;
-        return `    }\n    \n${methodBlock}`;
-    });
-    
-    // Pattern 6: tryブロックの修正
-    // this.registerStandardEndpoints();    }
-    // console.log('API, Endpoint Manager, initialized);
-    fixed = fixed.replace(/this\.registerStandardEndpoints\(\);\s*\}\s*\n\s*console\.log\('API, Endpoint Manager, initialized\);/g, () => {
-        modifications++;
-        return `this.registerStandardEndpoints();\n            console.log('API Endpoint Manager initialized');`;
-    });
-    
-    // Pattern 7: 'API, Endpoint Manager, initialized のような不正な文字列を修正
-    fixed = fixed.replace(/console\.log\('([^']*),\s*([^']*),\s*([^']*)(?:\)|;)/g, (match, part1, part2, part3) => {
-        modifications++;
-        return `console.log('${part1} ${part2} ${part3}');`;
-    });
-    
-    // Pattern 8: オブジェクトリテラルの閉じブレースの前のカンマ
-    fixed = fixed.replace(/,(\s*)\}/g, '$1}');
-    
-    // Pattern 9: 配列アクセスの構文エラー
-    // allowedOrigins: ['*']; -> allowedOrigins: ['*'],
-    fixed = fixed.replace(/(\w+):\s*\[([^\]]+)\];/g, (match, key, value) => {
-        modifications++;
-        return `${key}: [${value}],`;
-    });
-    
-    console.log(`Fixed ${modifications} issues in ${path.basename(filePath)}`);
-    return fixed;
-};
-
-// ファイルを処理
-const processFile = (filePath) => {
-    try {
-        const content = fs.readFileSync(filePath, 'utf8');
-        const fixed = fixSpecificPatterns(content, filePath);
-        
-        if (content !== fixed) {
-            fs.writeFileSync(filePath, fixed, 'utf8');
-            console.log(`✓ Fixed: ${filePath}`);
-        } else {
-            console.log(`  No changes: ${filePath}`);
-        }
-    } catch (error) {
-        console.error(`Error processing ${filePath}:`, error.message);
-    }
-};
-
-// メイン処理
-console.log('Fixing specific TypeScript syntax errors...\n');
-
-// APIEndpointManager.tsを最初に修正
-const apiEndpointManagerPath = path.join(__dirname, '..', 'src', 'analytics', 'analytics-api', 'APIEndpointManager.ts');
-if (fs.existsSync(apiEndpointManagerPath)) {
-    processFile(apiEndpointManagerPath);
+// APIEndpointManager.ts の特定のエラーを修正
+function fixAPIEndpointManager() {
+  const filePath = path.join(__dirname, '../src/analytics/analytics-api/APIEndpointManager.ts');
+  
+  if (!fs.existsSync(filePath)) {
+    console.error('APIEndpointManager.ts not found');
+    return;
+  }
+  
+  let content = fs.readFileSync(filePath, 'utf8');
+  
+  // 1. toISOString( → toISOString()
+  content = content.replace(/new Date\(\)\.toISOString\(,/g, 'new Date().toISOString(),');
+  
+  // 2. Array.from(this.endpoints.keys(), → Array.from(this.endpoints.keys())
+  content = content.replace(/Array\.from\(this\.endpoints\.keys\(\),/g, 'Array.from(this.endpoints.keys()),');
+  
+  // 3. その他の構文エラー修正
+  // オブジェクトリテラル内のセミコロン → カンマ
+  content = content.replace(/(\{[^}]*);(?=[^}]*\})/g, '$1,');
+  
+  fs.writeFileSync(filePath, content, 'utf8');
+  console.log('✅ Fixed APIEndpointManager.ts');
 }
 
-// その他の問題のあるファイルも修正
-const problematicFiles = [
-    'src/accessibility/ColorContrastAnalyzer.ts',
-    'src/core/help/HelpManager.ts',
-    'src/debug/EnhancedDebugInterface.ts',
-    'src/core/help/components/ContentLoader.ts'
-];
-
-problematicFiles.forEach(file => {
-    const filePath = path.join(__dirname, '..', file);
-    if (fs.existsSync(filePath)) {
-        processFile(filePath);
+// DataAggregationProcessor.ts の修正
+function fixDataAggregationProcessor() {
+  const filePath = path.join(__dirname, '../src/analytics/analytics-api/DataAggregationProcessor.ts');
+  
+  if (!fs.existsSync(filePath)) {
+    console.error('DataAggregationProcessor.ts not found');
+    return;
+  }
+  
+  let content = fs.readFileSync(filePath, 'utf8');
+  
+  // 1. try-catch ブロックの修正
+  content = content.replace(/\}\s*=\s*catch\s*\(/g, '} catch (');
+  
+  // 2. 不正な文字列リテラルの修正
+  // 閉じられていない文字列を検出して修正
+  const lines = content.split('\n');
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    
+    // 文字列が閉じられていない場合の修正
+    if ((line.match(/"/g) || []).length % 2 !== 0) {
+      // 行末に " を追加
+      if (!line.endsWith('"') && !line.endsWith("'")) {
+        lines[i] = line + '"';
+      }
     }
-});
+    
+    // 単一引用符の場合も同様
+    if ((line.match(/'/g) || []).length % 2 !== 0) {
+      if (!line.endsWith('"') && !line.endsWith("'")) {
+        lines[i] = line + "'";
+      }
+    }
+  }
+  content = lines.join('\n');
+  
+  // 3. 関数呼び出しの括弧修正
+  content = content.replace(/\(([^,)]+),\s*\)/g, '($1)');
+  
+  // 4. オブジェクトリテラルの修正
+  content = content.replace(/\{([^:}]+):\s*([^,}]+);/g, '{$1: $2,');
+  
+  fs.writeFileSync(filePath, content, 'utf8');
+  console.log('✅ Fixed DataAggregationProcessor.ts');
+}
 
-console.log('\nSpecific TypeScript syntax fixes complete!');
+// メイン処理
+function main() {
+  console.log('🔧 Fixing specific TypeScript syntax errors...\n');
+  
+  fixAPIEndpointManager();
+  fixDataAggregationProcessor();
+  
+  console.log('\n✅ Done!');
+}
+
+main();

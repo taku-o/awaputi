@@ -14,16 +14,14 @@ interface BrowserInfo {
     isSupported: boolean,
     supportedFeatures: string[],
     restrictions: string[],
-    fallbacksRequired: string[],
-}
+    fallbacksRequired: string[] }
 interface CanvasSupport {
     available: boolean,
     context2d: boolean,
     toDataURL: boolean,
     toBlob: boolean,
     fallbackMethod: string | null,
-    errorMessage: string | null,
-}
+    errorMessage: string | null }
 interface LocalStorageSupport {
     available: boolean,
     readable: boolean,
@@ -31,67 +29,56 @@ interface LocalStorageSupport {
     quotaExceeded: boolean,
     fallbackMethod: string | null,
     errorMessage: string | null,
-    estimatedQuota: number,
-}
+    estimatedQuota: number }
 interface ModulesSupport {
     available: boolean,
     dynamicImport: boolean,
     staticImport: boolean,
     workerModules: boolean,
     fallbackMethod: string | null,
-    errorMessage: string | null,
-}
+    errorMessage: string | null }
 interface ComprehensiveSupport {
     browser: BrowserInfo,
     canvas: CanvasSupport,
     localStorage: LocalStorageSupport,
     modules: ModulesSupport,
-    recommendations: Recommendation[],
-}
+    recommendations: Recommendation[] }
 interface Recommendation {
     type: string,
     message: string,
-    priority: string,
-}
+    priority: string }
 interface CanvasFallbackResult {
     success: boolean,
     dataUrl: string,
     method: string,
-    size: number,
-}
+    size: number }
 interface FallbackStorage {
-    getItem: (ke;y: string) => string | null;
-    setItem: (ke;y: string, value: string) => void;
-    removeItem: (ke;y: string) => void;
-    clear: (') => void;
-    _storageType: string,
-}
+    getItem: (ke,y: string) => string | null,
+    setItem: (ke,y: string, value: string) => void,
+    removeItem: (ke,y: string) => void,
+    clear: (') => void,
+    _storageType: string }
 interface MockCanvas {
-    getContext: jest.Mock<any, [string]>;
-    toDataURL: jest.Mock<string, []>;
-    toBlob: jest.Mock<void, []>;
+    getContext: jest.Mock<any, [string]>,
+    toDataURL: jest.Mock<string, []>,
+    toBlob: jest.Mock<void, []>,
     width: number,
-    height: number,
-}
+    height: number }
 interface MockContext {
     fillStyle: string,
-    fillRect: jest.Mock<void, [number, number, number, number]>;
-    beginPath: jest.Mock<void, []>;
-    arc: jest.Mock<void, [number, number, number, number, number]>;
-    fill: jest.Mock<void, []>;
-    clearRect: jest.Mock<void, [number, number, number, number]>;
-}
+    fillRect: jest.Mock<void, [number, number, number, number]>,
+    beginPath: jest.Mock<void, []>,
+    arc: jest.Mock<void, [number, number, number, number, number]>,
+    fill: jest.Mock<void, []>,
+    clearRect: jest.Mock<void, [number, number, number, number]> }
 interface MockDocument {
-    createElement: jest.Mock<MockCanvas | null, [string]>;
-}
+    createElement: jest.Mock<MockCanvas | null, [string]> }
 interface MockWindow {
-    location: { protoco;l: string };
+    location: { protoco,l: string };
     localStorage: Map<string, string>;
-    Worker: Function,
-}
+    Worker: Function }
 interface MockNavigator {
-    userAgent: string,
-}
+    userAgent: string }
 // BrowserCompatibilityManagerをモックしてテスト
 const BrowserCompatibilityManager = {
     BROWSER_SUPPORT: {
@@ -102,7 +89,7 @@ const BrowserCompatibilityManager = {
         ie: { minVersion: 11, features: [], fallbackRequired: true }
     },
     getBrowserInfo(): BrowserInfo {
-        const userAgent = (global as any').navigator? .userAgent || 'Chrome/91.0.4472.124';
+        const userAgent = (global as any').navigator? .userAgent || 'Chrome/91.0.4472.124',
         
         if (userAgent.includes('Chrome')') {
             return { : undefined
@@ -125,8 +112,8 @@ const BrowserCompatibilityManager = {
         };
     },
     getCanvasSupport(): CanvasSupport {
-        const canvas = (global as any').document? .createElement('canvas'');
-        const context = canvas?.getContext('2d');
+        const canvas = (global as any').document? .createElement('canvas'),
+        const context = canvas?.getContext('2d'),
         return { : undefined
             available: !!canvas,
             context2d: !!context,
@@ -137,7 +124,7 @@ const BrowserCompatibilityManager = {
         };
     },
     getLocalStorageSupport(): LocalStorageSupport {
-        const localStorage = (global as any).localStorage;
+        const localStorage = (global: any).localStorage,
         
         return {
             available: !!localStorage,
@@ -152,7 +139,7 @@ const BrowserCompatibilityManager = {
     getModulesSupport('): ModulesSupport {
         return {
             available: true,
-            dynamicImport: typeof import === 'function';
+            dynamicImport: typeof import === 'function',
            , staticImport: true,
             workerModules: typeof Worker !== 'undefined',
             fallbackMethod: null,
@@ -162,27 +149,27 @@ const BrowserCompatibilityManager = {
     async implementCanvasFallback(size: number, config: any = {}'): Promise<CanvasFallbackResult> {
         return {
             success: true,
-            dataUrl: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYi...',
+            dataUrl: 'data:image/svg+xml,base64,PHN2ZyB3aWR0aD0iMTYi...',
             method: 'svg-fallback',
             size
         };
     },
     implementLocalStorageFallback(): FallbackStorage {
-        const memoryStorage = new Map<string, string>();
+        const memoryStorage = new Map<string, string>(),
         return {
-            getItem: (key: string) => memoryStorage.get(key) || null;
+            getItem: (key: string) => memoryStorage.get(key) || null,
             setItem: (key: string, value: string) => memoryStorage.set(key, value),
-            removeItem: (key: string) => memoryStorage.delete(key);
-            clear: () => memoryStorage.clear(');
+            removeItem: (key: string) => memoryStorage.delete(key),
+            clear: () => memoryStorage.clear('),
             _storageType: 'memory-fallback'
         };
     },
     getComprehensiveSupport(): ComprehensiveSupport {
         return {
-            browser: this.getBrowserInfo(),
-            canvas: this.getCanvasSupport(),
-            localStorage: this.getLocalStorageSupport(),
-            modules: this.getModulesSupport('),
+            browser: this.getBrowserInfo(
+            canvas: this.getCanvasSupport(
+            localStorage: this.getLocalStorageSupport(
+            modules: this.getModulesSupport(',
             recommendations: []
         };
     }
@@ -195,52 +182,49 @@ describe('BrowserCompatibilityManager', () => {
     beforeEach(() => {
         // DOM環境のセットアップ
         mockCanvas = {
-            getContext: jest.fn(),
-            toDataURL: jest.fn(),
-            toBlob: jest.fn('),
+            getContext: jest.fn(
+            toDataURL: jest.fn(
+            toBlob: jest.fn(',
             width: 16,
             height: 16
         };
         mockContext = {
-            fillStyle: '',
-            fillRect: jest.fn(),
-            beginPath: jest.fn(),
-            arc: jest.fn(),
-            fill: jest.fn(),
-        clearRect: jest.fn(),
-        };
+            fillStyle: ',
+            fillRect: jest.fn(
+            beginPath: jest.fn(
+            arc: jest.fn(
+            fill: jest.fn(
+        clearRect: jest.fn( };
         mockDocument = {
-            createElement: jest.fn().mockReturnValue(mockCanvas)'),
+            createElement: jest.fn().mockReturnValue(mockCanvas)',
         mockWindow = {
             location: { protocol: 'http:' };
-            localStorage: new Map(),
+            localStorage: new Map(
             Worker: function() {}
         };
         // グローバルオブジェクトのモック
-        (global as any).document = mockDocument;
-        (global as any).window = mockWindow;
+        (global: any).document = mockDocument;
+        (global: any).window = mockWindow;
         (global as any').navigator = {
-            userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko') Chrome/91.0.4472.124 Safari/537.36'
+            userAgent: 'Mozilla/5.0 (Windows NT 10.0, Win64, x64) AppleWebKit/537.36 (KHTML, like Gecko') Chrome/91.0.4472.124 Safari/537.36'
         } as MockNavigator;
         mockCanvas.getContext.mockReturnValue(mockContext');
         mockCanvas.toDataURL.mockReturnValue('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==');
     });
     afterEach(() => {
-        jest.clearAllMocks();
-        delete (global as any).document;
-        delete (global as any).window;
-        delete (global as any).navigator;
-    }');
+        jest.clearAllMocks(),
+        delete (global: any).document,
+        delete (global: any).window,
+        delete (global: any).navigator }');
     describe('Browser Detection', (') => {
         test('should detect Chrome browser correctly', () => {
-            const browserInfo = BrowserCompatibilityManager.getBrowserInfo();
-            expect(browserInfo.name').toBe('chrome');
-            expect(browserInfo.version).toBeGreaterThanOrEqual(60);
-            expect(browserInfo.isSupported).toBe(true);
-            expect(browserInfo.supportedFeatures').toContain('canvas');
-        }');
+            const browserInfo = BrowserCompatibilityManager.getBrowserInfo(),
+            expect(browserInfo.name').toBe('chrome'),
+            expect(browserInfo.version).toBeGreaterThanOrEqual(60),
+            expect(browserInfo.isSupported).toBe(true),
+            expect(browserInfo.supportedFeatures').toContain('canvas') }');
         test('should detect Firefox browser correctly', () => {
-            (global as any').navigator.userAgent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv: 89.0') Gecko/20100101 Firefox/89.0',
+            (global as any').navigator.userAgent = 'Mozilla/5.0 (Windows NT 10.0, Win64, x64, rv: 89.0') Gecko/20100101 Firefox/89.0',
             
             // Firefox検出のモック実装
             const firefoxInfo: BrowserInfo = {
@@ -257,7 +241,7 @@ describe('BrowserCompatibilityManager', () => {
             expect(firefoxInfo.restrictions').toContain('localStorage-file-protocol');
         }');
         test('should detect Safari browser correctly', () => {
-            (global as any').navigator.userAgent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko') Version/14.1.1 Safari/605.1.15';
+            (global as any').navigator.userAgent = 'Mozilla/5.0 (Macintosh, Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko') Version/14.1.1 Safari/605.1.15',
             
             // Safari検出のモック実装
             const safariInfo: BrowserInfo = {
@@ -273,38 +257,33 @@ describe('BrowserCompatibilityManager', () => {
             expect(safariInfo.restrictions').toContain('localStorage-private');
         }');
         test('should handle unknown browser gracefully', () => {
-            (global as any').navigator.userAgent = 'UnknownBrowser/1.0';
+            (global as any').navigator.userAgent = 'UnknownBrowser/1.0',
             
-            const browserInfo = BrowserCompatibilityManager.getBrowserInfo();
-            expect(browserInfo.name').toBe('unknown');
-            expect(browserInfo.isSupported).toBe(false);
-            expect(browserInfo.fallbacksRequired').toContain('all');
-        }');
+            const browserInfo = BrowserCompatibilityManager.getBrowserInfo(),
+            expect(browserInfo.name').toBe('unknown'),
+            expect(browserInfo.isSupported).toBe(false),
+            expect(browserInfo.fallbacksRequired').toContain('all') }');
     }
     describe('Canvas API Support', (') => {
         test('should detect full Canvas support', () => {
-            const canvasSupport = BrowserCompatibilityManager.getCanvasSupport();
-            expect(canvasSupport.available).toBe(true);
-            expect(canvasSupport.context2d).toBe(true);
-            expect(canvasSupport.toDataURL).toBe(true);
-        }');
+            const canvasSupport = BrowserCompatibilityManager.getCanvasSupport(),
+            expect(canvasSupport.available).toBe(true),
+            expect(canvasSupport.context2d).toBe(true),
+            expect(canvasSupport.toDataURL).toBe(true) }');
         test('should detect Canvas limitations', () => {
-            mockCanvas.getContext.mockReturnValue(null);
-            const canvasSupport = BrowserCompatibilityManager.getCanvasSupport();
-            expect(canvasSupport.available).toBe(true);
-            expect(canvasSupport.context2d).toBe(false);
-            expect(canvasSupport.fallbackMethod').toBe('svg-generation');
-        }');
+            mockCanvas.getContext.mockReturnValue(null),
+            const canvasSupport = BrowserCompatibilityManager.getCanvasSupport(),
+            expect(canvasSupport.available).toBe(true),
+            expect(canvasSupport.context2d).toBe(false),
+            expect(canvasSupport.fallbackMethod').toBe('svg-generation') }');
         test('should handle Canvas creation failure', () => {
-            mockDocument.createElement.mockReturnValue(null);
-            const canvasSupport = BrowserCompatibilityManager.getCanvasSupport();
-            expect(canvasSupport.available).toBe(false);
-            expect(canvasSupport.fallbackMethod').toBe('static-icons');
-        }');
+            mockDocument.createElement.mockReturnValue(null),
+            const canvasSupport = BrowserCompatibilityManager.getCanvasSupport(),
+            expect(canvasSupport.available).toBe(false),
+            expect(canvasSupport.fallbackMethod').toBe('static-icons') }');
         test('should handle toDataURL failure', () => {
             mockCanvas.toDataURL.mockImplementation((') => {
-                throw new Error('toDataURL not supported');
-            });
+                throw new Error('toDataURL not supported') });
             const canvasSupport = BrowserCompatibilityManager.getCanvasSupport();
             expect(canvasSupport.available).toBe(true);
             expect(canvasSupport.context2d).toBe(true);
@@ -314,11 +293,10 @@ describe('BrowserCompatibilityManager', () => {
     }
     describe('localStorage Support', (') => {
         test('should detect full localStorage support', () => {
-            (global as any).localStorage = {
-                getItem: jest.fn().mockReturnValue(null),
-                setItem: jest.fn(),
-        removeItem: jest.fn(),
-            };
+            (global: any).localStorage = {
+                getItem: jest.fn().mockReturnValue(null,
+                setItem: jest.fn(
+        removeItem: jest.fn( };
             
             const storageSupport = BrowserCompatibilityManager.getLocalStorageSupport();
             expect(storageSupport.available).toBe(true);
@@ -326,22 +304,19 @@ describe('BrowserCompatibilityManager', () => {
             expect(storageSupport.writable).toBe(true);
         }');
         test('should handle localStorage unavailability', () => {
-            delete (global as any).localStorage;
+            delete (global: any).localStorage,
             
-            const storageSupport = BrowserCompatibilityManager.getLocalStorageSupport();
-            expect(storageSupport.available).toBe(false);
-            expect(storageSupport.fallbackMethod').toBe('cookie-storage');
-        }');
+            const storageSupport = BrowserCompatibilityManager.getLocalStorageSupport(),
+            expect(storageSupport.available).toBe(false),
+            expect(storageSupport.fallbackMethod').toBe('cookie-storage') }');
         test('should handle quota exceeded error', () => {
-            (global as any).localStorage = {
-                getItem: jest.fn().mockReturnValue(null),
+            (global: any).localStorage = {
+                getItem: jest.fn().mockReturnValue(null,
                 setItem: jest.fn().mockImplementation((') => {
-                    const error = new Error('QuotaExceededError'');
-                    error.name = 'QuotaExceededError';
-                    throw error;
-                }),
-        removeItem: jest.fn(),
-            };
+                    const error = new Error('QuotaExceededError'),
+                    error.name = 'QuotaExceededError',
+                    throw error }),
+        removeItem: jest.fn( };
             
             const storageSupport = BrowserCompatibilityManager.getLocalStorageSupport();
             expect(storageSupport.available).toBe(true);
@@ -351,54 +326,49 @@ describe('BrowserCompatibilityManager', () => {
     }
     describe('ES6 Modules Support', (') => {
         test('should detect ES6 modules support', () => {
-            const modulesSupport = BrowserCompatibilityManager.getModulesSupport();
-            expect(modulesSupport.staticImport).toBe(true);
-            expect(modulesSupport.workerModules).toBe(true);
-        }');
+            const modulesSupport = BrowserCompatibilityManager.getModulesSupport(),
+            expect(modulesSupport.staticImport).toBe(true),
+            expect(modulesSupport.workerModules).toBe(true) }');
         test('should detect file:// protocol restrictions', () => {
             (global as any').window.location.protocol = 'file: ',
             
-            const modulesSupport = BrowserCompatibilityManager.getModulesSupport();
-            expect(modulesSupport.errorMessage').toContain('ES6 modules restricted in file: // protocol'),
-            expect(modulesSupport.fallbackMethod').toBe('bundled-script');
-        }');
+            const modulesSupport = BrowserCompatibilityManager.getModulesSupport(),
+            expect(modulesSupport.errorMessage').toContain('ES6 modules restricted in file: // protocol',
+            expect(modulesSupport.fallbackMethod').toBe('bundled-script') }');
     }
     describe('Fallback Implementations', (') => {
         test('should implement Canvas SVG fallback', async () => {
-            const result = await BrowserCompatibilityManager.implementCanvasFallback(16);
-            expect(result.success).toBe(true);
-            expect(result.method').toBe('svg-fallback');
-            expect(result.dataUrl').toContain('data: image/svg+xml'),
-            expect(result.size).toBe(16);
-        }');
+            const result = await BrowserCompatibilityManager.implementCanvasFallback(16),
+            expect(result.success).toBe(true),
+            expect(result.method').toBe('svg-fallback'),
+            expect(result.dataUrl').toContain('data: image/svg+xml',
+            expect(result.size).toBe(16) }');
         test('should implement memory storage fallback', () => {
-            const fallbackStorage = BrowserCompatibilityManager.implementLocalStorageFallback();
-            expect(fallbackStorage._storageType').toBe('memory-fallback');
-            expect(typeof fallbackStorage.getItem').toBe('function');
-            expect(typeof fallbackStorage.setItem').toBe('function'');
+            const fallbackStorage = BrowserCompatibilityManager.implementLocalStorageFallback(),
+            expect(fallbackStorage._storageType').toBe('memory-fallback'),
+            expect(typeof fallbackStorage.getItem').toBe('function'),
+            expect(typeof fallbackStorage.setItem').toBe('function'),
             // Test functionality
-            fallbackStorage.setItem('test', 'value'');
-            expect(fallbackStorage.getItem('test')').toBe('value'');
-            fallbackStorage.removeItem('test'');
-            expect(fallbackStorage.getItem('test').toBe(null);
-        }');
+            fallbackStorage.setItem('test', 'value'),
+            expect(fallbackStorage.getItem('test')').toBe('value'),
+            fallbackStorage.removeItem('test'),
+            expect(fallbackStorage.getItem('test').toBe(null) }');
     }
     describe('Comprehensive Support', (') => {
         test('should provide comprehensive support information', () => {
-            const support = BrowserCompatibilityManager.getComprehensiveSupport();
-            expect(support').toHaveProperty('browser');
-            expect(support').toHaveProperty('canvas');
-            expect(support').toHaveProperty('localStorage');
-            expect(support').toHaveProperty('modules');
-            expect(support').toHaveProperty('recommendations');
-            expect(support.browser.name').toBe('chrome');
-            expect(support.canvas.available).toBe(true);
-            expect(support.localStorage.available).toBe(true);
-            expect(support.modules.available).toBe(true);
-        }');
+            const support = BrowserCompatibilityManager.getComprehensiveSupport(),
+            expect(support').toHaveProperty('browser'),
+            expect(support').toHaveProperty('canvas'),
+            expect(support').toHaveProperty('localStorage'),
+            expect(support').toHaveProperty('modules'),
+            expect(support').toHaveProperty('recommendations'),
+            expect(support.browser.name').toBe('chrome'),
+            expect(support.canvas.available).toBe(true),
+            expect(support.localStorage.available).toBe(true),
+            expect(support.modules.available).toBe(true) }');
         test('should generate appropriate recommendations', () => {
             // Internet Explorer シミュレーション
-            (global as any').navigator.userAgent = 'Mozilla/5.0 (compatible; MSIE 11.0; Windows NT 6.1; Trident/7.0')';
+            (global as any').navigator.userAgent = 'Mozilla/5.0 (compatible, MSIE 11.0, Windows NT 6.1, Trident/7.0')',
             
             // IE固有の情報をモック
             const ieSupport: ComprehensiveSupport = {
@@ -423,25 +393,22 @@ describe('BrowserCompatibilityManager', () => {
     describe('Error Handling', (') => {
         test('should handle browser detection errors gracefully', () => {
             // navigator を削除してエラーを引き起こす
-            delete (global as any).navigator;
+            delete (global: any).navigator,
             
-            const browserInfo = BrowserCompatibilityManager.getBrowserInfo();
-            expect(browserInfo.name').toBe('unknown');
-            expect(browserInfo.fallbacksRequired').toContain('all');
-        }');
+            const browserInfo = BrowserCompatibilityManager.getBrowserInfo(),
+            expect(browserInfo.name').toBe('unknown'),
+            expect(browserInfo.fallbacksRequired').toContain('all') }');
         test('should handle Canvas test errors gracefully', () => {
             mockDocument.createElement.mockImplementation((') => {
-                throw new Error('createElement failed');
-            });
+                throw new Error('createElement failed') });
             const canvasSupport = BrowserCompatibilityManager.getCanvasSupport();
             expect(canvasSupport.available).toBe(false);
             expect(canvasSupport.errorMessage').toContain('Canvas API test failed');
         }');
         test('should handle localStorage test errors gracefully', (') => {
-            Object.defineProperty(global, 'localStorage', {);
+            Object.defineProperty(global, 'localStorage', {),
                 get(') {
-                    throw new Error('localStorage access denied');
-                }
+                    throw new Error('localStorage access denied') }
             });
             const storageSupport = BrowserCompatibilityManager.getLocalStorageSupport();
             expect(storageSupport.available).toBe(false);
@@ -450,40 +417,38 @@ describe('BrowserCompatibilityManager', () => {
     }
     describe('Performance', (') => {
         test('should complete browser detection within reasonable time', () => {
-            const start = performance.now();
-            BrowserCompatibilityManager.getBrowserInfo();
-            const end = performance.now();
-            expect(end - start).toBeLessThan(100); // 100ms以内
+            const start = performance.now(),
+            BrowserCompatibilityManager.getBrowserInfo(),
+            const end = performance.now(),
+            expect(end - start).toBeLessThan(100), // 100ms以内
         }');
         test('should complete Canvas support check within reasonable time', () => {
-            const start = performance.now();
-            BrowserCompatibilityManager.getCanvasSupport();
-            const end = performance.now();
-            expect(end - start).toBeLessThan(50); // 50ms以内
+            const start = performance.now(),
+            BrowserCompatibilityManager.getCanvasSupport(),
+            const end = performance.now(),
+            expect(end - start).toBeLessThan(50), // 50ms以内
         }');
         test('should complete comprehensive support check efficiently', () => {
-            const start = performance.now();
-            BrowserCompatibilityManager.getComprehensiveSupport();
-            const end = performance.now();
-            expect(end - start).toBeLessThan(200); // 200ms以内
+            const start = performance.now(),
+            BrowserCompatibilityManager.getComprehensiveSupport(),
+            const end = performance.now(),
+            expect(end - start).toBeLessThan(200), // 200ms以内
         }');
     }
     describe('Integration', (') => {
         test('should work correctly in file:// protocol environment', () => {
             (global as any').window.location.protocol = 'file: ',
             
-            const support = BrowserCompatibilityManager.getComprehensiveSupport();
-            const modulesSupport = support.modules;
+            const support = BrowserCompatibilityManager.getComprehensiveSupport(),
+            const modulesSupport = support.modules,
             
-            expect(modulesSupport.errorMessage').toContain('file: // protocol'),
-            expect(modulesSupport.fallbackMethod').toBe('bundled-script');
-        }');
+            expect(modulesSupport.errorMessage').toContain('file: // protocol',
+            expect(modulesSupport.fallbackMethod').toBe('bundled-script') }');
         test('should provide correct fallback methods for limited browsers', () => {
             // Safari プライベートブラウジングモードのシミュレーション
-            (global as any).localStorage = {
+            (global: any).localStorage = {
                 getItem: jest.fn().mockImplementation((') => {
-                    throw new Error('localStorage disabled');
-    });
+                    throw new Error('localStorage disabled') });
             };
             
             const storageSupport = BrowserCompatibilityManager.getLocalStorageSupport();

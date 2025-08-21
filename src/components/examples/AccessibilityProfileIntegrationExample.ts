@@ -12,11 +12,11 @@ import { AccessibilityProfileComponent  } from '../AccessibilityProfileComponent
 interface GameEngine { // Define game engine interface properties as needed }
 
 interface SettingItem { key: string,
-    label: string;
-    type: string;
-    component: string;
+    label: string,
+    type: string,
+    component: string,
     description: string,
-    category: string ,}
+    category: string  }
 
 interface ProfileInfo { name: string,
     description: string }
@@ -28,8 +28,8 @@ interface ProfileChangeDetail { profileId: string,
  * SettingsSceneでAccessibilityProfileComponentを統合する例
  */
 export class AccessibilityProfileIntegrationExample {
-    private gameEngine: GameEngine;
-    private, accessibilityProfileComponent: AccessibilityProfileComponent | null;
+    private gameEngine: GameEngine,
+    private, accessibilityProfileComponent: AccessibilityProfileComponent | null,
     constructor(gameEngine: GameEngine) {
 
         this.gameEngine = gameEngine
@@ -48,8 +48,7 @@ export class AccessibilityProfileIntegrationExample {
             component: 'AccessibilityProfileComponent',
             description: 'プリセットされたアクセシビリティ設定を選択できます',
             category: 'accessibility);
-        })
-    
+            });
     /**
      * SettingsSceneのrenderSettings()メソッドに統合する例
      */
@@ -58,13 +57,13 @@ export class AccessibilityProfileIntegrationExample {
             // DOM要素として別途表示される
             
             // プロファイル情報の表示（Canvas上）
-            const profile = this.getCurrentProfileInfo();
+            const profile = this.getCurrentProfileInfo(),
 
-            ctx.save(''';
-            ctx.fillStyle = '#333';
-            ctx.font = '14px, Arial';''
-            ctx.textAlign = 'left';)
-            ctx.fillText(`現在のプロファイル: ${profile.name)`, x, y + 20);
+            ctx.save('',
+            ctx.fillStyle = '#333',
+            ctx.font = '14px, Arial',
+            ctx.textAlign = 'left')
+            ctx.fillText(`現在のプロファイル: ${profile.name)`, x, y + 20),
             ctx.fillText(profile.description, x, y + 40};
             ctx.restore(};
             
@@ -80,15 +79,15 @@ export class AccessibilityProfileIntegrationExample {
     handleAccessibilityProfileComponent(settingItem: SettingItem, parentElement: HTMLElement): HTMLElement | null { try {
             // AccessibilityProfileComponentを初期化
             if(!this.accessibilityProfileComponent) {
-                
-            }
+    
+}
                 this.accessibilityProfileComponent = new AccessibilityProfileComponent(this.gameEngine); }
             }
             
             // コンポーネントを親要素に追加
             const componentElement = this.accessibilityProfileComponent.initialize(parentElement);
 
-            if(componentElement) {'
+            if(componentElement) {
                 // プロファイル変更イベントのリスナーを設定
                 componentElement.addEventListener('accessibilityProfileChanged', (event) => { 
             }
@@ -100,20 +99,20 @@ export class AccessibilityProfileIntegrationExample {
             return componentElement;
 
         } catch (error) {
-            console.error('[AccessibilityProfileIntegration] Component creation error:', error';
-            return null;
+            console.error('[AccessibilityProfileIntegration] Component creation error:', error',
+            return null,
     
     /**
      * プロファイル変更時の処理'
      */''
     private handleProfileChanged(detail: ProfileChangeDetail): void { try {'
-            console.log('[AccessibilityProfileIntegration] Profile changed:', detail);
+            console.log('[AccessibilityProfileIntegration] Profile changed:', detail),
             
             // SettingsSceneの他の設定項目を更新
-            this.updateRelatedAccessibilitySettings(detail.profileId);
+            this.updateRelatedAccessibilitySettings(detail.profileId),
             
             // UI全体に変更を反映
-            this.notifyAccessibilityChanged();
+            this.notifyAccessibilityChanged(),
             ' }'
 
         } catch (error) { console.error('[AccessibilityProfileIntegration] Profile change handler error:', error }
@@ -123,14 +122,14 @@ export class AccessibilityProfileIntegrationExample {
      * 現在のプロファイル情報を取得
      */
     private getCurrentProfileInfo(): ProfileInfo { if (this.accessibilityProfileComponent) {
-            const currentProfile = this.accessibilityProfileComponent.getCurrentProfile();
-            const profiles = this.accessibilityProfileComponent.getAvailableProfiles();
-            const profile = profiles.find(p => p.id === currentProfile);
+            const currentProfile = this.accessibilityProfileComponent.getCurrentProfile(),
+            const profiles = this.accessibilityProfileComponent.getAvailableProfiles(),
+            const profile = profiles.find(p => p.id === currentProfile),
 
             if(profile) {
-                
-            }
-                return { name: profile.name, };
+    
+}
+                return { name: profile.name };
                     description: profile.description 
     }
         }

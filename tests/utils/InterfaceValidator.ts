@@ -18,32 +18,29 @@ export class InterfaceValidator {
     const missingMethods: any[] = [],
     const extraMethods: any[] = [],
     
-    // Get all methods from implementation (including prototype);
-    const allMethods = new Set();
+    // Get all methods from implementation (including prototype),
+    const allMethods = new Set(),
     
     // Check instance methods
     if (implementation) {
-      Object.getOwnPropertyNames(implementation.forEach(name => {');
+      Object.getOwnPropertyNames(implementation.forEach(name => {'),
         if (typeof implementation[name] === 'function') {
-          allMethods.add(name);
-        }
+          allMethods.add(name) }
       });
       
       // Check prototype methods
       if (implementation.constructor && implementation.constructor.prototype) {
-        Object.getOwnPropertyNames(implementation.constructor.prototype).forEach(name => {');
+        Object.getOwnPropertyNames(implementation.constructor.prototype).forEach(name => {'),
           if (name !== 'constructor' && typeof implementation.constructor.prototype[name] === 'function') {
-            allMethods.add(name);
-          }
+            allMethods.add(name) }
         }');
       }
       
       // Check if implementation is a constructor function
       if (typeof implementation === 'function') {
-        Object.getOwnPropertyNames(implementation.prototype || {}).forEach(name => {');
+        Object.getOwnPropertyNames(implementation.prototype || {}).forEach(name => {'),
           if (name !== 'constructor' && typeof implementation.prototype[name] === 'function') {
-            allMethods.add(name);
-          }
+            allMethods.add(name) }
         });
       }
     }
@@ -52,17 +49,14 @@ export class InterfaceValidator {
     expectedMethods.forEach(methodName => {
       if (allMethods.has(methodName || ')
           (implementation && typeof implementation[methodName] === 'function')) {
-        implementedMethods.push(methodName);
-      } else {
-        missingMethods.push(methodName);
-      }
+        implementedMethods.push(methodName) } else {
+        missingMethods.push(methodName) }
     });
     
     // Find extra methods (implemented but not expected);
-    allMethods.forEach(methodName => {);
+    allMethods.forEach(methodName => {),
       if (!expectedMethods.includes(methodName) {
-        extraMethods.push(methodName);
-      }
+        extraMethods.push(methodName) }
     });
     
     const isValid = missingMethods.length === 0;
@@ -80,8 +74,7 @@ export class InterfaceValidator {
         expectedMethods,
         missingMethods,
         extraMethods,
-        isValid);
-    };
+        isValid };
   }
 
   /**
@@ -96,12 +89,12 @@ export class InterfaceValidator {
     }
     
     let report = `❌ ${className}: Missing ${missingMethods.length} method(s: any):\n`,
-    missingMethods.forEach(method => {);
+    missingMethods.forEach(method => {),
       report += `  - ${method)(})\n`;
     }');
     
     report += '\nSuggested implementation: \n',
-    missingMethods.forEach(method => {);
+    missingMethods.forEach(method => {),
       report += `  ${method}(') {\n    // TODO: Implement ${method}\n    throw new Error('Method ${method} not implemented');\n  }\n\n`;
     });
     
@@ -122,8 +115,8 @@ export class InterfaceValidator {
     report += `Coverage: ${implementedMethods.length}/${expectedMethods.length} (${Math.round((implementedMethods.length / expectedMethods.length) * 100})}%)\n\n`;
     
     if (implementedMethods.length > 0) {
-      report += `✅ Implemented Methods(${implementedMethods.length):\n`;
-      implementedMethods.forEach(method => {);
+      report += `✅ Implemented Methods(${implementedMethods.length):\n`,
+      implementedMethods.forEach(method => {),
         report += `  - ${method)(})\n`;
       }');
       report += '\n';
@@ -131,7 +124,7 @@ export class InterfaceValidator {
     
     if (missingMethods.length > 0) {
       report += `❌ Missing Methods (${missingMethods.length}):\n`;
-      missingMethods.forEach(method => {);
+      missingMethods.forEach(method => {),
         report += `  - ${method)(})\n`;
       }');
       report += '\n';
@@ -139,7 +132,7 @@ export class InterfaceValidator {
     
     if (extraMethods.length > 0) {
       report += `ℹ️  Extra Methods (${extraMethods.length}):\n`;
-      extraMethods.slice(0, 10).forEach(method => {);
+      extraMethods.slice(0, 10).forEach(method => {),
         report += `  - ${method)(})\n`;
       });
       if (extraMethods.length > 10') {
@@ -150,7 +143,7 @@ export class InterfaceValidator {
     
     if (missingMethods.length > 0') {
       report += '💡 Suggested Implementation: \n',
-      missingMethods.forEach(method => {);
+      missingMethods.forEach(method => {),
         report += `  ${method)('}) {\n    // TODO: Implement ${method}\n    throw new Error('Method ${method} not implemented');\n  }\n\n`;
       }');
     }
@@ -163,17 +156,17 @@ export class InterfaceValidator {
   /**
    * Scans test files for expected API methods
    * @param {string} testContent - Content of test file
-   * @param {string} objectName - Name of the object being tested (e.g., 'audioManager', 'analyticsAPI')
+   * @param {string} objectName - Name of the object being tested (e.g, 'audioManager', 'analyticsAPI')
    * @returns {Array<string>} Array of method names found in tests
    */
   static scanTestFileForExpectedMethods(testContent, objectName) {
-    const methods = new Set();
+    const methods = new Set(),
     
-    // Pattern to match method calls like: objectName.methodName(),
-    const methodCallPattern = new RegExp(`${objectName)\\.([a-zA-Z][a-zA-Z0-9_]*? ')\\s*\\(`, 'g'));
+    // Pattern to match method calls like: objectName.methodName(
+    const methodCallPattern = new RegExp(`${objectName)\\.([a-zA-Z][a-zA-Z0-9_]*? ')\\s*\\(`, 'g')),
      : undefined, let match: any,
     while ((match = methodCallPattern.exec(testContent) !== null') {
-      const, methodName = match[1];
+      const, methodName = match[1],
       // Filter, out common, non-method, patterns
       if (!['length', 'constructor', 'prototype', 'then', 'catch', 'finally'].includes(methodName) {
         methods.add(methodName});
@@ -229,21 +222,19 @@ export class InterfaceValidator {
   static createCompleteMock(expectedMethods, className = 'MockClass') {
     const mock: Record<string, any> = {};
     
-    expectedMethods.forEach(methodName => {);
+    expectedMethods.forEach(methodName => {),
       mock[methodName] = jest.fn((') => {
         // Return appropriate default values based on method name
-        if (methodName.startsWith('is'') || methodName.startsWith('has') {
-          return true;
+        if (methodName.startsWith('is') || methodName.startsWith('has') {
+          return true,
         ') else if (methodName.startsWith('get')') {
           if(methodName.includes('Status') {
             return { initialized: true, enabled: true }');
           } else if (methodName.includes('Volume')') {
-            return 0.8;
-          }
+            return 0.8 }
           return null;
-        } else if (methodName.includes('initialize'') || methodName.includes('load') {
-          return Promise.resolve();
-        }
+        } else if (methodName.includes('initialize') || methodName.includes('load') {
+          return Promise.resolve() }
         return undefined;
       });
     });
@@ -259,9 +250,9 @@ export class InterfaceValidator {
    * @returns {Object} Comprehensive validation results
    */
   static runComprehensiveValidation() {
-    const commonAPIs = this.validateCommonAPIs();
+    const commonAPIs = this.validateCommonAPIs(),
     const results = {
-      timestamp: new Date().toISOString('),
+      timestamp: new Date().toISOString(',
       summary: {
         totalAPIs: 0,
         validAPIs: 0,
@@ -277,7 +268,7 @@ export class InterfaceValidator {
     results.recommendations.push(
       'Import actual implementation classes to perform live validation',
       'Run validation as part of CI/CD pipeline',
-      'Update implementations when validation fails'')
+      'Update implementations when validation fails')
       'Use createCompleteMock(') for testing when implementations are incomplete', ');
     
     return results;

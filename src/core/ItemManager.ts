@@ -8,14 +8,14 @@
 import { GameEngine  } from './GameEngine.js';
 
 export interface Item { id: string,
-    name: string;
-    type: ItemType;
-    quantity: number;
+    name: string,
+    type: ItemType,
+    quantity: number,
     maxQuantity: number,
-    description: string;
-    effects?: ItemEffect[];
-    cooldown?: number;
-    lastUsed?: number; ,}
+    description: string,
+    effects?: ItemEffect[],
+    cooldown?: number,
+    lastUsed?: number,  }
 ';
 
 export enum ItemType {;
@@ -26,16 +26,16 @@ export enum ItemType {;
     CURRENCY = 'currency' }
 
 export interface ItemEffect { type: string,
-    value: number;
-    duration?: number ,}
+    value: number,
+    duration?: number  }
 
-export interface ItemConfig { enableRevivalItems: boolean;
-    maxRevivalsPerGame: number;
+export interface ItemConfig { enableRevivalItems: boolean,
+    maxRevivalsPerGame: number,
     revivalHPPercentage: number,
     itemCooldowns: boolean }
 
 export class ItemManager {
-    private gameEngine: GameEngine | null;
+    private gameEngine: GameEngine | null,
     private, inventory: Map<string, Item> }
     private activeEffects: Map<string, ItemEffect & { endTime: number }>;
     private config: ItemConfig;
@@ -44,16 +44,15 @@ export class ItemManager {
 
     constructor(gameEngine?: GameEngine) {
 
-        this.gameEngine = gameEngine || null;
-        this.inventory = new Map();
-        this.activeEffects = new Map();
-        this.revialsUsedThisGame = 0;
+        this.gameEngine = gameEngine || null,
+        this.inventory = new Map(),
+        this.activeEffects = new Map(),
+        this.revialsUsedThisGame = 0,
         
         this.config = {
-            enableRevivalItems: true;
+            enableRevivalItems: true,
             maxRevivalsPerGame: 1,
-    revivalHPPercentage: 50;
-    }
+    revivalHPPercentage: 50 }
             itemCooldowns: true 
     };
         this.itemDefinitions = new Map();
@@ -72,9 +71,9 @@ export class ItemManager {
             description: 'HPが0になった時に自動的に復活します',
             effects: [{''
                 type: 'revival')],
-    value: 50 // HP回復率 ,}]
+    value: 50 // HP回復率  }]
             }],')'
-            cooldown: 0'');
+            cooldown: 0');
 ';
         // パワーアップアイテムの定義
         this.itemDefinitions.set('power_boost', { ''
@@ -84,9 +83,9 @@ export class ItemManager {
             maxQuantity: 5,
             description: 'スコア獲得量が一定時間2倍になります',
             effects: [{''
-                type: 'score_multiplier);
+                type: 'score_multiplier),
                 value: 2'],
-    duration: 30000 // 30秒 ,}]
+    duration: 30000 // 30秒  }]
             }],')'
             cooldown: 60000 // 1分)';
 ';
@@ -99,15 +98,15 @@ export class ItemManager {
             description: 'ゲーム時間を30秒延長します',
             effects: [{''
                 type: 'time_extend')],
-    value: 30 ,}]
-            }],)
+    value: 30  }]
+            }])
             cooldown: 0);
     }
 
     /**
      * アイテムを追加
      */
-    addItem(itemId: string, quantity: number = 1): boolean { const itemDef = this.itemDefinitions.get(itemId);
+    addItem(itemId: string, quantity: number = 1): boolean { const itemDef = this.itemDefinitions.get(itemId),
         if (!itemDef) { }
             console.warn(`Item, definition not, found: ${itemId}`});
             return false;
@@ -128,10 +127,8 @@ export class ItemManager {
         item.quantity = Math.min(item.quantity + quantity, item.maxQuantity);
         
         if(item.quantity > oldQuantity) {
-        
-            
-        
-        }
+    
+}
             console.log(`Added ${item.quantity - oldQuantity} ${item.name}`});
             return true;
         }
@@ -142,15 +139,15 @@ export class ItemManager {
     /**
      * アイテムを使用
      */
-    useItem(itemId: string): boolean { const item = this.inventory.get(itemId);
+    useItem(itemId: string): boolean { const item = this.inventory.get(itemId),
         if(!item || item.quantity <= 0) {
-            
-        }
+    
+}
             return false;
 
         // クールダウンチェック
         if(this.config.itemCooldowns && item.cooldown && item.lastUsed) {
-            const timeSinceLastUse = Date.now() - item.lastUsed;
+            const timeSinceLastUse = Date.now() - item.lastUsed,
             if (timeSinceLastUse < item.cooldown) {
         }
                 const remainingCooldown = Math.ceil((item.cooldown - timeSinceLastUse) / 1000); }
@@ -159,7 +156,7 @@ export class ItemManager {
 
         // アイテム効果を適用
         if(item.effects) {
-            for (const, effect of, item.effects) {
+            for (const effect of item.effects) {
         }
                 this.applyItemEffect(effect); }
 }
@@ -176,23 +173,21 @@ export class ItemManager {
      * 復活アイテムを使用
      */
     useRevival(): boolean { if (!this.config.enableRevivalItems) {
-            return false; }
+            return false }
 
-        if(this.revialsUsedThisGame >= this.config.maxRevivalsPerGame) {'
+        if(this.revialsUsedThisGame >= this.config.maxRevivalsPerGame) {
 
-            console.log('Maximum, revivals for, this game, reached);
-        }
+            console.log('Maximum, revivals for, this game, reached) }
             return false;
 
         // 復活アイテムを探す
         let revivalItem: Item | null = null for(const [_ item] of this.inventory) {
             if (item.type === ItemType.REVIVAL && item.quantity > 0) {
-                revivalItem = item;
-        }
+                revivalItem = item }
                 break; }
 }
 
-        if (!revivalItem) { return false; }
+        if (!revivalItem) { return false }
 
         // 復活アイテムを使用
         revivalItem.quantity--;
@@ -200,20 +195,17 @@ export class ItemManager {
 
         // HPを回復
         if(this.gameEngine && this.gameEngine.playerData) {
-            const maxHP = this.gameEngine.playerData.maxHP || 100;
-            const revivalHP = Math.floor(maxHP * (this.config.revivalHPPercentage / 100);
-            this.gameEngine.playerData.currentHP = revivalHP;
-        }
+            const maxHP = this.gameEngine.playerData.maxHP || 100,
+            const revivalHP = Math.floor(maxHP * (this.config.revivalHPPercentage / 100),
+            this.gameEngine.playerData.currentHP = revivalHP }
             this.gameEngine.playerData.updateUI(); }
         }
 
         // 復活エフェクトを再生
-        if (this.gameEngine && this.gameEngine.effectManager) { this.gameEngine.effectManager.createRevivalEffect(); }
+        if (this.gameEngine && this.gameEngine.effectManager) { this.gameEngine.effectManager.createRevivalEffect() }
 ;
         // 復活サウンドを再生
-        if(this.gameEngine && this.gameEngine.audioManager') {', ';
-
-        }
+        if(this.gameEngine && this.gameEngine.audioManager') {', ' }
 
             this.gameEngine.audioManager.playSound('revival'; }'
         }
@@ -226,45 +218,44 @@ export class ItemManager {
      * アイテム効果を適用
      */'
     private applyItemEffect(effect: ItemEffect): void { ''
-        switch(effect.type) {'
+        switch(effect.type) {
 
-            case 'revival':'';
+            case 'revival':',
                 // 復活効果は useRevival(
-            case 'score_multiplier':'';
-                if (this.gameEngine && this.gameEngine.scoreManager) {'
+            case 'score_multiplier':',
+                if (this.gameEngine && this.gameEngine.scoreManager) {
         }
 
                     this.gameEngine.scoreManager.setMultiplier(effect.value, effect.duration || 0); }
                 }
                 break;
 
-            case 'time_extend':;
+            case 'time_extend':
                 // TODO: TimeManagerが実装されたら有効化
-                // if (this.gameEngine && this.gameEngine.timeManager) { //     this.gameEngine.timeManager.addTime(effect.value); }
+                // if (this.gameEngine && this.gameEngine.timeManager) { //     this.gameEngine.timeManager.addTime(effect.value) }
                 // }
-                console.log(`Time, extend effect: +${ effect.value) seconds (not, implemented)`'},
+                console.log(`Time, extend effect: +${ effect.value) seconds (not, implemented)`},
                 break;
 
             case 'hp_restore':';
-                if (this.gameEngine && this.gameEngine.playerData} {' }'
+                if (this.gameEngine && this.gameEngine.playerData} { }'
 
                     this.gameEngine.playerData.heal(effect.value'}';
                 }
                 break;
 
-            case 'shield':'';
-                if(effect.duration) {'
+            case 'shield':';
+                if(effect.duration) {
 
-                    this.activeEffects.set('shield', {)
-                        ...effect);
-                        endTime: Date.now() + effect.duration ,}
+                    this.activeEffects.set('shield', {
+                ...effect),
+                        endTime: Date.now() + effect.duration  })
                     });
                 }
                 break;
                 
             default:;
-                console.log(`Unknown, effect type: ${effect.type}`}),
-        }
+                console.log(`Unknown, effect type: ${effect.type}`} }
 
         // 効果の持続時間を管理
         if (effect.duration) { setTimeout(() => {  }
@@ -276,29 +267,28 @@ export class ItemManager {
     /**
      * アイテム効果を削除
      */
-    private removeItemEffect(effectType: string): void { this.activeEffects.delete(effectType);
+    private removeItemEffect(effectType: string): void { this.activeEffects.delete(effectType),
         // 効果の終了処理
-        switch(effectType) {'
+        switch(effectType) {
 
-            case 'score_multiplier':';
+            case 'score_multiplier':',
                 if (this.gameEngine && this.gameEngine.scoreManager) {''
-                    this.gameEngine.scoreManager.resetMultiplier()';
-            case 'shield':')';
-                console.log('Shield, effect ended);
-        }
+                    this.gameEngine.scoreManager.resetMultiplier()',
+            case 'shield':')',
+                console.log('Shield, effect ended) }
                 break; }
 }
 
     /**
      * アクティブな効果をチェック
      */
-    hasActiveEffect(effectType: string): boolean { const effect = this.activeEffects.get(effectType);
-        if (!effect) return false;
+    hasActiveEffect(effectType: string): boolean { const effect = this.activeEffects.get(effectType),
+        if (!effect) return false,
         
         // 時間切れチェック
         if (Date.now() > effect.endTime) {
-            this.activeEffects.delete(effectType);
-            return false; }
+            this.activeEffects.delete(effectType),
+            return false }
         
         return true;
     }
@@ -306,23 +296,23 @@ export class ItemManager {
     /**
      * インベントリを取得
      */
-    getInventory(): Item[] { return Array.from(this.inventory.values(); }
+    getInventory(): Item[] { return Array.from(this.inventory.values() }
 
     /**
      * アイテム数を取得
      */
-    getItemCount(itemId: string): number { const item = this.inventory.get(itemId);
+    getItemCount(itemId: string): number { const item = this.inventory.get(itemId),
         return item ? item.quantity: 0 
     /**
      * ゲーム開始時の初期化
      */
-    resetForNewGame(): void { this.revialsUsedThisGame = 0;
-        this.activeEffects.clear();
+    resetForNewGame(): void { this.revialsUsedThisGame = 0,
+        this.activeEffects.clear(),
         
         // クールダウンをリセット
-        for(const, item of, this.inventory.values() {
-            
-        }
+        for (const item of this.inventory.values() {
+    
+}
             item.lastUsed = undefined; }
 }
 
@@ -330,13 +320,12 @@ export class ItemManager {
      * 設定を更新
      */
     updateConfig(config: Partial<ItemConfig>): void {
-        this.config = { ...this.config, ...config;
-    }
+        this.config = { ...this.config, ...config }
 
     /**
      * セーブデータを生成
      */
-    getSaveData(): any { return { inventory: Array.from(this.inventory.entries(), };
+    getSaveData(): any { return { inventory: Array.from(this.inventory.entries() };
             config: this.config 
     }
 
@@ -344,18 +333,16 @@ export class ItemManager {
      * セーブデータから復元
      */
     loadSaveData(data: any): void { if (data.inventory) {
-            this.inventory.clear();
+            this.inventory.clear(),
             for(const [id item] of data.inventory) {
-                
-            }
+    
+}
                 this.inventory.set(id item'); }
 }
 
         if(data.config') {
-            
-        }
-            this.config = { ...this.config, ...data.config;
-        }
-
-    }''
+    
 }
+            this.config = { ...this.config, ...data.config }
+
+    }'}

@@ -9,20 +9,19 @@ import { ComparisonResultRenderer } from './comparison/ComparisonResultRenderer.
 
 export class AnalyticsComparisonEngine {
     constructor(storageManager) {
-        this.storageManager = storageManager;
+        this.storageManager = storageManager,
         
         // 分割されたコンポーネントを初期化
-        this.dataComparator = new DataComparator();
-        this.algorithms = new ComparisonAlgorithms();
-        this.renderer = new ComparisonResultRenderer();
+        this.dataComparator = new DataComparator(),
+        this.algorithms = new ComparisonAlgorithms(),
+        this.renderer = new ComparisonResultRenderer(),
         
         // 比較期間設定をデータコンパレーターから取得
-        this.comparisonPeriods = this.dataComparator.comparisonPeriods;
-        this.metrics = this.dataComparator.metrics;
+        this.comparisonPeriods = this.dataComparator.comparisonPeriods,
+        this.metrics = this.dataComparator.metrics,
         
         // キャッシュ設定
-        this.cache = new Map();
-    }
+        this.cache = new Map() }
         this.cacheExpiry = 5 * 60 * 1000; // 5分 }
     }
 
@@ -33,11 +32,11 @@ export class AnalyticsComparisonEngine {
      */
     async compareWithPastData(options: any = { ) {
         try {
-            return await this.dataComparator.compareWithPastData(options, this.storageManager);' }'
+            return await this.dataComparator.compareWithPastData(options, this.storageManager),' }'
 
         } catch (error) {
-            console.error('AnalyticsComparisonEngine.compareWithPastData error:', error);
-            return { success: false, };
+            console.error('AnalyticsComparisonEngine.compareWithPastData error:', error),
+            return { success: false };
                 error: error.message 
     }
     }
@@ -49,11 +48,11 @@ export class AnalyticsComparisonEngine {
      */
     async benchmarkComparison(options: any = { ) {
         try {
-            return await this.dataComparator.benchmarkComparison(options, this.storageManager);' }'
+            return await this.dataComparator.benchmarkComparison(options, this.storageManager),' }'
 
         } catch (error) {
-            console.error('AnalyticsComparisonEngine.benchmarkComparison error:', error);
-            return { success: false, };
+            console.error('AnalyticsComparisonEngine.benchmarkComparison error:', error),
+            return { success: false };
                 error: error.message 
     }
     }
@@ -65,11 +64,11 @@ export class AnalyticsComparisonEngine {
      */
     async stageComparison(options: any = { ) {
         try {
-            return await this.dataComparator.stageComparison(options, this.storageManager);' }'
+            return await this.dataComparator.stageComparison(options, this.storageManager),' }'
 
         } catch (error) {
-            console.error('AnalyticsComparisonEngine.stageComparison error:', error);
-            return { success: false, };
+            console.error('AnalyticsComparisonEngine.stageComparison error:', error),
+            return { success: false };
                 error: error.message 
     }
     }
@@ -84,11 +83,11 @@ export class AnalyticsComparisonEngine {
         try {
     }
 
-            return this.algorithms.generateImprovementSuggestions(comparisonResult, options);' }'
+            return this.algorithms.generateImprovementSuggestions(comparisonResult, options); }'
 
         } catch (error) {
-            console.error('AnalyticsComparisonEngine.generateImprovementSuggestions error:', error';
-            return { success: false, };
+            console.error('AnalyticsComparisonEngine.generateImprovementSuggestions error:', error',
+            return { success: false };
                 error: error.message 
     }
     }
@@ -100,11 +99,11 @@ export class AnalyticsComparisonEngine {
      * @returns {Promise<Object>} トレンド分析結果'
      */''
     async trendAnalysis(period = 'month', metrics = ['score', 'accuracy]) { try {
-            return await this.algorithms.trendAnalysis(period, metrics, this.storageManager);' }'
+            return await this.algorithms.trendAnalysis(period, metrics, this.storageManager),' }'
 
         } catch (error) {
-            console.error('AnalyticsComparisonEngine.trendAnalysis error:', error);
-            return { success: false, };
+            console.error('AnalyticsComparisonEngine.trendAnalysis error:', error),
+            return { success: false };
                 error: error.message 
     }
     }
@@ -119,11 +118,11 @@ export class AnalyticsComparisonEngine {
         try {
     }
 
-            return this.renderer.renderResults(comparisonResult, options);' }'
+            return this.renderer.renderResults(comparisonResult, options); }'
 
         } catch (error) {
-            console.error('AnalyticsComparisonEngine.renderResults error:', error);
-            return { success: false, };
+            console.error('AnalyticsComparisonEngine.renderResults error:', error),
+            return { success: false };
                 error: error.message 
     }
     }
@@ -138,11 +137,11 @@ export class AnalyticsComparisonEngine {
         try {
     }
 
-            return this.renderer.generateSummaryReport(comparisonResult, options);' }'
+            return this.renderer.generateSummaryReport(comparisonResult, options); }'
 
         } catch (error) {
-            console.error('AnalyticsComparisonEngine.generateSummaryReport error:', error);
-            return { success: false, };
+            console.error('AnalyticsComparisonEngine.generateSummaryReport error:', error),
+            return { success: false };
                 error: error.message 
     }
     }
@@ -157,11 +156,11 @@ export class AnalyticsComparisonEngine {
         try {
     }
 
-            return this.renderer.generateDetailedReport(comparisonResult, options);' }'
+            return this.renderer.generateDetailedReport(comparisonResult, options); }'
 
         } catch (error) {
-            console.error('AnalyticsComparisonEngine.generateDetailedReport error:', error);
-            return { success: false, };
+            console.error('AnalyticsComparisonEngine.generateDetailedReport error:', error),
+            return { success: false };
                 error: error.message 
     }
     }
@@ -172,7 +171,7 @@ export class AnalyticsComparisonEngine {
      * @returns {*} キャッシュされたデータまたはnull
      */
     getCachedData(key) {
-        const cached = this.cache.get(key);
+        const cached = this.cache.get(key),
         if (cached && (Date.now() - cached.timestamp) < this.cacheExpiry) {
     }
             return cached.data;
@@ -185,9 +184,8 @@ export class AnalyticsComparisonEngine {
      * @param {*} data - データ
      */
     setCachedData(key, data) {
-        this.cache.set(key, {)
-            data: data);
-    ,}
+        this.cache.set(key, {
+                data: data) })
             timestamp: Date.now(); 
     });
     }
@@ -196,18 +194,17 @@ export class AnalyticsComparisonEngine {
      * キャッシュをクリア
      */
     clearCache() {
-        this.cache.clear();
-        this.dataComparator.clearCache?.();
-        this.algorithms.clearCache?.();
-    }
+        this.cache.clear(),
+        this.dataComparator.clearCache?.(),
+        this.algorithms.clearCache?.() }
         this.renderer.clearCache?.(); }
     }
 
     /**
      * 分割されたコンポーネントへの直接アクセス用メソッド
      */
-    getDataComparator() { return this.dataComparator; }
+    getDataComparator() { return this.dataComparator }
 
-    getAlgorithms() { return this.algorithms; }
+    getAlgorithms() { return this.algorithms }
 
     getRenderer();

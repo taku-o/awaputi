@@ -34,33 +34,33 @@ export { HelpDataAnalyzer  } from './effectiveness/HelpDataAnalyzer.js';
 export { HelpReportGenerator  } from './effectiveness/HelpReportGenerator.js';
 
 // 型定義
-export interface GameEngine { eventBus?: any;
-    state?: any; }
+export interface GameEngine { eventBus?: any,
+    state?: any }
 
 export interface HelpSystemComponents { helpManager: any,
-    tutorialManager: any;
-    contextManager: any;
-    helpErrorHandler: any;
-    tutorialOverlay: any;
-    contentLoader: any;
-    contentValidation: any;
-    searchEngine: any;
-    multilingualContentManager: any;
+    tutorialManager: any,
+    contextManager: any,
+    helpErrorHandler: any,
+    tutorialOverlay: any,
+    contentLoader: any,
+    contentValidation: any,
+    searchEngine: any,
+    multilingualContentManager: any,
     initialized: boolean,
-    version: string ,}
+    version: string  }
 
-export interface HelpSystemInitResult { initialized: boolean;
-    error?: string;
-    helpManager?: any;
-    tutorialManager?: any;
-    contextManager?: any;
-    helpErrorHandler?: any;
-    tutorialOverlay?: any;
-    contentLoader?: any;
-    contentValidation?: any;
-    searchEngine?: any;
-    multilingualContentManager?: any;
-    version?: string; }
+export interface HelpSystemInitResult { initialized: boolean,
+    error?: string,
+    helpManager?: any,
+    tutorialManager?: any,
+    contextManager?: any,
+    helpErrorHandler?: any,
+    tutorialOverlay?: any,
+    contentLoader?: any,
+    contentValidation?: any,
+    searchEngine?: any,
+    multilingualContentManager?: any,
+    version?: string }
 
 /**
  * ヘルプシステム全体の初期化
@@ -68,24 +68,23 @@ export interface HelpSystemInitResult { initialized: boolean;
  * @returns 初期化されたヘルプシステム
  */
 export function initializeHelpSystem(gameEngine: GameEngine): HelpSystemInitResult { try {
-        const helpManager = getHelpManager(gameEngine);
-        const tutorialManager = getTutorialManager(gameEngine);
-        const contextManager = getContextManager(gameEngine);
-        const helpErrorHandler = getHelpErrorHandler(gameEngine);
+        const helpManager = getHelpManager(gameEngine),
+        const tutorialManager = getTutorialManager(gameEngine),
+        const contextManager = getContextManager(gameEngine),
+        const helpErrorHandler = getHelpErrorHandler(gameEngine),
         
         // UI Components
-        const tutorialOverlay = getTutorialOverlay(gameEngine, gameEngine?.eventBus, gameEngine?.state);
+        const tutorialOverlay = getTutorialOverlay(gameEngine, gameEngine?.eventBus, gameEngine?.state),
         
         // Content Management System
-        const contentLoader = getContentLoader();
-        const contentValidation = getContentValidation();
-        const searchEngine = getSearchEngine();''
+        const contentLoader = getContentLoader(),
+        const contentValidation = getContentValidation(),
+        const searchEngine = getSearchEngine(),
         const multilingualContentManager = getMultilingualContentManager('''
-            version: '1.0.0' 
-        ,};''
-    } catch (error) {
-        console.error('Failed to initialize help system:', error);
-        return { initialized: false, };
+            version: '1.0.0'
+            };'} catch (error) {
+        console.error('Failed to initialize help system:', error),
+        return { initialized: false };
             error: error instanceof Error ? error.message : String(error); 
     }
 }
@@ -93,7 +92,7 @@ export function initializeHelpSystem(gameEngine: GameEngine): HelpSystemInitResu
 /**
  * ヘルプシステム全体の破棄'
  */''
-export function destroyHelpSystem(''';
+export function destroyHelpSystem('';
             'helpManagerInstance',
             'tutorialManagerInstance',
             'contextManagerInstance',
@@ -108,27 +107,22 @@ export function destroyHelpSystem(''';
             getTutorialOverlay({), undefined, undefined),
             getContentLoader(),
             getContentValidation(),
-            getSearchEngine()];
-            getMultilingualContentManager()];
-        ];
+            getSearchEngine()],
+            getMultilingualContentManager()],
+        ],
 
-        components.forEach(component => { ');''
-            if(component && typeof, component.destroy === 'function' {'
-                
-            }
+        components.forEach(component => { '),
+            if(component && typeof, component.destroy === 'function' { }
                 try { }
 
                     component.destroy();' }'
 
                 } catch (error) { console.warn('Failed to destroy component:', error }
 
-            }''
-        }';
+            }'}';
 
         console.log('Help, system destroyed, successfully');
 
-        return true;''
-    } catch (error) {
-        console.error('Failed to destroy help system:', error';
-        return false;''
-}
+        return true;} catch (error) {
+        console.error('Failed to destroy help system:', error',
+        return false,'}

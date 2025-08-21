@@ -6,24 +6,21 @@ import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jes
 import { EnhancedAnalyticsManager } from '../../src/analytics/EnhancedAnalyticsManager';
 import Analytics from '../../src/utils/Analytics';
 // Analyticsのモック作成
-jest.mock('../../src/utils/Analytics.js'');
-jest.mock('../../src/analytics/PrivacyManager.js'');
-jest.mock('../../src/analytics/IndexedDBStorageManager.js'');
-jest.mock('../../src/analytics/DataCollector.js'');
+jest.mock('../../src/utils/Analytics.js');
+jest.mock('../../src/analytics/PrivacyManager.js');
+jest.mock('../../src/analytics/IndexedDBStorageManager.js');
+jest.mock('../../src/analytics/DataCollector.js');
 jest.mock('../../src/analytics/GameBalanceCollector.js');
 // モッククラスの定義
 class MockPrivacyManager {
     constructor() {
-        this.consentStatus = true;
-    }
+        this.consentStatus = true }
     
     async requestConsent() {
-        return true;
-    }
+        return true }
     
     checkConsent() {
-        return this.consentStatus;
-    }
+        return this.consentStatus }
     
     anonymizeData(data {
         return { ...data, anonymized: true };
@@ -35,16 +32,13 @@ class MockPrivacyManager {
     }
     
     isOptedOut(feature {
-        return this.optOutFeatures && this.optOutFeatures[feature];
-    )
-    ;
+        return this.optOutFeatures && this.optOutFeatures[feature])
+    ,
     async exportUserData(callback {
-        return await callback();
-    }
+        return await callback() }
     
     async deleteUserData(callback {
-        return await callback();
-    }
+        return await callback() }
 }
 class MockIndexedDBStorageManager {
     constructor() {
@@ -52,23 +46,19 @@ class MockIndexedDBStorageManager {
     }
     
     async initialize() {
-        return true;
-    }
+        return true }
     
     async saveData(storeName, data) {
-        this.data[storeName] = this.data[storeName] || [];
-        this.data[storeName].push(data);
-        return true;
-    }
+        this.data[storeName] = this.data[storeName] || [],
+        this.data[storeName].push(data),
+        return true }
     
     async getData(storeName, query) {
-        return this.data[storeName] || [];
-    }
+        return this.data[storeName] || [] }
     
     async deleteData(storeName, query) {
-        this.data[storeName] = [];
-        return true;
-    }
+        this.data[storeName] = [],
+        return true }
     
     close() {
         // Mock implementation
@@ -76,7 +66,7 @@ class MockIndexedDBStorageManager {
 }
 class MockDataCollector {
     constructor(') {
-        this.currentSessionId = 'test-session-123';
+        this.currentSessionId = 'test-session-123',
         this.eventStats = {
             totalEvents: 0,
             sessionEvents: 0,
@@ -85,39 +75,31 @@ class MockDataCollector {
     }
     
     startSession(sessionInfo {
-        this.sessionInfo = sessionInfo;
-        this.eventStats.sessionEvents++;
-    }
+        this.sessionInfo = sessionInfo,
+        this.eventStats.sessionEvents++ }
     
     endSession(endInfo {
-        this.endInfo = endInfo;
-        this.eventStats.sessionEvents++;
-    }
+        this.endInfo = endInfo,
+        this.eventStats.sessionEvents++ }
     
     collectBubbleInteraction(bubbleData {
-        this.eventStats.bubbleEvents++;
-        this.eventStats.totalEvents++;
-    }
+        this.eventStats.bubbleEvents++,
+        this.eventStats.totalEvents++ }
     
     collectScoreData(scoreData {
-        this.eventStats.totalEvents++;
-    }
+        this.eventStats.totalEvents++ }
     
     collectItemUsageData(itemData {
-        this.eventStats.totalEvents++;
-    }
+        this.eventStats.totalEvents++ }
     
     collectPerformanceData(performanceData {
-        this.eventStats.totalEvents++;
-    }
+        this.eventStats.totalEvents++ }
     
     collectGameBalanceData(balanceData {
-        this.eventStats.totalEvents++;
-    )
-    ;
+        this.eventStats.totalEvents++)
+    ,
     getEventStats() {
-        return this.eventStats;
-    }
+        return this.eventStats }
     
     destroy() {
         // Mock implementation
@@ -125,83 +107,74 @@ class MockDataCollector {
 }
 class MockGameBalanceCollector {
     constructor(') {
-        this.collectedData = [];
-    }
+        this.collectedData = [] }
     
     collectBubbleSpawn(bubbleInfo {
-        this.collectedData.push({ type: 'bubbleSpawn', data: bubbleInfo )'),
-    }
+        this.collectedData.push({ type: 'bubbleSpawn', data: bubbleInfo )' }
     
     collectScoreData(scoreInfo {
-        this.collectedData.push({ type: 'scoreData', data: scoreInfo )'),
-    }
+        this.collectedData.push({ type: 'scoreData', data: scoreInfo )' }
     
     collectItemEffectData(itemInfo {
-        this.collectedData.push({ type: 'itemEffect', data: itemInfo )'),
-    }
+        this.collectedData.push({ type: 'itemEffect', data: itemInfo )' }
     
     collectStageDifficultyData(stageInfo {
-        this.collectedData.push({ type: 'stageDifficulty', data: stageInfo )'),
-    }
+        this.collectedData.push({ type: 'stageDifficulty', data: stageInfo )' }
     
     collectGameBalanceData(balanceData {
-        this.collectedData.push({ type: 'gameBalance', data: balanceData ),
-    }
+        this.collectedData.push({ type: 'gameBalance', data: balanceData  }
 }
 // グローバルモック設定
-(global as any).performance = {
-    now: jest.fn(() => Date.now();
+(global: any).performance = {
+    now: jest.fn(() => Date.now(),
     memory: {
         usedJSHeapSize: 50000000,
         totalJSHeapSize: 100000000,
         jsHeapSizeLimit: 200000000
-    })
+            });
 );
-(global as any).requestAnimationFrame = jest.fn(callback => setTimeout(callback, 16)');
+(global: any).requestAnimationFrame = jest.fn(callback => setTimeout(callback, 16)');
 describe('EnhancedAnalyticsManager', () => {
     let analyticsManager: any,
     let mockAnalytics: any,
     beforeEach(() => {
         // Analytics基底クラスのモック
         mockAnalytics = {
-            trackEvent: jest.fn(),
-            trackError: jest.fn(),
-            generateSessionId: jest.fn((') => 'test-session-id');
+            trackEvent: jest.fn(
+            trackError: jest.fn(
+            generateSessionId: jest.fn((') => 'test-session-id'),
         startTime: Date.now()
-        );
+        ),
         // デフォルトエクスポートのモック設定
-        jest.mocked(Analytics.mockImplementation(() => mockAnalytics)');
+        jest.mocked(Analytics.mockImplementation(() => mockAnalytics)'),
         // コンソールをモック
         jest.spyOn(console, 'info').mockImplementation(() => {)}');
         jest.spyOn(console, 'warn').mockImplementation(() => {}');
         jest.spyOn(console, 'error').mockImplementation(() => {}');
         // モッククラスを設定
-        require('../../src/analytics/PrivacyManager.js'').PrivacyManager = MockPrivacyManager;
-        require('../../src/analytics/IndexedDBStorageManager.js'').IndexedDBStorageManager = MockIndexedDBStorageManager;
-        require('../../src/analytics/DataCollector.js'').DataCollector = MockDataCollector;
+        require('../../src/analytics/PrivacyManager.js').PrivacyManager = MockPrivacyManager;
+        require('../../src/analytics/IndexedDBStorageManager.js').IndexedDBStorageManager = MockIndexedDBStorageManager;
+        require('../../src/analytics/DataCollector.js').DataCollector = MockDataCollector;
         require('../../src/analytics/GameBalanceCollector.js').GameBalanceCollector = MockGameBalanceCollector;
         
         analyticsManager = new EnhancedAnalyticsManager({
             autoInitialize: false
-        );
+        ),
         // アナリティクスのモックを設定
-        analyticsManager.analytics = mockAnalytics;
-    });
+        analyticsManager.analytics = mockAnalytics });
     afterEach(() => {
         if (analyticsManager) {
-            analyticsManager.destroy();
-        }
+            analyticsManager.destroy() }
         jest.clearAllMocks();
         jest.restoreAllMocks();
     }');
     describe('初期化', (') => {
         test('デフォルト設定で正しく初期化される', () => {
-            expect(analyticsManager.options.enableGameAnalytics).toBe(true);
-            expect(analyticsManager.options.enablePerformanceTracking).toBe(true);
-            expect(analyticsManager.options.enableBehaviorAnalysis).toBe(true);
-            expect(analyticsManager.isInitialized).toBe(false);
-            expect(analyticsManager.isGameAnalyticsEnabled).toBe(false);
-        }');
+            expect(analyticsManager.options.enableGameAnalytics).toBe(true),
+            expect(analyticsManager.options.enablePerformanceTracking).toBe(true),
+            expect(analyticsManager.options.enableBehaviorAnalysis).toBe(true),
+            expect(analyticsManager.isInitialized).toBe(false),
+            expect(analyticsManager.isGameAnalyticsEnabled).toBe(false) }');
         test('カスタム設定で初期化される', () => {
             const customManager = new EnhancedAnalyticsManager({
                 enableGameAnalytics: false,
@@ -212,14 +185,13 @@ describe('EnhancedAnalyticsManager', () => {
             expect(customManager.options.enablePerformanceTracking).toBe(false);
         }');
         test('initialize(')が正常に完了する', async () => {
-            await analyticsManager.initialize();
-            expect(analyticsManager.isInitialized).toBe(true);
-            expect(analyticsManager.isGameAnalyticsEnabled).toBe(true);
-            expect(analyticsManager.privacyManager).toBeInstanceOf(MockPrivacyManager);
-            expect(analyticsManager.storageManager).toBeInstanceOf(MockIndexedDBStorageManager);
-            expect(analyticsManager.dataCollector).toBeInstanceOf(MockDataCollector);
-            expect(analyticsManager.gameBalanceCollector).toBeInstanceOf(MockGameBalanceCollector);
-        }');
+            await analyticsManager.initialize(),
+            expect(analyticsManager.isInitialized).toBe(true),
+            expect(analyticsManager.isGameAnalyticsEnabled).toBe(true),
+            expect(analyticsManager.privacyManager).toBeInstanceOf(MockPrivacyManager),
+            expect(analyticsManager.storageManager).toBeInstanceOf(MockIndexedDBStorageManager),
+            expect(analyticsManager.dataCollector).toBeInstanceOf(MockDataCollector),
+            expect(analyticsManager.gameBalanceCollector).toBeInstanceOf(MockGameBalanceCollector) }');
         test('同意がない場合は初期化をスキップする', async () => {
             const consentDeniedManager = new EnhancedAnalyticsManager({
                 autoInitialize: false
@@ -233,8 +205,7 @@ describe('EnhancedAnalyticsManager', () => {
     }
     describe('基本的な追跡機能', () => {
         beforeEach(async () => {
-            await analyticsManager.initialize();
-        }');
+            await analyticsManager.initialize() }');
         test('ゲームセッション開始を追跡する', (') => {
             const sessionInfo = {
                 stageId: 'normal',
@@ -247,11 +218,10 @@ describe('EnhancedAnalyticsManager', () => {
             expect(mockAnalytics.trackEvent').toHaveBeenCalledWith('game_session_start', {
                 stage_id: 'normal',
                 difficulty: 'medium',
-                player_level: 5);
+                player_level: 5),
             expect(analyticsManager.dataCollector.sessionInfo').toEqual(expect.objectContaining({
                 stageId: 'normal',
-                difficulty: 'medium'))');
-        }
+                difficulty: 'medium'))') }
         test('ゲームセッション終了を追跡する', (') => {
             const endInfo = {
                 duration: 120000,
@@ -267,8 +237,7 @@ describe('EnhancedAnalyticsManager', () => {
                 duration: 120000,
                 final_score: 1500,
                 completed: true,
-                exit_reason: 'completed')');
-        }
+                exit_reason: 'completed')') }
         test('バブルインタラクションを追跡する', (') => {
             const bubbleData = {
                 bubbleType: 'normal',
@@ -282,9 +251,8 @@ describe('EnhancedAnalyticsManager', () => {
             expect(mockAnalytics.trackEvent').toHaveBeenCalledWith('bubble_interaction', {
                 bubble_type: 'normal',
                 action: 'popped',
-                reaction_time: 450);
-            expect(analyticsManager.dataCollector.eventStats.bubbleEvents).toBe(1);
-        }');
+                reaction_time: 450),
+            expect(analyticsManager.dataCollector.eventStats.bubbleEvents).toBe(1) }');
         test('スコア獲得を追跡する', (') => {
             const scoreData = {
                 type: 'bubble',
@@ -298,8 +266,7 @@ describe('EnhancedAnalyticsManager', () => {
             expect(mockAnalytics.trackEvent').toHaveBeenCalledWith('score_gained', {
                 score_type: 'bubble',
                 amount: 20,
-                total_score: 500)');
-        }
+                total_score: 500)') }
         test('アイテム使用を追跡する', (') => {
             const itemData = {
                 itemType: 'timeExtender',
@@ -311,13 +278,11 @@ describe('EnhancedAnalyticsManager', () => {
             expect(mockAnalytics.trackEvent').toHaveBeenCalledWith('item_used', {
                 item_type: 'timeExtender',
                 cost: 50,
-                effectiveness: 0.8);
-        }
+                effectiveness: 0.8) }
     }');
     describe('ゲームバランス分析機能', () => {
         beforeEach(async () => {
-            await analyticsManager.initialize();
-        }');
+            await analyticsManager.initialize() }');
         test('ゲームバランスデータを追跡する', (') => {
             const balanceData = {
                 type: 'bubbleFrequency',
@@ -339,8 +304,7 @@ describe('EnhancedAnalyticsManager', () => {
             expect(mockAnalytics.trackEvent').toHaveBeenCalledWith('game_balance', {
                 balance_type: 'bubbleFrequency',
                 stage_id: 'normal',
-                difficulty: 'medium')');
-        }
+                difficulty: 'medium')') }
         test('ゲームバランス警告を生成する', (') => {
             const balanceData = {
                 type: 'scoreDistribution',
@@ -359,17 +323,14 @@ describe('EnhancedAnalyticsManager', () => {
     }
     describe('パフォーマンス監視', () => {
         beforeEach(async () => {
-            await analyticsManager.initialize();
-        }');
+            await analyticsManager.initialize() }');
         test('パフォーマンス監視が開始される', () => {
-            analyticsManager.startPerformanceMonitoring();
-            expect(analyticsManager.performanceMonitor.fps).toBeDefined();
-            expect(analyticsManager.performanceMonitor.memoryUsage).toBeDefined();
-        }');
+            analyticsManager.startPerformanceMonitoring(),
+            expect(analyticsManager.performanceMonitor.fps).toBeDefined(),
+            expect(analyticsManager.performanceMonitor.memoryUsage).toBeDefined() }');
         test('パフォーマンス指標を収集する', () => {
-            analyticsManager.collectPerformanceMetrics();
-            expect(analyticsManager.dataCollector.eventStats.totalEvents).toBeGreaterThan(0);
-        }');
+            analyticsManager.collectPerformanceMetrics(),
+            expect(analyticsManager.dataCollector.eventStats.totalEvents).toBeGreaterThan(0) }');
         test('低FPS警告を生成する', () => {
             const lowFpsMetrics = {
                 fps: 20, // 30fps以下
@@ -379,11 +340,10 @@ describe('EnhancedAnalyticsManager', () => {
                     limit: 200000000
                 },
                 errorCount: 0,
-        timestamp: Date.now(),
-            };
+        timestamp: Date.now( };
             analyticsManager.checkPerformanceWarnings(lowFpsMetrics);
             expect(console.warn).toHaveBeenCalledWith(');
-                expect.stringContaining('[Performance Warning]''),
+                expect.stringContaining('[Performance Warning]'),
                 expect.stringContaining('Low FPS detected');
         }');
         test('高メモリ使用量警告を生成する', () => {
@@ -395,23 +355,21 @@ describe('EnhancedAnalyticsManager', () => {
                     limit: 200000000
                 },
                 errorCount: 0,
-        timestamp: Date.now(),
-            };
+        timestamp: Date.now( };
             analyticsManager.checkPerformanceWarnings(highMemoryMetrics);
             expect(console.warn).toHaveBeenCalledWith(');
-                expect.stringContaining('[Performance Warning]''),
+                expect.stringContaining('[Performance Warning]'),
                 expect.stringContaining('High memory usage');
         }');
     }
     describe('プレイヤー行動分析', () => {
         beforeEach(async () => {
-            await analyticsManager.initialize(');
+            await analyticsManager.initialize('),
             // セッション開始
             analyticsManager.initializePlayerBehaviorTracking({
                 stageId: 'normal',
                 difficulty: 'medium',
-                previousBestScore: 1000),
-            }');
+                previousBestScore: 1000 }');
         }
         test('プレイヤー行動を追跡する', (') => {
             const behaviorData = {
@@ -426,8 +384,8 @@ describe('EnhancedAnalyticsManager', () => {
         }');
         test('長時間セッションを検出する', () => {
             // 30分以上のセッション時間をシミュレート
-            const originalStartTime = analyticsManager.playerBehavior.sessionData.startTime;
-            analyticsManager.playerBehavior.sessionData.startTime = Date.now() - (31 * 60 * 1000');
+            const originalStartTime = analyticsManager.playerBehavior.sessionData.startTime,
+            analyticsManager.playerBehavior.sessionData.startTime = Date.now() - (31 * 60 * 1000'),
             const behaviorData = {
                 type: 'interaction',
                 action: 'popped',
@@ -463,37 +421,33 @@ describe('EnhancedAnalyticsManager', () => {
         }');
         test('スキル向上を計算する', () => {
             // 履歴データを設定
-            analyticsManager.playerBehavior.skillProgression.accuracyHistory = [0.6, 0.7, 0.8];
-            analyticsManager.playerBehavior.skillProgression.reactionTimeHistory = [800, 700, 600];
-            const improvement = analyticsManager.calculateSkillImprovement();
-            expect(improvement').toHaveProperty('improved');
-            expect(improvement').toHaveProperty('accuracyDelta');
-            expect(improvement').toHaveProperty('reactionTimeDelta');
-        }');
+            analyticsManager.playerBehavior.skillProgression.accuracyHistory = [0.6, 0.7, 0.8],
+            analyticsManager.playerBehavior.skillProgression.reactionTimeHistory = [800, 700, 600],
+            const improvement = analyticsManager.calculateSkillImprovement(),
+            expect(improvement').toHaveProperty('improved'),
+            expect(improvement').toHaveProperty('accuracyDelta'),
+            expect(improvement').toHaveProperty('reactionTimeDelta') }');
     }
     describe('エラーハンドリング', () => {
         beforeEach(async () => {
-            await analyticsManager.initialize();
-        }');
+            await analyticsManager.initialize() }');
         test('エラーを追跡する', (') => {
-            const error = new Error('Test error'');
+            const error = new Error('Test error'),
             const context = { component: 'TestComponent' };
             analyticsManager.trackError(error, context);
             expect(mockAnalytics.trackError).toHaveBeenCalledWith(error, context);
             expect(analyticsManager.performanceMonitor.errorCount).toBe(1);
         }');
         test('初期化エラーを処理する', (') => {
-            const error = new Error('Initialization failed');
-            analyticsManager.handleInitializationError(error);
-            expect(analyticsManager.isGameAnalyticsEnabled).toBe(false);
+            const error = new Error('Initialization failed'),
+            analyticsManager.handleInitializationError(error),
+            expect(analyticsManager.isGameAnalyticsEnabled).toBe(false),
             expect(console.warn').toHaveBeenCalledWith(
-                'Falling back to basic analytics only');
-        }');
+                'Falling back to basic analytics only') }');
     }
     describe('設定管理', () => {
         beforeEach(async () => {
-            await analyticsManager.initialize();
-        }');
+            await analyticsManager.initialize() }');
         test('設定を更新する', () => {
             const newSettings = {
                 enableGameAnalytics: false,
@@ -509,36 +463,31 @@ describe('EnhancedAnalyticsManager', () => {
             expect(analyticsManager.isGameAnalyticsEnabled).toBe(false);
         }');
         test('統計情報を取得する', () => {
-            const stats = analyticsManager.getAnalyticsStats();
-            expect(stats').toHaveProperty('isInitialized');
-            expect(stats').toHaveProperty('isGameAnalyticsEnabled');
-            expect(stats').toHaveProperty('performanceMonitor');
-            expect(stats').toHaveProperty('playerSkillLevel');
-            expect(stats').toHaveProperty('playStyleDistribution');
-        }');
+            const stats = analyticsManager.getAnalyticsStats(),
+            expect(stats').toHaveProperty('isInitialized'),
+            expect(stats').toHaveProperty('isGameAnalyticsEnabled'),
+            expect(stats').toHaveProperty('performanceMonitor'),
+            expect(stats').toHaveProperty('playerSkillLevel'),
+            expect(stats').toHaveProperty('playStyleDistribution') }');
     }
     describe('データ管理', () => {
         beforeEach(async () => {
-            await analyticsManager.initialize();
-        }');
+            await analyticsManager.initialize() }');
         test('データをエクスポートする', async () => {
-            const exportedData = await analyticsManager.exportData();
-            expect(exportedData').toHaveProperty('sessions');
-            expect(exportedData').toHaveProperty('bubbleInteractions');
-            expect(exportedData').toHaveProperty('performance');
-        }');
+            const exportedData = await analyticsManager.exportData(),
+            expect(exportedData').toHaveProperty('sessions'),
+            expect(exportedData').toHaveProperty('bubbleInteractions'),
+            expect(exportedData').toHaveProperty('performance') }');
         test('データを削除する', async () => {
-            await analyticsManager.deleteData();
-            expect(analyticsManager.storageManager.data.sessions).toEqual([]);
-            expect(analyticsManager.storageManager.data.bubbleInteractions).toEqual([]);
-            expect(analyticsManager.storageManager.data.performance).toEqual([]);
-        }');
+            await analyticsManager.deleteData(),
+            expect(analyticsManager.storageManager.data.sessions).toEqual([]),
+            expect(analyticsManager.storageManager.data.bubbleInteractions).toEqual([]),
+            expect(analyticsManager.storageManager.data.performance).toEqual([]) }');
     }
     describe('既存機能との互換性', (') => {
         test('基本のAnalyticsのメソッドが利用可能', () => {
-            expect(analyticsManager.analytics.trackEvent).toBeDefined();
-            expect(analyticsManager.analytics.trackError).toBeDefined();
-        }');
+            expect(analyticsManager.analytics.trackEvent).toBeDefined(),
+            expect(analyticsManager.analytics.trackError).toBeDefined() }');
         test('基本のAnalyticsが無効でも動作する', async () => {
             const managerWithoutAnalytics = new EnhancedAnalyticsManager({
                 autoInitialize: false
@@ -551,8 +500,7 @@ describe('EnhancedAnalyticsManager', () => {
             expect((') => {
                 managerWithoutAnalytics.startGameSession({
                     stageId: 'test',
-                    difficulty: 'easy'),
-                });
+                    difficulty: 'easy' });
             }).not.toThrow(');
         }
         test('段階的な機能無効化が正常に動作する', async () => {
@@ -567,27 +515,24 @@ describe('EnhancedAnalyticsManager', () => {
             expect((') => {
                 limitedManager.trackBubbleInteraction({
                     bubbleType: 'normal',
-                    action: 'popped'),
-                });
+                    action: 'popped' });
             }).not.toThrow();
         }
     }');
     describe('メモリ管理', (') => {
         test('destroy(')が正常に動作する', async () => {
-            await analyticsManager.initialize();
-            analyticsManager.destroy();
-            expect(analyticsManager.isInitialized).toBe(false);
-            expect(analyticsManager.isGameAnalyticsEnabled).toBe(false);
-        }');
+            await analyticsManager.initialize(),
+            analyticsManager.destroy(),
+            expect(analyticsManager.isInitialized).toBe(false),
+            expect(analyticsManager.isGameAnalyticsEnabled).toBe(false) }');
         test('破棄後の操作でエラーが発生しない', async () => {
-            await analyticsManager.initialize();
-            analyticsManager.destroy();
+            await analyticsManager.initialize(),
+            analyticsManager.destroy(),
             // 破棄後の操作でエラーが発生しないことを確認
             expect((') => {
                 analyticsManager.trackBubbleInteraction({
                     bubbleType: 'normal',
-                    action: 'popped'),
-                });
+                    action: 'popped' });
             }).not.toThrow();
         }
     }');

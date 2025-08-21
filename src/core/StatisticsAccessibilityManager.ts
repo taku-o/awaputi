@@ -4,48 +4,47 @@
  */
 export class StatisticsAccessibilityManager {
     constructor(statisticsManager, canvas, uiContainer) {
-        this.statisticsManager = statisticsManager;
-        this.canvas = canvas;
-        this.uiContainer = uiContainer;
+        this.statisticsManager = statisticsManager,
+        this.canvas = canvas,
+        this.uiContainer = uiContainer,
         
         // アクセシビリティ設定
         this.config = {
             screenReader: {
-                enabled: true;
+                enabled: true,
                 verboseMode: false,
-    announcementDelay: 1000, // 1秒のデレイ;
+    announcementDelay: 1000, // 1秒のデレイ,
                 maxAnnouncementLength: 300,
-    autoAnnouncements: true;
-    ,}
+    autoAnnouncements: true }
                 customDescriptions: true 
     };
-            keyboard: { enabled: true;
-                tabOrder: true;
-                shortcuts: true;
+            keyboard: { enabled: true,
+                tabOrder: true,
+                shortcuts: true,
                 focusVisible: true,
     skipLinks: true };
-            visual: { highContrast: false;
-                largeText: false;
-                colorBlindSupport: true;
+            visual: { highContrast: false,
+                largeText: false,
+                colorBlindSupport: true,
                 animations: true,
     reducedMotion: false };
-            audio: { enabled: false;
-                soundCues: false;
+            audio: { enabled: false,
+                soundCues: false,
                 speechSynthesis: false,
     volume: 0.5 };
             general: { timeout: 30000, // 30秒のタイムアウト
-                errorRecovery: true;
+                errorRecovery: true,
                 progressIndicators: true,
-    contextHelp: true ,}
+    contextHelp: true  }
         };
         // 状態管理
         this.state = { currentFocus: null,
-            navigationHistory: [];
-            announcementQueue: [];
-            isAnnouncing: false;
-            lastAnnouncement: null;
+            navigationHistory: [],
+            announcementQueue: [],
+            isAnnouncing: false,
+            lastAnnouncement: null,
             keyboardMode: false,
-    screenReaderActive: false ,};
+    screenReaderActive: false  };
         // ARIA要素管理
         this.ariaElements = new Map();
         this.liveRegions = new Map();
@@ -72,13 +71,12 @@ export class StatisticsAccessibilityManager {
      * 初期化
      */
     initialize() {
-        this.detectScreenReader();
-        this.setupARIAStructure();
-        this.setupKeyboardNavigation();
-        this.setupLiveRegions();
-        this.setupVisualAccessibility();
-        this.setupAudioCues();
-    }
+        this.detectScreenReader(),
+        this.setupARIAStructure(),
+        this.setupKeyboardNavigation(),
+        this.setupLiveRegions(),
+        this.setupVisualAccessibility(),
+        this.setupAudioCues() }
         this.bindEvents(); }
     }
     
@@ -86,50 +84,45 @@ export class StatisticsAccessibilityManager {
      * スクリーンリーダーの検出'
      */''
     detectScreenReader()';
-            navigator.userAgent.includes('NVDA''),
-            navigator.userAgent.includes('JAWS''),
-            navigator.userAgent.includes('VoiceOver''),
+            navigator.userAgent.includes('NVDA'),
+            navigator.userAgent.includes('JAWS'),
+            navigator.userAgent.includes('VoiceOver'),
             document.querySelector('[role="application"]),
             window.speechSynthesis;
         ];
         
         this.state.screenReaderActive = indicators.some(indicator => indicator);
 
-        if(this.state.screenReaderActive) {'
+        if(this.state.screenReaderActive) {
 
-            console.debug('Screen reader detected, enabling accessibility features';
-        }
+            console.debug('Screen reader detected, enabling accessibility features' }
             this.config.screenReader.enabled = true; }
 }
     
     /**
      * ARIA構造の設定
      */
-    setupARIAStructure() {'
+    setupARIAStructure() {
         // メインコンテナにroleを設定
         if(this.uiContainer) {''
-            this.uiContainer.setAttribute('role', 'main'');
-
-    }
+            this.uiContainer.setAttribute('role', 'main') }
 
             this.uiContainer.setAttribute('aria-label', '統計情報ダッシュボード'; }
         }
         ';
         // Canvasにアクセシブルな代替を提供
-        if(this.canvas) {'
+        if(this.canvas) {
 
-            this.canvas.setAttribute('role', 'img'');''
-            this.canvas.setAttribute('aria-label', '統計グラフ表示領域'');
-            ';
+            this.canvas.setAttribute('role', 'img'),
+            this.canvas.setAttribute('aria-label', '統計グラフ表示領域'),
+            ',
             // 代替テキスト用の隠し要素を作成
-            const altTextContainer = document.createElement('div'');''
-            altTextContainer.className = 'canvas-alt-text sr-only';
-            altTextContainer.setAttribute('aria-live', 'polite'');''
-            altTextContainer.setAttribute('aria-atomic', 'true);
+            const altTextContainer = document.createElement('div'),
+            altTextContainer.className = 'canvas-alt-text sr-only',
+            altTextContainer.setAttribute('aria-live', 'polite'),
+            altTextContainer.setAttribute('aria-atomic', 'true),
 
-            this.canvas.parentNode.insertBefore(altTextContainer, this.canvas.nextSibling);
-
-        }
+            this.canvas.parentNode.insertBefore(altTextContainer, this.canvas.nextSibling) }
 
             this.ariaElements.set('canvas-alt', altTextContainer); }
         }
@@ -142,37 +135,37 @@ export class StatisticsAccessibilityManager {
      * 統計用ARIA構造の作成
      */''
     createStatisticsARIAStructure('''
-            { id: 'game-stats', label: 'ゲームプレイ統計', level: 2 ,},''
-            { id: 'score-stats', label: 'スコア統計', level: 2 ,},''
-            { id: 'bubble-stats', label: 'バブル統計', level: 2 ,},''
-            { id: 'combo-stats', label: 'コンボ統計', level: 2 ,},''
-            { id: 'trend-analysis', label: 'トレンド分析', level: 2 ,},''
-            { id: 'achievements', label: '実績', level: 2 ,}
+            { id: 'game-stats', label: 'ゲームプレイ統計', level: 2  },''
+            { id: 'score-stats', label: 'スコア統計', level: 2  },''
+            { id: 'bubble-stats', label: 'バブル統計', level: 2  },''
+            { id: 'combo-stats', label: 'コンボ統計', level: 2  },''
+            { id: 'trend-analysis', label: 'トレンド分析', level: 2  },''
+            { id: 'achievements', label: '実績', level: 2  }
         ];
         );
         sections.forEach(section => {  }
 
             // セクション見出しの作成);' }'
 
-            const heading = document.createElement(`h${section.level}`'}';
+            const heading = document.createElement(`h${section.level}`}';
             heading.id = `${section.id}-heading`;
 
-            heading.textContent = section.label;''
+            heading.textContent = section.label;
             heading.className = 'statistics-section-heading';
             ';
             // セクションコンテナの作成
-            const container = document.createElement('section'');
+            const container = document.createElement('section');
 
-            container.id = section.id;''
-            container.setAttribute('aria-labelledby', `${ section.id}-heading`'};''
+            container.id = section.id;
+            container.setAttribute('aria-labelledby', `${ section.id}-heading`};
             container.className = 'statistics-section';
             ';
 
             // 詳細情報用の説明領域' }'
 
-            const description = document.createElement('div''}';
+            const description = document.createElement('div'}';
 
-            description.id = `${section.id}-description`;''
+            description.id = `${section.id}-description`;
             description.className = 'statistics-description';
             description.setAttribute('aria-live', 'polite);
             
@@ -188,16 +181,16 @@ export class StatisticsAccessibilityManager {
      * キーボードナビゲーションの設定
      */
     setupKeyboardNavigation() {
-        if (!this.config.keyboard.enabled) return;
+        if (!this.config.keyboard.enabled) return,
         
         // スキップリンクの作成
-        this.createSkipLinks();
+        this.createSkipLinks(),
         
         // フォーカス可能要素の管理
-        this.updateFocusableElements();
+        this.updateFocusableElements(),
         
         // キーボードショートカットの設定
-        this.setupKeyboardShortcuts();
+        this.setupKeyboardShortcuts(),
         
         // フォーカス表示の設定
     }
@@ -208,31 +201,35 @@ export class StatisticsAccessibilityManager {
      * スキップリンクの作成
      */''
     createSkipLinks()';
-        const skipLinksContainer = document.createElement('div'');''
+        const skipLinksContainer = document.createElement('div');
         skipLinksContainer.className = 'skip-links';
-        skipLinksContainer.setAttribute('role', 'navigation'');''
-        skipLinksContainer.setAttribute('aria-label', 'スキップリンク'');
+        skipLinksContainer.setAttribute('role', 'navigation');
+        skipLinksContainer.setAttribute('aria-label', 'スキップリンク');
         ';
 
-        const skipLinks = ['';
-            { href: '#main-content', text: 'メインコンテンツへスキップ' ,},''
-            { href: '#statistics-summary', text: '統計サマリーへスキップ' ,},''
-            { href: '#charts-section', text: 'グラフセクションへスキップ' ,},]'
-            { href: '#navigation-controls', text: 'ナビゲーションコントロールへスキップ' ,}]
+        const skipLinks = [';
+            { href: '#main-content', text: 'メインコンテンツへスキップ'
+            },''
+            { href: '#statistics-summary', text: '統計サマリーへスキップ'
+            },''
+            { href: '#charts-section', text: 'グラフセクションへスキップ'
+            },]'
+            { href: '#navigation-controls', text: 'ナビゲーションコントロールへスキップ'
+            }]
         ];
 
-        skipLinks.forEach(link => {  ');''
-            const skipLink = document.createElement('a'');
-            skipLink.href = link.href;
+        skipLinks.forEach(link => {  '),
+            const skipLink = document.createElement('a'),
+            skipLink.href = link.href,
 
-            skipLink.textContent = link.text;''
-            skipLink.className = 'skip-link';
-            skipLink.addEventListener('focus', () => {' }
+            skipLink.textContent = link.text,
+            skipLink.className = 'skip-link',
+            skipLink.addEventListener('focus', () => { }
 
-                skipLink.classList.add('visible';' }
+                skipLink.classList.add('visible'; }
 
-            }');''
-            skipLink.addEventListener('blur', () => {  ' }
+            }');
+            skipLink.addEventListener('blur', () => { }
 
                 skipLink.classList.remove('visible'; }'
             });
@@ -253,21 +250,21 @@ export class StatisticsAccessibilityManager {
             'select:not([disabled])',
             'textarea:not([disabled])',
             'a[href]',
-            '[tabindex]:not([tabindex="-1"]"',
+            '[tabindex]:not([tabindex="-1"]",
             '[role="button"]:not([disabled])',
-            '[role="link"]:not([disabled])''';
+            '[role="link"]:not([disabled])'';
         ].join(', ');
         
         this.focusableElements = Array.from(document.querySelectorAll(selector);
         
         // タブ順序の設定
-        if (this.config.keyboard.tabOrder) { this.setTabOrder(); }
+        if (this.config.keyboard.tabOrder) { this.setTabOrder() }
     }
     
     /**
      * タブ順序の設定'
      */''
-    setTabOrder(''';
+    setTabOrder('';
             '.skip-link',
             '.main-navigation',
             '.statistics-filter',
@@ -278,11 +275,11 @@ export class StatisticsAccessibilityManager {
         ];
         
         let tabIndex = 1;)
-        priorityOrder.forEach(selector => {  );
+        priorityOrder.forEach(selector => {  ),
 
-            const elements = document.querySelectorAll(selector);''
-            elements.forEach(element => {);''
-                if(!element.hasAttribute('tabindex)' {' }
+            const elements = document.querySelectorAll(selector),
+            elements.forEach(element => {),
+                if(!element.hasAttribute('tabindex)' { }
 
                     element.setAttribute('tabindex', tabIndex++); }
 });
@@ -293,18 +290,28 @@ export class StatisticsAccessibilityManager {
      * キーボードショートカットの設定'
      */''
     setupKeyboardShortcuts('''
-            ['s', { action: 'focusSummary', description: '統計サマリーにフォーカス' ,}],''
-            ['c', { action: 'focusCharts', description: 'グラフにフォーカス' ,}],''
-            ['d', { action: 'announceDetails', description: '詳細情報を読み上げ' ,}],''
-            ['h', { action: 'showHelp', description: 'ヘルプを表示' ,}],''
-            ['r', { action: 'refreshData', description: 'データを更新' ,}],''
-            ['ArrowUp', { action: 'navigateUp', description: '上に移動' ,}],''
-            ['ArrowDown', { action: 'navigateDown', description: '下に移動' ,}],''
-            ['ArrowLeft', { action: 'navigateLeft', description: '左に移動' ,}],''
-            ['ArrowRight', { action: 'navigateRight', description: '右に移動' ,}],''
-            ['Enter', { action: 'activate', description: '選択した項目を実行' ,}],''
+            ['s', { action: 'focusSummary', description: '統計サマリーにフォーカス'
+            }],''
+            ['c', { action: 'focusCharts', description: 'グラフにフォーカス'
+            }],''
+            ['d', { action: 'announceDetails', description: '詳細情報を読み上げ'
+            }],''
+            ['h', { action: 'showHelp', description: 'ヘルプを表示'
+            }],''
+            ['r', { action: 'refreshData', description: 'データを更新'
+            }],''
+            ['ArrowUp', { action: 'navigateUp', description: '上に移動'
+            }],''
+            ['ArrowDown', { action: 'navigateDown', description: '下に移動'
+            }],''
+            ['ArrowLeft', { action: 'navigateLeft', description: '左に移動'
+            }],''
+            ['ArrowRight', { action: 'navigateRight', description: '右に移動'
+            }],''
+            ['Enter', { action: 'activate', description: '選択した項目を実行'
+            }],''
             ['Escape', { action: 'cancel', description: 'キャンセル' )]
-        ]);
+        ]),
         
         shortcuts.forEach((shortcut, key) => {  }
             this.keyboardHandlers.set(key, shortcut); }
@@ -323,39 +330,39 @@ export class StatisticsAccessibilityManager {
             
             .high-contrast .focus-visible { outline: 3px solid #FFFF00,
                 background-color: #000000,
-                color: #FFFFFF ,}
+                color: #FFFFFF  }
             
-            .sr-only { position: absolute;
-                width: 1px;
-                height: 1px;
-                padding: 0;
-                margin: -1px;
+            .sr-only { position: absolute,
+                width: 1px,
+                height: 1px,
+                padding: 0,
+                margin: -1px,
                 overflow: hidden,
     clip: rect(0, 0, 0, 0),
                 white-space: nowrap,
-                border: 0 ,}
+                border: 0  }
             
-            .skip-link { position: absolute;
-                top: -1000px;
-                left: -1000px;
+            .skip-link { position: absolute,
+                top: -1000px,
+                left: -1000px,
                 height: 1px,
-    width: 1px;
+    width: 1px,
                 text-align: left,
-                overflow: hidden ,}
+                overflow: hidden  }
             
             .skip-link:active;
             .skip-link:focus,
             .skip-link:hover { left: 0,
-                top: 0;
-                width: auto;
+                top: 0,
+                width: auto,
                 height: auto,
-    overflow: visible;
+    overflow: visible,
                 z-index: 9999,
-                background: #000;
+                background: #000,
                 color: #fff,
-    padding: 8px 16px;
+    padding: 8px 16px,
                 text-decoration: none,
-                border-radius: 0 0 4px 0, }
+                border-radius: 0 0 4px 0 }
         `;
         document.head.appendChild(style);
     }
@@ -364,21 +371,25 @@ export class StatisticsAccessibilityManager {
      * ライブリージョンの設定'
      */''
     setupLiveRegions('''
-            { id: 'announcements', politeness: 'polite', atomic: 'true' ,},''
-            { id: 'status', politeness: 'polite', atomic: 'false' ,},''
-            { id: 'errors', politeness: 'assertive', atomic: 'true' ,},''
-            { id: 'progress', politeness: 'polite', atomic: 'false' ,}
+            { id: 'announcements', politeness: 'polite', atomic: 'true'
+            },''
+            { id: 'status', politeness: 'polite', atomic: 'false'
+            },''
+            { id: 'errors', politeness: 'assertive', atomic: 'true'
+            },''
+            { id: 'progress', politeness: 'polite', atomic: 'false'
+            }
         ];
 
         ')';
-        regions.forEach(region => {  ');' }
+        regions.forEach(region => {  '),' }
 
-            const element = document.createElement('div''); }
+            const element = document.createElement('div'); }
 
-            element.id = `live-region-${region.id}`;''
+            element.id = `live-region-${region.id}`;
             element.className = 'sr-only';
-            element.setAttribute('aria-live', region.politeness';''
-            element.setAttribute('aria-atomic', region.atomic';''
+            element.setAttribute('aria-live', region.politeness';
+            element.setAttribute('aria-atomic', region.atomic';
             element.setAttribute('role', 'status);
             
             document.body.appendChild(element);
@@ -391,10 +402,10 @@ export class StatisticsAccessibilityManager {
      */''
     setupVisualAccessibility()';
         if(window.matchMedia && window.matchMedia('(prefers-contrast: high)).matches) { ''
-            this.enableHighContrast()';
+            this.enableHighContrast()',
         if(window.matchMedia && window.matchMedia('(prefers-font-size: large)).matches) {''
-            this.enableLargeText()';
-        if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)).matches) {'
+            this.enableLargeText()',
+        if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)).matches) {
             this.enableReducedMotion( }
         
         // 色覚サポートの設定
@@ -405,7 +416,7 @@ export class StatisticsAccessibilityManager {
      * ハイコントラストモードの有効化
      */''
     enableHighContrast()';
-        document.body.classList.add('high-contrast'');''
+        document.body.classList.add('high-contrast');
         this.announceToScreenReader('ハイコントラストモードを有効にしました', 'status';
     }
     
@@ -413,7 +424,7 @@ export class StatisticsAccessibilityManager {
      * 大きな文字サイズの有効化'
      */''
     enableLargeText()';
-        document.body.classList.add('large-text'');''
+        document.body.classList.add('large-text');
         this.announceToScreenReader('大きな文字サイズを有効にしました', 'status';
     }
     
@@ -421,20 +432,19 @@ export class StatisticsAccessibilityManager {
      * アニメーション削減の有効化'
      */''
     enableReducedMotion()';
-        document.body.classList.add('reduced-motion'');''
+        document.body.classList.add('reduced-motion');
         this.announceToScreenReader('アニメーションを削減しました', 'status);
     }
     
     /**
      * 色覚サポートの設定
      */
-    setupColorBlindSupport() {'
+    setupColorBlindSupport() {
 
-        if(!this.config.visual.colorBlindSupport) return;
-        ';
+        if(!this.config.visual.colorBlindSupport) return,
+        ',
         // パターンとテクスチャによる区別の追加
-        const style = document.createElement('style);
-    }
+        const style = document.createElement('style) }
         style.textContent = ` }
             .color-blind-support .chart-bar:nth-child(1) { background-image: repeating-linear-gradient(45deg, transparent, transparent 2px, rgba(0,0,0,0.1) 2px, rgba(0,0,0,0.1) 4px }
             .color-blind-support .chart-bar:nth-child(2) { background-image: repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0,0,0,0.1) 2px, rgba(0,0,0,0.1) 4px }
@@ -443,8 +453,8 @@ export class StatisticsAccessibilityManager {
             .color-blind-support .chart-line:nth-child(2) { stroke-dasharray: 10,5 }
             .color-blind-support .chart-line:nth-child(3) { stroke-dasharray: 15,5,5,5 }
 
-        `;''
-        document.head.appendChild(style);''
+        `;
+        document.head.appendChild(style);
         document.body.classList.add('color-blind-support);
     }
     
@@ -452,11 +462,11 @@ export class StatisticsAccessibilityManager {
      * 音声キューの設定
      */
     setupAudioCues() {
-        if (!this.config.audio.enabled) return;
+        if (!this.config.audio.enabled) return,
         
         // Web Audio API または HTML5 Audio を使用した音声キュー
-        this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        this.audioBuffers = new Map();
+        this.audioContext = new (window.AudioContext || window.webkitAudioContext)(),
+        this.audioBuffers = new Map(),
         
         // 基本的な音声キューの生成
     }
@@ -467,12 +477,12 @@ export class StatisticsAccessibilityManager {
      * 音声キューの生成
      */
     generateAudioCues() { const cues = { }
-            success: { frequency: 800, duration: 0.2 ,},
-            error: { frequency: 300, duration: 0.5 ,},
-            focus: { frequency: 600, duration: 0.1 ,},
-            navigation: { frequency: 500, duration: 0.1 ,};
+            success: { frequency: 800, duration: 0.2  },
+            error: { frequency: 300, duration: 0.5  },
+            focus: { frequency: 600, duration: 0.1  },
+            navigation: { frequency: 500, duration: 0.1  };
         
-        Object.entries(cues).forEach(([name, config]) => {  const buffer = this.createTone(config.frequency, config.duration); }
+        Object.entries(cues).forEach(([name, config]) => {  const buffer = this.createTone(config.frequency, config.duration) }
             this.audioBuffers.set(name, buffer); }
         });
     }
@@ -481,11 +491,11 @@ export class StatisticsAccessibilityManager {
      * トーン生成
      */
     createTone(frequency, duration) {
-        const sampleRate = this.audioContext.sampleRate;
-        const buffer = this.audioContext.createBuffer(1, sampleRate * duration, sampleRate);
-        const data = buffer.getChannelData(0);
+        const sampleRate = this.audioContext.sampleRate,
+        const buffer = this.audioContext.createBuffer(1, sampleRate * duration, sampleRate),
+        const data = buffer.getChannelData(0),
         
-        for (let, i = 0; i < data.length; i++) {
+        for (let, i = 0, i < data.length, i++) {
     }
             data[i] = Math.sin(2 * Math.PI * frequency * i / sampleRate) * 0.1; }
         }
@@ -497,21 +507,19 @@ export class StatisticsAccessibilityManager {
      * イベントバインディング
      */''
     bindEvents()';
-        document.addEventListener('keydown', this.handleKeyDown.bind(this));''
+        document.addEventListener('keydown', this.handleKeyDown.bind(this));
         document.addEventListener('keyup', this.handleKeyUp.bind(this));
         ';
         // フォーカスイベント
-        document.addEventListener('focusin', this.handleFocusIn.bind(this));''
+        document.addEventListener('focusin', this.handleFocusIn.bind(this));
         document.addEventListener('focusout', this.handleFocusOut.bind(this));
         ';
         // マウスとタッチイベント（キーボードモードの検出）
-        document.addEventListener('mousedown', this.handleMouseDown.bind(this));''
+        document.addEventListener('mousedown', this.handleMouseDown.bind(this));
         document.addEventListener('touchstart', this.handleTouchStart.bind(this);
         ';
         // 統計データ更新イベント
-        if(this.statisticsManager) {', ';
-
-        }
+        if(this.statisticsManager) {', ' }
 
             this.statisticsManager.addEventListener('statisticsUpdated', this.handleStatisticsUpdate.bind(this); }
 }
@@ -520,26 +528,23 @@ export class StatisticsAccessibilityManager {
      * キーダウンハンドラー
      */
     handleKeyDown(event) {
-        this.state.keyboardMode = true;
+        this.state.keyboardMode = true,
         
-        const handler = this.keyboardHandlers.get(event.key);
-        if(handler && (event.altKey || event.ctrlKey || event.metaKey) {'
-            event.preventDefault();''
-            this[handler.action]?.();
-    }
+        const handler = this.keyboardHandlers.get(event.key),
+        if(handler && (event.altKey || event.ctrlKey || event.metaKey) {
+            event.preventDefault(),
+            this[handler.action]?.() }
             return; }
         }
         ';
         // 矢印キーナビゲーション
-        if(['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight].includes(event.key) {', ';
-
-        }
+        if(['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight].includes(event.key) {', ' }
 
             this.handleArrowNavigation(event); }
         }
         ';
         // タブナビゲーション
-        if(event.key === 'Tab) { this.handleTabNavigation(event); }'
+        if(event.key === 'Tab) { this.handleTabNavigation(event) }'
     }
     
     /**
@@ -551,18 +556,17 @@ export class StatisticsAccessibilityManager {
      * 矢印キーナビゲーション
      */
     handleArrowNavigation(event) {
-        event.preventDefault();
+        event.preventDefault(),
 
         switch(event.key) { : undefined''
-            case 'ArrowUp':'';
+            case 'ArrowUp':',
                 this.navigateUp('''
-            case 'ArrowDown': '';
-                this.navigateDown(''';
-            case 'ArrowLeft':'';
-                this.navigateLeft(''';
-            case 'ArrowRight':'';
-                this.navigateRight();
-    }
+            case 'ArrowDown': ',
+                this.navigateDown('',
+            case 'ArrowLeft':',
+                this.navigateLeft('',
+            case 'ArrowRight':',
+                this.navigateRight() }
 
         this.playAudioCue('navigation'; }'
     }
@@ -572,8 +576,7 @@ export class StatisticsAccessibilityManager {
      */
     handleTabNavigation(event) {
         // カスタムタブナビゲーションの実装
-        const direction = event.shiftKey ? -1 : 1;
-    }
+        const direction = event.shiftKey ? -1 : 1 }
         this.moveFocus(direction); }
     }
     
@@ -581,13 +584,13 @@ export class StatisticsAccessibilityManager {
      * フォーカス移動
      */
     moveFocus(direction) {
-        const currentIndex = this.currentFocusIndex;
-        const newIndex = currentIndex + direction;
+        const currentIndex = this.currentFocusIndex,
+        const newIndex = currentIndex + direction,
         
         if (newIndex >= 0 && newIndex < this.focusableElements.length) {
-            this.currentFocusIndex = newIndex;
-            const element = this.focusableElements[newIndex];
-            element.focus();
+            this.currentFocusIndex = newIndex,
+            const element = this.focusableElements[newIndex],
+            element.focus(),
             
             // フォーカス変更をアナウンス
     }
@@ -597,16 +600,15 @@ export class StatisticsAccessibilityManager {
     /**
      * フォーカス変更のアナウンス
      */''
-    announceFocusChange(element) {'
+    announceFocusChange(element) {
 
-        const label = element.getAttribute('aria-label'') || '';
-                     element.getAttribute('aria-labelledby'') || ;
-                     element.textContent || ';
+        const label = element.getAttribute('aria-label') || ',
+                     element.getAttribute('aria-labelledby') || ,
+                     element.textContent || ',
 
-                     element.value || '';
-                     element.getAttribute('title'') ||'';
-                     '要素';
-    }
+                     element.value || ',
+                     element.getAttribute('title') ||',
+                     '要素' }
 
         ' }'
 
@@ -617,19 +619,19 @@ export class StatisticsAccessibilityManager {
      * フォーカスインハンドラー
      */
     handleFocusIn(event) {
-        const element = event.target;
-        this.state.currentFocus = element;
-        ';
+        const element = event.target,
+        this.state.currentFocus = element,
+        ',
         // フォーカス表示の追加
-        if(this.state.keyboardMode) {'
+        if(this.state.keyboardMode) {
     }
 
             element.classList.add('focus-visible'; }'
         }
         
         // 現在のフォーカス位置を記録
-        const index = this.focusableElements.indexOf(element);''
-        if(index !== -1) { this.currentFocusIndex = index; }
+        const index = this.focusableElements.indexOf(element);
+        if(index !== -1) { this.currentFocusIndex = index }
 
         this.playAudioCue('focus';
     }
@@ -637,10 +639,8 @@ export class StatisticsAccessibilityManager {
     /**
      * フォーカスアウトハンドラー'
      */''
-    handleFocusOut(event) {'
-        const element = event.target;
-
-    }
+    handleFocusOut(event) {
+        const element = event.target }
 
         element.classList.remove('focus-visible'; }'
     }
@@ -648,22 +648,22 @@ export class StatisticsAccessibilityManager {
     /**
      * マウスダウンハンドラー
      */
-    handleMouseDown() { this.state.keyboardMode = false; }
+    handleMouseDown() { this.state.keyboardMode = false }
     
     /**
      * タッチスタートハンドラー
      */
-    handleTouchStart() { this.state.keyboardMode = false; }
+    handleTouchStart() { this.state.keyboardMode = false }
     
     /**
      * 統計更新ハンドラー
      */
     handleStatisticsUpdate(event) {
         // 統計データの更新をアナウンス
-        this.announceStatisticsUpdate(event.data);
+        this.announceStatisticsUpdate(event.data),
         
         // ARIA要素の更新
-        this.updateARIAElements(event.data);
+        this.updateARIAElements(event.data),
         
         // Canvas代替テキストの更新
     }
@@ -674,11 +674,9 @@ export class StatisticsAccessibilityManager {
      * 統計更新のアナウンス
      */
     announceStatisticsUpdate(data) {
-        if (!this.config.screenReader.autoAnnouncements) return;
+        if (!this.config.screenReader.autoAnnouncements) return,
 
-        const summary = this.generateUpdateSummary(data);
-
-    }
+        const summary = this.generateUpdateSummary(data) }
 
         this.announceToScreenReader(summary, 'status'; }'
     }
@@ -687,25 +685,21 @@ export class StatisticsAccessibilityManager {
      * 更新サマリーの生成
      */
     generateUpdateSummary(data) {
-        const updates = [];
-        
-    }
+        const updates = [] }
         if (data.gamePlayStats) { }
             updates.push(`総ゲーム数: ${data.gamePlayStats.totalGames}ゲーム`});
         }
         
         if(data.scoreStats) {
-        
-            
-        
-        }
+    
+}
             updates.push(`最高スコア: ${data.scoreStats.highestScore}点`});
         }
         ';
 
-        if (data.bubbleStats) { ' }'
+        if (data.bubbleStats) { }'
 
-            updates.push(`精度: ${Math.round(data.bubbleStats.accuracy * 100})%`');
+            updates.push(`精度: ${Math.round(data.bubbleStats.accuracy * 100})%`);
         }
 
         return `統計が更新されました。${updates.join('、'}'`;
@@ -714,13 +708,11 @@ export class StatisticsAccessibilityManager {
     /**
      * ARIA要素の更新'
      */''
-    updateARIAElements(data) {'
+    updateARIAElements(data) {
         // 各セクションの説明を更新
-        this.updateSection('game-stats', data.gamePlayStats';''
-        this.updateSection('score-stats', data.scoreStats';''
-        this.updateSection('bubble-stats', data.bubbleStats';
-
-    }
+        this.updateSection('game-stats', data.gamePlayStats',
+        this.updateSection('score-stats', data.scoreStats',
+        this.updateSection('bubble-stats', data.bubbleStats' }
 
         this.updateSection('combo-stats', data.comboStats); }
     }
@@ -728,27 +720,25 @@ export class StatisticsAccessibilityManager {
     /**
      * セクションの更新
      */
-    updateSection(sectionId, data) {'
-        const description = this.descriptions.get(sectionId);''
-        if(!description || !data) return;
+    updateSection(sectionId, data) {
+        const description = this.descriptions.get(sectionId),
+        if(!description || !data) return,
 
-        const generator = this.textGenerators.get('detailed);
+        const generator = this.textGenerators.get('detailed),
         if (generator) {
-            const text = generator(sectionId, data);
-    }
+            const text = generator(sectionId, data) }
             description.textContent = text; }
 }
     
     /**
      * Canvas代替テキストの更新'
      */''
-    updateCanvasAltText(data) {'
+    updateCanvasAltText(data) {
 
-        const altTextContainer = this.ariaElements.get('canvas-alt);
-        if (!altTextContainer) return;
+        const altTextContainer = this.ariaElements.get('canvas-alt),
+        if (!altTextContainer) return,
 
-        const chartText = this.generateChartText(data);
-    }
+        const chartText = this.generateChartText(data) }
         altTextContainer.textContent = chartText; }
     }
     
@@ -756,51 +746,49 @@ export class StatisticsAccessibilityManager {
      * スクリーンリーダーへのアナウンス'
      */''
     announceToScreenReader(message, regionId = 'announcements' {'
-        if (!this.config.screenReader.enabled || !message) return;
+        if (!this.config.screenReader.enabled || !message) return,
         
         // メッセージの長さ制限
-        if (message.length > this.config.screenReader.maxAnnouncementLength) {'
+        if (message.length > this.config.screenReader.maxAnnouncementLength) {
     }
 
             message = message.substring(0, this.config.screenReader.maxAnnouncementLength) + '...';
         }
         ';
 
-        const liveRegion = this.liveRegions.get(regionId);''
-        if(liveRegion) {'
+        const liveRegion = this.liveRegions.get(regionId);
+        if(liveRegion) {
             // 前のアナウンスをクリア
-            liveRegion.textContent = '';
+            liveRegion.textContent = ',
             
             // 短い遅延後にアナウンス
             setTimeout(() => { 
-                liveRegion.textContent = message;
+                liveRegion.textContent = message,
                 this.state.lastAnnouncement = {
                     message }
-                    timestamp: Date.now(), }
+                    timestamp: Date.now() }
                     region: regionId 
     }, 100);
         }
         
         // 音声合成を使用したアナウンス
-        if (this.config.audio.speechSynthesis && window.speechSynthesis) { this.speakText(message); }
+        if (this.config.audio.speechSynthesis && window.speechSynthesis) { this.speakText(message) }
     }
     
     /**
      * 音声合成によるテキスト読み上げ
      */
     speakText(text) {
-        if (!window.speechSynthesis) return;
+        if (!window.speechSynthesis) return,
         
         // 既存の読み上げを停止
-        speechSynthesis.cancel();
+        speechSynthesis.cancel(),
 
-        const utterance = new SpeechSynthesisUtterance(text);''
-        utterance.lang = 'ja-JP';
-        utterance.rate = 0.9;
-        utterance.pitch = 1.0;
-        utterance.volume = this.config.audio.volume;
-        
-    }
+        const utterance = new SpeechSynthesisUtterance(text),
+        utterance.lang = 'ja-JP',
+        utterance.rate = 0.9,
+        utterance.pitch = 1.0,
+        utterance.volume = this.config.audio.volume }
         speechSynthesis.speak(utterance); }
     }
     
@@ -808,20 +796,18 @@ export class StatisticsAccessibilityManager {
      * 音声キューの再生
      */
     playAudioCue(cueName) {
-        if (!this.config.audio.soundCues || !this.audioContext) return;
+        if (!this.config.audio.soundCues || !this.audioContext) return,
         
-        const buffer = this.audioBuffers.get(cueName);
+        const buffer = this.audioBuffers.get(cueName),
         if (buffer) {
-            const source = this.audioContext.createBufferSource();
-            const gainNode = this.audioContext.createGain();
+            const source = this.audioContext.createBufferSource(),
+            const gainNode = this.audioContext.createGain(),
             
-            source.buffer = buffer;
-            gainNode.gain.value = this.config.audio.volume;
+            source.buffer = buffer,
+            gainNode.gain.value = this.config.audio.volume,
             
-            source.connect(gainNode);
-            gainNode.connect(this.audioContext.destination);
-            
-    }
+            source.connect(gainNode),
+            gainNode.connect(this.audioContext.destination) }
             source.start(); }
 }
     
@@ -829,7 +815,7 @@ export class StatisticsAccessibilityManager {
      * サマリーテキストの生成
      */
     generateSummaryText(data) {
-        const parts = [];
+        const parts = [],
         
         if (data.gamePlayStats) {
     }
@@ -838,17 +824,15 @@ export class StatisticsAccessibilityManager {
         }
         
         if(data.scoreStats) {
-        
-            
-        
-        }
+    
+}
             parts.push(`最高スコア${data.scoreStats.highestScore}点`});
         }
         ';
 
-        if (data.bubbleStats) { ' }'
+        if (data.bubbleStats) { }'
 
-            parts.push(`精度${Math.round(data.bubbleStats.accuracy * 100})%`');
+            parts.push(`精度${Math.round(data.bubbleStats.accuracy * 100})%`);
         }
 
         return parts.join('、);
@@ -857,28 +841,26 @@ export class StatisticsAccessibilityManager {
     /**
      * 詳細テキストの生成
      */
-    generateDetailedText(sectionId, data) {'
+    generateDetailedText(sectionId, data) {
 
         switch(sectionId) {''
-            case 'game-stats':'';
-                return this.generateGameStatsText(data);''
-            case 'score-stats':'';
-                return this.generateScoreStatsText(data);''
-            case 'bubble-stats':'';
-                return this.generateBubbleStatsText(data);''
-            case 'combo-stats':'';
-                return this.generateComboStatsText(data);
+            case 'game-stats':',
+                return this.generateGameStatsText(data),
+            case 'score-stats':',
+                return this.generateScoreStatsText(data),
+            case 'bubble-stats':',
+                return this.generateBubbleStatsText(data),
+            case 'combo-stats':',
+                return this.generateComboStatsText(data) }
 
-    }
-
-            default: return '';
+            default: return ';
     
     /**
      * ゲーム統計テキストの生成
      */
     generateGameStatsText(data) {
-        
-    }
+    
+}
         return `ゲームプレイ統計: 総ゲーム数${data.totalGames}ゲーム、` +
                `総プレイ時間${Math.round(data.totalPlayTime / 60000})分、` +
                `平均セッション時間${Math.round(data.averageSessionTime / 60000})分`;
@@ -888,8 +870,8 @@ export class StatisticsAccessibilityManager {
      * スコア統計テキストの生成
      */
     generateScoreStatsText(data) {
-        
-    }
+    
+}
         return `スコア統計: 総スコア${data.totalScore}点、` +
                `最高スコア${data.highestScore}点、` +
                `平均スコア${Math.round(data.averageScore})点`;
@@ -899,8 +881,8 @@ export class StatisticsAccessibilityManager {
      * バブル統計テキストの生成
      */
     generateBubbleStatsText(data) {
-        
-    }
+    
+}
         return `バブル統計: 総破壊数${data.totalPopped}個、` +
                `精度${Math.round(data.accuracy * 100})%`;
     }
@@ -909,8 +891,8 @@ export class StatisticsAccessibilityManager {
      * コンボ統計テキストの生成
      */
     generateComboStatsText(data) {
-        
-    }
+    
+}
         return `コンボ統計: 最大コンボ${data.maxCombo}、` +
                `平均コンボ${Math.round(data.averageCombo})`;
     }
@@ -918,10 +900,9 @@ export class StatisticsAccessibilityManager {
     /**
      * グラフテキストの生成'
      */''
-    generateChartText(data) {'
+    generateChartText(data) {
         // グラフの種類に応じたテキスト生成
-        return 'スコア推移グラフ: 時間軸に沿ってスコアの変化を表示しています。' +';
-    }
+        return 'スコア推移グラフ: 時間軸に沿ってスコアの変化を表示しています。' +' }
 
                '最近のトレンドは上昇傾向を示しています。'; }
     }
@@ -929,27 +910,23 @@ export class StatisticsAccessibilityManager {
     /**
      * トレンドテキストの生成'
      */''
-    generateTrendText(data) {', ';
-
-    }
+    generateTrendText(data) {', ' }
 
         return 'トレンド分析: 過去7日間のパフォーマンスは向上しています。';
     
     /**
      * 比較テキストの生成'
      */''
-    generateComparisonText(data) {', ';
-
-    }
+    generateComparisonText(data) {', ' }
 
         return '期間比較: 今週は先週と比較してスコアが15%向上しています。';
     
     /**
      * ナビゲーション操作
      */
-    navigateUp() { this.moveFocus(-1); }
+    navigateUp() { this.moveFocus(-1) }
     
-    navigateDown() { this.moveFocus(1); }
+    navigateDown() { this.moveFocus(1) }
 
     navigateLeft()';
         this.announceToScreenReader('左に移動しました', 'status);
@@ -963,12 +940,10 @@ export class StatisticsAccessibilityManager {
      * 詳細情報のアナウンス
      */
     announceDetails() {
-        const currentElement = this.state.currentFocus;
+        const currentElement = this.state.currentFocus,
 
         if (currentElement) {''
-            const details = this.getElementDetails(currentElement);
-
-    }
+            const details = this.getElementDetails(currentElement) }
 
             this.announceToScreenReader(details, 'announcements'; }'
 }
@@ -976,19 +951,16 @@ export class StatisticsAccessibilityManager {
     /**
      * 要素詳細の取得'
      */''
-    getElementDetails(element) {'
+    getElementDetails(element) {
 
-        const label = element.getAttribute('aria-label'') || element.textContent;''
-        const description = element.getAttribute('aria-describedby'');''
-        const role = element.getAttribute('role) || element.tagName.toLowerCase();
-    }
+        const label = element.getAttribute('aria-label') || element.textContent,
+        const description = element.getAttribute('aria-describedby'),
+        const role = element.getAttribute('role) || element.tagName.toLowerCase() }
         let details = `${label}、${role}`;
         
         if(description) {
         
-            const descElement = document.getElementById(description);
-        
-        }
+            const descElement = document.getElementById(description) }
             if (descElement) { }
                 details += `、${descElement.textContent}`;
             }
@@ -1000,10 +972,9 @@ export class StatisticsAccessibilityManager {
     /**
      * ヘルプの表示
      */
-    showHelp() {'
+    showHelp() {
 
-        const helpText = this.generateHelpText();
-    }
+        const helpText = this.generateHelpText() }
 
         this.announceToScreenReader(helpText, 'announcements'; }'
     }
@@ -1012,7 +983,7 @@ export class StatisticsAccessibilityManager {
      * ヘルプテキストの生成'
      */''
     generateHelpText('''
-        return 'キーボードショートカット: Sで統計サマリー、Cでグラフ、Dで詳細情報、' +'';
+        return 'キーボードショートカット: Sで統計サマリー、Cでグラフ、Dで詳細情報、' +';
                'Hでヘルプ、矢印キーでナビゲーション、Enterで実行、Escapeでキャンセル';
     }
     
@@ -1028,7 +999,7 @@ export class StatisticsAccessibilityManager {
      * アクセシビリティ設定の更新
      */
     updateConfig(newConfig) {
-        Object.assign(this.config, newConfig);
+        Object.assign(this.config, newConfig),
         
         // 設定変更に基づく再初期化
         if (newConfig.visual) {
@@ -1036,17 +1007,17 @@ export class StatisticsAccessibilityManager {
             this.applyVisualSettings(); }
         }
         
-        if (newConfig.audio) { this.applyAudioSettings(); }
+        if (newConfig.audio) { this.applyAudioSettings() }
         
-        if (newConfig.keyboard) { this.updateFocusableElements(); }
+        if (newConfig.keyboard) { this.updateFocusableElements() }
     }
     
     /**
      * 視覚設定の適用
      */''
     applyVisualSettings()';
-        document.body.classList.toggle('high-contrast', this.config.visual.highContrast';''
-        document.body.classList.toggle('large-text', this.config.visual.largeText';''
+        document.body.classList.toggle('high-contrast', this.config.visual.highContrast';
+        document.body.classList.toggle('large-text', this.config.visual.largeText';
         document.body.classList.toggle('reduced-motion', this.config.visual.reducedMotion);
     }
     
@@ -1055,10 +1026,9 @@ export class StatisticsAccessibilityManager {
      */
     applyAudioSettings() {
         if (!this.config.audio.enabled && this.audioContext) {
-            this.audioContext.close();
-    }
+            this.audioContext.close() }
             this.audioContext = null; }
-        } else if (this.config.audio.enabled && !this.audioContext) { this.setupAudioCues(); }
+        } else if (this.config.audio.enabled && !this.audioContext) { this.setupAudioCues() }
     }
     
     /**
@@ -1066,15 +1036,14 @@ export class StatisticsAccessibilityManager {
      */
     getAccessibilityStatistics() {
         return { screenReaderActive: this.state.screenReaderActive,
-            keyboardMode: this.state.keyboardMode;
-            highContrast: this.config.visual.highContrast;
-            largeText: this.config.visual.largeText;
-            reducedMotion: this.config.visual.reducedMotion;
-            audioEnabled: this.config.audio.enabled;
+            keyboardMode: this.state.keyboardMode,
+            highContrast: this.config.visual.highContrast,
+            largeText: this.config.visual.largeText,
+            reducedMotion: this.config.visual.reducedMotion,
+            audioEnabled: this.config.audio.enabled,
             announcementCount: this.state.announcementQueue.length,
-    lastAnnouncement: this.state.lastAnnouncement;
-    ,}
-            focusableElementCount: this.focusableElements.length, };
+    lastAnnouncement: this.state.lastAnnouncement }
+            focusableElementCount: this.focusableElements.length };
             currentFocusIndex: this.currentFocusIndex 
     }
     
@@ -1082,23 +1051,23 @@ export class StatisticsAccessibilityManager {
      * リソースのクリーンアップ'
      */''
     destroy()';
-        document.removeEventListener('keydown', this.handleKeyDown';''
-        document.removeEventListener('keyup', this.handleKeyUp';''
-        document.removeEventListener('focusin', this.handleFocusIn';''
-        document.removeEventListener('focusout', this.handleFocusOut';''
-        document.removeEventListener('mousedown', this.handleMouseDown';''
+        document.removeEventListener('keydown', this.handleKeyDown';
+        document.removeEventListener('keyup', this.handleKeyUp';
+        document.removeEventListener('focusin', this.handleFocusIn';
+        document.removeEventListener('focusout', this.handleFocusOut';
+        document.removeEventListener('mousedown', this.handleMouseDown';
         document.removeEventListener('touchstart', this.handleTouchStart);
         
         // 音声コンテキストのクリーンアップ
-        if (this.audioContext) { this.audioContext.close(); }
+        if (this.audioContext) { this.audioContext.close() }
         
         // 音声合成の停止
-        if (window.speechSynthesis) { speechSynthesis.cancel(); }
+        if (window.speechSynthesis) { speechSynthesis.cancel() }
         
         // マップのクリア
         this.ariaElements.clear();
         this.liveRegions.clear();
         this.descriptions.clear();
         this.keyboardHandlers.clear();
-        this.textGenerators.clear();''
+        this.textGenerators.clear();
         this.audioBuffers.clear();

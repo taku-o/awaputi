@@ -7,18 +7,18 @@ interface RenderSettings { enableLighting: boolean,
     enableShadows: boolean,
     enableReflections: boolean,
     enablePostProcessing: boolean,
-    qualityLevel: 'low' | 'medium' | 'high' | 'ultra';
-    enableBatching: boolean;
-    reducedEffects: boolean;
+    qualityLevel: 'low' | 'medium' | 'high' | 'ultra',
+    enableBatching: boolean,
+    reducedEffects: boolean,
     transitionSmoothing: boolean,
-    transitionDuration: number ,}
+    transitionDuration: number  }
 
 /**
  * 拡張変換状態インターフェース
  */
 interface EnhancedTransform { depthOfField: number,
     motionBlur: {
-        ;x: number;
+        ,x: number,
         y: number,
     intensity: number };
     chromatic: number;
@@ -32,36 +32,35 @@ interface EnhancedTransform { depthOfField: number,
  * 遷移効果オプションインターフェース
  */'
 interface TransitionOptions { ''
-    direction?: 'in' | 'out' | 'cross';
-    easing?: string;
-    color?: string;
+    direction?: 'in' | 'out' | 'cross',
+    easing?: string,
+    color?: string,
 
-    intensity?: number;''
-    slideDirection?: 'left' | 'right' | 'up' | 'down';
-    zoomType?: 'in' | 'out'; }
+    intensity?: number,
+    slideDirection?: 'left' | 'right' | 'up' | 'down',
+    zoomType?: 'in' | 'out' }
 
-    center?: { x: number;, y: number }''
+    center?: { x: number,, y: number }''
     pattern?: 'horizontal' | 'vertical' | 'circular' | 'diamond';
     noiseScale?: number;
     threshold?: number;
-    [key: string]: any,
-}
+    [key: string]: any }
 
 /**
  * 遷移効果インターフェース
  */'
 interface TransitionEffect { id: number,''
-    type: 'transition';
-    transitionType: string;
-    duration: number;
+    type: 'transition',
+    transitionType: string,
+    duration: number,
     elapsed: number,
     options: TransitionOptions
-    ,}
+     }
 
 /**
  * エフェクトコントローラーインターフェース
  */
-interface EffectController { effectId: number;
+interface EffectController { effectId: number,
     transitionEffects: TransitionEffect[],
     performanceMetrics: Record<string, any> }
 
@@ -70,32 +69,31 @@ interface EffectController { effectId: number;
  * 公開API管理 - 遷移効果、設定管理、アクセシビリティ統合
  */
 export class EffectApiManager {
-    private canvas: HTMLCanvasElement;
-    private effectController: EffectController;
-    private errorHandler: any;
-    private renderSettings: RenderSettings;
-    private, enhancedTransform: EnhancedTransform;
+    private canvas: HTMLCanvasElement,
+    private effectController: EffectController,
+    private errorHandler: any,
+    private renderSettings: RenderSettings,
+    private, enhancedTransform: EnhancedTransform,
     constructor(canvas: HTMLCanvasElement, effectController: EffectController) {
 
-        this.canvas = canvas;
+        this.canvas = canvas,
 
-        this.effectController = effectController;''
+        this.effectController = effectController,
         this.errorHandler = getErrorHandler('''
-            qualityLevel: 'high', // 'low', 'medium', 'high', 'ultra';
-            enableBatching: false;
+            qualityLevel: 'high', // 'low', 'medium', 'high', 'ultra',
+            enableBatching: false,
             reducedEffects: false,
-    transitionSmoothing: false;
-    ,}
+    transitionSmoothing: false }
             transitionDuration: 300 
     };
         // 拡張変換状態
         this.enhancedTransform = { depthOfField: 0 }
-            motionBlur: { x: 0, y: 0, intensity: 0 ,},
+            motionBlur: { x: 0, y: 0, intensity: 0  },
             chromatic: 0;
             vignette: 0;
             noise: 0);
             scanlines: 0',
-    glitch: { intensity: 0, frequency: 0 ,};
+    glitch: { intensity: 0, frequency: 0  };
 
         console.log('[EffectApiManager] API管理システムを初期化しました');
     }
@@ -112,22 +110,21 @@ export class EffectApiManager {
             const effect: TransitionEffect = {'
                 id: this.effectController.effectId++,
                 type: 'transition',
-                transitionType: type, // 'fade', 'slide', 'zoom', 'wipe', 'dissolve';
+                transitionType: type, // 'fade', 'slide', 'zoom', 'wipe', 'dissolve',
                 duration: duration,
     elapsed: 0,
                 options: {''
-                    direction: options.direction || 'in', // 'in', 'out', 'cross''';
+                    direction: options.direction || 'in', // 'in', 'out', 'cross'',
                     easing: options.easing || 'easeInOut',
                     color: options.color || '#000000',
-    intensity: options.intensity || 1.0;
+    intensity: options.intensity || 1.0,
                     ...options
-            ,};
+             };
             
             this.effectController.transitionEffects.push(effect);
             console.log(`[EffectApiManager] 遷移効果を追加: ${type} (${duration}ms}`});
 
-            return effect.id;''
-        } catch (error) { this.errorHandler.handleError(error, {)'
+            return effect.id;} catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'EffectApiManager.addTransitionEffect',' }
 
             }');
@@ -136,16 +133,16 @@ export class EffectApiManager {
     /**
      * フェード遷移効果'
      */''
-    addFadeTransition(duration: number, color: string = '#000000', direction: 'in' | 'out' | 'cross' = 'out''): number { ''
-        return this.addTransitionEffect('fade', duration, { color, direction )'; }
+    addFadeTransition(duration: number, color: string = '#000000', direction: 'in' | 'out' | 'cross' = 'out'): number { ''
+        return this.addTransitionEffect('fade', duration, { color, direction )' }
     
     /**
      * スライド遷移効果'
      */''
-    addSlideTransition(duration: number, direction: 'left' | 'right' | 'up' | 'down' = 'left', easing: string = 'easeInOut''): number { ''
+    addSlideTransition(duration: number, direction: 'left' | 'right' | 'up' | 'down' = 'left', easing: string = 'easeInOut'): number { ''
         return this.addTransitionEffect('slide', duration, { ')'
-            direction: direction as 'in' | 'out' | 'cross')';
-            easing,')';
+            direction: direction as 'in' | 'out' | 'cross')',
+            easing,')',
             slideDirection: direction // 'left', 'right', 'up', 'down')' }
     
     /**
@@ -153,26 +150,27 @@ export class EffectApiManager {
      */''
     addZoomTransition(duration: number, zoomType: 'in' | 'out' = 'in', center: { x: number,  y: number ' | null = null'): number { }
 
-        const centerPoint = center || { x: this.canvas.width / 2, y: this.canvas.height / 2 ,}''
+        const centerPoint = center || { x: this.canvas.width / 2, y: this.canvas.height / 2  }''
         return this.addTransitionEffect('zoom', duration, { ')'
-            zoomType, // 'in', 'out'')';
-            center: centerPoint'' ,}'
+            zoomType, // 'in', 'out')',
+            center: centerPoint' }
     
     /**
      * ワイプ遷移効果'
      */''
-    addWipeTransition(duration: number, pattern: 'horizontal' | 'vertical' | 'circular' | 'diamond' = 'horizontal', direction: string = 'left''): number { ''
+    addWipeTransition(duration: number, pattern: 'horizontal' | 'vertical' | 'circular' | 'diamond' = 'horizontal', direction: string = 'left'): number { ''
         return this.addTransitionEffect('wipe', duration, { ')'
-            pattern, // 'horizontal', 'vertical', 'circular', 'diamond'')';
-            direction: direction as 'in' | 'out' | 'cross' ,}
+            pattern, // 'horizontal', 'vertical', 'circular', 'diamond')',
+            direction: direction as 'in' | 'out' | 'cross'
+            }
     
     /**
      * ディゾルブ遷移効果'
      */''
     addDissolveTransition(duration: number, noiseScale: number = 1.0, threshold: number = 0.5): number { ''
         return this.addTransitionEffect('dissolve', duration, { )
-            noiseScale, );
-            threshold '; }
+            noiseScale),
+            threshold ' }
     
     // ========================================
     // 設定管理API
@@ -183,9 +181,8 @@ export class EffectApiManager {
      */''
     updateRenderSettings(newSettings: Partial<RenderSettings>): void { try { }
 
-            this.renderSettings = { ...this.renderSettings, ...newSettings;''
-            console.log('[EffectApiManager] レンダリング設定を更新しました', newSettings';''
-        } catch (error) { this.errorHandler.handleError(error, {)'
+            this.renderSettings = { ...this.renderSettings, ...newSettings,
+            console.log('[EffectApiManager] レンダリング設定を更新しました', newSettings','} catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'EffectApiManager.updateRenderSettings',' }
 
             }');
@@ -196,45 +193,45 @@ export class EffectApiManager {
      * 品質レベルを設定'
      */''
     setQualityLevel(level: 'low' | 'medium' | 'high' | 'ultra': void { try {
-            this.renderSettings.qualityLevel = level;
-            ';
+            this.renderSettings.qualityLevel = level,
+            ',
             // 品質レベルに応じた設定調整
-            switch(level) {'
+            switch(level) {
 
-                case 'low':;
-                    this.renderSettings.enableLighting = false;
-                    this.renderSettings.enableShadows = false;
-                    this.renderSettings.enableReflections = false;
-                    this.renderSettings.enablePostProcessing = false;
+                case 'low':,
+                    this.renderSettings.enableLighting = false,
+                    this.renderSettings.enableShadows = false,
+                    this.renderSettings.enableReflections = false,
+                    this.renderSettings.enablePostProcessing = false,
 
-                    break;''
-                case 'medium':;
-                    this.renderSettings.enableLighting = true;
-                    this.renderSettings.enableShadows = false;
-                    this.renderSettings.enableReflections = false;
-                    this.renderSettings.enablePostProcessing = true;
+                    break,
+                case 'medium':,
+                    this.renderSettings.enableLighting = true,
+                    this.renderSettings.enableShadows = false,
+                    this.renderSettings.enableReflections = false,
+                    this.renderSettings.enablePostProcessing = true,
 
-                    break;''
-                case 'high':;
-                    this.renderSettings.enableLighting = true;
-                    this.renderSettings.enableShadows = true;
-                    this.renderSettings.enableReflections = false;
-                    this.renderSettings.enablePostProcessing = true;
+                    break,
+                case 'high':,
+                    this.renderSettings.enableLighting = true,
+                    this.renderSettings.enableShadows = true,
+                    this.renderSettings.enableReflections = false,
+                    this.renderSettings.enablePostProcessing = true,
 
-                    break;''
-                case 'ultra':;
-                    this.renderSettings.enableLighting = true;
-                    this.renderSettings.enableShadows = true;
-                    this.renderSettings.enableReflections = true;
-                    this.renderSettings.enablePostProcessing = true;
-            }
+                    break,
+                case 'ultra':,
+                    this.renderSettings.enableLighting = true,
+                    this.renderSettings.enableShadows = true,
+                    this.renderSettings.enableReflections = true,
+                    this.renderSettings.enablePostProcessing = true }
                     break; }
             }
             ';
 
-            console.log(`[EffectApiManager] 品質レベルを${level}に設定しました`});''
+            console.log(`[EffectApiManager] 品質レベルを${level}に設定しました`});
         } catch (error) { this.errorHandler.handleError(error, {)'
-                context: 'EffectApiManager.setQualityLevel' ,}';
+                context: 'EffectApiManager.setQualityLevel'
+            }';
         }
     }
     
@@ -242,14 +239,14 @@ export class EffectApiManager {
      * パフォーマンス最適化を有効化'
      */''
     enableOptimization(enabled: boolean): void { try {
-            this.renderSettings.enableBatching = enabled;
-            this.renderSettings.reducedEffects = enabled;
+            this.renderSettings.enableBatching = enabled,
+            this.renderSettings.reducedEffects = enabled,
 
             ' }'
 
-            console.log(`[EffectApiManager] パフォーマンス最適化を${enabled ? '有効' : '無効}にしました`}';''
-        } catch (error) { this.errorHandler.handleError(error, {)'
-                context: 'EffectApiManager.enableOptimization' ,}';
+            console.log(`[EffectApiManager] パフォーマンス最適化を${enabled ? '有効' : '無効}にしました`}';} catch (error) { this.errorHandler.handleError(error, {)'
+                context: 'EffectApiManager.enableOptimization'
+            }';
         }
     }
     
@@ -257,14 +254,15 @@ export class EffectApiManager {
      * 遷移スムージングを設定'
      */''
     setTransitionSmoothing(enabled: boolean, duration: number = 300): void { try {
-            this.renderSettings.transitionSmoothing = enabled;
-            this.renderSettings.transitionDuration = duration;
+            this.renderSettings.transitionSmoothing = enabled,
+            this.renderSettings.transitionDuration = duration,
 
             ' }'
 
-            console.log(`[EffectApiManager] 遷移スムージング: ${enabled ? '有効' : '無効'} (${duration}ms}`});''
+            console.log(`[EffectApiManager] 遷移スムージング: ${enabled ? '有効' : '無効'} (${duration}ms}`});
         } catch (error) { this.errorHandler.handleError(error, {)'
-                context: 'EffectApiManager.setTransitionSmoothing' ,});
+                context: 'EffectApiManager.setTransitionSmoothing'
+            });
         }
     }
     
@@ -276,10 +274,11 @@ export class EffectApiManager {
      * 被写界深度を設定
      */
     setDepthOfField(intensity: number): void { try {
-            this.enhancedTransform.depthOfField = Math.max(0, Math.min(1, intensity); }
-            console.log(`[EffectApiManager] 被写界深度を設定: ${intensity}`});''
+            this.enhancedTransform.depthOfField = Math.max(0, Math.min(1, intensity) }
+            console.log(`[EffectApiManager] 被写界深度を設定: ${intensity}`});
         } catch (error) { this.errorHandler.handleError(error, {)'
-                context: 'EffectApiManager.setDepthOfField' ,});
+                context: 'EffectApiManager.setDepthOfField'
+            });
         }
     }
     
@@ -289,9 +288,10 @@ export class EffectApiManager {
     setMotionBlur(x: number, y: number, intensity: number): void { try { }
             this.enhancedTransform.motionBlur = { x, y, intensity };
 
-            console.log(`[EffectApiManager] モーションブラーを設定: (${x}, ${y}, ${intensity}`});''
+            console.log(`[EffectApiManager] モーションブラーを設定: (${x}, ${y}, ${intensity}`});
         } catch (error) { this.errorHandler.handleError(error, {)'
-                context: 'EffectApiManager.setMotionBlur' ,});
+                context: 'EffectApiManager.setMotionBlur'
+            });
         }
     }
     
@@ -299,11 +299,12 @@ export class EffectApiManager {
      * 色収差を設定
      */
     setChromaticAberration(intensity: number): void { try {
-            this.enhancedTransform.chromatic = Math.max(0, Math.min(1, intensity); }
+            this.enhancedTransform.chromatic = Math.max(0, Math.min(1, intensity) }
 
-            console.log(`[EffectApiManager] 色収差を設定: ${intensity}`});''
+            console.log(`[EffectApiManager] 色収差を設定: ${intensity}`});
         } catch (error) { this.errorHandler.handleError(error, {)'
-                context: 'EffectApiManager.setChromaticAberration' ,});
+                context: 'EffectApiManager.setChromaticAberration'
+            });
         }
     }
     
@@ -311,11 +312,12 @@ export class EffectApiManager {
      * ビネット効果を設定
      */
     setVignette(intensity: number): void { try {
-            this.enhancedTransform.vignette = Math.max(0, Math.min(1, intensity); }
+            this.enhancedTransform.vignette = Math.max(0, Math.min(1, intensity) }
 
-            console.log(`[EffectApiManager] ビネット効果を設定: ${intensity}`});''
+            console.log(`[EffectApiManager] ビネット効果を設定: ${intensity}`});
         } catch (error) { this.errorHandler.handleError(error, {)'
-                context: 'EffectApiManager.setVignette' ,});
+                context: 'EffectApiManager.setVignette'
+            });
         }
     }
     
@@ -327,9 +329,10 @@ export class EffectApiManager {
                 intensity: Math.max(0, Math.min(1, intensity),
                 frequency: Math.max(0, frequency }
 
-            console.log(`[EffectApiManager] グリッチ効果を設定: ${intensity}, ${frequency}`});''
+            console.log(`[EffectApiManager] グリッチ効果を設定: ${intensity}, ${frequency}`});
         } catch (error) { this.errorHandler.handleError(error, {)'
-                context: 'EffectApiManager.setGlitchEffect' ,});
+                context: 'EffectApiManager.setGlitchEffect'
+            });
         }
     }
     
@@ -340,10 +343,9 @@ export class EffectApiManager {
     /**
      * 現在の設定を取得
      */
-    getCurrentSettings(): { renderSettings: RenderSettings;, enhancedTransform: EnhancedTransform } { return { }
-            renderSettings: { ...this.renderSettings;
-            enhancedTransform: { ...this.enhancedTransform;
-    }
+    getCurrentSettings(): { renderSettings: RenderSettings,, enhancedTransform: EnhancedTransform } { return { }
+            renderSettings: { ...this.renderSettings,
+            enhancedTransform: { ...this.enhancedTransform }
     
     /**
      * パフォーマンスメトリクスを取得

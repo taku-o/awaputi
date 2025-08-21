@@ -11,28 +11,28 @@ import { ErrorHandler  } from '../utils/ErrorHandler.js';
 class LoggingSystem { ''
     constructor(options = {)) {
         // ログストレージ
-        this.logs = [];
+        this.logs = [],
         
         // 設定
         this.config = {
             maxLogSize: options.maxLogSize || 1000,
-            logLevel: options.logLevel || 'info', // 'debug', 'info', 'warn', 'error';
-            enableConsole: options.enableConsole !== undefined ? options.enableConsole : true;
-            enableTimestamp: options.enableTimestamp !== undefined ? options.enableTimestamp : true;
+            logLevel: options.logLevel || 'info', // 'debug', 'info', 'warn', 'error',
+            enableConsole: options.enableConsole !== undefined ? options.enableConsole : true,
+            enableTimestamp: options.enableTimestamp !== undefined ? options.enableTimestamp : true,
             enableSource: options.enableSource !== undefined ? options.enableSource : true,
-    filterCategories: options.filterCategories || null ,};
+    filterCategories: options.filterCategories || null  };
         // ログレベル定義
         this.logLevels = { debug: 0,
-            info: 1;
+            info: 1,
             warn: 2,
-    error: 3 ,};
+    error: 3  };
         // 統計情報
         this.stats = { total: 0,
             byLevel: {
-                debug: 0;
-                info: 0;
+                debug: 0,
+                info: 0,
                 warn: 0,
-    error: 0 ,};
+    error: 0  };
             byCategory: {}
     
     /**
@@ -41,9 +41,7 @@ class LoggingSystem { ''
      * @param {Object} data - 追加データ
      * @param {string} source - ログソース
      */''
-    debug(message, data = null, source = null) {', ';
-
-    }
+    debug(message, data = null, source = null) {', ' }
 
         this._log('debug', message, data, source'; }
     }
@@ -54,9 +52,7 @@ class LoggingSystem { ''
      * @param {Object} data - 追加データ
      * @param {string} source - ログソース'
      */''
-    info(message, data = null, source = null) {', ';
-
-    }
+    info(message, data = null, source = null) {', ' }
 
         this._log('info', message, data, source'; }
     }
@@ -67,9 +63,7 @@ class LoggingSystem { ''
      * @param {Object} data - 追加データ
      * @param {string} source - ログソース'
      */''
-    warn(message, data = null, source = null) {', ';
-
-    }
+    warn(message, data = null, source = null) {', ' }
 
         this._log('warn', message, data, source'; }
     }
@@ -80,9 +74,7 @@ class LoggingSystem { ''
      * @param {Object} data - 追加データ
      * @param {string} source - ログソース'
      */''
-    error(message, data = null, source = null) {', ';
-
-    }
+    error(message, data = null, source = null) {', ' }
 
         this._log('error', message, data, source'; }
     }
@@ -103,8 +95,8 @@ class LoggingSystem { ''
             newValue,
             changeType: oldValue === undefined ? 'create' : '
     
-                        newValue === undefined ? 'delete' : 'update' 
-        ,};
+                        newValue === undefined ? 'delete' : 'update'
+            };
         this._log('info', `設定変更: ${category}.${key}`, data, source}';
     }
     
@@ -122,8 +114,7 @@ class LoggingSystem { ''
             category,
             key,
             value1,
-            value2,
-    }
+            value2 }
             resolvedValue }
         };
 
@@ -137,13 +128,12 @@ class LoggingSystem { ''
      * @param {*} value - アクセスされた値
      * @param {string} source - アクセスソース
      */
-    logConfigAccess(category, key, value, source = null) {'
+    logConfigAccess(category, key, value, source = null) {
 
         if(this._isDebugMode()) {
             const data = {
                 category,
-                key,
-    }
+                key }
                 value }
             };
 
@@ -162,12 +152,12 @@ class LoggingSystem { ''
      */
     getLogs(options = { ) {
         try {
-            let result = [...this.logs];
+            let result = [...this.logs],
             
             // レベルでフィルタ
             if (options.level) {
-                const minLevel = this.logLevels[options.level];
-                if (minLevel !== undefined) {'
+                const minLevel = this.logLevels[options.level],
+                if (minLevel !== undefined) {
     }
 
                     result = result.filter(log => this.logLevels[log.level] >= minLevel); }
@@ -175,8 +165,7 @@ class LoggingSystem { ''
             ';
             // カテゴリでフィルタ
             if(options.category && options.category !== 'all' {'
-                result = result.filter(log => { );
-            }
+                result = result.filter(log => { ) }
                     if (log.data && log.data.category) { }
                         return log.data.category === options.category;
                     return false;
@@ -184,16 +173,15 @@ class LoggingSystem { ''
             }
             
             // ソート（最新順）
-            if (options.newest) { result.reverse(); }
+            if (options.newest) { result.reverse() }
             
             // 件数制限
-            if (options.limit && options.limit > 0) { result = result.slice(0, options.limit); }
+            if (options.limit && options.limit > 0) { result = result.slice(0, options.limit) }
             ';
 
-            return result;''
-        } catch (error) { ErrorHandler.handleError(error, {)'
-                context: 'LoggingSystem.getLogs',);
-                options); });
+            return result;} catch (error) { ErrorHandler.handleError(error, {)'
+                context: 'LoggingSystem.getLogs'),
+                options });
             return [];
     
     /**
@@ -205,14 +193,13 @@ class LoggingSystem { ''
      */
     getConfigHistory(category = null, key = null, limit = 100) {
         try {
-            let result = this.logs.filter(log => { );
-    }
+            let result = this.logs.filter(log => { ) }
                 if (!log.data || !log.data.category) { }
                     return false;
                 
-                if (category && log.data.category !== category) { return false; }
+                if (category && log.data.category !== category) { return false }
                 
-                if (key && log.data.key !== key) { return false; }
+                if (key && log.data.key !== key) { return false }
                 
                 return true;
             });
@@ -221,23 +208,21 @@ class LoggingSystem { ''
             result.reverse();
             
             // 件数制限
-            if (limit && limit > 0) { result = result.slice(0, limit); }
+            if (limit && limit > 0) { result = result.slice(0, limit) }
             ';
 
-            return result;''
-        } catch (error) { ErrorHandler.handleError(error, {''
-                context: 'LoggingSystem.getConfigHistory);
-                category);
-                key,);
-                limit); });
+            return result;} catch (error) { ErrorHandler.handleError(error, {''
+                context: 'LoggingSystem.getConfigHistory),
+                category,
+                key),
+                limit });
             return [];
     
     /**
      * ログをクリア
      */
     clearLogs() {
-        this.logs = [];
-    }
+        this.logs = [] }
         this._resetStats(); }
     }
     
@@ -246,18 +231,15 @@ class LoggingSystem { ''
      * @returns {Object} 統計情報
      */
     getStats() {
-        
-    }
-        return { ...this.stats;
-    }
+    
+}
+        return { ...this.stats }
     
     /**
      * ログ設定を更新
      * @param {Object} newConfig - 新しい設定
      */
-    updateConfig(newConfig) {', ';
-
-    }
+    updateConfig(newConfig) {', ' }
 
         Object.assign(this.config, newConfig); }
     }
@@ -267,20 +249,19 @@ class LoggingSystem { ''
      * @param {string} format - エクスポート形式（'json', 'csv'）
      * @returns {string} エクスポートされたログ'
      */''
-    exportLogs(format = 'json'') {'
+    exportLogs(format = 'json') {
         try {'
-            if(format === 'json' {'
-    }
+            if(format === 'json' { }
 
-                return JSON.stringify(this.logs, null, 2);' }'
+                return JSON.stringify(this.logs, null, 2); }'
 
-            } else if(format === 'csv) { return this._exportToCsv(); else { ' }
+            } else if(format === 'csv) { return this._exportToCsv(), else { }
 
-                console.warn(`未対応のエクスポート形式: ${format}`'}';''
-                return '';
+                console.warn(`未対応のエクスポート形式: ${format}`}';
+                return ';
             } catch (error) {
-            console.error('ログエクスポートエラー:', error';''
-            return '';
+            console.error('ログエクスポートエラー:', error',
+            return ',
     
     /**
      * ログを記録
@@ -313,23 +294,23 @@ class LoggingSystem { ''
                 message,
                 data,
                 timestamp,
-                source: this.config.enableSource ? source : null ,};
+                source: this.config.enableSource ? source : null  };
             // ログに追加
             this.logs.push(logEntry);
             
             // ログサイズ制限
-            if (this.logs.length > this.config.maxLogSize) { this.logs.splice(0, Math.floor(this.config.maxLogSize * 0.2); // 20%削除 }
+            if (this.logs.length > this.config.maxLogSize) { this.logs.splice(0, Math.floor(this.config.maxLogSize * 0.2), // 20%削除 }
             
             // 統計更新
             this._updateStats(logEntry);
             
             // コンソール出力
-            if (this.config.enableConsole) { this._logToConsole(logEntry);' }'
+            if (this.config.enableConsole) { this._logToConsole(logEntry),' }'
 
             } catch (error) { ErrorHandler.handleError(error, {)'
-                context: 'LoggingSystem._log);
-                level,);
-                message); });
+                context: 'LoggingSystem._log),
+                level),
+                message });
         }
     }
     
@@ -342,23 +323,22 @@ class LoggingSystem { ''
             const { level, message, data, timestamp, source } = logEntry;
             ';
 
-            let consoleMethod;''
-            switch(level) {'
+            let consoleMethod;
+            switch(level) {
 
-                case 'debug': consoleMethod = console.debug; break;''
-                case 'info': consoleMethod = console.info; break;''
-                case 'warn': consoleMethod = console.warn; break;''
-                case 'error': consoleMethod = console.error; break;
-            }
+                case 'debug': consoleMethod = console.debug, break,
+                case 'info': consoleMethod = console.info, break,
+                case 'warn': consoleMethod = console.warn, break,
+                case 'error': consoleMethod = console.error, break }
                 default: consoleMethod = console.log; 
     }
 
-            let logMessage = '';
+            let logMessage = ';
             
             // タイムスタンプ
             if(timestamp) {
-                
-            }
+    
+}
                 logMessage += `[${timestamp.toISOString(})] `;
             }
             
@@ -367,8 +347,8 @@ class LoggingSystem { ''
             
             // ソース
             if(source) {
-                
-            }
+    
+}
                 logMessage += `[${source}] `;
             }
             
@@ -376,10 +356,10 @@ class LoggingSystem { ''
             logMessage += message;
             
             // 出力
-            if (data) { consoleMethod(logMessage, data); } else { consoleMethod(logMessage);' }'
+            if (data) { consoleMethod(logMessage, data) } else { consoleMethod(logMessage),' }'
 
             } catch (error) {
-            console.error('ログ出力エラー:', error); }
+            console.error('ログ出力エラー:', error) }
     }
     
     /**
@@ -389,14 +369,14 @@ class LoggingSystem { ''
      */
     _updateStats(logEntry) {
         // 総数
-        this.stats.total++;
+        this.stats.total++,
         
         // レベル別
-        this.stats.byLevel[logEntry.level]++;
+        this.stats.byLevel[logEntry.level]++,
         
         // カテゴリ別
         if (logEntry.data && logEntry.data.category) {
-            const category = logEntry.data.category;
+            const category = logEntry.data.category,
             if (!this.stats.byCategory[category]) {
     }
                 this.stats.byCategory[category] = 0; }
@@ -413,10 +393,9 @@ class LoggingSystem { ''
         this.stats = {
             total: 0,
     byLevel: {
-                debug: 0;
+                debug: 0,
                 info: 0,
-    warn: 0;
-    }
+    warn: 0 }
                 error: 0 
     };
             byCategory: {}
@@ -426,32 +405,31 @@ class LoggingSystem { ''
      * @returns {string} CSV形式のログ
      * @private
      */''
-    _exportToCsv(''';
+    _exportToCsv('';
         const header = ['timestamp', 'level', 'source', 'message', 'data'];
         const rows = [header];
         );
-        for (const, log of, this.logs) {'
-        const row = ['';
-                log.timestamp ? log.timestamp.toISOString() : '',
+        for (const log of this.logs) {
+        const row = [',
+                log.timestamp ? log.timestamp.toISOString() : ',
                 log.level,
-                log.source || '',
-                log.message,]';
-                log.data ? JSON.stringify(log.data) : ''];
-            ];
-    }
+                log.source || ',
+                log.message,]',
+                log.data ? JSON.stringify(log.data) : '],
+            ] }
             rows.push(row); }
         }
         ';
 
         return rows.map(row => row.map(cell => {  ')'
-            // CSVエスケープ処理');' }
+            // CSVエスケープ処理'),' }
 
-            if (typeof cell === 'string' && (cell.includes(','') || cell.includes('"'') || cell.includes('\n)' {' }
+            if (typeof cell === 'string' && (cell.includes(',') || cell.includes('"') || cell.includes('\n)' { }
 
-                return `"${cell.replace(/"/g, '""''}'"`;
+                return `"${cell.replace(/"/g, '""'}'"`;
             }"
-            return cell;""
-        }").join(',)'.join('\n';
+            return cell;"
+        }").join(')'.join('\n';
     }
     
     /**
@@ -462,16 +440,15 @@ class LoggingSystem { ''
     _isDebugMode()';
             if (typeof, window !== 'undefined' && window.location' {'
 
-                return new URLSearchParams(window.location.search).has('debug'') ||';
-    }
+                return new URLSearchParams(window.location.search).has('debug') ||' }
 
-                       (typeof, localStorage !== 'undefined' && localStorage.getItem('debugMode'') === 'true'); }
+                       (typeof, localStorage !== 'undefined' && localStorage.getItem('debugMode') === 'true'); }
             }
             return false;
-        } catch (error) { return false;
+        } catch (error) { return false,
 
 // シングルトンインスタンス
-let instance = null;
+let instance = null,
 
 /**
  * LoggingSystemのシングルトンインスタンスを取得
@@ -479,8 +456,8 @@ let instance = null;
  * @returns {LoggingSystem} インスタンス
  */
 function getLoggingSystem(options = {}) { if (!instance) {
-        instance = new LoggingSystem(options); } else if (Object.keys(options).length > 0) { // 既存インスタンスの設定を更新
-        instance.updateConfig(options); }
+        instance = new LoggingSystem(options) } else if (Object.keys(options).length > 0) { // 既存インスタンスの設定を更新
+        instance.updateConfig(options) }
     return instance;
 }
 

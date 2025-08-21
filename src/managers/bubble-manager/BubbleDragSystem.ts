@@ -1,12 +1,12 @@
 import type { BubbleDragSystem as IBubbleDragSystem, 
     BubblePhysicsEngine,
-    Bubble, ;
+    Bubble, ,
     Position,
     Vector2  } from '../../types/game';
 
 interface DragHistoryEntry { x: number,
     y: number,
-    time: number ,}
+    time: number  }
 
 /**
  * BubbleDragSystem - 泡ドラッグ操作システム
@@ -14,11 +14,11 @@ interface DragHistoryEntry { x: number,
  * 泡のドラッグ＆フリック操作、速度計算、軌跡描画を専門的に管理します
  */
 export class BubbleDragSystem implements IBubbleDragSystem { private draggedBubble: Bubble | null = null
-    private, isDragging: boolean = false;
+    private, isDragging: boolean = false,
     // @ts-ignore 将来のドラッグ機能拡張で使用予定 }
-    private __dragStartPosition: Position = { x: 0, y: 0 ,}
+    private __dragStartPosition: Position = { x: 0, y: 0  }
     // @ts-ignore 将来のドラッグ機能拡張で使用予定
-    private __dragCurrentPosition: Position = { x: 0, y: 0 ,}
+    private __dragCurrentPosition: Position = { x: 0, y: 0  }
     private dragHistory: DragHistoryEntry[] = []; // ドラッグ軌跡の履歴（速度計算用）
 
     constructor() { // 初期化済み }
@@ -27,16 +27,15 @@ export class BubbleDragSystem implements IBubbleDragSystem { private draggedBubb
      * ドラッグ開始処理
      */
     handleDragStart(bubbles: Bubble[], x: number, y: number): Bubble | null { // ドラッグ対象の泡を検索（最前面から）
-        for(let, i = bubbles.length - 1; i >= 0; i--) {
-            const bubble = bubbles[i];
+        for(let, i = bubbles.length - 1, i >= 0, i--) {
+            const bubble = bubbles[i],
             
             if(bubble.containsPoint(x, y) {
-                this.draggedBubble = bubble;
-        }
+                this.draggedBubble = bubble }
                 this.isDragging = true; }
                 this.__dragStartPosition = { x, y };
                 this.__dragCurrentPosition = { x, y };
-                this.dragHistory = [{ x, y, time: Date.now( ,}];
+                this.dragHistory = [{ x, y, time: Date.now(  }];
                 
                 console.log(`Drag started on ${bubble.type} bubble`});
                 return bubble; // 泡オブジェクトを返す
@@ -50,13 +49,13 @@ export class BubbleDragSystem implements IBubbleDragSystem { private draggedBubb
      * ドラッグ移動処理
      */
     handleDragMove(x: number, y: number): boolean { if (!this.isDragging || !this.draggedBubble) {
-            return false; }
+            return false }
         
         this.__dragCurrentPosition = { x, y };
         
         // 履歴を記録（最新の10個まで保持）
-        this.dragHistory.push({ x, y, time: Date.now( ,});
-        if (this.dragHistory.length > 10) { this.dragHistory.shift(); }
+        this.dragHistory.push({ x, y, time: Date.now(  });
+        if (this.dragHistory.length > 10) { this.dragHistory.shift() }
         
         return true;
     }
@@ -65,18 +64,17 @@ export class BubbleDragSystem implements IBubbleDragSystem { private draggedBubb
      * ドラッグ終了処理
      */
     handleDragEnd(startX: number, startY: number, endX: number, endY: number, physicsEngine: BubblePhysicsEngine): boolean { if (!this.isDragging || !this.draggedBubble) {
-            return false; }
+            return false }
         
         // ドラッグベクトルを計算
         const dragVector: Vector2 = { x: endX - startX,
-            y: endY - startY ,};
+            y: endY - startY  };
         // ドラッグ距離を計算
         const dragDistance = Math.sqrt(dragVector.x * dragVector.x + dragVector.y * dragVector.y);
         
         // 最小ドラッグ距離をチェック
         if(dragDistance < 15) {
-            this.resetDrag();
-        }
+            this.resetDrag() }
             return false;
         
         // 履歴から速度を計算（より滑らかな投擲）
@@ -101,7 +99,7 @@ export class BubbleDragSystem implements IBubbleDragSystem { private draggedBubb
      * ドラッグ履歴から速度を計算
      */
     calculateVelocityFromHistory(): Vector2 { if (this.dragHistory.length < 2) { }
-            return { x: 0, y: 0 ,}
+            return { x: 0, y: 0  }
         
         const recent = this.dragHistory[this.dragHistory.length - 1];
         const previous = this.dragHistory[this.dragHistory.length - 2];
@@ -114,14 +112,14 @@ export class BubbleDragSystem implements IBubbleDragSystem { private draggedBubb
     /**
      * フリック強度を計算
      */
-    calculateFlickStrength(dragVector: Vector2, velocity: Vector2): number { const dragDistance = Math.sqrt(dragVector.x * dragVector.x + dragVector.y * dragVector.y);
-        const velocityMagnitude = Math.sqrt(velocity.x * velocity.x + velocity.y * velocity.y);
+    calculateFlickStrength(dragVector: Vector2, velocity: Vector2): number { const dragDistance = Math.sqrt(dragVector.x * dragVector.x + dragVector.y * dragVector.y),
+        const velocityMagnitude = Math.sqrt(velocity.x * velocity.x + velocity.y * velocity.y),
         
         // ドラッグ距離と速度の両方を考慮
-        const distanceComponent = Math.min(dragDistance / 30, 10); // 最大10倍
-        const velocityComponent = Math.min(velocityMagnitude / 100, 5); // 最大5倍
+        const distanceComponent = Math.min(dragDistance / 30, 10), // 最大10倍
+        const velocityComponent = Math.min(velocityMagnitude / 100, 5), // 最大5倍
         
-        return Math.max(1, distanceComponent * 0.7 + velocityComponent * 0.3) * 250; // 基本力250 }
+        return Math.max(1, distanceComponent * 0.7 + velocityComponent * 0.3) * 250, // 基本力250 }
     
     /**
      * 力の方向を計算
@@ -132,21 +130,21 @@ export class BubbleDragSystem implements IBubbleDragSystem { private draggedBubb
     y: dragVector.y * 0.6 + velocity.y * 0.4 };
         const magnitude = Math.sqrt(combinedVector.x * combinedVector.x + combinedVector.y * combinedVector.y);
         if(magnitude === 0) {
-            
-        }
-            return { x: 0, y: 0 ,}
+    
+}
+            return { x: 0, y: 0  }
         
-        return { x: combinedVector.x / magnitude, };
+        return { x: combinedVector.x / magnitude };
             y: combinedVector.y / magnitude 
     }
     
     /**
      * ドラッグ状態をリセット
      */
-    resetDrag(): void { this.isDragging = false;
-        this.draggedBubble = null; }
-        this.__dragStartPosition = { x: 0, y: 0 ,}
-        this.__dragCurrentPosition = { x: 0, y: 0 ,}
+    resetDrag(): void { this.isDragging = false,
+        this.draggedBubble = null }
+        this.__dragStartPosition = { x: 0, y: 0  }
+        this.__dragCurrentPosition = { x: 0, y: 0  }
         this.dragHistory = [];
     }
     
@@ -154,19 +152,17 @@ export class BubbleDragSystem implements IBubbleDragSystem { private draggedBubb
      * ドラッグ軌跡の描画（デバッグ用）
      */
     renderDragTrail(context: CanvasRenderingContext2D, renderQuality: number): void { if (renderQuality > 0.8 && this.isDragging && this.dragHistory.length > 1) {''
-            context.save()';
-            context.strokeStyle = 'rgba(255, 255, 0, 0.5)';
-            context.lineWidth = 2;
-            context.setLineDash([3, 3]);
+            context.save()',
+            context.strokeStyle = 'rgba(255, 255, 0, 0.5)',
+            context.lineWidth = 2,
+            context.setLineDash([3, 3]),
             
-            context.beginPath();
-            context.moveTo(this.dragHistory[0].x, this.dragHistory[0].y);
+            context.beginPath(),
+            context.moveTo(this.dragHistory[0].x, this.dragHistory[0].y),
             
-            for(let, i = 1; i < this.dragHistory.length; i++) {
-            
-                
-            
-            }
+            for(let, i = 1, i < this.dragHistory.length, i++) {
+    
+}
                 context.lineTo(this.dragHistory[i].x, this.dragHistory[i].y); }
             }
             
@@ -178,7 +174,7 @@ export class BubbleDragSystem implements IBubbleDragSystem { private draggedBubb
     /**
      * ドラッグ中かどうか
      */
-    isDragInProgress(): boolean { return this.isDragging; }
+    isDragInProgress(): boolean { return this.isDragging }
     
     /**
      * ドラッグ中の泡を取得'

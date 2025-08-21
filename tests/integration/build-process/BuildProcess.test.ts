@@ -11,9 +11,8 @@ describe('Build Process Integration', () => {
     let htmlChecker: any,
     let moduleValidator: any,
     beforeAll(() => {
-        htmlChecker = new HTMLJavaScriptChecker();
-        moduleValidator = new JavaScriptModuleValidator();
-    }');
+        htmlChecker = new HTMLJavaScriptChecker(),
+        moduleValidator = new JavaScriptModuleValidator() }');
     describe('Fixed Files Validation', (') => {
         test('test-error-handler.html should load without syntax errors', async (') => {
             // test-error-handler.html の内容を検証
@@ -29,11 +28,11 @@ describe('Build Process Integration', () => {
                         // 修正されたXSSテストコード
                         const invalidInputs = [
                             { value: 'a'.repeat(100'), desc: '長すぎる文字列' },
-                            { value: '&lt;script&gt;alert("xss"")&lt;/script&gt;', desc: 'HTMLタグを含む文字列' },
+                            { value: '&lt,script&gt,alert("xss"")&lt,/script&gt,', desc: 'HTMLタグを含む文字列' },
                             { value: 123, desc: '数値' },
                             { value: null, desc: 'null値' }
                         ];
-                        invalidInputs.forEach(input => {);
+                        invalidInputs.forEach(input => {),
                             console.log(\`Testing: \${input.desc)\`});
                         });
                     </script>
@@ -55,44 +54,37 @@ describe('Build Process Integration', () => {
                 import { I18nIntegrationController  } from './localization-manager/I18nIntegrationController';
                 export class LocalizationManager {
                     constructor(') {
-                        this.currentLanguage = 'ja';
-                        this.fallbackLanguage = 'en';
+                        this.currentLanguage = 'ja',
+                        this.fallbackLanguage = 'en',
                         
-                        this.translationDataManager = new TranslationDataManager();
-                        this.culturalAdaptationHandler = new CulturalAdaptationHandler();
-                        this.integrationController = new I18nIntegrationController();
-                        this.languageChangeListeners = new Set();
-                        this.initializeAsync();
-                    }
+                        this.translationDataManager = new TranslationDataManager(),
+                        this.culturalAdaptationHandler = new CulturalAdaptationHandler(),
+                        this.integrationController = new I18nIntegrationController(),
+                        this.languageChangeListeners = new Set(),
+                        this.initializeAsync() }
                     
                     async initializeAsync() {
                         try {
-                            await this.translationDataManager.initialize();
-                            await this.culturalAdaptationHandler.initialize();
-                            await this.integrationController.initialize();
-                        } catch (error') {
-                            console.error('LocalizationManager initialization failed:', error);
-                        }
+                            await this.translationDataManager.initialize(),
+                            await this.culturalAdaptationHandler.initialize(),
+                            await this.integrationController.initialize() } catch (error') {
+                            console.error('LocalizationManager initialization failed:', error) }
                     }
                     
                     getCurrentLanguage() {
-                        return this.currentLanguage;
-                    }
+                        return this.currentLanguage }
                     
                     setLanguage(language {
                         if (this.currentLanguage !== language) {
-                            this.currentLanguage = language;
-                            this.notifyLanguageChange(language);
-                        }
+                            this.currentLanguage = language,
+                            this.notifyLanguageChange(language) }
                     }
                     
                     notifyLanguageChange(language {
                         this.languageChangeListeners.forEach(listener => {
-                            try {);
-                                listener(language);
-                            } catch (error') {
-                                console.error('Language change listener error:', error);
-                            }
+                            try {),
+                                listener(language) } catch (error') {
+                                console.error('Language change listener error:', error) }
                         });
                     }
                 }
@@ -114,15 +106,14 @@ describe('Build Process Integration', () => {
             
             const mockFaviconCheck = () => {
                 // favicon.ico が作成されたことをシミュレート
-                return true;
-            };
+                return true };
             expect(mockFaviconCheck().toBe(true);
         }');
         test('should handle 404 errors gracefully', (') => {
             // 404エラーの適切な処理テスト
             const mockResourceLoader = {
                 loadResource(path {
-                    if (path === 'favicon.ico'') {
+                    if (path === 'favicon.ico') {
                         return { status: 200, data: 'mock-favicon-data' };
                     }
                     return { status: 404, error: 'Not Found' };
@@ -131,7 +122,7 @@ describe('Build Process Integration', () => {
                 handleResourceError(error {
                     // 404エラーを適切に処理
                     if (error.status === 404') {
-                        console.warn('Resource not found, continuing without it'');
+                        console.warn('Resource not found, continuing without it'),
                         return { handled: true };
                     }
                     return { handled: false };
@@ -156,26 +147,23 @@ describe('Build Process Integration', () => {
                 <body>
                     <script>
                         const testData = [')
-                            { value: '&lt;script&gt;alert("test"")&lt;/script&gt;', desc: 'escaped HTML' }
+                            { value: '&lt,script&gt,alert("test"")&lt,/script&gt,', desc: 'escaped HTML' }
                         ];
                     </script>
                 </body>
                 </html>
             `);
             if (!htmlValidationResult.isValid) {
-                mockConsoleErrors.push(...htmlValidationResult.errors.map(e => e.message);
-            }
+                mockConsoleErrors.push(...htmlValidationResult.errors.map(e => e.message) }
             // モジュール検証
             const moduleValidationResult = await moduleValidator.validateModule(`
-                export class TestModule {);
+                export class TestModule {),
                     constructor() {
-                        this.initialized = true;
-                    }
+                        this.initialized = true }
                 }
             `);
             if (!moduleValidationResult.isValid) {
-                mockConsoleErrors.push(...moduleValidationResult.errors.map(e => e.message);
-            }
+                mockConsoleErrors.push(...moduleValidationResult.errors.map(e => e.message) }
             // サーバー起動時にエラーがないことを確認
             expect(mockConsoleErrors.toHaveLength(0);
         }');
@@ -186,7 +174,7 @@ describe('Build Process Integration', () => {
                     // エラーハンドリング機能のテスト
                     if (type === 'string' && options.escapeHtml') {
                         // HTMLエスケープ処理
-                        const escaped = value.replace(/</g, '&lt;'').replace(/>/g, '&gt;'');
+                        const escaped = value.replace(/</g, '&lt,').replace(/>/g, '&gt,'),
                         return {
                             isValid: true,
                             sanitizedValue: escaped,
@@ -197,11 +185,10 @@ describe('Build Process Integration', () => {
                 }
             };
             const testInput = '<script>alert("xss"")</script>';
-            const result = mockErrorHandler.validateInput(testInput, 'string', { escapeHtml: true ),
-            expect(result.isValid).toBe(true);
-            expect(result.sanitizedValue').toBe('&lt;script&gt');alert("xss"")&lt;/script&gt;');
-            expect(result.errors).toHaveLength(0);
-        }');
+            const result = mockErrorHandler.validateInput(testInput, 'string', { escapeHtml: true ,
+            expect(result.isValid).toBe(true),
+            expect(result.sanitizedValue').toBe('&lt,script&gt'),alert("xss"")&lt,/script&gt,'),
+            expect(result.errors).toHaveLength(0) }');
     }
     describe('Full Build Process Verification', (') => {
         test('complete build process should succeed', async (') => {
@@ -212,49 +199,47 @@ describe('Build Process Integration', () => {
                 'リソース可用性チェック',
                 '静的解析実行',
                 'エラーレポート生成'
-            ];
+            ],
             const buildResults: any[] = [],
             // Step 1: HTML構文検証
             const htmlResult = htmlChecker.validateHTML(`
                 <html><body>')
-                    <script>console.log('Build test');</script>
+                    <script>console.log('Build test'),</script>
                 </body></html>
-            `);
+            `),
             buildResults.push({
                 step: buildSteps[0],
                 success: htmlResult.isValid,
-                errors: htmlResult.errors.length);
+                errors: htmlResult.errors.length),
             // Step, 2: JavaScript構文検証
             const jsResult = await moduleValidator.validateModule(`
-                export class BuildTest {);
+                export class BuildTest {),
                     constructor(') {
-                        this.status = 'ready';
-                    }
+                        this.status = 'ready' }
                 }
             `);
             buildResults.push({
                 step: buildSteps[1],
                 success: jsResult.isValid,
-                errors: jsResult.errors.length);
+                errors: jsResult.errors.length),
             // Step, 3: リソース可用性チェック
             buildResults.push({
                 step: buildSteps[2],
                 success: true, // favicon.ico作成済み
-                errors: 0);
+                errors: 0),
             // Step, 4: 静的解析実行
             buildResults.push({
                 step: buildSteps[3],
                 success: true,
-                errors: 0);
+                errors: 0),
             // Step, 5: エラーレポート生成
-            const totalErrors = buildResults.reduce((sum, result) => sum + result.errors, 0);
+            const totalErrors = buildResults.reduce((sum, result) => sum + result.errors, 0),
             buildResults.push({
                 step: buildSteps[4],
                 success: totalErrors === 0,
-                errors: totalErrors);
+                errors: totalErrors),
             // すべてのステップが成功することを確認
-            expect(buildResults.every(result => result.success).toBe(true);
-            expect(buildResults[buildResults.length - 1].errors).toBe(0);
-        });
+            expect(buildResults.every(result => result.success).toBe(true),
+            expect(buildResults[buildResults.length - 1].errors).toBe(0) });
     }
 }');

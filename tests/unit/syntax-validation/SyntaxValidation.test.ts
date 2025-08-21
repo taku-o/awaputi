@@ -10,76 +10,68 @@ interface ValidationResult {
     isValid: boolean,
     errors: ValidationError[],
     warnings: ValidationWarning[],
-    scriptBlockCount: number,
-}
+    scriptBlockCount: number }
 interface ValidationError {
     type: string,
-    message?: string;
-    line?: number;
-    column?: number;
-}
+    message?: string,
+    line?: number,
+    column?: number }
 interface ValidationWarning {
     type: string,
-    message?: string;
-    line?: number;
-}
+    message?: string,
+    line?: number }
 interface ModuleValidationResult extends ValidationResult {
-    statistics: ModuleStatistics,
-}
+    statistics: ModuleStatistics }
 interface ModuleStatistics {
     imports: number,
     exports: number,
     classes: number,
     functions: number,
-    variables: number,
-}
+    variables: number }
 describe('Syntax Validation', (') => {
     describe('HTMLJavaScriptChecker', () => {
         let checker: HTMLJavaScriptChecker,
         beforeEach(() => {
-            checker = new HTMLJavaScriptChecker();
-        }');
+            checker = new HTMLJavaScriptChecker() }');
         test('should validate HTML with valid JavaScript', (') => {
             const validHTML = `
                 <html>
                 <body>
                     <script>
-                        console.log('Hello World');
-                        const x = 42;
+                        console.log('Hello World'),
+                        const x = 42,
                     </script>
                 </body>
                 </html>
-            `;
-            const result = checker.validateHTML(validHTML) as ValidationResult;
+            `,
+            const result = checker.validateHTML(validHTML) as ValidationResult,
             
-            expect(result.isValid).toBe(true);
-            expect(result.errors).toHaveLength(0);
-            expect(result.scriptBlockCount).toBe(1);
-        }');
+            expect(result.isValid).toBe(true),
+            expect(result.errors).toHaveLength(0),
+            expect(result.scriptBlockCount).toBe(1) }');
         test('should detect syntax errors in JavaScript blocks', (') => {
             const invalidHTML = `
                 <html>
                 <body>
                     <script>
                         console.log('unclosed string
-                        const x = ;
+                        const x = ,
                     </script>
                 </body>
                 </html>
-            `;);
-            const result = checker.validateHTML(invalidHTML) as ValidationResult;
+            `),
+            const result = checker.validateHTML(invalidHTML) as ValidationResult,
             
-            expect(result.isValid).toBe(false);
-            expect(result.errors.length).toBeGreaterThan(0);
-            expect(result.errors[0].type').toBe('SYNTAX_ERROR');
-        }');
+            expect(result.isValid).toBe(false),
+            expect(result.errors.length).toBeGreaterThan(0),
+            expect(result.errors[0].type').toBe('SYNTAX_ERROR') }');
         test('should detect properly escaped XSS test code', (') => {
             const htmlWithEscapedXSS = `
                 <html>
                 <body>
                     <script>
                         const testData = [
-                            { value: '&lt;script&gt;alert("xss"")&lt;/script&gt;', desc: 'HTMLタグを含む文字列' }
+                            { value: '&lt,script&gt,alert("xss"")&lt,/script&gt,', desc: 'HTMLタグを含む文字列' }
                         ];
                     </script>
                 </body>
@@ -95,15 +87,14 @@ describe('Syntax Validation', (') => {
                 <html>
                 <body>
                     <script>
-                        const bad = '<script>alert("xss"")</script>';
+                        const bad = '<script>alert("xss"")</script>',
                     </script>
                 </body>
                 </html>
-            `;
-            const result = checker.validateHTML(htmlWithPotentialXSS) as ValidationResult;
+            `,
+            const result = checker.validateHTML(htmlWithPotentialXSS) as ValidationResult,
             
-            expect(result.warnings.some((w: ValidationWarning') => w.type === 'POTENTIAL_XSS')).toBe(true);
-        }');
+            expect(result.warnings.some((w: ValidationWarning') => w.type === 'POTENTIAL_XSS')).toBe(true) }');
         test('should handle empty script blocks', () => {
             const htmlWithEmptyScript = `
                 <html>
@@ -112,12 +103,11 @@ describe('Syntax Validation', (') => {
                     <script>   </script>
                 </body>
                 </html>
-            `;
-            const result = checker.validateHTML(htmlWithEmptyScript) as ValidationResult;
+            `,
+            const result = checker.validateHTML(htmlWithEmptyScript) as ValidationResult,
             
-            expect(result.isValid).toBe(true);
-            expect(result.warnings.some((w: ValidationWarning') => w.type === 'EMPTY_SCRIPT')).toBe(true);
-        }');
+            expect(result.isValid).toBe(true),
+            expect(result.warnings.some((w: ValidationWarning') => w.type === 'EMPTY_SCRIPT')).toBe(true) }');
         test('should skip ES6 module scripts', (') => {
             const htmlWithModuleScript = `
                 <html>
@@ -135,11 +125,10 @@ describe('Syntax Validation', (') => {
         }');
         test('should validate escape sequences', (') => {
             const escapeSequences = 'Valid: \\n\\t\\"\\\\ , Invalid: \\z\\x\\u',
-            const errors = checker.validateEscapeSequences(escapeSequences) as ValidationError[];
+            const errors = checker.validateEscapeSequences(escapeSequences) as ValidationError[],
             
-            expect(errors.length).toBeGreaterThan(0);
-            expect(errors[0].type').toBe('INVALID_ESCAPE');
-        }');
+            expect(errors.length).toBeGreaterThan(0),
+            expect(errors[0].type').toBe('INVALID_ESCAPE') }');
         test('should generate proper summary', (') => {
             const result: ValidationResult = {
                 isValid: true,
@@ -156,21 +145,18 @@ describe('Syntax Validation', (') => {
     describe('JavaScriptModuleValidator', () => {
         let validator: JavaScriptModuleValidator,
         beforeEach(() => {
-            validator = new JavaScriptModuleValidator();
-        }');
+            validator = new JavaScriptModuleValidator() }');
         test('should validate valid ES6 module', async (') => {
             const validModule = `
                 import { Component  } from './Component.js';
                 
                 export class TestClass extends Component {
                     constructor() {
-                        super(');
-                        this.name = 'test';
-                    }
+                        super('),
+                        this.name = 'test' }
                     
                     getName() {
-                        return this.name;
-                    }
+                        return this.name }
                 }
                 
                 export default TestClass;
@@ -187,8 +173,7 @@ describe('Syntax Validation', (') => {
             const moduleWithUnmatchedBrackets = `
                 export class TestClass {
                     constructor() {
-                        this.items = [1, 2, 3;
-                    }
+                        this.items = [1, 2, 3 }
                 // 波括弧が閉じていない
             `;
             const result = await validator.validateModule(moduleWithUnmatchedBrackets) as ModuleValidationResult;
@@ -210,8 +195,7 @@ describe('Syntax Validation', (') => {
             const moduleWithSuspiciousComparison = `
                 export function checkValue(x, y) {
                     if (x ===== y) {  // 疑わしい比較演算子
-                        return true;
-                    }
+                        return true }
                     return false;
                 }
             `;
@@ -227,8 +211,7 @@ describe('Syntax Validation', (') => {
                 }
                 
                 export function BadFunctionName() {  // camelCaseでない
-                    return true;
-                }
+                    return true }
             `;
             const result = await validator.validateModule(moduleWithBadNaming) as ModuleValidationResult;
             
@@ -295,7 +278,7 @@ describe('Syntax Validation', (') => {
         test('should validate real test-error-handler.html file', () => {
             // 実際のテストファイルを読み込んで検証
             // 注意: 実際のファイル読み込みはテスト環境で適切に設定する必要があります
-            const checker = new HTMLJavaScriptChecker(');
+            const checker = new HTMLJavaScriptChecker('),
             // モックデータを使用した統合テスト
             const realHTMLContent = `
                 <!DOCTYPE html>
@@ -305,7 +288,7 @@ describe('Syntax Validation', (') => {
                     <script>
                         const invalidInputs = [
                             { value: 'a'.repeat(100'), desc: '長すぎる文字列' },
-                            { value: '&lt;script&gt;alert("xss"")&lt;/script&gt;', desc: 'HTMLタグを含む文字列' },
+                            { value: '&lt,script&gt,alert("xss"")&lt,/script&gt,', desc: 'HTMLタグを含む文字列' },
                             { value: 123, desc: '数値' }
                         ];
                     </script>
@@ -318,7 +301,7 @@ describe('Syntax Validation', (') => {
             expect(result.warnings.some((w: ValidationWarning') => w.type === 'ESCAPED_XSS_TEST')).toBe(true);
         }');
         test('should validate LocalizationManager module structure', async () => {
-            const validator = new JavaScriptModuleValidator(');
+            const validator = new JavaScriptModuleValidator('),
             // LocalizationManager のような構造のモックテスト
             const localizationManagerMock = `
                 import { TranslationDataManager  } from './localization-manager/TranslationDataManager.js';
@@ -326,13 +309,12 @@ describe('Syntax Validation', (') => {
                 import { I18nIntegrationController  } from './localization-manager/I18nIntegrationController.js';
                 export class LocalizationManager {
                     constructor(') {
-                        this.currentLanguage = 'ja';
-                        this.fallbackLanguage = 'en';
+                        this.currentLanguage = 'ja',
+                        this.fallbackLanguage = 'en',
                         
-                        this.translationDataManager = new TranslationDataManager();
-                        this.culturalAdaptationHandler = new CulturalAdaptationHandler();
-                        this.integrationController = new I18nIntegrationController();
-                    }
+                        this.translationDataManager = new TranslationDataManager(),
+                        this.culturalAdaptationHandler = new CulturalAdaptationHandler(),
+                        this.integrationController = new I18nIntegrationController() }
                     
                     async initializeAsync() {
                         // 初期化処理

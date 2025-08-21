@@ -5,108 +5,90 @@ import { jest, describe, test, expect, beforeEach  } from '@jest/globals';
 import { ConfigurationSynchronizer, getConfigurationSynchronizer  } from '../../src/utils/ConfigurationSynchronizer.js';
 // Configuration interfaces
 interface BubbleConfig {
-    score?: number;
-    health?: number;
-    size?: number;
-    shakeIntensity?: number;
-    disableDuration?: number;
-    bonusTimeMs?: number;
-}
+    score?: number,
+    health?: number,
+    size?: number,
+    shakeIntensity?: number,
+    disableDuration?: number,
+    bonusTimeMs?: number }
 interface ConfigMap {
     bubbles: {
-        [bubbleTyp;e: string]: BubbleConfig,
-    };
+        [bubbleTyp,e: string]: BubbleConfig };
 }
 interface SourceInfo {
     name: string,
-    priority: number,
-}
+    priority: number }
 interface SourceConfig {
     config: ConfigMap,
-    source: SourceInfo,
-}
+    source: SourceInfo }
 interface Discrepancy {
     type: string,
-    bubbleType?: string;
+    bubbleType?: string,
     key: string,
     values: Array<{
-        valu;e: any,
+        valu,e: any,
         source: string,
-        priority: number,
-    }>;
-    severity: string,
-}
+        priority: number }>;
+    severity: string }
 interface ValidationResult {
     timestamp: Date,
     sourceCount: number,
     discrepancyCount: number,
     discrepancies: Discrepancy[],
-    sourceConfigs: Map<string, SourceConfig>;
-    recommendations: Recommendation[],
-}
+    sourceConfigs: Map<string, SourceConfig>,
+    recommendations: Recommendation[] }
 interface Recommendation {
     action: string,
     targetValue: any,
     priority: string,
-    affectedFiles: string[],
-}
+    affectedFiles: string[] }
 interface SyncReport {
     timestamp: Date,
     discrepancyCount: number,
     discrepancies: Discrepancy[],
     syncHistory: any[],
     sources: any,
-    status: string,
-}
+    status: string }
 interface MockErrorHandler {
-    handleError: jest.MockedFunction<(erro;r: Error) => void>;
-}
+    handleError: jest.MockedFunction<(erro,r: Error) => void> }
 interface MockConfigManager {
-    get: jest.MockedFunction<(categor;y: string, key: string) => any>;
-    set: jest.MockedFunction<(categor;y: string, key: string, value => boolean>);
-    has: jest.MockedFunction<(categor;y: string, key: string) => boolean>,
-    getCategory: jest.MockedFunction<(categor;y: string) => any>;
-}
+    get: jest.MockedFunction<(categor,y: string, key: string) => any>,
+    set: jest.MockedFunction<(categor,y: string, key: string, value => boolean>),
+    has: jest.MockedFunction<(categor,y: string, key: string) => boolean>,
+    getCategory: jest.MockedFunction<(categor,y: string) => any> }
 // Jest の設定
 const mockErrorHandler: MockErrorHandler = {
-    handleError: jest.fn(),
-};
+    handleError: jest.fn( };
 const mockConfigManager: MockConfigManager = {
-    get: jest.fn(),
-    set: jest.fn(),
-    has: jest.fn(),
-        getCategory: jest.fn()'),
-};
+    get: jest.fn(
+    set: jest.fn(
+    has: jest.fn(
+        getCategory: jest.fn()' };
 // モックの設定
 jest.mock('../../src/utils/ErrorHandler.js', () => ({
-    getErrorHandler: jest.fn(() => mockErrorHandler));
-    }))');
+    getErrorHandler: jest.fn(() => mockErrorHandler)))');
 jest.mock('../../src/core/ConfigurationManager.js', () => ({
-    getConfigurationManager: jest.fn(() => mockConfigManager));
-    }))');
+    getConfigurationManager: jest.fn(() => mockConfigManager)))');
 describe('ConfigurationSynchronizer', () => {
     let synchronizer: ConfigurationSynchronizer,
     beforeEach(() => {
         // モックをリセット
-        jest.clearAllMocks();
+        jest.clearAllMocks(),
         // インスタンスを作成
-        synchronizer = new ConfigurationSynchronizer();
-    )');
+        synchronizer = new ConfigurationSynchronizer())'),
     describe('Constructor', (') => {
         test('should initialize with correct properties', () => {
-            expect(synchronizer.configManager).toBe(mockConfigManager);
-            expect(synchronizer.errorHandler).toBe(mockErrorHandler);
-            expect(synchronizer.discrepancies).toEqual([]);
-            expect(synchronizer.syncHistory).toEqual([]);
-            expect(synchronizer.configurationSources).toBeInstanceOf(Map);
-        }');
+            expect(synchronizer.configManager).toBe(mockConfigManager),
+            expect(synchronizer.errorHandler).toBe(mockErrorHandler),
+            expect(synchronizer.discrepancies).toEqual([]),
+            expect(synchronizer.syncHistory).toEqual([]),
+            expect(synchronizer.configurationSources).toBeInstanceOf(Map) }');
         test('should register configuration sources', () => {
-            expect(synchronizer.configurationSources.size).toBe(4');
-            expect(synchronizer.configurationSources.has('gameBalance').toBe(true');
-            expect(synchronizer.configurationSources.has('bubbleImplementation').toBe(true');
-            expect(synchronizer.configurationSources.has('testExpectations').toBe(true');
-            expect(synchronizer.configurationSources.has('configurationManager').toBe(true);
-        }');
+            expect(synchronizer.configurationSources.size).toBe(4'),
+            expect(synchronizer.configurationSources.has('gameBalance').toBe(true'),
+            expect(synchronizer.configurationSources.has('bubbleImplementation').toBe(true'),
+            expect(synchronizer.configurationSources.has('testExpectations').toBe(true'),
+            expect(synchronizer.configurationSources.has('configurationManager').toBe(true) }');
     }
     describe('validateConsistency', (') => {
         test('should validate consistency across all sources', async () => {
@@ -132,7 +114,7 @@ describe('ConfigurationSynchronizer', () => {
                     normal: { score: 15 };
                     boss: { health: 8, size: 90 }
                 });
-            const result: ValidationResult = await synchronizer.validateConsistency(),
+            const result: ValidationResult = await synchronizer.validateConsistency(
             expect(result').toHaveProperty('timestamp');
             expect(result').toHaveProperty('sourceCount', 4);
             expect(result').toHaveProperty('discrepancyCount');
@@ -143,11 +125,11 @@ describe('ConfigurationSynchronizer', () => {
         }');
         test('should handle source loading errors gracefully', async () => {
             // エラーを発生させるモック
-            (synchronizer._loadGameBalanceConfig = jest.fn(').mockRejectedValue(new Error('Load failed'));
-            (synchronizer._loadBubbleImplementationConfig = jest.fn().mockResolvedValue({});
-            (synchronizer._loadTestExpectationConfig = jest.fn().mockResolvedValue({});
-            (synchronizer._loadConfigurationManagerConfig = jest.fn().mockResolvedValue({});
-            const result: ValidationResult = await synchronizer.validateConsistency(),
+            (synchronizer._loadGameBalanceConfig = jest.fn(').mockRejectedValue(new Error('Load failed')),
+            (synchronizer._loadBubbleImplementationConfig = jest.fn().mockResolvedValue({);
+            (synchronizer._loadTestExpectationConfig = jest.fn().mockResolvedValue({);
+            (synchronizer._loadConfigurationManagerConfig = jest.fn().mockResolvedValue({);
+            const result: ValidationResult = await synchronizer.validateConsistency(
             expect(result.sourceCount).toBe(4);
             expect(mockErrorHandler.handleError).toHaveBeenCalled();
         }');
@@ -172,7 +154,7 @@ describe('ConfigurationSynchronizer', () => {
                     source: { name: 'Implementation', priority: 3 }
                 }]
             ]);
-            const discrepancies: Discrepancy[] = (synchronizer._detectBubbleConfigDiscrepancies(sourceConfigs),
+            const discrepancies: Discrepancy[] = (synchronizer._detectBubbleConfigDiscrepancies(sourceConfigs,
             expect(discrepancies.length).toBeGreaterThan(0');
             const scoreDiscrepancy = discrepancies.find(d => d.type === 'BUBBLE_SCORE_INCONSISTENCY');
             expect(scoreDiscrepancy).toBeTruthy();
@@ -198,7 +180,7 @@ describe('ConfigurationSynchronizer', () => {
                     source: { name: 'Implementation', priority: 3 }
                 }]
             ]);
-            const discrepancies: Discrepancy[] = (synchronizer._detectBubbleConfigDiscrepancies(sourceConfigs)'),
+            const discrepancies: Discrepancy[] = (synchronizer._detectBubbleConfigDiscrepancies(sourceConfigs)',
             const healthDiscrepancy = discrepancies.find(d => d.type === 'BUBBLE_HEALTH_INCONSISTENCY');
             expect(healthDiscrepancy).toBeTruthy();
             expect(healthDiscrepancy? .bubbleType').toBe('boss');
@@ -225,11 +207,11 @@ describe('ConfigurationSynchronizer', () => {
                     source: { name: 'Implementation', priority: 3 }
                 }]
             ]);
-            const discrepancies: Discrepancy[] = (synchronizer._detectEffectConfigDiscrepancies(sourceConfigs),
+            const discrepancies: Discrepancy[] = (synchronizer._detectEffectConfigDiscrepancies(sourceConfigs,
             expect(discrepancies.length).toBe(2');
             const intensityDiscrepancy = discrepancies.find(d => d.type === 'ELECTRIC_INTENSITY_INCONSISTENCY');
             expect(intensityDiscrepancy).toBeTruthy();
-            expect(intensityDiscrepancy? .key').toBe('bubbles.electric.shakeIntensity'');
+            expect(intensityDiscrepancy? .key').toBe('bubbles.electric.shakeIntensity');
             const durationDiscrepancy = discrepancies.find(d => d.type === 'ELECTRIC_DURATION_INCONSISTENCY');
             expect(durationDiscrepancy).toBeTruthy();
             expect(durationDiscrepancy?.key').toBe('bubbles.electric.disableDuration');
@@ -253,7 +235,7 @@ describe('ConfigurationSynchronizer', () => {
                     source: { name: 'Implementation', priority: 3 }
                 }]
             ]);
-            const discrepancies: Discrepancy[] = (synchronizer._detectEffectConfigDiscrepancies(sourceConfigs)'),
+            const discrepancies: Discrepancy[] = (synchronizer._detectEffectConfigDiscrepancies(sourceConfigs)',
             const rainbowDiscrepancy = discrepancies.find(d => d.type === 'RAINBOW_DURATION_INCONSISTENCY');
             expect(rainbowDiscrepancy).toBeTruthy();
             expect(rainbowDiscrepancy? .key').toBe('bubbles.rainbow.bonusTimeMs');
@@ -264,26 +246,23 @@ describe('ConfigurationSynchronizer', () => {
             const values = new Map<string, number>([
                 ['source1', 10],
                 ['source2', 20] // 100% variance
-            ]); : undefined
-            const severity: string = (synchronizer._calculateSeverity(values),
-            expect(severity').toBe('HIGH');
-        }');
+            ]), : undefined
+            const severity: string = (synchronizer._calculateSeverity(values,
+            expect(severity').toBe('HIGH') }');
         test('should return MEDIUM for moderate variance', (') => {
             const values = new Map<string, number>([
                 ['source1', 10],
                 ['source2', 13] // 30% variance
-            ]);
-            const severity: string = (synchronizer._calculateSeverity(values),
-            expect(severity').toBe('MEDIUM');
-        }');
+            ]),
+            const severity: string = (synchronizer._calculateSeverity(values,
+            expect(severity').toBe('MEDIUM') }');
         test('should return LOW for small variance', (') => {
             const values = new Map<string, number>([
                 ['source1', 10],
                 ['source2', 11] // 10% variance
-            ]);
-            const severity: string = (synchronizer._calculateSeverity(values),
-            expect(severity').toBe('LOW');
-        }');
+            ]),
+            const severity: string = (synchronizer._calculateSeverity(values,
+            expect(severity').toBe('LOW') }');
     }
     describe('_generateRecommendations', (') => {
         test('should generate sync recommendations for bubble score inconsistency', (') => {
@@ -297,7 +276,7 @@ describe('ConfigurationSynchronizer', () => {
                 ],
                 severity: 'HIGH'
             }];
-            const recommendations: Recommendation[] = (synchronizer._generateRecommendations(discrepancies),
+            const recommendations: Recommendation[] = (synchronizer._generateRecommendations(discrepancies,
             expect(recommendations).toHaveLength(1);
             expect(recommendations[0].action').toBe('SYNC_TO_IMPLEMENTATION');
             expect(recommendations[0].targetValue).toBe(15);
@@ -313,7 +292,7 @@ describe('ConfigurationSynchronizer', () => {
             synchronizer.syncHistory = [
                 { timestamp: Date.now('), action: 'sync' }
             ];
-            const report: SyncReport = synchronizer.generateSyncReport(),
+            const report: SyncReport = synchronizer.generateSyncReport(
             expect(report').toHaveProperty('timestamp');
             expect(report').toHaveProperty('discrepancyCount', 1);
             expect(report').toHaveProperty('discrepancies');
@@ -322,18 +301,16 @@ describe('ConfigurationSynchronizer', () => {
             expect(report').toHaveProperty('status', 'INCONSISTENT');
         }');
         test('should report SYNCHRONIZED status when no discrepancies', () => {
-            synchronizer.discrepancies = [];
-            const report: SyncReport = synchronizer.generateSyncReport(),
-            expect(report.status').toBe('SYNCHRONIZED');
-            expect(report.discrepancyCount).toBe(0);
-        }');
+            synchronizer.discrepancies = [],
+            const report: SyncReport = synchronizer.generateSyncReport(
+            expect(report.status').toBe('SYNCHRONIZED'),
+            expect(report.discrepancyCount).toBe(0) }');
     }
     describe('Singleton pattern', (') => {
         test('should return same instance for getConfigurationSynchronizer', () => {
-            const instance1 = getConfigurationSynchronizer();
-            const instance2 = getConfigurationSynchronizer();
-            expect(instance1).toBe(instance2);
-        }');
+            const instance1 = getConfigurationSynchronizer(),
+            const instance2 = getConfigurationSynchronizer(),
+            expect(instance1).toBe(instance2) }');
     }
     describe('Value extraction methods', (') => {
         test('should extract bubble score values correctly', (') => {

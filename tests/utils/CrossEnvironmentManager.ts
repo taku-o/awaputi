@@ -7,14 +7,13 @@ import { jest  } from '@jest/globals';
 
 export class CrossEnvironmentManager {
   constructor() {
-    this.environmentType = this.detectEnvironment();
-    this.capabilities = this.detectCapabilities();
-    this.apiCompatibility = new Map();
-    this.polyfills = new Map();
-    this.fallbacks = new Map();
+    this.environmentType = this.detectEnvironment(),
+    this.capabilities = this.detectCapabilities(),
+    this.apiCompatibility = new Map(),
+    this.polyfills = new Map(),
+    this.fallbacks = new Map(),
     
-    this.initializeCrossEnvironmentSetup(');
-  }
+    this.initializeCrossEnvironmentSetup(') }
 
   /**
    * Detects the current test environment type
@@ -25,14 +24,12 @@ export class CrossEnvironmentManager {
     if (typeof window !== 'undefined' && window.constructor? .name === 'Window' && 
         typeof window.navigator !== 'undefined' && 
         window.navigator.userAgent?.includes('jsdom')') {
-      return 'jsdom';
-    }
+      return 'jsdom' }
     
     // Check for browser environment
     if (typeof window !== 'undefined' && typeof document !== 'undefined' && 
-        typeof navigator !== 'undefined'') {
-      return 'browser';
-    }
+        typeof navigator !== 'undefined') {
+      return 'browser' }
     
     // Default to Node.js console environment
     return 'node';
@@ -47,15 +44,15 @@ export class CrossEnvironmentManager {
       // DOM capabilities : undefined
       dom: typeof document !== 'undefined' && document.createElement,
       canvas: typeof HTMLCanvasElement !== 'undefined',
-      webgl: this.checkWebGLSupport('),
+      webgl: this.checkWebGLSupport(',
       
       // Audio capabilities
       audioContext: typeof AudioContext !== 'undefined' || typeof webkitAudioContext !== 'undefined',
       audioElement: typeof Audio !== 'undefined',
       
       // Storage capabilities
-      localStorage: this.checkLocalStorageSupport(),
-      sessionStorage: this.checkSessionStorageSupport('),
+      localStorage: this.checkLocalStorageSupport(
+      sessionStorage: this.checkSessionStorageSupport(',
       indexedDB: typeof indexedDB !== 'undefined',
       
       // Event capabilities
@@ -75,7 +72,7 @@ export class CrossEnvironmentManager {
       serviceWorkers: typeof ServiceWorker !== 'undefined',
       
       // Modern JavaScript capabilities
-      modules: this.checkModuleSupport('),
+      modules: this.checkModuleSupport(',
       async: true, // ES2017+ support assumed
       
       // Test environment specific
@@ -88,18 +85,18 @@ export class CrossEnvironmentManager {
    * Initialize cross-environment setup
    */
   initializeCrossEnvironmentSetup() {
-    this.setupDOMCompatibility();
-    this.setupCanvasCompatibility();
-    this.setupAudioCompatibility();
-    this.setupStorageCompatibility();
-    this.setupPerformanceCompatibility();
-    this.setupEventCompatibility();
-    this.setupNetworkCompatibility();
+    this.setupDOMCompatibility(),
+    this.setupCanvasCompatibility(),
+    this.setupAudioCompatibility(),
+    this.setupStorageCompatibility(),
+    this.setupPerformanceCompatibility(),
+    this.setupEventCompatibility(),
+    this.setupNetworkCompatibility(),
     
     // Record environment info for debugging
     console.log(`CrossEnvironmentManager initialized: ${this.environmentType)`, {
-      capabilities: Object.keys(this.capabilities).filter(key => this.capabilities[key])});
-    });
+      capabilities: Object.keys(this.capabilities).filter(key => this.capabilities[key]));
+    );
   }
 
   /**
@@ -108,39 +105,38 @@ export class CrossEnvironmentManager {
   setupDOMCompatibility() {
     if (!this.capabilities.dom) {
       // Provide minimal DOM polyfills for Node.js environment
-      (global as any).document = {
+      (global: any).document = {
         createElement: jest.fn(() => ({
           getContext: jest.fn(() => ({
-            fillRect: jest.fn(),
-            clearRect: jest.fn(),
-            drawImage: jest.fn(),
-            getImageData: jest.fn(() => ({ data: new Uint8ClampedArray(4)));
-           , putImageData: jest.fn(),
-            measureText: jest.fn(() => ({ width: 100 ))),
-            save: jest.fn(),
-            restore: jest.fn(),
-            translate: jest.fn(),
-            rotate: jest.fn(),
-            scale: jest.fn())),
-          addEventListener: jest.fn(),
-          removeEventListener: jest.fn(),
-          dispatchEvent: jest.fn(),
+            fillRect: jest.fn(
+            clearRect: jest.fn(
+            drawImage: jest.fn(
+            getImageData: jest.fn(() => ({ data: new Uint8ClampedArray(4)),
+           , putImageData: jest.fn(
+            measureText: jest.fn(() => ({ width: 100 )),
+            save: jest.fn(
+            restore: jest.fn(
+            translate: jest.fn(
+            rotate: jest.fn(
+            scale: jest.fn()),
+          addEventListener: jest.fn(
+          removeEventListener: jest.fn(
+          dispatchEvent: jest.fn(
           style: {},
           width: 800,
           height: 600
         }),
         body: {
-          appendChild: jest.fn(),
-          removeChild: jest.fn(),
+          appendChild: jest.fn(
+          removeChild: jest.fn(
           style: {}
         },
-        addEventListener: jest.fn(),
-        removeEventListener: jest.fn(),
-      };
+        addEventListener: jest.fn(
+        removeEventListener: jest.fn( };
 
-      (global as any).window = global.window || {
-        addEventListener: jest.fn(),
-        removeEventListener: jest.fn(),
+      (global: any).window = global.window || {
+        addEventListener: jest.fn(
+        removeEventListener: jest.fn(
         innerWidth: 1024,
         innerHeight: 768,
         devicePixelRatio: 1,
@@ -158,16 +154,15 @@ export class CrossEnvironmentManager {
   setupCanvasCompatibility() {
     if (!this.capabilities.canvas) {
       // Provide Canvas polyfill for environments without HTMLCanvasElement
-      (global as any).HTMLCanvasElement = class MockCanvas {
+      (global: any).HTMLCanvasElement = class MockCanvas {
         constructor() {
-          this.width = 800;
-          this.height = 600;
+          this.width = 800,
+          this.height = 600,
           this.style = {};
         }
 
         getContext(type {
-          return this.createMockContext(type');
-        }
+          return this.createMockContext(type') }
 
         createMockContext(type {
           const mockContext = {
@@ -180,50 +175,49 @@ export class CrossEnvironmentManager {
             textBaseline: 'alphabetic',
             
             // Drawing methods
-            fillRect: jest.fn(),
-            strokeRect: jest.fn(),
-            clearRect: jest.fn(),
-            fillText: jest.fn(),
-            strokeText: jest.fn(),
-            measureText: jest.fn((text) => ({ width: text.length * 6 ))),
+            fillRect: jest.fn(
+            strokeRect: jest.fn(
+            clearRect: jest.fn(
+            fillText: jest.fn(
+            strokeText: jest.fn(
+            measureText: jest.fn((text) => ({ width: text.length * 6 )),
             
             // Path methods
-            beginPath: jest.fn(),
-            closePath: jest.fn(),
-            moveTo: jest.fn(),
-            lineTo: jest.fn(),
-            arc: jest.fn(),
-            rect: jest.fn(),
-            fill: jest.fn(),
-            stroke: jest.fn(),
+            beginPath: jest.fn(
+            closePath: jest.fn(
+            moveTo: jest.fn(
+            lineTo: jest.fn(
+            arc: jest.fn(
+            rect: jest.fn(
+            fill: jest.fn(
+            stroke: jest.fn(
             
             // Transform methods
-            save: jest.fn(),
-            restore: jest.fn(),
-            translate: jest.fn(),
-            rotate: jest.fn(),
-            scale: jest.fn(),
-            transform: jest.fn(),
-            setTransform: jest.fn(),
+            save: jest.fn(
+            restore: jest.fn(
+            translate: jest.fn(
+            rotate: jest.fn(
+            scale: jest.fn(
+            transform: jest.fn(
+            setTransform: jest.fn(
             
             // Image methods
-            drawImage: jest.fn(),
+            drawImage: jest.fn(
             getImageData: jest.fn((x, y, w, h) => ({
-              data: new Uint8ClampedArray(w * h * 4),
+              data: new Uint8ClampedArray(w * h * 4,
               width: w,
               height: h
-            ))),
-            putImageData: jest.fn(),
+            )),
+            putImageData: jest.fn(
             createImageData: jest.fn((w, h) => ({
-              data: new Uint8ClampedArray(w * h * 4),
+              data: new Uint8ClampedArray(w * h * 4,
               width: w,
               height: h
-            )))
-          ');
+            ))
+          '),
 
           if (type === 'webgl' || type === 'experimental-webgl') {
-            return this.createMockWebGLContext();
-          }
+            return this.createMockWebGLContext() }
 
           return mockContext;
         }
@@ -240,48 +234,45 @@ export class CrossEnvironmentManager {
             TRIANGLES: 0x0004,
             
             // WebGL methods
-            clear: jest.fn(),
-            clearColor: jest.fn(),
-            viewport: jest.fn(),
-            useProgram: jest.fn(),
-            drawArrays: jest.fn(),
-            drawElements: jest.fn(),
+            clear: jest.fn(
+            clearColor: jest.fn(
+            viewport: jest.fn(
+            useProgram: jest.fn(
+            drawArrays: jest.fn(
+            drawElements: jest.fn(
             
             // Shader methods
-            createShader: jest.fn(() => ({))),
-            shaderSource: jest.fn(),
-            compileShader: jest.fn(),
-            createProgram: jest.fn(() => ({))),
-            attachShader: jest.fn(),
-            linkProgram: jest.fn(),
+            createShader: jest.fn(() => ({)),
+            shaderSource: jest.fn(
+            compileShader: jest.fn(
+            createProgram: jest.fn(() => ({)),
+            attachShader: jest.fn(
+            linkProgram: jest.fn(
             
             // Buffer methods
-            createBuffer: jest.fn(() => ({))),
-            bindBuffer: jest.fn(),
-            bufferData: jest.fn(),
+            createBuffer: jest.fn(() => ({)),
+            bindBuffer: jest.fn(
+            bufferData: jest.fn(
             
             // Attribute methods
-            getAttribLocation: jest.fn(() => 0),
-            enableVertexAttribArray: jest.fn(),
-            vertexAttribPointer: jest.fn(),
+            getAttribLocation: jest.fn(() => 0,
+            enableVertexAttribArray: jest.fn(
+            vertexAttribPointer: jest.fn(
             
             // Uniform methods
-            getUniformLocation: jest.fn(() => ({))),
-            uniform1f: jest.fn(),
-            uniform2f: jest.fn(),
-            uniform3f: jest.fn(),
-            uniform4f: jest.fn(),
-            uniformMatrix4fv: jest.fn();
-        }
+            getUniformLocation: jest.fn(() => ({)),
+            uniform1f: jest.fn(
+            uniform2f: jest.fn(
+            uniform3f: jest.fn(
+            uniform4f: jest.fn(
+            uniformMatrix4fv: jest.fn() }
 
         toDataURL(') {
-          return 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==';
-        }
+          return 'data:image/png,base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==' }
 
         toBlob(callback {
           if (callback') {
-            callback(new Blob(['fake-image-data'], { type: 'image/png' )),
-          }
+            callback(new Blob(['fake-image-data'], { type: 'image/png' ) }
         }
       };
 
@@ -290,8 +281,7 @@ export class CrossEnvironmentManager {
       if (global.document && originalCreateElement) {
         global.document.createElement = jest.fn((tagName) => {
           if (tagName.toLowerCase(') === 'canvas') {
-            return new global.HTMLCanvasElement();
-          }
+            return new global.HTMLCanvasElement() }
           return originalCreateElement.call(global.document, tagName);
         )');
       }
@@ -306,41 +296,38 @@ export class CrossEnvironmentManager {
   setupAudioCompatibility() {
     if (!this.capabilities.audioContext) {
       // Provide AudioContext polyfill
-      (global as any).AudioContext = class MockAudioContext {
+      (global: any).AudioContext = class MockAudioContext {
         constructor(') {
-          this.state = 'running';
-          this.sampleRate = 44100;
-          this.currentTime = 0; : undefined
+          this.state = 'running',
+          this.sampleRate = 44100,
+          this.currentTime = 0, : undefined
           this.destination = { connect: jest.fn() };
         }
 
         createGain() {
           return {
             gain: { value: 1, setValueAtTime: jest.fn() },
-            connect: jest.fn(),
-            disconnect: jest.fn(),
-          };
+            connect: jest.fn(
+            disconnect: jest.fn( };
         }
 
         createOscillator() {
           return {
             frequency: { value: 440, setValueAtTime: jest.fn(') },
             type: 'sine',
-            connect: jest.fn(),
-            disconnect: jest.fn(),
-            start: jest.fn(),
-            stop: jest.fn(),
-          };
+            connect: jest.fn(
+            disconnect: jest.fn(
+            start: jest.fn(
+            stop: jest.fn( };
         }
 
         createBufferSource() {
           return {
             buffer: null,
-            connect: jest.fn(),
-            disconnect: jest.fn(),
-            start: jest.fn(),
-            stop: jest.fn(),
-          };
+            connect: jest.fn(
+            disconnect: jest.fn(
+            start: jest.fn(
+            stop: jest.fn( };
         }
 
         createBuffer(channels, length, sampleRate) {
@@ -348,69 +335,60 @@ export class CrossEnvironmentManager {
             numberOfChannels: channels,
             length,
             sampleRate,
-            getChannelData: jest.fn(() => new Float32Array(length);
-        )
-;
+            getChannelData: jest.fn(() => new Float32Array(length))
+,
         decodeAudioData(audioData {
-          return Promise.resolve(this.createBuffer(2, 44100, 44100);
-        }
+          return Promise.resolve(this.createBuffer(2, 44100, 44100) }
 
         resume() {
-          return Promise.resolve();
-        }
+          return Promise.resolve() }
 
         suspend() {
-          return Promise.resolve();
-        }
+          return Promise.resolve() }
 
         close() {
-          return Promise.resolve();
-        }
+          return Promise.resolve() }
       };
 
-      (global as any).webkitAudioContext = global.AudioContext;
+      (global: any).webkitAudioContext = global.AudioContext;
     }
 
     if (!this.capabilities.audioElement) {
       (global as any').Audio = class MockAudio {
         constructor(src {
-          this.src = src || '';
-          this.volume = 1;
-          this.currentTime = 0;
-          this.duration = 0;
-          this.paused = true;
-          this.ended = false;
-          this.loop = false;
-          this.muted = false;
-          this.readyState = 4; // HAVE_ENOUGH_DATA
+          this.src = src || ',
+          this.volume = 1,
+          this.currentTime = 0,
+          this.duration = 0,
+          this.paused = true,
+          this.ended = false,
+          this.loop = false,
+          this.muted = false,
+          this.readyState = 4, // HAVE_ENOUGH_DATA
           
           // Event handlers
-          this.onload = null;
-          this.onloadstart = null;
-          this.onloadeddata = null;
-          this.oncanplay = null;
-          this.oncanplaythrough = null;
-          this.onplay = null;
-          this.onpause = null;
-          this.onended = null;
-          this.onerror = null;
-        )
-;
+          this.onload = null,
+          this.onloadstart = null,
+          this.onloadeddata = null,
+          this.oncanplay = null,
+          this.oncanplaythrough = null,
+          this.onplay = null,
+          this.onpause = null,
+          this.onended = null,
+          this.onerror = null)
+,
         play() {
-          this.paused = false;
-          if (this.onplay) this.onplay();
-          return Promise.resolve();
-        }
+          this.paused = false,
+          if (this.onplay) this.onplay(),
+          return Promise.resolve() }
 
         pause() {
-          this.paused = true;
-          if (this.onpause) this.onpause();
-        }
+          this.paused = true,
+          if (this.onpause) this.onpause() }
 
         load() {
-          if (this.onloadstart) this.onloadstart();
-          if (this.oncanplay) this.oncanplay();
-        }
+          if (this.onloadstart) this.onloadstart(),
+          if (this.oncanplay) this.oncanplay() }
 
         addEventListener(event, handler) {
           this[`on${event}`] = handler;
@@ -433,19 +411,19 @@ export class CrossEnvironmentManager {
   setupStorageCompatibility() {
     if (!this.capabilities.localStorage) {
       const createMockStorage = () => {
-        const storage = new Map();
+        const storage = new Map(),
         return {
-          getItem: jest.fn((key) => storage.get(key || null);
+          getItem: jest.fn((key) => storage.get(key || null),
           setItem: jest.fn((key, value) => storage.set(key, String(value),
-          removeItem: jest.fn((key) => storage.delete(key);
-          clear: jest.fn(() => storage.clear();
-          key: jest.fn((index) => Array.from(storage.keys()[index] || null),
-          get length() { return storage.size; }
+          removeItem: jest.fn((key) => storage.delete(key),
+          clear: jest.fn(() => storage.clear(),
+          key: jest.fn((index) => Array.from(storage.keys()[index] || null,
+          get length() { return storage.size }
         );
       };
 
-      (global as any).localStorage = createMockStorage();
-      (global as any).sessionStorage = createMockStorage(');
+      (global: any).localStorage = createMockStorage();
+      (global: any).sessionStorage = createMockStorage(');
     }
 
     this.apiCompatibility.set('storage', this.capabilities.localStorage);
@@ -456,14 +434,14 @@ export class CrossEnvironmentManager {
    */
   setupPerformanceCompatibility() {
     if (!this.capabilities.performance) {
-      (global as any).performance = {
-        now: jest.fn(() => Date.now();
-        mark: jest.fn(),
-        measure: jest.fn(),
-        getEntriesByType: jest.fn(() => []);
-        getEntriesByName: jest.fn(() => []),
-        clearMarks: jest.fn(),
-        clearMeasures: jest.fn(),
+      (global: any).performance = {
+        now: jest.fn(() => Date.now(),
+        mark: jest.fn(
+        measure: jest.fn(
+        getEntriesByType: jest.fn(() => []),
+        getEntriesByName: jest.fn(() => [],
+        clearMarks: jest.fn(
+        clearMeasures: jest.fn(
         
         // Mock memory information
         memory: {
@@ -476,51 +454,43 @@ export class CrossEnvironmentManager {
         timing: {
           navigationStart: Date.now() - 5000,
           loadEventEnd: Date.now() - 1000
-        );
-      };
+        ) };
     }
 
     // Ensure consistent performance.now() behavior
     const originalNow = performance.now.bind(performance);
     performance.now = jest.fn(() => {
-      const time = originalNow();
-      return time;
-    )');
+      const time = originalNow(),
+      return time)'),
 
-    this.apiCompatibility.set('performance', this.capabilities.performance);
-  }
+    this.apiCompatibility.set('performance', this.capabilities.performance) }
 
   /**
    * Sets up Event compatibility across environments
    */
   setupEventCompatibility() {
     if (!this.capabilities.events) {
-      (global as any).EventTarget = class MockEventTarget {
+      (global: any).EventTarget = class MockEventTarget {
         constructor() {
-          this.listeners = new Map();
-        }
+          this.listeners = new Map() }
 
         addEventListener(type, listener) {
           if (!this.listeners.has(type) {
-            this.listeners.set(type, new Set();
-          }
+            this.listeners.set(type, new Set() }
           this.listeners.get(type.add(listener);
         }
 
         removeEventListener(type, listener) {
           if (this.listeners.has(type) {
-            this.listeners.get(type.delete(listener);
-          }
+            this.listeners.get(type.delete(listener) }
         }
 
         dispatchEvent(event {
           if (this.listeners.has(event.type) {
-            this.listeners.get(event.type).forEach(listener => {');
+            this.listeners.get(event.type).forEach(listener => {'),
               if (typeof listener === 'function') {
-                listener(event);
-              } else if (listener.handleEvent) {
-                listener.handleEvent(event);
-              }
+                listener(event) } else if (listener.handleEvent) {
+                listener.handleEvent(event) }
             });
           }
           return true;
@@ -529,35 +499,31 @@ export class CrossEnvironmentManager {
     }
 
     if (!this.capabilities.customEvents) {
-      (global as any).CustomEvent = class MockCustomEvent {
+      (global: any).CustomEvent = class MockCustomEvent {
         constructor(type, options = {) {
-          this.type = type;
-          this.detail = options.detail;
-          this.bubbles = options.bubbles || false;
-          this.cancelable = options.cancelable || false;
-          this.defaultPrevented = false;
-        }
+          this.type = type,
+          this.detail = options.detail,
+          this.bubbles = options.bubbles || false,
+          this.cancelable = options.cancelable || false,
+          this.defaultPrevented = false }
 
         preventDefault() {
-          this.defaultPrevented = true;
-        }
+          this.defaultPrevented = true }
 
         stopPropagation() {
           // Mock implementation
         }
       };
 
-      (global as any).Event = global.Event || class MockEvent {
+      (global: any).Event = global.Event || class MockEvent {
         constructor(type, options = {) {
-          this.type = type;
-          this.bubbles = options.bubbles || false;
-          this.cancelable = options.cancelable || false;
-          this.defaultPrevented = false;
-        }
+          this.type = type,
+          this.bubbles = options.bubbles || false,
+          this.cancelable = options.cancelable || false,
+          this.defaultPrevented = false }
 
         preventDefault() {
-          this.defaultPrevented = true;
-        }
+          this.defaultPrevented = true }
 
         stopPropagation(') {
           // Mock implementation
@@ -573,42 +539,38 @@ export class CrossEnvironmentManager {
    */
   setupNetworkCompatibility() {
     if (!this.capabilities.fetch) {
-      (global as any).fetch = jest.fn(() => 
+      (global: any).fetch = jest.fn(() => 
         Promise.resolve({
           ok: true,
-          status: 200;);
-         , json: () => Promise.resolve({);
-          text: (') => Promise.resolve('');
-          blob: () => Promise.resolve(new Blob(),
+          status: 200),
+         , json: () => Promise.resolve({),
+          text: (') => Promise.resolve('),
+          blob: () => Promise.resolve(new Blob(
           arrayBuffer: () => Promise.resolve(new ArrayBuffer(0)
         )
-      );
-    }
+      ) }
 
     if (!this.capabilities.xmlHttpRequest) {
-      (global as any).XMLHttpRequest = class MockXMLHttpRequest {
+      (global: any).XMLHttpRequest = class MockXMLHttpRequest {
         constructor(') {
-          this.readyState = 0;
-          this.status = 0;
-          this.responseText = '';
-          this.response = null;
-        }
+          this.readyState = 0,
+          this.status = 0,
+          this.responseText = ',
+          this.response = null }
 
         open(method, url) {
-          this.readyState = 1;
-        }
+          this.readyState = 1 }
 
         send(data {
-          this.readyState = 4;
-          this.status = 200;
+          this.readyState = 4,
+          this.status = 200,
           if (this.onreadystatechange) {
-            this.onreadystatechange();
-          }
+            this.onreadystatechange() }
         }
 
         setRequestHeader() {}
-        getAllResponseHeaders(') { return ''; }
-        getResponseHeader(') { return null; }
+        getAllResponseHeaders(') { return ' }
+        getResponseHeader(') { return null }
       };
     }
 
@@ -620,41 +582,33 @@ export class CrossEnvironmentManager {
    */
   checkWebGLSupport(') {
     try {
-      const canvas = document? .createElement('canvas'');
-      return !!(canvas?.getContext('webgl'') || canvas?.getContext('experimental-webgl');
-    } catch (e) {
-      return false;
-    }
+      const canvas = document? .createElement('canvas'),
+      return !!(canvas?.getContext('webgl') || canvas?.getContext('experimental-webgl') } catch (e) {
+      return false }
   }
 
   checkLocalStorageSupport(') {
     try {
-      const test = '__localStorage_test__';
-      localStorage.setItem(test, test);
-      localStorage.removeItem(test);
-      return true;
-    } catch (e) {
-      return false;
-    }
+      const test = '__localStorage_test__',
+      localStorage.setItem(test, test),
+      localStorage.removeItem(test),
+      return true } catch (e) {
+      return false }
   }
 
   checkSessionStorageSupport(') {
     try {
-      const test = '__sessionStorage_test__';
-      sessionStorage.setItem(test, test);
-      sessionStorage.removeItem(test);
-      return true;
-    } catch (e) {
-      return false;
-    }
+      const test = '__sessionStorage_test__',
+      sessionStorage.setItem(test, test),
+      sessionStorage.removeItem(test),
+      return true } catch (e) {
+      return false }
   }
 
   checkModuleSupport(') {
     try {
-      return typeof module !== 'undefined' && module.exports;
-    } catch (e) {
-      return false;
-    }
+      return typeof module !== 'undefined' && module.exports } catch (e) {
+      return false }
   }
 
   /**
@@ -662,9 +616,9 @@ export class CrossEnvironmentManager {
    */
   validateDOMAPIs(') {
     const validationResults = { : undefined
-      createElement: typeof document? .createElement === 'function'; : undefined
-      querySelector: typeof document? .querySelector === 'function'; : undefined
-      getElementById: typeof document? .getElementById === 'function'; : undefined
+      createElement: typeof document? .createElement === 'function', : undefined
+      querySelector: typeof document? .querySelector === 'function', : undefined
+      getElementById: typeof document? .getElementById === 'function', : undefined
      , addEventListener: typeof document? .addEventListener === 'function'
     };
 
@@ -680,7 +634,7 @@ export class CrossEnvironmentManager {
     return { : undefined
       type: this.environmentType,
       capabilities: this.capabilities,
-      compatibility: Object.fromEntries(this.apiCompatibility'),
+      compatibility: Object.fromEntries(this.apiCompatibility',
       
       // Test configuration recommendations
       testConfig: {
@@ -705,12 +659,11 @@ export class CrossEnvironmentManager {
    * @param {Object} fallbackImpl - Fallback implementation
    */
   provideFallback(apiName, fallbackImpl) {
-    this.fallbacks.set(apiName, fallbackImpl);
+    this.fallbacks.set(apiName, fallbackImpl),
     
     // Apply fallback if API is not available
     if (!this.capabilities[apiName]) {
-      Object.assign(global, fallbackImpl);
-    }
+      Object.assign(global, fallbackImpl) }
   }
 
   /**
@@ -719,8 +672,7 @@ export class CrossEnvironmentManager {
    * @returns {boolean} Whether the API is available
    */
   isAPIAvailable(apiName {
-    return this.apiCompatibility.get(apiName || false);
-  }
+    return this.apiCompatibility.get(apiName || false) }
 
   /**
    * Gets a comprehensive environment report
@@ -731,11 +683,10 @@ export class CrossEnvironmentManager {
       environment: this.environmentType,
       timestamp: new Date().toISOString(),
       capabilities: this.capabilities,
-      compatibility: Object.fromEntries(this.apiCompatibility),
-      polyfills: Array.from(this.polyfills.keys(),
-      fallbacks: Array.from(this.fallbacks.keys(),
-      recommendations: this.generateRecommendations(),
-    };
+      compatibility: Object.fromEntries(this.apiCompatibility,
+      polyfills: Array.from(this.polyfills.keys(
+      fallbacks: Array.from(this.fallbacks.keys(
+      recommendations: this.generateRecommendations( };
   }
 
   /**
@@ -745,22 +696,18 @@ export class CrossEnvironmentManager {
   generateRecommendations(') {
     const recommendations: any[] = [],
 
-    if (this.environmentType === 'node'') {
-      recommendations.push('Consider using jsdom for better DOM compatibility'');
-      recommendations.push('Mock implementations are being used for browser APIs');
-    }
+    if (this.environmentType === 'node') {
+      recommendations.push('Consider using jsdom for better DOM compatibility'),
+      recommendations.push('Mock implementations are being used for browser APIs') }
 
     if (!this.capabilities.canvas') {
-      recommendations.push('Canvas tests will use mock implementations');
-    }
+      recommendations.push('Canvas tests will use mock implementations') }
 
     if (!this.capabilities.audioContext') {
-      recommendations.push('Audio tests will use mock implementations');
-    }
+      recommendations.push('Audio tests will use mock implementations') }
 
     if (!this.capabilities.performance') {
-      recommendations.push('Performance measurements will be simulated');
-    }
+      recommendations.push('Performance measurements will be simulated') }
 
     return recommendations;
   }

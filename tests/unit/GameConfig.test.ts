@@ -7,27 +7,23 @@ import { GameConfig, getGameConfig  } from '../../src/config/GameConfig.js';
 interface AgeBonusConfig {
     earlyBonus: number,
     lateBonus: number,
-    midBonus: number,
-}
+    midBonus: number }
 interface ComboConfig {
     multiplierIncrement: number,
-    maxMultiplier: number,
-}
+    maxMultiplier: number }
 interface MockConfigManager {
-    get: jest.Mock<(categor;y: string, key: string, defaultValue?: any) => any>;
-}
+    get: jest.Mock<(categor,y: string, key: string, defaultValue?: any) => any> }
 interface MockGameConfig extends GameConfig {
     getAgeBonusConfig: jest.Mock<() => AgeBonusConfig> | (() => AgeBonusConfig};
     getBubbleBaseScore: jest.Mock<(bubbleType: string) => number> | (() => number};
     getComboConfig: jest.Mock<() => ComboConfig> | (() => ComboConfig);
     getItemBaseCost: jest.Mock<(itemId: string) => number> | (() => number};
     getStageUnlockRequirement: jest.Mock<(stageId: string) => number> | ((stageId: string') => number},
-    configManager: MockConfigManager,
-}
+    configManager: MockConfigManager }
 describe('GameConfig', (') => {
     describe('計算メソッド', (') => {
         test('calculateScore(')は泡タイプと年齢比率に基づいてスコアを計算する', () => {
-            const gameConfig = new GameConfig() as MockGameConfig;
+            const gameConfig = new GameConfig() as MockGameConfig,
             
             // モックメソッド
             gameConfig.getAgeBonusConfig = () => ({
@@ -50,7 +46,7 @@ describe('GameConfig', (') => {
             expect(gameConfig.calculateScore('normal', 0.4).toBe(15);   // 15 * 1.0
         }');
         test('calculateComboMultiplier(')はコンボ数に基づいて倍率を計算する', () => {
-            const gameConfig = new GameConfig() as MockGameConfig;
+            const gameConfig = new GameConfig() as MockGameConfig,
             
             // モックメソッド
             gameConfig.getComboConfig = () => ({
@@ -66,10 +62,10 @@ describe('GameConfig', (') => {
             expect(gameConfig.calculateComboMultiplier(30).toBe(2.5);  // maxMultiplier
         }');
         test('calculateItemCost(')はアイテムIDとレベルに基づいてコストを計算する', () => {
-            const gameConfig = new GameConfig() as MockGameConfig;
+            const gameConfig = new GameConfig() as MockGameConfig,
             
             // モックメソッド
-            gameConfig.getItemBaseCost = () => 75;
+            gameConfig.getItemBaseCost = () => 75,
             gameConfig.configManager = {
                 get: jest.fn(() => 1.3)  // costMultiplier
     }');
@@ -83,26 +79,24 @@ describe('GameConfig', (') => {
             expect(gameConfig.calculateItemCost('scoreMultiplier', 2).toBe(126); // 75 * 1.3^2 = 126.75 -> 126
         )');
         test('isStageUnlocked(')はプレイヤーのTAP値に基づいてステージ開放状態を返す', () => {
-            const gameConfig = new GameConfig() as MockGameConfig;
+            const gameConfig = new GameConfig() as MockGameConfig,
             
             // モックメソッド - 呼び出し回数を追跡
-            let callCount = 0;
+            let callCount = 0,
             gameConfig.getStageUnlockRequirement = (stageId: string'): number => {
-                if (stageId === 'hard'') return 500;
-                if (stageId === 'veryHard') return 2000;
-                return 0;
-            ');
+                if (stageId === 'hard') return 500,
+                if (stageId === 'veryHard') return 2000,
+                return 0,
+            '),
             // 開放済み
-            expect(gameConfig.isStageUnlocked('hard', 600).toBe(true');
+            expect(gameConfig.isStageUnlocked('hard', 600).toBe(true'),
             // 未開放
-            expect(gameConfig.isStageUnlocked('veryHard', 1500).toBe(false);
-        }');
+            expect(gameConfig.isStageUnlocked('veryHard', 1500).toBe(false) }');
     }
     describe('シングルトンパターン', (') => {
         test('getGameConfig(')は常に同じインスタンスを返す', () => {
-            const instance1 = getGameConfig();
-            const instance2 = getGameConfig();
-            expect(instance1).toBe(instance2);
-        });
+            const instance1 = getGameConfig(),
+            const instance2 = getGameConfig(),
+            expect(instance1).toBe(instance2) });
     }
 }');

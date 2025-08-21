@@ -189,7 +189,7 @@ export const COMMON_PATTERNS = {
 /**
  * ファイル拡張子の自動補完
  */
-export const FILE_EXTENSIONS = ['.js', '.mjs', '.json', ''];
+export const FILE_EXTENSIONS = ['.js', '.mjs', '.json', '];
 
 /**
  * 除外するディレクトリ（スキャン対象外）
@@ -221,28 +221,23 @@ export function detectPhaseGPattern(importPath {
         {
             name: 'achievement_reorganization',
             test: /Achievement.*\.js$/,
-            suggestedPath: (path') => path.replace('/core/', '/core/achievements/'');
-        },
+            suggestedPath: (path') => path.replace('/core/', '/core/achievements/') },
         {
             name: 'debug_migration',
             test: /utils\/(Test|Error|Debug).*\.js$/,
-            suggestedPath: (path') => path.replace('/utils/', '/debug/'');
-        },
+            suggestedPath: (path') => path.replace('/utils/', '/debug/') },
         {
             name: 'audio_accessibility',
             test: /Audio.*Manager\.js$/,
-            suggestedPath: (path) => path.replace(/\.\/([^/]+')\.js$/, '../../src/audio/accessibility/$1.js'');
-        },
+            suggestedPath: (path) => path.replace(/\.\/([^/]+')\.js$/, '../../src/audio/accessibility/$1.js') },
         {
             name: 'visual_consolidation',
             test: /visual\/(focus|feedback)\/.*\.js$/,
-            suggestedPath: (path) => path.replace(/\/visual\/(focus|feedback')\//, '/'');
-        },
+            suggestedPath: (path) => path.replace(/\/visual\/(focus|feedback')\//, '/') },
         {
             name: 'balance_tools',
             test: /Balance.*\.js$/,
-            suggestedPath: (path) => path.replace(/\.\/([^/]+')\.js$/, '../../../tools/balance/$1.js');
-        }
+            suggestedPath: (path) => path.replace(/\.\/([^/]+')\.js$/, '../../../tools/balance/$1.js') }
     ];
 
     for (const pattern of patterns) {

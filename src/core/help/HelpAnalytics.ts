@@ -7,219 +7,218 @@ import { LoggingSystem  } from '../LoggingSystem.js';
 import { ErrorHandler  } from '../../utils/ErrorHandler.js';
 
 // 型定義
-export interface GameEngine { helpManager?: HelpManager;
-    helpFeedbackSystem?: HelpFeedbackSystem;
-    accessibilityManager?: AccessibilityManager;
-    }
-export interface HelpManager { searchEngine?: SearchEngine;
-    contentLoader?: ContentLoader;
-    }
+export interface GameEngine { helpManager?: HelpManager,
+    helpFeedbackSystem?: HelpFeedbackSystem,
+    accessibilityManager?: AccessibilityManager }
+export interface HelpManager { searchEngine?: SearchEngine,
+    contentLoader?: ContentLoader }
 export interface HelpFeedbackSystem { // フィードバックシステムのインターフェース }
 export interface AccessibilityManager { // アクセシビリティマネージャーのインターフェース }
 export interface SearchEngine { // 検索エンジンのインターフェース }
 export interface ContentLoader { // コンテンツローダーのインターフェース }
 export interface AnalyticsConfig { sessionTimeout: number,
-    maxEvents: number;
-    enableRealTimeTracking: boolean;
+    maxEvents: number,
+    enableRealTimeTracking: boolean,
     enableOfflineStorage: boolean,
-    dataRetentionDays: number ,}
+    dataRetentionDays: number  }
 export interface HelpUsageAnalytics { totalSessions: number,
-    totalPageViews: number;
-    uniqueUsers: Set<string>;
-    averageSessionDuration: number;
+    totalPageViews: number,
+    uniqueUsers: Set<string>,
+    averageSessionDuration: number,
     topHelpCategories: Map<string, number>,
     topHelpTopics: Map<string, number>,
     searchQueries: Map<string, number>,
-    exitPoints: Map<string, number>, }
+    exitPoints: Map<string, number> }
 export interface ContentAnalytics { topicViews: Map<string, TopicViewStats>,
-    categoryViews: Map<string, CategoryViewStats>, }
+    categoryViews: Map<string, CategoryViewStats> }
 export interface TopicViewStats { viewCount: number,
     totalViewTime: number,
-    exitCount: number ,}
+    exitCount: number  }
 export interface CategoryViewStats { viewCount: number,
     totalViewTime: number,
-    exitCount: number ,}
+    exitCount: number  }
 export interface TutorialUsageAnalytics { totalStarts: number,
-    totalCompletions: number;
-    completionRate: number;
+    totalCompletions: number,
+    completionRate: number,
     averageCompletionTime: number,
     dropOffPoints: Map<string, number>,
     skipRates: Map<string, number>,
-    retryRates: Map<string, number>, }
+    retryRates: Map<string, number> }
 export interface UserBehaviorAnalytics { navigationPatterns: Map<string, number>,
     timeSpentBySection: Map<string, TimeStats>,
     commonUserJourneys: Map<string, number>,
     bounceRate: number,
-    returnUserRate: number ,}
+    returnUserRate: number  }
 export interface TimeStats { total: number,
     count: number,
-    average: number ,}
+    average: number  }
 export interface EffectivenessAnalytics { helpfulnessRatings: Map<string, RatingData>,
-    problemResolutionRate: number;
+    problemResolutionRate: number,
     userSatisfactionScore: number,
     contentGaps: Map<string, number>,
     improvementSuggestions: ImprovementSuggestion[]
-    ,}
+     }
 export interface RatingData { totalRatings: number,
     averageRating: number,
     ratingCount: Record<number, number>, // 1-5の評価ごとの件数 }
 export interface ImprovementSuggestion { type: string,
-    contentId?: string;
-    query?: string;
+    contentId?: string,
+    query?: string,
     suggestion: string,
-    priority: 'high' | 'medium' | 'low' ,}
+    priority: 'high' | 'medium' | 'low'
+            }
 export interface Analytics { helpUsage: HelpUsageAnalytics,
-    content: ContentAnalytics;
-    tutorialUsage: TutorialUsageAnalytics;
+    content: ContentAnalytics,
+    tutorialUsage: TutorialUsageAnalytics,
     userBehavior: UserBehaviorAnalytics,
     effectiveness: EffectivenessAnalytics
-    ,}
+     }
 export interface HelpSession { id: string,
-    startTime: number;
-    endTime?: number;
-    duration?: number;
-    entryPoint: string;
-    exitPoint?: string;
-    exitContext?: any;
-    context: any;
-    events: AnalyticsEvent[];
-    pageViews: PageView[];
-    searchQueries: SearchQuery[];
+    startTime: number,
+    endTime?: number,
+    duration?: number,
+    entryPoint: string,
+    exitPoint?: string,
+    exitContext?: any,
+    context: any,
+    events: AnalyticsEvent[],
+    pageViews: PageView[],
+    searchQueries: SearchQuery[],
     currentPage: string | null,
-    lastActivityTime: number;
-    active?: boolean ,}
+    lastActivityTime: number,
+    active?: boolean  }
 export interface AnalyticsEvent { type: string,
-    data: any;
-    timestamp: number,
-    sessionId: string | null ,}
-export interface PageView { page: string,
-    timestamp: number;
     data: any,
-    timeSpent: number ,}
+    timestamp: number,
+    sessionId: string | null  }
+export interface PageView { page: string,
+    timestamp: number,
+    data: any,
+    timeSpent: number  }
 export interface SearchQuery { query: string,
-    timestamp: number;
+    timestamp: number,
     resultCount: number,
     results: SearchResult[]
-    ,}
+     }
 export interface SearchResult { id: string,
     title: string,
-    category: string ,}
+    category: string  }
 export interface CacheConfig { maxContentCacheSize: number,
-    maxSearchCacheSize: number;
+    maxSearchCacheSize: number,
     cacheExpiryTime: number,
-    enableCompression: boolean ,}
+    enableCompression: boolean  }
 export interface CacheEntry { data: any,
-    timestamp: number;
+    timestamp: number,
     accessCount: number,
-    compressed: boolean ,}
+    compressed: boolean  }
 export interface PerformanceMetrics { operations: Map<string, OperationMetrics>,
-    cacheHitRate: number;
-    averageResponseTime: number;
+    cacheHitRate: number,
+    averageResponseTime: number,
     errorRate: number,
-    memoryUsage: number ,}
+    memoryUsage: number  }
 export interface OperationMetrics { totalCalls: number,
-    totalDuration: number;
-    averageDuration: number;
+    totalDuration: number,
+    averageDuration: number,
     errorCount: number,
-    lastCall: number ,}
+    lastCall: number  }
 export interface ValidationResult { isValid: boolean,
     sanitizedData: any,
-    errors: string[] ,}
+    errors: string[]  }
 export interface ValidationComponents { analytics: boolean,
-    feedback: boolean;
-    search: boolean;
+    feedback: boolean,
+    search: boolean,
     content: boolean,
-    accessibility: boolean ,}
+    accessibility: boolean  }
 export interface SystemValidationResult { isValid: boolean,
-    errors: string[];
+    errors: string[],
     warnings: string[],
     components: ValidationComponents
-    ,}
+     }
 export interface FallbackInterface { isActive: boolean,
     container: HTMLElement | null,
     content: Map<string, FallbackContent>,
-    keydownHandler?: (event: KeyboardEvent') => void ,}
+    keydownHandler?: (event: KeyboardEvent') => void  }
 export interface FallbackContent { title: string,
-    content: string[] ,}
+    content: string[]  }
 export interface UsageReport { generatedAt: number,
-    period: ReportPeriod;
-    usage: UsageReportData;
-    effectiveness: EffectivenessReportData;
+    period: ReportPeriod,
+    usage: UsageReportData,
+    effectiveness: EffectivenessReportData,
     performance: PerformanceReportData,
     recommendations: ImprovementSuggestion[]
-    ,}
+     }
 export interface ReportPeriod { start: number,
-    end: number ,}
+    end: number  }
 export interface UsageReportData { totalSessions: number,
-    totalPageViews: number;
-    averageSessionDuration: number;
-    searchQueries: number;
+    totalPageViews: number,
+    averageSessionDuration: number,
+    searchQueries: number,
     topCategories: TopItem[],
     topSearches: TopItem[]
-    ,}
+     }
 export interface EffectivenessReportData { averageRating: number,
-    totalFeedbacks: number;
+    totalFeedbacks: number,
     satisfactionScore: number,
     problemAreas: ProblemArea[]
-    ,}
+     }
 export interface PerformanceReportData { cacheHitRate: number,
     errorRate: number,
-    operationsCount: number ,}
-export interface TopItem { category?: string;
-    topic?: string;
-    query?: string;
-    count: number ,}
+    operationsCount: number  }
+export interface TopItem { category?: string,
+    topic?: string,
+    query?: string,
+    count: number  }
 ';
 
-export interface ProblemArea {;
-    type: 'low_rating' | 'content_gap';
-    contentId?: string;
-    query?: string;
-    rating?: number;
+export interface ProblemArea {,
+    type: 'low_rating' | 'content_gap',
+    contentId?: string,
+    query?: string,
+    rating?: number,
 
-    searchCount?: number;''
-   , severity: 'high' | 'medium' | 'low' }
+    searchCount?: number,', severity: 'high' | 'medium' | 'low' }
 export interface ContentPerformance { [contentId: string]: {
-        averageRatin;g: number,
+        averageRatin,g: number,
         totalRatings: number,
-        helpfulness: 'high' | 'medium' | 'low' ,}
+        helpfulness: 'high' | 'medium' | 'low'
+            }
 
 export interface UserBehaviorReport { timeSpentBySection: Record<string, TimeStats>,
     navigationPatterns: Record<string, number>,
-    commonJourneys: Record<string, number>, }
-export interface ReportData { [key: string]: any, }
+    commonJourneys: Record<string, number> }
+export interface ReportData { [key: string]: any }
 export interface AnalyticsReport { generatedAt: number,
-    reportType: string;
+    reportType: string,
     period: string,
-    data: ReportData;
-    error?: string ,}
+    data: ReportData,
+    error?: string  }
 export interface SummaryReportData { overview: {
-        totalHelpSession;s: number;
-        totalPageViews: number;
-        uniqueUsers: number;
+        totalHelpSession,s: number,
+        totalPageViews: number,
+        uniqueUsers: number,
         averageSessionDuration: number,
     tutorialCompletionRate: number  
     };
-    topContent: { categories: TopItem[];
+    topContent: { categories: TopItem[],
         topics: TopItem[],
     searchQueries: TopItem[]  
     };
     userSatisfaction: { averageRating: number,
-    totalFeedbacks: number; }
+    totalFeedbacks: number }
         satisfactionScore: number }
 
 export interface EffectivenessReportDetailed { contentPerformance: ContentPerformance,
-    userBehavior: UserBehaviorReport;
+    userBehavior: UserBehaviorReport,
     problemAreas: ProblemArea[],
     improvements: ImprovementSuggestion[]
-    ,}
-export interface SanitizationOptions { maxLength?: number;
-    allowSpecialChars?: boolean;
-    preserveWhitespace?: boolean; }
+     }
+export interface SanitizationOptions { maxLength?: number,
+    allowSpecialChars?: boolean,
+    preserveWhitespace?: boolean }
 export interface StoredAnalyticsData { analytics: Analytics,
     sessions: Array<[string, HelpSession]>,
     events: Array<[string, AnalyticsEvent]>,
-    lastSaved: number ,}
+    lastSaved: number  }
 
 export type DataType = 'categoryId' | 'topicId' | 'searchQuery' | 'feedback' | 'context';
 
@@ -227,63 +226,63 @@ export type DataType = 'categoryId' | 'topicId' | 'searchQuery' | 'feedback' | '
  * ヘルプシステムの使用状況を追跡・分析するクラス
  */
 export class HelpAnalytics {
-    private gameEngine: GameEngine;
-    private loggingSystem: LoggingSystem;
+    private gameEngine: GameEngine,
+    private loggingSystem: LoggingSystem,
     // 追跡対象イベント
-    private, events: Map<string, AnalyticsEvent>;
-    private sessions: Map<string, HelpSession>;
-    private currentSession: HelpSession | null;
+    private, events: Map<string, AnalyticsEvent>,
+    private sessions: Map<string, HelpSession>,
+    private currentSession: HelpSession | null,
     // 設定
-    private config: AnalyticsConfig;
+    private config: AnalyticsConfig,
     // 追跡データ
-    private, analytics: Analytics;
+    private, analytics: Analytics,
     // キャッシュ関連
-    private contentCache?: Map<string, CacheEntry>;
-    private searchCache?: Map<string, CacheEntry>;
-    private cacheConfig?: CacheConfig;
+    private contentCache?: Map<string, CacheEntry>,
+    private searchCache?: Map<string, CacheEntry>,
+    private cacheConfig?: CacheConfig,
     
     // パフォーマンス関連
-    private performanceMetrics?: PerformanceMetrics;
+    private performanceMetrics?: PerformanceMetrics,
     
     // フォールバック関連
-    private fallbackInterface?: FallbackInterface;
+    private fallbackInterface?: FallbackInterface,
 
     constructor(gameEngine: GameEngine) {
 
-        this.gameEngine = gameEngine;
-        this.loggingSystem = LoggingSystem.getInstance ? LoggingSystem.getInstance() : new LoggingSystem();
+        this.gameEngine = gameEngine,
+        this.loggingSystem = LoggingSystem.getInstance ? LoggingSystem.getInstance() : new LoggingSystem(),
         
         // 追跡対象イベント
-        this.events = new Map<string, AnalyticsEvent>();
-        this.sessions = new Map<string, HelpSession>();
-        this.currentSession = null;
+        this.events = new Map<string, AnalyticsEvent>(),
+        this.sessions = new Map<string, HelpSession>(),
+        this.currentSession = null,
         
         // 設定
         this.config = {
-            sessionTimeout: 30 * 60 * 1000, // 30分;
-            maxEvents: 1000;
+            sessionTimeout: 30 * 60 * 1000, // 30分,
+            maxEvents: 1000,
             enableRealTimeTracking: true,
     enableOfflineStorage: true
-,}
+ }
             dataRetentionDays: 30 ;
     },
         
         // 追跡データ
         this.analytics = { helpUsage: {
-                totalSessions: 0;
-                totalPageViews: 0;
-                uniqueUsers: new Set<string>();
-                averageSessionDuration: 0; }
+                totalSessions: 0,
+                totalPageViews: 0,
+                uniqueUsers: new Set<string>(),
+                averageSessionDuration: 0 }
                 topHelpCategories: new Map<string, number>(),
                 topHelpTopics: new Map<string, number>(),
                 searchQueries: new Map<string, number>(),
                 exitPoints: new Map<string, number>( },
             content: { topicViews: new Map<string, TopicViewStats>(),
                 categoryViews: new Map<string, CategoryViewStats>( },
-            tutorialUsage: { totalStarts: 0;
-                totalCompletions: 0;
+            tutorialUsage: { totalStarts: 0,
+                totalCompletions: 0,
                 completionRate: 0,
-    averageCompletionTime: 0; }
+    averageCompletionTime: 0 }
                 dropOffPoints: new Map<string, number>(),
                 skipRates: new Map<string, number>(),
                 retryRates: new Map<string, number>( },
@@ -292,13 +291,13 @@ export class HelpAnalytics {
                 commonUserJourneys: new Map<string, number>(),
                 bounceRate: 0,
     returnUserRate: 0 
-,};
+ };
             effectiveness: { helpfulnessRatings: new Map<string, RatingData>(),
-                problemResolutionRate: 0;
+                problemResolutionRate: 0,
                 userSatisfactionScore: 0,
     contentGaps: new Map<string, number>(),
                 improvementSuggestions: [] 
-,}
+ }
         },
         
         this.initialize();
@@ -309,24 +308,24 @@ export class HelpAnalytics {
      */
     private initialize(): void { try {
             // ローカルストレージからデータを復元
-            this.loadAnalyticsData();
+            this.loadAnalyticsData(),
             
             // Mapオブジェクトの確実な初期化（復元データが壊れている場合の対策）
-            this.ensureMapInitialization();
+            this.ensureMapInitialization(),
             
             // ヘルプシステムの初期化検証
-            const validationResult = this.validateHelpSystemInitialization();
+            const validationResult = this.validateHelpSystemInitialization(),
             
             // コンテンツキャッシングの初期化
-            this.initializeContentCaching();
+            this.initializeContentCaching(),
             
             // パフォーマンス監視の初期化
-            this.initializePerformanceMonitoring();
+            this.initializePerformanceMonitoring(),
             
             // フォールバックインターフェースの準備
             if(!validationResult.isValid) {
-                
-            }
+    
+}
                 this.initializeFallbackInterface(); }
             // セッション管理の開始
             this.startSessionTracking();
@@ -335,14 +334,15 @@ export class HelpAnalytics {
             this.setupPeriodicSave();
             this.setupPeriodicMaintenance();
             // ページ離脱時の処理
-            this.setupUnloadHandlers(''';'
+            this.setupUnloadHandlers('';
             this.loggingSystem.info('HelpAnalytics', 'Help analytics initialized', { ')'
-                validation: validationResult.isValid ? 'passed' : 'failed','';
-                fallbackReady: !!this.fallbackInterface';' ,}'
+                validation: validationResult.isValid ? 'passed' : 'failed',',
+                fallbackReady: !!this.fallbackInterface','
+            }'
 
         } catch (error) {
-            this.loggingSystem.error('HelpAnalytics', 'Failed to initialize help analytics', error';''
-            ErrorHandler.handle(error as Error, 'HelpAnalytics.initialize); }
+            this.loggingSystem.error('HelpAnalytics', 'Failed to initialize help analytics', error',
+            ErrorHandler.handle(error as Error, 'HelpAnalytics.initialize) }
     }
     
     /**
@@ -351,46 +351,38 @@ export class HelpAnalytics {
     private ensureMapInitialization(): void { try {
             // helpUsageセクション
             if(!(this.analytics.helpUsage.topHelpCategories, instanceof Map) {
-                
-            }
+    
+}
                 this.analytics.helpUsage.topHelpCategories = new Map<string, number>(); }
-            if(!(this.analytics.helpUsage.topHelpTopics, instanceof Map) { this.analytics.helpUsage.topHelpTopics = new Map<string, number>(); }
-            if(!(this.analytics.helpUsage.searchQueries, instanceof Map) { this.analytics.helpUsage.searchQueries = new Map<string, number>(); }
-            if(!(this.analytics.helpUsage.exitPoints, instanceof Map) {
-                ';
-
-            }
+            if(!(this.analytics.helpUsage.topHelpTopics, instanceof Map) { this.analytics.helpUsage.topHelpTopics = new Map<string, number>() }
+            if(!(this.analytics.helpUsage.searchQueries, instanceof Map) { this.analytics.helpUsage.searchQueries = new Map<string, number>() }
+            if(!(this.analytics.helpUsage.exitPoints, instanceof Map) { }
 
                 this.analytics.helpUsage.exitPoints = new Map<string, number>(); }
             ';
             // contentセクション
             if(!this.analytics.content || typeof, this.analytics.content !== 'object' {'
                 this.analytics.content = {
-                    topicViews: new Map<string, TopicViewStats>(),
-            }
+                    topicViews: new Map<string, TopicViewStats>() }
                     categoryViews: new Map<string, CategoryViewStats>(); }
                 }
-            if(!(this.analytics.content.topicViews, instanceof Map) { this.analytics.content.topicViews = new Map<string, TopicViewStats>(); }
-            if(!(this.analytics.content.categoryViews, instanceof Map) { this.analytics.content.categoryViews = new Map<string, CategoryViewStats>(); }
+            if(!(this.analytics.content.topicViews, instanceof Map) { this.analytics.content.topicViews = new Map<string, TopicViewStats>() }
+            if(!(this.analytics.content.categoryViews, instanceof Map) { this.analytics.content.categoryViews = new Map<string, CategoryViewStats>() }
             // 他の必要なMapオブジェクト
-            if(!(this.analytics.tutorialUsage.dropOffPoints, instanceof Map) { this.analytics.tutorialUsage.dropOffPoints = new Map<string, number>(); }
-            if(!(this.analytics.tutorialUsage.skipRates, instanceof Map) { this.analytics.tutorialUsage.skipRates = new Map<string, number>(); }
-            if(!(this.analytics.tutorialUsage.retryRates, instanceof Map) { this.analytics.tutorialUsage.retryRates = new Map<string, number>(); }
-            if(!(this.analytics.userBehavior.navigationPatterns, instanceof Map) { this.analytics.userBehavior.navigationPatterns = new Map<string, number>(); }
-            if(!(this.analytics.userBehavior.timeSpentBySection, instanceof Map) { this.analytics.userBehavior.timeSpentBySection = new Map<string, TimeStats>(); }
-            if(!(this.analytics.userBehavior.commonUserJourneys, instanceof Map) { this.analytics.userBehavior.commonUserJourneys = new Map<string, number>(); }
-            if(!(this.analytics.effectiveness.helpfulnessRatings, instanceof Map) { this.analytics.effectiveness.helpfulnessRatings = new Map<string, RatingData>(); }
-            if(!(this.analytics.effectiveness.contentGaps, instanceof Map) {
-                ';
-
-            }
+            if(!(this.analytics.tutorialUsage.dropOffPoints, instanceof Map) { this.analytics.tutorialUsage.dropOffPoints = new Map<string, number>() }
+            if(!(this.analytics.tutorialUsage.skipRates, instanceof Map) { this.analytics.tutorialUsage.skipRates = new Map<string, number>() }
+            if(!(this.analytics.tutorialUsage.retryRates, instanceof Map) { this.analytics.tutorialUsage.retryRates = new Map<string, number>() }
+            if(!(this.analytics.userBehavior.navigationPatterns, instanceof Map) { this.analytics.userBehavior.navigationPatterns = new Map<string, number>() }
+            if(!(this.analytics.userBehavior.timeSpentBySection, instanceof Map) { this.analytics.userBehavior.timeSpentBySection = new Map<string, TimeStats>() }
+            if(!(this.analytics.userBehavior.commonUserJourneys, instanceof Map) { this.analytics.userBehavior.commonUserJourneys = new Map<string, number>() }
+            if(!(this.analytics.effectiveness.helpfulnessRatings, instanceof Map) { this.analytics.effectiveness.helpfulnessRatings = new Map<string, RatingData>() }
+            if(!(this.analytics.effectiveness.contentGaps, instanceof Map) { }
 
                 this.analytics.effectiveness.contentGaps = new Map<string, number>(); }'
             }
 
-            this.loggingSystem.debug('HelpAnalytics', 'Map initialization completed';''
-        } catch (error) {
-            this.loggingSystem.error('HelpAnalytics', 'Failed to ensure map initialization', error); }
+            this.loggingSystem.debug('HelpAnalytics', 'Map initialization completed';} catch (error) {
+            this.loggingSystem.error('HelpAnalytics', 'Failed to ensure map initialization', error) }
     }
     
     /**
@@ -400,31 +392,30 @@ export class HelpAnalytics {
      */
     startHelpSession(entryPoint: string, context: any = { ): void {
         try {
-            const sessionId = this.generateSessionId();
-            const timestamp = Date.now();
+            const sessionId = this.generateSessionId(),
+            const timestamp = Date.now(),
             
-            this.currentSession = { id: sessionId;
-                startTime: timestamp;
-                entryPoint: entryPoint;
-                context: context;
-                events: [];
-                pageViews: [];
-                searchQueries: [];
+            this.currentSession = { id: sessionId,
+                startTime: timestamp,
+                entryPoint: entryPoint,
+                context: context,
+                events: [],
+                pageViews: [],
+                searchQueries: [],
                 currentPage: null,
     lastActivityTime: timestamp  }
-,};
+ };
             this.sessions.set(sessionId, this.currentSession);
             this.analytics.helpUsage.totalSessions++;
             ';
             // エントリーポイントの追跡
-            this.trackEvent('help_session_start', { sessionId: sessionId'' }
+            this.trackEvent('help_session_start', { sessionId: sessionId'}
                 entryPoint: entryPoint,')';
-                context: context''),
+                context: context',
             ' }'
 
-            this.loggingSystem.debug('HelpAnalytics', `Help session started: ${sessionId} from ${entryPoint}`}';''
-        } catch (error) {
-            this.loggingSystem.error('HelpAnalytics', 'Failed to start help session', error); }
+            this.loggingSystem.debug('HelpAnalytics', `Help session started: ${sessionId} from ${entryPoint}`}';} catch (error) {
+            this.loggingSystem.error('HelpAnalytics', 'Failed to start help session', error) }
     }
     
     /**
@@ -434,32 +425,31 @@ export class HelpAnalytics {
      */
     endHelpSession(exitPoint: string, exitContext: any = { ): void {
         try {
-            if (!this.currentSession) return;
+            if (!this.currentSession) return,
             
-            const endTime = Date.now();
-            const duration = endTime - this.currentSession.startTime;
+            const endTime = Date.now(),
+            const duration = endTime - this.currentSession.startTime,
             
             // セッション情報の更新
-            this.currentSession.endTime = endTime;
-            this.currentSession.duration = duration;
-            this.currentSession.exitPoint = exitPoint;
-            this.currentSession.exitContext = exitContext;
+            this.currentSession.endTime = endTime,
+            this.currentSession.duration = duration,
+            this.currentSession.exitPoint = exitPoint,
+            this.currentSession.exitContext = exitContext,
             // 統計の更新
-            this.updateSessionStatistics(this.currentSession);
-            ';
+            this.updateSessionStatistics(this.currentSession),
+            ',
             // 終了イベントの追跡
-            this.trackEvent('help_session_end', { sessionId: this.currentSession.id;)
-                duration: duration),
-    exitPoint: exitPoint''; }
+            this.trackEvent('help_session_end', { sessionId: this.currentSession.id)
+                duration: duration,
+    exitPoint: exitPoint' }
                 pageViews: this.currentSession.pageViews.length,')';
-                searchCount: this.currentSession.searchQueries.length''),
+                searchCount: this.currentSession.searchQueries.length',
             ' }'
 
             this.loggingSystem.debug('HelpAnalytics', `Help session ended: ${this.currentSession.id}, duration: ${duration}ms`}';
 
-            this.currentSession = null;''
-        } catch (error) {
-            this.loggingSystem.error('HelpAnalytics', 'Failed to end help session', error); }
+            this.currentSession = null;'} catch (error) {
+            this.loggingSystem.error('HelpAnalytics', 'Failed to end help session', error) }
     }
     
     /**
@@ -469,21 +459,19 @@ export class HelpAnalytics {
      */
     trackPageView(page: string, pageData: any = { ): void {
         try {
-            const timestamp = Date.now();
-            const pageView: PageView = { page: page;
-                timestamp: timestamp;
+            const timestamp = Date.now(),
+            const pageView: PageView = { page: page,
+                timestamp: timestamp,
                 data: pageData,
     timeSpent: 0  }
-,};
+ };
             if(this.currentSession) {
             
                 // 前のページの滞在時間を計算
                 if (this.currentSession.currentPage) {
-                    const lastPageView = this.currentSession.pageViews[this.currentSession.pageViews.length - 1];
+                    const lastPageView = this.currentSession.pageViews[this.currentSession.pageViews.length - 1],
                     if (lastPageView) {
-                        lastPageView.timeSpent = timestamp - lastPageView.timestamp;
-            
-            }
+                        lastPageView.timeSpent = timestamp - lastPageView.timestamp }
                         this.updateTimeSpentStatistics(lastPageView.page, lastPageView.timeSpent); }
                 }
                 
@@ -493,16 +481,15 @@ export class HelpAnalytics {
             }
             
             // 統計の更新
-            this.analytics.helpUsage.totalPageViews++;''
+            this.analytics.helpUsage.totalPageViews++;
             this.updateCategoryStatistics(page);
 
             this.trackEvent('page_view', { page: page,''
-                data: pageData''),
+                data: pageData',
             ' }'
 
-            this.loggingSystem.debug('HelpAnalytics', `Page view tracked: ${page}`}';''
-        } catch (error) {
-            this.loggingSystem.error('HelpAnalytics', 'Failed to track page view', error); }
+            this.loggingSystem.debug('HelpAnalytics', `Page view tracked: ${page}`}';} catch (error) {
+            this.loggingSystem.error('HelpAnalytics', 'Failed to track page view', error) }
     }
     
     /**
@@ -512,31 +499,29 @@ export class HelpAnalytics {
      * @param resultCount - 結果数
      */
     trackSearchQuery(query: string, results: SearchResult[] = [], resultCount: number = 0): void { try {
-            const timestamp = Date.now();
-            const searchData: SearchQuery = { query: query;
+            const timestamp = Date.now(),
+            const searchData: SearchQuery = { query: query,
                 timestamp: timestamp,
-    resultCount: resultCount; }
-                results: results.map(r => ({ id: r.id, title: r.title, category: r.category )) ,}
+    resultCount: resultCount }
+                results: results.map(r => ({ id: r.id, title: r.title, category: r.category ))  }
             };
             
             if(this.currentSession) {
             
-                this.currentSession.searchQueries.push(searchData);
-            
-            }
+                this.currentSession.searchQueries.push(searchData) }
                 this.currentSession.lastActivityTime = timestamp; }
             // 検索統計の更新
-            const currentCount = this.analytics.helpUsage.searchQueries.get(query) || 0;''
+            const currentCount = this.analytics.helpUsage.searchQueries.get(query) || 0;
             this.analytics.helpUsage.searchQueries.set(query, currentCount + 1);
 
-            this.trackEvent('search_query', { query: query'' }
+            this.trackEvent('search_query', { query: query'}
                 resultCount: resultCount,')';
-                hasResults: resultCount > 0''),
+                hasResults: resultCount > 0',
             ' }'
 
             this.loggingSystem.debug('HelpAnalytics', `Search query tracked: "${query}" (${resultCount} results}`});""
         } catch (error") {"
-            this.loggingSystem.error('HelpAnalytics', 'Failed to track search query', error'; }
+            this.loggingSystem.error('HelpAnalytics', 'Failed to track search query', error' }
     }
     
     /**
@@ -546,16 +531,15 @@ export class HelpAnalytics {
      */''
     trackTutorialStart(tutorialId: string, context: any = { )): void {
         try {
-            this.analytics.tutorialUsage.totalStarts++;
+            this.analytics.tutorialUsage.totalStarts++,
 
             this.trackEvent('tutorial_start', {''
-                tutorialId: tutorialId,')';
-                context: context''),
+                tutorialId: tutorialId,')',
+                context: context',
             ' }'
 
-            this.loggingSystem.debug('HelpAnalytics', `Tutorial start tracked: ${tutorialId}`}';''
-        } catch (error) {
-            this.loggingSystem.error('HelpAnalytics', 'Failed to track tutorial start', error); }
+            this.loggingSystem.debug('HelpAnalytics', `Tutorial start tracked: ${tutorialId}`}';} catch (error) {
+            this.loggingSystem.error('HelpAnalytics', 'Failed to track tutorial start', error) }
     }
     
     /**
@@ -565,18 +549,18 @@ export class HelpAnalytics {
      * @param stepsCompleted - 完了ステップ数
      */
     trackTutorialCompletion(tutorialId: string, completionTime: number, stepsCompleted: number): void { try {
-            this.analytics.tutorialUsage.totalCompletions++;''
-            this.updateTutorialStatistics(tutorialId, completionTime, stepsCompleted, true);
+            this.analytics.tutorialUsage.totalCompletions++,
+            this.updateTutorialStatistics(tutorialId, completionTime, stepsCompleted, true),
 
-            this.trackEvent('tutorial_completion', {)
-                tutorialId: tutorialId'',
-    completionTime: completionTime,')';
-                stepsCompleted: stepsCompleted''),
-            ' }'
+            this.trackEvent('tutorial_completion', {
+                tutorialId: tutorialId',
+    completionTime: completionTime,')',
+                stepsCompleted: stepsCompleted',
+            ' 
+            })'
 
-            this.loggingSystem.debug('HelpAnalytics', `Tutorial completion tracked: ${tutorialId} (${completionTime}ms}`});''
-        } catch (error) {
-            this.loggingSystem.error('HelpAnalytics', 'Failed to track tutorial completion', error'; }
+            this.loggingSystem.debug('HelpAnalytics', `Tutorial completion tracked: ${tutorialId} (${completionTime}ms}`});'} catch (error) {
+            this.loggingSystem.error('HelpAnalytics', 'Failed to track tutorial completion', error' }
     }
     
     /**
@@ -585,20 +569,19 @@ export class HelpAnalytics {
      * @param stepIndex - 離脱ステップ
      * @param reason - 離脱理由'
      */''
-    trackTutorialDropOff(tutorialId: string, stepIndex: number, reason: string = ''): void { try { }
+    trackTutorialDropOff(tutorialId: string, stepIndex: number, reason: string = '): void { try { }
             const dropOffKey = `${tutorialId}_step_${stepIndex}`;
 
-            const currentCount = this.analytics.tutorialUsage.dropOffPoints.get(dropOffKey) || 0;''
+            const currentCount = this.analytics.tutorialUsage.dropOffPoints.get(dropOffKey) || 0;
             this.analytics.tutorialUsage.dropOffPoints.set(dropOffKey, currentCount + 1);
 
-            this.trackEvent('tutorial_drop_off', { tutorialId: tutorialId'' }
+            this.trackEvent('tutorial_drop_off', { tutorialId: tutorialId'}
                 stepIndex: stepIndex,')';
-                reason: reason''),
+                reason: reason',
             ' }'
 
-            this.loggingSystem.debug('HelpAnalytics', `Tutorial drop-off tracked: ${tutorialId} at step ${stepIndex}`}';''
-        } catch (error) {
-            this.loggingSystem.error('HelpAnalytics', 'Failed to track tutorial drop-off', error'; }
+            this.loggingSystem.debug('HelpAnalytics', `Tutorial drop-off tracked: ${tutorialId} at step ${stepIndex}`}';} catch (error) {
+            this.loggingSystem.error('HelpAnalytics', 'Failed to track tutorial drop-off', error' }
     }
     
     /**
@@ -608,19 +591,19 @@ export class HelpAnalytics {
      * @param feedback - フィードバックテキスト
      * @param context - コンテキスト'
      */''
-    trackUserFeedback(contentId: string, rating: number, feedback: string = '', context: any = { ): void {
+    trackUserFeedback(contentId: string, rating: number, feedback: string = ', context: any = { ): void {
         try {
-            const feedbackData = { contentId: contentId;
-                rating: rating;
+            const feedbackData = { contentId: contentId,
+                rating: rating,
                 feedback: feedback,
-    context: context; }
-                timestamp: Date.now( ,};
+    context: context }
+                timestamp: Date.now(  };
             
             // 評価統計の更新)
-            if(!this.analytics.effectiveness.helpfulnessRatings.has(contentId) { this.analytics.effectiveness.helpfulnessRatings.set(contentId, {)
-                    totalRatings: 0 ,}
-                    averageRating: 0,) }
-                    ratingCount: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 ,});
+            if(!this.analytics.effectiveness.helpfulnessRatings.has(contentId) { this.analytics.effectiveness.helpfulnessRatings.set(contentId, {
+                totalRatings: 0  })
+                    averageRating: 0) }
+                    ratingCount: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0  });
             }
             
             const ratingData = this.analytics.effectiveness.helpfulnessRatings.get(contentId)!;
@@ -628,15 +611,14 @@ export class HelpAnalytics {
             ratingData.ratingCount[rating]++;
             
             // 平均評価の再計算
-            let totalScore = 0;''
-            for(let, i = 1; i <= 5; i++) { totalScore += i * ratingData.ratingCount[i]; }
+            let totalScore = 0;
+            for(let, i = 1; i <= 5; i++) { totalScore += i * ratingData.ratingCount[i] }
             ratingData.averageRating = totalScore / ratingData.totalRatings;
 
             this.trackEvent('user_feedback', feedbackData';
 
-            this.loggingSystem.debug('HelpAnalytics', `User feedback tracked: ${contentId} (rating: ${rating}`});''
-        } catch (error) {
-            this.loggingSystem.error('HelpAnalytics', 'Failed to track user feedback', error'; }
+            this.loggingSystem.debug('HelpAnalytics', `User feedback tracked: ${contentId} (rating: ${rating}`});'} catch (error) {
+            this.loggingSystem.error('HelpAnalytics', 'Failed to track user feedback', error' }
     }
 
     /**
@@ -647,12 +629,10 @@ export class HelpAnalytics {
     recordCategorySelection(categoryId: string, context: any = { )): void {''
         this.executeWithValidation('recordCategorySelection', () => { '
             // データの検証とサニタイゼーション
-            const categoryValidation = this.validateAndSanitizeData(categoryId, 'categoryId'');''
-            const contextValidation = this.validateAndSanitizeData(context, 'context);
+            const categoryValidation = this.validateAndSanitizeData(categoryId, 'categoryId'),
+            const contextValidation = this.validateAndSanitizeData(context, 'context),
 
-            if(!categoryValidation.isValid) {', ';
-
-            }
+            if(!categoryValidation.isValid) {', ' }
 
                 this.loggingSystem.error('HelpAnalytics', 'Invalid category ID for recording', categoryValidation.errors'; }
                 return; }
@@ -662,15 +642,16 @@ export class HelpAnalytics {
             const selectionData = { categoryId: sanitizedCategoryId,
 
                 context: sanitizedContext,
-                timestamp: Date.now(''';'
-               , sessionId: this.currentSession?.id || 'unknown' ,})''
+                timestamp: Date.now('','
+               , sessionId: this.currentSession?.id || 'unknown'
+            });
             // カテゴリ統計の更新')'
             this.updateCategoryStatistics(sanitizedCategoryId);
             ';
             // イベント記録
             this.trackEvent('category_selection', selectionData';
 
-             : undefined'';
+             : undefined';
             this.loggingSystem.debug('HelpAnalytics', `Category selection tracked: ${sanitizedCategoryId}`});
         }';
     }
@@ -684,12 +665,10 @@ export class HelpAnalytics {
     recordTopicExit(topicId: string, content: any, exitContext: any = { )): void {''
         this.executeWithValidation('recordTopicExit', () => { '
             // データの検証とサニタイゼーション
-            const topicValidation = this.validateAndSanitizeData(topicId, 'topicId'');''
-            const contextValidation = this.validateAndSanitizeData(exitContext, 'context);
+            const topicValidation = this.validateAndSanitizeData(topicId, 'topicId'),
+            const contextValidation = this.validateAndSanitizeData(exitContext, 'context),
 
-            if(!topicValidation.isValid) {', ';
-
-            }
+            if(!topicValidation.isValid) {', ' }
 
                 this.loggingSystem.error('HelpAnalytics', 'Invalid topic ID for recording exit', topicValidation.errors'; }
                 return; }
@@ -703,12 +682,13 @@ export class HelpAnalytics {
             const exitData = { topicId: sanitizedTopicId,
                 content: sanitizedContent,
                 exitContext: sanitizedContext,
-                timestamp: Date.now(''';'
-               , sessionId: this.currentSession?.id || 'unknown' ,}))
+                timestamp: Date.now('','
+               , sessionId: this.currentSession?.id || 'unknown'
+            }))
             // トピック統計の更新)
             if(!this.analytics.content.topicViews.has(sanitizedTopicId) { this.analytics.content.topicViews.set(sanitizedTopicId, { : undefined)
-                    viewCount: 0),
-    totalViewTime: 0, }
+                    viewCount: 0,
+    totalViewTime: 0 }
                     exitCount: 0); 
     }
 
@@ -731,12 +711,10 @@ export class HelpAnalytics {
     recordTopicView(topicId: string, content: any, viewContext: any = { )): void {''
         this.executeWithValidation('recordTopicView', () => { '
             // データの検証とサニタイゼーション
-            const topicValidation = this.validateAndSanitizeData(topicId, 'topicId'');''
-            const contextValidation = this.validateAndSanitizeData(viewContext, 'context);
+            const topicValidation = this.validateAndSanitizeData(topicId, 'topicId'),
+            const contextValidation = this.validateAndSanitizeData(viewContext, 'context),
 
-            if(!topicValidation.isValid) {', ';
-
-            }
+            if(!topicValidation.isValid) {', ' }
 
                 this.loggingSystem.error('HelpAnalytics', 'Invalid topic ID for recording view', topicValidation.errors'; }
                 return; }
@@ -750,12 +728,13 @@ export class HelpAnalytics {
             const viewData = { topicId: sanitizedTopicId,
                 content: sanitizedContent,
                 viewContext: sanitizedContext,
-                timestamp: Date.now(''';'
-               , sessionId: this.currentSession?.id || 'unknown' ,}))
+                timestamp: Date.now('','
+               , sessionId: this.currentSession?.id || 'unknown'
+            }))
             // トピック統計の更新)
             if(!this.analytics.content.topicViews.has(sanitizedTopicId) { this.analytics.content.topicViews.set(sanitizedTopicId, { : undefined)
-                    viewCount: 0),
-    totalViewTime: 0, }
+                    viewCount: 0,
+    totalViewTime: 0 }
                     exitCount: 0); 
     }
 
@@ -778,21 +757,18 @@ export class HelpAnalytics {
     recordFeedback(topicId: string, content: any, feedback: any): void { ''
         this.executeWithValidation('recordFeedback', () => { '
             // データの検証とサニタイゼーション
-            const topicValidation = this.validateAndSanitizeData(topicId, 'topicId'');''
-            const feedbackValidation = this.validateAndSanitizeData(feedback, 'feedback);
+            const topicValidation = this.validateAndSanitizeData(topicId, 'topicId'),
+            const feedbackValidation = this.validateAndSanitizeData(feedback, 'feedback),
 
-            if(!topicValidation.isValid) {', ';
-
-            }
+            if(!topicValidation.isValid) {', ' }
 
                 this.loggingSystem.error('HelpAnalytics', 'Invalid topic ID for recording feedback', topicValidation.errors); }
                 return; }
             }
 
-            if(!feedbackValidation.isValid) {'
+            if(!feedbackValidation.isValid) {
 
-                this.loggingSystem.error('HelpAnalytics', 'Invalid feedback data', feedbackValidation.errors';
-            }
+                this.loggingSystem.error('HelpAnalytics', 'Invalid feedback data', feedbackValidation.errors' }
                 return; }
             const sanitizedTopicId = topicValidation.sanitizedData;
             const sanitizedFeedback = feedbackValidation.sanitizedData;
@@ -804,13 +780,14 @@ export class HelpAnalytics {
             const feedbackData = { topicId: sanitizedTopicId,
                 content: sanitizedContent,
                 feedback: sanitizedFeedback,
-                timestamp: Date.now(''';'
-               , sessionId: this.currentSession?.id || 'unknown' ,})''
+                timestamp: Date.now('','
+               , sessionId: this.currentSession?.id || 'unknown'
+            });
             // フィードバック統計の更新')'
-            if(sanitizedFeedback.rating) { '
+            if(sanitizedFeedback.rating) {
 
-                this.trackUserFeedback(sanitizedTopicId, sanitizedFeedback.rating, sanitizedFeedback.comment || '', { : undefined )
-                    content: sanitizedContent)'; ,}
+                this.trackUserFeedback(sanitizedTopicId, sanitizedFeedback.rating, sanitizedFeedback.comment || ', { : undefined )
+                    content: sanitizedContent)' }
             ';
             // イベント記録
             this.trackEvent('topic_feedback', feedbackData';
@@ -827,11 +804,9 @@ export class HelpAnalytics {
     recordSearchQuery(query: string, resultCount: number = 0): void { ''
         this.executeWithValidation('recordSearchQuery', () => { '
             // データの検証とサニタイゼーション
-            const queryValidation = this.validateAndSanitizeData(query, 'searchQuery);
+            const queryValidation = this.validateAndSanitizeData(query, 'searchQuery),
 
-            if(!queryValidation.isValid) {', ';
-
-            }
+            if(!queryValidation.isValid) {', ' }
 
                 this.loggingSystem.error('HelpAnalytics', 'Invalid search query', queryValidation.errors'; }
                 return; }
@@ -855,59 +830,52 @@ export class HelpAnalytics {
      * @returns 検証とサニタイゼーション結果
      */
     private validateAndSanitizeData(data: any, type: DataType): ValidationResult { try {
-            const result: ValidationResult = { isValid: true;
+            const result: ValidationResult = { isValid: true,
                 sanitizedData: null,
     errors: []  
     },""
 
             switch(type) {""
 
-                case 'categoryId':';
+                case 'categoryId':',
                     result.sanitizedData = this.sanitizeString(data, { maxLength: 100, allowSpecialChars: false ),''
-                    if(!result.sanitizedData || result.sanitizedData.length === 0) {'
-                        result.isValid = false;
+                    if(!result.sanitizedData || result.sanitizedData.length === 0) {
+                        result.isValid = false }
 
-            }
-
-                        result.errors.push('Invalid, category ID''); }
+                        result.errors.push('Invalid, category ID'); }
                     break;
 
                 case 'topicId':';
                     result.sanitizedData = this.sanitizeString(data, { maxLength: 100, allowSpecialChars: false ),''
-                    if(!result.sanitizedData || result.sanitizedData.length === 0) {'
-                        result.isValid = false;
+                    if(!result.sanitizedData || result.sanitizedData.length === 0) {
+                        result.isValid = false }
 
-                    }
-
-                        result.errors.push('Invalid, topic ID''); }
+                        result.errors.push('Invalid, topic ID'); }
                     break;
 
-                case 'searchQuery':'';
-                    result.sanitizedData = this.sanitizeString(data, { maxLength: 200, preserveWhitespace: true )),
+                case 'searchQuery':';
+                    result.sanitizedData = this.sanitizeString(data, { maxLength: 200, preserveWhitespace: true ),
                     // 検索クエリは空でも有効
-                    break;
+                    break,
 
-                case 'feedback':'';
+                case 'feedback':',
                     if(typeof, data === 'object' && data !== null' {'
                         result.sanitizedData = {''
-                            rating: this.validateRating(data.rating),
-                            comment: this.sanitizeString(data.comment || '', { maxLength: 1000, preserveWhitespace: true ),
-                    }
+                            rating: this.validateRating(data.rating,
+                            comment: this.sanitizeString(data.comment || ', { maxLength: 1000, preserveWhitespace: true  }
                             timestamp: Date.now(); 
-    };''
-                        if(result.sanitizedData.rating === null) {'
-                            result.isValid = false;
+    };
+                        if(result.sanitizedData.rating === null) {
+                            result.isValid = false }
 
-                        }
+                            result.errors.push('Invalid, rating value'); }
+} else {  result.isValid = false,' }'
 
-                            result.errors.push('Invalid, rating value''); }
-} else {  result.isValid = false;' }'
-
-                        result.errors.push('Feedback, must be, an object''); }
+                        result.errors.push('Feedback, must be, an object'); }
                     break;
 
-                case 'context':'';
-                    if (typeof, data === 'object' && data !== null) { result.sanitizedData = this.sanitizeObject(data); } else {  }
+                case 'context':';
+                    if (typeof, data === 'object' && data !== null) { result.sanitizedData = this.sanitizeObject(data) } else {  }
                         result.sanitizedData = {}
                     break;
 
@@ -915,21 +883,19 @@ export class HelpAnalytics {
                     result.errors.push(`Unknown, data type: ${type}`});
             }
 
-            if(!result.isValid) { ' }'
+            if(!result.isValid) { }'
 
                 this.loggingSystem.warn('HelpAnalytics', `Data validation failed for ${type}:`, result.errors}';
             }
 ';
 
-            return result;''
-        } catch (error) {
-            this.loggingSystem.error('HelpAnalytics', 'Failed to validate and sanitize data', error);
+            return result;} catch (error) {
+            this.loggingSystem.error('HelpAnalytics', 'Failed to validate and sanitize data', error),
             return { isValid: false,
-                sanitizedData: null, };
+                sanitizedData: null };
                 errors: [(error, as Error).message] ;
 }
-            },
-        }
+            } }
     /**
      * 文字列のサニタイゼーション
      * @param input - 入力文字列
@@ -938,42 +904,34 @@ export class HelpAnalytics {
      */''
     private sanitizeString(input: any, options: SanitizationOptions = { )): string {'
         try {'
-            if(typeof, input !== 'string' {'
-                
-            }
+            if(typeof, input !== 'string' { }
                 input = String(input); }
             let sanitized = input;
 ';
             // HTML/スクリプトタグの除去
-            sanitized = sanitized.replace(/<script\b[^<]*(?:(? !<\/script>)<[^<]*')*<\/script>/gi, ''');''
-            sanitized = sanitized.replace(/<[^>]*>/g, ''');
+            sanitized = sanitized.replace(/<script\b[^<]*(?:(? !<\/script>)<[^<]*')*<\/script>/gi, '');
+            sanitized = sanitized.replace(/<[^>]*>/g, '');
 ';
             // 危険な文字の置換
-            sanitized = sanitized.replace(/[<>]/g, '''); : undefined''
-            sanitized = sanitized.replace(/javascript:/gi, ''');''
-            sanitized = sanitized.replace(/data:/gi, '');
+            sanitized = sanitized.replace(/[<>]/g, ''); : undefined''
+            sanitized = sanitized.replace(/javascript:/gi, '');
+            sanitized = sanitized.replace(/data:/gi, ');
 ';
             // 特殊文字の制限
-            if(!options.allowSpecialChars) {', ';
+            if(!options.allowSpecialChars) {', ' }
 
-            }
-
-                sanitized = sanitized.replace(/[^\w\s\-_.]/g, ''); }
+                sanitized = sanitized.replace(/[^\w\s\-_.]/g, '); }
             // 空白の処理
-            if(!options.preserveWhitespace) {
-                ';
-
-            }
+            if(!options.preserveWhitespace) { }
 
                 sanitized = sanitized.trim().replace(/\s+/g, ', '); }
             // 長さ制限
-            if (options.maxLength && sanitized.length > options.maxLength) { sanitized = sanitized.substring(0, options.maxLength); }
+            if (options.maxLength && sanitized.length > options.maxLength) { sanitized = sanitized.substring(0, options.maxLength) }
 ';
 
-            return sanitized;''
-        } catch (error) {
-            this.loggingSystem.error('HelpAnalytics', 'Failed to sanitize string', error';''
-            return '';
+            return sanitized;} catch (error) {
+            this.loggingSystem.error('HelpAnalytics', 'Failed to sanitize string', error',
+            return ',
 
     /**
      * オブジェクトのサニタイゼーション
@@ -982,7 +940,7 @@ export class HelpAnalytics {
      * @returns サニタイズされたオブジェクト'
      */''
     private sanitizeObject(obj: any, maxDepth: number = 3): any { try {'
-            if(maxDepth <= 0 || typeof, obj !== 'object' || obj === null' { ,}
+            if(maxDepth <= 0 || typeof, obj !== 'object' || obj === null' {  }
                 return {}
 ';
 
@@ -994,28 +952,25 @@ export class HelpAnalytics {
                 // キーの検証
                 const sanitizedKey = this.sanitizeString(key, { maxLength: 50, allowSpecialChars: false ),''
                 if(!sanitizedKey || !allowedKeys.includes(sanitizedKey)) {
-
-            };
+    
+};
                     continue; }
 ';
                 // 値の処理
-                if(typeof, value === 'string' {', ';
-
-                }
+                if(typeof, value === 'string' {', ' }
 
                     sanitized[sanitizedKey] = this.sanitizeString(value, { maxLength: 500, preserveWhitespace: true )),' }'
 
-                } else if(typeof, value === 'number' && isFinite(value)) { sanitized[sanitizedKey] = value;' }
+                } else if(typeof, value === 'number' && isFinite(value)) { sanitized[sanitizedKey] = value,' }
 
-                } else if (typeof, value === 'boolean'') { sanitized[sanitizedKey] = value;' }
+                } else if (typeof, value === 'boolean') { sanitized[sanitizedKey] = value,' }
 
-                } else if (typeof, value === 'object' && value !== null) { sanitized[sanitizedKey] = this.sanitizeObject(value, maxDepth - 1); }
+                } else if (typeof, value === 'object' && value !== null) { sanitized[sanitizedKey] = this.sanitizeObject(value, maxDepth - 1) }
             }
 ';
 
-            return sanitized;''
-        } catch (error) {
-            this.loggingSystem.error('HelpAnalytics', 'Failed to sanitize object', error); }
+            return sanitized;} catch (error) {
+            this.loggingSystem.error('HelpAnalytics', 'Failed to sanitize object', error) }
             return {};
     /**
      * 評価値の検証
@@ -1023,11 +978,11 @@ export class HelpAnalytics {
      * @returns 有効な評価値またはnull
      */
     private validateRating(rating: any): number | null { try {
-            const numRating = Number(rating);
+            const numRating = Number(rating),
             if (isNaN(numRating) || numRating < 1 || numRating > 5) {
-                return null; }
+                return null }
             return Math.round(numRating);
-        } catch (error) { return null;
+        } catch (error) { return null,
 
     /**
      * アナリティクスデータ構造の検証
@@ -1035,18 +990,16 @@ export class HelpAnalytics {
      * @returns 構造が有効かどうか'
      */''
     private validateAnalyticsStructure(data: any): boolean { try {'
-            const requiredSections = ['helpUsage', 'content', 'tutorialUsage', 'userBehavior', 'effectiveness'];
+            const requiredSections = ['helpUsage', 'content', 'tutorialUsage', 'userBehavior', 'effectiveness'],
 
-            for(const, section of, requiredSections) {', ';
+            for (const section of requiredSections) {', ' }
 
-            }
+                if (!data[section] || typeof, data[section] !== 'object') { }
 
-                if (!data[section] || typeof, data[section] !== 'object'') {' }
-
-                    this.loggingSystem.error('HelpAnalytics', `Missing or invalid section: ${section}`'}';'
+                    this.loggingSystem.error('HelpAnalytics', `Missing or invalid section: ${section}`}';
                     return false;
             // Map オブジェクトの検証
-            const mapFields = [ '';
+            const mapFields = [ ';
                 'helpUsage.topHelpCategories',
                 'helpUsage.topHelpTopics',
                 'helpUsage.searchQueries', ]
@@ -1054,23 +1007,20 @@ export class HelpAnalytics {
                 'content.categoryViews'];
             ];
 
-            for(const, field of, mapFields) {
-';
+            for (const field of mapFields) {
+',
 
-                const fieldValue = this.getNestedValue(data, field);
+                const fieldValue = this.getNestedValue(data, field) }
 
-            }
-
-                if(!(fieldValue, instanceof Map)) {' }'
+                if(!(fieldValue, instanceof Map)) { }'
 
                     this.loggingSystem.warn('HelpAnalytics', `Field ${field} is not a Map object`}';
                 }
 ';
 
-            return true;''
-        } catch (error) {
-            this.loggingSystem.error('HelpAnalytics', 'Failed to validate analytics structure', error';
-            return false;
+            return true;} catch (error) {
+            this.loggingSystem.error('HelpAnalytics', 'Failed to validate analytics structure', error',
+            return false,
 
     /**
      * ネストされた値の取得
@@ -1080,8 +1030,7 @@ export class HelpAnalytics {
      */''
     private getNestedValue(obj: any, path: string): any { ''
         return path.split('.).reduce((current, key) => {  }'
-            return current && current[key] !== undefined ? current[key] : undefined 
-        }, obj);
+            return current && current[key] !== undefined ? current[key] : undefined }, obj);
     }
 
     /**
@@ -1092,8 +1041,8 @@ export class HelpAnalytics {
     private executeWithValidation(operation: string, dataOperation: () => any): any { try {
             // データ構造の事前検証
             if(!this.validateAnalyticsStructure(this.analytics) {
-                
-            }
+    
+}
                 this.ensureMapInitialization(); }
             // 操作の実行
             const result = dataOperation();
@@ -1104,8 +1053,7 @@ export class HelpAnalytics {
             }
 ';
 
-            return result;''
-        } catch (error) { }
+            return result;} catch (error) { }
 
             this.loggingSystem.error('HelpAnalytics', `Failed to execute ${operation} with validation`, error);
             ErrorHandler.handle(error as Error, `HelpAnalytics.${operation}`);
@@ -1115,21 +1063,20 @@ export class HelpAnalytics {
      * ヘルプコンテンツキャッシング機能
      */
     private initializeContentCaching(): void { try {
-            this.contentCache = new Map<string, CacheEntry>();
-            this.searchCache = new Map<string, CacheEntry>();
+            this.contentCache = new Map<string, CacheEntry>(),
+            this.searchCache = new Map<string, CacheEntry>(),
             this.cacheConfig = { maxContentCacheSize: 50,
-    maxSearchCacheSize: 100; }
+    maxSearchCacheSize: 100 }
                 cacheExpiryTime: 15 * 60 * 1000, // 15分;
                 enableCompression: true 
-,};
+ };
             // キャッシュクリーンアップ
-            setInterval(() => { this.cleanupExpiredCache();' }'
+            setInterval(() => { this.cleanupExpiredCache(),' }'
 
             }, 5 * 60 * 1000'); // 5分間隔'
 
-            this.loggingSystem.debug('HelpAnalytics', 'Content caching initialized';''
-        } catch (error) {
-            this.loggingSystem.error('HelpAnalytics', 'Failed to initialize content caching', error); }
+            this.loggingSystem.debug('HelpAnalytics', 'Content caching initialized';} catch (error) {
+            this.loggingSystem.error('HelpAnalytics', 'Failed to initialize content caching', error) }
     }
 
     /**
@@ -1139,21 +1086,20 @@ export class HelpAnalytics {
      */
     private cacheContent(contentId: string, content: any): void { try {
             if(!this.contentCache) {
-                
-            }
+    
+}
                 this.initializeContentCaching(); }
             const cacheEntry: CacheEntry = { data: this.cacheConfig!.enableCompression ? this.compressData(content) : content,
-                timestamp: Date.now();
+                timestamp: Date.now(),
                 accessCount: 0,
     compressed: this.cacheConfig!.enableCompression 
-,};
+ };
             // キャッシュサイズ制限
-            if (this.contentCache!.size >= this.cacheConfig!.maxContentCacheSize) { this.evictLeastUsedContent(); }
+            if (this.contentCache!.size >= this.cacheConfig!.maxContentCacheSize) { this.evictLeastUsedContent() }
 
-            this.contentCache!.set(contentId, cacheEntry);''
-            this.loggingSystem.debug('HelpAnalytics', `Content cached: ${contentId}`}';''
-        } catch (error) {
-            this.loggingSystem.error('HelpAnalytics', 'Failed to cache content', error); }
+            this.contentCache!.set(contentId, cacheEntry);
+            this.loggingSystem.debug('HelpAnalytics', `Content cached: ${contentId}`}';} catch (error) {
+            this.loggingSystem.error('HelpAnalytics', 'Failed to cache content', error) }
     }
 
     /**
@@ -1163,27 +1109,26 @@ export class HelpAnalytics {
      */
     private getCachedContent(contentId: string): any { try {
             if(!this.contentCache || !this.contentCache.has(contentId) {
-                
-            }
+    
+}
                 return null;
             const cacheEntry = this.contentCache.get(contentId)!;
             
             // 有効期限チェック
-            if (Date.now() - cacheEntry.timestamp > this.cacheConfig!.cacheExpiryTime) { this.contentCache.delete(contentId);
-                return null; }
+            if (Date.now() - cacheEntry.timestamp > this.cacheConfig!.cacheExpiryTime) { this.contentCache.delete(contentId),
+                return null }
             // アクセス統計の更新
             cacheEntry.accessCount++;
             
             // データの展開
-            const content = cacheEntry.compressed ? undefined : undefined'';
+            const content = cacheEntry.compressed ? undefined : undefined';
                 this.decompressData(cacheEntry.data) : cacheEntry.data;
 
             this.loggingSystem.debug('HelpAnalytics', `Content retrieved from cache: ${contentId}`}';
 
-            return content;''
-        } catch (error) {
-            this.loggingSystem.error('HelpAnalytics', 'Failed to get cached content', error);
-            return null;
+            return content;} catch (error) {
+            this.loggingSystem.error('HelpAnalytics', 'Failed to get cached content', error),
+            return null,
 
     /**
      * 検索結果のキャッシュ
@@ -1192,22 +1137,22 @@ export class HelpAnalytics {
      */
     private cacheSearchResults(query: string, results: any[]): void { try {
             if(!this.searchCache) {
-                
-            ,}
+    
+}
                 this.initializeContentCaching(); }
             const cacheKey = this.generateSearchCacheKey(query);
             const cacheEntry: CacheEntry = { data: this.cacheConfig!.enableCompression ? this.compressData(results) : results,
-                timestamp: Date.now();
+                timestamp: Date.now(),
                 accessCount: 0,
     compressed: this.cacheConfig!.enableCompression 
-,};
+ };
             // キャッシュサイズ制限
-            if (this.searchCache!.size >= this.cacheConfig!.maxSearchCacheSize) { this.evictLeastUsedSearchResults(); }
+            if (this.searchCache!.size >= this.cacheConfig!.maxSearchCacheSize) { this.evictLeastUsedSearchResults() }
 
-            this.searchCache!.set(cacheKey, cacheEntry);''
-            this.loggingSystem.debug('HelpAnalytics', `Search results cached: "${query"}"`}";"""
+            this.searchCache!.set(cacheKey, cacheEntry);
+            this.loggingSystem.debug('HelpAnalytics', `Search results cached: "${query"}"`}";""
         } catch (error") {"
-            this.loggingSystem.error('HelpAnalytics', 'Failed to cache search results', error); }
+            this.loggingSystem.error('HelpAnalytics', 'Failed to cache search results', error) }
     }
 
     /**
@@ -1217,28 +1162,28 @@ export class HelpAnalytics {
      */
     private getCachedSearchResults(query: string): any[] | null { try {
             if(!this.searchCache) {
-                
-            }
+    
+}
                 return null;
             const cacheKey = this.generateSearchCacheKey(query);
-            if(!this.searchCache.has(cacheKey) { return null; }
+            if(!this.searchCache.has(cacheKey) { return null }
             const cacheEntry = this.searchCache.get(cacheKey)!;
             
             // 有効期限チェック
-            if (Date.now() - cacheEntry.timestamp > this.cacheConfig!.cacheExpiryTime) { this.searchCache.delete(cacheKey);
-                return null; }
+            if (Date.now() - cacheEntry.timestamp > this.cacheConfig!.cacheExpiryTime) { this.searchCache.delete(cacheKey),
+                return null }
             // アクセス統計の更新
             cacheEntry.accessCount++;
             
             // データの展開
-            const results = cacheEntry.compressed ? undefined : undefined'';
+            const results = cacheEntry.compressed ? undefined : undefined';
                 this.decompressData(cacheEntry.data) : cacheEntry.data;
 
-            this.loggingSystem.debug('HelpAnalytics', `Search results retrieved from cache: "${query"}"`}";"
-            return results;""
+            this.loggingSystem.debug('HelpAnalytics', `Search results retrieved from cache: "${query"}"`}";
+            return results;"
         } catch (error") {"
-            this.loggingSystem.error('HelpAnalytics', 'Failed to get cached search results', error);
-            return null;
+            this.loggingSystem.error('HelpAnalytics', 'Failed to get cached search results', error),
+            return null,
 
     /**
      * パフォーマンス監視機能
@@ -1246,19 +1191,18 @@ export class HelpAnalytics {
     private initializePerformanceMonitoring(): void { try {
             this.performanceMetrics = {
                 operations: new Map<string, OperationMetrics>(),
-                cacheHitRate: 0;
-                averageResponseTime: 0;
+                cacheHitRate: 0,
+                averageResponseTime: 0,
                 errorRate: 0,
     memoryUsage: 0 
-,};
+ };
             // 定期的なメトリクス収集
-            setInterval(() => { this.collectPerformanceMetrics();' }'
+            setInterval(() => { this.collectPerformanceMetrics(),' }'
 
             }, 30000'); // 30秒間隔'
 
-            this.loggingSystem.debug('HelpAnalytics', 'Performance monitoring initialized';''
-        } catch (error) {
-            this.loggingSystem.error('HelpAnalytics', 'Failed to initialize performance monitoring', error); }
+            this.loggingSystem.debug('HelpAnalytics', 'Performance monitoring initialized';} catch (error) {
+            this.loggingSystem.error('HelpAnalytics', 'Failed to initialize performance monitoring', error) }
     }
 
     /**
@@ -1267,15 +1211,15 @@ export class HelpAnalytics {
      * @param operation - 実行する操作
      * @returns 操作結果
      */
-    private measurePerformance<T>(operationName: string, operation: () => T): T { const startTime = performance.now();
+    private measurePerformance<T>(operationName: string, operation: () => T): T { const startTime = performance.now(),
         let error: Error | null = null,
         let result: T,
         try {
-            result = operation( } catch (err) { error = err as Error;
-            throw err; } finally { const endTime = performance.now();
-            const duration = endTime - startTime;
+            result = operation( } catch (err) { error = err as Error,
+            throw err } finally { const endTime = performance.now(),
+            const duration = endTime - startTime,
 
-            this.recordOperationMetrics(operationName, duration, error); }
+            this.recordOperationMetrics(operationName, duration, error) }
         return result;
     }
 
@@ -1287,10 +1231,10 @@ export class HelpAnalytics {
      */
     private recordOperationMetrics(operationName: string, duration: number, error: Error | null = null): void { try {
             if(!this.performanceMetrics!.operations.has(operationName) {
-                this.performanceMetrics!.operations.set(operationName, { totalCalls: 0;)
-                    totalDuration: 0),
-    averageDuration: 0); }
-                    errorCount: 0, }
+                this.performanceMetrics!.operations.set(operationName, { totalCalls: 0)
+                    totalDuration: 0,
+    averageDuration: 0) }
+                    errorCount: 0 }
                     lastCall: 0); }
             const metrics = this.performanceMetrics!.operations.get(operationName)!;
             metrics.totalCalls++;
@@ -1298,14 +1242,13 @@ export class HelpAnalytics {
             metrics.averageDuration = metrics.totalDuration / metrics.totalCalls;
             metrics.lastCall = Date.now();
 
-            if (error) { metrics.errorCount++; }
+            if (error) { metrics.errorCount++ }
 ';
             // パフォーマンス警告
             if(duration > 1000) { // 1秒以上' }'
 
-                this.loggingSystem.warn('HelpAnalytics', `Slow operation detected: ${operationName} took ${duration.toFixed(2})ms`);''
-            } catch (err) {
-            this.loggingSystem.error('HelpAnalytics', 'Failed to record operation metrics', err); }
+                this.loggingSystem.warn('HelpAnalytics', `Slow operation detected: ${operationName} took ${duration.toFixed(2})ms`);'} catch (err) {
+            this.loggingSystem.error('HelpAnalytics', 'Failed to record operation metrics', err) }
     }
 
     /**
@@ -1313,55 +1256,49 @@ export class HelpAnalytics {
      */
     private collectPerformanceMetrics(): void { try {
             // キャッシュヒット率の計算
-            let totalCacheRequests = 0;
-            let cacheHits = 0;
+            let totalCacheRequests = 0,
+            let cacheHits = 0,
 
             if(this.contentCache) {
 
-                for(const, entry of, this.contentCache.values() {
-                    totalCacheRequests += entry.accessCount;
-
-            }
+                for (const entry of this.contentCache.values() {
+                    totalCacheRequests += entry.accessCount }
                     if (entry.accessCount > 0) cacheHits++; }
             }
 
             if(this.searchCache) {
 
-                for(const, entry of, this.searchCache.values() {
-                    totalCacheRequests += entry.accessCount;
-
-            }
+                for (const entry of this.searchCache.values() {
+                    totalCacheRequests += entry.accessCount }
                     if (entry.accessCount > 0) cacheHits++; }
             }
 ';
 
-            this.performanceMetrics!.cacheHitRate = totalCacheRequests > 0 ? undefined : undefined'';
+            this.performanceMetrics!.cacheHitRate = totalCacheRequests > 0 ? undefined : undefined';
                 (cacheHits / totalCacheRequests') * 100 : 0;
 ';
             // メモリ使用量の推定
-            if (typeof, process !== 'undefined' && process.memoryUsage) { this.performanceMetrics!.memoryUsage = process.memoryUsage().heapUsed; }
+            if (typeof, process !== 'undefined' && process.memoryUsage) { this.performanceMetrics!.memoryUsage = process.memoryUsage().heapUsed }
             // エラー率の計算
             let totalOperations = 0;
             let totalErrors = 0;
 
-            for(const, metrics of, this.performanceMetrics!.operations.values() {
+            for (const metrics of this.performanceMetrics!.operations.values() {
 
-                totalOperations += metrics.totalCalls;
-
-            }
+                totalOperations += metrics.totalCalls }
                 totalErrors += metrics.errorCount; }
 ';
 
-            this.performanceMetrics!.errorRate = totalOperations > 0 ? undefined : undefined'';
+            this.performanceMetrics!.errorRate = totalOperations > 0 ? undefined : undefined';
                 (totalErrors / totalOperations') * 100 : 0;
 
-            this.loggingSystem.debug('HelpAnalytics', 'Performance metrics collected', { ';''
+            this.loggingSystem.debug('HelpAnalytics', 'Performance metrics collected', { ',
                 cacheHitRate: this.performanceMetrics!.cacheHitRate.toFixed(2) + '%',
-                errorRate: this.performanceMetrics!.errorRate.toFixed(2) + '%' ,}
+                errorRate: this.performanceMetrics!.errorRate.toFixed(2) + '%'
+            }
 
-            }';''
-        } catch (error) {
-            this.loggingSystem.error('HelpAnalytics', 'Failed to collect performance metrics', error); }
+            }';} catch (error) {
+            this.loggingSystem.error('HelpAnalytics', 'Failed to collect performance metrics', error) }
     }
 
     /**
@@ -1369,16 +1306,16 @@ export class HelpAnalytics {
      */
     private optimizePerformance(): void { try {
             // キャッシュの最適化
-            this.optimizeCache();
+            this.optimizeCache(),
 
             // データベースの最適化（該当する場合）
-            this.optimizeDataStorage();
+            this.optimizeDataStorage(),
             // メモリの最適化
-            this.optimizeMemoryUsage()';
-            this.loggingSystem.info('HelpAnalytics', 'Performance optimization completed';' }
+            this.optimizeMemoryUsage()',
+            this.loggingSystem.info('HelpAnalytics', 'Performance optimization completed',' }
 
         } catch (error) {
-            this.loggingSystem.error('HelpAnalytics', 'Failed to optimize performance', error); }
+            this.loggingSystem.error('HelpAnalytics', 'Failed to optimize performance', error) }
     }
 
     /**
@@ -1386,26 +1323,27 @@ export class HelpAnalytics {
      */
     private compressData(data: any): string { try {
             // シンプルなJSON圧縮（実際の実装ではより効率的な圧縮を使用）
-            return JSON.stringify(data);' }'
+            return JSON.stringify(data),' }'
 
         } catch (error) {
-            this.loggingSystem.error('HelpAnalytics', 'Failed to compress data', error);
-            return data;
+            this.loggingSystem.error('HelpAnalytics', 'Failed to compress data', error),
+            return data,
 
     private decompressData(compressedData: string): any { try {
-            return JSON.parse(compressedData);' ,}'
+            return JSON.parse(compressedData),'
+            }'
 
         } catch (error) {
-            this.loggingSystem.error('HelpAnalytics', 'Failed to decompress data', error';
-            return compressedData;
-';
+            this.loggingSystem.error('HelpAnalytics', 'Failed to decompress data', error',
+            return compressedData,
+',
 
-    private generateSearchCacheKey(query: string): string { ' ,}'
+    private generateSearchCacheKey(query: string): string { }'
 
-        return `search_${query.toLowerCase('}.replace(/\s+/g, '_'}'`;'
+        return `search_${query.toLowerCase('}.replace(/\s+/g, '_'}'`;
     }
 
-    private cleanupExpiredCache(): void { const now = Date.now();
+    private cleanupExpiredCache(): void { const now = Date.now(),
         
         // コンテンツキャッシュのクリーンアップ
         if(this.contentCache) {
@@ -1423,38 +1361,34 @@ export class HelpAnalytics {
             }
     }
 
-    private evictLeastUsedContent(): void { if (!this.contentCache || this.contentCache.size === 0) return;
+    private evictLeastUsedContent(): void { if (!this.contentCache || this.contentCache.size === 0) return,
 
         let leastUsed: string | null = null,
-        let minAccessCount = Infinity;
+        let minAccessCount = Infinity,
 
         for(const [key, entry] of this.contentCache.entries() {
 
             if (entry.accessCount < minAccessCount) {
-                minAccessCount = entry.accessCount;
-
-        }
+                minAccessCount = entry.accessCount }
                 leastUsed = key; }
         }
 
-        if (leastUsed) { this.contentCache.delete(leastUsed); }
+        if (leastUsed) { this.contentCache.delete(leastUsed) }
     }
 
-    private evictLeastUsedSearchResults(): void { if (!this.searchCache || this.searchCache.size === 0) return;
+    private evictLeastUsedSearchResults(): void { if (!this.searchCache || this.searchCache.size === 0) return,
 
         let leastUsed: string | null = null,
-        let minAccessCount = Infinity;
+        let minAccessCount = Infinity,
 
         for(const [key, entry] of this.searchCache.entries() {
 
             if (entry.accessCount < minAccessCount) {
-                minAccessCount = entry.accessCount;
-
-        }
+                minAccessCount = entry.accessCount }
                 leastUsed = key; }
         }
 
-        if (leastUsed) { this.searchCache.delete(leastUsed); }
+        if (leastUsed) { this.searchCache.delete(leastUsed) }
     }
 
     private optimizeCache(): void { // キャッシュサイズの調整
@@ -1462,12 +1396,12 @@ export class HelpAnalytics {
             // 使用頻度の低いアイテムを削除
         }
             this.evictLeastUsedContent(); }
-        if (this.searchCache && this.searchCache.size > this.cacheConfig!.maxSearchCacheSize * 0.8) { this.evictLeastUsedSearchResults(); }
+        if (this.searchCache && this.searchCache.size > this.cacheConfig!.maxSearchCacheSize * 0.8) { this.evictLeastUsedSearchResults() }
     }
 
     private optimizeDataStorage(): void { // アナリティクスデータのサイズ最適化
-        const maxAnalyticsAge = 30 * 24 * 60 * 60 * 1000; // 30日
-        const cutoffTime = Date.now() - maxAnalyticsAge;
+        const maxAnalyticsAge = 30 * 24 * 60 * 60 * 1000, // 30日
+        const cutoffTime = Date.now() - maxAnalyticsAge,
 
         // 古いセッションデータの削除
         if(this.sessions) {
@@ -1491,86 +1425,86 @@ export class HelpAnalytics {
      * フォールバック用テキストベースヘルプインターフェース
      */
     private initializeFallbackInterface(): void { try {
-            this.fallbackInterface = { isActive: false; }
+            this.fallbackInterface = { isActive: false }
                 container: null,
                 content: new Map<string, FallbackContent>(' };
 ';
             // 基本的なヘルプコンテンツ
             this.fallbackInterface.content.set('basic-help', { ')'
                 title: 'ゲームヘルプ（簡易版）')',
-    content: [ '';
+    content: [ ',
                     '基本操作:',
                     '- 泡をクリックまたはタップして割る',
                     '- スペースキーでポーズ',
                     '- ESCキーでメニューに戻る',
                     '- F11キーでフルスクリーン切り替え',
-                    '',
+                    ',
                     'スコアシステム:',
                     '- 泡を割るとスコア獲得',
                     '- 連続で割るとコンボボーナス',
                     '- ピンクの泡でHP回復',
                     '- 毒の泡でHPダメージ', ]
-                    '',]';
-                    '問題が発生した場合は、ページを再読み込みしてください。'')]';
-                ]'');
+                    ',]',
+                    '問題が発生した場合は、ページを再読み込みしてください。')]',
+                ]'),
 
-            this.loggingSystem.debug('HelpAnalytics', 'Fallback interface initialized';' }
+            this.loggingSystem.debug('HelpAnalytics', 'Fallback interface initialized',' }
 
         } catch (error) {
-            this.loggingSystem.error('HelpAnalytics', 'Failed to initialize fallback interface', error'; }
+            this.loggingSystem.error('HelpAnalytics', 'Failed to initialize fallback interface', error' }
     }
 
     /**
      * フォールバックインターフェースを表示
      */'
     showFallbackInterface(): void { try {'
-            if(this.fallbackInterface!.isActive) return;
-';
+            if(this.fallbackInterface!.isActive) return,
+',
             // コンテナ要素を作成
-            this.fallbackInterface!.container = document.createElement('div'');''
-            this.fallbackInterface!.container.id = 'help-fallback-interface';
-            this.fallbackInterface!.container.style.cssText = `;
-                position: fixed;
-                top: 50%;
+            this.fallbackInterface!.container = document.createElement('div'),
+            this.fallbackInterface!.container.id = 'help-fallback-interface',
+            this.fallbackInterface!.container.style.cssText = `,
+                position: fixed,
+                top: 50%,
                 left: 50%,
     transform: translate(-50%, -50%),
-                width: 80%;
+                width: 80%,
                 max-width: 600px,
                 max-height: 80%,
                 background: rgba(0, 0, 0, 0.9),
                 color: white,
-    padding: 20px;
+    padding: 20px,
                 border-radius: 10px,
-                font-family: Arial, sans-serif;
+                font-family: Arial, sans-serif,
                 font-size: 14px,
                 line-height: 1.4,
                 overflow-y: auto,
                 z-index: 10000,
-                border: 2px solid #4CAF50;
-            `;
-';
+                border: 2px solid #4CAF50,
+            `,
+',
             // ヘルプコンテンツを追加
-            const helpContent = this.fallbackInterface!.content.get('basic-help'')!;''
-            const contentDiv = document.createElement('div'');
+            const helpContent = this.fallbackInterface!.content.get('basic-help')!,
+            const contentDiv = document.createElement('div'),
 
-            const title = document.createElement('h2'');
+            const title = document.createElement('h2'),
 
-            title.textContent = helpContent.title;''
-            title.style.cssText = 'margin-top: 0;, color: #4CAF50; text-align: center;';
-            contentDiv.appendChild(title);
+            title.textContent = helpContent.title,
+            title.style.cssText = 'margin-top: 0,, color: #4CAF50, text-align: center,',
+            contentDiv.appendChild(title),
 
-            helpContent.content.forEach(line => { ');''
-                const p = document.createElement('p'');
+            helpContent.content.forEach(line => { '),
+                const p = document.createElement('p'),
 
-                p.textContent = line;''
-                p.style.cssText = 'margin: 5px 0; white-space: pre-line;'; ,}
+                p.textContent = line,
+                p.style.cssText = 'margin: 5px 0, white-space: pre-line,',  }
 
                 contentDiv.appendChild(p);' }'
 
             }');
 ';
             // 閉じるボタンを追加
-            const closeButton = document.createElement('button'');''
+            const closeButton = document.createElement('button');
             closeButton.textContent = '閉じる (ESC')';
             closeButton.style.cssText = `;
                 display: block;
@@ -1592,35 +1526,33 @@ export class HelpAnalytics {
             // キーボードイベント
             const handleKeyDown = (event: KeyboardEvent') => {  ''
                 if(event.key === 'Escape' {'
-;
-                    this.hideFallbackInterface()';
-            document.addEventListener('keydown', handleKeyDown';
-            this.fallbackInterface!.keydownHandler = handleKeyDown;
-';
+,
+                    this.hideFallbackInterface()',
+            document.addEventListener('keydown', handleKeyDown',
+            this.fallbackInterface!.keydownHandler = handleKeyDown,
+',
             // DOMに追加
-            document.body.appendChild(this.fallbackInterface!.container);
-            this.fallbackInterface!.isActive = true;
-                }
+            document.body.appendChild(this.fallbackInterface!.container),
+            this.fallbackInterface!.isActive = true }
 
 ' }'
 
-            this.loggingSystem.info('HelpAnalytics', 'Fallback interface displayed';' }
+            this.loggingSystem.info('HelpAnalytics', 'Fallback interface displayed'; }
 
         } catch (error) {
-            this.loggingSystem.error('HelpAnalytics', 'Failed to show fallback interface', error); }
+            this.loggingSystem.error('HelpAnalytics', 'Failed to show fallback interface', error) }
     }
 
     /**
      * フォールバックインターフェースを非表示
      */
     private hideFallbackInterface(): void { try {
-            if (!this.fallbackInterface!.isActive || !this.fallbackInterface!.container) return;
-';
+            if (!this.fallbackInterface!.isActive || !this.fallbackInterface!.container) return,
+',
             // イベントリスナーを削除
-            if(this.fallbackInterface!.keydownHandler) {'
+            if(this.fallbackInterface!.keydownHandler) {
 
-                document.removeEventListener('keydown', this.fallbackInterface!.keydownHandler';
-            }
+                document.removeEventListener('keydown', this.fallbackInterface!.keydownHandler' }
                 this.fallbackInterface!.keydownHandler = undefined; }
 ';
             // DOMから削除
@@ -1628,56 +1560,55 @@ export class HelpAnalytics {
             this.fallbackInterface!.container = null;
             this.fallbackInterface!.isActive = false;
 
-            this.loggingSystem.debug('HelpAnalytics', 'Fallback interface hidden';''
-        } catch (error) {
-            this.loggingSystem.error('HelpAnalytics', 'Failed to hide fallback interface', error); }
+            this.loggingSystem.debug('HelpAnalytics', 'Fallback interface hidden';} catch (error) {
+            this.loggingSystem.error('HelpAnalytics', 'Failed to hide fallback interface', error) }
     }
 
     /**
      * ヘルプシステムの初期化検証
      */
     private validateHelpSystemInitialization(): SystemValidationResult { try {
-            const validationResult: SystemValidationResult = { isValid: true;
-                errors: [];
+            const validationResult: SystemValidationResult = { isValid: true,
+                errors: [],
                 warnings: [],
     components: {
-                    analytics: false;
-                    feedback: false;
-                    search: false;
+                    analytics: false,
+                    feedback: false,
+                    search: false,
                     content: false,
     accessibility: false  
     }
             },
             // アナリティクスコンポーネントの検証
-            if(this.analytics && this.validateAnalyticsStructure(this.analytics)) { validationResult.components.analytics = true; }
+            if(this.analytics && this.validateAnalyticsStructure(this.analytics)) { validationResult.components.analytics = true }
 
             } else {
-                validationResult.errors.push('Analytics, component validation, failed'; }'
+                validationResult.errors.push('Analytics, component validation, failed' }'
                 validationResult.isValid = false; }
 ';
             // フィードバックシステムの検証
-            if(this.gameEngine && this.gameEngine.helpFeedbackSystem) { validationResult.components.feedback = true; }
+            if(this.gameEngine && this.gameEngine.helpFeedbackSystem) { validationResult.components.feedback = true }
 
             } else { }'
 
                 validationResult.warnings.push('Feedback, system not, available'; }
 ';
             // 検索エンジンの検証
-            if(this.gameEngine && this.gameEngine.helpManager && this.gameEngine.helpManager.searchEngine) { validationResult.components.search = true; }
+            if(this.gameEngine && this.gameEngine.helpManager && this.gameEngine.helpManager.searchEngine) { validationResult.components.search = true }
 
             } else {
-                validationResult.errors.push('Search, engine not, available'; }'
+                validationResult.errors.push('Search, engine not, available' }'
                 validationResult.isValid = false; }
 ';
             // コンテンツマネージャーの検証
-            if(this.gameEngine && this.gameEngine.helpManager) { validationResult.components.content = true; }
+            if(this.gameEngine && this.gameEngine.helpManager) { validationResult.components.content = true }
 
             } else {
-                validationResult.errors.push('Content, manager not, available'; }'
+                validationResult.errors.push('Content, manager not, available' }'
                 validationResult.isValid = false; }
 ';
             // アクセシビリティの検証
-            if(this.gameEngine && this.gameEngine.accessibilityManager) { validationResult.components.accessibility = true; }
+            if(this.gameEngine && this.gameEngine.accessibilityManager) { validationResult.components.accessibility = true }
 
             } else { }'
 
@@ -1685,50 +1616,49 @@ export class HelpAnalytics {
             // 初期化の準備
             if(!validationResult.isValid) {
 
-                this.initializeFallbackInterface();
-            }
+                this.initializeFallbackInterface() }
 
-                validationResult.warnings.push('Fallback, interface prepared, due to, validation failures''); }
+                validationResult.warnings.push('Fallback, interface prepared, due to, validation failures'); }
             }
 
             this.loggingSystem.info('HelpAnalytics', 'Help system validation completed', { isValid: validationResult.isValid) }
-                errors: validationResult.errors.length,);
+                errors: validationResult.errors.length);
                 warnings: validationResult.warnings.length';
 ';
 
-            return validationResult;' ,}'
+            return validationResult;
+            }'
 
         } catch (error) {
-            this.loggingSystem.error('HelpAnalytics', 'Failed to validate help system initialization', error);
+            this.loggingSystem.error('HelpAnalytics', 'Failed to validate help system initialization', error),
             return { isValid: false,
-                errors: [(error, as Error).message];
+                errors: [(error, as Error).message],
                 warnings: [],
-    components: { analytics: false;
+    components: { analytics: false,
                     feedback: false,
-    search: false; }
-                    content: false, };
+    search: false }
+                    content: false };
                     accessibility: false ;
-    },
-        }
+    } }
     /**
      * ヘルプ使用統計レポートの生成
      */
     generateUsageReport(): UsageReport | null { try {
-            const report: UsageReport = { generatedAt: Date.now(),
+            const report: UsageReport = { generatedAt: Date.now(
     period: { }
                     start: Date.now() - (7 * 24 * 60 * 60 * 1000), // 7日前;
-                    end: Date.now( ,}
-                usage: { totalSessions: this.analytics.helpUsage.totalSessions;
-                    totalPageViews: this.analytics.helpUsage.totalPageViews;)
-                    averageSessionDuration: this.calculateAverageSessionDuration();
+                    end: Date.now(  }
+                usage: { totalSessions: this.analytics.helpUsage.totalSessions,
+                    totalPageViews: this.analytics.helpUsage.totalPageViews)
+                    averageSessionDuration: this.calculateAverageSessionDuration(),
                     searchQueries: this.analytics.helpUsage.searchQueries.size,
-    topCategories: this.getTopCategories(5); }
+    topCategories: this.getTopCategories(5) }
                     topSearches: this.getTopSearchQueries(10 };)
-                effectiveness: { averageRating: this.calculateAverageRating();
-                    totalFeedbacks: this.getTotalFeedbackCount(),
-    satisfactionScore: this.calculateSatisfactionScore(); }
+                effectiveness: { averageRating: this.calculateAverageRating(),
+                    totalFeedbacks: this.getTotalFeedbackCount(
+    satisfactionScore: this.calculateSatisfactionScore() }
                     problemAreas: this.identifyProblemAreas( }
-                performance: { cacheHitRate: this.performanceMetrics ? this.performanceMetrics.cacheHitRate : 0;
+                performance: { cacheHitRate: this.performanceMetrics ? this.performanceMetrics.cacheHitRate : 0,
                     errorRate: this.performanceMetrics ? this.performanceMetrics.errorRate : 0,
     operationsCount: this.performanceMetrics ? this.performanceMetrics.operations.size : 0  
     };)
@@ -1739,15 +1669,14 @@ export class HelpAnalytics {
 
             this.loggingSystem.info('HelpAnalytics', 'Usage report generated';
 
-            return report;''
-        } catch (error) {
-            this.loggingSystem.error('HelpAnalytics', 'Failed to generate usage report', error';
-            return null;
+            return report;} catch (error) {
+            this.loggingSystem.error('HelpAnalytics', 'Failed to generate usage report', error',
+            return null,
 
     /**
      * 使用統計レポートの保存
      */'
-    private saveUsageReport(report: UsageReport): void { try { ,}
+    private saveUsageReport(report: UsageReport): void { try {  }
 
             const reportKey = `help_usage_report_${new, Date(report.generatedAt}.toISOString('}.split('T'})[0]}`;
             localStorage.setItem(reportKey, JSON.stringify(report);
@@ -1756,33 +1685,31 @@ export class HelpAnalytics {
             const cutoffDate = Date.now() - (30 * 24 * 60 * 60 * 1000);
             for(let, i = 0; i < localStorage.length; i++) {
 
-                const key = localStorage.key(i);''
+                const key = localStorage.key(i),
                 if(key && key.startsWith('help_usage_report_' {'
-                    const reportData = JSON.parse(localStorage.getItem(key)!);
+                    const reportData = JSON.parse(localStorage.getItem(key)!),
 
-                    if (reportData.generatedAt < cutoffDate) {'
+                    if (reportData.generatedAt < cutoffDate) {
             }
 
                         localStorage.removeItem(key); }
 }
 
-            this.loggingSystem.debug('HelpAnalytics', `Usage report saved: ${reportKey}`}';''
-        } catch (error) {
-            this.loggingSystem.error('HelpAnalytics', 'Failed to save usage report', error); }
+            this.loggingSystem.debug('HelpAnalytics', `Usage report saved: ${reportKey}`}';} catch (error) {
+            this.loggingSystem.error('HelpAnalytics', 'Failed to save usage report', error) }
     }
 
     /**
      * アナリティクスデータのクリーンアップとメンテナンス
      */
     private performDataMaintenance(): void { try {
-            let cleanedItems = 0;
+            let cleanedItems = 0,
 
             // 古いセッションデータのクリーンアップ
-            const sessionCutoff = Date.now() - (this.config.dataRetentionDays * 24 * 60 * 60 * 1000);
+            const sessionCutoff = Date.now() - (this.config.dataRetentionDays * 24 * 60 * 60 * 1000),
             for(const [sessionId, session] of this.sessions.entries() {
                 if (session.startTime < sessionCutoff) {
-                    this.sessions.delete(sessionId);
-            }
+                    this.sessions.delete(sessionId) }
                     cleanedItems++; }
             }
 
@@ -1793,16 +1720,12 @@ export class HelpAnalytics {
             this.optimizeCache();
 
             // データ構造の検証と修復
-            if(!this.validateAnalyticsStructure(this.analytics) {
-                ';
-
-            }
+            if(!this.validateAnalyticsStructure(this.analytics) { }
 
                 this.ensureMapInitialization() }
 
-            this.loggingSystem.info('HelpAnalytics', `Data maintenance completed, cleaned ${cleanedItems} items`}';''
-        } catch (error) {
-            this.loggingSystem.error('HelpAnalytics', 'Failed to perform data maintenance', error); }
+            this.loggingSystem.info('HelpAnalytics', `Data maintenance completed, cleaned ${cleanedItems} items`}';} catch (error) {
+            this.loggingSystem.error('HelpAnalytics', 'Failed to perform data maintenance', error) }
     }
     
     /**
@@ -1812,27 +1735,26 @@ export class HelpAnalytics {
      */
     private trackEvent(eventType: string, eventData: any = { ): void {
         try {
-            const event: AnalyticsEvent = { type: eventType;
-                data: eventData;
-                timestamp: Date.now(),
+            const event: AnalyticsEvent = { type: eventType,
+                data: eventData,
+                timestamp: Date.now(
     sessionId: this.currentSession ? this.currentSession.id : null  }
-,};
+ };
             // イベントキューに追加
             const eventId = this.generateEventId();
             this.events.set(eventId, event);
             
             // セッションにも追加
             if(this.currentSession) {
-                this.currentSession.events.push(event);
-            }
+                this.currentSession.events.push(event) }
                 this.currentSession.lastActivityTime = event.timestamp; }
             // イベント数制限のチェック
-            if (this.events.size > this.config.maxEvents) { this.cleanupOldEvents(); }
+            if (this.events.size > this.config.maxEvents) { this.cleanupOldEvents() }
             // リアルタイム処理（必要に応じて）
-            if (this.config.enableRealTimeTracking) { this.processEventRealTime(event);' }'
+            if (this.config.enableRealTimeTracking) { this.processEventRealTime(event),' }'
 
             } catch (error) {
-            this.loggingSystem.error('HelpAnalytics', 'Failed to track event', error'; }
+            this.loggingSystem.error('HelpAnalytics', 'Failed to track event', error' }
     }
     
     /**
@@ -1844,32 +1766,31 @@ export class HelpAnalytics {
     generateReport(reportType: string = 'summary', options: any = { ': AnalyticsReport {
         try {
             const report: AnalyticsReport = {''
-                generatedAt: Date.now(''',
+                generatedAt: Date.now('',
     period: options.period || 'all'
-,})
-                data: {})'', ')';
-            switch(reportType) {'
+            });
+                data: {})', ')';
+            switch(reportType) {
 
-                case 'summary':'';
-                    report.data = this.generateSummaryReport(options);
+                case 'summary':',
+                    report.data = this.generateSummaryReport(options),
 
-                    break;''
-                case 'detailed':'';
-                    report.data = this.generateDetailedReport(options);
+                    break,
+                case 'detailed':',
+                    report.data = this.generateDetailedReport(options),
 
-                    break;''
-                case 'user_journey':'';
-                    report.data = this.generateUserJourneyReport(options);
+                    break,
+                case 'user_journey':',
+                    report.data = this.generateUserJourneyReport(options),
 
-                    break;''
-                case 'effectiveness':'';
-                    report.data = this.generateEffectivenessReport(options);
+                    break,
+                case 'effectiveness':',
+                    report.data = this.generateEffectivenessReport(options),
 
-                    break;''
-                case 'tutorial_analysis':'';
-                    report.data = this.generateTutorialAnalysisReport(options);
-                    break;
-            }
+                    break,
+                case 'tutorial_analysis':',
+                    report.data = this.generateTutorialAnalysisReport(options),
+                    break }
                 default: report.data = this.analytics; 
     }
 
@@ -1877,37 +1798,37 @@ export class HelpAnalytics {
             return report;
 
         } catch (error) {
-            this.loggingSystem.error('HelpAnalytics', 'Failed to generate report', error';
+            this.loggingSystem.error('HelpAnalytics', 'Failed to generate report', error',
 
             return { ''
-                generatedAt: Date.now('' ,};
+                generatedAt: Date.now('};
 '
-                period: options.period || 'all', })
-                data: {},)
+                period: options.period || 'all'
+            });
+                data: {})
                 error: (error, as Error).message ;
-            },
-        }
+            } }
     /**
      * サマリーレポートの生成
      * @param options - オプション
      * @returns サマリーレポート
      */
     private generateSummaryReport(options: any = { ): SummaryReportData {
-        const completionRate = this.analytics.tutorialUsage.totalStarts > 0 ?;
-            (this.analytics.tutorialUsage.totalCompletions / this.analytics.tutorialUsage.totalStarts) * 100 : 0;
+        const completionRate = this.analytics.tutorialUsage.totalStarts > 0 ?,
+            (this.analytics.tutorialUsage.totalCompletions / this.analytics.tutorialUsage.totalStarts) * 100 : 0,
         
         return { overview: {
-                totalHelpSessions: this.analytics.helpUsage.totalSessions;
+                totalHelpSessions: this.analytics.helpUsage.totalSessions,
                 totalPageViews: this.analytics.helpUsage.totalPageViews,
-    uniqueUsers: this.analytics.helpUsage.uniqueUsers.size; }
-                averageSessionDuration: this.calculateAverageSessionDuration(), };
+    uniqueUsers: this.analytics.helpUsage.uniqueUsers.size }
+                averageSessionDuration: this.calculateAverageSessionDuration() };
                 tutorialCompletionRate: Math.round(completionRate * 100) / 100 ;
     },
-            topContent: { categories: this.getTopCategories(5),
-    topics: this.getTopTopics(10); }
+            topContent: { categories: this.getTopCategories(5,
+    topics: this.getTopTopics(10) }
                 searchQueries: this.getTopSearchQueries(10 };)
-            userSatisfaction: { averageRating: this.calculateAverageRating(),
-    totalFeedbacks: this.getTotalFeedbackCount(); }
+            userSatisfaction: { averageRating: this.calculateAverageRating(
+    totalFeedbacks: this.getTotalFeedbackCount() }
                 satisfactionScore: this.calculateSatisfactionScore( 
     }
 
@@ -1944,9 +1865,9 @@ export class HelpAnalytics {
      * @returns 効果測定レポート
      */
     private generateEffectivenessReport(options: any = { ): EffectivenessReportDetailed {
-        return { contentPerformance: this.analyzeContentPerformance(),
-            userBehavior: this.analyzeUserBehavior(),
-    problemAreas: this.identifyProblemAreas(), };
+        return { contentPerformance: this.analyzeContentPerformance(
+            userBehavior: this.analyzeUserBehavior(
+    problemAreas: this.identifyProblemAreas() };
             improvements: this.generateImprovementSuggestions(); 
     }
     
@@ -1954,96 +1875,90 @@ export class HelpAnalytics {
      * データの保存
      */
     private saveAnalyticsData(): void { try {
-            if (!this.config.enableOfflineStorage) return;
+            if (!this.config.enableOfflineStorage) return,
             
             const dataToSave: StoredAnalyticsData = { analytics: this.analytics,
-    sessions: Array.from(this.sessions.entries(); }
+    sessions: Array.from(this.sessions.entries() }
                 events: Array.from(this.events.entries().slice(-100), // 最新100件のみ;
                 lastSaved: Date.now()';
-            localStorage.setItem('help_analytics_data', JSON.stringify(dataToSave));''
-            this.loggingSystem.debug('HelpAnalytics', 'Analytics data saved to localStorage';' }
+            localStorage.setItem('help_analytics_data', JSON.stringify(dataToSave));
+            this.loggingSystem.debug('HelpAnalytics', 'Analytics data saved to localStorage'; }
 
         } catch (error) {
-            this.loggingSystem.error('HelpAnalytics', 'Failed to save analytics data', error'; }
+            this.loggingSystem.error('HelpAnalytics', 'Failed to save analytics data', error' }
     }
     
     /**
      * データの読み込み
      */'
     private loadAnalyticsData(): void { try {'
-            if(!this.config.enableOfflineStorage) return;
+            if(!this.config.enableOfflineStorage) return,
 
-            const savedData = localStorage.getItem('help_analytics_data);
-            if (!savedData) return;
+            const savedData = localStorage.getItem('help_analytics_data),
+            if (!savedData) return,
             
-            const data: StoredAnalyticsData = JSON.parse(savedData),
+            const data: StoredAnalyticsData = JSON.parse(savedData,
             
             // データの復元
             if(data.analytics) {
                 // Mapオブジェクトの復元
-                Object.keys(data.analytics).forEach(category => { );
-                    const categoryData = (data.analytics, as any)[category];''
-                    Object.keys(categoryData).forEach(key => {);
-
-            }
+                Object.keys(data.analytics).forEach(category => { ),
+                    const categoryData = (data.analytics, as any)[category],
+                    Object.keys(categoryData).forEach(key => {) }
 
                         if (categoryData[key] && typeof, categoryData[key] === 'object' && (categoryData[key] as, any)._isMap) { }
                             categoryData[key] = new Map((categoryData[key] as, any).entries); }
                     });
                 });
                 
-                this.analytics = { ...this.analytics, ...data.analytics;
-            }
+                this.analytics = { ...this.analytics, ...data.analytics }
             
-            if (data.sessions) { this.sessions = new Map(data.sessions); }
+            if (data.sessions) { this.sessions = new Map(data.sessions) }
             if(data.events) {
-            ';
+            ',
 
-                ';
-
-            }
+                ' }
 
                 this.events = new Map(data.events); }
             }
 
-            this.loggingSystem.debug('HelpAnalytics', 'Analytics data loaded from localStorage';''
-        } catch (error) {
-            this.loggingSystem.error('HelpAnalytics', 'Failed to load analytics data', error'; }
+            this.loggingSystem.debug('HelpAnalytics', 'Analytics data loaded from localStorage';} catch (error) {
+            this.loggingSystem.error('HelpAnalytics', 'Failed to load analytics data', error' }
     }
     
     /**
      * ユーティリティメソッド群'
      */''
     private generateSessionId()';
-        return 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);'
+        return 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
     }
 
     private generateEventId()';
-        return 'event_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);'
+        return 'event_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
     }
     
     private updateSessionStatistics(session: HelpSession): void { // セッション統計の更新ロジック
-        const duration = session.duration || 0;
-        const currentAvg = this.analytics.helpUsage.averageSessionDuration;
-        const totalSessions = this.analytics.helpUsage.totalSessions;
+        const duration = session.duration || 0,
+        const currentAvg = this.analytics.helpUsage.averageSessionDuration,
+        const totalSessions = this.analytics.helpUsage.totalSessions,
         
-        this.analytics.helpUsage.averageSessionDuration = ;
-            (currentAvg * (totalSessions - 1) + duration) / totalSessions; }
-    private calculateAverageSessionDuration(): number { return Math.round(this.analytics.helpUsage.averageSessionDuration / 1000); // 秒単位 }
+        this.analytics.helpUsage.averageSessionDuration = ,
+            (currentAvg * (totalSessions - 1) + duration) / totalSessions }
+    private calculateAverageSessionDuration(): number { return Math.round(this.analytics.helpUsage.averageSessionDuration / 1000), // 秒単位 }
     private getTopCategories(limit: number = 5): TopItem[] { return Array.from(this.analytics.helpUsage.topHelpCategories.entries()
-            .sort((a, b) => b[1] - a[1]);
+            .sort((a, b) => b[1] - a[1]),
             .slice(0, limit) }
             .map(([category, count]) => ({ category, count });
     }
     
     private getTopTopics(limit: number = 10): TopItem[] { return Array.from(this.analytics.helpUsage.topHelpTopics.entries()
-            .sort((a, b) => b[1] - a[1]);
+            .sort((a, b) => b[1] - a[1]),
             .slice(0, limit) }
             .map(([topic, count]) => ({ topic, count });
     }
     
     private getTopSearchQueries(limit: number = 10): TopItem[] { return Array.from(this.analytics.helpUsage.searchQueries.entries()
-            .sort((a, b) => b[1] - a[1]);
+            .sort((a, b) => b[1] - a[1]),
             .slice(0, limit) }
             .map(([query, count]) => ({ query, count });
     }
@@ -2059,12 +1974,12 @@ export class HelpAnalytics {
         }, 24 * 60 * 60 * 1000);
         
         // 使用統計レポートを週次で生成
-        setInterval(() => { this.generateUsageReport(); }, 7 * 24 * 60 * 60 * 1000);
+        setInterval(() => { this.generateUsageReport() }, 7 * 24 * 60 * 60 * 1000);
     }
 
     private setupUnloadHandlers()';
         window.addEventListener('beforeunload', () => {  ''
-            if(this.currentSession) {' }'
+            if(this.currentSession) { }'
 
                 this.endHelpSession('page_unload); }
             this.saveAnalyticsData();
@@ -2074,26 +1989,24 @@ export class HelpAnalytics {
     private startSessionTracking(): void { // セッションタイムアウトのチェック
         setInterval(() => { 
             if(this.currentSession) {
-                const now = Date.now();
-                const inactive = now - this.currentSession.lastActivityTime;
-                ';
+                const now = Date.now(),
+                const inactive = now - this.currentSession.lastActivityTime,
+                ' }
 
-            }
-
-                if(inactive > this.config.sessionTimeout) {' }'
+                if(inactive > this.config.sessionTimeout) { }'
 
                     this.endHelpSession('timeout); }
 }, 60000); // 1分間隔でチェック
     }
     
-    private cleanupOldEvents(): void { const cutoffTime = Date.now() - (this.config.dataRetentionDays * 24 * 60 * 60 * 1000);
+    private cleanupOldEvents(): void { const cutoffTime = Date.now() - (this.config.dataRetentionDays * 24 * 60 * 60 * 1000),
         const eventsToDelete: string[] = [],
         
         for(const [eventId, event] of this.events.entries() {
         
             if (event.timestamp < cutoffTime) {
-        
-        }
+    
+}
                 eventsToDelete.push(eventId); }
         }
         
@@ -2103,20 +2016,19 @@ export class HelpAnalytics {
     private processEventRealTime(event: AnalyticsEvent): void { // リアルタイム処理（必要に応じて拡張）
         if(event.type === 'search_query' && event.data.resultCount === 0) {
             // 検索結果が0件の場合は改善の余地ありとして記録
-            const query = event.data.query;
-            const gaps = this.analytics.effectiveness.contentGaps;
-        }
+            const query = event.data.query,
+            const gaps = this.analytics.effectiveness.contentGaps }
             gaps.set(query, (gaps.get(query) || 0) + 1); }
     }
     
     private updateCategoryStatistics(page: string): void { // ページからカテゴリを推定して統計を更新
-        const categories = this.analytics.helpUsage.topHelpCategories;
-        categories.set(page, (categories.get(page) || 0) + 1); }
-    private updateTimeSpentStatistics(page: string, timeSpent: number): void { const timeStats = this.analytics.userBehavior.timeSpentBySection;
+        const categories = this.analytics.helpUsage.topHelpCategories,
+        categories.set(page, (categories.get(page) || 0) + 1) }
+    private updateTimeSpentStatistics(page: string, timeSpent: number): void { const timeStats = this.analytics.userBehavior.timeSpentBySection,
         if(!timeStats.has(page) {
-            
-        }
-            timeStats.set(page, { total: 0, count: 0, average: 0 ,})
+    
+}
+            timeStats.set(page, { total: 0, count: 0, average: 0  })
         const stats = timeStats.get(page)!;
         stats.total += timeSpent;
         stats.count++;
@@ -2125,52 +2037,50 @@ export class HelpAnalytics {
     
     private updateTutorialStatistics(tutorialId: string, completionTime: number, stepsCompleted: number, completed: boolean): void { if (completed) {
             // 完了時間の平均を更新
-            const currentAvg = this.analytics.tutorialUsage.averageCompletionTime;
-            const totalCompletions = this.analytics.tutorialUsage.totalCompletions;
+            const currentAvg = this.analytics.tutorialUsage.averageCompletionTime,
+            const totalCompletions = this.analytics.tutorialUsage.totalCompletions,
             
-            this.analytics.tutorialUsage.averageCompletionTime = ;
-                (currentAvg * (totalCompletions - 1) + completionTime) / totalCompletions;
+            this.analytics.tutorialUsage.averageCompletionTime = ,
+                (currentAvg * (totalCompletions - 1) + completionTime) / totalCompletions,
                 
             // 完了率の更新
-            this.analytics.tutorialUsage.completionRate = ;
-                (this.analytics.tutorialUsage.totalCompletions / this.analytics.tutorialUsage.totalStarts) * 100; }
+            this.analytics.tutorialUsage.completionRate = ,
+                (this.analytics.tutorialUsage.totalCompletions / this.analytics.tutorialUsage.totalStarts) * 100 }
     }
     
-    private calculateAverageRating(): number { let totalRating = 0;
-        let totalCount = 0;
+    private calculateAverageRating(): number { let totalRating = 0,
+        let totalCount = 0,
         
         for(const [contentId, ratingData] of this.analytics.effectiveness.helpfulnessRatings.entries() {
         
-            totalRating += ratingData.averageRating * ratingData.totalRatings;
-        
-        }
+            totalRating += ratingData.averageRating * ratingData.totalRatings }
             totalCount += ratingData.totalRatings; }
         return totalCount > 0 ? totalRating / totalCount: 0,
     
-    private getTotalFeedbackCount(): number { let totalCount = 0;
+    private getTotalFeedbackCount(): number { let totalCount = 0,
         for(const [contentId, ratingData] of this.analytics.effectiveness.helpfulnessRatings.entries() {
-            
-        }
+    
+}
             totalCount += ratingData.totalRatings; }
         return totalCount;
     }
     
-    private calculateSatisfactionScore(): number { const avgRating = this.calculateAverageRating();
-        return Math.round((avgRating / 5) * 100); // 100点満点に換算 }
+    private calculateSatisfactionScore(): number { const avgRating = this.calculateAverageRating(),
+        return Math.round((avgRating / 5) * 100), // 100点満点に換算 }
     private analyzeContentPerformance(): ContentPerformance { // コンテンツのパフォーマンス分析 }
         const performance: ContentPerformance = {}''
         for(const [contentId, ratingData] of this.analytics.effectiveness.helpfulnessRatings.entries()) { performance[contentId] = {
                 averageRating: ratingData.averageRating,
                 totalRatings: ratingData.totalRatings,
-                helpfulness: ratingData.averageRating >= 4 ? 'high' : ratingData.averageRating >= 3 ? 'medium' : 'low' 
-,}
+                helpfulness: ratingData.averageRating >= 4 ? 'high' : ratingData.averageRating >= 3 ? 'medium' : 'low'
+            }
         
         return performance;
     }
     
     private analyzeUserBehavior(): UserBehaviorReport { // ユーザー行動の分析
-        return { timeSpentBySection: Object.fromEntries(this.analytics.userBehavior.timeSpentBySection),
-            navigationPatterns: Object.fromEntries(this.analytics.userBehavior.navigationPatterns), };
+        return { timeSpentBySection: Object.fromEntries(this.analytics.userBehavior.timeSpentBySection,
+            navigationPatterns: Object.fromEntries(this.analytics.userBehavior.navigationPatterns) };
             commonJourneys: Object.fromEntries(this.analytics.userBehavior.commonUserJourneys); 
     }
     
@@ -2180,20 +2090,20 @@ export class HelpAnalytics {
         // 低評価のコンテンツ
         for(const [contentId, ratingData] of this.analytics.effectiveness.helpfulnessRatings.entries() {
 
-            if(ratingData.averageRating < 3 && ratingData.totalRatings >= 5) {'
-                problems.push({'')
-                    type: 'low_rating);
-                    contentId: contentId'',
+            if(ratingData.averageRating < 3 && ratingData.totalRatings >= 5) {
+                problems.push({')
+                    type: 'low_rating),
+                    contentId: contentId',
     rating: ratingData.averageRating,' }'
 
                     severity: 'high'); 
     }
         
         // 検索結果が見つからないクエリ
-        for(const [query, count] of this.analytics.effectiveness.contentGaps.entries() { if(count >= 3) {'
-                problems.push({'')
-                    type: 'content_gap);
-                    query: query'',
+        for(const [query, count] of this.analytics.effectiveness.contentGaps.entries() { if(count >= 3) {
+                problems.push({')
+                    type: 'content_gap),
+                    query: query',
     searchCount: count,' }'
 
                     severity: 'medium'); 
@@ -2204,10 +2114,10 @@ export class HelpAnalytics {
     
     private generateImprovementSuggestions(): ImprovementSuggestion[] { // 改善提案の生成
         const suggestions: ImprovementSuggestion[] = [],
-        const problems = this.identifyProblemAreas();
+        const problems = this.identifyProblemAreas(),
 
-        problems.forEach(problem => { ');''
-            if(problem.type === 'low_rating'') {'
+        problems.forEach(problem => { '),
+            if(problem.type === 'low_rating') {
                 suggestions.push({')
             }''
                     type: 'content_improvement',') }
@@ -2215,11 +2125,10 @@ export class HelpAnalytics {
                     contentId: problem.contentId',' }'
 
                     suggestion: `コンテンツ "${problem.contentId}" の品質改善が必要です（評価: ${problem.rating?.toFixed(1"}"）`, : undefined"""
-                    priority: 'high''';
-                }'),
-            }
+                    priority: 'high'';
+                }') }
 
-            if(problem.type === 'content_gap'') { '
+            if(problem.type === 'content_gap') {
                 suggestions.push({)'
                     type: 'content_creation' }
 
@@ -2236,17 +2145,14 @@ export class HelpAnalytics {
      * クリーンアップ処理
      */'
     cleanup(): void { try {'
-            if(this.currentSession) {', ';
-
-            }
+            if(this.currentSession) {', ' }
 
                 this.endHelpSession('cleanup'; }'
             }
 
             this.saveAnalyticsData()';
-            this.loggingSystem.info('HelpAnalytics', 'Help analytics cleaned up';''
-        } catch (error) {
-            this.loggingSystem.error('HelpAnalytics', 'Failed to cleanup help analytics', error); }
+            this.loggingSystem.info('HelpAnalytics', 'Help analytics cleaned up';} catch (error) {
+            this.loggingSystem.error('HelpAnalytics', 'Failed to cleanup help analytics', error) }
     }
 // シングルトンインスタンス管理
 let helpAnalyticsInstance: HelpAnalytics | null = null,
@@ -2257,7 +2163,7 @@ let helpAnalyticsInstance: HelpAnalytics | null = null,
  * @returns HelpAnalyticsインスタンス
  */
 export function getHelpAnalytics(gameEngine: GameEngine): HelpAnalytics | null { if (!helpAnalyticsInstance && gameEngine) {
-        helpAnalyticsInstance = new HelpAnalytics(gameEngine); }
+        helpAnalyticsInstance = new HelpAnalytics(gameEngine) }
     return helpAnalyticsInstance;
 }
 
@@ -2267,8 +2173,7 @@ export function getHelpAnalytics(gameEngine: GameEngine): HelpAnalytics | null {
  * @returns 新しいHelpAnalyticsインスタンス
  */
 export function reinitializeHelpAnalytics(gameEngine: GameEngine): HelpAnalytics | null { if (helpAnalyticsInstance) {
-        helpAnalyticsInstance.cleanup(); }''
+        helpAnalyticsInstance.cleanup() }''
     helpAnalyticsInstance = gameEngine ? new HelpAnalytics(gameEngine) : null;
 
-    return helpAnalyticsInstance;''
-}
+    return helpAnalyticsInstance;}

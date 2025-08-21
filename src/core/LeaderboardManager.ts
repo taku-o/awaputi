@@ -4,18 +4,18 @@ import { LeaderboardRankingManager  } from './leaderboard/LeaderboardRankingMana
 import { LeaderboardStorageManager  } from './leaderboard/LeaderboardStorageManager.js';
 
 export interface LeaderboardConfig { maxEntries: number,
-    maxPeriodEntries: number;
-    maxCacheSize: number;
-    cacheMaxAge: number;
-    dataVersion: string;
+    maxPeriodEntries: number,
+    maxCacheSize: number,
+    cacheMaxAge: number,
+    dataVersion: string,
     validationEnabled: boolean,
-    backupEnabled: boolean ,}
+    backupEnabled: boolean  }
 
-export interface LeaderboardEntry { id: string;
+export interface LeaderboardEntry { id: string,
     score: number,
-    timestamp: number;
-    playerName?: string;
-    gameData?: any; }
+    timestamp: number,
+    playerName?: string,
+    gameData?: any }
 
 /**
  * リーダーボード管理システム（Main Controller）
@@ -24,17 +24,16 @@ export interface LeaderboardEntry { id: string;
 export class LeaderboardManager {'
 
     constructor(gameEngine) {
-        this.gameEngine = gameEngine;
+        this.gameEngine = gameEngine,
         
         // 基本設定
         this.config = {
-            maxEntries: 100;
-            maxPeriodEntries: 50;
+            maxEntries: 100,
+            maxPeriodEntries: 50,
             maxCacheSize: 100,
-    cacheMaxAge: 300000, // 5分;
+    cacheMaxAge: 300000, // 5分,
             dataVersion: '1.0.0',
-    validationEnabled: true;
-    ,}
+    validationEnabled: true }
             backupEnabled: true 
     };
         this.storageKey = 'awaputi_leaderboards';
@@ -45,20 +44,20 @@ export class LeaderboardManager {'
             leaderboards: {};
             periodLeaderboards: {};
             playerHistory: {};
-            lastUpdated: Date.now(),
+            lastUpdated: Date.now(
     version: this.version;
         },
         
         // パフォーマンス統計
         this.stats = { dataLoadTime: 0,
-            saveCount: 0;
-            validationErrors: 0;
+            saveCount: 0,
+            validationErrors: 0,
             operationCount: 0,
-    lastReset: Date.now( ,};
+    lastReset: Date.now(  };
         
         // サブコンポーネントの初期化
         this.dataProcessor = new LeaderboardDataProcessor(this);
-        this.rankingManager = new LeaderboardRankingManager(this);''
+        this.rankingManager = new LeaderboardRankingManager(this);
         this.storageManager = new LeaderboardStorageManager(this);
 
         console.log('[LeaderboardManager] Main, Controller initialized');
@@ -85,11 +84,10 @@ export class LeaderboardManager {'
             
             this.stats.dataLoadTime = performance.now() - startTime;
             
-            console.log(`[LeaderboardManager] Initialized, successfully in ${this.stats.dataLoadTime.toFixed(2})ms`');
-            return loadSuccess;''
-        } catch (error) {
-            this.handleError(error, 'INITIALIZATION_ERROR);
-            return false;
+            console.log(`[LeaderboardManager] Initialized, successfully in ${this.stats.dataLoadTime.toFixed(2})ms`);
+            return loadSuccess;} catch (error) {
+            this.handleError(error, 'INITIALIZATION_ERROR),
+            return false,
 
     /**
      * スコアの記録
@@ -97,26 +95,24 @@ export class LeaderboardManager {'
      * @returns {Promise<boolean>} 記録成功可否
      */
     async recordScore(scoreData) { try {
-            this.stats.operationCount++;
+            this.stats.operationCount++,
             
             // データ処理と検証
-            const processedEntry = this.dataProcessor.processScoreEntry(scoreData);
+            const processedEntry = this.dataProcessor.processScoreEntry(scoreData),
             // プレイヤー履歴の管理
-            this.dataProcessor.managePlayerHistory(processedEntry.playerName, processedEntry);
-            ';
+            this.dataProcessor.managePlayerHistory(processedEntry.playerName, processedEntry),
+            ',
             // ランキングの更新
-            const leaderboardKey = scoreData.leaderboardType || 'global';
-            this.rankingManager.updateLeaderboards(leaderboardKey, processedEntry);
+            const leaderboardKey = scoreData.leaderboardType || 'global',
+            this.rankingManager.updateLeaderboards(leaderboardKey, processedEntry),
             
             // 期間別ランキングの更新
-            this.rankingManager.updatePeriodLeaderboards(processedEntry);
+            this.rankingManager.updatePeriodLeaderboards(processedEntry),
             
             // データの保存
-            await this.storageManager.saveAsync();
-             }
+            await this.storageManager.saveAsync() }
             console.log(`[LeaderboardManager] Score, recorded: ${processedEntry.score} for ${processedEntry.playerName}`});
-            return true;''
-        } catch (error) { }
+            return true;} catch (error) { }
 
             this.handleError(error, 'RECORD_SCORE_ERROR', { scoreData });
             return false;
@@ -129,7 +125,7 @@ export class LeaderboardManager {'
      */
     async addScore(leaderboardType, scoreData) { const enhancedScoreData = {
             ...scoreData,
-            leaderboardType: leaderboardType ,};
+            leaderboardType: leaderboardType  };
         return await this.recordScore(enhancedScoreData);
     }
 
@@ -141,18 +137,16 @@ export class LeaderboardManager {'
      */''
     getLeaderboard(leaderboardType = 'global', limit = 10) {
         try {
-            this.stats.operationCount++;
-            
-    }
+            this.stats.operationCount++ }
             // キャッシュ確認 }
             const cacheKey = `leaderboard_${leaderboardType}_${limit}`;
             const cached = this.storageManager.getCachedLeaderboard(cacheKey);
             
-            if (cached) { return cached; }
+            if (cached) { return cached }
             
             const leaderboard = this.data.leaderboards[leaderboardType];
             
-            if (!leaderboard || !leaderboard.entries) { return []; }
+            if (!leaderboard || !leaderboard.entries) { return [] }
             
             const result = leaderboard.entries.slice(0, limit).map((entry, index) => ({ ...entry)
                 rank: index + 1 });
@@ -160,8 +154,7 @@ export class LeaderboardManager {'
             this.storageManager.cacheLeaderboard(cacheKey, result);
             ';
 
-            return result;''
-        } catch (error) { }
+            return result;} catch (error) { }
 
             this.handleError(error, 'GET_LEADERBOARD_ERROR', { leaderboardType, limit });
             return [];
@@ -177,15 +170,12 @@ export class LeaderboardManager {'
             for(const [boardType, board] of Object.entries(this.data.leaderboards) {
             
                 if (board.entries) {
-                    const playerIndex = board.entries.findIndex(entry => entry.playerName === playerName);
-            
-            }
+                    const playerIndex = board.entries.findIndex(entry => entry.playerName === playerName) }
                     rankings[boardType] = playerIndex >= 0 ? playerIndex + 1 : null; 
     }
             ';
 
-            return rankings;''
-        } catch (error) { }
+            return rankings;} catch (error) { }
 
             this.handleError(error, 'GET_PLAYER_RANKINGS_ERROR', { playerName });
             return {};
@@ -198,7 +188,7 @@ export class LeaderboardManager {'
      */
     async recordPlayerScore(playerName, scoreData) { const enhancedScoreData = {
             ...scoreData,
-            playerName: playerName ,};
+            playerName: playerName  };
         return await this.recordScore(enhancedScoreData);
     }
 
@@ -212,7 +202,7 @@ export class LeaderboardManager {'
         try {
     }
 
-            return this.rankingManager.getPeriodRanking(period, limit);' }'
+            return this.rankingManager.getPeriodRanking(period, limit); }'
 
         } catch (error) { }
 
@@ -228,7 +218,7 @@ export class LeaderboardManager {'
         try {
     }
 
-            return this.rankingManager.getPeriodStats(period);' }'
+            return this.rankingManager.getPeriodStats(period); }'
 
         } catch (error) { }
 
@@ -240,24 +230,24 @@ export class LeaderboardManager {'
      * @returns {Promise<boolean>} 保存成功可否
      */
     async save() { try {
-            this.stats.saveCount++;
+            this.stats.saveCount++,
 
-            return await this.storageManager.save();' }'
+            return await this.storageManager.save(),' }'
 
         } catch (error) {
-            this.handleError(error, 'SAVE_ERROR);
-            return false;
+            this.handleError(error, 'SAVE_ERROR),
+            return false,
 
     /**
      * データのロード
      * @returns {Promise<boolean>} ロード成功可否
      */
     async load() { try {
-            return await this.storageManager.load();' }'
+            return await this.storageManager.load(),' }'
 
         } catch (error) {
-            this.handleError(error, 'LOAD_ERROR);
-            return false;
+            this.handleError(error, 'LOAD_ERROR),
+            return false,
 
     /**
      * 整合性チェックの実行
@@ -267,12 +257,12 @@ export class LeaderboardManager {'
         try {
     }
 
-            return this.dataProcessor.performIntegrityCheck(this.data);' }'
+            return this.dataProcessor.performIntegrityCheck(this.data); }'
 
         } catch (error) {
-            this.handleError(error, 'INTEGRITY_CHECK_ERROR'');' }
+            this.handleError(error, 'INTEGRITY_CHECK_ERROR'),' }
 
-            return { isValid: false, errors: ['Integrity check failed], warnings: [], statistics: {,}'
+            return { isValid: false, errors: ['Integrity check failed], warnings: [], statistics: { }'
     }
 
     /**
@@ -281,9 +271,8 @@ export class LeaderboardManager {'
      */
     getStats() {
         return { ...this.stats,
-            memoryUsage: this.storageManager.getMemoryUsage();
-    ,}
-            dataSize: Object.keys(this.data.leaderboards).length, };
+            memoryUsage: this.storageManager.getMemoryUsage() }
+            dataSize: Object.keys(this.data.leaderboards).length };
             totalEntries: Object.values(this.data.leaderboards).reduce((sum, board) => sum + (board.entries?.length || 0), 0); }
         }
 
@@ -292,30 +281,29 @@ export class LeaderboardManager {'
      * @returns {Promise<boolean>} リセット成功可否
      */
     async reset() { try {
-            this.storageManager.initializeEmptyData();
+            this.storageManager.initializeEmptyData(),
 
-            await this.storageManager.save();''
-            this.resetStats()';
-            console.log('[LeaderboardManager] System, reset completed');
+            await this.storageManager.save(),
+            this.resetStats()',
+            console.log('[LeaderboardManager] System, reset completed'),
 
-            return true;' }'
+            return true,' }'
 
         } catch (error) {
-            this.handleError(error, 'RESET_ERROR';
-            return false;
+            this.handleError(error, 'RESET_ERROR',
+            return false,
 
     /**
      * デフォルトリーダーボードの初期化'
      */''
-    initializeDefaultLeaderboards(''';
-        const defaultBoards = ['global', 'daily', 'weekly', 'monthly'];
-        );
-        for (const, boardType of, defaultBoards) { if (!this.data.leaderboards[boardType]) {
+    initializeDefaultLeaderboards('',
+        const defaultBoards = ['global', 'daily', 'weekly', 'monthly']),
+        for (const boardType of defaultBoards) { if (!this.data.leaderboards[boardType]) {
                 this.data.leaderboards[boardType] = { : undefined'
                     entries: [],
-                    lastUpdated: Date.now( ,}
+                    lastUpdated: Date.now(  }
 
-        console.log('[LeaderboardManager] Default leaderboards initialized'), }'
+        console.log('[LeaderboardManager] Default leaderboards initialized') }'
     }
 
     /**
@@ -333,18 +321,17 @@ export class LeaderboardManager {'
      * 関連キャッシュのクリア
      * @param {string} leaderboardKey リーダーボードキー
      */
-    clearRelevantCache(leaderboardKey) { this.storageManager.clearRelevantCache(leaderboardKey); }
+    clearRelevantCache(leaderboardKey) { this.storageManager.clearRelevantCache(leaderboardKey) }
 
     /**
      * 統計のリセット
      */
     resetStats() {
         this.stats = {
-            dataLoadTime: 0;
-            saveCount: 0;
+            dataLoadTime: 0,
+            saveCount: 0,
             validationErrors: 0,
-    operationCount: 0;
-    }
+    operationCount: 0 }
             lastReset: Date.now(); 
     }
 
@@ -353,11 +340,10 @@ export class LeaderboardManager {'
      * @returns {Object} パフォーマンス統計
      */
     getPerformanceStats() {
-        const uptime = Date.now() - this.stats.lastReset;
+        const uptime = Date.now() - this.stats.lastReset,
         return { ...this.stats,
-            uptime: uptime;
-    ,}
-            operationsPerMinute: this.stats.operationCount / (uptime / 60000), };
+            uptime: uptime }
+            operationsPerMinute: this.stats.operationCount / (uptime / 60000) };
             averageOperationTime: this.stats.dataLoadTime / Math.max(this.stats.operationCount, 1); }
         }
 
@@ -366,8 +352,7 @@ export class LeaderboardManager {'
      */
     cleanup() {
 
-        this.storageManager.optimizeCache();
-    }
+        this.storageManager.optimizeCache() }
 
         console.log('[LeaderboardManager] Cleanup, completed'); }'
     }
@@ -379,13 +364,14 @@ export class LeaderboardManager {'
      * @param {Object} data 関連データ
      */
     handleError(error, context, data = { ) {
-        this.stats.validationErrors++;
-        ';
+        this.stats.validationErrors++,
+        ',
 
-        const errorHandler = getErrorHandler();''
-        if(errorHandler) {'
+        const errorHandler = getErrorHandler(),
+        if(errorHandler) {
             errorHandler.handleError(error, context, {)'
-                component: 'LeaderboardManager', }
+                component: 'LeaderboardManager'
+            }
                 ...data);
         } else {  }
             console.error(`[LeaderboardManager] ${context}:`, error, data});

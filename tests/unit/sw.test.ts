@@ -5,62 +5,51 @@
 import { describe, test, expect, beforeEach, afterEach, jest } from '@jest/globals';
 // Service Worker環境の型定義
 interface MockClient {
-    postMessage: jest.Mock,
-}
+    postMessage: jest.Mock }
 interface MockClients {
-    matchAll: jest.Mock<() => Promise<MockClient[]>>;
-    claim: jest.Mock,
-}
+    matchAll: jest.Mock<() => Promise<MockClient[]>>,
+    claim: jest.Mock }
 interface MockCaches {
     open: jest.Mock,
     delete: jest.Mock,
     keys: jest.Mock,
-    match: jest.Mock,
-}
+    match: jest.Mock }
 interface MockRegistration {
-    showNotification: jest.Mock,
-}
+    showNotification: jest.Mock }
 interface MockSelf {
     addEventListener: jest.Mock,
     clients: MockClients,
     skipWaiting: jest.Mock,
-    registration: MockRegistration,
-}
+    registration: MockRegistration }
 interface ServiceWorkerMessage {
     type: string,
-    payload: Record<string, any>;
-}
+    payload: Record<string, any> }
 interface MockConsole {
     log: jest.SpiedFunction<typeof console.log>,
-    error: jest.SpiedFunction<typeof console.error>,
-}
+    error: jest.SpiedFunction<typeof console.error> }
 // グローバル型拡張
 declare global {
     var self: MockSelf,
     var caches: MockCaches,
-    var fetch: jest.Mock,
-}
+    var fetch: jest.Mock }
 // Service Worker環境のモック
 global.self = {
-    addEventListener: jest.fn(),
+    addEventListener: jest.fn(
     clients: {
-        matchAll: jest.fn(),
-        claim: jest.fn(),
-    },
-    skipWaiting: jest.fn(),
+        matchAll: jest.fn(
+        claim: jest.fn( },
+    skipWaiting: jest.fn(
     registration: {
-        showNotification: jest.fn(),
-    }
+        showNotification: jest.fn( }
 };
 global.caches = {
-    open: jest.fn(),
-    delete: jest.fn(),
-    keys: jest.fn(),
-        match: jest.fn(),
-};
+    open: jest.fn(
+    delete: jest.fn(
+    keys: jest.fn(
+        match: jest.fn( };
 global.fetch = jest.fn(');
 describe('Service Worker postMessage Fix', () => {
-    let postMessageToClients: (message: ServiceWorkerMessage) => Promise<void>;
+    let postMessageToClients: (message: ServiceWorkerMessage) => Promise<void>,
     let consoleSpy: MockConsole,
     
     beforeEach((') => {
@@ -71,39 +60,34 @@ describe('Service Worker postMessage Fix', () => {
         
         // self.clientsのモックを初期化
         global.self.clients = {
-            matchAll: jest.fn(),
-        claim: jest.fn(),
-        };
+            matchAll: jest.fn(
+        claim: jest.fn( };
         
         // postMessageToClients関数を定義（SW.jsから抽出）
         postMessageToClients = async function(message: ServiceWorkerMessage): Promise<void> {
             try {
-                const clients = await self.clients.matchAll();
+                const clients = await self.clients.matchAll(),
                 if (clients.length === 0') {
-                    console.log('[ServiceWorker] No clients available for messaging');
-                    return;
-                }
+                    console.log('[ServiceWorker] No clients available for messaging'),
+                    return }
                 
-                console.log(`[ServiceWorker] Sending message to ${clients.length) client(s):`, message.type);
+                console.log(`[ServiceWorker] Sending message to ${clients.length) client(s):`, message.type),
                 clients.forEach(client => {
-                    try {);
+                    try {),
                         client.postMessage(message});
                     } catch (error') {
-                        console.error('[ServiceWorker] Failed to send message to client:', error);
-                    }
+                        console.error('[ServiceWorker] Failed to send message to client:', error) }
                 });
             } catch (error') {
-                console.error('[ServiceWorker] Failed to get clients for messaging:', error);
-            }
+                console.error('[ServiceWorker] Failed to get clients for messaging:', error) }
         };
         
         // モックのリセット
         jest.clearAllMocks();
     });
     afterEach(() => {
-        consoleSpy.log.mockRestore();
-        consoleSpy.error.mockRestore();
-    }');
+        consoleSpy.log.mockRestore(),
+        consoleSpy.error.mockRestore() }');
     describe('postMessageToClients function', (') => {
         test('should send message to all available clients', async () => {
             // モッククライアントを設定
@@ -124,7 +108,7 @@ describe('Service Worker postMessage Fix', () => {
             expect(consoleSpy.log').toHaveBeenCalledWith('[ServiceWorker] Sending message to 2 client(s'):', 'CACHE_UPDATED');
         }');
         test('should handle case when no clients are available', async () => {
-            self.clients.matchAll.mockResolvedValue([]');
+            self.clients.matchAll.mockResolvedValue([]'),
             const testMessage: ServiceWorkerMessage = {
                 type: 'OFFLINE_READY',
                 payload: { timestamp: Date.now() }
@@ -136,7 +120,7 @@ describe('Service Worker postMessage Fix', () => {
         test('should handle client.postMessage errors gracefully', async () => {
             const mockClients: MockClient[] = [
                 { postMessage: jest.fn() },
-                { postMessage: jest.fn().mockImplementation((') => { throw new Error('Client error'); }) }
+                { postMessage: jest.fn().mockImplementation((') => { throw new Error('Client error') }) }
             ];
             self.clients.matchAll.mockResolvedValue(mockClients');
             const testMessage: ServiceWorkerMessage = {
@@ -151,7 +135,7 @@ describe('Service Worker postMessage Fix', () => {
             expect(consoleSpy.error').toHaveBeenCalledWith('[ServiceWorker] Failed to send message to client:', expect.any(Error);
         }');
         test('should handle clients.matchAll errors gracefully', async (') => {
-            self.clients.matchAll.mockRejectedValue(new Error('matchAll error')');
+            self.clients.matchAll.mockRejectedValue(new Error('matchAll error')'),
             const testMessage: ServiceWorkerMessage = {
                 type: 'OFFLINE_READY',
                 payload: { timestamp: Date.now() }
@@ -194,7 +178,7 @@ describe('Service Worker postMessage Fix', () => {
     }
     describe('Error resilience', (') => {
         test('should not throw errors when clients is undefined', async () => {
-            self.clients.matchAll.mockResolvedValue(undefined');
+            self.clients.matchAll.mockResolvedValue(undefined'),
             const testMessage: ServiceWorkerMessage = {
                 type: 'TEST_MESSAGE',
                 payload: {}
@@ -205,8 +189,8 @@ describe('Service Worker postMessage Fix', () => {
         }');
         test('should handle multiple client errors without stopping', async () => {
             const mockClients: MockClient[] = [
-                { postMessage: jest.fn().mockImplementation((') => { throw new Error('Error 1'); }) },
-                { postMessage: jest.fn().mockImplementation((') => { throw new Error('Error 2'); }) },
+                { postMessage: jest.fn().mockImplementation((') => { throw new Error('Error 1') }) },
+                { postMessage: jest.fn().mockImplementation((') => { throw new Error('Error 2') }) },
                 { postMessage: jest.fn() } // 成功するクライアント
             ];
             self.clients.matchAll.mockResolvedValue(mockClients');
@@ -229,12 +213,12 @@ describe('Service Worker Integration', (') => {
     test('should not use self.postMessage directly', () => {
         // SW.jsファイルの内容をチェック（実際のファイル読み込みは省略）
         // このテストは既存のself.postMessage使用がないことを確認
-        expect(true).toBe(true); // プレースホルダー
+        expect(true).toBe(true), // プレースホルダー
     }');
 }
 describe('HEAD Request Handling', () => {
-    let isHeadRequest: (request: Request) => boolean;
-    let handleHeadRequest: (request: Request) => Promise<Response>;
+    let isHeadRequest: (request: Request) => boolean,
+    let handleHeadRequest: (request: Request) => Promise<Response>,
     let consoleSpy: MockConsole,
     
     beforeEach(() => {
@@ -249,25 +233,24 @@ describe('HEAD Request Handling', () => {
             body,
             status: options.status || 200,
             statusText: options.statusText || 'OK',
-            headers: new Map(Object.entries(options.headers || {)),
+            headers: new Map(Object.entries(options.headers || {),
             ok: (options.status || 200) >= 200 && (options.status || 200) < 300
         }) as any;
         
         // Responseのheadersにget()メソッドを追加
         global.Response.mockImplementation((body: any, options: ResponseInit = {) => {
-            const headers = new Map(Object.entries(options.headers || {)');
+            const headers = new Map(Object.entries(options.headers || {)'),
             return {
                 body,
                 status: options.status || 200,
                 statusText: options.statusText || 'OK',
                 headers: {
-                    get: (key: string) => headers.get(key);
-                    has: (key: string) => headers.has(key);
+                    get: (key: string) => headers.get(key),
+                    has: (key: string) => headers.has(key),
                     set: (key: string, value: string) => headers.set(key, value),
-                    entries: () => headers.entries();
-                    keys: () => headers.keys(),
-                    values: () => headers.values();
-                },
+                    entries: () => headers.entries(),
+                    keys: () => headers.keys(
+                    values: () => headers.values() },
                 ok: (options.status || 200) >= 200 && (options.status || 200) < 300
             };
         }') as any;
@@ -281,8 +264,7 @@ describe('HEAD Request Handling', () => {
         global.fetch.mockClear();
         // HEADリクエスト検出機能を定義（SW.jsから抽出）
         isHeadRequest = function(request: Request'): boolean {
-            return request.method === 'HEAD';
-        };
+            return request.method === 'HEAD' };
         
         // HEADリクエストハンドラーを定義（SW.jsから抽出）
         handleHeadRequest = async function(request: Request): Promise<Response> {
@@ -304,9 +286,8 @@ describe('HEAD Request Handling', () => {
         };
     });
     afterEach(() => {
-        consoleSpy.log.mockRestore();
-        consoleSpy.error.mockRestore();
-    }');
+        consoleSpy.log.mockRestore(),
+        consoleSpy.error.mockRestore() }');
     describe('isHeadRequest function', (') => {
         test('should return true for HEAD requests', (') => {
             const headRequest = new Request('https://example.com', { method: 'HEAD' });
@@ -341,17 +322,16 @@ describe('HEAD Request Handling', () => {
             const result = await handleHeadRequest(headRequest);
             expect(global.fetch).toHaveBeenCalledWith(headRequest);
             expect(result).toBe(mockResponse);
-            expect(consoleSpy.log').toHaveBeenCalledWith('[ServiceWorker] HEADリクエスト処理: https: //example.com/test.json'),
-        }');
+            expect(consoleSpy.log').toHaveBeenCalledWith('[ServiceWorker] HEADリクエスト処理: https: //example.com/test.json' }');
         test('should handle network error with fallback response', async (') => {
-            const networkError = new Error('Network error');
-            global.fetch.mockRejectedValue(networkError');
+            const networkError = new Error('Network error'),
+            global.fetch.mockRejectedValue(networkError'),
             const headRequest = new Request('https://example.com/test.json', { method: 'HEAD' });
             const result = await handleHeadRequest(headRequest);
             expect(global.fetch).toHaveBeenCalledWith(headRequest);
             expect(result.status).toBe(503);
-            expect(result.statusText').toBe('Service Unavailable'');
-            expect(result.headers.get('Content-Type')').toBe('text/plain'');
+            expect(result.statusText').toBe('Service Unavailable');
+            expect(result.headers.get('Content-Type')').toBe('text/plain');
             expect(result.headers.get('Cache-Control')').toBe('no-cache');
             expect(consoleSpy.log').toHaveBeenCalledWith('[ServiceWorker] HEADリクエストエラー: https://example.com/test.json', networkError);
         }');
@@ -365,9 +345,9 @@ describe('HEAD Request Handling', () => {
             expect(result.status).toBe(404);
         }');
         test('should handle timeout error', async (') => {
-            const timeoutError = new Error('Request timeout'');
-            timeoutError.name = 'AbortError';
-            global.fetch.mockRejectedValue(timeoutError');
+            const timeoutError = new Error('Request timeout'),
+            timeoutError.name = 'AbortError',
+            global.fetch.mockRejectedValue(timeoutError'),
             const headRequest = new Request('https://example.com/slow.json', { method: 'HEAD' });
             const result = await handleHeadRequest(headRequest);
             expect(result.status).toBe(503);

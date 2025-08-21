@@ -8,22 +8,20 @@ import { test, expect } from '@playwright/test';
 test.describe('BubblePop Game E2E Tests', () => {
   test.beforeEach(async ({ page }') => {
     // Navigate to the game
-    await page.goto('/'');
+    await page.goto('/'),
     
     // Wait for the game to load
-    await page.waitForSelector('#gameCanvas');
-    await page.waitForFunction(() => window.gameEngine !== undefined);
-  }');
+    await page.waitForSelector('#gameCanvas'),
+    await page.waitForFunction(() => window.gameEngine !== undefined) }');
 
   test('should load game successfully', async ({ page )') => {
     // Check if canvas is present
-    const canvas = await page.locator('#gameCanvas');
-    await expect(canvas).toBeVisible();
+    const canvas = await page.locator('#gameCanvas'),
+    await expect(canvas).toBeVisible(),
     
     // Check if game engine is initialized
     const gameEngineExists = await page.evaluate((') => {
-      return typeof window.gameEngine !== 'undefined';
-    });
+      return typeof window.gameEngine !== 'undefined' });
     expect(gameEngineExists).toBe(true');
     
     // Check if loading screen disappears
@@ -33,8 +31,7 @@ test.describe('BubblePop Game E2E Tests', () => {
   test('should display main menu', async ({ page ) => {
     // Wait for main menu to appear
     await page.waitForFunction((') => {
-      return window.gameEngine && window.gameEngine.sceneManager.currentScene === 'menu';
-    });
+      return window.gameEngine && window.gameEngine.sceneManager.currentScene === 'menu' });
     
     // Check for menu elements (these would be rendered on canvas or as HTML');
     const canvas = await page.locator('#gameCanvas');
@@ -44,24 +41,21 @@ test.describe('BubblePop Game E2E Tests', () => {
   test('should handle user name registration', async ({ page ) => {
     // Check if user name prompt appears for new users
     const hasUserName = await page.evaluate((') => {
-      return localStorage.getItem('bubblePop_playerData') !== null;
-    });
+      return localStorage.getItem('bubblePop_playerData') !== null });
     
     if (!hasUserName) {
       // Simulate user name entry (this would depend on your UI implementation});
       await page.evaluate(() => {
         if (window.gameEngine && window.gameEngine.playerData') {
-          window.gameEngine.playerData.username = 'TestPlayer';
-          window.gameEngine.playerData.save();
-        }
+          window.gameEngine.playerData.username = 'TestPlayer',
+          window.gameEngine.playerData.save() }
       });
     }
     
     // Verify user name is saved
     const savedUserName = await page.evaluate((') => {
-      const data = localStorage.getItem('bubblePop_playerData');
-      return data ? JSON.parse(data.username: null),
-    });
+      const data = localStorage.getItem('bubblePop_playerData'),
+      return data ? JSON.parse(data.username: null });
     
     expect(savedUserName).toBeTruthy();
   }');
@@ -74,12 +68,10 @@ test.describe('BubblePop Game E2E Tests', () => {
     await page.waitForFunction((') => {
       return window.gameEngine && 
              (window.gameEngine.sceneManager.currentScene === 'stageSelect' ||
-              window.gameEngine.sceneManager.currentScene === 'game');
-    });
+              window.gameEngine.sceneManager.currentScene === 'game') });
     
     const currentScene = await page.evaluate(() => {
-      return window.gameEngine.sceneManager.currentScene;
-    }');
+      return window.gameEngine.sceneManager.currentScene }');
     
     expect(['stageSelect', 'game']).toContain(currentScene);
   }');
@@ -88,15 +80,13 @@ test.describe('BubblePop Game E2E Tests', () => {
     // Navigate to game scene
     await page.evaluate(() => {
       if (window.gameEngine') {
-        window.gameEngine.sceneManager.switchScene('game');
-      }
+        window.gameEngine.sceneManager.switchScene('game') }
     });
     
     // Wait for game to start
     await page.waitForFunction((') => {
       return window.gameEngine && 
-             window.gameEngine.sceneManager.currentScene === 'game';
-    });
+             window.gameEngine.sceneManager.currentScene === 'game' });
     
     // Wait a bit for bubbles to spawn
     await page.waitForTimeout(2000);
@@ -104,8 +94,7 @@ test.describe('BubblePop Game E2E Tests', () => {
     // Check if bubbles are present
     const bubbleCount = await page.evaluate(() => {
       return window.gameEngine && window.gameEngine.bubbleManager ?   : undefined
-             window.gameEngine.bubbleManager.bubbles.length: 0,
-    });
+             window.gameEngine.bubbleManager.bubbles.length: 0 });
     
     expect(bubbleCount).toBeGreaterThan(0);
   }');
@@ -114,16 +103,14 @@ test.describe('BubblePop Game E2E Tests', () => {
     // Start game
     await page.evaluate(() => {
       if (window.gameEngine') {
-        window.gameEngine.sceneManager.switchScene('game');
-      }
+        window.gameEngine.sceneManager.switchScene('game') }
     });
     
     await page.waitForTimeout(1000);
     
     // Get initial score
     const initialScore = await page.evaluate(() => {
-      return window.gameEngine ? window.gameEngine.playerData.currentScore: 0,
-    });
+      return window.gameEngine ? window.gameEngine.playerData.currentScore: 0 });
     
     // Click on canvas (should hit bubbles');
     await page.click('#gameCanvas', { position: { x: 200, y: 200 } }');
@@ -134,8 +121,7 @@ test.describe('BubblePop Game E2E Tests', () => {
     
     // Check if score increased
     const finalScore = await page.evaluate(() => {
-      return window.gameEngine ? window.gameEngine.playerData.currentScore: 0,
-    });
+      return window.gameEngine ? window.gameEngine.playerData.currentScore: 0 });
     
     expect(finalScore).toBeGreaterThanOrEqual(initialScore);
   }');
@@ -144,17 +130,16 @@ test.describe('BubblePop Game E2E Tests', () => {
     // Start game and spawn special bubbles
     await page.evaluate(() => {
       if (window.gameEngine') {
-        window.gameEngine.sceneManager.switchScene('game');
+        window.gameEngine.sceneManager.switchScene('game'),
         
         // Spawn special bubbles for testing
         setTimeout(() => {
           if (window.gameEngine.bubbleManager') {
             window.gameEngine.bubbleManager.spawnBubble('rainbow', { x: 200, y: 200 }');
             window.gameEngine.bubbleManager.spawnBubble('pink', { x: 300, y: 300 }');
-            window.gameEngine.bubbleManager.spawnBubble('electric', { x: 400, y: 400 ),
-          }
+            window.gameEngine.bubbleManager.spawnBubble('electric', { x: 400, y: 400  }
         }, 500);
-      }
+        }
     });
     
     await page.waitForTimeout(1000');
@@ -171,10 +156,10 @@ test.describe('BubblePop Game E2E Tests', () => {
     
     // Check if special effects are active
     const effectsActive = await page.evaluate(() => {
-      if (!window.gameEngine) return false;
+      if (!window.gameEngine) return false,
       
       return {
-        bonusTime: window.gameEngine.isBonusTimeActive(),
+        bonusTime: window.gameEngine.isBonusTimeActive(
         screenShake: window.gameEngine.isScreenShakeActive(}
       };);
     });
@@ -184,13 +169,12 @@ test.describe('BubblePop Game E2E Tests', () => {
   }');
 
   test('should handle touch events on mobile', async ({ page, isMobile )') => {
-    test.skip(!isMobile, 'This test is only for mobile devices');
+    test.skip(!isMobile, 'This test is only for mobile devices'),
     
     // Start game
     await page.evaluate(() => {
       if (window.gameEngine') {
-        window.gameEngine.sceneManager.switchScene('game');
-      }
+        window.gameEngine.sceneManager.switchScene('game') }
     });
     
     await page.waitForTimeout(1000');
@@ -207,8 +191,7 @@ test.describe('BubblePop Game E2E Tests', () => {
     
     // Verify touch events were handled
     const gameIsRunning = await page.evaluate(() => {
-      return window.gameEngine ? window.gameEngine.isRunning: false,
-    });
+      return window.gameEngine ? window.gameEngine.isRunning: false });
     
     expect(gameIsRunning).toBe(true);
   }');
@@ -217,11 +200,10 @@ test.describe('BubblePop Game E2E Tests', () => {
     // Start game and play a bit
     await page.evaluate(() => {
       if (window.gameEngine') {
-        window.gameEngine.sceneManager.switchScene('game');
-        window.gameEngine.playerData.currentScore = 1000;
-        window.gameEngine.playerData.ap = 50;
-        window.gameEngine.playerData.save();
-      }
+        window.gameEngine.sceneManager.switchScene('game'),
+        window.gameEngine.playerData.currentScore = 1000,
+        window.gameEngine.playerData.ap = 50,
+        window.gameEngine.playerData.save() }
     });
     
     // Reload page
@@ -248,14 +230,13 @@ test.describe('BubblePop Game E2E Tests', () => {
     // Start game and force game over
     await page.evaluate(() => {
       if (window.gameEngine') {
-        window.gameEngine.sceneManager.switchScene('game');
+        window.gameEngine.sceneManager.switchScene('game'),
         
         // Force game over after a short delay
         setTimeout(() => {
           if (window.gameEngine.playerData) {
-            window.gameEngine.playerData.currentHP = 0;
-            window.gameEngine.gameOver();
-          }
+            window.gameEngine.playerData.currentHP = 0,
+            window.gameEngine.gameOver() }
         }, 1000);
       }
     });
@@ -264,8 +245,7 @@ test.describe('BubblePop Game E2E Tests', () => {
     
     // Check if game over state is reached
     const isGameOver = await page.evaluate(() => {
-      return window.gameEngine ? window.gameEngine.isGameOver: false,
-    });
+      return window.gameEngine ? window.gameEngine.isGameOver: false });
     
     expect(isGameOver).toBe(true);
   }');
@@ -274,8 +254,7 @@ test.describe('BubblePop Game E2E Tests', () => {
     // Check browser-specific features
     const compatibility = await page.evaluate(() => {
       if (window.gameEngine && window.gameEngine.checkBrowserCompatibility) {
-        return window.gameEngine.checkBrowserCompatibility();
-      }
+        return window.gameEngine.checkBrowserCompatibility() }
       return true;
     });
     
@@ -283,13 +262,11 @@ test.describe('BubblePop Game E2E Tests', () => {
     
     // Verify game works in different browsers
     const gameIsRunning = await page.evaluate(() => {
-      return window.gameEngine ? window.gameEngine.isRunning: false,
-    });
+      return window.gameEngine ? window.gameEngine.isRunning: false });
     
     // Game should at least initialize, even if not running
     const gameExists = await page.evaluate((') => {
-      return typeof window.gameEngine !== 'undefined';
-    });
+      return typeof window.gameEngine !== 'undefined' });
     
     expect(gameExists).toBe(true);
   }');
@@ -298,13 +275,13 @@ test.describe('BubblePop Game E2E Tests', () => {
     // Start game and create high load scenario
     await page.evaluate(() => {
       if (window.gameEngine') {
-        window.gameEngine.sceneManager.switchScene('game');
+        window.gameEngine.sceneManager.switchScene('game'),
         
         // Spawn many bubbles
-        for (let i = 0; i < 50; i++) {
+        for (let i = 0, i < 50, i++) {
           setTimeout(() => {
             if (window.gameEngine.bubbleManager') {
-              window.gameEngine.bubbleManager.spawnBubble('normal', {);
+              window.gameEngine.bubbleManager.spawnBubble('normal', {),
                 x: Math.random() * 800,
                 y: Math.random() * 600
               });
@@ -318,8 +295,7 @@ test.describe('BubblePop Game E2E Tests', () => {
     
     // Check if game is still responsive
     const performanceStats = await page.evaluate(() => {
-      return window.gameEngine ? window.gameEngine.performanceStats: null,
-    });
+      return window.gameEngine ? window.gameEngine.performanceStats: null });
     
     expect(performanceStats).toBeTruthy();
     expect(performanceStats.fps).toBeGreaterThan(0);
@@ -328,7 +304,7 @@ test.describe('BubblePop Game E2E Tests', () => {
   test('should handle window resize', async ({ page }) => {
     // Get initial canvas size
     const initialSize = await page.evaluate((') => {
-      const canvas = document.getElementById('gameCanvas');
+      const canvas = document.getElementById('gameCanvas'),
       return { width: canvas.width, height: canvas.height };
     });
     
@@ -338,7 +314,7 @@ test.describe('BubblePop Game E2E Tests', () => {
     
     // Check if canvas adapted
     const newSize = await page.evaluate((') => {
-      const canvas = document.getElementById('gameCanvas');
+      const canvas = document.getElementById('gameCanvas'),
       return { width: canvas.width, height: canvas.height };
     });
     
@@ -348,8 +324,7 @@ test.describe('BubblePop Game E2E Tests', () => {
     
     // Game should still be running
     const gameIsRunning = await page.evaluate(() => {
-      return window.gameEngine ? window.gameEngine.isRunning: false,
-    });
+      return window.gameEngine ? window.gameEngine.isRunning: false });
     
     expect(gameIsRunning).toBe(true);
   });

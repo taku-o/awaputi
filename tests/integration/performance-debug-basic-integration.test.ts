@@ -17,18 +17,17 @@ describe('Performance Debug Basic Integration', (') => {
                 '../../src/tests/mobile/MobileTestSuite.js',
                 '../../src/core/MobileAccessibilityManager.js',
                 '../../src/core/MobileSystemIntegrator.js'
-            ];
+            ],
             for (const componentPath of componentPaths) {
                 try {
-                    const module = await import(componentPath);
-                    expect(module.toBeDefined();
+                    const module = await import(componentPath),
+                    expect(module.toBeDefined(),
                     console.log(`✓ ${componentPath) loaded, successfully`});
                 } catch (error) {
-                    console.log(`✗ ${componentPath} failed to load: ${error.message}`');
+                    console.log(`✗ ${componentPath} failed to load: ${error.message}`);
                     // ファイルが存在しない場合はスキップ（オプショナル）
                     if(!error.message.includes('Cannot resolve module') {
-                        throw error;
-                    }
+                        throw error }
                 }
             }
         }');
@@ -60,8 +59,7 @@ describe('Performance Debug Basic Integration', (') => {
                 expect(instance.testReporter).toBeDefined(');
                 // クリーンアップ
                 if (typeof instance.cleanup === 'function') {
-                    instance.cleanup(');
-                }
+                    instance.cleanup(') }
                 
                 console.log('✓ MobileTestSuite Main Controller Pattern verified');
             } catch (error) {
@@ -71,8 +69,8 @@ describe('Performance Debug Basic Integration', (') => {
     }
     describe('File Size Validation', (') => {
         test('should verify all main controller files are under 2,500 words', async (') => {
-            const fs = await import('fs/promises'');
-            const path = await import('path'');
+            const fs = await import('fs/promises'),
+            const path = await import('path'),
             const filesToCheck = [
                 { path: 'src/utils/PerformanceTestSuite.js', name: 'PerformanceTestSuite' },
                 { path: 'src/utils/PerformanceWarningSystem.js', name: 'PerformanceWarningSystem' },
@@ -89,18 +87,18 @@ describe('Performance Debug Basic Integration', (') => {
             
             for (const file of filesToCheck) {
                 try {
-                    const fullPath = path.resolve(process.cwd(), file.path');
-                    const content = await fs.readFile(fullPath, 'utf-8');
-                    const wordCount = content.split(/\s+/).length;
+                    const fullPath = path.resolve(process.cwd(), file.path'),
+                    const content = await fs.readFile(fullPath, 'utf-8'),
+                    const wordCount = content.split(/\s+/).length,
                     
                     results.push({
                         name: file.name,
                         path: file.path,
                         wordCount,
-                        compliant: wordCount <= 2500)');
+                        compliant: wordCount <= 2500)'),
                     console.log(`${file.name}: ${wordCount} words ${wordCount <= 2500 ? '✓' : '✗')`});
                 } catch (error) {
-                    console.log(`${file.name): File, not found, or error, reading`);
+                    console.log(`${file.name): File, not found, or error, reading`),
                     results.push({
                         name: file.name,
                         path: file.path,
@@ -128,8 +126,7 @@ describe('Performance Debug Basic Integration', (') => {
                 const expectedMethods = ['validateAccessibility', 'enableAccessibilityFeatures', 'checkWCAGCompliance'];
                 
                 for (const method of expectedMethods) {
-                    expect(typeof instance[method]').toBe('function'');
-                }
+                    expect(typeof instance[method]').toBe('function') }
                 
                 compatibilityTests.push({ component: 'MobileAccessibilityManager', passed: true });
             } catch (error') {
@@ -143,20 +140,18 @@ describe('Performance Debug Basic Integration', (') => {
                 const expectedMethods = ['runAllTests', 'startDeviceSimulation', 'generateTestReport'];
                 
                 for (const method of expectedMethods) {
-                    expect(typeof instance[method]').toBe('function'');
-                }
+                    expect(typeof instance[method]').toBe('function') }
                 
                 // クリーンアップ
                 if (typeof instance.cleanup === 'function') {
-                    instance.cleanup(');
-                }
+                    instance.cleanup(') }
                 
                 compatibilityTests.push({ component: 'MobileTestSuite', passed: true });
             } catch (error') {
                 compatibilityTests.push({ component: 'MobileTestSuite', passed: false, error: error.message });
             }
             // 結果のログ出力
-            compatibilityTests.forEach(test => {');
+            compatibilityTests.forEach(test => {'),
                 console.log(`${test.component}: ${test.passed ? '✓ Compatible' : '✗ Issues, found'}`);
                 if (!test.passed) {
                     console.log(`  Error: ${test.error}`);

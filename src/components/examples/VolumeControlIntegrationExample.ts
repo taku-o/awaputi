@@ -11,15 +11,13 @@ interface GameEngine { // Define game engine interface properties as needed }
  * 設定画面でのVolumeControlComponent使用例
  */
 export class VolumeControlIntegrationExample {
-    private gameEngine: GameEngine;
-    private volumeControl: VolumeControlComponent | null;
-    private, container: HTMLElement | null;
+    private gameEngine: GameEngine,
+    private volumeControl: VolumeControlComponent | null,
+    private, container: HTMLElement | null,
     constructor(gameEngine: GameEngine) {
 
-        this.gameEngine = gameEngine;
-        this.volumeControl = null;
-
-    }
+        this.gameEngine = gameEngine,
+        this.volumeControl = null }
         this.container = null; }
     }
     
@@ -27,24 +25,22 @@ export class VolumeControlIntegrationExample {
      * 設定画面の初期化例
      */
     initializeSettingsScene(): boolean { // 設定画面のDOM構造を作成
-        this.createSettingsUI();
+        this.createSettingsUI(),
         // VolumeControlComponentを初期化
-        this.volumeControl = new VolumeControlComponent(this.gameEngine);
-        ';
+        this.volumeControl = new VolumeControlComponent(this.gameEngine),
+        ',
         // 音響設定セクションに追加
-        const audioSection = document.getElementById('audio-settings-section';''
-        if(!audioSection) {'
+        const audioSection = document.getElementById('audio-settings-section',
+        if(!audioSection) {
 
-            console.error('Audio settings section not found';
-        }
+            console.error('Audio settings section not found' }
             return false;
         
         const success = this.volumeControl.initialize(audioSection');
 
-        if(!success') {'
+        if(!success') {
 
-            console.error('Failed, to initialize, volume control'');
-        }
+            console.error('Failed, to initialize, volume control') }
             return false;
 
         console.log('Volume, control initialized, successfully');
@@ -55,10 +51,10 @@ export class VolumeControlIntegrationExample {
      * 設定画面のDOM構造作成例'
      */''
     private createSettingsUI()';
-        this.container = document.createElement('div'');''
+        this.container = document.createElement('div');
         this.container.className = 'settings-container';
 
-        this.container.innerHTML = `'';
+        this.container.innerHTML = `';
             <div class="settings-header">;
                 <h2>ゲーム設定</h2>";
             </div>"";
@@ -111,16 +107,16 @@ export class VolumeControlIntegrationExample {
      * 音量設定の保存"
      */""
     private saveVolumeSettings(volume: number): void { // ゲーム設定に保存""
-        // this.gameEngine.settingsManager.set('masterVolume', volume); }
+        // this.gameEngine.settingsManager.set('masterVolume', volume) }
     
     /**
      * 音量制御の状態を取得
      */
     getVolumeControlStatus(): any { if (!this.volumeControl) {
-            return null; }
+            return null }
         
-        return { isEnabled: this.volumeControl.isEnabled(),
-            currentVolume: this.volumeControl.getCurrentVolume(), };
+        return { isEnabled: this.volumeControl.isEnabled(
+            currentVolume: this.volumeControl.getCurrentVolume() };
             stats: this.volumeControl.getStats(); 
     }
     
@@ -128,28 +124,28 @@ export class VolumeControlIntegrationExample {
      * 音量制御の表示/非表示切り替え
      */
     setVolumeControlVisible(visible: boolean): void { if (this.volumeControl) {
-            this.volumeControl.setVisible(visible); }
+            this.volumeControl.setVisible(visible) }
     }
     
     /**
      * プログラム的に音量を設定
      */
     setVolumeLevel(volume: number): void { if (this.volumeControl) {
-            this.volumeControl.setVolume(volume); }
+            this.volumeControl.setVolume(volume) }
     }
     
     /**
      * 外部から音量変更を通知（他のシステムから）
      */
     onExternalVolumeChange(volume: number): void { if (this.volumeControl) {
-            this.volumeControl.onVolumeChanged(volume); }
+            this.volumeControl.onVolumeChanged(volume) }
     }
     
     /**
      * アクセシビリティ属性の更新
      */
     updateAccessibility(): void { if (this.volumeControl) {
-            this.volumeControl.updateAccessibility(); }
+            this.volumeControl.updateAccessibility() }
     }
     
     /**
@@ -158,16 +154,14 @@ export class VolumeControlIntegrationExample {
     dispose(): void { try {
             // VolumeControlComponentを破棄
             if(this.volumeControl) {
-                this.volumeControl.dispose();
-            }
+                this.volumeControl.dispose() }
                 this.volumeControl = null; }
             }
             
             // DOM要素を削除
             if(this.container && this.container.parentNode) {
 
-                this.container.parentNode.removeChild(this.container);
-            }
+                this.container.parentNode.removeChild(this.container) }
                 this.container = null; }
             }
 
@@ -179,7 +173,7 @@ export class VolumeControlIntegrationExample {
     /**
      * 統合例のベストプラクティス情報'
      */''
-    static getBestPractices(''';
+    static getBestPractices('';
             'VolumeControlComponentは設定画面の音響セクションに配置する',
             '音量変更時は他の音響コンポーネントにも通知する',
             '設定値はゲームの設定システムに保存する',
@@ -194,20 +188,20 @@ export class VolumeControlIntegrationExample {
      */)
     static getSampleCode(): string { return `
 // VolumeControlComponent の基本的な使用例
-;
+,
 // 1. コンポーネント初期化
-const volumeControl = new VolumeControlComponent(gameEngine);
-';
+const volumeControl = new VolumeControlComponent(gameEngine),
+',
 // 2. DOM要素への追加
-const audioSection = document.getElementById('audio-settings);
-const success = volumeControl.initialize(audioSection);
+const audioSection = document.getElementById('audio-settings),
+const success = volumeControl.initialize(audioSection),
 
 // 3. 音量の設定
-volumeControl.setVolume(0.8); // 80%
+volumeControl.setVolume(0.8), // 80%
 
 // 4. 現在の音量取得
-const currentVolume = volumeControl.getCurrentVolume();
+const currentVolume = volumeControl.getCurrentVolume(),
 
 // 5. コンポーネントの破棄
-volumeControl.dispose();''
+volumeControl.dispose(),
         `.trim(' }'

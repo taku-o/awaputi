@@ -4,31 +4,31 @@
  */
 
 // Type definitions
-interface AnalyzerConfig { enabled?: boolean;
-    analysisInterval?: number;
-    historySize?: number; }
+interface AnalyzerConfig { enabled?: boolean,
+    analysisInterval?: number,
+    historySize?: number }
 
 interface MemoryUsageSample { used: number,
-    total: number;
+    total: number,
     pressure: number,
-    timestamp: number;
+    timestamp: number,
     metadata?: Record<string, any> }
 
 interface UsagePatterns { growthRate: number,
-    peakUsage: number;
-    averageUsage: number;
-    volatility: number;
-    trendDirection: 'growing' | 'shrinking' | 'stable';
-    lastTrendAnalysis: number;
+    peakUsage: number,
+    averageUsage: number,
+    volatility: number,
+    trendDirection: 'growing' | 'shrinking' | 'stable',
+    lastTrendAnalysis: number,
     cycleDetected: boolean,
-    cycleLength: number ,}
+    cycleLength: number  }
 ';
 
 interface TrendAnalysisConfig { samples: number,''
     trend: 'growing' | 'shrinking' | 'stable',
-    confidence: number ,}
+    confidence: number  }
 
-interface TrendAnalysisConfigs { shortTerm: TrendAnalysisConfig;
+interface TrendAnalysisConfigs { shortTerm: TrendAnalysisConfig,
     mediumTerm: TrendAnalysisConfig,
     longTerm: TrendAnalysisConfig
     }
@@ -36,126 +36,124 @@ interface TrendAnalysisConfigs { shortTerm: TrendAnalysisConfig;
 interface Predictions { nextPeak: number,
     timeToLimit: number,
     recommendedAction: 'none' | 'monitor_closely' | 'schedule_cleanup' | 'immediate_cleanup',
-    confidence: number ,}
+    confidence: number  }
 
 interface AnalyzerStatistics { analysisCount: number,
-    trendsDetected: Map<string, number>;
-    predictionsCorrect: number;
+    trendsDetected: Map<string, number>,
+    predictionsCorrect: number,
     predictionsFailed: number,
-    averageAccuracy: number ,}
+    averageAccuracy: number  }
 ';
 
 interface TrendResult { ''
-    trend: 'growing' | 'shrinking' | 'stable' | 'unknown';
+    trend: 'growing' | 'shrinking' | 'stable' | 'unknown',
     rate?: number,
-    confidence: number;
+    confidence: number,
     samples?: number }
 
 interface PredictionRange { min: number,
     max: number }
 
-interface PredictionBasedOn { trend: string;
-    rate: number;
+interface PredictionBasedOn { trend: string,
+    rate: number,
     cycles: boolean,
     volatility: number }
 ';
 
 interface UsagePrediction { ''
-    prediction: number | 'insufficient_data';
-    confidence?: number;
-    range?: PredictionRange;
-    basedOn?: PredictionBasedOn;
-    }
+    prediction: number | 'insufficient_data',
+    confidence?: number,
+    range?: PredictionRange,
+    basedOn?: PredictionBasedOn }
 
 interface CycleDetection { detected: boolean,
-    cycleLength?: number;
-    correlation?: number;
-    confidence?: number; }
+    cycleLength?: number,
+    correlation?: number,
+    confidence?: number }
 
 interface RiskFactors { currentUsage: number,
-    growthRate: number;
+    growthRate: number,
     volatility: number,
-    timeToLimit: number ,}
+    timeToLimit: number  }
 ';
 
 interface RiskAssessment { ''
-    level: 'low' | 'medium' | 'high' | 'critical';
+    level: 'low' | 'medium' | 'high' | 'critical',
     score: number,
     factors: RiskFactors
     }
 
-interface AnalysisResult { timestamp?: number;
-    currentUsage?: MemoryUsageSample;
-    patterns?: UsagePatterns;
-    trends?: Record<string, TrendResult>;
-    cycles?: CycleDetection;
-    predictions?: Predictions;
-    risk?: RiskAssessment;
+interface AnalysisResult { timestamp?: number,
+    currentUsage?: MemoryUsageSample,
+    patterns?: UsagePatterns,
+    trends?: Record<string, TrendResult>,
+    cycles?: CycleDetection,
+    predictions?: Predictions,
+    risk?: RiskAssessment,
 
-    recommendations?: string[];''
-    analysis?: 'insufficient_data' | 'error';
-    error?: string; }
+    recommendations?: string[],
+    analysis?: 'insufficient_data' | 'error',
+    error?: string }
 
 interface AnalyzerStats { analysisCount: number,
-    trendsDetected: Map<string, number>;
-    predictionsCorrect: number;
-    predictionsFailed: number;
-    averageAccuracy: number;
-    historySize: number;
-    currentPressure: number;
+    trendsDetected: Map<string, number>,
+    predictionsCorrect: number,
+    predictionsFailed: number,
+    averageAccuracy: number,
+    historySize: number,
+    currentPressure: number,
     lastAnalysis: number,
     patterns: UsagePatterns
-    ,}
+     }
 
 export class MemoryUsageAnalyzer {
-    private enabled: boolean;
-    private analysisInterval: number;
-    private historySize: number;
-    private usageHistory: MemoryUsageSample[];
-    private currentUsage: MemoryUsageSample;
-    private patterns: UsagePatterns;
-    private trendAnalysis: TrendAnalysisConfigs;
-    private predictions: Predictions;
-    private stats: AnalyzerStatistics;
-    private, lastAnalysis: number;
+    private enabled: boolean,
+    private analysisInterval: number,
+    private historySize: number,
+    private usageHistory: MemoryUsageSample[],
+    private currentUsage: MemoryUsageSample,
+    private patterns: UsagePatterns,
+    private trendAnalysis: TrendAnalysisConfigs,
+    private predictions: Predictions,
+    private stats: AnalyzerStatistics,
+    private, lastAnalysis: number,
     constructor(config: AnalyzerConfig = {) {
 
         // Configuration
         this.enabled = config.enabled !== undefined ? config.enabled: true,
-        this.analysisInterval = config.analysisInterval || 5000; // 5 seconds
-        this.historySize = config.historySize || 200; // Keep 200 data points
+        this.analysisInterval = config.analysisInterval || 5000, // 5 seconds
+        this.historySize = config.historySize || 200, // Keep 200 data points
         
         // Usage tracking
-        this.usageHistory = [];
+        this.usageHistory = [],
         this.currentUsage = {
-            used: 0;
+            used: 0,
             total: 0,
     pressure: 0,
             timestamp: Date.now('''
-            trendDirection: 'stable';
+            trendDirection: 'stable',
             lastTrendAnalysis: 0,
-    cycleDetected: false;
-    ,}
+    cycleDetected: false }
             cycleLength: 0 
     };
         // Trend detection
-        this.trendAnalysis = { ' }'
+        this.trendAnalysis = { }'
 
-            shortTerm: { samples: 10, trend: 'stable', confidence: 0 ,},''
-            mediumTerm: { samples: 30, trend: 'stable', confidence: 0 ,},''
-            longTerm: { samples: 60, trend: 'stable', confidence: 0 ,};
+            shortTerm: { samples: 10, trend: 'stable', confidence: 0  },''
+            mediumTerm: { samples: 30, trend: 'stable', confidence: 0  },''
+            longTerm: { samples: 60, trend: 'stable', confidence: 0  };
         
         // Performance prediction
         this.predictions = { nextPeak: 0,
             timeToLimit: Infinity,
             recommendedAction: 'none',
-    confidence: 0 ,}))
+    confidence: 0  }))
         // Statistics
-        this.stats = { analysisCount: 0,)
-            trendsDetected: new Map();
-            predictionsCorrect: 0;
+        this.stats = { analysisCount: 0)
+            trendsDetected: new Map(),
+            predictionsCorrect: 0,
             predictionsFailed: 0,
-    averageAccuracy: 0 ,};
+    averageAccuracy: 0  };
         // Start continuous analysis
         this.lastAnalysis = 0;
         this._startContinuousAnalysis();
@@ -165,9 +163,9 @@ export class MemoryUsageAnalyzer {
      * Record memory usage sample
      */
     recordUsage(used: number, total: number, metadata: Record<string, any> = { ): void {
-        if (!this.enabled) return;
+        if (!this.enabled) return,
         
-        const timestamp = Date.now();
+        const timestamp = Date.now(),
         const pressure = total > 0 ? used / total: 0,
         
         const sample: MemoryUsageSample = {
@@ -181,17 +179,17 @@ export class MemoryUsageAnalyzer {
         this.currentUsage = sample;
         
         // Maintain history size
-        if (this.usageHistory.length > this.historySize) { this.usageHistory.shift(); }
+        if (this.usageHistory.length > this.historySize) { this.usageHistory.shift() }
         
         // Update patterns immediately for critical situations
-        if (pressure > 0.9) { this._updatePatterns(); }
+        if (pressure > 0.9) { this._updatePatterns() }
     }
     
     /**
      * Perform comprehensive usage analysis
      */
     performAnalysis(): AnalysisResult { ''
-        if(!this.enabled || this.usageHistory.length < 5) {' }'
+        if(!this.enabled || this.usageHistory.length < 5) { }'
 
             return { analysis: 'insufficient_data' }
         
@@ -200,80 +198,78 @@ export class MemoryUsageAnalyzer {
         this.stats.analysisCount++;
         
         try { // Update all patterns
-            this._updatePatterns();
+            this._updatePatterns(),
             
             // Perform trend analysis
-            const trends = this._analyzeTrends();
+            const trends = this._analyzeTrends(),
             
             // Detect cycles
-            const cycles = this._detectCycles();
+            const cycles = this._detectCycles(),
             
             // Generate predictions
-            const predictions = this._generatePredictions();
+            const predictions = this._generatePredictions(),
             
             // Calculate risk assessment
-            const risk = this._assessRisk();
+            const risk = this._assessRisk(),
             
             const analysis: AnalysisResult = {
                 timestamp: now }
-                currentUsage: { ...this.currentUsage;
-                patterns: { ...this.patterns;
+                currentUsage: { ...this.currentUsage,
+                patterns: { ...this.patterns,
                 trends,
                 cycles,
                 predictions,
                 risk,
-                recommendations: this._generateRecommendations(risk);
-            ,};
+                recommendations: this._generateRecommendations(risk) };
             
             return analysis;
 
         } catch (error) {
-            console.error('[MemoryUsageAnalyzer] Analysis failed:', error';' }
+            console.error('[MemoryUsageAnalyzer] Analysis failed:', error',' }
 
-            return { analysis: 'error', error: (error, as Error).message ,}
+            return { analysis: 'error', error: (error, as Error).message  }
     }
     
     /**
      * Get current usage patterns
      */
     getCurrentPatterns(): UsagePatterns {
-        return { ...this.patterns;
-    }
+        return { ...this.patterns }
     
     /**
      * Get usage trend for specified timeframe
      */
     getTrend(timeframe: number = 300000): TrendResult { // 5 minutes default
-        const now = Date.now();
-        const relevantSamples = this.usageHistory.filter();
-            sample => now - sample.timestamp <= timeframe);
+        const now = Date.now(),
+        const relevantSamples = this.usageHistory.filter(),
+            sample => now - sample.timestamp <= timeframe),
 
-        if(relevantSamples.length < 2) {' }'
+        if(relevantSamples.length < 2) { }'
 
-            return { trend: 'unknown', confidence: 0 ,}
+            return { trend: 'unknown', confidence: 0  }
         
         const first = relevantSamples[0];
         const last = relevantSamples[relevantSamples.length - 1];
         
         const change = last.pressure - first.pressure;
 
-        const timeSpan = last.timestamp - first.timestamp;''
+        const timeSpan = last.timestamp - first.timestamp;
         const rate = change / (timeSpan / 1000'); // Change per second'
 
         let trend: 'growing' | 'shrinking' | 'stable' = 'stable',
         if (Math.abs(rate) > 0.001) { // Significant change threshold
-            trend = rate > 0 ? 'growing' : 'shrinking'; }
+            trend = rate > 0 ? 'growing' : 'shrinking' }
         
         // Calculate confidence based on sample size and consistency
         const confidence = Math.min(1.0, relevantSamples.length / 20);
         
-        return { trend, rate, confidence, samples: relevantSamples.length ,}
+        return { trend, rate, confidence, samples: relevantSamples.length  }
     
     /**
      * Predict future memory usage
      */
     predictUsage(futureTime: number = 60000): UsagePrediction { // 1 minute default
-        if(this.usageHistory.length < 10) {' }'
+        if(this.usageHistory.length < 10) { }'
 
             return { prediction: 'insufficient_data' }
         
@@ -288,9 +284,8 @@ export class MemoryUsageAnalyzer {
         
         // If cycles detected, adjust for cyclical behavior
         if(this.patterns.cycleDetected && this.patterns.cycleLength > 0) {
-            const cyclePosition = (Date.now() % this.patterns.cycleLength) / this.patterns.cycleLength;
-            const cycleAdjustment = Math.sin(cyclePosition * 2 * Math.PI) * 0.1;
-        }
+            const cyclePosition = (Date.now() % this.patterns.cycleLength) / this.patterns.cycleLength,
+            const cycleAdjustment = Math.sin(cyclePosition * 2 * Math.PI) * 0.1 }
             adjustedPrediction += cycleAdjustment; }
         }
         
@@ -298,13 +293,13 @@ export class MemoryUsageAnalyzer {
         const volatilityMargin = this.patterns.volatility * 0.5;
         
         return { prediction: Math.max(0, Math.min(1, adjustedPrediction),
-            confidence: trend.confidence * 0.8, // Reduce confidence for future predictions;
+            confidence: trend.confidence * 0.8, // Reduce confidence for future predictions,
             range: {
-                min: Math.max(0, adjustedPrediction - volatilityMargin), };
+                min: Math.max(0, adjustedPrediction - volatilityMargin) };
                 max: Math.min(1, adjustedPrediction + volatilityMargin); }
             },
-            basedOn: { trend: trend.trend;
-                rate: trend.rate || 0;
+            basedOn: { trend: trend.trend,
+                rate: trend.rate || 0,
                 cycles: this.patterns.cycleDetected,
     volatility: this.patterns.volatility 
     }
@@ -314,10 +309,9 @@ export class MemoryUsageAnalyzer {
      */
     getStats(): AnalyzerStats { return { ...this.stats,
             historySize: this.usageHistory.length,
-    currentPressure: this.currentUsage.pressure, };
-            lastAnalysis: this.lastAnalysis, }
-            patterns: { ...this.patterns;
-    }
+    currentPressure: this.currentUsage.pressure };
+            lastAnalysis: this.lastAnalysis }
+            patterns: { ...this.patterns }
     
     /**
      * Reset analyzer state
@@ -327,10 +321,10 @@ export class MemoryUsageAnalyzer {
             lastTrendAnalysis: 0;
             cycleDetected: false,
     cycleLength: 0;
-        })
+            });
         this.stats = { analysisCount: 0)
-            trendsDetected: new Map();
-            predictionsCorrect: 0;
+            trendsDetected: new Map(),
+            predictionsCorrect: 0,
             predictionsFailed: 0,
     averageAccuracy: 0 }
     
@@ -348,31 +342,30 @@ export class MemoryUsageAnalyzer {
     /**
      * Update usage patterns
      */
-    private _updatePatterns(): void { if (this.usageHistory.length < 3) return;
+    private _updatePatterns(): void { if (this.usageHistory.length < 3) return,
         
-        const recent = this.usageHistory.slice(-30); // Last 30 samples
+        const recent = this.usageHistory.slice(-30), // Last 30 samples
         
         // Calculate average usage
-        this.patterns.averageUsage = recent.reduce((sum, sample) => ;
-            sum + sample.pressure, 0) / recent.length;
+        this.patterns.averageUsage = recent.reduce((sum, sample) => ,
+            sum + sample.pressure, 0) / recent.length,
         
         // Calculate peak usage
-        this.patterns.peakUsage = Math.max(...recent.map(s => s.pressure);
+        this.patterns.peakUsage = Math.max(...recent.map(s => s.pressure),
         
-        // Calculate volatility (standard, deviation);
-        const variance = recent.reduce((sum, sample) => ;
-            sum + Math.pow(sample.pressure - this.patterns.averageUsage, 2), 0) / recent.length;
-        this.patterns.volatility = Math.sqrt(variance);
+        // Calculate volatility (standard, deviation),
+        const variance = recent.reduce((sum, sample) => ,
+            sum + Math.pow(sample.pressure - this.patterns.averageUsage, 2), 0) / recent.length,
+        this.patterns.volatility = Math.sqrt(variance),
         
         // Calculate growth rate
         if(recent.length >= 2) {
-            const first = recent[0];
-            const last = recent[recent.length - 1];
-            const timeSpan = last.timestamp - first.timestamp;
+            const first = recent[0],
+            const last = recent[recent.length - 1],
+            const timeSpan = last.timestamp - first.timestamp,
             
             if (timeSpan > 0) {
-                this.patterns.growthRate = ;
-        }
+                this.patterns.growthRate =  }
                     (last.pressure - first.pressure) / (timeSpan / 1000); }
 }
         
@@ -385,13 +378,13 @@ export class MemoryUsageAnalyzer {
     /**
      * Update trend direction
      */
-    private _updateTrendDirection(): void { const rate = this.patterns.growthRate;
+    private _updateTrendDirection(): void { const rate = this.patterns.growthRate,
 
         if (Math.abs(rate) < 0.001) {''
-            this.patterns.trendDirection = 'stable';' }
+            this.patterns.trendDirection = 'stable',' }
 
         } else if(rate > 0) { ''
-            this.patterns.trendDirection = 'growing'; }
+            this.patterns.trendDirection = 'growing' }
 
         } else { }'
 
@@ -409,7 +402,7 @@ export class MemoryUsageAnalyzer {
     private _analyzeTrends(): Record<string, TrendResult> {
         const trends: Record<string, TrendResult> = {};
         
-        for(const [timeframe, config] of Object.entries(this.trendAnalysis) { trends[timeframe] = this.getTrend(config.samples * this.analysisInterval); }
+        for(const [timeframe, config] of Object.entries(this.trendAnalysis) { trends[timeframe] = this.getTrend(config.samples * this.analysisInterval) }
         
         return trends;
     }
@@ -429,12 +422,10 @@ export class MemoryUsageAnalyzer {
         
         for(let, lag = 5; lag < samples.length / 2; lag++) {
         
-            const correlation = this._calculateAutocorrelation(pressures, lag);
+            const correlation = this._calculateAutocorrelation(pressures, lag),
             
             if (correlation > bestCorrelation && correlation > 0.7) {
-                bestCorrelation = correlation;
-        
-        }
+                bestCorrelation = correlation }
                 bestCycleLength = lag * this.analysisInterval; }
 }
         
@@ -442,38 +433,34 @@ export class MemoryUsageAnalyzer {
         
         if(detected) {
         
-            this.patterns.cycleDetected = true;
-        
-        }
+            this.patterns.cycleDetected = true }
             this.patterns.cycleLength = bestCycleLength; }
         }
         
         return { detected,
             cycleLength: bestCycleLength,
-    correlation: bestCorrelation, };
+    correlation: bestCorrelation };
             confidence: Math.min(1.0, bestCorrelation); }
         }
     
     /**
      * Calculate autocorrelation for cycle detection
      */
-    private _calculateAutocorrelation(data: number[], lag: number): number { if (lag >= data.length - 1) return 0;
+    private _calculateAutocorrelation(data: number[], lag: number): number { if (lag >= data.length - 1) return 0,
         
-        const n = data.length - lag;
-        const mean = data.reduce((sum, val) => sum + val, 0) / data.length;
+        const n = data.length - lag,
+        const mean = data.reduce((sum, val) => sum + val, 0) / data.length,
         
-        let numerator = 0;
-        let denominator = 0;
+        let numerator = 0,
+        let denominator = 0,
         
-        for(let, i = 0; i < n; i++) {
-        
-            
-        
-        }
+        for(let, i = 0, i < n, i++) {
+    
+}
             numerator += (data[i] - mean) * (data[i + lag] - mean); }
         }
         
-        for (let, i = 0; i < data.length; i++) { denominator += Math.pow(data[i] - mean, 2); }
+        for (let, i = 0; i < data.length; i++) { denominator += Math.pow(data[i] - mean, 2) }
         
         return denominator === 0 ? 0 : numerator / denominator;
     }
@@ -481,16 +468,16 @@ export class MemoryUsageAnalyzer {
     /**
      * Generate predictions based on patterns
      */
-    private _generatePredictions(): Predictions { const current = this.currentUsage.pressure;
-        const rate = this.patterns.growthRate;
+    private _generatePredictions(): Predictions { const current = this.currentUsage.pressure,
+        const rate = this.patterns.growthRate,
         
         // Predict next peak
-        let nextPeak = current;
+        let nextPeak = current,
         if(rate > 0) {
-            
-        }
+    
+}
             nextPeak = current + (rate * 60); // Next minute }
-        } else { nextPeak = this.patterns.peakUsage * 1.1; // 10% above current peak }
+        } else { nextPeak = this.patterns.peakUsage * 1.1, // 10% above current peak }
         
         // Predict time to memory limit
         let timeToLimit = Infinity;
@@ -503,17 +490,15 @@ export class MemoryUsageAnalyzer {
         ;
         // Determine recommended action
         let recommendedAction: 'none' | 'monitor_closely' | 'schedule_cleanup' | 'immediate_cleanup' = 'none',
-        if(current > 0.9) {', ';
+        if(current > 0.9) {', ' }
 
-        }
-
-            recommendedAction = 'immediate_cleanup';' }
+            recommendedAction = 'immediate_cleanup'; }
 
         } else if(current > 0.8 || rate > 0.01) { ''
-            recommendedAction = 'schedule_cleanup';' }
+            recommendedAction = 'schedule_cleanup',' }
 
-        } else if (current > 0.6 && this.patterns.trendDirection === 'growing'') { ''
-            recommendedAction = 'monitor_closely'; }
+        } else if (current > 0.6 && this.patterns.trendDirection === 'growing') { ''
+            recommendedAction = 'monitor_closely' }
         
         // Calculate prediction confidence
         const confidence = Math.max(0, Math.min(1.0);
@@ -525,8 +510,7 @@ export class MemoryUsageAnalyzer {
             recommendedAction,
             confidence };
         
-        return { ...this.predictions;
-    }
+        return { ...this.predictions }
     
     /**
      * Assess memory risk level
@@ -563,9 +547,9 @@ export class MemoryUsageAnalyzer {
         return { level: riskLevel,
             score: riskScore,
     factors: {
-                currentUsage: current;
+                currentUsage: current,
                 growthRate: rate,
-    volatility: volatility, };
+    volatility: volatility };
                 timeToLimit: this.predictions.timeToLimit 
     }
     
@@ -574,23 +558,21 @@ export class MemoryUsageAnalyzer {
      */''
     private _generateRecommendations(risk: RiskAssessment): string[] { const recommendations: string[] = [],
 
-        if(risk.level === 'critical'') {'
+        if(risk.level === 'critical') {
 
-            recommendations.push('Execute, emergency cleanup, immediately'');''
-            recommendations.push('Reduce, memory-intensive, operations'');
+            recommendations.push('Execute, emergency cleanup, immediately'),
+            recommendations.push('Reduce, memory-intensive, operations') }
 
-        }
+            recommendations.push('Consider, increasing cleanup, frequency');' }
 
-            recommendations.push('Consider, increasing cleanup, frequency'');' }
+        } else if (risk.level === 'high') { ''
+            recommendations.push('Schedule, aggressive cleanup'),
+            recommendations.push('Monitor, memory usage, closely'),
+            recommendations.push('Review, memory allocation, patterns'),' }
 
-        } else if (risk.level === 'high'') { ''
-            recommendations.push('Schedule, aggressive cleanup'');''
-            recommendations.push('Monitor, memory usage, closely'');''
-            recommendations.push('Review, memory allocation, patterns'');' }
-
-        } else if (risk.level === 'medium'') { ''
-            recommendations.push('Schedule, standard cleanup'');''
-            recommendations.push('Optimize, cache usage''); }
+        } else if (risk.level === 'medium') { ''
+            recommendations.push('Schedule, standard cleanup'),
+            recommendations.push('Optimize, cache usage') }
 
         } else { }'
 
@@ -598,21 +580,16 @@ export class MemoryUsageAnalyzer {
         }
         ';
         // Pattern-specific recommendations
-        if(this.patterns.volatility > 0.2) {', ';
-
-        }
+        if(this.patterns.volatility > 0.2) {', ' }
 
             recommendations.push('Investigate, causes of, memory volatility'; }'
         }
 
-        if(this.patterns.cycleDetected) {', ';
+        if(this.patterns.cycleDetected) {', ' }
 
-        }
-
-            recommendations.push('Optimize, for detected, memory usage, cycles''); }
+            recommendations.push('Optimize, for detected, memory usage, cycles'); }
         }
         
         return recommendations;
 
-    }''
-}
+    }'}

@@ -13,57 +13,57 @@ import { measurePerformance,
 } from './SEOUtils';
 
 // 画像最適化オプションインターフェース
-interface ImageOptimizationOptions { quality?: number;''
-    format?: 'webp' | 'png' | 'jpg';
-    width?: number;
-    height?: number;
-    enableLazyLoad?: boolean; }
+interface ImageOptimizationOptions { quality?: number,
+    format?: 'webp' | 'png' | 'jpg',
+    width?: number,
+    height?: number,
+    enableLazyLoad?: boolean }
 
 // パフォーマンスメトリクスインターフェース
 interface PerformanceMetrics { loadTime: number,
-    firstContentfulPaint: number;
-    largestContentfulPaint: number;
-    firstInputDelay: number;
+    firstContentfulPaint: number,
+    largestContentfulPaint: number,
+    firstInputDelay: number,
     cumulativeLayoutShift: number,
-    timestamp: number ,}
+    timestamp: number  }
 
 // 最適化結果インターフェース
-interface OptimizationResult { success: boolean;
-    originalSize?: number;
-    optimizedSize?: number;
-    compressionRatio?: number;
-    format?: string;
-    error?: string; }
+interface OptimizationResult { success: boolean,
+    originalSize?: number,
+    optimizedSize?: number,
+    compressionRatio?: number,
+    format?: string,
+    error?: string }
 
 // 読み込みタスクインターフェース
 interface LoadingTask { id: string,''
     status: 'pending' | 'loading' | 'completed' | 'failed',
-    startTime: number;
-    endTime?: number;
-    result?: any;
-    error?: Error;
-    ,}
+    startTime: number,
+    endTime?: number,
+    result?: any,
+    error?: Error,
+     }
 
 export class SEOPerformanceOptimizer {
-    private baseUrl: string;
-    private, imageCache: Map<string, string>;
-    private metadataCache: Map<string, any>;
-    private compressionCache: Map<string, OptimizationResult>;
-    private loadingTasks: Map<string, LoadingTask>;
-    private performanceObserver: PerformanceObserver | null;
-    private, metrics: PerformanceMetrics[];
+    private baseUrl: string,
+    private, imageCache: Map<string, string>,
+    private metadataCache: Map<string, any>,
+    private compressionCache: Map<string, OptimizationResult>,
+    private loadingTasks: Map<string, LoadingTask>,
+    private performanceObserver: PerformanceObserver | null,
+    private, metrics: PerformanceMetrics[],
     constructor() {
     
-        this.baseUrl = getBaseUrl();
-        this.imageCache = new Map();
-        this.metadataCache = new Map();
-        this.compressionCache = new Map();
-        this.loadingTasks = new Map();
-        this.performanceObserver = null;
-        this.metrics = [];
+        this.baseUrl = getBaseUrl(),
+        this.imageCache = new Map(),
+        this.metadataCache = new Map(),
+        this.compressionCache = new Map(),
+        this.loadingTasks = new Map(),
+        this.performanceObserver = null,
+        this.metrics = [],
         
     
-    ,}
+     }
         this._initialize(); }
     }
     
@@ -71,11 +71,11 @@ export class SEOPerformanceOptimizer {
      * 初期化処理
      */'
     private _initialize(): void { try {'
-            this._setupPerformanceMonitoring()';
-            seoLogger.info('SEOPerformanceOptimizer, initialized successfully';' }
+            this._setupPerformanceMonitoring()',
+            seoLogger.info('SEOPerformanceOptimizer, initialized successfully',' }
 
         } catch (error) {
-            seoErrorHandler.handle(error as Error, 'seoPerformanceOptimizerInit'; }'
+            seoErrorHandler.handle(error as Error, 'seoPerformanceOptimizerInit' }'
     }
     
     /**
@@ -99,15 +99,15 @@ export class SEOPerformanceOptimizer {
      * パフォーマンスエントリーの処理
      */'
     private _processPerformanceEntries(entries: PerformanceEntry[]): void { ''
-        entries.forEach(entry => { ');''
-            if(entry.entryType === 'paint' {' }
+        entries.forEach(entry => { '),
+            if(entry.entryType === 'paint' { }
 
                 this._recordPaintMetric(entry);' }'
 
             } else if(entry.entryType === 'layout-shift' { ''
-                this._recordLayoutShift(entry);' }'
+                this._recordLayoutShift(entry),' }'
 
-            } else if(entry.entryType === 'first-input) { this._recordFirstInputDelay(entry); }'
+            } else if(entry.entryType === 'first-input) { this._recordFirstInputDelay(entry) }'
         });
     }
     
@@ -122,43 +122,42 @@ export class SEOPerformanceOptimizer {
      * レイアウトシフトの記録'
      */''
     private _recordLayoutShift(entry: PerformanceEntry): void { ''
-        seoLogger.performance('Layout Shift', (entry as any).value || 0); }
+        seoLogger.performance('Layout Shift', (entry: any).value || 0) }
     
     /**
      * 初回入力遅延の記録'
      */''
     private _recordFirstInputDelay(entry: PerformanceEntry): void { ''
-        seoLogger.performance('First Input Delay', entry.startTime'; }
+        seoLogger.performance('First Input Delay', entry.startTime' }
     
     /**
      * 画像の最適化'
      */''
     async optimizeImage(imageUrl: string, options: ImageOptimizationOptions = { )): Promise<OptimizationResult> {''
-        const cacheKey = generateCacheKey('imageOptimization', { imageUrl, options );
+        const cacheKey = generateCacheKey('imageOptimization', { imageUrl, options ),
         
         if(this.compressionCache.has(cacheKey) {
-        
-            
-        
-        }
+    
+}
             return this.compressionCache.get(cacheKey)!;
         
-        try { const startTime = performance.now();
+        try { const startTime = performance.now(),
             
             // 画像の読み込み
-            const response = await fetch(imageUrl);
-            const originalBlob = await response.blob();
-            const originalSize = originalBlob.size;
+            const response = await fetch(imageUrl),
+            const originalBlob = await response.blob(),
+            const originalSize = originalBlob.size,
             // Canvas を使用した最適化（簡易版）
-            const optimizedBlob = await this._processImageWithCanvas(originalBlob, options);
-            const optimizedSize = optimizedBlob.size;
+            const optimizedBlob = await this._processImageWithCanvas(originalBlob, options),
+            const optimizedSize = optimizedBlob.size,
             
             const result: OptimizationResult = {
-                success: true;
+                success: true,
                 originalSize,
                 optimizedSize,
                 compressionRatio: optimizedSize / originalSize,
-                format: options.format || 'webp' ,};
+                format: options.format || 'webp'
+            };
             this.compressionCache.set(cacheKey, result);
 
             const duration = performance.now()';
@@ -175,20 +174,20 @@ export class SEOPerformanceOptimizer {
      * Canvas を使用した画像処理
      */
     private async _processImageWithCanvas(blob: Blob, options: ImageOptimizationOptions): Promise<Blob> { return new Promise((resolve, reject) => { '
-            const img = new Image();''
+            const img = new Image(),
             img.onload = () => {'
                 try {'
-                    const canvas = document.createElement('canvas'');''
-                    const ctx = canvas.getContext('2d)!;
+                    const canvas = document.createElement('canvas'),
+                    const ctx = canvas.getContext('2d)!,
                     
                     // サイズ調整
-                    canvas.width = options.width || img.width;
-                    canvas.height = options.height || img.height;
+                    canvas.width = options.width || img.width,
+                    canvas.height = options.height || img.height,
                     
-                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height),
                     
                     canvas.toBlob((optimizedBlob) => {
-                        if (optimizedBlob) {' }'
+                        if (optimizedBlob) { }'
 
                             resolve(optimizedBlob); }
 
@@ -196,9 +195,8 @@ export class SEOPerformanceOptimizer {
 
                             reject(new, Error('Failed, to optimize, image)'; }'
 
-                        }''
-                    }, `image/${options.format || 'webp'}`, options.quality || 0.8);
-                } catch (error) { reject(error); }
+                        }'}, `image/${options.format || 'webp'}`, options.quality || 0.8);
+                } catch (error) { reject(error) }
             };
 
             img.onerror = () => reject(new, Error('Failed, to load, image);
@@ -210,23 +208,18 @@ export class SEOPerformanceOptimizer {
      * メタデータの最適化
      */
     optimizeMetadata(metadata: Record<string, any>): Record<string, any> {
-        const optimized = { ...metadata;
+        const optimized = { ...metadata,
         
         // 長いテキストの短縮
-        if(optimized.title && optimized.title.length > 60) {
-            ';
-
-        }
+        if(optimized.title && optimized.title.length > 60) { }
 
             optimized.title = optimized.title.substring(0, 57) + '...';
         }
         
         if(optimized.description && optimized.description.length > 160) {
-        ';
+        ',
 
-            ';
-
-        }
+            ' }
 
             optimized.description = optimized.description.substring(0, 157) + '...';
         }
@@ -242,18 +235,18 @@ export class SEOPerformanceOptimizer {
      * Core Web Vitals の測定
      */
     measureCoreWebVitals(): PerformanceMetrics { const metrics: PerformanceMetrics = {
-            loadTime: performance.now();
-            firstContentfulPaint: 0;
-            largestContentfulPaint: 0;
+            loadTime: performance.now(),
+            firstContentfulPaint: 0,
+            largestContentfulPaint: 0,
             firstInputDelay: 0,
     cumulativeLayoutShift: 0,
-            timestamp: Date.now()';
+            timestamp: Date.now()',
         if(typeof, window !== 'undefined' && window.performance' {'
 
-            const paintEntries = performance.getEntriesByType('paint'');''
-            const fcpEntry = paintEntries.find(entry => entry.name === 'first-contentful-paint);
+            const paintEntries = performance.getEntriesByType('paint'),
+            const fcpEntry = paintEntries.find(entry => entry.name === 'first-contentful-paint),
             if (fcpEntry) {
-        ,}
+         }
                 metrics.firstContentfulPaint = fcpEntry.startTime; }
 }
         
@@ -265,12 +258,12 @@ export class SEOPerformanceOptimizer {
      * パフォーマンス統計の取得
      */
     getPerformanceStats(): { averageLoadTime: number,
-        averageFCP: number;
+        averageFCP: number,
         metricsCount: number,
-    cacheHitRate: number ,} { if (this.metrics.length === 0) {
-            return { averageLoadTime: 0;
+    cacheHitRate: number  } { if (this.metrics.length === 0) {
+            return { averageLoadTime: 0,
                 averageFCP: 0,
-    metricsCount: 0, };
+    metricsCount: 0 };
                 cacheHitRate: 0 
     }
         
@@ -279,7 +272,7 @@ export class SEOPerformanceOptimizer {
         
         return { averageLoadTime: totalLoadTime / this.metrics.length,
             averageFCP: totalFCP / this.metrics.length,
-    metricsCount: this.metrics.length, };
+    metricsCount: this.metrics.length };
             cacheHitRate: this.imageCache.size > 0 ? 0.8 : 0 // 簡易計算 
         }
     
@@ -287,13 +280,12 @@ export class SEOPerformanceOptimizer {
      * リソースのクリーンアップ
      */
     cleanup(): void { if (this.performanceObserver) {
-            this.performanceObserver.disconnect(); }
+            this.performanceObserver.disconnect() }
         
         this.imageCache.clear();
         this.metadataCache.clear();
-        this.compressionCache.clear();''
+        this.compressionCache.clear();
         this.loadingTasks.clear()';
-        seoLogger.info('SEOPerformanceOptimizer, cleaned up'');
+        seoLogger.info('SEOPerformanceOptimizer, cleaned up');
 
-    }''
-}
+    }'}

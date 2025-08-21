@@ -9,68 +9,67 @@
  */
 interface ChallengeReward { type: string,
     amount: number,
-    description: string ,}
+    description: string  }
 
 /**
  * Challenge data interface
  */
-interface ChallengeData { id: string;
-    title: string;
+interface ChallengeData { id: string,
+    title: string,
     description: string,
     type: 'daily' | 'weekly' | 'special' | 'event',
-    difficulty: 'easy' | 'medium' | 'hard' | 'expert';
-    progress: number;
+    difficulty: 'easy' | 'medium' | 'hard' | 'expert',
+    progress: number,
     target: number,
-    reward: ChallengeReward;
-    deadline?: Date;
-    priority?: number; ,}
+    reward: ChallengeReward,
+    deadline?: Date,
+    priority?: number,  }
 
 /**
  * Challenge system interface
  */
-interface ChallengeSystem { getChallengeById?: (challengeId: string) => Promise<ChallengeData | null> ,}
+interface ChallengeSystem { getChallengeById?: (challengeId: string) => Promise<ChallengeData | null>  }
 }
 
 /**
  * Localization manager interface
  */
-interface LocalizationManager { translate(key: string): string | null, }
+interface LocalizationManager { translate(key: string): string | null }
 
 /**
  * Bound event handlers
  */
 interface BoundHandlers { close: () => void,
-    backdropClick: (event: Event) => void;
-    keyDown: (event: KeyboardEvent) => void ,}
+    backdropClick: (event: Event) => void,
+    keyDown: (event: KeyboardEvent) => void  }
 }
 
 export class ChallengeDetailModal {
-    private challengeSystem: ChallengeSystem;
-    private localizationManager: LocalizationManager;
+    private challengeSystem: ChallengeSystem,
+    private localizationManager: LocalizationManager,
     // 状態管理
-    private isVisible: boolean = false;
-    private currentChallengeId: string | null = null;
-    private challengeData: ChallengeData | null = null;
-    private isLoading: boolean = false;
-    private error: string | null = null;
+    private isVisible: boolean = false,
+    private currentChallengeId: string | null = null,
+    private challengeData: ChallengeData | null = null,
+    private isLoading: boolean = false,
+    private error: string | null = null,
     // DOM要素
-    private container: HTMLDivElement | null = null;
-    private backdrop: HTMLDivElement | null = null;
-    private modal: HTMLDivElement | null = null;
-    private closeButton: HTMLButtonElement | null = null;
-    private contentArea: HTMLDivElement | null = null;
+    private container: HTMLDivElement | null = null,
+    private backdrop: HTMLDivElement | null = null,
+    private modal: HTMLDivElement | null = null,
+    private closeButton: HTMLButtonElement | null = null,
+    private contentArea: HTMLDivElement | null = null,
     // イベントハンドラー
-    private, boundHandlers: BoundHandlers;
+    private, boundHandlers: BoundHandlers,
     constructor(challengeSystem: ChallengeSystem, localizationManager: LocalizationManager) {
 
-        this.challengeSystem = challengeSystem;
-        this.localizationManager = localizationManager;
+        this.challengeSystem = challengeSystem,
+        this.localizationManager = localizationManager,
         
         // イベントハンドラー
         this.boundHandlers = {
-            close: this.close.bind(this),
-    backdropClick: this.onBackdropClick.bind(this);
-    ,}
+            close: this.close.bind(this,
+    backdropClick: this.onBackdropClick.bind(this) }
 
             keyDown: this.onKeyDown.bind(this); 
     };
@@ -83,7 +82,7 @@ export class ChallengeDetailModal {
      * モーダル構造の作成'
      */''
     createModalStructure()';
-            this.container = document.createElement('div'');''
+            this.container = document.createElement('div');
             this.container.className = 'challenge-detail-modal-container';
             this.container.style.cssText = `;
                 position: fixed;
@@ -99,7 +98,7 @@ export class ChallengeDetailModal {
             `;
             ';
             // 背景（バックドロップ）
-            this.backdrop = document.createElement('div'');''
+            this.backdrop = document.createElement('div');
             this.backdrop.className = 'challenge-detail-modal-backdrop';
             this.backdrop.style.cssText = `;
                 position: absolute;
@@ -109,11 +108,11 @@ export class ChallengeDetailModal {
                 height: 100%,
                 background-color: rgba(0, 0, 0, 0.5);
                 cursor: pointer,
-            `;''
+            `;
             this.backdrop.addEventListener('click', this.boundHandlers.backdropClick';
             ';
             // モーダル本体
-            this.modal = document.createElement('div'');''
+            this.modal = document.createElement('div');
             this.modal.className = 'challenge-detail-modal';
             this.modal.style.cssText = `;
                 position: relative,
@@ -129,7 +128,7 @@ export class ChallengeDetailModal {
             `;
             ';
             // ヘッダー
-            const header = document.createElement('div'');''
+            const header = document.createElement('div');
             header.className = 'challenge-detail-modal-header';
             header.style.cssText = `;
                 padding: 20px 24px 16px;
@@ -140,18 +139,18 @@ export class ChallengeDetailModal {
                 background: #f8f9fa;
             `;
 
-            const title = document.createElement('h2'');''
+            const title = document.createElement('h2');
             title.className = 'challenge-detail-modal-title';
             title.style.cssText = `;
                , margin: 0;
                 font-size: 24px,
                 font-weight: bold,
                 color: #2c3e50,
-            `;''
-            title.textContent = this.localizationManager.translate('challenge.detail.title'') || 'チャレンジ詳細';
+            `;
+            title.textContent = this.localizationManager.translate('challenge.detail.title') || 'チャレンジ詳細';
             ';
             // 閉じるボタン
-            this.closeButton = document.createElement('button'');''
+            this.closeButton = document.createElement('button');
             this.closeButton.className = 'challenge-detail-modal-close';
             this.closeButton.style.cssText = `;
                 background: none,
@@ -167,28 +166,28 @@ export class ChallengeDetailModal {
                 justify-content: center,
                 border-radius: 50%,
                 transition: all 0.2s ease,
-            `;''
+            `;
             this.closeButton.innerHTML = '×';
-            this.closeButton.setAttribute('aria-label', this.localizationManager.translate('common.close'') || '閉じる'');''
-            this.closeButton.addEventListener('click', this.boundHandlers.close';''
+            this.closeButton.setAttribute('aria-label', this.localizationManager.translate('common.close') || '閉じる');
+            this.closeButton.addEventListener('click', this.boundHandlers.close';
             this.closeButton.addEventListener('mouseover', () => {  ''
-                this.closeButton!.style.backgroundColor = '#ecf0f1';' }
+                this.closeButton!.style.backgroundColor = '#ecf0f1',' }
 
-                this.closeButton!.style.color = '#2c3e50';' }
+                this.closeButton!.style.color = '#2c3e50'; }
 
-            }');''
+            }');
             this.closeButton.addEventListener('mouseout', () => {  ''
-                this.closeButton!.style.backgroundColor = 'transparent';' }
+                this.closeButton!.style.backgroundColor = 'transparent',' }
 
                 this.closeButton!.style.color = '#7f8c8d'; }
             }';
             ';
 
-            header.appendChild(title);''
+            header.appendChild(title);
             header.appendChild(this.closeButton);
             ';
             // コンテンツエリア
-            this.contentArea = document.createElement('div'');''
+            this.contentArea = document.createElement('div');
             this.contentArea.className = 'challenge-detail-modal-content';
             this.contentArea.style.cssText = `;
                 padding: 24px;
@@ -200,46 +199,41 @@ export class ChallengeDetailModal {
             // 要素の組み立て
             this.modal.appendChild(header);
             this.modal.appendChild(this.contentArea);
-            this.container.appendChild(this.backdrop);''
+            this.container.appendChild(this.backdrop);
             this.container.appendChild(this.modal);
             ';
             // アクセシビリティ属性
-            this.modal.setAttribute('role', 'dialog'');''
-            this.modal.setAttribute('aria-modal', 'true'');''
-            this.modal.setAttribute('aria-labelledby', 'challenge-detail-title'');''
+            this.modal.setAttribute('role', 'dialog');
+            this.modal.setAttribute('aria-modal', 'true');
+            this.modal.setAttribute('aria-labelledby', 'challenge-detail-title');
             title.id = 'challenge-detail-title';
 
             console.log('[ChallengeDetailModal] モーダル構造作成完了';
 
         } catch (error') {
-            console.error('[ChallengeDetailModal] モーダル構造作成エラー:', error);
-            this.error = (error, as Error).message; }
+            console.error('[ChallengeDetailModal] モーダル構造作成エラー:', error),
+            this.error = (error, as Error).message }
     }
     
     /**
      * チャレンジ詳細表示
      */
-    async show(challengeId: string): Promise<void> { if (this.isVisible || !challengeId) return;
+    async show(challengeId: string): Promise<void> { if (this.isVisible || !challengeId) return,
         
         try {
-            this.currentChallengeId = challengeId;
-            this.isLoading = true;
-            this.error = null;
+            this.currentChallengeId = challengeId,
+            this.isLoading = true,
+            this.error = null,
             
             // モーダルを表示
-            this.isVisible = true;''
-            if(this.container) {', ';
-
-            }
+            this.isVisible = true,
+            if(this.container) {', ' }
 
                 this.container.style.display = 'flex'; }
             }
             
             // ドキュメントに追加（まだ追加されていない場合）
-            if(this.container && !this.container.parentNode) {
-                ';
-
-            }
+            if(this.container && !this.container.parentNode) { }
 
                 document.body.appendChild(this.container); }
             }
@@ -252,25 +246,23 @@ export class ChallengeDetailModal {
             // チャレンジデータ読み込み
             await this.loadChallengeData(challengeId);
 
-             : undefined'';
+             : undefined';
             console.log('[ChallengeDetailModal] モーダル表示:', challengeId);
 
         } catch (error) {
-            console.error('[ChallengeDetailModal] 表示エラー:', error);
-            this.error = (error, as Error).message;
-            this.renderError(); } finally { this.isLoading = false; }
+            console.error('[ChallengeDetailModal] 表示エラー:', error),
+            this.error = (error, as Error).message,
+            this.renderError() } finally { this.isLoading = false }
     }
     
     /**
      * モーダルを閉じる
      */
-    close(): void { if (!this.isVisible) return;
+    close(): void { if (!this.isVisible) return,
         
         try {
-            this.isVisible = false;''
-            if(this.container) {', ';
-
-            }
+            this.isVisible = false,
+            if(this.container) {', ' }
 
                 this.container.style.display = 'none'; }
             }
@@ -287,43 +279,42 @@ export class ChallengeDetailModal {
             console.log('[ChallengeDetailModal] モーダル閉じる';
 
         } catch (error') {
-            console.error('[ChallengeDetailModal] 閉じるエラー:', error); }
+            console.error('[ChallengeDetailModal] 閉じるエラー:', error) }
     }
     
     /**
      * チャレンジデータ読み込み
      */
     private async loadChallengeData(challengeId: string): Promise<void> { try {
-            this.renderLoading();
+            this.renderLoading(),
             
             // チャレンジシステムからデータ取得
             if(this.challengeSystem && this.challengeSystem.getChallengeById) {
-                
-            }
+    
+}
                 this.challengeData = await this.challengeSystem.getChallengeById(challengeId); }
             } else {  // フォールバック：モックデータ }
                 this.challengeData = this.createMockChallengeData(challengeId); }
             }
             
             if(this.challengeData) {
-            ';
+            ',
 
-                this.renderChallengeDetails();
-            }
+                this.renderChallengeDetails() }
 
-                throw new Error('チャレンジデータが見つかりません';' }
+                throw new Error('チャレンジデータが見つかりません'; }
 
             } catch (error) {
-            console.error('[ChallengeDetailModal] データ読み込みエラー:', error);
-            this.error = (error, as Error).message;
-            this.renderError(); }
+            console.error('[ChallengeDetailModal] データ読み込みエラー:', error),
+            this.error = (error, as Error).message,
+            this.renderError() }
     }
     
     /**
      * モックチャレンジデータ作成'
      */''
     private createMockChallengeData(challengeId: string): ChallengeData { return {  };
-            id: challengeId, }
+            id: challengeId }
 
             title: `チャレンジ ${challengeId}`,''
             description: 'このチャレンジの詳細説明です。目標を達成して報酬を獲得しましょう。',
@@ -334,27 +325,27 @@ export class ChallengeDetailModal {
             reward: { ''
                 type: 'ap',
                 amount: 100,
-                description: '100 AP' ,};
+                description: '100 AP'
+            };
             deadline: new Date(Date.now() + 24 * 60 * 60 * 1000), // 24時間後;
             priority: 5;
-        },
-    }
+        } }
     
     /**
      * ローディング状態の描画
      */
     private renderLoading(): void { ''
-        if(!this.contentArea) return;
-        ';
+        if(!this.contentArea) return,
+        ',
 
-        this.contentArea.innerHTML = `'';
-            <div style="text-align: center; padding: 40px; color: #7f8c8d;">""
-                <div style="font-size: 18px; margin-bottom: 16px;">読み込み中...</div>""
-                <div style="width: 40px; height: 40px; border: 4px solid #ecf0f1; border-top: 4px solid #3498db; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto;"></div>
-            </div>;
-            <style>;
+        this.contentArea.innerHTML = `',
+            <div style="text-align: center, padding: 40px, color: #7f8c8d,">""
+                <div style="font-size: 18px, margin-bottom: 16px,">読み込み中...</div>""
+                <div style="width: 40px, height: 40px, border: 4px solid #ecf0f1, border-top: 4px solid #3498db, border-radius: 50%, animation: spin 1s linear infinite, margin: 0 auto,"></div>
+            </div>,
+            <style>,
                 @keyframes spin { }
-                    0% { transform: rotate(0deg), }
+                    0% { transform: rotate(0deg) }
                     100% { transform: rotate(360deg }
             </style>;
         `;
@@ -363,14 +354,14 @@ export class ChallengeDetailModal {
     /**
      * チャレンジ詳細の描画
      */
-    private, renderChallengeDetails(): void { if (!this.challengeData || !this.contentArea) return;
-        ";
-        const challenge = this.challengeData;""
-        const progressPercentage = Math.round((challenge.progress / challenge.target) * 100");
-        ";
-        this.contentArea.innerHTML = `"";
-            <div class="challenge-detail-content">"";
-                <div style="margin-bottom: 24px;">" }"
+    private, renderChallengeDetails(): void { if (!this.challengeData || !this.contentArea) return,
+        ",
+        const challenge = this.challengeData,""
+        const progressPercentage = Math.round((challenge.progress / challenge.target) * 100"),
+        ",
+        this.contentArea.innerHTML = `"",
+            <div class="challenge-detail-content">"",
+                <div style="margin-bottom: 24px,">" }"
                     <h3 style="margin: 0 0 8px 0; font-size: 20px;, color: #2c3e50;">${challenge.title}</h3>""
                     <p style="margin: 0;, color: #7f8c8d; line-height: 1.5;">${challenge.description}</p>
                 </div>";
@@ -413,13 +404,14 @@ export class ChallengeDetailModal {
                 </div>;
                 ";
                 ${ challenge.deadline ? ` : undefined""
-                    <div, style="margin-bottom: 24px;">""
-                        <h4, style="margin: 0, 0 8px, 0; color: #2c3e50;">期限</h4>""
-                        <div, style="color: #e74c3c; font-weight: bold;">" ,}"
+                    <div, style="margin-bottom: 24px,">""
+                        <h4, style="margin: 0, 0 8px, 0, color: #2c3e50,">期限</h4>""
+                        <div, style="color: #e74c3c, font-weight: bold,">"
+            }"
                             ${this.formatDeadline(challenge.deadline"}""
                         </div>";
                     </div>"";
-                ` : ''}
+                ` : '}
             </div>;
         `;
     }
@@ -428,14 +420,14 @@ export class ChallengeDetailModal {
      * エラー状態の描画
      */'
     private renderError(): void { ''
-        if(!this.contentArea) return;
-        ';
+        if(!this.contentArea) return,
+        ',
 
-        this.contentArea.innerHTML = `'';
-            <div style="text-align: center; padding: 40px;, color: #e74c3c;">""
-                <div style="font-size: 18px; margin-bottom: 16px;">エラーが発生しました</div>" }"
+        this.contentArea.innerHTML = `',
+            <div style="text-align: center, padding: 40px,, color: #e74c3c,">""
+                <div style="font-size: 18px, margin-bottom: 16px,">エラーが発生しました</div>" }"
                 <div style="color: #7f8c8d; margin-bottom: 24px;">${this.error || '不明なエラー'}</div>''
-                <button onclick="this.closest('.challenge-detail-modal-container'').querySelector('.challenge-detail-modal-close'.click()" "";
+                <button onclick="this.closest('.challenge-detail-modal-container').querySelector('.challenge-detail-modal-close'.click()""";
                         style="padding: 8px 16px; background: #e74c3c; color: white; border: none; border-radius: 4px;, cursor: pointer;">
                     閉じる;
                 </button>;
@@ -447,7 +439,7 @@ export class ChallengeDetailModal {
      * バックドロップクリック処理
      */
     private onBackdropClick(event: Event): void { if (event.target === this.backdrop) {
-            this.close(); }
+            this.close() }
     }
     
     /**
@@ -455,8 +447,7 @@ export class ChallengeDetailModal {
      */""
     private onKeyDown(event: KeyboardEvent): void { ""
         if(event.key === 'Escape' {'
-            event.preventDefault();
-        }
+            event.preventDefault() }
             this.close(); }
 }
     
@@ -467,7 +458,8 @@ export class ChallengeDetailModal {
             daily: 'デイリー',
             weekly: 'ウィークリー',
             special: 'スペシャル',
-            event: 'イベント' ,};
+            event: 'イベント'
+            };
         return types[type] || type;
     }
 
@@ -475,7 +467,8 @@ export class ChallengeDetailModal {
             easy: '易しい',
             medium: '普通',
             hard: '難しい',
-            expert: 'エキスパート' ,};
+            expert: 'エキスパート'
+            };
         return difficulties[difficulty] || difficulty;
     }
 
@@ -483,25 +476,24 @@ export class ChallengeDetailModal {
             easy: '#d5f4e6',
             medium: '#fff3cd',
             hard: '#f8d7da',
-            expert: '#d1ecf1' ,}
+            expert: '#d1ecf1'
+            }
 
-        };''
+        };
         return colors[difficulty] || '#f8f9fa';
     }
     
-    private formatDeadline(deadline: Date): string { const now = new Date();
-        const diff = deadline.getTime() - now.getTime();
+    private formatDeadline(deadline: Date): string { const now = new Date(),
+        const diff = deadline.getTime() - now.getTime(),
 
-        if(diff <= 0) {', ';
-
-        }
+        if(diff <= 0) {', ' }
 
             return '期限切れ';
         
         const hours = Math.floor(diff / (1000 * 60 * 60);
         const minutes = Math.floor((diff % (1000 * 60 * 60) / (1000 * 60));
         
-        if (hours > 24) { const days = Math.floor(hours / 24); }
+        if (hours > 24) { const days = Math.floor(hours / 24) }
             return `${days}日後`;
         } else if (hours > 0) {
             return `${hours}時間後`;
@@ -514,25 +506,18 @@ export class ChallengeDetailModal {
     cleanup()';
             document.removeEventListener('keydown', this.boundHandlers.keyDown);
 
-            if(this.backdrop) {', ';
-
-            }
+            if(this.backdrop) {', ' }
 
                 this.backdrop.removeEventListener('click', this.boundHandlers.backdropClick); }
             }
 
-            if(this.closeButton) {', ';
-
-            }
+            if(this.closeButton) {', ' }
 
                 this.closeButton.removeEventListener('click', this.boundHandlers.close); }
             }
             
             // DOM要素削除
-            if(this.container && this.container.parentNode) {
-                ';
-
-            }
+            if(this.container && this.container.parentNode) { }
 
                 this.container.parentNode.removeChild(this.container); }
             }
@@ -548,7 +533,6 @@ export class ChallengeDetailModal {
             console.log('[ChallengeDetailModal] クリーンアップ完了';
 
         } catch (error') {
-            console.error('[ChallengeDetailModal] クリーンアップエラー:', error'; }
+            console.error('[ChallengeDetailModal] クリーンアップエラー:', error' }
 
-    }''
-}
+    }'}

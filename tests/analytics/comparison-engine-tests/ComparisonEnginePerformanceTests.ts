@@ -4,25 +4,22 @@ import { ComparisonEngine } from '../../../src/analytics/ComparisonEngine';
 // モックStorageManager - パフォーマンステスト用
 class MockStorageManager {
     constructor() {
-        this.data = new Map();
-    }
+        this.data = new Map() }
 
     async getData(storeName, query) {
-        const storeData = this.data.get(storeName || []);
-        if (!query') return storeData;
+        const storeData = this.data.get(storeName || []),
+        if (!query') return storeData,
 
         if (query.range && query.index === 'startTime') {
             return storeData.filter(item => {
-                const timestamp = item.startTime;
-                return timestamp >= query.range.lower && timestamp <= query.range.upper;);
-        }
+                const timestamp = item.startTime,
+                return timestamp >= query.range.lower && timestamp <= query.range.upper) }
 
         return storeData;
     }
 
     setTestData(storeName, data) {
-        this.data.set(storeName, data');
-    }
+        this.data.set(storeName, data') }
 }
 
 describe('ComparisonEngine - Performance and Scalability Tests', () => {
@@ -30,9 +27,8 @@ describe('ComparisonEngine - Performance and Scalability Tests', () => {
     let mockStorageManager: any,
 
     beforeEach(() => {
-        mockStorageManager = new MockStorageManager();
-        comparisonEngine = new ComparisonEngine(mockStorageManager as any);
-    }');
+        mockStorageManager = new MockStorageManager(),
+        comparisonEngine = new ComparisonEngine(mockStorageManager: any) }');
 
     describe('ベンチマーク比較機能', () => {
         beforeEach((') => {
@@ -162,8 +158,7 @@ describe('ComparisonEngine - Performance and Scalability Tests', () => {
 
         test('ベンチマーク比較が実行される', async (') => {
             const result = await comparisonEngine.compareWithBenchmark({
-                metrics: ['score', 'accuracy']);
-            });
+                metrics: ['score', 'accuracy']) });
 
             expect(result.success).toBe(true);
             expect(result.comparison.available).toBe(true);
@@ -173,13 +168,13 @@ describe('ComparisonEngine - Performance and Scalability Tests', () => {
         }');
 
         test('プレイヤーIDが正しく匿名化される', (') => {
-            const anonymized1 = comparisonEngine.anonymizePlayerId('player1'');
-            const anonymized2 = comparisonEngine.anonymizePlayerId('player1'');
-            const anonymized3 = comparisonEngine.anonymizePlayerId('player2');
+            const anonymized1 = comparisonEngine.anonymizePlayerId('player1'),
+            const anonymized2 = comparisonEngine.anonymizePlayerId('player1'),
+            const anonymized3 = comparisonEngine.anonymizePlayerId('player2'),
 
-            expect(anonymized1).toBe(anonymized2; // 同じIDは同じ匿名化結果);
-            expect(anonymized1).not.toBe(anonymized3; // 異なるIDは異なる匿名化結果);
-            expect(anonymized1).toMatch(/^player_\d+$/); // 形式チェック
+            expect(anonymized1).toBe(anonymized2, // 同じIDは同じ匿名化結果),
+            expect(anonymized1).not.toBe(anonymized3, // 異なるIDは異なる匿名化結果),
+            expect(anonymized1).toMatch(/^player_\d+$/), // 形式チェック
         }');
 
         test('ベンチマーク指標が正しく計算される', () => {
@@ -306,13 +301,12 @@ describe('ComparisonEngine - Performance and Scalability Tests', () => {
         }');
 
         test('データ不足時の適切な処理', async (') => {
-            mockStorageManager.setTestData('sessions', []); // 空のデータ
+            mockStorageManager.setTestData('sessions', []), // 空のデータ
 
-            const result = await comparisonEngine.compareWithBenchmark();
+            const result = await comparisonEngine.compareWithBenchmark(),
 
-            expect(result.success).toBe(false);
-            expect(result.error').toBe('Current performance data is insufficient');
-        }');
+            expect(result.success).toBe(false),
+            expect(result.error').toBe('Current performance data is insufficient') }');
 
         test('ベンチマークデータ不足時の適切な処理', async (') => {
             // 現在のデータのみ設定（ベンチマーク期間外）
@@ -336,17 +330,15 @@ describe('ComparisonEngine - Performance and Scalability Tests', () => {
         }');
 
         test('標準偏差が正しく計算される', () => {
-            const values = [10, 20, 30, 40, 50];
-            const stdDev = comparisonEngine.calculateStandardDeviation(values);
+            const values = [10, 20, 30, 40, 50],
+            const stdDev = comparisonEngine.calculateStandardDeviation(values),
             
             // 手動計算: mean=30, variance=200, stdDev=sqrt(200)≈14.14
-            expect(stdDev).toBeCloseTo(14.14, 1);
-        }');
+            expect(stdDev).toBeCloseTo(14.14, 1) }');
 
         test('空配列での標準偏差計算', () => {
-            const stdDev = comparisonEngine.calculateStandardDeviation([]);
-            expect(stdDev).toBe(0);
-        }');
+            const stdDev = comparisonEngine.calculateStandardDeviation([]),
+            expect(stdDev).toBe(0) }');
 
         test('ベンチマークデータ品質評価', () => {
             const playerMetrics = [
@@ -365,19 +357,17 @@ describe('ComparisonEngine - Performance and Scalability Tests', () => {
             expect(quality.quality').toBe('medium'); // 5人なのでmedium
 
             // 高品質の場合
-            const highQualityMetrics = new Array(15).fill({ sessionCount: 5 ),
-            const highQuality = comparisonEngine.assessBenchmarkDataQuality(highQualityMetrics);
-            expect(highQuality.quality').toBe('high');
-        }');
+            const highQualityMetrics = new Array(15).fill({ sessionCount: 5 ,
+            const highQuality = comparisonEngine.assessBenchmarkDataQuality(highQualityMetrics),
+            expect(highQuality.quality').toBe('high') }');
 
         test('ベンチマーク差分のフォーマット', () => {
-            const metric = comparisonEngine.metrics.score;
+            const metric = comparisonEngine.metrics.score,
             
-            const positiveFormatted = comparisonEngine.formatBenchmarkDifference(100, 10, metric);
-            expect(positiveFormatted').toBe('+100pts (+10.0%')');
+            const positiveFormatted = comparisonEngine.formatBenchmarkDifference(100, 10, metric),
+            expect(positiveFormatted').toBe('+100pts (+10.0%')'),
 
-            const negativeFormatted = comparisonEngine.formatBenchmarkDifference(-50, -5, metric);
-            expect(negativeFormatted').toBe('-50pts (-5.0%')');
-        });
+            const negativeFormatted = comparisonEngine.formatBenchmarkDifference(-50, -5, metric),
+            expect(negativeFormatted').toBe('-50pts (-5.0%')') });
     });
 }');

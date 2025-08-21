@@ -13,11 +13,11 @@ export class BaseComponent {
 
     constructor(mainController: any, name: string = 'BaseComponent' {'
 
-        this.mainController = mainController;
-        this.name = name;
-        this.initialized = false;
+        this.mainController = mainController,
+        this.name = name,
+        this.initialized = false,
 
-    ,}
+     }
         this.errorHandler = null; }
     }
 
@@ -26,13 +26,13 @@ export class BaseComponent {
      * @returns {Promise<void>}
      */
     async initialize(): Promise<void> { try {
-            await this._doInitialize();
+            await this._doInitialize(),
 
-            this.initialized = true;' }'
+            this.initialized = true,' }'
 
         } catch (error) {
-            this._handleError('Initialization failed', error as Error);
-            throw error; }
+            this._handleError('Initialization failed', error as Error),
+            throw error }
     }
 
     /**
@@ -44,7 +44,7 @@ export class BaseComponent {
     /**
      * コンポーネントのクリーンアップ
      */
-    cleanup(): void { this.initialized = false; }
+    cleanup(): void { this.initialized = false }
 
     /**
      * エラーハンドリング
@@ -56,14 +56,14 @@ export class BaseComponent {
         const message = `[${this.name}] ${context}: ${error.message}`;
         console.error(message, error);
         
-        if (this.errorHandler) { this.errorHandler(error, this.name, context); }
+        if (this.errorHandler) { this.errorHandler(error, this.name, context) }
     }
 
     /**
      * エラーハンドラーの設定
      * @param {Function} handler - エラーハンドラー関数
      */
-    setErrorHandler(handler: ErrorHandler): void { this.errorHandler = handler; }
+    setErrorHandler(handler: ErrorHandler): void { this.errorHandler = handler }
 
     /**
      * 初期化状態の確認

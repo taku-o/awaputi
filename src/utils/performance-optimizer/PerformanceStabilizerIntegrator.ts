@@ -11,31 +11,30 @@
 import { getErrorHandler  } from '../ErrorHandler.js';
 
 // 型定義
-interface IntegratorConfig { stabilizerIntegration?: Partial<StabilizerIntegrationSettings>;
-    stabilizationControl?: Partial<StabilizationControl>;
-    performanceZones?: Partial<PerformanceZones>;
-    }
+interface IntegratorConfig { stabilizerIntegration?: Partial<StabilizerIntegrationSettings>,
+    stabilizationControl?: Partial<StabilizationControl>,
+    performanceZones?: Partial<PerformanceZones> }
 
 interface StabilizerIntegrationSettings { enabled: boolean,
-    lastSync: number;
+    lastSync: number,
     syncInterval: number,
-    confidenceThreshold: number ,}
+    confidenceThreshold: number  }
 
-interface IntegrationStats { frameTimeVariance: number;
-    stabilityScore: number;
-    stabilizerInsights: StabilizerInsights | null;
+interface IntegrationStats { frameTimeVariance: number,
+    stabilityScore: number,
+    stabilizerInsights: StabilizerInsights | null,
     performanceHistory: PerformanceHistoryEntry[],
     issueHistory: PerformanceIssue[]
     }
 
-interface StabilizationControl { targetFPS: number;
-    targetFrameTime: number;
+interface StabilizationControl { targetFPS: number,
+    targetFrameTime: number,
     forceStabilization: boolean,
     stabilizationMode: StabilizationMode
     }
 
-interface PerformanceZones { optimal: PerformanceZone;
-    good: PerformanceZone;
+interface PerformanceZones { optimal: PerformanceZone,
+    good: PerformanceZone,
     poor: PerformanceZone,
     critical: PerformanceZone
     }
@@ -43,37 +42,37 @@ interface PerformanceZones { optimal: PerformanceZone;
 interface PerformanceZone { minStability: number,
     maxJitter: number }
 
-interface StabilizerStatus { timing: TimingInfo;
-    adaptive: AdaptiveInfo;
+interface StabilizerStatus { timing: TimingInfo,
+    adaptive: AdaptiveInfo,
     recommendations: StabilizationRecommendation[],
     pacing: PacingInfo
     }
 
-interface TimingInfo { variance: number;
-    stabilityScore: number;
-    jitterLevel: number;
+interface TimingInfo { variance: number,
+    stabilityScore: number,
+    jitterLevel: number,
     smoothnessIndex: number,
     consistencyRating: string }
 
-interface AdaptiveInfo { performanceZone: PerformanceZoneType;
+interface AdaptiveInfo { performanceZone: PerformanceZoneType,
     confidenceLevel: number,
     currentTargetFPS: number }
 
-interface PacingInfo { vsyncDetected?: boolean;
-    tearingRisk?: number; }
+interface PacingInfo { vsyncDetected?: boolean,
+    tearingRisk?: number }
 
 interface StabilizationRecommendation { type: RecommendationType,
-    description?: string;
-    priority?: number; }
+    description?: string,
+    priority?: number }
 
 interface IntegrationResult { integrated: boolean,
-    reason?: string;
-    timestamp?: number;
+    reason?: string,
+    timestamp?: number,
     actions?: {
-        zon;e: string[];
-        jitter: string[];
+        zon,e: string[],
+        jitter: string[],
         fps: string[],
-    stabilization: string[] ,};
+    stabilization: string[]  };
     currentZone?: PerformanceZoneType;
     stabilityScore?: number;
     jitterLevel?: number;
@@ -82,11 +81,11 @@ interface IntegrationResult { integrated: boolean,
 
 interface FrameStabilityAnalysis { timestamp: number,
     overall: {
-        stabilityScor;e: number;
-        confidence: number;
+        stabilityScor,e: number,
+        confidence: number,
         trend: TrendDirection,
-    trendStrength: number ,};
-    analysis: { frameConsistency: number;
+    trendStrength: number  };
+    analysis: { frameConsistency: number,
         jitterAnalysis: number,
     performanceVariability: number };
     problems: ProblemArea[];
@@ -97,72 +96,72 @@ interface FrameStabilityAnalysis { timestamp: number,
 }
 
 interface ForceStabilizationResult { forced: boolean,
-    targetFPS?: number;
-    mode?: StabilizationMode;
-    previousTarget?: number;
-    previousMode?: StabilizationMode;
-    actions?: string[];
-    settings?: ModeSettings;
-    timestamp?: number;
-    error?: boolean; }
+    targetFPS?: number,
+    mode?: StabilizationMode,
+    previousTarget?: number,
+    previousMode?: StabilizationMode,
+    actions?: string[],
+    settings?: ModeSettings,
+    timestamp?: number,
+    error?: boolean }
 
 interface PerformanceHistoryEntry { timestamp: number,
-    stabilityScore: number;
-    variance: number;
-    jitterLevel: number;
+    stabilityScore: number,
+    variance: number,
+    jitterLevel: number,
     performanceZone: PerformanceZoneType,
-    confidenceLevel: number ,}
+    confidenceLevel: number  }
 
-interface PerformanceIssue { type: string;
+interface PerformanceIssue { type: string,
     data: any,
     timestamp: number }
 
-interface StabilizerInsights { performanceZone: PerformanceZoneType;
-    confidenceLevel: number;
-    jitterLevel: number;
-    smoothnessIndex: number;
-    consistencyRating: string;
-    vsyncDetected: boolean;
+interface StabilizerInsights { performanceZone: PerformanceZoneType,
+    confidenceLevel: number,
+    jitterLevel: number,
+    smoothnessIndex: number,
+    consistencyRating: string,
+    vsyncDetected: boolean,
     tearingRisk: number,
     timestamp: number }
 
-interface OverallStability { score: number;
-    confidence: number;
-    consistency: number;
+interface OverallStability { score: number,
+    confidence: number,
+    consistency: number,
     jitter: number,
     variability: number }
 
 interface StabilityTrend { direction: TrendDirection,
     strength: number }
 
-interface ProblemArea { type: string;
+interface ProblemArea { type: string,
     description: string,
-    severity: SeverityLevel;
-    count?: number;
-    percentage?: number; }
+    severity: SeverityLevel,
+    count?: number,
+    percentage?: number }
 
 interface StabilityRecommendationEntry { type: RecommendationSeverity,
     action: string,
-    description: string ,}
+    description: string  }
 ';
 
 interface StabilityPrediction { confidence: number,''
-    prediction: TrendDirection | 'insufficient_data' | 'unknown';
-    change?: number ,}
+    prediction: TrendDirection | 'insufficient_data' | 'unknown',
+    change?: number  }
 
-interface ModeSettings { qualityReduction: QualityReductionLevel;
+interface ModeSettings { qualityReduction: QualityReductionLevel,
     frameTargetAdjustment: FrameTargetAdjustment,
     jitterTolerance: JitterTolerance
     }
 
-interface IntegrationSettings { stabilizerIntegration: StabilizerIntegrationSettings;
+interface IntegrationSettings { stabilizerIntegration: StabilizerIntegrationSettings,
     stabilizationControl: StabilizationControl,
     performanceZones: PerformanceZones
     }
 ';
 
 interface ErrorHandler { ''
-    logError(message: string, error: any): void ,}
+    logError(message: string, error: any): void  }
 
 type PerformanceZoneType = 'optimal' | 'good' | 'poor' | 'critical';
 type StabilizationMode = 'aggressive' | 'balanced' | 'conservative';
@@ -175,27 +174,26 @@ type FrameTargetAdjustment = 'dynamic' | 'adaptive' | 'static';
 type JitterTolerance = 'minimal' | 'normal' | 'relaxed';
 
 export class PerformanceStabilizerIntegrator {
-    private config: IntegratorConfig;
-    private errorHandler: ErrorHandler;
-    private stabilizerIntegration: StabilizerIntegrationSettings;
-    private integrationStats: IntegrationStats;
-    private stabilizationControl: StabilizationControl;
-    private, performanceZones: PerformanceZones;
+    private config: IntegratorConfig,
+    private errorHandler: ErrorHandler,
+    private stabilizerIntegration: StabilizerIntegrationSettings,
+    private integrationStats: IntegrationStats,
+    private stabilizationControl: StabilizationControl,
+    private, performanceZones: PerformanceZones,
     constructor(config: IntegratorConfig = {) {
-';
+',
 
-        this.config = config;''
-        this.errorHandler = getErrorHandler(''
-    }
+        this.config = config,
+        this.errorHandler = getErrorHandler('}
 
             stabilizationMode: 'balanced' 
     };
         // パフォーマンスゾーンしきい値
         this.performanceZones = {
-            optimal: { minStability: 0.9, maxJitter: 3 ,},
-            good: { minStability: 0.7, maxJitter: 5 ,})
-            poor: { minStability: 0.5, maxJitter: 7 ,})
-            critical: { minStability: 0.0, maxJitter: 10 ,}
+            optimal: { minStability: 0.9, maxJitter: 3  },
+            good: { minStability: 0.7, maxJitter: 5  })
+            poor: { minStability: 0.5, maxJitter: 7  })
+            critical: { minStability: 0.0, maxJitter: 10  }
 
     /**
      * FrameStabilizerの推奨事項を統合
@@ -203,9 +201,10 @@ export class PerformanceStabilizerIntegrator {
      * @returns 統合結果
      */
     integrateStabilizerRecommendations(stabilizerStatus: StabilizerStatus): IntegrationResult { try {'
-            if(!this.stabilizerIntegration.enabled) {' }'
+            if(!this.stabilizerIntegration.enabled) { }'
 
-                return { integrated: false, reason: 'Integration disabled' ,}
+                return { integrated: false, reason: 'Integration disabled'
+            }
             
             const timing = stabilizerStatus.timing;
             const adaptive = stabilizerStatus.adaptive;
@@ -231,24 +230,24 @@ export class PerformanceStabilizerIntegrator {
             this.storeStabilizerInsights(adaptive, timing, pacing);
             
             const result = { integrated: true,
-                timestamp: Date.now(,
+                timestamp: Date.now(
     actions: {
-                    zone: zoneActions;
-                    jitter: jitterActions;
+                    zone: zoneActions,
+                    jitter: jitterActions,
                     fps: fpsActions,
-    stabilization: stabilizationActions ,};
+    stabilization: stabilizationActions  };
                 currentZone: adaptive.performanceZone;
                 stabilityScore: timing.stabilityScore,
     jitterLevel: timing.jitterLevel);
-            })
+            });
             // 統合履歴に記録)
             this.recordIntegrationHistory(result);
             
             return result;
 
         } catch (error) {
-            this.errorHandler.logError('Failed to integrate stabilizer recommendations', error); }
-            return { integrated: false, error: true ,}
+            this.errorHandler.logError('Failed to integrate stabilizer recommendations', error) }
+            return { integrated: false, error: true  }
     }
 
     /**
@@ -256,67 +255,65 @@ export class PerformanceStabilizerIntegrator {
      * @returns 統合された安定性分析結果
      */
     getFrameStabilityAnalysis(): FrameStabilityAnalysis { try {
-            const currentTime = Date.now();
-            const recentHistory = this.getRecentPerformanceHistory(5000); // 5秒間
+            const currentTime = Date.now(),
+            const recentHistory = this.getRecentPerformanceHistory(5000), // 5秒間
             
             // 総合安定性スコア計算
-            const overallStability = this.calculateOverallStability(recentHistory);
+            const overallStability = this.calculateOverallStability(recentHistory),
             
             // トレンド分析
-            const stabilityTrend = this.calculateStabilityTrend(recentHistory);
+            const stabilityTrend = this.calculateStabilityTrend(recentHistory),
             
             // 問題領域特定
-            const problemAreas = this.identifyProblemAreas(recentHistory);
+            const problemAreas = this.identifyProblemAreas(recentHistory),
             
             // 推奨アクション生成
-            const recommendations = this.generateStabilityRecommendations(;
-                overallStability);
-                stabilityTrend, );
-                problemAreas);
+            const recommendations = this.generateStabilityRecommendations(
+                overallStability,
+                stabilityTrend),
+                problemAreas,
             
             // 予測と信頼度
-            const prediction = this.predictStabilityTrend(recentHistory);
+            const prediction = this.predictStabilityTrend(recentHistory),
             
             return { timestamp: currentTime,
                 overall: {
-                    stabilityScore: overallStability.score;
+                    stabilityScore: overallStability.score,
                     confidence: overallStability.confidence,
-    trend: stabilityTrend.direction, };
+    trend: stabilityTrend.direction };
                     trendStrength: stabilityTrend.strength 
     };
-                analysis: { frameConsistency: overallStability.consistency;
+                analysis: { frameConsistency: overallStability.consistency,
                     jitterAnalysis: overallStability.jitter,
     performanceVariability: overallStability.variability };
                 problems: problemAreas;
                 prediction: prediction;
                 recommendations: recommendations,
     stabilizerStatus: this.integrationStats.stabilizerInsights;
-            },
-
-        } catch (error) {
-            this.errorHandler.logError('Failed to get frame stability analysis', error);
-            return { error: true, };
-                timestamp: Date.now(, }
-                overall: { stabilityScore: 0.5, confidence: 0.0 ,}
+            } } catch (error) {
+            this.errorHandler.logError('Failed to get frame stability analysis', error),
+            return { error: true };
+                timestamp: Date.now( }
+                overall: { stabilityScore: 0.5, confidence: 0.0  }
     }
 
     /**
      * 強制フレーム安定化を実行)'
      * @param targetFPS - 目標FPS')'
-     * @param mode - 安定化モード ('aggressive', 'balanced', 'conservative'')
+     * @param mode - 安定化モード ('aggressive', 'balanced', 'conservative')
      * @returns 安定化結果'
      */''
     forceFrameStabilization(targetFPS: number, mode: StabilizationMode = 'balanced': ForceStabilizationResult { try { }'
-            console.log(`[StabilizerIntegrator] Forcing frame stabilization: ${targetFPS}FPS, mode: ${ mode)`),
+            console.log(`[StabilizerIntegrator] Forcing frame stabilization: ${targetFPS}FPS, mode: ${ mode)`,
             
-            const, previousTarget = this.stabilizationControl.targetFPS;
-            const, previousMode = this.stabilizationControl.stabilizationMode;
+            const, previousTarget = this.stabilizationControl.targetFPS,
+            const, previousMode = this.stabilizationControl.stabilizationMode,
             
             // 新しい設定適用
-            this.stabilizationControl.targetFPS = targetFPS;
-            this.stabilizationControl.targetFrameTime = 1000 / targetFPS;
-            this.stabilizationControl.stabilizationMode = mode;
-            this.stabilizationControl.forceStabilization = true;
+            this.stabilizationControl.targetFPS = targetFPS,
+            this.stabilizationControl.targetFrameTime = 1000 / targetFPS,
+            this.stabilizationControl.stabilizationMode = mode,
+            this.stabilizationControl.forceStabilization = true,
             
             // モード別設定適用
             const, modeSettings = this.applyStabilizationMode(mode};
@@ -325,13 +322,13 @@ export class PerformanceStabilizerIntegrator {
             const stabilizationActions = this.executeForceStabilization(targetFPS, mode}
             
             const result = {
-                forced: true;
+                forced: true,
                 targetFPS,
                 mode,
                 previousTarget,
                 previousMode,
                 actions: stabilizationActions,
-    settings: modeSettings, }
+    settings: modeSettings }
                 timestamp: Date.now());
             };
             
@@ -343,8 +340,8 @@ export class PerformanceStabilizerIntegrator {
             return result;
 
         } catch (error) {
-            this.errorHandler.logError('Failed to force frame stabilization', error); }
-            return { forced: false, error: true ,}
+            this.errorHandler.logError('Failed to force frame stabilization', error) }
+            return { forced: false, error: true  }
     }
 
     /**
@@ -353,22 +350,22 @@ export class PerformanceStabilizerIntegrator {
      * @param adaptive - 適応情報
      */
     updateIntegratedStats(timing: TimingInfo, adaptive: AdaptiveInfo): void { try {
-            this.integrationStats.frameTimeVariance = timing.variance;
-            this.integrationStats.stabilityScore = timing.stabilityScore;
+            this.integrationStats.frameTimeVariance = timing.variance,
+            this.integrationStats.stabilityScore = timing.stabilityScore,
             
             // パフォーマンス履歴に追加
-            this.integrationStats.performanceHistory.push({);
-                timestamp: Date.now(;
-                stabilityScore: timing.stabilityScore;
-                variance: timing.variance;
-                jitterLevel: timing.jitterLevel);
-                performanceZone: adaptive.performanceZone),
+            this.integrationStats.performanceHistory.push({),
+                timestamp: Date.now(
+                stabilityScore: timing.stabilityScore,
+                variance: timing.variance,
+                jitterLevel: timing.jitterLevel),
+                performanceZone: adaptive.performanceZone,
     confidenceLevel: adaptive.confidenceLevel });
             // 履歴制限（最新1000件）
-            if (this.integrationStats.performanceHistory.length > 1000) { this.integrationStats.performanceHistory.shift();' }'
+            if (this.integrationStats.performanceHistory.length > 1000) { this.integrationStats.performanceHistory.shift(),' }'
 
             } catch (error) {
-            this.errorHandler.logError('Failed to update integrated stats', error); }
+            this.errorHandler.logError('Failed to update integrated stats', error) }
     }
 
     /**
@@ -378,31 +375,32 @@ export class PerformanceStabilizerIntegrator {
      * @returns 実行されたアクション
      */
     handlePerformanceZone(adaptive: AdaptiveInfo, timing: TimingInfo): string[] { const actions: string[] = [],
-        const zone = adaptive.performanceZone;
-        ';
+        const zone = adaptive.performanceZone,
+        ',
 
         try {'
-            switch(zone) {'
+            switch(zone) {
 
-                case 'critical':'';
-                    actions.push('critical_zone_entered'');''
-                    this.recordPerformanceIssue('critical_stability_zone', {)
-                        zone'';
-                        stabilityScore: timing.stabilityScore,')';
-                        variance: timing.variance'');
-                    break;
+                case 'critical':',
+                    actions.push('critical_zone_entered'),
+                    this.recordPerformanceIssue('critical_stability_zone', {
+                zone',
+                        stabilityScore: timing.stabilityScore,')',
+                        variance: timing.variance'),
+                    break,
 
-                case 'poor':'';
-                    actions.push('poor_zone_entered'');''
+                case 'poor':',
+                    actions.push('poor_zone_entered'),
                     this.recordPerformanceIssue('poor_stability_zone', {)
-                        zone'';
-                        stabilityScore: timing.stabilityScore,')';
-                        variance: timing.variance'');
-                    break;
+                        zone',
+                        stabilityScore: timing.stabilityScore,')',
+                        variance: timing.variance'),
+                    break,
 
-                case 'optimal':'';
-                    if(timing.stabilityScore > 0.9) {'
-            ,}
+                case 'optimal':',
+                    if(timing.stabilityScore > 0.9) {
+    
+})
 
                         actions.push('optimal_performance_detected'; }'
                     }
@@ -412,8 +410,8 @@ export class PerformanceStabilizerIntegrator {
             return actions;
 
         } catch (error) {
-            this.errorHandler.logError('Failed to handle performance zone', error);
-            return [];
+            this.errorHandler.logError('Failed to handle performance zone', error),
+            return [],
 
     /**
      * ジッター制御を処理
@@ -424,18 +422,16 @@ export class PerformanceStabilizerIntegrator {
         
         try {
             // 高ジッター検出
-            if(timing.jitterLevel > 7) {'
+            if(timing.jitterLevel > 7) {
 
-                actions.push('high_jitter_detected'');''
-                this.recordPerformanceIssue('high_frame_jitter', {)
-                    jitterLevel: timing.jitterLevel, }
+                actions.push('high_jitter_detected'),
+                this.recordPerformanceIssue('high_frame_jitter', {
+                jitterLevel: timing.jitterLevel })
                     smoothnessIndex: timing.smoothnessIndex'; 
     }
             ';
             // 中程度ジッター検出
-            if(timing.jitterLevel > 5 && timing.jitterLevel <= 7) {', ';
-
-            }
+            if(timing.jitterLevel > 5 && timing.jitterLevel <= 7) {', ' }
 
                 actions.push('moderate_jitter_detected'; }'
             }
@@ -443,8 +439,8 @@ export class PerformanceStabilizerIntegrator {
             return actions;
 
         } catch (error) {
-            this.errorHandler.logError('Failed to handle jitter control', error);
-            return [];
+            this.errorHandler.logError('Failed to handle jitter control', error),
+            return [],
 
     /**
      * 適応FPS同期を処理
@@ -456,10 +452,9 @@ export class PerformanceStabilizerIntegrator {
         try {
             // FPS目標値同期
             if(adaptive.currentTargetFPS !== this.stabilizationControl.targetFPS) {
-                const oldTarget = this.stabilizationControl.targetFPS;
-                this.stabilizationControl.targetFPS = adaptive.currentTargetFPS;
-                this.stabilizationControl.targetFrameTime = 1000 / adaptive.currentTargetFPS;
-            }
+                const oldTarget = this.stabilizationControl.targetFPS,
+                this.stabilizationControl.targetFPS = adaptive.currentTargetFPS,
+                this.stabilizationControl.targetFrameTime = 1000 / adaptive.currentTargetFPS }
                 actions.push(`fps_sync_${oldTarget}_to_${adaptive.currentTargetFPS}`});
                 console.log(`[StabilizerIntegrator] Synchronized, target FPS: ${oldTarget} → ${adaptive.currentTargetFPS}`});
             }
@@ -467,8 +462,8 @@ export class PerformanceStabilizerIntegrator {
             return actions;
 
         } catch (error) {
-            this.errorHandler.logError('Failed to handle adaptive FPS sync', error);
-            return [];
+            this.errorHandler.logError('Failed to handle adaptive FPS sync', error),
+            return [],
 
     /**
      * 安定化推奨事項を処理
@@ -478,24 +473,20 @@ export class PerformanceStabilizerIntegrator {
     processStabilizationRecommendations(recommendations: StabilizationRecommendation[]): string[] { const actions: string[] = [],
         
         try {
-            if(!Array.isArray(recommendations) return actions;
+            if(!Array.isArray(recommendations) return actions,
 
-            recommendations.forEach(recommendation => { ');''
-                if (recommendation.type === 'reduce_quality'') {' }
+            recommendations.forEach(recommendation => { '),
+                if (recommendation.type === 'reduce_quality') { }
 
-                    actions.push('quality_reduction_recommended''); }
-
-                }''
-                if(recommendation.type === 'target_fps_adjustment'') {', ';
-
-                }
-
-                    actions.push('fps_adjustment_recommended''); }
+                    actions.push('quality_reduction_recommended'); }
 
                 }''
-                if(recommendation.type === 'frame_pacing'') {', ';
+                if(recommendation.type === 'target_fps_adjustment') {', ' }
 
-                }
+                    actions.push('fps_adjustment_recommended'); }
+
+                }''
+                if(recommendation.type === 'frame_pacing') {', ' }
 
                     actions.push('frame_pacing_recommended'; }'
 });
@@ -503,8 +494,8 @@ export class PerformanceStabilizerIntegrator {
             return actions;
 
         } catch (error) {
-            this.errorHandler.logError('Failed to process stabilization recommendations', error);
-            return [];
+            this.errorHandler.logError('Failed to process stabilization recommendations', error),
+            return [],
 
     /**
      * Stabilizerインサイトを保存
@@ -514,15 +505,15 @@ export class PerformanceStabilizerIntegrator {
      */
     storeStabilizerInsights(adaptive: AdaptiveInfo, timing: TimingInfo, pacing: PacingInfo): void { try {
             this.integrationStats.stabilizerInsights = {
-                performanceZone: adaptive.performanceZone;
-                confidenceLevel: adaptive.confidenceLevel;
-                jitterLevel: timing.jitterLevel;
-                smoothnessIndex: timing.smoothnessIndex;
+                performanceZone: adaptive.performanceZone,
+                confidenceLevel: adaptive.confidenceLevel,
+                jitterLevel: timing.jitterLevel,
+                smoothnessIndex: timing.smoothnessIndex,
                 consistencyRating: timing.consistencyRating,
     vsyncDetected: pacing?.vsyncDetected || false, : undefined
                 tearingRisk: pacing?.tearingRisk || 0, : undefined
-                timestamp: Date.now( ,} catch (error) {
-            this.errorHandler.logError('Failed to store stabilizer insights', error); }
+                timestamp: Date.now(  } catch (error) {
+            this.errorHandler.logError('Failed to store stabilizer insights', error) }
     }
 
     /**
@@ -532,15 +523,15 @@ export class PerformanceStabilizerIntegrator {
      */
     recordPerformanceIssue(issueType: string, data: any): void { try {
             this.integrationStats.issueHistory.push({)
-                type: issueType,);
-                data);
-                timestamp: Date.now( ,});
+                type: issueType),
+                data,
+                timestamp: Date.now(  });
             
             // 履歴制限（最新500件）
-            if (this.integrationStats.issueHistory.length > 500) { this.integrationStats.issueHistory.shift();' }'
+            if (this.integrationStats.issueHistory.length > 500) { this.integrationStats.issueHistory.shift(),' }'
 
             } catch (error) {
-            this.errorHandler.logError('Failed to record performance issue', error); }
+            this.errorHandler.logError('Failed to record performance issue', error) }
     }
 
     /**
@@ -550,7 +541,7 @@ export class PerformanceStabilizerIntegrator {
      */
     calculateOverallStability(history: PerformanceHistoryEntry[]): OverallStability { try {
             if (history.length === 0) { }
-                return { score: 0.5, confidence: 0.0, consistency: 0.5, jitter: 0.5, variability: 0.5 ,}
+                return { score: 0.5, confidence: 0.0, consistency: 0.5, jitter: 0.5, variability: 0.5  }
             
             const scores = history.map(h => h.stabilityScore);
             const variances = history.map(h => h.variance);
@@ -567,11 +558,11 @@ export class PerformanceStabilizerIntegrator {
             return { score: avgScore,
                 confidence: Math.min(1.0, history.length / 60),
                 consistency: Math.max(0, Math.min(1, consistency),
-                jitter: jitterScore, };
+                jitter: jitterScore };
                 variability }
             } catch (error) {
-            this.errorHandler.logError('Failed to calculate overall stability', error'; }
-            return { score: 0.5, confidence: 0.0, consistency: 0.5, jitter: 0.5, variability: 0.5 ,}
+            this.errorHandler.logError('Failed to calculate overall stability', error' }
+            return { score: 0.5, confidence: 0.0, consistency: 0.5, jitter: 0.5, variability: 0.5  }
     }
 
     /**
@@ -580,17 +571,17 @@ export class PerformanceStabilizerIntegrator {
      * @returns {object} トレンドデータ
      */'
     calculateStabilityTrend(history: PerformanceHistoryEntry[]): StabilityTrend { try {'
-            if(history.length < 10) {' }'
+            if(history.length < 10) { }'
 
-                return { direction: 'insufficient_data', strength: 0.0 ,}
+                return { direction: 'insufficient_data', strength: 0.0  }
             
             // 線形回帰でトレンド計算
             const n = history.length;
             let sumX = 0, sumY = 0, sumXY = 0, sumXX = 0;
             
-            history.forEach((h, i) => {  sumX += i;
-                sumY += h.stabilityScore;
-                sumXY += i * h.stabilityScore; }
+            history.forEach((h, i) => {  sumX += i,
+                sumY += h.stabilityScore,
+                sumXY += i * h.stabilityScore }
                 sumXX += i * i; }
             });
             
@@ -598,15 +589,13 @@ export class PerformanceStabilizerIntegrator {
             const strength = Math.abs(slope);
             ';
 
-            let direction;''
-            if(strength < 0.001) {', ';
+            let direction;
+            if(strength < 0.001) {', ' }
 
-            }
-
-                direction = 'stable';' }
+                direction = 'stable'; }
 
             } else if(slope > 0) { ''
-                direction = 'improving'; }
+                direction = 'improving' }
 
             } else { }'
 
@@ -614,9 +603,9 @@ export class PerformanceStabilizerIntegrator {
             }
             
             return { direction, strength } catch (error) {
-            this.errorHandler.logError('Failed to calculate stability trend', error';' }
+            this.errorHandler.logError('Failed to calculate stability trend', error',' }
 
-            return { direction: 'unknown', strength: 0.0 ,}
+            return { direction: 'unknown', strength: 0.0  }
     }
 
     /**
@@ -627,40 +616,39 @@ export class PerformanceStabilizerIntegrator {
     identifyProblemAreas(history: PerformanceHistoryEntry[]): ProblemArea[] { const problems: ProblemArea[] = [],
         
         try {
-            const recentIssues = this.integrationStats.issueHistory;
-                .filter(issue => Date.now() - issue.timestamp < 10000); // 10秒間
+            const recentIssues = this.integrationStats.issueHistory,
+                .filter(issue => Date.now() - issue.timestamp < 10000), // 10秒間
             
             // 繰り返し問題の検出 }
             const issueTypes: Record<string, number> = {};
-            recentIssues.forEach(issue => {  ); }
+            recentIssues.forEach(issue => {  ) }
                 issueTypes[issue.type] = (issueTypes[issue.type] || 0) + 1; }
             });
             ';
 
             Object.entries(issueTypes).forEach(([type, count]) => {  ''
                 if(count >= 3) {
-                    
-                }
+    
+}
 
-                    problems.push({' }'
+                    problems.push({ }'
 
-                        type: 'recurring_issue', }
+                        type: 'recurring_issue'
+            }
 
-                        description: `Recurring ${type}`;''
-                        severity: count > 5 ? 'high' : 'medium',);
-                        count);
-                    });
+                        description: `Recurring ${type}`;
+                        severity: count > 5 ? 'high' : 'medium');
+                        count });
                 }
             });
             
             // 長期安定性問題
-            const lowStabilityCount = history.filter(h => h.stabilityScore < 0.5).length;''
-            if(lowStabilityCount > history.length * 0.3) {'
+            const lowStabilityCount = history.filter(h => h.stabilityScore < 0.5).length;
+            if(lowStabilityCount > history.length * 0.3) {
                 problems.push({''
-                    type: 'chronic_instability','';
-                    description: 'Chronic frame stability issues',')';
-                    severity: 'high');
-            ,}
+                    type: 'chronic_instability',',
+                    description: 'Chronic frame stability issues',')',
+                    severity: 'high') }
                     percentage: (lowStabilityCount / history.length) * 100 
     });
             }
@@ -668,8 +656,8 @@ export class PerformanceStabilizerIntegrator {
             return problems;
 
         } catch (error) {
-            this.errorHandler.logError('Failed to identify problem areas', error);
-            return [];
+            this.errorHandler.logError('Failed to identify problem areas', error),
+            return [],
 
     /**
      * 安定性推奨事項を生成
@@ -682,9 +670,9 @@ export class PerformanceStabilizerIntegrator {
         
         try {
             // 安定性スコアベースの推奨
-            if(stability.score < 0.5) {'
+            if(stability.score < 0.5) {
                 recommendations.push({''
-                    type: 'critical','';
+                    type: 'critical',',
                     action: 'immediate_quality_reduction',' }
 
                     description: '安定性が非常に低下しています。品質設定を下げてください。')'); 
@@ -693,29 +681,28 @@ export class PerformanceStabilizerIntegrator {
             // トレンドベースの推奨
             if(trend.direction === 'degrading' && trend.strength > 0.01' { '
                 recommendations.push({''
-                    type: 'warning','';
+                    type: 'warning',',
                     action: 'monitor_degradation',' }
 
                     description: 'パフォーマンスが低下傾向にあります。監視を強化してください。'); 
     }
             ';
             // 問題ベースの推奨
-            problems.forEach(problem => {  ');''
-                if(problem.type === 'recurring_issue'') {'
-                    recommendations.push({'
-                }
+            problems.forEach(problem => {  '),
+                if(problem.type === 'recurring_issue') {
+                    recommendations.push({ }
 
                         type: 'maintenance',' }''
-                        action: 'address_recurring_issue',) }
+                        action: 'address_recurring_issue') }
                         description: `繰り返し発生する問題: ${problem.description}`);
                     });
                 }
             }';
             ';
             // 信頼度が低い場合
-            if(stability.confidence < 0.3) { '
+            if(stability.confidence < 0.3) {
                 recommendations.push({''
-                    type: 'info','';
+                    type: 'info',',
                     action: 'collect_more_data',' }
 
                     description: 'データが不十分です。より長期間の監視が必要です。'); 
@@ -724,8 +711,8 @@ export class PerformanceStabilizerIntegrator {
             return recommendations;
 
         } catch (error) {
-            this.errorHandler.logError('Failed to generate stability recommendations', error';
-            return [];
+            this.errorHandler.logError('Failed to generate stability recommendations', error',
+            return [],
 
     /**
      * 安定性トレンドを予測
@@ -733,9 +720,11 @@ export class PerformanceStabilizerIntegrator {
      * @returns 予測データ
      */'
     predictStabilityTrend(history: PerformanceHistoryEntry[]): StabilityPrediction { try {'
-            if(history.length < 20) {' ,}'
+            if(history.length < 20) {
+            }'
 
-                return { confidence: 0.0, prediction: 'insufficient_data' ,}
+                return { confidence: 0.0, prediction: 'insufficient_data'
+            }
             
             const recent = history.slice(-10);
             const avgRecent = recent.reduce((sum, h) => sum + h.stabilityScore, 0) / recent.length;
@@ -747,12 +736,12 @@ export class PerformanceStabilizerIntegrator {
             const confidence = Math.min(1.0, history.length / 100);
             ';
 
-            let prediction;''
+            let prediction;
             if (Math.abs(change) < 0.05) { ''
-                prediction = 'stable';' }
+                prediction = 'stable',' }
 
             } else if(change > 0) { ''
-                prediction = 'improving'; }
+                prediction = 'improving' }
 
             } else { }'
 
@@ -760,9 +749,10 @@ export class PerformanceStabilizerIntegrator {
             }
             
             return { confidence, prediction, change } catch (error) {
-            this.errorHandler.logError('Failed to predict stability trend', error';' }
+            this.errorHandler.logError('Failed to predict stability trend', error',' }
 
-            return { confidence: 0.0, prediction: 'unknown' ,}
+            return { confidence: 0.0, prediction: 'unknown'
+            }
     }
 
     /**
@@ -770,8 +760,8 @@ export class PerformanceStabilizerIntegrator {
      * @param timeWindow - 時間窓（ミリ秒）
      * @returns 履歴配列
      */
-    getRecentPerformanceHistory(timeWindow: number = 5000): PerformanceHistoryEntry[] { const cutoff = Date.now() - timeWindow;
-        return this.integrationStats.performanceHistory.filter(h => h.timestamp >= cutoff);
+    getRecentPerformanceHistory(timeWindow: number = 5000): PerformanceHistoryEntry[] { const cutoff = Date.now() - timeWindow,
+        return this.integrationStats.performanceHistory.filter(h => h.timestamp >= cutoff),
 
     /**
      * 安定化モードを適用
@@ -780,25 +770,24 @@ export class PerformanceStabilizerIntegrator {
      */
     applyStabilizationMode(mode: StabilizationMode): ModeSettings {'
         const settings: any = {}''
-        switch(mode) {'
+        switch(mode) {
 
-            case 'aggressive':'';
-                settings.qualityReduction = 'maximum';
-                settings.frameTargetAdjustment = 'dynamic';
-                settings.jitterTolerance = 'minimal';
+            case 'aggressive':',
+                settings.qualityReduction = 'maximum',
+                settings.frameTargetAdjustment = 'dynamic',
+                settings.jitterTolerance = 'minimal',
 
-                break;''
-            case 'balanced':'';
-                settings.qualityReduction = 'moderate';
-                settings.frameTargetAdjustment = 'adaptive';
-                settings.jitterTolerance = 'normal';
+                break,
+            case 'balanced':',
+                settings.qualityReduction = 'moderate',
+                settings.frameTargetAdjustment = 'adaptive',
+                settings.jitterTolerance = 'normal',
 
-                break;''
-            case 'conservative':'';
-                settings.qualityReduction = 'minimal';
-                settings.frameTargetAdjustment = 'static';
-                settings.jitterTolerance = 'relaxed';
-        }
+                break,
+            case 'conservative':',
+                settings.qualityReduction = 'minimal',
+                settings.frameTargetAdjustment = 'static',
+                settings.jitterTolerance = 'relaxed' }
                 break; }
         }
         
@@ -839,8 +828,7 @@ export class PerformanceStabilizerIntegrator {
     getIntegrationSettings(): IntegrationSettings { return { }
             stabilizerIntegration: { ...this.stabilizerIntegration
             stabilizationControl: { ...this.stabilizationControl
-            performanceZones: { ...this.performanceZones;
-    }
+            performanceZones: { ...this.performanceZones }
 
     /**
      * 統計をリセット

@@ -5,24 +5,24 @@
 
 // Type definitions for error reporter system
 interface ErrorInfo { id: string,
-    context: string;
+    context: string,
     message: string,
-    timestamp: string;
-    name?: string;
-    stack?: string;
-    metadata?: Record<string, any>;
-    recovered?: boolean; }
+    timestamp: string,
+    name?: string,
+    stack?: string,
+    metadata?: Record<string, any>,
+    recovered?: boolean }
 
 interface NotificationConfig { autoHide: boolean,
-    hideDelay: number;
-    maxConcurrentNotifications: number;
-    position: 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left' | 'top-center' | 'bottom-center';
+    hideDelay: number,
+    maxConcurrentNotifications: number,
+    position: 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left' | 'top-center' | 'bottom-center',
     showReloadButton: boolean,
-    showCloseButton: boolean ,}
+    showCloseButton: boolean  }
 ';
 
 interface MainController { ''
-    determineSeverity?: (errorInfo: ErrorInfo') => string ,}'
+    determineSeverity?: (errorInfo: ErrorInfo') => string  }'
 }
 
 type NotificationAction = 'dismiss' | 'reload' | 'report';
@@ -30,26 +30,25 @@ type SeverityLevel = 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW';
 
 interface SeverityConfig { [key: string]: string }
 
-interface PositionStyles { [key: string]: string, }
+interface PositionStyles { [key: string]: string }
 
 export class UtilsErrorReporter {
-    private mainController: MainController;
-    private notificationConfig: NotificationConfig;
-    private activeNotifications: Set<HTMLElement>;
-    private notificationQueue: ErrorInfo[];
-    private notificationId: number';
+    private mainController: MainController,
+    private notificationConfig: NotificationConfig,
+    private activeNotifications: Set<HTMLElement>,
+    private notificationQueue: ErrorInfo[],
+    private notificationId: number',
 
     constructor(mainController: MainController) {
-        this.mainController = mainController;
+        this.mainController = mainController,
         
         // Notification configuration
         this.notificationConfig = {
             autoHide: true,
-    hideDelay: 10000, // 10 seconds;
+    hideDelay: 10000, // 10 seconds,
             maxConcurrentNotifications: 3,
             position: 'top-right',
-    showReloadButton: true;
-    ,}
+    showReloadButton: true }
             showCloseButton: true 
     };
         ';
@@ -64,8 +63,8 @@ export class UtilsErrorReporter {
      */
     notifyUser(errorInfo: ErrorInfo): void { // Only notify for important errors
         if(this.shouldNotifyUser(errorInfo) {
-            
-        }
+    
+}
             this.showErrorNotification(errorInfo'); }
 }
     
@@ -78,19 +77,19 @@ export class UtilsErrorReporter {
         const { context, message } = errorInfo;
         ';
         // Canvas-related critical errors
-        if(context === 'CANVAS_ERROR' && message.includes('Canvas)' { return true; }
+        if(context === 'CANVAS_ERROR' && message.includes('Canvas)' { return true }
         ';
         // Browser compatibility issues
-        if (message.includes('not, supported'') || message.includes('not, available)' { return true; }
+        if (message.includes('not, supported') || message.includes('not, available)' { return true }
         ';
         // Network-related issues
-        if (message.includes('network'') || message.includes('fetch)' { return true; }
+        if (message.includes('network') || message.includes('fetch)' { return true }
         ';
         // Memory issues
-        if(context === 'MEMORY_WARNING' && message.includes('memory)' { return true; }
+        if(context === 'MEMORY_WARNING' && message.includes('memory)' { return true }
         ';
         // Performance issues
-        if(context === 'PERFORMANCE_WARNING' && message.includes('FPS) { return true; }
+        if(context === 'PERFORMANCE_WARNING' && message.includes('FPS) { return true }
         
         return false;
     }
@@ -101,8 +100,7 @@ export class UtilsErrorReporter {
      */
     private showErrorNotification(errorInfo: ErrorInfo): void { // Check notification limits
         if(this.activeNotifications.size >= this.notificationConfig.maxConcurrentNotifications) {
-            this.queueNotification(errorInfo);
-        }
+            this.queueNotification(errorInfo) }
             return; }
         }
         
@@ -114,12 +112,12 @@ export class UtilsErrorReporter {
      * Queue notification for later display
      * @param errorInfo - Error information
      */
-    private queueNotification(errorInfo: ErrorInfo): void { this.notificationQueue.push(errorInfo);
+    private queueNotification(errorInfo: ErrorInfo): void { this.notificationQueue.push(errorInfo),
         
         // Keep queue reasonable size
         if(this.notificationQueue.length > 10) {
-            
-        }
+    
+}
             this.notificationQueue.shift(); }
 }
     
@@ -128,10 +126,10 @@ export class UtilsErrorReporter {
      * @param errorInfo - Error information
      * @returns Notification element
      */''
-    private createNotificationElement(errorInfo: ErrorInfo): HTMLElement { const notificationId = ++this.notificationId;''
-        const notification = document.createElement('div''); }
+    private createNotificationElement(errorInfo: ErrorInfo): HTMLElement { const notificationId = ++this.notificationId,
+        const notification = document.createElement('div') }
 
-        notification.id = `error-notification-${notificationId}`;''
+        notification.id = `error-notification-${notificationId}`;
         notification.className = 'error-notification';
         notification.dataset.errorId = errorInfo.id;
 
@@ -139,28 +137,28 @@ export class UtilsErrorReporter {
         notification.dataset.severity = severity;
         ';
 
-        notification.innerHTML = `'';
+        notification.innerHTML = `';
             <div class="error-notification-content">"";
                 <div class="error-notification-header">"";
                     <span class="error-notification-icon">${this.getSeverityIcon(severity"}"</span>""
                     <h3 class="error-notification-title">${this.getSeverityTitle(severity"}"</h3>"
                     ${ this.notificationConfig.showCloseButton ? undefined : undefined" }"
-                        '<button class="error-notification-close" aria-label="閉じる">×</button>' : ''}
+                        '<button class="error-notification-close" aria-label="閉じる">×</button>' : '}
 
-                </div>'';
+                </div>';
                 <div class="error-notification-body">"";
                     <p class="error-notification-message">${this.getUserFriendlyMessage(errorInfo})</p>""
                     ${ errorInfo.metadata && Object.keys(errorInfo.metadata"}.length > 0 ? `<details class="error-notification-details">"
                             <summary>詳細情報</summary>" }"
                             <pre>${JSON.stringify(errorInfo.metadata, null, 2"}"</pre> : undefined""
                         </details>` : ''
-                </div>'';
+                </div>';
                 <div class="error-notification-actions">";
                     ${ this.notificationConfig.showCloseButton ? undefined : undefined" }"
-                        '<button class="error-btn error-btn-secondary" data-action="dismiss">閉じる</button>' : ''}
+                        '<button class="error-btn error-btn-secondary" data-action="dismiss">閉じる</button>' : '}
 
                     ${ this.notificationConfig.showReloadButton ? undefined : undefined', '
-                        '<button, class="error-btn, error-btn-primary" data-action="reload">再読み込み</button>' : ''}
+                        '<button, class="error-btn, error-btn-primary" data-action="reload">再読み込み</button>' : '}
                 </div>;
             </div>;
         `;
@@ -180,7 +178,8 @@ export class UtilsErrorReporter {
             CRITICAL: '🚨',
             HIGH: '⚠️',
             MEDIUM: 'ℹ️',
-            LOW: '📝' ,};
+            LOW: '📝'
+            };
         return icons[severity] || icons.MEDIUM;
     }
     
@@ -193,7 +192,8 @@ export class UtilsErrorReporter {
             CRITICAL: 'システムエラー',
             HIGH: '重要なエラー',
             MEDIUM: '警告',
-            LOW: '情報' ,};
+            LOW: '情報'
+            };
         return titles[severity] || titles.MEDIUM;
     }
     
@@ -205,45 +205,31 @@ export class UtilsErrorReporter {
     private getUserFriendlyMessage(errorInfo: ErrorInfo): string {
         const { context, message } = errorInfo;
 
-        if(context === 'CANVAS_ERROR'') {', ';
-
-        }
+        if(context === 'CANVAS_ERROR') {', ' }
 
             return 'グラフィック機能に問題が発生しました。ブラウザを更新してください。';
 
-        if(context === 'AUDIO_ERROR'') {', ';
-
-        }
+        if(context === 'AUDIO_ERROR') {', ' }
 
             return '音声機能が利用できません。ゲームは音声なしで続行されます。';
 
-        if(context === 'STORAGE_ERROR'') {', ';
-
-        }
+        if(context === 'STORAGE_ERROR') {', ' }
 
             return 'データの保存に問題が発生しました。進行状況が保存されない可能性があります。';
 
-        if(context === 'MEMORY_WARNING'') {', ';
-
-        }
+        if(context === 'MEMORY_WARNING') {', ' }
 
             return 'メモリ使用量が多くなっています。パフォーマンスが低下する可能性があります。';
 
-        if(context === 'PERFORMANCE_WARNING'') {', ';
-
-        }
+        if(context === 'PERFORMANCE_WARNING') {', ' }
 
             return 'パフォーマンスが低下しています。設定を調整することをお勧めします。';
 
-        if(context === 'NETWORK_ERROR'') {', ';
-
-        }
+        if(context === 'NETWORK_ERROR') {', ' }
 
             return 'ネットワーク接続に問題があります。インターネット接続を確認してください。';
 
-        if(context === 'BROWSER_COMPATIBILITY'') {', ';
-
-        }
+        if(context === 'BROWSER_COMPATIBILITY') {', ' }
 
             return 'お使いのブラウザでは一部機能が制限される可能性がありますが、ゲームは続行できます。';
 
@@ -266,7 +252,7 @@ export class UtilsErrorReporter {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             z-index: 10000,
             opacity: 0,
-    transform: translateX(100%),
+    transform: translateX(100%,
             transition: all 0.3s ease-out,
             border-left: 4px solid ${this.getSeverityColor(severity'}''
         `;
@@ -274,84 +260,74 @@ export class UtilsErrorReporter {
         notification.style.cssText = baseStyles;
         ';
         // Content styles
-        const content = notification.querySelector('.error-notification-content' as HTMLElement;''
-        if(content) {', ';
-
-        }
+        const content = notification.querySelector('.error-notification-content' as HTMLElement;
+        if(content) {', ' }
 
             content.style.cssText = 'padding: 16px;'; 
     }
         ';
         // Header styles
-        const header = notification.querySelector('.error-notification-header' as HTMLElement;''
-        if(header) {', ';
-
-        }
+        const header = notification.querySelector('.error-notification-header' as HTMLElement;
+        if(header) {', ' }
 
             header.style.cssText = 'display: flex; align-items: center;, gap: 8px; margin-bottom: 12px;'; 
     }
         ';
         // Title styles
-        const title = notification.querySelector('.error-notification-title' as HTMLElement;''
-        if(title) {', ';
-
-        }
+        const title = notification.querySelector('.error-notification-title' as HTMLElement;
+        if(title) {', ' }
 
             title.style.cssText = 'margin: 0; font-size: 16px; font-weight: 600; color: #333;, flex: 1;'; 
     }
         ';
         // Close button styles
-        const closeBtn = notification.querySelector('.error-notification-close' as HTMLElement;''
+        const closeBtn = notification.querySelector('.error-notification-close' as HTMLElement;
         if(closeBtn) {
-            closeBtn.style.cssText = `;
+            closeBtn.style.cssText = `,
                 background: none,
-    border: none;
+    border: none,
                 font-size: 20px,
-                color: #666;
-                cursor: pointer;
-                padding: 0;
-                width: 24px;
+                color: #666,
+                cursor: pointer,
+                padding: 0,
+                width: 24px,
                 height: 24px,
-    display: flex;
+    display: flex,
                 align-items: center,
-                justify-content: center,
-        }
+                justify-content: center }
             `; }
         }
         ';
         // Message styles
-        const messageEl = notification.querySelector('.error-notification-message' as HTMLElement;''
-        if(messageEl) {', ';
-
-        }
+        const messageEl = notification.querySelector('.error-notification-message' as HTMLElement;
+        if(messageEl) {', ' }
 
             messageEl.style.cssText = 'margin: 0 0 16px 0;, color: #555; line-height: 1.4;'; 
     }
         ';
         // Actions styles
-        const actions = notification.querySelector('.error-notification-actions' as HTMLElement;''
-        if(actions) {', ';
-
-        }
+        const actions = notification.querySelector('.error-notification-actions' as HTMLElement;
+        if(actions) {', ' }
 
             actions.style.cssText = 'display: flex;, gap: 8px; justify-content: flex-end;'; 
     }
         ';
         // Button styles
         notification.querySelectorAll('.error-btn'.forEach(btn => {  ')'
-            const button = btn as HTMLElement');''
-            const isPrimary = button.classList.contains('error-btn-primary';
-            button.style.cssText = `;
+            const button = btn as HTMLElement'),
+            const isPrimary = button.classList.contains('error-btn-primary',
+            button.style.cssText = `,
                 padding: 8px 16px,
-    border: none;
+    border: none,
                 border-radius: 4px,
-                cursor: pointer;
+                cursor: pointer,
                 font-size: 14px,
                 font-weight: 500,
-                transition: background-color 0.2s, }
+                transition: background-color 0.2s }
 
                 ${isPrimary ? undefined : undefined', '
-                    `background: ${this.getSeverityColor(severity',}'; color: white;` :'', 'background: #f5f5f5;, color: #333;
+                    `background: ${this.getSeverityColor(severity'
+            }'; color: white;` :', 'background: #f5f5f5;, color: #333;
 
                 }
             `;
@@ -363,7 +339,7 @@ export class UtilsErrorReporter {
      * @returns CSS position styles'
      */''
     private getPositionStyles('''
-            'top-right': 'top: 20px;, right: 20px;','', 'top-left': 'top: 20px;, left: 20px;','', 'bottom-right': 'bottom: 20px;, right: 20px;','', 'bottom-left': 'bottom: 20px,  left: 20px;','', 'top-center': 'top: 20px; left: 50%;, transform: translateX(-50%);','', 'bottom-center': 'bottom: 20px; left: 50%;, transform: translateX(-50%);
+            'top-right': 'top: 20px;, right: 20px;',', 'top-left': 'top: 20px;, left: 20px;',', 'bottom-right': 'bottom: 20px;, right: 20px;',', 'bottom-left': 'bottom: 20px,  left: 20px;',', 'top-center': 'top: 20px; left: 50%;, transform: translateX(-50%);',', 'bottom-center': 'bottom: 20px; left: 50%;, transform: translateX(-50%);
 
         };
 
@@ -379,7 +355,8 @@ export class UtilsErrorReporter {
             CRITICAL: '#dc3545',
             HIGH: '#fd7e14',
             MEDIUM: '#ffc107',
-            LOW: '#17a2b8' ,};
+            LOW: '#17a2b8'
+            };
         return colors[severity] || colors.MEDIUM;
     }
     
@@ -388,32 +365,29 @@ export class UtilsErrorReporter {
      * @param notification - Notification element'
      */''
     private attachNotificationEventListeners(notification: HTMLElement): void { // Close button
-        const closeBtn = notification.querySelector('.error-notification-close' as HTMLElement;''
-        if(closeBtn) {', ';
-
-        }
+        const closeBtn = notification.querySelector('.error-notification-close' as HTMLElement,
+        if(closeBtn) {', ' }
 
             closeBtn.addEventListener('click', () => this.dismissNotification(notification)); }
         }
         ';
         // Action buttons
-        notification.querySelectorAll('[data-action]'.forEach(btn => {  ');''
+        notification.querySelectorAll('[data-action]'.forEach(btn => {  '),
             btn.addEventListener('click', (e) => {
-                const target = e.target as HTMLElement;
-                const action = target.dataset.action as NotificationAction; }
+                const target = e.target as HTMLElement,
+                const action = target.dataset.action as NotificationAction }
                 this.handleNotificationAction(action, notification); }
 
-            });''
-        }');
+            });'}');
         ';
         // Hover effects
-        notification.addEventListener('mouseenter', () => {  ' }
+        notification.addEventListener('mouseenter', () => { }
 
-            notification.style.transform = 'translateX(0) scale(1.02)';' }
+            notification.style.transform = 'translateX(0) scale(1.02)'; }
 
         }');
 
-        notification.addEventListener('mouseleave', () => {  ' }
+        notification.addEventListener('mouseleave', () => { }
 
             notification.style.transform = 'translateX(0) scale(1)'; }
         });
@@ -424,12 +398,12 @@ export class UtilsErrorReporter {
      * @param notification - Notification element
      * @param errorInfo - Error information
      */
-    private displayNotification(notification: HTMLElement, errorInfo: ErrorInfo): void { document.body.appendChild(notification);
-        this.activeNotifications.add(notification);
-        ';
+    private displayNotification(notification: HTMLElement, errorInfo: ErrorInfo): void { document.body.appendChild(notification),
+        this.activeNotifications.add(notification),
+        ',
         // Trigger animation
         requestAnimationFrame(() => { ''
-            notification.style.opacity = '1';' }
+            notification.style.opacity = '1',' }
 
             notification.style.transform = 'translateX(0)'; }
         });
@@ -450,19 +424,18 @@ export class UtilsErrorReporter {
      * @param notification - Notification element
      */
     private handleNotificationAction(action: NotificationAction, notification: HTMLElement): void { ''
-        switch(action) {'
+        switch(action) {
 
-            case 'dismiss':'';
-                this.dismissNotification(notification);
+            case 'dismiss':',
+                this.dismissNotification(notification),
 
-                break;''
-            case 'reload':'';
+                break,
+            case 'reload':',
                 if(confirm('ページを再読み込みしますか？未保存の変更は失われる可能性があります。' {''
-                    location.reload()';
-            case 'report':')';
-                this.showReportDialog(notification.dataset.errorId || '');
-                break;
-        }
+                    location.reload()',
+            case 'report':')',
+                this.showReportDialog(notification.dataset.errorId || '),
+                break }
             default: }
                 console.warn(`[ErrorReporter] Unknown, action: ${action}`});
         }
@@ -481,10 +454,10 @@ export class UtilsErrorReporter {
      * @param notification - Notification element
      */
     private dismissNotification(notification: HTMLElement): void { ''
-        if(!notification || !notification.parentNode) return;
+        if(!notification || !notification.parentNode) return,
 
-        notification.style.opacity = '0';
-        notification.style.transform = 'translateX(100%)';
+        notification.style.opacity = '0',
+        notification.style.transform = 'translateX(100%)',
         
         setTimeout(() => { 
             if (notification.parentNode) { }
@@ -499,9 +472,9 @@ export class UtilsErrorReporter {
     /**
      * Adjust positions of multiple notifications
      */'
-    private adjustNotificationPositions(): void { const notifications = Array.from(this.activeNotifications);''
+    private adjustNotificationPositions(): void { const notifications = Array.from(this.activeNotifications),
         notifications.forEach((notification, index) => { '
-            const offset = index * 90; // 90px gap between notifications' }'
+            const offset = index * 90, // 90px gap between notifications' }'
 
             if(this.notificationConfig.position.includes('top' { }'
                 notification.style.top = `${20 + offset}px`;
@@ -516,10 +489,10 @@ export class UtilsErrorReporter {
      */
     private processNotificationQueue(): void { if (this.notificationQueue.length > 0 && 
             this.activeNotifications.size < this.notificationConfig.maxConcurrentNotifications) {
-            const errorInfo = this.notificationQueue.shift();
+            const errorInfo = this.notificationQueue.shift(),
             if(errorInfo) {
-                
-            }
+    
+}
                 this.showErrorNotification(errorInfo); }
 }
     }
@@ -528,10 +501,10 @@ export class UtilsErrorReporter {
      * Show fallback UI for compatibility issues'
      */''
     showFallbackUI()';
-        const fallbackDiv = document.createElement('div'');''
+        const fallbackDiv = document.createElement('div');
         fallbackDiv.id = 'fallbackUI';
 
-        fallbackDiv.innerHTML = `'';
+        fallbackDiv.innerHTML = `';
             <div style=";
                 position: fixed;
                 top: 50%;
@@ -556,7 +529,7 @@ export class UtilsErrorReporter {
                     <li>Safari (iOS/macOS")</li>";
                 </ul>"";
                 <div style="margin-top: 20px;">""
-                    <button onclick="this.parentElement.parentElement.remove(); console.log('[Game] Continuing, with limited, compatibility mode'');" style="
+                    <button onclick="this.parentElement.parentElement.remove(); console.log('[Game] Continuing, with limited, compatibility mode');" style="
                         padding: 10px 20px;
                         background: #28a745;
                         color: white,
@@ -597,13 +570,13 @@ export class UtilsErrorReporter {
      * @param config - Configuration options
      */"
     configure(config: Partial<NotificationConfig>): void { ""
-        Object.assign(this.notificationConfig, config);""
-        console.log('[ErrorReporter] Configuration, updated'); }'
+        Object.assign(this.notificationConfig, config),""
+        console.log('[ErrorReporter] Configuration, updated') }'
     
     /**
      * Clear all active notifications
      */
-    clearAllNotifications(): void { this.activeNotifications.forEach(notification => { ); }
+    clearAllNotifications(): void { this.activeNotifications.forEach(notification => { ) }
             this.dismissNotification(notification); }
         });
         this.notificationQueue = [];
@@ -613,20 +586,19 @@ export class UtilsErrorReporter {
      * Get active notifications count
      * @returns Number of active notifications
      */
-    getActiveNotificationsCount(): number { return this.activeNotifications.size; }
+    getActiveNotificationsCount(): number { return this.activeNotifications.size }
     
     /**
      * Get queued notifications count
      * @returns Number of queued notifications
      */
-    getQueuedNotificationsCount(): number { return this.notificationQueue.length; }
+    getQueuedNotificationsCount(): number { return this.notificationQueue.length }
     
     /**
      * Cleanup reporter resources
      */'
     destroy(): void { ''
-        this.clearAllNotifications()';
-        console.log('[ErrorReporter] Reporter, destroyed''); }
+        this.clearAllNotifications()',
+        console.log('[ErrorReporter] Reporter, destroyed') }
 
-    }''
-}
+    }'}

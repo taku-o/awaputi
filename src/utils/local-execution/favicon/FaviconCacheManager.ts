@@ -8,25 +8,25 @@
 
 // Type definitions
 interface CacheData { dataURL: string,
-    timestamp: number;
+    timestamp: number,
     size: number,
-    configHash: string ,}
+    configHash: string  }
 
-interface CacheStats { totalEntries: number;
-    totalSize: number;
+interface CacheStats { totalEntries: number,
+    totalSize: number,
     expiredCount?: number,
-    available: boolean;
+    available: boolean,
     error?: string }
 
-interface FaviconConfig { backgroundColor?: string;
-    textColor?: string;
-    text?: string;
-    fontFamily?: string; }
+interface FaviconConfig { backgroundColor?: string,
+    textColor?: string,
+    text?: string,
+    fontFamily?: string }
 
-interface HashableConfig { backgroundColor?: string;
-    textColor?: string;
-    text?: string;
-    fontFamily?: string; }
+interface HashableConfig { backgroundColor?: string,
+    textColor?: string,
+    text?: string,
+    fontFamily?: string }
 
 export default class FaviconCacheManager { /**
      * キャッシュキーのプレフィックス
@@ -36,7 +36,7 @@ export default class FaviconCacheManager { /**
     /**
      * キャッシュの有効期限（ミリ秒）
      */
-    static readonly CACHE_EXPIRY: number = 7 * 24 * 60 * 60 * 1000; // 1週間
+    static readonly CACHE_EXPIRY: number = 7 * 24 * 60 * 60 * 1000, // 1週間
     
     /**
      * キャッシュから取得
@@ -46,33 +46,29 @@ export default class FaviconCacheManager { /**
      */
     static get(size: number, configHash: string): string | null {
         if(!this._isLocalStorageAvailable() {
-            
-        ,}
+    
+}
             return null;
         
-        try { const key = this._generateCacheKey(size, configHash);
-            const cached = localStorage.getItem(key);
+        try { const key = this._generateCacheKey(size, configHash),
+            const cached = localStorage.getItem(key),
             
             if(!cached) {
-            
-                
-            
-            }
+    
+}
                 return null;
             
-            const data: CacheData = JSON.parse(cached),
+            const data: CacheData = JSON.parse(cached,
             
             // 期限切れチェック
             if(this._isExpired(data.timestamp) {
-                localStorage.removeItem(key);
-            }
+                localStorage.removeItem(key) }
                 return null;
             ';
 
-            return data.dataURL;''
-        } catch (error) {
-            console.warn('Error reading favicon from cache:', error);
-            return null;
+            return data.dataURL;} catch (error) {
+            console.warn('Error reading favicon from cache:', error),
+            return null,
     
     /**
      * キャッシュに保存
@@ -81,21 +77,20 @@ export default class FaviconCacheManager { /**
      * @param dataURL - Data URL
      */
     static set(size: number, configHash: string, dataURL: string): void { if(!this._isLocalStorageAvailable() {
-            return; ,}
+            return }
         
-        try { const key = this._generateCacheKey(size, configHash);
+        try { const key = this._generateCacheKey(size, configHash),
             const data: CacheData = {
                 dataURL,
-                timestamp: Date.now();
+                timestamp: Date.now(),
                 size,
                 configHash };
             ';
 
-            localStorage.setItem(key, JSON.stringify(data);''
-        } catch (error) {
-            console.warn('Error saving favicon to cache:', error);
+            localStorage.setItem(key, JSON.stringify(data);'} catch (error) {
+            console.warn('Error saving favicon to cache:', error),
             // キャッシュ容量が満杯の場合、古いエントリを削除
-            this._cleanupOldEntries(); }
+            this._cleanupOldEntries() }
     }
     
     /**
@@ -104,8 +99,8 @@ export default class FaviconCacheManager { /**
      * @returns ハッシュ値
      */
     static generateConfigHash(config: FaviconConfig): string { const hashableConfig: HashableConfig = {
-            backgroundColor: config.backgroundColor;
-            textColor: config.textColor;
+            backgroundColor: config.backgroundColor,
+            textColor: config.textColor,
             text: config.text,
     fontFamily: config.fontFamily };
         const configStr = JSON.stringify(hashableConfig);
@@ -117,19 +112,18 @@ export default class FaviconCacheManager { /**
      * @param size - 特定サイズのみクリアする場合はサイズを指定
      */
     static clear(size: number | null = null): void { if(!this._isLocalStorageAvailable() {
-            return; }
+            return }
         
         try { if (size === null) {
                 // 全ファビコンキャッシュを削除
-                const keys = Object.keys(localStorage).filter(key => );
-                    key.startsWith(this.CACHE_PREFIX);
-                keys.forEach(key => localStorage.removeItem(key); }
+                const keys = Object.keys(localStorage).filter(key => ),
+                    key.startsWith(this.CACHE_PREFIX),
+                keys.forEach(key => localStorage.removeItem(key) }
             } else {  // 特定サイズのみ削除
-                const keys = Object.keys(localStorage).filter(key => );
+                const keys = Object.keys(localStorage).filter(key => ),
                     key.startsWith(this.CACHE_PREFIX) && key.includes(`_${size}_`} }
                 ); }
-                keys.forEach(key => localStorage.removeItem(key)});''
-            } catch (error) { console.warn('Error clearing favicon cache:', error }
+                keys.forEach(key => localStorage.removeItem(key)});'} catch (error) { console.warn('Error clearing favicon cache:', error }
     }
     
     /**
@@ -137,32 +131,32 @@ export default class FaviconCacheManager { /**
      * @returns キャッシュ統計
      */
     static getStats(): CacheStats { if(!this._isLocalStorageAvailable() { }
-            return { totalEntries: 0, totalSize: 0, available: false ,}
+            return { totalEntries: 0, totalSize: 0, available: false  }
         
-        try { const keys = Object.keys(localStorage).filter(key => );
-                key.startsWith(this.CACHE_PREFIX);
+        try { const keys = Object.keys(localStorage).filter(key => ),
+                key.startsWith(this.CACHE_PREFIX),
             
-            let totalSize = 0;
-            let expiredCount = 0;
+            let totalSize = 0,
+            let expiredCount = 0,
             
-            keys.forEach(key => { );
-                const item = localStorage.getItem(key);
+            keys.forEach(key => { ),
+                const item = localStorage.getItem(key),
                 if(item) {
-                    totalSize += item.length;
+                    totalSize += item.length,
                     try {
                         const data: CacheData = JSON.parse(item) }
                         if(this._isExpired(data.timestamp) { }
                             expiredCount++; }
-                        } catch (e) { expiredCount++; }
+                        } catch (e) { expiredCount++ }
 });
             
             return { totalEntries: keys.length,
                 totalSize,
-                expiredCount, };
+                expiredCount };
                 available: true 
     } catch (error) { return { totalEntries: 0, 
-                totalSize: 0, ;
-                available: false,  };
+                totalSize: 0, ,
+                available: false };
                 error: (error, as Error).message  }
             }
     }
@@ -184,39 +178,38 @@ export default class FaviconCacheManager { /**
      * @param timestamp - タイムスタンプ
      * @returns 期限切れかどうか
      */
-    private static _isExpired(timestamp: number): boolean { return Date.now() - timestamp > this.CACHE_EXPIRY; }
+    private static _isExpired(timestamp: number): boolean { return Date.now() - timestamp > this.CACHE_EXPIRY }
     
     /**
      * localStorageが利用可能かチェック
      * @private
      * @returns 利用可能かどうか'
      */''
-    private static _isLocalStorageAvailable(''';
+    private static _isLocalStorageAvailable('';
             return, typeof localStorage !== 'undefined' && localStorage !== null;)
-        } catch (e) { return false;
+        } catch (e) { return false,
     
     /**
      * 古いキャッシュエントリを削除
      * @private
      */
     private static _cleanupOldEntries(): void { if(!this._isLocalStorageAvailable() {
-            return; }
+            return }
         
-        try { const keys = Object.keys(localStorage).filter(key => );
-                key.startsWith(this.CACHE_PREFIX);
+        try { const keys = Object.keys(localStorage).filter(key => ),
+                key.startsWith(this.CACHE_PREFIX),
             
             // 期限切れのエントリを削除
             keys.forEach(key => { )
-                try {);
-                    const item = localStorage.getItem(key);
+                try {),
+                    const item = localStorage.getItem(key),
                     if(item) {
                         const data: CacheData = JSON.parse(item) }
                         if(this._isExpired(data.timestamp) { }
                             localStorage.removeItem(key); }
 } catch (e) { // 壊れたエントリも削除
-                    localStorage.removeItem(key); }
-            });''
-        } catch (error) { console.warn('Error cleaning up favicon cache:', error }
+                    localStorage.removeItem(key) }
+            });'} catch (error) { console.warn('Error cleaning up favicon cache:', error }
     }
     
     /**
@@ -225,19 +218,16 @@ export default class FaviconCacheManager { /**
      * @param str - ハッシュ化する文字列
      * @returns ハッシュ値
      */
-    private static _simpleHash(str: string): string { let hash = 0;
-        if (str.length === 0) return hash.toString();
+    private static _simpleHash(str: string): string { let hash = 0,
+        if (str.length === 0) return hash.toString(),
         
-        for(let, i = 0; i < str.length; i++) {
+        for(let, i = 0, i < str.length, i++) {
         
-            const char = str.charCodeAt(i);
-            hash = ((hash << 5) - hash) + char;
-        
-        }
+            const char = str.charCodeAt(i),
+            hash = ((hash << 5) - hash) + char }
             hash = hash & hash; // 32bit整数に変換 }
         }
 
         return Math.abs(hash).toString(36);
 
-    }''
-}
+    }'}

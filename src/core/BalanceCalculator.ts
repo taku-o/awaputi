@@ -6,154 +6,152 @@
  */
 
 // 型定義
-interface GameConfig { getBalanceConfig?: () => BalanceConfig; 
-    }
+interface GameConfig { getBalanceConfig?: () => BalanceConfig }
 
 interface BalanceConfig { stages: {
-        unlockRequirement;s: Record<string, number>;
+        unlockRequirement,s: Record<string, number>,
         difficulty: Record<string, DifficultySettings> };
-    items: { baseCosts: Record<string, number>;
+    items: { baseCosts: Record<string, number>,
         costMultiplier: number,
-    effects: Record<string, number>;
+    effects: Record<string, number>,
         maxLevels: Record<string, number> };
-    bubbles: { maxAge: Record<string, number>;
+    bubbles: { maxAge: Record<string, number>,
         health: Record<string, number> }
 
 interface DifficultySettings { spawnRate: number,
-    maxBubbles: number ,}
+    maxBubbles: number  }
 
-interface CalculatedDifficulty extends DifficultySettings { originalSpawnRate: number;
+interface CalculatedDifficulty extends DifficultySettings { originalSpawnRate: number,
     originalMaxBubbles: number,
     levelAdjustment: LevelAdjustment
     }
 
-interface LevelAdjustment { spawnRateMultiplier: number;
+interface LevelAdjustment { spawnRateMultiplier: number,
     maxBubblesMultiplier: number,
     playerLevel: number }
 
-interface BubbleModifiers { timeMultiplier?: number;
-    timeBonus?: number;
-    healthMultiplier?: number;
-    healthBonus?: number; }
+interface BubbleModifiers { timeMultiplier?: number,
+    timeBonus?: number,
+    healthMultiplier?: number,
+    healthBonus?: number }
 
 interface ItemRecommendation { itemId: string,
-    currentLevel: number;
-    nextLevel: number;
-    cost: number;
+    currentLevel: number,
+    nextLevel: number,
+    cost: number,
     effect: number,
-    priority: number ,}
+    priority: number  }
 
-interface PlayerState { currentTAP?: number;
-    currentItems?: Record<string, number>;
-    playStyle?: 'aggressive' | 'defensive' | 'balanced';
-    unlockedStages?: string[];
-    completedAchievements?: string[]; }
+interface PlayerState { currentTAP?: number,
+    currentItems?: Record<string, number>,
+    playStyle?: 'aggressive' | 'defensive' | 'balanced',
+    unlockedStages?: string[],
+    completedAchievements?: string[] }
 
 interface GameProgress { tapProgress: number,
-    stageProgress: number;
-    unlockedStages: number;
-    totalStages: number;
-    nextStage: string | null;
+    stageProgress: number,
+    unlockedStages: number,
+    totalStages: number,
+    nextStage: string | null,
     nextStageRequirement: number | null,
-    tapToNextStage: number ,}
+    tapToNextStage: number  }
 
 interface BalanceAdjustment { type: string,
-    reason: string;
-    adjustment?: number;
-    stageId?: string;
-    itemId?: string;
-    currentRate?: number; }
+    reason: string,
+    adjustment?: number,
+    stageId?: string,
+    itemId?: string,
+    currentRate?: number }
 
 interface BalanceSuggestions { difficulty: BalanceAdjustment[],
     items: BalanceAdjustment[],
     stages: BalanceAdjustment[]
-    ,}
+     }
 
-interface GameData { averagePlayTime?: number;
-    averageScore?: number;
-    stageCompletionRates?: Record<string, number>;
-    itemUsageRates?: Record<string, number>; }
+interface GameData { averagePlayTime?: number,
+    averageScore?: number,
+    stageCompletionRates?: Record<string, number>,
+    itemUsageRates?: Record<string, number> }
 
 interface StageInfo { stageId: string,
-    requirement: number ,}
+    requirement: number  }
 
-interface DebugInfo { hasGameConfig: boolean;
+interface DebugInfo { hasGameConfig: boolean,
     balanceConfig: BalanceConfig,
     version: string }
 
 export class BalanceCalculator {
-    private gameConfig: GameConfig | null;
-    private, defaultBalanceConfig: BalanceConfig';
+    private gameConfig: GameConfig | null,
+    private, defaultBalanceConfig: BalanceConfig',
 
     constructor(gameConfig: GameConfig | null = null) {
-        this.gameConfig = gameConfig;
+        this.gameConfig = gameConfig,
         
         // デフォルトのバランス設定（GameConfigが利用できない場合のフォールバック）
         this.defaultBalanceConfig = {
             stages: {
                 unlockRequirements: {
-                    hard: 500;
-                    veryHard: 2000;
-                    special: 5000;
-                    nightmare: 12000;
-                    chaos: 25000;
+                    hard: 500,
+                    veryHard: 2000,
+                    special: 5000,
+                    nightmare: 12000,
+                    chaos: 25000,
                     ultimate: 50000,
-    allIn: 100000;
-    }
+    allIn: 100000 }
                     boss: 35000 
     };
                 difficulty: {
-                    tutorial: { spawnRate: 1.0, maxBubbles: 10 ,},
-                    normal: { spawnRate: 1.5, maxBubbles: 20 ,},
-                    hard: { spawnRate: 1.6, maxBubbles: 22 ,},
-                    veryHard: { spawnRate: 1.8, maxBubbles: 28 ,},
-                    special: { spawnRate: 2.0, maxBubbles: 32 ,},
-                    nightmare: { spawnRate: 2.3, maxBubbles: 38 ,},
-                    chaos: { spawnRate: 2.7, maxBubbles: 42 ,},
-                    ultimate: { spawnRate: 3.2, maxBubbles: 48 ,},
-                    allIn: { spawnRate: 3.6, maxBubbles: 55 ,},
-                    boss: { spawnRate: 1.8, maxBubbles: 28 ,}
+                    tutorial: { spawnRate: 1.0, maxBubbles: 10  },
+                    normal: { spawnRate: 1.5, maxBubbles: 20  },
+                    hard: { spawnRate: 1.6, maxBubbles: 22  },
+                    veryHard: { spawnRate: 1.8, maxBubbles: 28  },
+                    special: { spawnRate: 2.0, maxBubbles: 32  },
+                    nightmare: { spawnRate: 2.3, maxBubbles: 38  },
+                    chaos: { spawnRate: 2.7, maxBubbles: 42  },
+                    ultimate: { spawnRate: 3.2, maxBubbles: 48  },
+                    allIn: { spawnRate: 3.6, maxBubbles: 55  },
+                    boss: { spawnRate: 1.8, maxBubbles: 28  }
             },
             items: { baseCosts: {
-                    scoreMultiplier: 75;
-                    revival: 150;
-                    rareRate: 100;
-                    hpBoost: 60;
-                    timeExtension: 90;
+                    scoreMultiplier: 75,
+                    revival: 150,
+                    rareRate: 100,
+                    hpBoost: 60,
+                    timeExtension: 90,
                     comboBoost: 80,
     reset: 30 };
                 costMultiplier: 1.3,
-    effects: { scoreMultiplier: 1.3;
-                    rareRate: 1.3;
-                    hpBoost: 25;
+    effects: { scoreMultiplier: 1.3,
+                    rareRate: 1.3,
+                    hpBoost: 25,
                     timeExtension: 45000,
     comboBoost: 1.5 };
-                maxLevels: { scoreMultiplier: 5;
-                    revival: 2;
-                    rareRate: 4;
-                    hpBoost: 6;
-                    timeExtension: 4;
+                maxLevels: { scoreMultiplier: 5,
+                    revival: 2,
+                    rareRate: 4,
+                    hpBoost: 6,
+                    timeExtension: 4,
                     comboBoost: 3,
     reset: 1 
     };
             bubbles: { maxAge: {
-                    normal: 12000;
-                    stone: 16000;
-                    iron: 20000;
-                    diamond: 22000;
-                    pink: 10000;
-                    poison: 14000;
-                    spiky: 13000;
-                    rainbow: 16000;
-                    clock: 20000;
-                    score: 9000;
-                    electric: 13000;
-                    escaping: 16000;
+                    normal: 12000,
+                    stone: 16000,
+                    iron: 20000,
+                    diamond: 22000,
+                    pink: 10000,
+                    poison: 14000,
+                    spiky: 13000,
+                    rainbow: 16000,
+                    clock: 20000,
+                    score: 9000,
+                    electric: 13000,
+                    escaping: 16000,
                     cracked: 6000,
     boss: 35000 };
-                health: { normal: 1;
-                    stone: 2;
-                    iron: 3;
+                health: { normal: 1,
+                    stone: 2,
+                    iron: 3,
                     diamond: 4,
     boss: 8 
     };
@@ -164,24 +162,22 @@ export class BalanceCalculator {
      * バランス設定を取得'
      */''
     getBalanceConfig()';
-        if(this.gameConfig && typeof, this.gameConfig.getBalanceConfig === 'function) { return this.gameConfig.getBalanceConfig(); }'
+        if(this.gameConfig && typeof, this.gameConfig.getBalanceConfig === 'function) { return this.gameConfig.getBalanceConfig() }'
         return this.defaultBalanceConfig;
     }
     
     /**
      * 難易度調整を計算
      */
-    calculateDifficulty(stageId: string, playerLevel: number = 1): CalculatedDifficulty { const config = this.getBalanceConfig();
-        const baseDifficulty = config.stages.difficulty[stageId];
+    calculateDifficulty(stageId: string, playerLevel: number = 1): CalculatedDifficulty { const config = this.getBalanceConfig(),
+        const baseDifficulty = config.stages.difficulty[stageId],
         
         if(!baseDifficulty) {
         
             console.warn(`Unknown stage: ${stageId}. Using normal difficulty.`},
-            return { ...config.stages.difficulty.normal,
-        
-        }
-                originalSpawnRate: config.stages.difficulty.normal.spawnRate, };
-                originalMaxBubbles: config.stages.difficulty.normal.maxBubbles, }
+            return { ...config.stages.difficulty.normal }
+                originalSpawnRate: config.stages.difficulty.normal.spawnRate };
+                originalMaxBubbles: config.stages.difficulty.normal.maxBubbles }
                 levelAdjustment: this.calculateLevelAdjustment(playerLevel});
             }
         
@@ -189,9 +185,9 @@ export class BalanceCalculator {
         const levelAdjustment = this.calculateLevelAdjustment(playerLevel);
         
         return { spawnRate: baseDifficulty.spawnRate * levelAdjustment.spawnRateMultiplier,
-            maxBubbles: Math.floor(baseDifficulty.maxBubbles * levelAdjustment.maxBubblesMultiplier);
+            maxBubbles: Math.floor(baseDifficulty.maxBubbles * levelAdjustment.maxBubblesMultiplier),
             originalSpawnRate: baseDifficulty.spawnRate,
-    originalMaxBubbles: baseDifficulty.maxBubbles, };
+    originalMaxBubbles: baseDifficulty.maxBubbles };
             levelAdjustment }
         }
     
@@ -199,22 +195,22 @@ export class BalanceCalculator {
      * プレイヤーレベルに基づく調整値を計算
      */
     calculateLevelAdjustment(playerLevel: number): LevelAdjustment { // レベル1を基準とした調整
-        const levelFactor = Math.max(1, playerLevel);
+        const levelFactor = Math.max(1, playerLevel),
         
         // レベルが高いほど少し難易度を下げる（経験者向け調整）
-        const spawnRateMultiplier = Math.max(0.8, 1 - (levelFactor - 1) * 0.02);
-        const maxBubblesMultiplier = Math.max(0.9, 1 - (levelFactor - 1) * 0.01);
+        const spawnRateMultiplier = Math.max(0.8, 1 - (levelFactor - 1) * 0.02),
+        const maxBubblesMultiplier = Math.max(0.9, 1 - (levelFactor - 1) * 0.01),
         
         return { spawnRateMultiplier,
-            maxBubblesMultiplier, };
+            maxBubblesMultiplier };
             playerLevel: levelFactor 
     }
     
     /**
      * アイテムコストを計算
      */
-    calculateItemCost(itemId: string, currentLevel: number = 0): number { const config = this.getBalanceConfig();
-        const baseCost = config.items.baseCosts[itemId];
+    calculateItemCost(itemId: string, currentLevel: number = 0): number { const config = this.getBalanceConfig(),
+        const baseCost = config.items.baseCosts[itemId],
         
         if (baseCost === undefined) { }
             console.warn(`Unknown, item: ${itemId}. Using, default cost.`});
@@ -228,14 +224,14 @@ export class BalanceCalculator {
     /**
      * アイテムの最大レベルを取得
      */
-    getItemMaxLevel(itemId: string): number { const config = this.getBalanceConfig();
-        return config.items.maxLevels[itemId] || 1; }
+    getItemMaxLevel(itemId: string): number { const config = this.getBalanceConfig(),
+        return config.items.maxLevels[itemId] || 1 }
     
     /**
      * アイテム効果値を計算
      */
-    calculateItemEffect(itemId: string, level: number = 1): number { const config = this.getBalanceConfig();
-        const baseEffect = config.items.effects[itemId];
+    calculateItemEffect(itemId: string, level: number = 1): number { const config = this.getBalanceConfig(),
+        const baseEffect = config.items.effects[itemId],
         
         if (baseEffect === undefined) { }
             console.warn(`Unknown, item effect: ${itemId}. Using, default effect.`});
@@ -243,35 +239,33 @@ export class BalanceCalculator {
         }
         ;
         // アイテムタイプに応じた計算
-        switch(itemId) {'
+        switch(itemId) {
 
-            case 'scoreMultiplier':'';
-            case 'rareRate':'';
-            case 'comboBoost':';
+            case 'scoreMultiplier':',
+            case 'rareRate':',
+            case 'comboBoost':',
                 // 倍率系：レベルごとに効果が累積
-                return 1 + (baseEffect - 1') * level;
+                return 1 + (baseEffect - 1') * level,
 
-            case 'hpBoost':;
+            case 'hpBoost':,
                 // HP系：レベルごとに加算
-                return baseEffect * level;
+                return baseEffect * level,
 
-            case 'timeExtension':;
+            case 'timeExtension':,
                 // 時間系：固定値
-                return baseEffect;
-                
-        }
+                return baseEffect }
             default: return baseEffect;
     
     /**
      * ステージ開放条件をチェック
      */
-    isStageUnlocked(stageId: string, playerTAP: number): boolean { const config = this.getBalanceConfig();
-        const requirement = config.stages.unlockRequirements[stageId];
+    isStageUnlocked(stageId: string, playerTAP: number): boolean { const config = this.getBalanceConfig(),
+        const requirement = config.stages.unlockRequirements[stageId],
         
         // 要件が設定されていない場合は開放済み
         if(requirement === undefined) {
-            
-        }
+    
+}
             return true;
         
         return playerTAP >= requirement;
@@ -280,15 +274,15 @@ export class BalanceCalculator {
     /**
      * ステージ開放に必要なTAP値を取得
      */
-    getStageUnlockRequirement(stageId: string): number { const config = this.getBalanceConfig();
-        return config.stages.unlockRequirements[stageId] || 0; }
+    getStageUnlockRequirement(stageId: string): number { const config = this.getBalanceConfig(),
+        return config.stages.unlockRequirements[stageId] || 0 }
     
     /**
      * 泡の生存時間を計算
      */
     calculateBubbleLifetime(bubbleType: string, modifiers: BubbleModifiers = { ): number {
-        const config = this.getBalanceConfig();
-        const baseLifetime = config.bubbles.maxAge[bubbleType];
+        const config = this.getBalanceConfig(),
+        const baseLifetime = config.bubbles.maxAge[bubbleType],
         
         if (baseLifetime === undefined) { }
             console.warn(`Unknown, bubble type: ${bubbleType}. Using, default lifetime.`});
@@ -298,9 +292,9 @@ export class BalanceCalculator {
         let lifetime = baseLifetime;
         
         // 修正値を適用
-        if (modifiers.timeMultiplier) { lifetime *= modifiers.timeMultiplier; }
+        if (modifiers.timeMultiplier) { lifetime *= modifiers.timeMultiplier }
         
-        if (modifiers.timeBonus) { lifetime += modifiers.timeBonus; }
+        if (modifiers.timeBonus) { lifetime += modifiers.timeBonus }
         
         return Math.floor(lifetime);
     }
@@ -309,22 +303,20 @@ export class BalanceCalculator {
      * 泡の耐久値を計算
      */
     calculateBubbleHealth(bubbleType: string, modifiers: BubbleModifiers = { ): number {
-        const config = this.getBalanceConfig();
-        const baseHealth = config.bubbles.health[bubbleType];
+        const config = this.getBalanceConfig(),
+        const baseHealth = config.bubbles.health[bubbleType],
         
         if(baseHealth === undefined) {
-        
-            
-        
-        }
+    
+}
             return config.bubbles.health.normal || 1;
         
         let health = baseHealth;
         
         // 修正値を適用
-        if (modifiers.healthMultiplier) { health *= modifiers.healthMultiplier; }
+        if (modifiers.healthMultiplier) { health *= modifiers.healthMultiplier }
         
-        if (modifiers.healthBonus) { health += modifiers.healthBonus; }
+        if (modifiers.healthBonus) { health += modifiers.healthBonus }
         
         return Math.max(1, Math.floor(health);
     }
@@ -349,21 +341,19 @@ export class BalanceCalculator {
         
         const itemOrder = priorities[playStyle] || priorities.balanced;
         
-        for(const, itemId of, itemOrder) {
+        for (const itemId of itemOrder) {
         
-            const currentLevel = currentItems[itemId] || 0;
-            const maxLevel = this.getItemMaxLevel(itemId);
-            const cost = this.calculateItemCost(itemId, currentLevel);
+            const currentLevel = currentItems[itemId] || 0,
+            const maxLevel = this.getItemMaxLevel(itemId),
+            const cost = this.calculateItemCost(itemId, currentLevel),
             
             if (currentLevel < maxLevel && currentTAP >= cost) {
                 recommendations.push({
-                    itemId);
-                    currentLevel);
-                    nextLevel: currentLevel + 1,);
-                    cost);
-                    effect: this.calculateItemEffect(itemId, currentLevel + 1),
-        
-        }
+                    itemId,
+                    currentLevel,
+                    nextLevel: currentLevel + 1),
+                    cost,
+                    effect: this.calculateItemEffect(itemId, currentLevel + 1) }
                     priority: itemOrder.indexOf(itemId) + 1 
     });
             }
@@ -394,8 +384,9 @@ export class BalanceCalculator {
         // 次の目標ステージ（TAP要件順でソートして最初の未開放ステージ）
         const sortedStages: StageInfo[] = allStages;
             .map(stageId => ({ )
-                stageId);
-                requirement: this.getStageUnlockRequirement(stageId })
+                stageId,
+                requirement: this.getStageUnlockRequirement(stageId
+            });
             .sort((a, b) => a.requirement - b.requirement);
             
         const nextStageInfo = sortedStages.find(stage => );
@@ -405,12 +396,12 @@ export class BalanceCalculator {
         
         const nextStage = nextStageInfo ? nextStageInfo.stageId: null,
         
-        return { tapProgress: Math.floor(tapProgress),
-            stageProgress: Math.floor(stageProgress),
-    unlockedStages: unlockedCount;
+        return { tapProgress: Math.floor(tapProgress,
+            stageProgress: Math.floor(stageProgress,
+    unlockedStages: unlockedCount,
             totalStages,
             nextStage,
-            nextStageRequirement: nextStage ? this.getStageUnlockRequirement(nextStage) : null, };
+            nextStageRequirement: nextStage ? this.getStageUnlockRequirement(nextStage) : null };
             tapToNextStage: nextStage ? this.getStageUnlockRequirement(nextStage) - currentTAP : 0 
         }
     
@@ -425,21 +416,23 @@ export class BalanceCalculator {
         
         const suggestions: BalanceSuggestions = { difficulty: [],
             items: [],
-    stages: [] ,};
+    stages: []  };
         ;
         // 平均プレイ時間が短すぎる場合
         if(averagePlayTime < 60000) { // 1分未満
             suggestions.difficulty.push({''
-                type: 'reduce_spawn_rate','';
-                reason: '平均プレイ時間が短すぎます', }
+                type: 'reduce_spawn_rate',',
+                reason: '平均プレイ時間が短すぎます'
+            }
                 adjustment: 0.9'; 
     }
         ';
         // 平均プレイ時間が長すぎる場合
         if(averagePlayTime > 300000) { // 5分以上
             suggestions.difficulty.push({''
-                type: 'increase_spawn_rate','';
-                reason: '平均プレイ時間が長すぎます', }
+                type: 'increase_spawn_rate',',
+                reason: '平均プレイ時間が長すぎます'
+            }
                 adjustment: 1.1); 
     }
         
@@ -450,12 +443,11 @@ export class BalanceCalculator {
             }
                 suggestions.stages.push({) }
 
-                    type: 'reduce_difficulty'), }
+                    type: 'reduce_difficulty') }
                     reason: `${stageId}のクリア率が低すぎます (${Math.floor(rate * 100})%)`;
                     stageId,
                     currentRate: rate;
-                }),
-            }
+                }) }
         });
         
         // アイテム使用率が低い場合
@@ -465,12 +457,11 @@ export class BalanceCalculator {
             }
                 suggestions.items.push({) }
 
-                    type: 'reduce_cost'), }
+                    type: 'reduce_cost') }
                     reason: `${itemId}の使用率が低すぎます (${Math.floor(rate * 100})%)`;
                     itemId,
                     currentRate: rate;
-                }),
-            }
+                }) }
         });
         
         return suggestions;
@@ -480,7 +471,7 @@ export class BalanceCalculator {
      * デバッグ情報を取得
      */'
     getDebugInfo(): DebugInfo { return { hasGameConfig: !!this.gameConfig,''
-            balanceConfig: this.getBalanceConfig('' ,}
+            balanceConfig: this.getBalanceConfig('}
 
             version: '1.0.0' 
     }

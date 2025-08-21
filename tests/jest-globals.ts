@@ -6,20 +6,20 @@
 import { jest, expect, describe, test, it, beforeEach, afterEach, beforeAll, afterAll } from '@jest/globals';
 
 // Make jest globally available for ES Modules
-(global as any).jest = jest;
-(global as any).expect = expect;
-(global as any).describe = describe;
-(global as any).test = test;
-(global as any).it = it;
-(global as any).beforeEach = beforeEach;
-(global as any).afterEach = afterEach;
-(global as any).beforeAll = beforeAll;
-(global as any).afterAll = afterAll;
+(global: any).jest = jest;
+(global: any).expect = expect;
+(global: any).describe = describe;
+(global: any).test = test;
+(global: any).it = it;
+(global: any).beforeEach = beforeEach;
+(global: any).afterEach = afterEach;
+(global: any).beforeAll = beforeAll;
+(global: any).afterAll = afterAll;
 
 // Additional Jest utilities already defined above
 
 // Mock utilities
-(global as any).spyOn = jest.spyOn;
+(global: any).spyOn = jest.spyOn;
 (global as any').fn = jest.fn;
 
 // Export for modules that need explicit imports

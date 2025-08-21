@@ -1,252 +1,157 @@
 #!/usr/bin/env node
-import { promises as fs } from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+/**
+ * TypeScript構文エラーを修正するスクリプト
+ * 主に以下のパターンを修正：
+ * 1. 文字列の後の余分な引用符
+ * 2. 関数呼び出しの括弧の不一致
+ * 3. オブジェクトリテラルの構文エラー
+ * 4. セミコロンとカンマの混在
+ */
 
-// Define patterns to fix
-const patterns = [
-    // Fix Date.now(})
-    { pattern: /Date\.now\(\}\)/g, replacement: 'Date.now()' },
-    // Fix jest.fn(})
-    { pattern: /jest\.fn\(\}/g, replacement: 'jest.fn()' },
-    // Fix : jest.fn(}) patterns
-    { pattern: /:\s*jest\.fn\(\}/g, replacement: ': jest.fn()' },
-    // Fix handleError: jest.fn(})
-    { pattern: /handleError:\s*jest\.fn\(\}\)/g, replacement: 'handleError: jest.fn()' },
-    // Fix jest.fn(() => value}
-    { pattern: /jest\.fn\(\(\)\s*=>\s*([^}]+)\}/g, replacement: 'jest.fn(() => $1)' },
-    // Fix patterns like toHaveBeenCalled(};
-    { pattern: /toHaveBeenCalled\(\};/g, replacement: 'toHaveBeenCalled();' },
-    // Fix patterns like toBe(true};
-    { pattern: /toBe\(([^}]+)\};/g, replacement: 'toBe($1);' },
-    // Fix patterns like toEqual([]}
-    { pattern: /toEqual\(\[\]\}/g, replacement: 'toEqual([])' },
-    // Fix patterns like toBeDefined(};
-    { pattern: /toBeDefined\(\};/g, replacement: 'toBeDefined();' },
-    // Fix expect patterns with mismatched brackets
-    { pattern: /expect\(([^)]+)\}\.to/g, replacement: 'expect($1).to' },
-    // Fix trailing }) patterns in objects
-    { pattern: /,\s*\}\)/g, replacement: ' })' },
-    // Fix test descriptions with bracket issues
-    { pattern: /test\('([^']+)'};/g, replacement: "test('$1');" },
-    // Fix missing closing parentheses in function calls
-    { pattern: /\.mockImplementation\(\(\) => \{\}\}/g, replacement: '.mockImplementation(() => {})' },
-    
-    // New patterns based on the test files reviewed
-    // Fix destroy(};
-    { pattern: /destroy\(\};/g, replacement: 'destroy();' },
-    // Fix mock return values like jest.fn(() => 60})
-    { pattern: /jest\.fn\(\(\)\s*=>\s*(\d+)\}\)/g, replacement: 'jest.fn(() => $1)' },
-    // Fix Date.now(} patterns
-    { pattern: /Date\.now\(\}/g, replacement: 'Date.now()' },
-    // Fix addColorStop: jest.fn(})
-    { pattern: /addColorStop:\s*jest\.fn\(\}\)/g, replacement: 'addColorStop: jest.fn()' },
-    // Fix removeChild: jest.fn(})
-    { pattern: /removeChild:\s*jest\.fn\(\}\)/g, replacement: 'removeChild: jest.fn()' },
-    // Fix click: jest.fn(}
-    { pattern: /click:\s*jest\.fn\(\}/g, replacement: 'click: jest.fn()' },
-    // Fix toBeInstanceOf(Map as any); patterns
-    { pattern: /toBeInstanceOf\(([^)]+)\s+as\s+any\};/g, replacement: 'toBeInstanceOf($1 as any);' },
-    // Fix toBe(true}; patterns
-    { pattern: /toBe\(true\};/g, replacement: 'toBe(true);' },
-    // Fix toBe(mockGameEngine}; patterns  
-    { pattern: /toBe\(([^}]+)\};/g, replacement: 'toBe($1);' },
-    // Fix expect().toBeDefined(}; patterns
-    { pattern: /\.toBeDefined\(\};/g, replacement: '.toBeDefined();' },
-    // Fix toHaveLength patterns
-    { pattern: /\.toHaveLength\(([^)]+)\};/g, replacement: '.toHaveLength($1);' },
-    // Fix toContain patterns
-    { pattern: /\.toContain\(([^)]+)\};/g, replacement: '.toContain($1);' },
-    // Fix toBeGreaterThan patterns
-    { pattern: /\.toBeGreaterThan\(([^)]+)\};/g, replacement: '.toBeGreaterThan($1);' },
-    // Fix toBeCloseTo patterns
-    { pattern: /\.toBeCloseTo\(([^,]+),\s*([^)]+)\};/g, replacement: '.toBeCloseTo($1, $2);' },
-    // Fix toBeLessThan patterns
-    { pattern: /\.toBeLessThan\(([^)]+)\};/g, replacement: '.toBeLessThan($1);' },
-    // Fix toBeGreaterThanOrEqual patterns
-    { pattern: /\.toBeGreaterThanOrEqual\(([^)]+)\};/g, replacement: '.toBeGreaterThanOrEqual($1);' },
-    // Fix toBeFalsy patterns
-    { pattern: /\.toBeFalsy\(\};/g, replacement: '.toBeFalsy();' },
-    // Fix monitoring.enabled).toBe(true};
-    { pattern: /\.enabled\)\.toBe\(true\};/g, replacement: '.enabled).toBe(true);' },
-    // Fix .intervalId).toBeDefined(};
-    { pattern: /\.intervalId\)\.toBeDefined\(\};/g, replacement: '.intervalId).toBeDefined();' },
-    // Fix frameVariance}).toBe patterns
-    { pattern: /frameVariance\}\)\.toBe\(true\);/g, replacement: 'frameVariance}).toBe(true);' },
-    // Fix unit: 'fps'};
-    { pattern: /unit:\s*'([^']+)'\};/g, replacement: "unit: '$1'};" },
-    // Fix unit: 'MB'};
-    { pattern: /unit:\s*'MB'\};/g, replacement: "unit: 'MB'};" },
-    // Fix .toBe(true};
-    { pattern: /\.toBe\(true\};/g, replacement: '.toBe(true);' },
-    // Fix const stored = ... patterns where line ends with };
-    { pattern: /expect\(stored\.([^)]+)\)\.toBe\(([^)]+)\);/g, replacement: 'expect(stored.$1).toBe($2);' },
-    // Fix Max(0, patterns
-    { pattern: /\.toHaveBeenCalledWith\(0\};/g, replacement: '.toHaveBeenCalledWith(0);' },
-    // Fix getCurrentCombo() patterns with missing closing )
-    { pattern: /getCurrentCombo\(\)\s*\{/g, replacement: 'getCurrentCombo() {' },
-    // Fix nested function call patterns
-    { pattern: /call\s*=>\s*call\[0\]\s*===\s*'([^']+)'\}/g, replacement: "call => call[0] === '$1'" },
-    // Fix toHaveBeenCalledWith patterns with };
-    { pattern: /\.toHaveBeenCalledWith\(([^;]+)\};/g, replacement: '.toHaveBeenCalledWith($1);' },
-    // Fix Error('Score setting failed'}
-    { pattern: /Error\('([^']+)'\}/g, replacement: "Error('$1')" },
-    // Fix Error('Spawn failed'}
-    { pattern: /Error\('Spawn failed'\}/g, replacement: "Error('Spawn failed')" },
-    // Fix Error('Metrics error'}
-    { pattern: /Error\('Metrics error'\}/g, replacement: "Error('Metrics error')" },
-    // Fix Error('Collection error'}
-    { pattern: /Error\('Collection error'\}/g, replacement: "Error('Collection error')" },
-    // Fix Error('Canvas error'}
-    { pattern: /Error\('Canvas error'\}/g, replacement: "Error('Canvas error')" },
-    // Fix Error('GC failed'}
-    { pattern: /Error\('GC failed'\}/g, replacement: "Error('GC failed')" },
-    // Fix toHaveBeenCalledWith('[PerformanceThresholdMonitor] Destroyed'}
-    { pattern: /toHaveBeenCalledWith\('\[([^\]]+)\]\s+([^']+)'\}/g, replacement: "toHaveBeenCalledWith('[$1] $2')" },
-    // Fix patterns like });
-    { pattern: /\)\s*;\s*$/gm, replacement: ');' },
-    // Fix patterns like });)
-    { pattern: /\}\);\)/g, replacement: '});' },
-    // Fix patterns where }) is on separate line and should be });
-    { pattern: /^\s*\}\)\s*$/gm, replacement: '    });' },
-    // Fix object property patterns with missing closing
-    { pattern: /,\s*(\w+):\s*([^,\)]+)\s*\)\s*$/gm, replacement: ',\n        $1: $2\n    )' },
-    // Fix multi-line object patterns that end with )
-    { pattern: /^(\s+)(\w+):\s*([^\n]+)\n\s*\)/gm, replacement: '$1$2: $3\n    })' },
+const fs = require('fs');
+const path = require('path');
+const glob = require('glob');
+
+// 修正パターン
+const fixPatterns = [
+    // パターン1: 文字列の後の余分な引用符を削除
+    {
+        pattern: /(['"`])\s*'\s*(?=[;,)\]}])/g,
+        replacement: '$1'
+    },
+    // パターン2: return文の後の余分な引用符
+    {
+        pattern: /return\s+([^;]+)''\s*;/g,
+        replacement: 'return $1;'
+    },
+    // パターン3: console.logの後の余分な引用符
+    {
+        pattern: /console\.(log|error|warn)\([^)]*\)'\s*;/g,
+        replacement: 'console.$1$2);'
+    },
+    // パターン4: 関数呼び出しの括弧の後の余分な文字
+    {
+        pattern: /\)\s*'\s*''/g,
+        replacement: ')'
+    },
+    // パターン5: オブジェクトプロパティの後の括弧修正
+    {
+        pattern: /,\s*\}\s*\)/g,
+        replacement: '})'
+    },
+    // パターン6: 不正な文字列連結
+    {
+        pattern: /(['"`])\s*;''/g,
+        replacement: '$1;'
+    },
+    // パターン7: 二重引用符の修正
+    {
+        pattern: /''\s*\)'/g,
+        replacement: ')'
+    },
+    // パターン8: 関数パラメータの後の余分な括弧
+    {
+        pattern: /\{[^}]*\)\s*([,;])/g,
+        replacement: function(match, ending) {
+            // 括弧のバランスを確認
+            const openCount = (match.match(/\(/g) || []).length;
+            const closeCount = (match.match(/\)/g) || []).length;
+            if (closeCount > openCount) {
+                return match.replace(/\)(\s*[,;])$/, '$1');
+            }
+            return match;
+        }
+    }
 ];
 
-// Special multi-line object fix function
-function fixMultilineObjects(content) {
-    // Fix patterns like:
-    //     hardwareConcurrency: 4,
-    //     deviceMemory: 8
-    // )
-    const lines = content.split('\n');
-    const fixedLines = [];
-    
-    for (let i = 0; i < lines.length; i++) {
-        const line = lines[i];
-        const trimmedLine = line.trim();
-        
-        // Check if current line is just a closing parenthesis
-        if (trimmedLine === ')' && i > 0) {
-            const prevLine = lines[i - 1].trim();
-            // Check if previous line ends with a property value (no comma, no closing brace)
-            if (prevLine && !prevLine.endsWith(',') && !prevLine.endsWith('}') && !prevLine.endsWith('{') && !prevLine.endsWith(';')) {
-                // This is likely a multiline object that needs fixing
-                fixedLines.push(line.replace(')', '    })'));
-            } else {
-                fixedLines.push(line);
-            }
-        } else {
-            fixedLines.push(line);
-        }
-    }
-    
-    return fixedLines.join('\n');
+// TypeScriptファイルを検索
+function findTypeScriptFiles(dir) {
+    return glob.sync(path.join(dir, '**/*.ts'), {
+        ignore: ['node_modules/**', 'dist/**', 'build/**']
+    });
 }
 
-// Function to count matches
-function countMatches(content, pattern) {
-    const matches = content.match(pattern);
-    return matches ? matches.length : 0;
-}
-
-// Process a single file with more complex fixes
-async function processFile(filePath) {
+// ファイルを修正
+function fixFile(filePath) {
     try {
-        let content = await fs.readFile(filePath, 'utf8');
-        let modified = content;
-        let totalFixes = 0;
-        const fixes = [];
+        let content = fs.readFileSync(filePath, 'utf8');
+        let originalContent = content;
+        let changeCount = 0;
 
-        // Apply simple pattern fixes first
-        for (const { pattern, replacement } of patterns) {
-            const matchCount = countMatches(modified, pattern);
-            if (matchCount > 0) {
-                modified = modified.replace(pattern, replacement);
-                totalFixes += matchCount;
-                fixes.push(`${matchCount} instances of ${pattern.source}`);
+        // 各パターンを適用
+        fixPatterns.forEach(({ pattern, replacement }) => {
+            const before = content;
+            content = content.replace(pattern, replacement);
+            if (before !== content) {
+                changeCount++;
             }
-        }
-        
-        // Apply multi-line object fixes
-        const beforeMultiline = modified;
-        modified = fixMultilineObjects(modified);
-        if (beforeMultiline !== modified) {
-            totalFixes++;
-            fixes.push('multiline object closures');
-        }
+        });
 
-        if (totalFixes > 0) {
-            await fs.writeFile(filePath, modified, 'utf8');
-            console.log(`✅ Fixed ${filePath}: ${totalFixes} issues`);
-            fixes.forEach(fix => console.log(`   - ${fix}`));
-            return { fixed: true, count: totalFixes };
-        }
+        // 特殊なケースの修正
+        // 1. 配列やオブジェクトの後の余分な括弧
+        content = content.replace(/\]\s*\)\s*'/g, '])');
+        content = content.replace(/\}\s*\)\s*'/g, '})');
         
-        return { fixed: false, count: 0 };
+        // 2. 文字列の後の不正なセミコロンとカンマ
+        content = content.replace(/(['"`])\s*;\s*,/g, '$1,');
+        
+        // 3. 関数呼び出しの修正
+        content = content.replace(/\)\s*\)\s*;''/g, '));');
+
+        // 変更があった場合のみファイルを更新
+        if (content !== originalContent) {
+            fs.writeFileSync(filePath, content, 'utf8');
+            console.log(`Fixed: ${filePath} (${changeCount} patterns applied)`);
+            return true;
+        }
+        return false;
     } catch (error) {
-        console.error(`❌ Error processing ${filePath}:`, error.message);
-        return { fixed: false, count: 0, error: true };
+        console.error(`Error processing ${filePath}:`, error.message);
+        return false;
     }
 }
 
-// Find all TypeScript test files
-async function findTestFiles(dir) {
-    const files = [];
-    const entries = await fs.readdir(dir, { withFileTypes: true });
-    
-    for (const entry of entries) {
-        const fullPath = path.join(dir, entry.name);
-        if (entry.isDirectory() && !entry.name.startsWith('.') && entry.name !== 'node_modules') {
-            files.push(...await findTestFiles(fullPath));
-        } else if (entry.isFile() && entry.name.endsWith('.test.ts')) {
-            files.push(fullPath);
+// メイン処理
+function main() {
+    const srcDir = path.join(__dirname, '..', 'src');
+    const testDirs = [
+        path.join(__dirname, '..', 'test'),
+        path.join(__dirname, '..', 'tests')
+    ];
+
+    console.log('TypeScript構文エラー修正スクリプトを開始します...');
+
+    // srcディレクトリの修正
+    console.log('\nsrcディレクトリを処理中...');
+    const srcFiles = findTypeScriptFiles(srcDir);
+    let fixedCount = 0;
+
+    srcFiles.forEach(file => {
+        if (fixFile(file)) {
+            fixedCount++;
         }
-    }
-    
-    return files;
-}
+    });
 
-// Main function
-async function main() {
-    const projectRoot = path.resolve(__dirname, '..');
-    console.log('🔍 Searching for TypeScript test files with syntax errors...');
-    
-    try {
-        const testFiles = await findTestFiles(projectRoot);
-        console.log(`📁 Found ${testFiles.length} test files`);
-        
-        let totalFixed = 0;
-        let filesFixed = 0;
-        let errors = 0;
-        
-        for (const file of testFiles) {
-            const result = await processFile(file);
-            if (result.error) {
-                errors++;
-            } else if (result.fixed) {
-                filesFixed++;
-                totalFixed += result.count;
-            }
+    // testディレクトリの修正
+    testDirs.forEach(testDir => {
+        if (fs.existsSync(testDir)) {
+            console.log(`\n${testDir}を処理中...`);
+            const testFiles = findTypeScriptFiles(testDir);
+            testFiles.forEach(file => {
+                if (fixFile(file)) {
+                    fixedCount++;
+                }
+            });
         }
-        
-        console.log('\n📊 Summary:');
-        console.log(`   - Files processed: ${testFiles.length}`);
-        console.log(`   - Files fixed: ${filesFixed}`);
-        console.log(`   - Total fixes: ${totalFixed}`);
-        console.log(`   - Errors: ${errors}`);
-        
-    } catch (error) {
-        console.error('❌ Fatal error:', error);
-        process.exit(1);
-    }
+    });
+
+    console.log(`\n完了: ${fixedCount}個のファイルを修正しました。`);
 }
 
-// Run the script
-main();
+// スクリプト実行
+if (require.main === module) {
+    main();
+}
+
+module.exports = { fixFile, fixPatterns };

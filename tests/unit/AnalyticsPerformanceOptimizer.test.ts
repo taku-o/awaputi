@@ -7,87 +7,72 @@ import { AnalyticsPerformanceOptimizer  } from '../../src/analytics/AnalyticsPer
 // Type definitions for test objects
 interface PerformanceHistory {
     timestamp: number,
-    fps: number,
-}
+    fps: number }
 interface EventData {
-    [key: string]: any,
-}
+    [key: string]: any }
 interface EventHandler {
-    (type: string, data: EventData): void,
-}
+    (type: string, data: EventData): void }
 interface QueuedEvent {
     type: string,
     timestamp: number,
     data: EventData,
-    handler?: EventHandler;
-}
+    handler?: EventHandler }
 interface GroupedEvents {
-    [type: string]: QueuedEvent[],
-}
+    [type: string]: QueuedEvent[] }
 interface OptimizerConfig {
     batchSize: number,
     batchTimeout: number,
     cacheSize: number,
-    performanceCheckInterval?: number;
-    cacheTimeout?: number;
-    memoryWarningThreshold?: number;
-}
+    performanceCheckInterval?: number,
+    cacheTimeout?: number,
+    memoryWarningThreshold?: number }
 interface PerformanceMetrics {
     memoryUsage: number,
     cacheHitRate: number,
-    fps?: number;
-}
+    fps?: number }
 interface MemoryUsage {
-    current: number,
-}
+    current: number }
 interface OptimizationStats {
     batchesProcessed: number,
     cacheHits: number,
     cacheMisses: number,
     performanceWarnings: number,
-    memoryCleanups: number,
-}
+    memoryCleanups: number }
 interface OptimizationStatsResponse extends OptimizationStats {
     performanceMetrics: PerformanceMetrics,
     memoryUsage: MemoryUsage,
     config: OptimizerConfig,
     eventQueueSize: number,
-    cacheSize: number,
-}
+    cacheSize: number }
 interface PerformanceReportSummary {
     batchesProcessed: number,
-    cacheHitRate: string,
-}
+    cacheHitRate: string }
 interface PerformanceReport {
     summary: PerformanceReportSummary,
     recommendations: string[],
-    detailedStats: OptimizationStatsResponse,
-}
+    detailedStats: OptimizationStatsResponse }
 // モックAnalyticsManager
 class MockAnalyticsManager {
     public trackEvent: jest.Mock,
     public trackPlayerBehavior: jest.Mock,
     public performanceHistory: PerformanceHistory[],
     constructor() {
-        this.trackEvent = jest.fn();
-        this.trackPlayerBehavior = jest.fn(');
-        this.performanceHistory = [];
-    }
+        this.trackEvent = jest.fn(),
+        this.trackPlayerBehavior = jest.fn('),
+        this.performanceHistory = [] }
 }
 // モックPerformance.memory
 interface MockPerformanceMemory {
-    usedJSHeapSize: number,
-}
+    usedJSHeapSize: number }
 declare global {
     interface Performance {
-        memory?: MockPerformanceMemory;
-    }
+        memory?: MockPerformanceMemory }
 }
 describe('AnalyticsPerformanceOptimizer', () => {
     let mockAnalyticsManager: MockAnalyticsManager,
     let optimizer: AnalyticsPerformanceOptimizer,
     beforeEach(() => {
-        mockAnalyticsManager = new MockAnalyticsManager();
+        mockAnalyticsManager = new MockAnalyticsManager(),
         optimizer = new AnalyticsPerformanceOptimizer(mockAnalyticsManager, {
             batchSize: 5,
             batchTimeout: 1000,
@@ -98,37 +83,33 @@ describe('AnalyticsPerformanceOptimizer', () => {
         jest.useFakeTimers();
     });
     afterEach(() => {
-        optimizer.destroy();
-        jest.clearAllTimers();
-        jest.useRealTimers();
-    }');
+        optimizer.destroy(),
+        jest.clearAllTimers(),
+        jest.useRealTimers() }');
     describe('初期化', (') => {
         test('デフォルト設定で初期化される', () => {
-            const defaultOptimizer = new AnalyticsPerformanceOptimizer(mockAnalyticsManager);
-            expect(defaultOptimizer.config.batchSize).toBe(50);
-            expect(defaultOptimizer.config.batchTimeout).toBe(5000);
-            expect(defaultOptimizer.config.cacheSize).toBe(1000);
-            expect(defaultOptimizer.eventQueue).toEqual([]);
-            expect(defaultOptimizer.cache.size).toBe(0);
-            defaultOptimizer.destroy();
-        }');
+            const defaultOptimizer = new AnalyticsPerformanceOptimizer(mockAnalyticsManager),
+            expect(defaultOptimizer.config.batchSize).toBe(50),
+            expect(defaultOptimizer.config.batchTimeout).toBe(5000),
+            expect(defaultOptimizer.config.cacheSize).toBe(1000),
+            expect(defaultOptimizer.eventQueue).toEqual([]),
+            expect(defaultOptimizer.cache.size).toBe(0),
+            defaultOptimizer.destroy() }');
         test('カスタム設定で初期化される', () => {
-            expect(optimizer.config.batchSize).toBe(5);
-            expect(optimizer.config.batchTimeout).toBe(1000);
-            expect(optimizer.config.cacheSize).toBe(100);
-        }');
+            expect(optimizer.config.batchSize).toBe(5),
+            expect(optimizer.config.batchTimeout).toBe(1000),
+            expect(optimizer.config.cacheSize).toBe(100) }');
     }
     describe('バッチ処理', (') => {
         test('イベントがキューに追加される', (') => {
             optimizer.batchEvent('test_event', { data: 'test' }, jest.fn();
             expect(optimizer.eventQueue.length).toBe(1);
             expect(optimizer.eventQueue[0].type').toBe('test_event');
-            expect(optimizer.eventQueue[0].data').toEqual({ data: 'test' )'),
-        }
+            expect(optimizer.eventQueue[0].data').toEqual({ data: 'test' )' }
         test('バッチサイズに達すると即座に処理される', async () => {
-            const handler = jest.fn();
+            const handler = jest.fn(),
             // バッチサイズ（5個）のイベントを追加
-            for (let i = 0; i < 5; i++) {
+            for (let i = 0, i < 5, i++) {
                 optimizer.batchEvent(`event_${i}`, { index: i }, handler);
             }
             
@@ -138,7 +119,7 @@ describe('AnalyticsPerformanceOptimizer', () => {
             expect(handler).toHaveBeenCalledTimes(5);
         }');
         test('タイムアウトでバッチ処理が実行される', async () => {
-            const handler = jest.fn(');
+            const handler = jest.fn('),
             optimizer.batchEvent('timeout_event', { data: 'test' }, handler);
             // バッチタイムアウト時間を進める
             jest.advanceTimersByTime(1000);
@@ -153,7 +134,7 @@ describe('AnalyticsPerformanceOptimizer', () => {
                 { type: 'typeA', data: { value: 'data3' }, timestamp: Date.now() }
             ];
             
-            const grouped: GroupedEvents = optimizer.groupEventsByType(events),
+            const grouped: GroupedEvents = optimizer.groupEventsByType(events,
             expect(grouped.typeA).toHaveLength(2);
             expect(grouped.typeB).toHaveLength(1);
             expect(grouped.typeA[0].data.value').toBe('data1');
@@ -181,7 +162,7 @@ describe('AnalyticsPerformanceOptimizer', () => {
         }');
         test('キャッシュサイズ制限が機能する', () => {
             // キャッシュサイズ制限を超えてデータを追加
-            for (let i = 0; i < optimizer.config.cacheSize + 10; i++) {
+            for (let i = 0, i < optimizer.config.cacheSize + 10, i++) {
                 optimizer.setCachedData(`key_${i}`, { index: i });
             }
             
@@ -193,11 +174,10 @@ describe('AnalyticsPerformanceOptimizer', () => {
             // 時間を進めて期限切れにする
             jest.advanceTimersByTime(optimizer.config.cacheTimeout! + 1000');
             // 新しいデータを追加してクリーンアップを誘発
-            optimizer.setCachedData('new_key', { data: 'new' ),
-            optimizer.cleanupCache(');
-            expect(optimizer.cache.has('old_key').toBe(false');
-            expect(optimizer.cache.has('new_key').toBe(true);
-        }');
+            optimizer.setCachedData('new_key', { data: 'new' ,
+            optimizer.cleanupCache('),
+            expect(optimizer.cache.has('old_key').toBe(false'),
+            expect(optimizer.cache.has('new_key').toBe(true) }');
     }
     describe('パフォーマンス監視', (') => {
         test('パフォーマンスメトリクスが更新される', (') => {
@@ -213,12 +193,11 @@ describe('AnalyticsPerformanceOptimizer', () => {
             expect(optimizer.memoryUsage.current).toBe(50 * 1024 * 1024);
         }');
         test('キャッシュヒット率が計算される', () => {
-            optimizer.optimizationStats.cacheHits = 80;
-            optimizer.optimizationStats.cacheMisses = 20;
+            optimizer.optimizationStats.cacheHits = 80,
+            optimizer.optimizationStats.cacheMisses = 20,
             
-            optimizer.checkPerformanceMetrics();
-            expect(optimizer.performanceMetrics.cacheHitRate).toBe(80);
-        }');
+            optimizer.checkPerformanceMetrics(),
+            expect(optimizer.performanceMetrics.cacheHitRate).toBe(80) }');
         test('メモリ警告が発生する', (') => {
             const consoleSpy = jest.spyOn(console, 'warn').mockImplementation(() => {}');
             // メモリ警告閾値を超過
@@ -237,7 +216,7 @@ describe('AnalyticsPerformanceOptimizer', () => {
     describe('メモリ管理', (') => {
         test('メモリクリーンアップが実行される', () => {
             // 古いイベントを追加
-            const oldTimestamp = Date.now(') - 400000; // 6分前
+            const oldTimestamp = Date.now(') - 400000, // 6分前
             optimizer.eventQueue.push({
                 type: 'old_event',
                 timestamp: oldTimestamp,
@@ -245,8 +224,8 @@ describe('AnalyticsPerformanceOptimizer', () => {
             }');
             // 新しいイベントを追加
             optimizer.eventQueue.push({
-                type: 'new_event';);
-               , timestamp: Date.now(),
+                type: 'new_event'),
+               , timestamp: Date.now(
                 data: {}
             });
             optimizer.performMemoryCleanup();
@@ -257,7 +236,7 @@ describe('AnalyticsPerformanceOptimizer', () => {
         }');
         test('パフォーマンス履歴がクリーンアップされる', () => {
             // 古いパフォーマンス履歴を追加
-            const oldTimestamp = Date.now() - 7200000; // 2時間前
+            const oldTimestamp = Date.now() - 7200000, // 2時間前
             mockAnalyticsManager.performanceHistory = [
                 { timestamp: oldTimestamp, fps: 60 },
                 { timestamp: Date.now(), fps: 55 }
@@ -270,30 +249,28 @@ describe('AnalyticsPerformanceOptimizer', () => {
     }
     describe('最適化統計', (') => {
         test('最適化統計が取得できる', () => {
-            optimizer.optimizationStats.batchesProcessed = 10;
-            optimizer.optimizationStats.cacheHits = 50;
-            optimizer.optimizationStats.cacheMisses = 10;
+            optimizer.optimizationStats.batchesProcessed = 10,
+            optimizer.optimizationStats.cacheHits = 50,
+            optimizer.optimizationStats.cacheMisses = 10,
             
-            const stats: OptimizationStatsResponse = optimizer.getOptimizationStats(),
-            expect(stats.batchesProcessed).toBe(10);
-            expect(stats.performanceMetrics).toBeDefined();
-            expect(stats.memoryUsage).toBeDefined();
-            expect(stats.config).toBeDefined();
-            expect(stats.eventQueueSize).toBeDefined();
-            expect(stats.cacheSize).toBeDefined();
-        }');
+            const stats: OptimizationStatsResponse = optimizer.getOptimizationStats(
+            expect(stats.batchesProcessed).toBe(10),
+            expect(stats.performanceMetrics).toBeDefined(),
+            expect(stats.memoryUsage).toBeDefined(),
+            expect(stats.config).toBeDefined(),
+            expect(stats.eventQueueSize).toBeDefined(),
+            expect(stats.cacheSize).toBeDefined() }');
         test('パフォーマンスレポートが生成される', () => {
-            optimizer.optimizationStats.batchesProcessed = 5;
-            optimizer.performanceMetrics.cacheHitRate = 75;
-            optimizer.performanceMetrics.fps = 45;
+            optimizer.optimizationStats.batchesProcessed = 5,
+            optimizer.performanceMetrics.cacheHitRate = 75,
+            optimizer.performanceMetrics.fps = 45,
             
-            const report: PerformanceReport = optimizer.generatePerformanceReport(),
-            expect(report.summary).toBeDefined();
-            expect(report.recommendations).toBeDefined();
-            expect(report.detailedStats).toBeDefined();
-            expect(report.summary.batchesProcessed).toBe(5);
-            expect(report.summary.cacheHitRate').toBe('75.00%');
-        }');
+            const report: PerformanceReport = optimizer.generatePerformanceReport(
+            expect(report.summary).toBeDefined(),
+            expect(report.recommendations).toBeDefined(),
+            expect(report.detailedStats).toBeDefined(),
+            expect(report.summary.batchesProcessed).toBe(5),
+            expect(report.summary.cacheHitRate').toBe('75.00%') }');
         test('最適化推奨事項が生成される', () => {
             const mockStats: OptimizationStatsResponse = {
                 batchesProcessed: 0,
@@ -314,7 +291,7 @@ describe('AnalyticsPerformanceOptimizer', () => {
                 cacheSize: 0
             };
             
-            const recommendations: string[] = optimizer.generateOptimizationRecommendations(mockStats),
+            const recommendations: string[] = optimizer.generateOptimizationRecommendations(mockStats,
             expect(recommendations').toContain('キャッシュヒット率が低いです。キャッシュサイズを増やすことを検討してください。');
             expect(recommendations').toContain('FPSが低下しています。バッチサイズを小さくするか、処理間隔を長くしてください。');
             expect(recommendations').toContain('メモリ使用量が多いです。より頻繁なクリーンアップを実行してください。');
@@ -335,8 +312,8 @@ describe('AnalyticsPerformanceOptimizer', () => {
             expect(optimizer.config.cacheSize).toBe(500);
         }');
         test('パフォーマンス警告時に設定が自動調整される', (') => {
-            const originalBatchSize = optimizer.config.batchSize;
-            const originalBatchTimeout = optimizer.config.batchTimeout;
+            const originalBatchSize = optimizer.config.batchSize,
+            const originalBatchTimeout = optimizer.config.batchTimeout,
             
             // fpsThreshold（30）より低い値で警告をトリガー
             optimizer.handlePerformanceWarning('Low FPS detected', { fps: 20 });
@@ -347,9 +324,8 @@ describe('AnalyticsPerformanceOptimizer', () => {
     }
     describe('イベント処理最適化', (') => {
         test('元のイベント送信メソッドがオーバーライドされる', () => {
-            expect(typeof mockAnalyticsManager.trackEvent').toBe('function');
-            expect(typeof mockAnalyticsManager.trackPlayerBehavior').toBe('function');
-        }');
+            expect(typeof mockAnalyticsManager.trackEvent').toBe('function'),
+            expect(typeof mockAnalyticsManager.trackPlayerBehavior').toBe('function') }');
         test('フォールバック処理が機能する', async (') => {
             const events: QueuedEvent[] = [
                 { type: 'test', timestamp: Date.now(), data: { value: 1 }, handler: jest.fn(') },
@@ -357,9 +333,8 @@ describe('AnalyticsPerformanceOptimizer', () => {
             ];
             
             await optimizer.fallbackToIndividualProcessing(events);
-            events.forEach(event => {);
-                expect(event.handler!).toHaveBeenCalledWith(event.type, event.data);
-            });
+            events.forEach(event => {),
+                expect(event.handler!).toHaveBeenCalledWith(event.type, event.data) });
         }
     }');
     describe('破棄処理', (') => {
@@ -372,12 +347,11 @@ describe('AnalyticsPerformanceOptimizer', () => {
             expect(optimizer.cacheTimestamps.size).toBe(0);
         }');
         test('残りのイベントが処理される', async () => {
-            const handler = jest.fn(');
+            const handler = jest.fn('),
             optimizer.batchEvent('final_event', { final: true }, handler);
             optimizer.destroy();
             // 少し待って処理完了を確認
             await new Promise(resolve => setTimeout(resolve, 5);
-            expect(handler').toHaveBeenCalledWith('final_event', { final: true ),
-        }
+            expect(handler').toHaveBeenCalledWith('final_event', { final: true  }
     }');
 }

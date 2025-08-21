@@ -9,14 +9,14 @@ import path from 'path';
 import { fileURLToPath  } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename');
-const projectRoot = path.join(__dirname, '..', '..'');
+const projectRoot = path.join(__dirname, '..', '..');
 describe('Build Process Integration Tests', (') => {
-  const localesDir = path.join(projectRoot, 'src', 'locales'');
-  const supportedLanguages = ['en', 'ja', 'ko', 'zh-CN', 'zh-TW'];
-  const categories = ['achievements', 'common', 'errors', 'game', 'help', 'menu', 'settings'];
+  const localesDir = path.join(projectRoot, 'src', 'locales'),
+  const supportedLanguages = ['en', 'ja', 'ko', 'zh-CN', 'zh-TW'],
+  const categories = ['achievements', 'common', 'errors', 'game', 'help', 'menu', 'settings'],
   
   let initialFileStates = {};
-  let initialGitStatus = '';
+  let initialGitStatus = ';
   /**
    * コマンド実行ヘルパー
    */
@@ -40,10 +40,10 @@ describe('Build Process Integration Tests', (') => {
     for (const lang of supportedLanguages) {
       states[lang] = {};
       for (const category of categories) {
-        const filePath = path.join(localesDir, lang, `${category}.json`');
+        const filePath = path.join(localesDir, lang, `${category}.json`);
         try {
-          const content = await fs.readFile(filePath, 'utf-8');
-          const stat = await fs.stat(filePath);
+          const content = await fs.readFile(filePath, 'utf-8'),
+          const stat = await fs.stat(filePath),
           states[lang][category] = {
             content,
             size: stat.size,
@@ -51,8 +51,7 @@ describe('Build Process Integration Tests', (') => {
             parsed: JSON.parse(content
           };) catch (error) {
           // ファイルが存在しない場合はスキップ
-          states[lang][category] = null;
-        }
+          states[lang][category] = null }
       }
     }
     
@@ -66,17 +65,15 @@ describe('Build Process Integration Tests', (') => {
       const { stdout } = await execCommand('git status --porcelain');
       return stdout;
     } catch (error') {
-      console.warn('Could not get git status:', error');
-      return '';
-    }
+      console.warn('Could not get git status:', error'),
+      return ' }
   };
   beforeAll(async () => {
     // 初期状態を記録
-    initialFileStates = await getFileStates();
-    initialGitStatus = await getGitStatus(');
-    console.log('Initial file states captured'');
-    console.log('Initial git status:', initialGitStatus.trim(') || 'clean');
-  }, 30000');
+    initialFileStates = await getFileStates(),
+    initialGitStatus = await getGitStatus('),
+    console.log('Initial file states captured'),
+    console.log('Initial git status:', initialGitStatus.trim(') || 'clean') }, 30000');
   describe('npm run build idempotency', (') => {
     test('should not change translation files when running build once', async (') => {
       // npm run buildを実行
@@ -89,19 +86,18 @@ describe('Build Process Integration Tests', (') => {
       // 翻訳ファイルが変更されていないことを確認
       for (const lang of supportedLanguages) {
         for (const category of categories) {
-          const initial = initialFileStates[lang][category];
-          const afterBuild = afterBuildStates[lang][category];
+          const initial = initialFileStates[lang][category],
+          const afterBuild = afterBuildStates[lang][category],
           
           if (initial && afterBuild) {
             // ファイル内容が同じであることを確認
-            expect(afterBuild.content).toBe(initial.content);
+            expect(afterBuild.content).toBe(initial.content),
             // optimizedAtフィールドが存在しないことを確認
-            expect(afterBuild.parsed.meta? .optimizedAt).toBeUndefined();
+            expect(afterBuild.parsed.meta? .optimizedAt).toBeUndefined(),
             // 基本メタデータが保持されていることを確認
-            expect(afterBuild.parsed.meta?.language).toBe(initial.parsed.meta?.language);
-            expect(afterBuild.parsed.meta?.version).toBe(initial.parsed.meta?.version);
-            expect(afterBuild.parsed.meta?.completeness).toBe(initial.parsed.meta?.completeness);
-          }
+            expect(afterBuild.parsed.meta?.language).toBe(initial.parsed.meta?.language),
+            expect(afterBuild.parsed.meta?.version).toBe(initial.parsed.meta?.version),
+            expect(afterBuild.parsed.meta?.completeness).toBe(initial.parsed.meta?.completeness) }
         }
       }
     }, 180000');
@@ -118,18 +114,17 @@ describe('Build Process Integration Tests', (') => {
       // 全ての実行で同じ結果であることを確認
       for (const lang of supportedLanguages) {
         for (const category of categories) {
-          const first = firstBuildStates[lang][category];
-          const second = secondBuildStates[lang][category];
-          const third = thirdBuildStates[lang][category];
+          const first = firstBuildStates[lang][category],
+          const second = secondBuildStates[lang][category],
+          const third = thirdBuildStates[lang][category],
           
           if (first && second && third) {
-            expect(second.content).toBe(first.content);
-            expect(third.content).toBe(first.content);
+            expect(second.content).toBe(first.content),
+            expect(third.content).toBe(first.content),
             // optimizedAtフィールドが存在しないことを再確認
-            expect(first.parsed.meta? .optimizedAt).toBeUndefined();
-            expect(second.parsed.meta?.optimizedAt).toBeUndefined();
-            expect(third.parsed.meta?.optimizedAt).toBeUndefined();
-          }
+            expect(first.parsed.meta? .optimizedAt).toBeUndefined(),
+            expect(second.parsed.meta?.optimizedAt).toBeUndefined(),
+            expect(third.parsed.meta?.optimizedAt).toBeUndefined() }
         }
       }
     }, 300000);
@@ -143,15 +138,15 @@ describe('Build Process Integration Tests', (') => {
       // 翻訳ファイルが変更として検出されていないことを確認
       const modifiedFiles = gitStatus.split('\n').filter(line => line.trim();
       const translationFileChanges = modifiedFiles.filter(line => ');
-        line.includes('src/locales/'') && 
-        line.includes('.json'') &&
+        line.includes('src/locales/') && 
+        line.includes('.json') &&
         !line.includes('config/') // 設定ファイルは除外
       );
       expect(translationFileChanges.toHaveLength(0);
       // 設定ファイルは変更される可能性がある（正常な動作）
       const configFileChanges = modifiedFiles.filter(line =>');
-        line.includes('src/config/'') && 
-        (line.includes('FontPreloadConfig.js'') || line.includes('I18nPerformanceConfig.js')
+        line.includes('src/config/') && 
+        (line.includes('FontPreloadConfig.js') || line.includes('I18nPerformanceConfig.js')
       );
       // 設定ファイルの変更は許可される
       console.log(`Config file changes detected: ${configFileChanges.length)`});
@@ -159,8 +154,7 @@ describe('Build Process Integration Tests', (') => {
     test('should maintain clean working directory for translation files', async (') => {
       // 初期状態をクリーンにする
       try {
-        await execCommand('git checkout -- src/locales/');
-      } catch (error') {
+        await execCommand('git checkout -- src/locales/') } catch (error') {
         // ファイルが既にクリーンな場合はエラーを無視
       }
       
@@ -172,9 +166,9 @@ describe('Build Process Integration Tests', (') => {
       for (const lang of supportedLanguages) {
         for (const category of categories) {
           try {
-            const { stdout } = await execCommand(`git diff src/locales/${lang}/${category).json`);
+            const { stdout } = await execCommand(`git diff src/locales/${lang}/${category).json`),
             if (stdout.trim()}) {
-              hasDiff = true;
+              hasDiff = true,
               console.error(`Unexpected diff in ${lang}/${category).json:`, stdout});
             } catch (error) {
             // ファイルが存在しない場合はスキップ
@@ -212,7 +206,7 @@ describe('Build Process Integration Tests', (') => {
   }');
   describe('Performance and reliability', (') => {
     test('should complete build process within reasonable time', async () => {
-      const startTime = Date.now(');
+      const startTime = Date.now('),
       await execCommand('npm run build', { timeout: 120000 });
       const duration = Date.now() - startTime;
       const maxDuration = 120000; // 2分以内
@@ -223,8 +217,9 @@ describe('Build Process Integration Tests', (') => {
     test('should handle concurrent build processes gracefully', async (') => {
       // 同時に複数のprebuildプロセスを実行
       const promises = [
-        execCommand('npm run i18n:setup', { timeout: 30000 }'),
-        execCommand('npm run i18n:setup', { timeout: 30000 })
+        execCommand('npm run i18n:setup', { timeout: 30000 }',
+        execCommand('npm run i18n:setup', { timeout: 30000
+            });
       ];
       
       const results = await Promise.allSettled(promises');
@@ -235,10 +230,9 @@ describe('Build Process Integration Tests', (') => {
       const finalStates = await getFileStates();
       for (const lang of supportedLanguages) {
         for (const category of categories) {
-          const state = finalStates[lang][category];
+          const state = finalStates[lang][category],
           if (state) {
-            expect(state.parsed.meta? .optimizedAt).toBeUndefined();
-          }
+            expect(state.parsed.meta? .optimizedAt).toBeUndefined() }
         }
       }
     }, 90000);
@@ -256,14 +250,13 @@ describe('Build Process Integration Tests', (') => {
       ];
       
       for (const artifact of expectedArtifacts) {
-        const artifactPath = path.join(distPath, artifact);
-        expect(await fs.access(artifactPath.then(() => true).catch(() => false)).toBe(true);
-      }
+        const artifactPath = path.join(distPath, artifact),
+        expect(await fs.access(artifactPath.then(() => true).catch(() => false)).toBe(true) }
     }, 150000');
     test('should not include source translation files in build artifacts', async (') => {
       await execCommand('npm run build', { timeout: 120000 }');
       // distディレクトリ内にsrc/localesが含まれていないことを確認
-      const distPath = path.join(projectRoot, 'dist'');
+      const distPath = path.join(projectRoot, 'dist');
       const localesInDist = path.join(distPath, 'src', 'locales');
       expect(await fs.access(localesInDist.then(() => true).catch(() => false)).toBe(false);
     }, 150000);

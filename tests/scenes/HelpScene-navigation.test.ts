@@ -11,12 +11,10 @@ import { HelpScene  } from '../../src/scenes/HelpScene';
 const mockDocument = {
     fullscreenElement: null,
     documentElement: {
-        requestFullscreen: jest.fn(),
-    },
-        exitFullscreen: jest.fn(),
-};
+        requestFullscreen: jest.fn( },
+        exitFullscreen: jest.fn( };
 // グローバル変数のモック
-(global as any).document = mockDocument;
+(global: any).document = mockDocument;
 (global as any').navigator = {
     userAgent: 'test-agent'
 };
@@ -32,74 +30,64 @@ describe('HelpScene Context-Aware Navigation', () => {
         // Mock GameEngine
         mockGameEngine = {
             sceneManager: {
-                hasScene: jest.fn().mockReturnValue(true;);
+                hasScene: jest.fn().mockReturnValue(true),
                , switchScene: jest.fn(').mockReturnValue(true,
                 currentScene: {
                     constructor: { name: 'HelpScene' }
                 }
             },
-            localizationManager: {),
-                getCurrentLanguage: jest.fn(').mockReturnValue('ja'),
-                t: jest.fn().mockImplementation((key, defaultValue) => defaultValue);
-            },
+            localizationManager: {,
+                getCurrentLanguage: jest.fn(').mockReturnValue('ja',
+                t: jest.fn().mockImplementation((key, defaultValue) => defaultValue) },
             accessibilityManager: {
-                announceToScreenReader: jest.fn()'),
-            }
+                announceToScreenReader: jest.fn()' }
         };
         
         // HelpSceneのサブコンポーネントをモック
         jest.mock('../../src/scenes/help-scene/HelpAccessibilityManager.js', () => ({
             HelpAccessibilityManager: jest.fn().mockImplementation(() => ({
-                enableAccessibilityFeatures: jest.fn(),
-                disableAccessibilityFeatures: jest.fn(),
-                announceToScreenReader: jest.fn(),
-                destroy: jest.fn(),
-                getAccessibilityState: jest.fn().mockReturnValue({),
-            });
+                enableAccessibilityFeatures: jest.fn(
+                disableAccessibilityFeatures: jest.fn(
+                announceToScreenReader: jest.fn(
+                destroy: jest.fn(
+                getAccessibilityState: jest.fn().mockReturnValue({);
         })');
         jest.mock('../../src/scenes/help-scene/HelpContentManager.js', () => ({
             HelpContentManager: jest.fn().mockImplementation(() => ({
-                initialize: jest.fn().mockResolvedValue(true;);
-               , getState: jest.fn().mockReturnValue({),
-                getHelpAnalytics: jest.fn().mockReturnValue({),
-                    startHelpSession: jest.fn(),
+                initialize: jest.fn().mockResolvedValue(true),
+               , getState: jest.fn().mockReturnValue({,
+                getHelpAnalytics: jest.fn().mockReturnValue({,
+                    startHelpSession: jest.fn(
         endHelpSession: jest.fn(),
-                }),
-                getHelpFeedbackSystem: jest.fn().mockReturnValue({),
+                getHelpFeedbackSystem: jest.fn().mockReturnValue({,
                     endContentView: jest.fn(),
-                }),
-                getCurrentTopic: jest.fn(),
-        destroy: jest.fn(),
-            });
-        })');
+                getCurrentTopic: jest.fn(
+        destroy: jest.fn();
+        )');
         jest.mock('../../src/scenes/help-scene/HelpAnimationManager.js', () => ({
             HelpAnimationManager: jest.fn().mockImplementation(() => ({
-                updateAnimations: jest.fn(),
-                getAllAnimationStates: jest.fn().mockReturnValue({),
+                updateAnimations: jest.fn(
+                getAllAnimationStates: jest.fn().mockReturnValue({,
         destroy: jest.fn(),
-            }),
-            HelpTransitionRenderer: jest.fn().mockImplementation(() => ({});
-        })');
+            HelpTransitionRenderer: jest.fn().mockImplementation(() => ({);
+        )');
         jest.mock('../../src/scenes/help-scene/HelpRenderer.js', () => ({
             HelpRenderer: jest.fn().mockImplementation(() => ({
-                render: jest.fn(),
-            }));
-        })');
+                render: jest.fn());
+        )');
         jest.mock('../../src/scenes/help-scene/HelpEventManager.js', () => ({
             HelpEventManager: jest.fn().mockImplementation(() => ({
-                setCallback: jest.fn(),
-                setupEventListeners: jest.fn(),
-                removeEventListeners: jest.fn(),
-                getEventState: jest.fn().mockReturnValue({),
-        destroy: jest.fn(),
-            });
-        });
+                setCallback: jest.fn(
+                setupEventListeners: jest.fn(
+                removeEventListeners: jest.fn(
+                getEventState: jest.fn().mockReturnValue({,
+        destroy: jest.fn();
+        );
         helpScene = new HelpScene(mockGameEngine);
     });
     afterEach(() => {
         if (helpScene && helpScene.destroy) {
-            helpScene.destroy();
-        }
+            helpScene.destroy() }
         jest.clearAllMocks();
     }');
     describe('Context Data Processing', (') => {
@@ -153,50 +141,46 @@ describe('HelpScene Context-Aware Navigation', () => {
     describe('Navigation Context Integration', (') => {
         test('should use NavigationContextManager for go back', () => {
             // ナビゲーションコンテキストをモック
-            helpScene.navigationContext.getReturnDestination = jest.fn(').mockReturnValue('settings') as jest.Mock;
-            helpScene.navigationContext.popContext = jest.fn(') as jest.Mock;
+            helpScene.navigationContext.getReturnDestination = jest.fn(').mockReturnValue('settings') as jest.Mock,
+            helpScene.navigationContext.popContext = jest.fn(') as jest.Mock,
             
             // onGoBackコールバックを取得して実行
-            const callbacks = helpScene.helpEventManager.setCallback.mock.calls;
-            const onGoBackCallback = callbacks.find(call => call[0] === 'onGoBack')[1];
+            const callbacks = helpScene.helpEventManager.setCallback.mock.calls,
+            const onGoBackCallback = callbacks.find(call => call[0] === 'onGoBack')[1],
             
-            onGoBackCallback();
-            expect(helpScene.navigationContext.getReturnDestination).toHaveBeenCalled();
-            expect(helpScene.navigationContext.popContext).toHaveBeenCalled();
-            expect(mockGameEngine.sceneManager.switchScene').toHaveBeenCalledWith('settings');
-        }');
+            onGoBackCallback(),
+            expect(helpScene.navigationContext.getReturnDestination).toHaveBeenCalled(),
+            expect(helpScene.navigationContext.popContext).toHaveBeenCalled(),
+            expect(mockGameEngine.sceneManager.switchScene').toHaveBeenCalledWith('settings') }');
         test('should fallback to menu when no return destination', () => {
             // 戻り先がない場合のテスト
-            helpScene.navigationContext.getReturnDestination = jest.fn().mockReturnValue(null as jest.Mock);
-            helpScene.navigationContext.popContext = jest.fn(') as jest.Mock;
+            helpScene.navigationContext.getReturnDestination = jest.fn().mockReturnValue(null as jest.Mock),
+            helpScene.navigationContext.popContext = jest.fn(') as jest.Mock,
             
-            const callbacks = helpScene.helpEventManager.setCallback.mock.calls;
-            const onGoBackCallback = callbacks.find(call => call[0] === 'onGoBack')[1];
+            const callbacks = helpScene.helpEventManager.setCallback.mock.calls,
+            const onGoBackCallback = callbacks.find(call => call[0] === 'onGoBack')[1],
             
-            onGoBackCallback();
-            expect(mockGameEngine.sceneManager.switchScene').toHaveBeenCalledWith('menu');
-        }');
+            onGoBackCallback(),
+            expect(mockGameEngine.sceneManager.switchScene').toHaveBeenCalledWith('menu') }');
         test('should handle scene switch failure with fallback', () => {
-            helpScene.navigationContext.getReturnDestination = jest.fn(').mockReturnValue('nonexistent') as jest.Mock;
-            helpScene.navigationContext.popContext = jest.fn() as jest.Mock;
+            helpScene.navigationContext.getReturnDestination = jest.fn(').mockReturnValue('nonexistent') as jest.Mock,
+            helpScene.navigationContext.popContext = jest.fn() as jest.Mock,
             mockGameEngine.sceneManager.switchScene = jest.fn() as jest.Mock
                 .mockReturnValueOnce(false  // 最初の試行は失敗
-                .mockReturnValueOnce(true;  // フォールバックは成功
+                .mockReturnValueOnce(true,  // フォールバックは成功
             
-            const callbacks = helpScene.helpEventManager.setCallback.mock.calls;');
-            const onGoBackCallback = callbacks.find(call => call[0] === 'onGoBack')[1];
+            const callbacks = helpScene.helpEventManager.setCallback.mock.calls,'),
+            const onGoBackCallback = callbacks.find(call => call[0] === 'onGoBack')[1],
             
-            onGoBackCallback();
-            expect(mockGameEngine.sceneManager.switchScene').toHaveBeenCalledWith('nonexistent');
-            expect(mockGameEngine.sceneManager.switchScene').toHaveBeenCalledWith('menu');
-        }');
+            onGoBackCallback(),
+            expect(mockGameEngine.sceneManager.switchScene').toHaveBeenCalledWith('nonexistent'),
+            expect(mockGameEngine.sceneManager.switchScene').toHaveBeenCalledWith('menu') }');
     }
     describe('Analytics Integration', (') => {
         test('should track contextual help analytics', () => {
             const mockAnalytics = {
-                startHelpSession: jest.fn(),
-        endHelpSession: jest.fn(),
-            };
+                startHelpSession: jest.fn(
+        endHelpSession: jest.fn( };
             
             helpScene.helpContentManager.getHelpAnalytics = jest.fn().mockReturnValue(mockAnalytics as jest.Mock');
             const contextData = {
@@ -212,13 +196,11 @@ describe('HelpScene Context-Aware Navigation', () => {
                 sourceScene: 'game',
                 userAgent: 'test-agent',
                 screenSize: '1920x1080',
-                language: 'ja')');
-        }
+                language: 'ja')') }
         test('should track standard help analytics', () => {
             const mockAnalytics = {
-                startHelpSession: jest.fn(),
-        endHelpSession: jest.fn(),
-            };
+                startHelpSession: jest.fn(
+        endHelpSession: jest.fn( };
             
             helpScene.helpContentManager.getHelpAnalytics = jest.fn().mockReturnValue(mockAnalytics as jest.Mock');
             const contextData = {
@@ -232,8 +214,7 @@ describe('HelpScene Context-Aware Navigation', () => {
                 sourceScene: 'unknown',
                 userAgent: 'test-agent',
                 screenSize: '1920x1080',
-                language: 'ja');
-        }
+                language: 'ja') }
     }');
     describe('Accessibility Announcements', (') => {
         test('should announce contextual help entry', (') => {
@@ -273,19 +254,17 @@ describe('HelpScene Context-Aware Navigation', () => {
     }
     describe('Error Handling', (') => {
         test('should handle missing scene manager gracefully', (') => {
-            mockGameEngine.sceneManager = null;
+            mockGameEngine.sceneManager = null,
             
-            const callbacks = helpScene.helpEventManager.setCallback.mock.calls;
-            const onGoBackCallback = callbacks.find(call => call[0] === 'onGoBack')[1];
+            const callbacks = helpScene.helpEventManager.setCallback.mock.calls,
+            const onGoBackCallback = callbacks.find(call => call[0] === 'onGoBack')[1],
             
-            expect(() => onGoBackCallback().not.toThrow();
-        }');
+            expect(() => onGoBackCallback().not.toThrow() }');
         test('should handle context processing errors', () => {
             // processEntryContextでエラーが発生する状況をシミュレート
-            const originalProcessEntryContext = helpScene.processEntryContext;
+            const originalProcessEntryContext = helpScene.processEntryContext,
             helpScene.processEntryContext = jest.fn() as jest.Mock.mockImplementation((') => {
-                throw new Error('Context processing error');
-            });
+                throw new Error('Context processing error') });
             expect(() => helpScene.enter({ contextual: true }).not.toThrow();
             // 元のメソッドを復元
             helpScene.processEntryContext = originalProcessEntryContext;
@@ -293,10 +272,9 @@ describe('HelpScene Context-Aware Navigation', () => {
     }
     describe('Cleanup', (') => {
         test('should cleanup NavigationContextManager on destroy', () => {
-            helpScene.navigationContext.cleanup = jest.fn() as jest.Mock;
+            helpScene.navigationContext.cleanup = jest.fn() as jest.Mock,
             
-            helpScene.destroy();
-            expect(helpScene.navigationContext.cleanup).toHaveBeenCalled();
-        });
+            helpScene.destroy(),
+            expect(helpScene.navigationContext.cleanup).toHaveBeenCalled() });
     }
 }');

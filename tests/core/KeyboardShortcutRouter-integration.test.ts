@@ -9,16 +9,14 @@ import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jes
 import { CoreKeyboardShortcutManager  } from '../../src/core/KeyboardShortcutManager';
 // DOM APIのモック
 const mockDocument = {
-    addEventListener: jest.fn(),
-        removeEventListener: jest.fn(),
-};
+    addEventListener: jest.fn(
+        removeEventListener: jest.fn( };
 // Window APIのモック
 const mockWindow = {
-    addEventListener: jest.fn(),
-        removeEventListener: jest.fn(),
-};
+    addEventListener: jest.fn(
+        removeEventListener: jest.fn( };
 // グローバル変数のモック
-(global as any).document = mockDocument;
+(global: any).document = mockDocument;
 (global as any').window = mockWindow;
 describe('KeyboardShortcut Router Integration', () => {
     let keyboardManager: any,
@@ -28,7 +26,7 @@ describe('KeyboardShortcut Router Integration', () => {
     beforeEach(() => {
         // Mock SceneManager
         mockSceneManager = {
-            switchScene: jest.fn().mockReturnValue(true;);
+            switchScene: jest.fn().mockReturnValue(true),
            , getCurrentScene: jest.fn(').mockReturnValue({
                 constructor: { name: 'TestScene' });
     });
@@ -38,39 +36,33 @@ describe('KeyboardShortcut Router Integration', () => {
         mockGameEngine = {
             sceneManager: mockSceneManager,
             settingsManager: {
-                get: jest.fn(),
-        set: jest.fn(),
-            },
+                get: jest.fn(
+        set: jest.fn( },
             responsiveCanvasManager: {
-                toggleFullscreen: jest.fn(),
-            },
+                toggleFullscreen: jest.fn( },
             audioManager: {
                 toggleMute: jest.fn().mockReturnValue(false
-            });
-            performanceStats: {),
-            isDebugMode: jest.fn().mockReturnValue(false);
+            );
+            performanceStats: {,
+            isDebugMode: jest.fn().mockReturnValue(false),
         
-        keyboardManager = new CoreKeyboardShortcutManager(mockGameEngine);
-    });
+        keyboardManager = new CoreKeyboardShortcutManager(mockGameEngine) });
     afterEach(() => {
         if (keyboardManager && keyboardManager.cleanup) {
-            keyboardManager.cleanup();
-        }
+            keyboardManager.cleanup() }
         jest.clearAllMocks();
     }');
     describe('Settings Shortcut Integration', (') => {
         test('should route S key to unified SettingsScene', () => {
-            keyboardManager.handleSettings();
+            keyboardManager.handleSettings(),
             expect(mockSceneManager.switchScene').toHaveBeenCalledWith('settings', {
                 accessMethod: 'keyboard_s',
-                sourceScene: 'TestScene'),
-            }');
+                sourceScene: 'TestScene' }');
         }
         test('should handle settings shortcut failure gracefully', () => {
-            mockSceneManager.switchScene.mockReturnValue(false);
-            mockSceneManager.getCurrentScene.mockReturnValue({);
-                openSettings: jest.fn(),
-            }');
+            mockSceneManager.switchScene.mockReturnValue(false),
+            mockSceneManager.getCurrentScene.mockReturnValue({),
+                openSettings: jest.fn( }');
             const consoleSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
             keyboardManager.handleSettings();
             expect(mockSceneManager.switchScene).toHaveBeenCalled();
@@ -78,29 +70,26 @@ describe('KeyboardShortcut Router Integration', () => {
             consoleSpy.mockRestore();
         }');
         test('should use fallback method when scene switch fails', () => {
-            const mockOpenSettings = jest.fn() as jest.Mock;
-            mockSceneManager.switchScene.mockReturnValue(false);
+            const mockOpenSettings = jest.fn() as jest.Mock,
+            mockSceneManager.switchScene.mockReturnValue(false),
             mockSceneManager.getCurrentScene.mockReturnValue({
-                openSettings: mockOpenSettings),
-            });
+                openSettings: mockOpenSettings });
             keyboardManager.handleSettings();
             expect(mockOpenSettings).toHaveBeenCalled();
         }');
     }
     describe('Help Shortcut Integration', (') => {
         test('should route H key to unified HelpScene', () => {
-            keyboardManager.handleHelp();
+            keyboardManager.handleHelp(),
             expect(mockSceneManager.switchScene').toHaveBeenCalledWith('help', {
                 accessMethod: 'keyboard_h',
                 sourceScene: 'TestScene',
-                standard: true),
-            }');
+                standard: true }');
         }
         test('should handle help shortcut failure gracefully', () => {
-            mockSceneManager.switchScene.mockReturnValue(false);
-            mockSceneManager.getCurrentScene.mockReturnValue({);
-                showControlsHelp: jest.fn(),
-            }');
+            mockSceneManager.switchScene.mockReturnValue(false),
+            mockSceneManager.getCurrentScene.mockReturnValue({),
+                showControlsHelp: jest.fn( }');
             const consoleSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
             keyboardManager.handleHelp();
             expect(mockSceneManager.switchScene).toHaveBeenCalled();
@@ -110,15 +99,14 @@ describe('KeyboardShortcut Router Integration', () => {
     }
     describe('Contextual Help Shortcut (F1')', (') => {
         test('should route F1 key to contextual help mode', () => {
-            keyboardManager.handleContextualHelp();
+            keyboardManager.handleContextualHelp(),
             expect(mockSceneManager.switchScene').toHaveBeenCalledWith('help', {
                 accessMethod: 'keyboard_f1',
                 sourceScene: 'TestScene',
-                contextual: true),
-            }');
+                contextual: true }');
         }
         test('should fallback to standard help when contextual fails', () => {
-            mockSceneManager.switchScene.mockReturnValueOnce(false.mockReturnValueOnce(true)');
+            mockSceneManager.switchScene.mockReturnValueOnce(false.mockReturnValueOnce(true)'),
             const consoleSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
             keyboardManager.handleContextualHelp();
             expect(mockSceneManager.switchScene).toHaveBeenCalledTimes(2);
@@ -128,15 +116,14 @@ describe('KeyboardShortcut Router Integration', () => {
     }
     describe('Documentation Help Shortcut (Ctrl+H')', (') => {
         test('should route Ctrl+H to documentation help mode', () => {
-            keyboardManager.handleDocumentationHelp();
+            keyboardManager.handleDocumentationHelp(),
             expect(mockSceneManager.switchScene').toHaveBeenCalledWith('help', {
                 accessMethod: 'keyboard_ctrl_h',
                 sourceScene: 'TestScene',
-                documentation: true),
-            }');
+                documentation: true }');
         }
         test('should fallback to standard help when documentation fails', () => {
-            mockSceneManager.switchScene.mockReturnValueOnce(false.mockReturnValueOnce(true)');
+            mockSceneManager.switchScene.mockReturnValueOnce(false.mockReturnValueOnce(true)'),
             const consoleSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
             keyboardManager.handleDocumentationHelp();
             expect(mockSceneManager.switchScene).toHaveBeenCalledTimes(2);
@@ -147,8 +134,7 @@ describe('KeyboardShortcut Router Integration', () => {
     describe('Error Handling', (') => {
         test('should handle errors in settings navigation', () => {
             mockSceneManager.switchScene.mockImplementation((') => {
-                throw new Error('Scene switch error');
-            }');
+                throw new Error('Scene switch error') }');
             const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
             keyboardManager.handleSettings();
             expect(consoleSpy').toHaveBeenCalledWith('[KeyboardShortcutManager] Failed to open settings:', expect.any(Error);
@@ -156,8 +142,7 @@ describe('KeyboardShortcut Router Integration', () => {
         }');
         test('should handle errors in help navigation', () => {
             mockSceneManager.switchScene.mockImplementation((') => {
-                throw new Error('Scene switch error');
-            }');
+                throw new Error('Scene switch error') }');
             const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
             keyboardManager.handleHelp();
             expect(consoleSpy').toHaveBeenCalledWith('[KeyboardShortcutManager] Failed to open help:', expect.any(Error);
@@ -165,8 +150,7 @@ describe('KeyboardShortcut Router Integration', () => {
         }');
         test('should handle errors in contextual help navigation', () => {
             mockSceneManager.switchScene.mockImplementation((') => {
-                throw new Error('Scene switch error');
-            }');
+                throw new Error('Scene switch error') }');
             const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
             keyboardManager.handleContextualHelp();
             expect(consoleSpy').toHaveBeenCalledWith('[KeyboardShortcutManager] Failed to open contextual help:', expect.any(Error);
@@ -175,21 +159,19 @@ describe('KeyboardShortcut Router Integration', () => {
     }
     describe('Default Shortcut Registration', (') => {
         test('should register all expected shortcuts', (') => {
-            expect(keyboardManager.shortcuts.has('settings').toBe(true');
-            expect(keyboardManager.shortcuts.has('help').toBe(true');
-            expect(keyboardManager.shortcuts.has('contextualHelp').toBe(true');
-            expect(keyboardManager.shortcuts.has('documentationHelp').toBe(true);
-        }');
+            expect(keyboardManager.shortcuts.has('settings').toBe(true'),
+            expect(keyboardManager.shortcuts.has('help').toBe(true'),
+            expect(keyboardManager.shortcuts.has('contextualHelp').toBe(true'),
+            expect(keyboardManager.shortcuts.has('documentationHelp').toBe(true) }');
         test('should have correct key mappings for shortcuts', (') => {
-            const settingsShortcut = keyboardManager.shortcuts.get('settings'');
-            const helpShortcut = keyboardManager.shortcuts.get('help'');
-            const contextualHelpShortcut = keyboardManager.shortcuts.get('contextualHelp'');
-            const documentationHelpShortcut = keyboardManager.shortcuts.get('documentationHelp');
-            expect(settingsShortcut.keys').toContain('KeyS');
-            expect(helpShortcut.keys').toContain('KeyH');
-            expect(contextualHelpShortcut.keys').toContain('F1');
-            expect(documentationHelpShortcut.keys').toContain('ControlLeft+KeyH');
-        }');
+            const settingsShortcut = keyboardManager.shortcuts.get('settings'),
+            const helpShortcut = keyboardManager.shortcuts.get('help'),
+            const contextualHelpShortcut = keyboardManager.shortcuts.get('contextualHelp'),
+            const documentationHelpShortcut = keyboardManager.shortcuts.get('documentationHelp'),
+            expect(settingsShortcut.keys').toContain('KeyS'),
+            expect(helpShortcut.keys').toContain('KeyH'),
+            expect(contextualHelpShortcut.keys').toContain('F1'),
+            expect(documentationHelpShortcut.keys').toContain('ControlLeft+KeyH') }');
     }
     describe('Scene Context Management', (') => {
         test('should provide proper context data for settings navigation', (') => {
@@ -199,8 +181,7 @@ describe('KeyboardShortcut Router Integration', () => {
             keyboardManager.handleSettings();
             expect(mockSceneManager.switchScene').toHaveBeenCalledWith('settings', {
                 accessMethod: 'keyboard_s',
-                sourceScene: 'GameScene'),
-            }');
+                sourceScene: 'GameScene' }');
         }
         test('should handle missing scene constructor gracefully', () => {
             mockSceneManager.getCurrentScene.mockReturnValue({});
@@ -208,16 +189,14 @@ describe('KeyboardShortcut Router Integration', () => {
             expect(mockSceneManager.switchScene').toHaveBeenCalledWith('help', {
                 accessMethod: 'keyboard_h',
                 sourceScene: 'unknown',
-                standard: true),
-            }');
+                standard: true }');
         }
         test('should handle null current scene gracefully', () => {
-            mockSceneManager.getCurrentScene.mockReturnValue(null);
-            keyboardManager.handleSettings();
+            mockSceneManager.getCurrentScene.mockReturnValue(null),
+            keyboardManager.handleSettings(),
             expect(mockSceneManager.switchScene').toHaveBeenCalledWith('settings', {
                 accessMethod: 'keyboard_s',
-                sourceScene: 'unknown'),
-            });
+                sourceScene: 'unknown' });
         }
     }');
     describe('Logging and Debugging', (') => {

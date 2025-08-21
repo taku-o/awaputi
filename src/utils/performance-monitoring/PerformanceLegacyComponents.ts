@@ -7,65 +7,63 @@ import { getErrorHandler  } from '../../core/ErrorHandler.js';
 
 // Type definitions
 interface MetricValue { timestamp: number,
-    value: number ,}
+    value: number  }
 
-interface AlertEvent { alertId: string;
-    metricId: string;
+interface AlertEvent { alertId: string,
+    metricId: string,
     value: number,
     threshold: number,
     condition: 'above' | 'below' | 'equal',
-    timestamp: number ,}
+    timestamp: number  }
 
 interface Alert { metricId: string,
     threshold: number,
     condition: 'above' | 'below' | 'equal',
-    callback?: (event: AlertEvent') => void;
-    id: string ,}
+    callback?: (event: AlertEvent') => void,
+    id: string  }
 }
 
-interface MetricConfig { id: string;
-    name?: string;
-    unit?: string;
-    type?: string;
-    [key: string]: any, }
+interface MetricConfig { id: string,
+    name?: string,
+    unit?: string,
+    type?: string,
+    [key: string]: any }
 
 interface DataPoint { timestamp: number,
     metrics: Record<string, any> }
 ';
 
-interface DashboardConfig { updateInterval?: number;''
-    position?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
-    theme?: 'dark' | 'light'; }
+interface DashboardConfig { updateInterval?: number,
+    position?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right',
+    theme?: 'dark' | 'light' }
 
-interface PerformanceGathererConfig { collectors?: string[];
-    interval?: number;
-    enabledMetrics?: string[]; }
+interface PerformanceGathererConfig { collectors?: string[],
+    interval?: number,
+    enabledMetrics?: string[] }
 
-interface HistoryTrackerConfig { maxDataPoints?: number;
-    retentionPeriod?: number; }
+interface HistoryTrackerConfig { maxDataPoints?: number,
+    retentionPeriod?: number }
 
-interface AlertManagerConfig { maxActiveAlerts?: number;
-    alertTimeout?: number; }
+interface AlertManagerConfig { maxActiveAlerts?: number,
+    alertTimeout?: number }
 
-interface StreamConfig { bufferSize?: number;
-    throttle?: number; }
+interface StreamConfig { bufferSize?: number,
+    throttle?: number }
 
 // パフォーマンスダッシュボード
 export class PerformanceDashboard {
-    private container: HTMLElement | null;
-    private, widgets: Map<string, any>;
-    private visible: boolean;
-    private updateInterval: NodeJS.Timeout | null;
-    private, charts: Map<string, any>;
+    private container: HTMLElement | null,
+    private, widgets: Map<string, any>,
+    private visible: boolean,
+    private updateInterval: NodeJS.Timeout | null,
+    private, charts: Map<string, any>,
 
     constructor() {
 
-        this.container = null;
-        this.widgets = new Map();
-        this.visible = false;
-        this.updateInterval = null;
-
-    }
+        this.container = null,
+        this.widgets = new Map(),
+        this.visible = false,
+        this.updateInterval = null }
         this.charts = new Map(); }
     }
 
@@ -73,25 +71,25 @@ export class PerformanceDashboard {
         console.log('PerformanceDashboard, initialized);
     }
 
-    async show(): Promise<void> { if (this.visible) return;
+    async show(): Promise<void> { if (this.visible) return,
         
-        this.createDashboard();
+        this.createDashboard(),
 
-        this.visible = true;''
-        this.startUpdates()';
-        console.log('PerformanceDashboard, shown'); }'
+        this.visible = true,
+        this.startUpdates()',
+        console.log('PerformanceDashboard, shown') }'
 
-    async hide(): Promise<void> { if (!this.visible) return;
-        ';
+    async hide(): Promise<void> { if (!this.visible) return,
+        ',
 
-        this.stopUpdates();''
-        this.removeDashboard()';
-        console.log('PerformanceDashboard, hidden'); }'
+        this.stopUpdates(),
+        this.removeDashboard()',
+        console.log('PerformanceDashboard, hidden') }'
 
-    toggle(): Promise<void> { return this.visible ? this.hide() : this.show(); }
+    toggle(): Promise<void> { return this.visible ? this.hide() : this.show() }
 
     createDashboard()';
-        this.container = document.createElement('div'');''
+        this.container = document.createElement('div');
         this.container.id = 'performance-dashboard';
         this.container.style.cssText = `;
             position: fixed;
@@ -110,15 +108,15 @@ export class PerformanceDashboard {
     }
 
     removeDashboard(): void { if (this.container && this.container.parentNode) {
-            this.container.parentNode.removeChild(this.container);
-            this.container = null; }
+            this.container.parentNode.removeChild(this.container),
+            this.container = null }
     }
 ';
 
     updateMetrics(metrics: Map<string, any>): void { ''
-        if(!this.container || !this.visible) return;
+        if(!this.container || !this.visible) return,
 
-        let html = '<h3>Performance Dashboard</h3>';
+        let html = '<h3>Performance Dashboard</h3>',
         for (const [key, value] of metrics) { }
             html += `<div>${key}: ${this.formatValue(value})</div>`;
         }
@@ -126,9 +124,7 @@ export class PerformanceDashboard {
     }
 
     formatValue(value: any): string { ''
-        if(typeof, value === 'number' {'
-            
-        }
+        if(typeof, value === 'number' { }
             return value.toFixed(2);
         return String(value);
     }
@@ -139,19 +135,19 @@ export class PerformanceDashboard {
     }
 
     stopUpdates(): void { if (this.updateInterval) {
-            clearInterval(this.updateInterval);
-            this.updateInterval = null; }
+            clearInterval(this.updateInterval),
+            this.updateInterval = null }
 }
 
 // パフォーマンスデータ収集器
 export class PerformanceDataGatherer {
-    private collectors: Map<string, any>;
-    private collecting: boolean;
+    private collectors: Map<string, any>,
+    private collecting: boolean,
     constructor() {
 
-        this.collectors = new Map();
+        this.collectors = new Map(),
 
-    ,}
+     }
         this.collecting = false; }
     }
 
@@ -159,8 +155,8 @@ export class PerformanceDataGatherer {
         console.log('PerformanceDataGatherer, initialized';
     }
 
-    async start(config?: PerformanceGathererConfig'): Promise<void> { this.collecting = true;''
-        console.log('PerformanceDataGatherer, started'); }'
+    async start(config?: PerformanceGathererConfig'): Promise<void> { this.collecting = true,
+        console.log('PerformanceDataGatherer, started') }'
 
     async stop()';
         console.log('PerformanceDataGatherer, stopped');
@@ -168,34 +164,34 @@ export class PerformanceDataGatherer {
 ';
 
     async collectAllMetrics(): Promise<Map<string, number>> { ''
-        const metrics = new Map<string, number>();
-        ';
+        const metrics = new Map<string, number>(),
+        ',
         // Collect basic performance metrics
-        metrics.set('fps', this.calculateFPS());''
-        metrics.set('memory_used', this.getMemoryUsage());''
-        metrics.set('frame_time', this.getFrameTime();
+        metrics.set('fps', this.calculateFPS()),
+        metrics.set('memory_used', this.getMemoryUsage()),
+        metrics.set('frame_time', this.getFrameTime(),
         
-        return metrics; }
+        return metrics }
 
-    calculateFPS(): number { return Math.random() * 60; // Simulated FPS }
+    calculateFPS(): number { return Math.random() * 60, // Simulated FPS }
 
     getMemoryUsage()';
-        if ('memory' in, performance && (performance, as any).memory) { return (performance, as any).memory.usedJSHeapSize / 1024 / 1024; }
+        if ('memory' in, performance && (performance, as any).memory) { return (performance, as any).memory.usedJSHeapSize / 1024 / 1024 }
         return Math.random() * 100;
     }
 
-    getFrameTime(): number { return Math.random() * 30 + 10; // Simulated frame time 
+    getFrameTime(): number { return Math.random() * 30 + 10, // Simulated frame time 
     }
 
 // パフォーマンス履歴追跡
 export class PerformanceHistoryTracker {
-    private history: Map<string, MetricValue[]>;
-    private maxDataPoints: number;
+    private history: Map<string, MetricValue[]>,
+    private maxDataPoints: number,
     constructor() {
 
-        this.history = new Map();
+        this.history = new Map(),
 
-    ,}
+     }
         this.maxDataPoints = 1000; }
     }
 
@@ -206,75 +202,75 @@ export class PerformanceHistoryTracker {
 
     async start(config?: HistoryTrackerConfig): Promise<void> { ''
         if(config?.maxDataPoints !== undefined) {
-            
-        }
+    
+}
             this.maxDataPoints = config.maxDataPoints; }
 
         }''
         console.log('PerformanceHistoryTracker, started');
     }
 
- : undefined'';
+ : undefined';
     async stop()';
         console.log('PerformanceHistoryTracker, stopped);
     }
 
     addDataPoint(timestamp: number, metrics: Map<string, number>): void { for (const [metricId, value] of metrics) {
             if(!this.history.has(metricId) {
-                
-            }
+    
+}
                 this.history.set(metricId []); }
             }
             
             const dataPoints = this.history.get(metricId)!;
-            dataPoints.push({ timestamp value );
+            dataPoints.push({ timestamp value ),
             
             // Keep history size manageable
             if(dataPoints.length > this.maxDataPoints) {
-                
-            }
+    
+}
                 dataPoints.shift(); }
 }
     }
 
-    getHistory(metricId: string, timeRange: number): MetricValue[] { const dataPoints = this.history.get(metricId) || [];
-        const now = Date.now();''
-        return dataPoints.filter(point => now - point.timestamp < timeRange);
+    getHistory(metricId: string, timeRange: number): MetricValue[] { const dataPoints = this.history.get(metricId) || [],
+        const now = Date.now(),
+        return dataPoints.filter(point => now - point.timestamp < timeRange),
 
-    getAggregated(metricId: string, timeRange: number, aggregation: 'average' | 'min' | 'max' | 'last): number | null { const history = this.getHistory(metricId, timeRange);
-        if (history.length === 0) return null;
+    getAggregated(metricId: string, timeRange: number, aggregation: 'average' | 'min' | 'max' | 'last): number | null { const history = this.getHistory(metricId, timeRange),
+        if (history.length === 0) return null,
         
-        const values = history.map(h => h.value);
+        const values = history.map(h => h.value),
 
-        switch(aggregation) {'
+        switch(aggregation) {
 
-            case 'average':'';
-                return values.reduce((sum, val) => sum + val, 0') / values.length;''
-            case 'min':'';
-                return Math.min(...values);''
-            case 'max':;
-                return Math.max(...values);
-            default: return values[values.length - 1];
+            case 'average':',
+                return values.reduce((sum, val) => sum + val, 0') / values.length,
+            case 'min':',
+                return Math.min(...values),
+            case 'max':,
+                return Math.max(...values),
+            default: return values[values.length - 1],
 
-    getDataPointCount(): number { let total = 0;
-        for(const, dataPoints of, this.history.values() {
-            
-        ,}
+    getDataPointCount(): number { let total = 0,
+        for (const dataPoints of this.history.values() {
+    
+}
             total += dataPoints.length; }
         }
         return total;
 
 // パフォーマンスアラート管理
 export class PerformanceAlertManager {
-    private alerts: Map<string, Alert>;
-    private activeAlerts: AlertEvent[];
-    private, alertHistory: AlertEvent[];
+    private alerts: Map<string, Alert>,
+    private activeAlerts: AlertEvent[],
+    private, alertHistory: AlertEvent[],
     constructor() {
 
-        this.alerts = new Map();
-        this.activeAlerts = [];
+        this.alerts = new Map(),
+        this.activeAlerts = [],
 
-    ,}
+     }
         this.alertHistory = []; }
     }
 
@@ -283,17 +279,17 @@ export class PerformanceAlertManager {
     }
 
     async start(config?: AlertManagerConfig'): Promise<void> { ''
-        console.log('PerformanceAlertManager, started'); }'
+        console.log('PerformanceAlertManager, started') }'
 
     async stop()';
-        console.log('PerformanceAlertManager, stopped'');
+        console.log('PerformanceAlertManager, stopped');
     }
 
     addAlert(metricId: string, threshold: number, condition: 'above' | 'below' | 'equal', callback?: (event: AlertEvent) => void): string { const alert: Alert = {
             metricId,
             threshold,
             condition,
-            callback, }
+            callback }
             id: `alert_${Date.now())_${Math.random())`
         };
         this.alerts.set(alert.id, alert);
@@ -301,90 +297,85 @@ export class PerformanceAlertManager {
     }
 
     checkThresholds(metrics: Map<string, number>): void { for (const [alertId, alert] of this.alerts) {
-            const value = metrics.get(alert.metricId);
-            if (value === undefined) continue;
-            ';
+            const value = metrics.get(alert.metricId),
+            if (value === undefined) continue,
+            ',
 
-            let triggered = false;''
-            switch(alert.condition) {'
+            let triggered = false,
+            switch(alert.condition) {
 
-                case 'above':;
-                    triggered = value > alert.threshold;
+                case 'above':,
+                    triggered = value > alert.threshold,
 
-                    break;''
-                case 'below':;
-                    triggered = value < alert.threshold;
+                    break,
+                case 'below':,
+                    triggered = value < alert.threshold,
 
-                    break;''
-                case 'equal':;
-                    triggered = value === alert.threshold;
-            }
+                    break,
+                case 'equal':,
+                    triggered = value === alert.threshold }
                     break; }
             }
             
-            if (triggered) { this.triggerAlert(alert, value); }
+            if (triggered) { this.triggerAlert(alert, value) }
 }
 
     triggerAlert(alert: Alert, value: number): void { const alertEvent: AlertEvent = {
             alertId: alert.id,
-    metricId: alert.metricId;
+    metricId: alert.metricId,
             value,
-            threshold: alert.threshold;
+            threshold: alert.threshold,
             condition: alert.condition,
-    timestamp: Date.now( ,};
+    timestamp: Date.now(  };
         
         this.activeAlerts.push(alertEvent);
         this.alertHistory.push(alertEvent);
         
-        if (alert.callback) { alert.callback(alertEvent); }
+        if (alert.callback) { alert.callback(alertEvent) }
         
         console.log(`Alert, triggered: ${alert.metricId} ${alert.condition} ${alert.threshold} (current: ${value}`});
     }
 
-    getActiveAlerts(): AlertEvent[] { return [...this.activeAlerts];
+    getActiveAlerts(): AlertEvent[] { return [...this.activeAlerts],
 
     getAlertsInRange(startTime: number, endTime: number): AlertEvent[] { return this.alertHistory.filter(alert => )
-            alert.timestamp >= startTime && alert.timestamp <= endTime);
+            alert.timestamp >= startTime && alert.timestamp <= endTime),
 
     handlePerformanceEvent(eventType: string, event: any): void {
-        console.log(`PerformanceAlertManager handling ${eventType,} event: ${event.type}`});
+        console.log(`PerformanceAlertManager handling ${eventType } event: ${event.type}`});
     }
 }
 
 // メトリクス登録管理
 export class MetricsRegistry {
-    private metrics: Map<string, MetricConfig>;
+    private metrics: Map<string, MetricConfig>,
 
     constructor() {
-
-        
-
-    }
+    
+}
         this.metrics = new Map(); }
     }
 
-    register(metricConfig: MetricConfig): string { this.metrics.set(metricConfig.id, metricConfig); }
+    register(metricConfig: MetricConfig): string { this.metrics.set(metricConfig.id, metricConfig) }
         console.log(`Metric, registered: ${metricConfig.id}`});
         return metricConfig.id;
     }
 
-    get(metricId: string): MetricConfig | undefined { return this.metrics.get(metricId); }
+    get(metricId: string): MetricConfig | undefined { return this.metrics.get(metricId) }
 
-    getCount(): number { return this.metrics.size; }
+    getCount(): number { return this.metrics.size }
 
-    getAllIds(): string[] { return Array.from(this.metrics.keys();
+    getAllIds(): string[] { return Array.from(this.metrics.keys(),
 
 // リアルタイムメトリクスストリーム
 export class RealtimeMetricsStream {
-    private subscribers: Set<(dataPoint: DataPoint) => void>;
-    private streaming: boolean;
-    private buffer: DataPoint[];
+    private subscribers: Set<(dataPoint: DataPoint) => void>,
+    private streaming: boolean,
+    private buffer: DataPoint[],
     constructor() {
 
-        this.subscribers = new Set();
-        this.streaming = false;
-
-    }
+        this.subscribers = new Set(),
+        this.streaming = false }
     }
         this.buffer = []; }
     }
@@ -393,14 +384,14 @@ export class RealtimeMetricsStream {
         console.log('RealtimeMetricsStream, initialized';
     }
 
-    async start(config?: StreamConfig'): Promise<void> { this.streaming = true;''
-        console.log('RealtimeMetricsStream, started'); }'
+    async start(config?: StreamConfig'): Promise<void> { this.streaming = true,
+        console.log('RealtimeMetricsStream, started') }'
 
     async stop()';
         console.log('RealtimeMetricsStream, stopped);
     }
 
-    send(timestamp: number, metrics: Map<string, any>): void { if (!this.streaming) return;
+    send(timestamp: number, metrics: Map<string, any>): void { if (!this.streaming) return,
         
         const dataPoint: DataPoint = {
             timestamp metrics: Object.fromEntries(metrics  };
@@ -408,10 +399,10 @@ export class RealtimeMetricsStream {
         this.buffer.push(dataPoint);
         
         // Keep buffer size manageable
-        if (this.buffer.length > 100) { this.buffer.shift(); }
+        if (this.buffer.length > 100) { this.buffer.shift() }
         
         // Notify subscribers
-        for(const, subscriber of, this.subscribers) {
+        for (const subscriber of this.subscribers) {
             try {
         }
                 subscriber(dataPoint');' }'
@@ -420,6 +411,5 @@ export class RealtimeMetricsStream {
 }
 ';
 
-    subscribe(callback: (dataPoint: DataPoint) => void): () => void { this.subscribers.add(callback);''
-        return () => this.subscribers.delete(callback);''
-}
+    subscribe(callback: (dataPoint: DataPoint) => void): () => void { this.subscribers.add(callback),
+        return () => this.subscribers.delete(callback),'}

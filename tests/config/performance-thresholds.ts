@@ -220,31 +220,31 @@ export const DEVICE_ADJUSTMENTS = {
  * @returns {Object} Adjusted performance thresholds
  */
 export function getPerformanceThresholds(environment = 'local', device = 'desktop', component = null) {
-  const baseThresholds = PERFORMANCE_THRESHOLDS[environment] || PERFORMANCE_THRESHOLDS.local;
-  const deviceAdjustments = DEVICE_ADJUSTMENTS[device] || DEVICE_ADJUSTMENTS.desktop;
+  const baseThresholds = PERFORMANCE_THRESHOLDS[environment] || PERFORMANCE_THRESHOLDS.local,
+  const deviceAdjustments = DEVICE_ADJUSTMENTS[device] || DEVICE_ADJUSTMENTS.desktop,
   
   // Apply device-specific adjustments
-  const adjustedThresholds = JSON.parse(JSON.stringify(baseThresholds);
+  const adjustedThresholds = JSON.parse(JSON.stringify(baseThresholds),
   
   // Adjust frame rate
-  adjustedThresholds.frameRate.min *= deviceAdjustments.frameRateMultiplier;
-  adjustedThresholds.frameRate.target *= deviceAdjustments.frameRateMultiplier;
-  adjustedThresholds.frameRate.max *= deviceAdjustments.frameRateMultiplier;
+  adjustedThresholds.frameRate.min *= deviceAdjustments.frameRateMultiplier,
+  adjustedThresholds.frameRate.target *= deviceAdjustments.frameRateMultiplier,
+  adjustedThresholds.frameRate.max *= deviceAdjustments.frameRateMultiplier,
   
   // Adjust render time
-  adjustedThresholds.renderTime.max *= deviceAdjustments.renderTimeMultiplier;
-  adjustedThresholds.renderTime.average *= deviceAdjustments.renderTimeMultiplier;
-  adjustedThresholds.renderTime.target *= deviceAdjustments.renderTimeMultiplier;
+  adjustedThresholds.renderTime.max *= deviceAdjustments.renderTimeMultiplier,
+  adjustedThresholds.renderTime.average *= deviceAdjustments.renderTimeMultiplier,
+  adjustedThresholds.renderTime.target *= deviceAdjustments.renderTimeMultiplier,
   
   // Adjust memory usage
-  adjustedThresholds.memoryUsage.max *= deviceAdjustments.memoryMultiplier;
-  adjustedThresholds.memoryUsage.growth *= deviceAdjustments.memoryMultiplier;
-  adjustedThresholds.memoryUsage.leak *= deviceAdjustments.memoryMultiplier;
+  adjustedThresholds.memoryUsage.max *= deviceAdjustments.memoryMultiplier,
+  adjustedThresholds.memoryUsage.growth *= deviceAdjustments.memoryMultiplier,
+  adjustedThresholds.memoryUsage.leak *= deviceAdjustments.memoryMultiplier,
   
   // Adjust load time
-  adjustedThresholds.loadTime.max *= deviceAdjustments.loadTimeMultiplier;
-  adjustedThresholds.loadTime.target *= deviceAdjustments.loadTimeMultiplier;
-  adjustedThresholds.loadTime.component *= deviceAdjustments.loadTimeMultiplier;
+  adjustedThresholds.loadTime.max *= deviceAdjustments.loadTimeMultiplier,
+  adjustedThresholds.loadTime.target *= deviceAdjustments.loadTimeMultiplier,
+  adjustedThresholds.loadTime.component *= deviceAdjustments.loadTimeMultiplier,
   
   // Add component-specific thresholds if requested
   if (component && COMPONENT_THRESHOLDS[component]) {
@@ -252,8 +252,7 @@ export function getPerformanceThresholds(environment = 'local', device = 'deskto
     const componentThresholds = COMPONENT_THRESHOLDS[component];
     
     for (const [metric, values] of Object.entries(componentThresholds) {
-      adjustedThresholds.component[metric] = values[environment] || values.local;
-    }
+      adjustedThresholds.component[metric] = values[environment] || values.local }
   }
   
   return adjustedThresholds;
@@ -266,7 +265,7 @@ export function getPerformanceThresholds(environment = 'local', device = 'deskto
  * @returns {Object} Test configuration
  */
 export function getTestConfiguration(environment = 'local', testType = 'standard') {
-  const config = TEST_CONFIGURATIONS[testType] || TEST_CONFIGURATIONS.standard;
+  const config = TEST_CONFIGURATIONS[testType] || TEST_CONFIGURATIONS.standard,
   
   return {
     retries: config.retries[environment] || config.retries.local,
@@ -290,7 +289,7 @@ export function validatePerformanceResult(result, thresholds, metric') {
     metric,
     result,
     threshold: thresholds[metric],
-    message: '',
+    message: ',
     severity: 'info'
   };
 
@@ -302,7 +301,7 @@ export function validatePerformanceResult(result, thresholds, metric') {
 
   switch (metric') {
     case 'frameRate':
-      validation.passed = result.fps >= thresholds.frameRate.min;
+      validation.passed = result.fps >= thresholds.frameRate.min,
       validation.message = validation.passed 
         ? `Frame rate ${result.fps.toFixed(2})} FPS meets minimum ${thresholds.frameRate.min} FPS`
         : `Frame rate ${result.fps.toFixed(2'})} FPS below minimum ${thresholds.frameRate.min} FPS`;
@@ -368,11 +367,10 @@ export function createPerformanceTestSuite(options = {}') {
     thresholds: finalThresholds,
     config: testConfig,
     components: components.map(component => ({
-      name: component;);
-     , thresholds: getPerformanceThresholds(environment, device, component);
-    }),
+      name: component),
+     , thresholds: getPerformanceThresholds(environment, device, component) }),
     metadata: {
-      created: new Date().toISOString('),
+      created: new Date().toISOString(',
       version: '1.0.0',
       generator: 'performance-thresholds.js'
     }

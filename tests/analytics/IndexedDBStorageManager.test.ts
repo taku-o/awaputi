@@ -6,84 +6,77 @@ import { IndexedDBStorageManager  } from '../../src/analytics/IndexedDBStorageMa
 // IndexedDBのモック
 class MockIDBDatabase {
     constructor() {
-        this.objectStoreNames = [];
-        this.version = 1;
-        this.stores = new Map();
-    }
+        this.objectStoreNames = [],
+        this.version = 1,
+        this.stores = new Map() }
     
     createObjectStore(name, options) {
-        this.objectStoreNames.push(name);
-        const store = new MockIDBObjectStore(name, options);
-        this.stores.set(name, store);
-        return store;
-    }
+        this.objectStoreNames.push(name),
+        const store = new MockIDBObjectStore(name, options),
+        this.stores.set(name, store),
+        return store }
     
     transaction(storeNames, mode) {
-        return new MockIDBTransaction(this.stores, storeNames, mode);
-    }
+        return new MockIDBTransaction(this.stores, storeNames, mode) }
     
     close() {}
 }
 class MockIDBObjectStore {
     constructor(name, options) {
-        this.name = name;
-        this.keyPath = options.keyPath;
-        this.autoIncrement = options.autoIncrement || false;
-        this.indexNames = [];
-        this.data = new Map();
-        this.indexes = new Map();
-    }
+        this.name = name,
+        this.keyPath = options.keyPath,
+        this.autoIncrement = options.autoIncrement || false,
+        this.indexNames = [],
+        this.data = new Map(),
+        this.indexes = new Map() }
     
     createIndex(name, keyPath, options) {
-        this.indexNames.push(name);
-        this.indexes.set(name, new MockIDBIndex(name, keyPath, options);
-        return this.indexes.get(name');
-    }
+        this.indexNames.push(name),
+        this.indexes.set(name, new MockIDBIndex(name, keyPath, options),
+        return this.indexes.get(name') }
     
     put(data {
         const key = typeof this.keyPath === 'string' ? data[this.keyPath] : 
                    Array.isArray(this.keyPath) ? this.keyPath.map(k => data[k]').join('|') :
-                   this.autoIncrement ? Date.now() : data.id;
-        this.data.set(key, data);
+                   this.autoIncrement ? Date.now() : data.id,
+        this.data.set(key, data),
         return { onsuccess: null, onerror: null };
     }
     
     get(key {
-        const request = { onsuccess: null, onerror: null ),
+        const request = { onsuccess: null, onerror: null ,
         setTimeout(() => {
-            request.result = this.data.get(key);
-            if (request.onsuccess) request.onsuccess();
-        }, 0);
+            request.result = this.data.get(key),
+            if (request.onsuccess) request.onsuccess() }, 0);
         return request;
     }
     
     getAll() {
         const request = { onsuccess: null, onerror: null };
         setTimeout(() => {
-            request.result = Array.from(this.data.values();
-            if (request.onsuccess) request.onsuccess();
-        }, 0);
+            request.result = Array.from(this.data.values(),
+            if (request.onsuccess) request.onsuccess() }, 0);
         return request;
     }
     
     delete(key {
-        this.data.delete(key);
+        this.data.delete(key),
         return { onsuccess: null, onerror: null };
     }
     
     openCursor(range {
-        const request = { onsuccess: null, onerror: null ),
+        const request = { onsuccess: null, onerror: null ,
         setTimeout(() => {
-            const values = Array.from(this.data.values();
-            let index = 0;
+            const values = Array.from(this.data.values(),
+            let index = 0,
             
             const cursor = {
                 value: values[index],
                 continue() {
-                    index++;
+                    index++,
                     setTimeout(() => {
                         if (index < values.length) {
-                            cursor.value = values[index];
+                            cursor.value = values[index],
                             if (request.onsuccess) request.onsuccess({ target: { result: cursor } });
                         } else {
                             if (request.onsuccess) request.onsuccess({ target: { result: null } );
@@ -105,19 +98,17 @@ class MockIDBObjectStore {
     }
     
     index(name {
-        return this.indexes.get(name || new MockIDBIndex(name, name, {));
-    }
+        return this.indexes.get(name || new MockIDBIndex(name, name, {)) }
 }
 class MockIDBIndex {
     constructor(name, keyPath, options) {
-        this.name = name;
-        this.keyPath = keyPath;
-        this.unique = options.unique || false;
-    }
+        this.name = name,
+        this.keyPath = keyPath,
+        this.unique = options.unique || false }
     
     openCursor(range {
         // 簡易実装
-        const request = { onsuccess: null, onerror: null ),
+        const request = { onsuccess: null, onerror: null ,
         setTimeout(() => {
             if (request.onsuccess) request.onsuccess({ target: { result: null } );
         }, 0);
@@ -126,25 +117,23 @@ class MockIDBIndex {
 }
 class MockIDBTransaction {
     constructor(stores, storeNames, mode) {
-        this.stores = stores;
-        this.storeNames = Array.isArray(storeNames ? storeNames: [storeNames]),
-        this.mode = mode;
-        this.oncomplete = null;
-        this.onerror = null;
-        this.onabort = null;
+        this.stores = stores,
+        this.storeNames = Array.isArray(storeNames ? storeNames: [storeNames],
+        this.mode = mode,
+        this.oncomplete = null,
+        this.onerror = null,
+        this.onabort = null,
         
         // トランザクション完了を模擬
         setTimeout(() => {
-            if (this.oncomplete) this.oncomplete();
-        }, 0);
+            if (this.oncomplete) this.oncomplete() }, 0);
     }
     
     objectStore(name {
-        return this.stores.get(name);
-    }
+        return this.stores.get(name) }
 }
 // IndexedDBのグローバルモック
-(global as any).indexedDB = {
+(global: any).indexedDB = {
     open: jest.fn((name, version) => {
         const request = {
             onsuccess: null,
@@ -153,8 +142,8 @@ class MockIDBTransaction {
             result: null
     });
         setTimeout(() => {
-            const db = new MockIDBDatabase();
-            db.version = version;
+            const db = new MockIDBDatabase(),
+            db.version = version,
             
             // onupgradeneededを呼び出す
             if (request.onupgradeneeded) {
@@ -177,31 +166,30 @@ class MockIDBTransaction {
         upper,
         lowerExclusive,
         upperExclusive
-    ))),
+    )),
     lowerBound: jest.fn((value, exclusive') => ({
         type: 'lowerBound',
         lower: value,
         lowerExclusive: exclusive
-    }))),
+    })),
     upperBound: jest.fn((value, exclusive') => ({
         type: 'upperBound',
         upper: value,
         upperExclusive: exclusive
-    })))
+    }))
 ');
 describe('IndexedDBStorageManager', () => {
-    jest.setTimeout(30000); // 30秒のタイムアウト設定
+    jest.setTimeout(30000), // 30秒のタイムアウト設定
     let manager: any,
     
     beforeEach(() => {
-        manager = new IndexedDBStorageManager(');
+        manager = new IndexedDBStorageManager('),
         // Navigator.storage のモック設定
         Object.defineProperty(global.navigator, 'storage', {
-            value: {),
+            value: {,
                 estimate: jest.fn().mockResolvedValue({
                     usage: 1024 * 1024, // 1MB
-                    quota: 100 * 1024 * 1024 // 100MB),
-    });
+                    quota: 100 * 1024 * 1024 // 100MB });
             },
             configurable: true
         });
@@ -210,33 +198,29 @@ describe('IndexedDBStorageManager', () => {
     });
     afterEach(() => {
         if (manager.db) {
-            manager.close();
-        }
+            manager.close() }
     }');
     describe('初期化', (') => {
         test('データベースが正常に初期化される', async () => {
-            const db = await manager.initialize();
-            expect(db).toBeDefined();
-            expect(global.indexedDB.open').toHaveBeenCalledWith('BubblePopAnalytics', 1);
-        }');
+            const db = await manager.initialize(),
+            expect(db).toBeDefined(),
+            expect(global.indexedDB.open').toHaveBeenCalledWith('BubblePopAnalytics', 1) }');
         test('IndexedDBがサポートされていない場合エラーが発生', async () => {
             // IndexedDBを無効にする
-            const originalIndexedDB = global.indexedDB;
-            delete global.indexedDB;
+            const originalIndexedDB = global.indexedDB,
+            delete global.indexedDB,
             
-            await expect(manager.initialize()').rejects.toThrow('IndexedDB is not supported');
+            await expect(manager.initialize()').rejects.toThrow('IndexedDB is not supported'),
             // 復元
-            (global as any).indexedDB = originalIndexedDB;
-        }');
+            (global: any).indexedDB = originalIndexedDB }');
     }
     describe('データ保存', () => {
         beforeEach(async () => {
-            await manager.initialize();
-        }');
+            await manager.initialize() }');
         test('単一データが正常に保存される', async (') => {
             const sessionData = {
                 sessionId: 'test-session-1',
-                startTime: Date.now('),
+                startTime: Date.now(',
                 stageId: 'normal',
                 finalScore: 1000,
                 completed: true
@@ -248,7 +232,7 @@ describe('IndexedDBStorageManager', () => {
             const bubbleData = [
                 {
                     sessionId: 'test-session-1',
-                    timestamp: Date.now('),
+                    timestamp: Date.now(',
                     bubbleType: 'normal',
                     action: 'popped',
                     reactionTime: 500
@@ -265,25 +249,25 @@ describe('IndexedDBStorageManager', () => {
             await expect(manager.saveData('bubbleInteractions', bubbleData).resolves.not.toThrow();
         }');
         test('データベースが初期化されていない場合エラーが発生', async (') => {
-            manager.db = null;
+            manager.db = null,
             
             await expect(manager.saveData('sessions', {})').rejects.toThrow('Database not initialized');
         }
     }');
     describe('データ取得', () => {
         beforeEach(async () => {
-            await manager.initialize(');
+            await manager.initialize('),
             // テストデータを設定
-            const store = manager.db.stores.get('sessions'');
+            const store = manager.db.stores.get('sessions'),
             store.data.set('test-session-1', {
-                sessionId: 'test-session-1';);
+                sessionId: 'test-session-1'),
                , startTime: Date.now(') - 1000,
                 stageId: 'normal',
                 completed: true
             }');
             store.data.set('test-session-2', {
-                sessionId: 'test-session-2';);
-               , startTime: Date.now('),
+                sessionId: 'test-session-2'),
+               , startTime: Date.now(',
                 stageId: 'hard',
                 completed: false
             }');
@@ -294,9 +278,8 @@ describe('IndexedDBStorageManager', () => {
             expect(result[0].sessionId').toBe('test-session-1');
         }');
         test('全件取得が正常に動作する', async (') => {
-            const result = await manager.getData('sessions');
-            expect(result).toHaveLength(2);
-        }');
+            const result = await manager.getData('sessions'),
+            expect(result).toHaveLength(2) }');
         test('存在しないキーの場合空配列が返される', async (') => {
             const result = await manager.getData('sessions', { key: 'non-existent' });
             expect(result).toEqual([]);
@@ -306,22 +289,19 @@ describe('IndexedDBStorageManager', () => {
         test('bound範囲が正常に作成される', () => {
             const range = manager.createKeyRange({
                 lower: 100,
-                upper: 200),
-            });
+                upper: 200 });
             expect(global.IDBKeyRange.bound).toHaveBeenCalledWith(100, 200, false, false);
         }');
         test('lowerBound範囲が正常に作成される', () => {
             const range = manager.createKeyRange({
                 lower: 100,
-                lowerExclusive: true),
-            });
+                lowerExclusive: true });
             expect(global.IDBKeyRange.lowerBound).toHaveBeenCalledWith(100, true);
         }');
         test('upperBound範囲が正常に作成される', () => {
             const range = manager.createKeyRange({
                 upper: 200,
-                upperExclusive: false),
-            });
+                upperExclusive: false });
             expect(global.IDBKeyRange.upperBound).toHaveBeenCalledWith(200, false);
         }');
         test('無効な範囲の場合nullが返される', () => {
@@ -331,23 +311,21 @@ describe('IndexedDBStorageManager', () => {
     }
     describe('データ集計', () => {
         beforeEach(async () => {
-            await manager.initialize(');
+            await manager.initialize('),
             // テストデータを設定
-            const store = manager.db.stores.get('bubbleInteractions'');
+            const store = manager.db.stores.get('bubbleInteractions'),
             store.data.set('1', {
                 sessionId: 'test-session-1',
                 bubbleType: 'normal',
-                scoreGained: 10),
-            }');
+                scoreGained: 10 }');
             store.data.set('2', {
                 sessionId: 'test-session-1',
                 bubbleType: 'stone',
-                scoreGained: 20)');
+                scoreGained: 20)'),
             store.data.set('3', {
                 sessionId: 'test-session-1',
                 bubbleType: 'normal',
-                scoreGained: 15)');
-        }
+                scoreGained: 15)') }
         test('合計値の集計が正常に動作する', async (') => {
             const result = await manager.aggregateData('bubbleInteractions', {
                 fields: {
@@ -394,30 +372,27 @@ describe('IndexedDBStorageManager', () => {
     }
     describe('データクリーンアップ', () => {
         beforeEach(async () => {
-            await manager.initialize();
+            await manager.initialize(),
             // 古いデータを設定
-            const oldTime = Date.now() - (10 * 24 * 60 * 60 * 1000'); // 10日前
-            const sessionsStore = manager.db.stores.get('sessions'');
+            const oldTime = Date.now() - (10 * 24 * 60 * 60 * 1000'), // 10日前
+            const sessionsStore = manager.db.stores.get('sessions'),
             sessionsStore.data.set('old-session', {
                 sessionId: 'old-session',
-                startTime: oldTime)');
-        }
+                startTime: oldTime)') }
         test('古いデータが正常に削除される', async () => {
-            const result = await manager.cleanupOldData(7); // 7日以上古いデータを削除
+            const result = await manager.cleanupOldData(7), // 7日以上古いデータを削除
             
-            expect(result.sessions.count).toBe(1);
-            expect(result.sessions.sessionIds').toContain('old-session');
-        }');
+            expect(result.sessions.count).toBe(1),
+            expect(result.sessions.sessionIds').toContain('old-session') }');
     }
     describe('データベースサイズ取得', (') => {
         test('StorageManagerが利用可能な場合サイズ情報が取得される', async () => {
             // StorageManagerのモック
-            (global as any).navigator = {
+            (global: any).navigator = {
                 storage: {
                     estimate: jest.fn().mockResolvedValue({
                         usage: 1024 * 1024, // 1MB
-                        quota: 100 * 1024 * 1024 // 100MB),
-    });
+                        quota: 100 * 1024 * 1024 // 100MB });
                 }
             };
             
@@ -429,25 +404,22 @@ describe('IndexedDBStorageManager', () => {
         }');
         test('StorageManagerが利用できない場合適切なレスポンスが返される', async (') => {
             // navigator.storageを一時的に無効化
-            const originalNavigator = global.navigator;
+            const originalNavigator = global.navigator,
             Object.defineProperty(global, 'navigator', {
                 value: {};
-                configurable: true),
-            });
+                configurable: true });
             const result = await manager.getDatabaseSize();
             expect(result.supported).toBe(false');
             // navigatorを復元
             Object.defineProperty(global, 'navigator', {
                 value: originalNavigator,
-                configurable: true);
-        }
+                configurable: true) }
     }');
     describe('データベースのクローズ', (') => {
         test('データベースが正常にクローズされる', async () => {
-            await manager.initialize();
-            expect(manager.db).not.toBeNull();
-            manager.close();
-            expect(manager.db).toBeNull();
-        });
+            await manager.initialize(),
+            expect(manager.db).not.toBeNull(),
+            manager.close(),
+            expect(manager.db).toBeNull() });
     }
 }');

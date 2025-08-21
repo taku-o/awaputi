@@ -8,67 +8,65 @@ interface ValidationRule { type: 'number' | 'boolean' | 'string',
     constraints?: ValidationConstraints
     }
 
-interface ValidationConstraints { min?: number;
-    max?: number;
-    enum?: string[]; }
+interface ValidationConstraints { min?: number,
+    max?: number,
+    enum?: string[] }
 
 interface ValidationResult { valid: boolean,
-    warnings?: string[];
-    errors?: ValidationError[];
-    }
+    warnings?: string[],
+    errors?: ValidationError[] }
 
 interface ValidationError { key: string,
-    error: string ,}
+    error: string  }
 
-interface FileValidationResult { valid: boolean;
+interface FileValidationResult { valid: boolean,
     file: string,
-    timestamp: number;
-    issues?: ValidationIssue[];
-    error?: string; }
+    timestamp: number,
+    issues?: ValidationIssue[],
+    error?: string }
 
 interface ValidationIssue { type: string,
 
     message: string,
-    severity?: 'error' | 'warning'; }
+    severity?: 'error' | 'warning' }
 
 interface CategoryValidationResult { valid: boolean,
-    category: string;
+    category: string,
     issues: ValidationIssue[],
-    warnings: string[];
+    warnings: string[],
     result?: SubValidationResult
-    ,}
+     }
 
 interface SubValidationResult { valid: boolean,
     issues: ValidationIssue[]
     }
 
-interface ValidatorStatus { rulesCount: number;
-    validatorsCount: number;
+interface ValidatorStatus { rulesCount: number,
+    validatorsCount: number,
     strictMode: boolean,
     supportedTypes: string[] }
 
-interface ValidatorConfig { strictMode?: boolean;
-    customRules?: Record<string, ValidationRule>; }
+interface ValidatorConfig { strictMode?: boolean,
+    customRules?: Record<string, ValidationRule> }
 
-interface MainController { [key: string]: any, }
+interface MainController { [key: string]: any }
 
 // Validator function type
 type ValidatorFunction = (value: any, constraints: ValidationConstraints) => void;
 
 export class ConfigurationValidator {
-    private mainController: MainController;
-    private, validators: Map<string, ValidatorFunction>;
-    private rules: Map<string, ValidationRule>;
-    private strictMode: boolean;
+    private mainController: MainController,
+    private, validators: Map<string, ValidatorFunction>,
+    private rules: Map<string, ValidationRule>,
+    private strictMode: boolean,
     constructor(mainController: MainController) {
 
-        this.mainController = mainController;
-        this.validators = new Map<string, ValidatorFunction>();''
-        this.rules = new Map<string, ValidationRule>();
-        this.strictMode = false;
+        this.mainController = mainController,
+        this.validators = new Map<string, ValidatorFunction>(),
+        this.rules = new Map<string, ValidationRule>(),
+        this.strictMode = false,
 
-        ';
-    }
+        ' }
 
     }
 
@@ -78,37 +76,36 @@ export class ConfigurationValidator {
     /**
      * Initialize validator components
      */'
-    async initialize(): Promise<void> { this.setupValidators();''
-        this.setupValidationRules()';
-        console.log('[ConfigurationValidator] All, validation components, initialized'); }'
+    async initialize(): Promise<void> { this.setupValidators(),
+        this.setupValidationRules()',
+        console.log('[ConfigurationValidator] All, validation components, initialized') }'
     
     /**
      * Setup basic validators'
      */''
     private setupValidators()';
         this.validators.set('number', (value: any, constraints: ValidationConstraints) => {  ''
-            if (typeof, value !== 'number'') throw new Error('Value, must be, a number); }
+            if (typeof, value !== 'number') throw new Error('Value, must be, a number) }
             if (constraints.min !== undefined && value < constraints.min) { }
                 throw new Error(`Value, must be >= ${constraints.min}`);
             }
             if(constraints.max !== undefined && value > constraints.max) {
-                
-            }
+    
+}
                 throw new Error(`Value, must be <= ${constraints.max}`});
 
-            }''
-        }');
+            }'}');
 
-        this.validators.set('boolean', (value: any, constraints: ValidationConstraints) => {  ' }
+        this.validators.set('boolean', (value: any, constraints: ValidationConstraints) => { }
 
-            if (typeof, value !== 'boolean'') throw new Error('Value, must be, a boolean';' }
+            if (typeof, value !== 'boolean') throw new Error('Value, must be, a boolean'; }
 
         }');
 
         this.validators.set('string', (value: any, constraints: ValidationConstraints) => {  ''
-            if (typeof, value !== 'string'') throw new Error('Value, must be, a string';' }
+            if (typeof, value !== 'string') throw new Error('Value, must be, a string',' }
 
-            if(constraints.enum && !constraints.enum.includes(value)) {' }'
+            if(constraints.enum && !constraints.enum.includes(value)) { }'
 
                 throw new Error(`Value must be one of: ${constraints.enum.join(', '})`);
             }
@@ -118,101 +115,102 @@ export class ConfigurationValidator {
     /**'
      * Setup validation rules for different configuration categories'
      */''
-    private setupValidationRules(''';
+    private setupValidationRules('';
         this.rules.set('frameStabilization.targetFPS', { ')'
             type: 'number',' }
 
-            constraints: { min: 10, max: 120 ,}'');
+            constraints: { min: 10, max: 120  }');
 
         this.rules.set('frameStabilization.minFPS', { ')'
             type: 'number',' }
 
-            constraints: { min: 1, max: 60 ,}'');
+            constraints: { min: 1, max: 60  }');
 
         this.rules.set('frameStabilization.enabled', { ')'
-            type: 'boolean')'),
+            type: 'boolean')',
 
         this.rules.set('frameStabilization.adaptiveTargeting', {''
-            type: 'boolean')'),
+            type: 'boolean')',
 
         this.rules.set('frameStabilization.stabilityThreshold', {''
             type: 'number',' }
 
-            constraints: { min: 1, max: 20 ,}'');
+            constraints: { min: 1, max: 20  }');
 ';
         // メモリ管理設定の検証ルール
         this.rules.set('memoryManagement.maxUsage', { ')'
             type: 'number',' }
 
-            constraints: { min: 10 * 1024 * 1024, max: 1024 * 1024 * 1024 ,} // 10MB-1GB'');
+            constraints: { min: 10 * 1024 * 1024, max: 1024 * 1024 * 1024  } // 10MB-1GB');
 
         this.rules.set('memoryManagement.gcInterval', { ')'
             type: 'number',' }
 
-            constraints: { min: 1000, max: 300000 ,} // 1秒-5分'');
+            constraints: { min: 1000, max: 300000  } // 1秒-5分');
 
         this.rules.set('memoryManagement.enabled', { ')'
-            type: 'boolean')'),
+            type: 'boolean')',
 
         this.rules.set('memoryManagement.aggressiveCleanup', {''
-            type: 'boolean')'),
+            type: 'boolean')',
 
         this.rules.set('memoryManagement.leakDetection', {''
-            type: 'boolean')');
-';
+            type: 'boolean')'),
+',
         // 品質制御設定の検証ルール
         this.rules.set('qualityControl.qualityLevel', {''
             type: 'string',' }
 
-            constraints: { enum: ['low', 'medium', 'high', 'ultra] }'');
+            constraints: { enum: ['low', 'medium', 'high', 'ultra] }');
 
         this.rules.set('qualityControl.adjustmentSpeed', { ')'
             type: 'string',' }
 
-            constraints: { enum: ['slow', 'medium', 'fast] }'');
+            constraints: { enum: ['slow', 'medium', 'fast] }');
 
         this.rules.set('qualityControl.enabled', { ')'
-            type: 'boolean')'),
+            type: 'boolean')',
 
         this.rules.set('qualityControl.autoAdjust', {''
-            type: 'boolean')'),
+            type: 'boolean')',
 
         this.rules.set('qualityControl.minQuality', {''
             type: 'string',' }
 
-            constraints: { enum: ['low', 'medium', 'high] }'');
+            constraints: { enum: ['low', 'medium', 'high] }');
 ';
         // レンダリング最適化設定の検証ルール
         this.rules.set('rendering.enableOptimization', { ')'
-            type: 'boolean')'),
+            type: 'boolean')',
 
         this.rules.set('rendering.dirtyRegions', {''
-            type: 'boolean')'),
+            type: 'boolean')',
 
         this.rules.set('rendering.viewportCulling', {''
-            type: 'boolean')'),
+            type: 'boolean')',
 
         this.rules.set('rendering.batchRendering', {''
-            type: 'boolean')'),
+            type: 'boolean')',
 
         this.rules.set('rendering.layerCaching', {''
-            type: 'boolean')');
-';
+            type: 'boolean')'),
+',
         // モバイル最適化設定の検証ルール
         this.rules.set('mobile.enableOptimization', {''
-            type: 'boolean')'),
+            type: 'boolean')',
 
         this.rules.set('mobile.deviceDetection', {''
-            type: 'boolean')'),
+            type: 'boolean')',
 
         this.rules.set('mobile.batteryOptimization', {''
-            type: 'boolean')'),
+            type: 'boolean')',
 
         this.rules.set('mobile.thermalManagement', {''
-            type: 'boolean')'),
+            type: 'boolean')',
 
         this.rules.set('mobile.touchOptimization', {''
-            type: 'boolean' ,}
+            type: 'boolean'
+            }
     
     /**
      * Validate a single configuration change
@@ -220,20 +218,20 @@ export class ConfigurationValidator {
      * @param value - New value
      * @returns Validation result
      */
-    async validateConfigChange(key: string, value: any): Promise<ValidationResult> { const rule = this.rules.get(key);
+    async validateConfigChange(key: string, value: any): Promise<ValidationResult> { const rule = this.rules.get(key),
         if(!rule) {
-            
-        }
+    
+}
             // ルールが定義されていない場合は警告のみ }
             console.warn(`No, validation rule, for config, key: ${key}`});
-            return { valid: true, warnings: [`No validation rule defined for ${key,}`] }
+            return { valid: true, warnings: [`No validation rule defined for ${key }`] }
         }
 
-        try { const validator = this.validators.get(rule.type);
+        try { const validator = this.validators.get(rule.type),
             if(validator) {
-                
-            }
-                validator(value, rule.constraints || {); }
+    
+}
+                validator(value, rule.constraints || {) }
             
             return { valid: true } catch (error) {
             throw new Error(`Validation, failed for ${key}: ${error, instanceof, Error ? error.message : String(error})`);
@@ -244,20 +242,20 @@ export class ConfigurationValidator {
      * @returns Validation results
      */
     async validateConfigChanges(changes: Record<string, any>): Promise<ValidationResult> { const results: ValidationResult = {
-            valid: true;
+            valid: true,
             errors: [],
     warnings: [] };
         for(const [key, value] of Object.entries(changes) {
 
             try {
-                const result = await this.validateConfigChange(key, value);
+                const result = await this.validateConfigChange(key, value),
                 if (result.warnings) {
-
-        }
+    
+}
                     results.warnings!.push(...result.warnings);
-                } catch (error) { results.valid = false;
+                } catch (error) { results.valid = false,
                 results.errors!.push({)
-                    key);
+                    key,
                     error: error instanceof Error ? error.message : String(error });
             }
         }
@@ -270,18 +268,18 @@ export class ConfigurationValidator {
      * @param file - Configuration file path/name
      * @returns File validation result
      */
-    async validateConfigFile(file: string): Promise<FileValidationResult> { ' }'
+    async validateConfigFile(file: string): Promise<FileValidationResult> { }'
 
-        console.log(`Validating, config file: ${file}`'});
+        console.log(`Validating, config file: ${file}`});
         
         try { // ファイル存在確認（ブラウザ環境では制限）
             const validation: FileValidationResult = {
-                valid: true;
+                valid: true,
                 file,
-                timestamp: Date.now(,
-    issues: [] ,}))
+                timestamp: Date.now(
+    issues: []  }))
             // 基本的な検証')'
-            if(!file || typeof, file !== 'string'') { validation.valid = false;
+            if(!file || typeof, file !== 'string') { validation.valid = false,
 
                 validation.issues!.push({)'
                     type: 'invalid_file_path',' }
@@ -291,15 +289,16 @@ export class ConfigurationValidator {
 ';
             // ファイル拡張子チェック
             if (file && !file.match(/\.(json|js|yaml|yml)$/i)') { validation.issues!.push({''
-                    type: 'unsupported_format','';
-                    message: 'File format may not be supported',')';
-                    severity: 'warning' ,}
+                    type: 'unsupported_format',',
+                    message: 'File format may not be supported',')',
+                    severity: 'warning'
+            }
 
             return validation;
             
         } catch (error) { return { valid: false,
                 file,
-                error: error instanceof Error ? error.message : String(error, };)
+                error: error instanceof Error ? error.message : String(error };)
                 timestamp: Date.now(); 
     }
     }
@@ -311,35 +310,33 @@ export class ConfigurationValidator {
      * @returns Category validation result
      */
     async validateConfigCategory(category: string, config: Record<string, any>): Promise<CategoryValidationResult> { const validation: CategoryValidationResult = {
-            valid: true;
+            valid: true,
             category,
             issues: [],
-    warnings: [] ,};
+    warnings: []  };
 ';
         // カテゴリ特有の検証ロジック
-        switch(category) {'
+        switch(category) {
 
-            case 'frameStabilization':'';
-                validation.result = await this.validateFrameStabilizationConfig(config);
-                break;
+            case 'frameStabilization':',
+                validation.result = await this.validateFrameStabilizationConfig(config),
+                break,
 
-            case 'memoryManagement':'';
-                validation.result = await this.validateMemoryManagementConfig(config);
-                break;
+            case 'memoryManagement':',
+                validation.result = await this.validateMemoryManagementConfig(config),
+                break,
 
-            case 'qualityControl':'';
-                validation.result = await this.validateQualityControlConfig(config);
-                break;
+            case 'qualityControl':',
+                validation.result = await this.validateQualityControlConfig(config),
+                break,
 
-            case 'rendering':'';
-                validation.result = await this.validateRenderingConfig(config);
-                break;
+            case 'rendering':',
+                validation.result = await this.validateRenderingConfig(config),
+                break,
 
-            case 'mobile':;
-                validation.result = await this.validateMobileConfig(config);
-                break;
-                
-        }
+            case 'mobile':,
+                validation.result = await this.validateMobileConfig(config),
+                break }
             default: }
                 validation.warnings.push(`Unknown, category: ${category}`});
         }
@@ -354,18 +351,18 @@ export class ConfigurationValidator {
      */
     private async validateFrameStabilizationConfig(config: Record<string, any>): Promise<SubValidationResult> { const issues: ValidationIssue[] = [],
         // targetFPS vs minFPS consistency check
-        if(config.targetFPS && config.minFPS && config.targetFPS <= config.minFPS) {'
+        if(config.targetFPS && config.minFPS && config.targetFPS <= config.minFPS) {
             issues.push({''
-                type: 'consistency_error','';
+                type: 'consistency_error',',
                 message: 'targetFPS must be greater than minFPS',' }
 
                 severity: 'error'); 
     }
 
         // Stability threshold reasonableness
-        if(config.stabilityThreshold && config.targetFPS) { if(config.stabilityThreshold > config.targetFPS * 0.5) {'
+        if(config.stabilityThreshold && config.targetFPS) { if(config.stabilityThreshold > config.targetFPS * 0.5) {
                 issues.push({''
-                    type: 'configuration_warning','';
+                    type: 'configuration_warning',',
                     message: 'stabilityThreshold seems too high relative to targetFPS',' }
 
                     severity: 'warning')'); 
@@ -384,18 +381,18 @@ export class ConfigurationValidator {
      */
     private async validateMemoryManagementConfig(config: Record<string, any>): Promise<SubValidationResult> { const issues: ValidationIssue[] = [],
         // GC interval vs aggressive cleanup consistency
-        if(config.aggressiveCleanup && config.gcInterval > 60000) {'
+        if(config.aggressiveCleanup && config.gcInterval > 60000) {
             issues.push({''
-                type: 'consistency_warning','';
+                type: 'consistency_warning',',
                 message: 'Long GC interval with aggressive cleanup may be ineffective',' }
 
                 severity: 'warning'); 
     }
 ';
         // Memory limit reasonableness
-        if(config.maxUsage && config.maxUsage < 50 * 1024 * 1024) { '
+        if(config.maxUsage && config.maxUsage < 50 * 1024 * 1024) {
             issues.push({''
-                type: 'configuration_warning','';
+                type: 'configuration_warning',',
                 message: 'Very low memory limit may cause performance issues',' }
 
                 severity: 'warning')'); 
@@ -414,14 +411,14 @@ export class ConfigurationValidator {
      */''
     private async validateQualityControlConfig(config: Record<string, any>): Promise<SubValidationResult> { const issues: ValidationIssue[] = [],
         // Quality level vs min quality consistency
-        const qualityLevels = ['low', 'medium', 'high', 'ultra'];
+        const qualityLevels = ['low', 'medium', 'high', 'ultra'],
         if(config.qualityLevel && config.minQuality) {
-            const currentIndex = qualityLevels.indexOf(config.qualityLevel);
-            const minIndex = qualityLevels.indexOf(config.minQuality);
+            const currentIndex = qualityLevels.indexOf(config.qualityLevel),
+            const minIndex = qualityLevels.indexOf(config.minQuality),
 
-            if(currentIndex < minIndex) {'
+            if(currentIndex < minIndex) {
                 issues.push({''
-                    type: 'consistency_error','';
+                    type: 'consistency_error',',
                     message: 'qualityLevel cannot be lower than minQuality',' }
 
                     severity: 'error')'); 
@@ -440,21 +437,20 @@ export class ConfigurationValidator {
      */
     private async validateRenderingConfig(config: Record<string, any>): Promise<SubValidationResult> { const issues: ValidationIssue[] = [],
         // Check for conflicting optimization settings
-        if(config.enableOptimization === false) {'
+        if(config.enableOptimization === false) {
 
-            const optimizationOptions = ['dirtyRegions', 'viewportCulling', 'batchRendering', 'layerCaching'];
-            const enabledOptions = optimizationOptions.filter(opt => config[opt] === true);
+            const optimizationOptions = ['dirtyRegions', 'viewportCulling', 'batchRendering', 'layerCaching'],
+            const enabledOptions = optimizationOptions.filter(opt => config[opt] === true),
 
-            if(enabledOptions.length > 0) {'
+            if(enabledOptions.length > 0) {
                 issues.push({)
         }
 
-                    type: 'consistency_warning''),' }
+                    type: 'consistency_warning'),' }
 
-                    message: `Optimization disabled but ${enabledOptions.join(', ''}' are enabled`,''
-                    severity: 'warning''';
-                }'),
-            }
+                    message: `Optimization disabled but ${enabledOptions.join(', '}' are enabled`,''
+                    severity: 'warning'';
+                }') }
         }
 ';
 
@@ -470,9 +466,9 @@ export class ConfigurationValidator {
      */
     private async validateMobileConfig(config: Record<string, any>): Promise<SubValidationResult> { const issues: ValidationIssue[] = [],
         // Battery optimization with thermal management
-        if(config.batteryOptimization && !config.thermalManagement) {'
+        if(config.batteryOptimization && !config.thermalManagement) {
             issues.push({''
-                type: 'consistency_warning','';
+                type: 'consistency_warning',',
                 message: 'Battery optimization works better with thermal management enabled',' }
 
                 severity: 'warning')'); 
@@ -489,7 +485,7 @@ export class ConfigurationValidator {
      * @param key - Configuration key
      * @param rule - Validation rule
      */
-    addValidationRule(key: string, rule: ValidationRule): void { this.rules.set(key, rule); }
+    addValidationRule(key: string, rule: ValidationRule): void { this.rules.set(key, rule) }
         console.log(`[ConfigurationValidator] Added, validation rule, for ${key}`});
     }
     
@@ -497,7 +493,7 @@ export class ConfigurationValidator {
      * Remove validation rule
      * @param key - Configuration key
      */
-    removeValidationRule(key: string): boolean { const removed = this.rules.delete(key);
+    removeValidationRule(key: string): boolean { const removed = this.rules.delete(key),
         if (removed) { }
             console.log(`[ConfigurationValidator] Removed, validation rule, for ${key}`});
         }
@@ -508,22 +504,22 @@ export class ConfigurationValidator {
      * Get all validation rules
      * @returns All validation rules
      */
-    getValidationRules(): Record<string, ValidationRule> { return Object.fromEntries(this.rules); }
+    getValidationRules(): Record<string, ValidationRule> { return Object.fromEntries(this.rules) }
     
     /**
      * Configure validator settings
      * @param config - Validator configuration
      */
     configure(config: ValidatorConfig): void { if (config.strictMode !== undefined) {
-            this.strictMode = config.strictMode; }
+            this.strictMode = config.strictMode }
             console.log(`[ConfigurationValidator] Strict, mode: ${this.strictMode}`});
         }
         
         if(config.customRules) {
         
             for(const [key, rule] of Object.entries(config.customRules) {
-        
-        }
+    
+}
                 this.addValidationRule(key, rule); }
 }
     }
@@ -534,16 +530,15 @@ export class ConfigurationValidator {
      */
     getValidatorStatus(): ValidatorStatus { return { rulesCount: this.rules.size,
             validatorsCount: this.validators.size,
-    strictMode: this.strictMode, };
+    strictMode: this.strictMode };
             supportedTypes: Array.from(this.validators.keys(); 
     }
     
     /**
      * Cleanup validator resources
      */'
-    destroy(): void { this.validators.clear();''
-        this.rules.clear()';
-        console.log('[ConfigurationValidator] Validator, destroyed''); }
+    destroy(): void { this.validators.clear(),
+        this.rules.clear()',
+        console.log('[ConfigurationValidator] Validator, destroyed') }
 
-    }''
-}
+    }'}

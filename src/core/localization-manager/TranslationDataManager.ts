@@ -5,54 +5,53 @@
  */
 
 // 型定義
-export interface TranslationValue { [key: string]: string | string[] | TranslationValue, }
+export interface TranslationValue { [key: string]: string | string[] | TranslationValue }
 
-export interface TranslationData { [key: string]: string | string[], }
+export interface TranslationData { [key: string]: string | string[] }
 
-export interface AccessibilityTranslationData { [key: string]: string, }
+export interface AccessibilityTranslationData { [key: string]: string }
 
 export interface TranslationCategoryStats { keyCount: number,
-    arrayCount: number ,}
+    arrayCount: number  }
 
 export interface AccessibilityCategoryStats {
-    keyCount: number;
-}
+    keyCount: number }
 
-export interface TranslationStats { loadedLanguages: string[];
+export interface TranslationStats { loadedLanguages: string[],
     languageCount: number,
     translations: Record<string, TranslationCategoryStats>,
-    accessibilityTranslations: Record<string, AccessibilityCategoryStats>, }
+    accessibilityTranslations: Record<string, AccessibilityCategoryStats> }
 
-export interface TranslationSearchOptions { caseSensitive?: boolean;
-    exactMatch?: boolean;
-    includeAccessibility?: boolean; }
+export interface TranslationSearchOptions { caseSensitive?: boolean,
+    exactMatch?: boolean,
+    includeAccessibility?: boolean }
 
 export interface TranslationSearchResult { language: string,
-    key: string;
+    key: string,
     value: string | string[],
     category: TranslationCategory
-    ,}
+     }
 
-export interface TranslationValidationResult { isValid: boolean;
-    missingKeys: string[];
+export interface TranslationValidationResult { isValid: boolean,
+    missingKeys: string[],
     extraKeys: string[],
     invalidValues: string[] }
 
-export interface TranslationExportOptions { includeAccessibility?: boolean;
-    format?: TranslationExportFormat;
-    languages?: string[]; }
+export interface TranslationExportOptions { includeAccessibility?: boolean,
+    format?: TranslationExportFormat,
+    languages?: string[] }
 
 export interface TranslationImportResult { success: boolean,
     importedLanguages: string[],
-    errors: string[] ,}
+    errors: string[]  }
 
-export interface BulkTranslationOperation { language: string;
-    key: string;
+export interface BulkTranslationOperation { language: string,
+    key: string,
     value: string | string[],
     operation: TranslationOperation
     }
 
-export interface TranslationMergeResult { mergedKeys: number;
+export interface TranslationMergeResult { mergedKeys: number,
     conflictKeys: string[],
     newKeys: number }
 
@@ -68,20 +67,18 @@ export type SupportedLanguage = typeof | SUPPORTED_LANGUAGES[number];
 export const DEFAULT_FALLBACK_LANGUAGE: SupportedLanguage = 'en',
 
 export class TranslationDataManager {
-    private translations: Map<string, TranslationData>;
-    private loadedLanguages: Set<string>;
-    private accessibilityTranslations: Map<string, AccessibilityTranslationData>;
+    private translations: Map<string, TranslationData>,
+    private loadedLanguages: Set<string>,
+    private accessibilityTranslations: Map<string, AccessibilityTranslationData>,
 
     constructor() {
 
-        this.translations = new Map();
-        this.loadedLanguages = new Set();
-        this.accessibilityTranslations = new Map();
+        this.translations = new Map(),
+        this.loadedLanguages = new Set(),
+        this.accessibilityTranslations = new Map(),
         
         // 翻訳データを初期化
-        this.initializeTranslations();
-
-    }
+        this.initializeTranslations() }
         this.initializeAccessibilityTranslations(); }
     }
     
@@ -160,36 +157,36 @@ export class TranslationDataManager {
             'dataClear.title': 'データクリア確認',
             'dataClear.warning': 'すべてのデータが削除されます。',
             'dataClear.irreversible': 'この操作は取り消せません。',
-            'dataClear.items': ['';
+            'dataClear.items': [',
                 'ユーザー名',
                 '所持AP・TAP',
                 'ハイスコア記録',
-                '開放済みステージ',]';
-                '所持アイテム']';
+                '開放済みステージ',]',
+                '所持アイテム']',
             ],
-            'dataClear.execute': '削除実行','';
-            'dataClear.cancel': 'キャンセル')';
+            'dataClear.execute': '削除実行',',
+            'dataClear.cancel': 'キャンセル')',
             // 操作説明
             'help.title': '操作説明',
             'help.basicControls': '基本操作',
             'help.gameTips': 'ゲームのコツ',
             'help.bubbleTypes': '泡の種類',
-            'help.controls': ['';
+            'help.controls': [',
                 'クリック/タップ: 泡を割る',
                 'ドラッグ: 泡を吹き飛ばす',
                 '↑↓キー: メニュー選択',
                 'Enter: 決定',
-                'ESC: 戻る/終了',]';
-                'S: ショップ（ステージ選択時）']';
+                'ESC: 戻る/終了',]',
+                'S: ショップ（ステージ選択時）']',
             ],
-            'help.tips': ['';
+            'help.tips': [',
                 '泡は時間が経つと危険になる',
                 '連続で割るとコンボボーナス',
                 'ピンクの泡でHP回復',
                 '毒の泡は避けよう',
-                '硬い泡は複数回クリック',]';
-                '特殊泡は画面外に逃がせる'')]';
-            ]')'';
+                '硬い泡は複数回クリック',]',
+                '特殊泡は画面外に逃がせる')]',
+            ]')',
             'help.bubbles': '普通(青) 石(灰) 鉄(茶) ダイヤ(白) ピンク(回復) 毒(緑) とげとげ(連鎖) 虹色(ボーナス) 時計(時停) S字(得点) ビリビリ(妨害) 逃げる(移動')',
             // ヘルプカテゴリ（新しく追加）
             'help.categories.gameplay': 'ゲームの基本',
@@ -230,8 +227,7 @@ export class TranslationDataManager {
             'confirm.yes': 'はい',
             'confirm.no': 'いいえ',
             'confirm.ok': 'OK',
-            'confirm.cancel': 'キャンセル'' 
-    }');
+            'confirm.cancel': 'キャンセル'}');
         ';
         // 英語翻訳
         this.translations.set('en', { // Menu
@@ -292,11 +288,11 @@ export class TranslationDataManager {
             'userInfo.tap': 'Total TAP',
             'userInfo.unlockedStages': 'Unlocked Stages',
             'userInfo.ownedItems': 'Owned Items',
-            'userInfo.highScores': 'High Scores','';
-            'userInfo.noRecords': 'No records yet')';
+            'userInfo.highScores': 'High Scores',',
+            'userInfo.noRecords': 'No records yet')',
             // Username
-            'username.register': 'Register Username',')';
-            'username.change': 'Change Username'')'';
+            'username.register': 'Register Username',')',
+            'username.change': 'Change Username')',
             'username.prompt': 'Enter username(max, 10 characters)',
             'username.inputHelp': 'Type and press Enter to confirm, ESC to cancel',
             'username.ok': 'OK',
@@ -305,12 +301,12 @@ export class TranslationDataManager {
             'dataClear.title': 'Data Clear Confirmation',
             'dataClear.warning': 'All data will be deleted.',
             'dataClear.irreversible': 'This action cannot be undone.',
-            'dataClear.items': ['';
+            'dataClear.items': [',
                 'Username',
                 'AP & TAP',
                 'High Score Records',
-                'Unlocked Stages',]';
-                'Owned Items']';
+                'Unlocked Stages',]',
+                'Owned Items']',
             ],
             'dataClear.execute': 'Execute Delete',
             'dataClear.cancel': 'Cancel',
@@ -319,25 +315,25 @@ export class TranslationDataManager {
             'help.basicControls': 'Basic Controls',
             'help.gameTips': 'Game Tips',
             'help.bubbleTypes': 'Bubble Types',
-            'help.controls': ['';
+            'help.controls': [',
                 'Click/Tap: Pop bubbles',
                 'Drag: Blow away bubbles',
                 '↑↓ Keys: Select menu',
                 'Enter: Confirm',
-                'ESC: Back/Exit',]';
-                'S: Shop(in, stage select)']';
+                'ESC: Back/Exit',]',
+                'S: Shop(in, stage select)']',
             ],
-            'help.tips': ['';
+            'help.tips': [',
                 'Bubbles become dangerous over time',
                 'Pop consecutively for combo bonus',
                 'Pink bubbles restore HP',
                 'Avoid poison bubbles',
-                'Hard bubbles need multiple clicks',]';
-                'Push special bubbles off screen']';
+                'Hard bubbles need multiple clicks',]',
+                'Push special bubbles off screen']',
             ],
             'help.bubbles': 'Normal(Blue) Stone(Gray) Iron(Brown) Diamond(White) Pink(Heal) Poison(Green) Spiky(Chain) Rainbow(Bonus) Clock(Time) S-shape(Score) Electric(Hinder) Escape(Move)',
 
-            // Help Categories(newly, added)'', 'help.categories.gameplay': 'Game Basics',
+            // Help Categories(newly, added)', 'help.categories.gameplay': 'Game Basics',
             'help.categories.bubbles': 'Bubble Types',
             'help.categories.controls': 'Controls',
             'help.categories.scoring': 'Scoring System',
@@ -370,15 +366,14 @@ export class TranslationDataManager {
             'error.audioNotSupported': 'Audio features are not available.',
             'error.storageNotSupported': 'Data storage is not available.',
 
-            // Common(newly, added)'', 'common.back': 'Back',
+            // Common(newly, added)', 'common.back': 'Back',
             // Confirm
             'confirm.yes': 'Yes',
             'confirm.no': 'No',
             'confirm.ok': 'OK',
-            'confirm.cancel': 'Cancel'' 
-    }');
+            'confirm.cancel': 'Cancel'}');
 
-        this.loadedLanguages.add('ja'');''
+        this.loadedLanguages.add('ja');
         this.loadedLanguages.add('en';
     }
     
@@ -432,8 +427,8 @@ export class TranslationDataManager {
             'accessibility.audio.vibrationFeedback': '振動フィードバック',
             'accessibility.audio.flashAlerts': '点滅アラート',
             'accessibility.audio.captionStyle': 'キャプションスタイル',
-            'accessibility.audio.captionSize': 'キャプションサイズ','';
-            'accessibility.audio.captionPosition': 'キャプション位置')';
+            'accessibility.audio.captionSize': 'キャプションサイズ',',
+            'accessibility.audio.captionPosition': 'キャプション位置')',
             // 運動機能アクセシビリティ
             'accessibility.motor.title': '運動機能支援',
             'accessibility.motor.alternativeInput': '代替入力方法',
@@ -442,9 +437,9 @@ export class TranslationDataManager {
             'accessibility.motor.timing': 'タイミング調整',
             'accessibility.motor.pauseOptions': '一時停止オプション',
             'accessibility.motor.inputSettings': '入力設定',
-            'accessibility.motor.gestureCustomization': 'ジェスチャーカスタマイズ',')';
-            'accessibility.motor.autoAdvance': '自動進行')');
-        ';
+            'accessibility.motor.gestureCustomization': 'ジェスチャーカスタマイズ',')',
+            'accessibility.motor.autoAdvance': '自動進行')'),
+        ',
         // 英語アクセシビリティ翻訳
         this.accessibilityTranslations.set('en', {'
             // Accessibility Manager
@@ -493,8 +488,8 @@ export class TranslationDataManager {
             'accessibility.audio.vibrationFeedback': 'Vibration Feedback',
             'accessibility.audio.flashAlerts': 'Flash Alerts',
             'accessibility.audio.captionStyle': 'Caption Style',
-            'accessibility.audio.captionSize': 'Caption Size','';
-            'accessibility.audio.captionPosition': 'Caption Position')';
+            'accessibility.audio.captionSize': 'Caption Size',',
+            'accessibility.audio.captionPosition': 'Caption Position')',
             // Motor Accessibility
             'accessibility.motor.title': 'Motor Function Assistance',
             'accessibility.motor.alternativeInput': 'Alternative Input Methods',
@@ -503,8 +498,8 @@ export class TranslationDataManager {
             'accessibility.motor.timing': 'Timing Adjustment',
             'accessibility.motor.pauseOptions': 'Pause Options',
             'accessibility.motor.inputSettings': 'Input Settings',
-            'accessibility.motor.gestureCustomization': 'Gesture Customization',')';
-            'accessibility.motor.autoAdvance': 'Auto Advance'); }
+            'accessibility.motor.gestureCustomization': 'Gesture Customization',')',
+            'accessibility.motor.autoAdvance': 'Auto Advance') }
     
     /**
      * 翻訳を取得
@@ -515,7 +510,7 @@ export class TranslationDataManager {
      */
     getTranslation(language: string, key: string, fallbackLanguage: string = DEFAULT_FALLBACK_LANGUAGE): string | string[] { // メイン翻訳から取得
         if(this.translations.has(language) {
-            const langTranslations = this.translations.get(language)!;
+            const langTranslations = this.translations.get(language)!,
             
             if (langTranslations[key] !== undefined) {
         }
@@ -523,7 +518,7 @@ export class TranslationDataManager {
         
         // アクセシビリティ翻訳から取得
         if(this.accessibilityTranslations.has(language) {
-            const accessibilityLangTranslations = this.accessibilityTranslations.get(language)!;
+            const accessibilityLangTranslations = this.accessibilityTranslations.get(language)!,
             if (accessibilityLangTranslations[key] !== undefined) {
         }
                 return accessibilityLangTranslations[key];
@@ -531,17 +526,17 @@ export class TranslationDataManager {
         // フォールバック言語から取得
         if(fallbackLanguage !== language) {
             if(this.translations.has(fallbackLanguage) {
-                const fallbackTranslations = this.translations.get(fallbackLanguage)!;
+                const fallbackTranslations = this.translations.get(fallbackLanguage)!,
                 if (fallbackTranslations[key] !== undefined) {
         }
                     return fallbackTranslations[key];
             
             if(this.accessibilityTranslations.has(fallbackLanguage) {
             
-                const fallbackAccessibilityTranslations = this.accessibilityTranslations.get(fallbackLanguage)!;
+                const fallbackAccessibilityTranslations = this.accessibilityTranslations.get(fallbackLanguage)!,
                 if (fallbackAccessibilityTranslations[key] !== undefined) {
-            
-            }
+    
+}
                     return fallbackAccessibilityTranslations[key];
         }
         
@@ -557,46 +552,44 @@ export class TranslationDataManager {
      */
     setLanguageData(language: string, translationData: TranslationData): void {
         const existingTranslations = this.translations.get(language) || {};
-        const mergedTranslations = { ...existingTranslations, ...translationData;
+        const mergedTranslations = { ...existingTranslations, ...translationData,
         
-        this.translations.set(language, mergedTranslations);
-        this.loadedLanguages.add(language);
-    }
+        this.translations.set(language, mergedTranslations),
+        this.loadedLanguages.add(language) }
     
     /**
      * アクセシビリティ翻訳データを設定
      * @param language 言語コード
      * @param accessibilityData アクセシビリティ翻訳データ
      */
-    setAccessibilityData(language: string, accessibilityData: AccessibilityTranslationData): void { this.accessibilityTranslations.set(language, accessibilityData); }
+    setAccessibilityData(language: string, accessibilityData: AccessibilityTranslationData): void { this.accessibilityTranslations.set(language, accessibilityData) }
     
     /**
      * 言語が読み込まれているかチェック
      * @param language 言語コード
      * @returns 読み込み状態
      */
-    isLanguageLoaded(language: string): boolean { return this.loadedLanguages.has(language); }
+    isLanguageLoaded(language: string): boolean { return this.loadedLanguages.has(language) }
     
     /**
      * 利用可能な言語一覧を取得
      * @returns 言語コード配列
      */
-    getAvailableLanguages(): string[] { return Array.from(this.loadedLanguages); }
+    getAvailableLanguages(): string[] { return Array.from(this.loadedLanguages) }
     
     /**
      * 翻訳データの統計を取得
      * @returns 統計情報
      */
     getTranslationStats(): TranslationStats { const stats: TranslationStats = {
-            loadedLanguages: Array.from(this.loadedLanguages),
-    languageCount: this.loadedLanguages.size, }
+            loadedLanguages: Array.from(this.loadedLanguages,
+    languageCount: this.loadedLanguages.size }
             translations: {};
             accessibilityTranslations: {};
         // メイン翻訳の統計
         for(const [lang, translations] of this.translations.entries() {
             stats.translations[lang] = {
-                keyCount: Object.keys(translations).length;
-        }
+                keyCount: Object.keys(translations).length }
                 arrayCount: Object.values(translations).filter(v => Array.isArray(v).length 
     }
         
@@ -617,27 +610,26 @@ export class TranslationDataManager {
      * @returns 検索結果
      */
     searchTranslations(searchTerm: string, options: TranslationSearchOptions = { ): TranslationSearchResult[] {
-        const results: TranslationSearchResult[] = [] ,}
+        const results: TranslationSearchResult[] = []  }
         const { caseSensitive = false, exactMatch = false, includeAccessibility = true } = options;
         
-        const searchText = caseSensitive ? searchTerm: searchTerm.toLowerCase(),
+        const searchText = caseSensitive ? searchTerm: searchTerm.toLowerCase(
         
         // メイン翻訳を検索
         for(const [language, translations] of this.translations.entries() {
             for(const [key, value] of Object.entries(translations) {''
-                const valueStr = Array.isArray(value) ? value.join(', ') : value;
-                const searchValue = caseSensitive ? valueStr: valueStr.toLowerCase(),
+                const valueStr = Array.isArray(value) ? value.join(', ') : value,
+                const searchValue = caseSensitive ? valueStr: valueStr.toLowerCase(
                 
-                const matches = exactMatch ;
+                const matches = exactMatch ,
 
-                    ? searchValue === searchText || key === searchTerm: searchValue.includes(searchText) || key.includes(searchTerm),
+                    ? searchValue === searchText || key === searchTerm: searchValue.includes(searchText) || key.includes(searchTerm,
 
                 if(matches) {
                     results.push({
-                        language);
-                        key)';
-                        value,');
-        }
+                        language,
+                        key)',
+                        value,') }
 
                         category: 'main'); 
     }
@@ -647,17 +639,16 @@ export class TranslationDataManager {
         if(includeAccessibility) {
             for(const [language, translations] of this.accessibilityTranslations.entries() {
                 for(const [key, value] of Object.entries(translations) {
-                    const searchValue = caseSensitive ? value: value.toLowerCase(),
+                    const searchValue = caseSensitive ? value: value.toLowerCase(
                     
-                    const matches = exactMatch ;
-                        ? searchValue === searchText || key === searchTerm: searchValue.includes(searchText) || key.includes(searchTerm),
+                    const matches = exactMatch ,
+                        ? searchValue === searchText || key === searchTerm: searchValue.includes(searchText) || key.includes(searchTerm,
 
                     if(matches) {
                         results.push({
-                            language);
-                            key)';
-                            value,');
-        }
+                            language,
+                            key)',
+                            value,') }
 
                             category: 'accessibility'); 
     }
@@ -674,8 +665,8 @@ export class TranslationDataManager {
      * @returns 検証結果
      */
     validateTranslations(language: string, referenceLanguage: string = DEFAULT_FALLBACK_LANGUAGE): TranslationValidationResult { const result: TranslationValidationResult = {
-            isValid: true;
-            missingKeys: [];
+            isValid: true,
+            missingKeys: [],
             extraKeys: [],
     invalidValues: [] };
         const targetTranslations = this.translations.get(language);
@@ -683,23 +674,21 @@ export class TranslationDataManager {
         
         if(!targetTranslations || !referenceTranslations) {
         
-            result.isValid = false;
-        
-        }
+            result.isValid = false }
             return result;
         
         const targetKeys = new Set(Object.keys(targetTranslations);
         const referenceKeys = new Set(Object.keys(referenceTranslations);
         
         // 不足しているキーを検出
-        for(const, key of, referenceKeys) {
+        for (const key of referenceKeys) {
             if(!targetKeys.has(key) {
         }
                 result.missingKeys.push(key); }
 }
         
         // 余分なキーを検出
-        for(const, key of, targetKeys) {
+        for (const key of targetKeys) {
             if(!referenceKeys.has(key) {
         }
                 result.extraKeys.push(key); }
@@ -708,15 +697,15 @@ export class TranslationDataManager {
         // 無効な値を検出
         for(const [key, value] of Object.entries(targetTranslations)) { ''
             if(typeof, value !== 'string' && !Array.isArray(value) {
-                
-            }
+    
+}
 
                 result.invalidValues.push(key);' }'
 
             } else if(Array.isArray(value) && value.some(item => typeof, item !== 'string' { ''
-                result.invalidValues.push(key);' }'
+                result.invalidValues.push(key),' }'
 
-            } else if(typeof, value === 'string' && value.trim() === '') { result.invalidValues.push(key); }
+            } else if(typeof, value === 'string' && value.trim() === ') { result.invalidValues.push(key) }
         }
         
         result.isValid = result.missingKeys.length === 0 && ;
@@ -731,38 +720,36 @@ export class TranslationDataManager {
      * @param options エクスポートオプション
      * @returns エクスポートされたデータ'
      */''
-    exportTranslations(options: TranslationExportOptions = { )): string {' }'
+    exportTranslations(options: TranslationExportOptions = { )): string { }'
 
         const { includeAccessibility = true, format = 'json', languages } = options;
         
         const exportData: Record<string, any> = {};
         const targetLanguages = languages || Array.from(this.loadedLanguages);
         
-        for(const, language of, targetLanguages) {
-        
-            
-        
-        }
+        for (const language of targetLanguages) {
+    
+}
             exportData[language] = {};
             
             // メイン翻訳
-            if(this.translations.has(language) { exportData[language].main = this.translations.get(language); }
+            if(this.translations.has(language) { exportData[language].main = this.translations.get(language) }
             
             // アクセシビリティ翻訳
-            if(includeAccessibility && this.accessibilityTranslations.has(language) { exportData[language].accessibility = this.accessibilityTranslations.get(language); }
+            if(includeAccessibility && this.accessibilityTranslations.has(language) { exportData[language].accessibility = this.accessibilityTranslations.get(language) }
         }
 
-        switch(format) {'
+        switch(format) {
 
-            case 'json':'';
-                return JSON.stringify(exportData, null, 2);''
-            case 'csv':'';
-                return this.convertToCSV(exportData);''
-            case 'yaml':;
-                return this.convertToYAML(exportData);
+            case 'json':',
+                return JSON.stringify(exportData, null, 2),
+            case 'csv':',
+                return this.convertToCSV(exportData),
+            case 'yaml':,
+                return this.convertToYAML(exportData),
 
             default:'
-        ,}
+            }
 
                 return JSON.stringify(exportData, null, 2);
     
@@ -773,25 +760,24 @@ export class TranslationDataManager {
      * @returns インポート結果'
      */''
     importTranslations(data: string, format: TranslationExportFormat = 'json': TranslationImportResult { const result: TranslationImportResult = {'
-            success: false;
+            success: false,
             importedLanguages: [],
     errors: [] };
-        try { let parsedData: Record<string, any>;
+        try { let parsedData: Record<string, any>,
 
-            switch(format) {'
+            switch(format) {
 
-                case 'json':'';
-                    parsedData = JSON.parse(data);
+                case 'json':',
+                    parsedData = JSON.parse(data),
 
-                    break;''
-                case 'csv':'';
-                    parsedData = this.parseCSV(data);
+                    break,
+                case 'csv':',
+                    parsedData = this.parseCSV(data),
 
-                    break;''
-                case 'yaml':;
-                    parsedData = this.parseYAML(data);
-                    break;
-            }
+                    break,
+                case 'yaml':,
+                    parsedData = this.parseYAML(data),
+                    break }
                 default: }
                     throw new Error(`Unsupported, format: ${format}`});
             }
@@ -800,12 +786,12 @@ export class TranslationDataManager {
             
                 try {
                     if (languageData.main) {
-            
-            }
+    
+}
                         this.setLanguageData(language, languageData.main); }
                     }
                     
-                    if (languageData.accessibility) { this.setAccessibilityData(language, languageData.accessibility); }
+                    if (languageData.accessibility) { this.setAccessibilityData(language, languageData.accessibility) }
                     
                     result.importedLanguages.push(language);
                 } catch (error) {
@@ -826,28 +812,26 @@ export class TranslationDataManager {
      * @param operations 操作配列
      * @returns 実行された操作数
      */
-    executeBulkOperations(operations: BulkTranslationOperation[]): number { let executedCount = 0;
+    executeBulkOperations(operations: BulkTranslationOperation[]): number { let executedCount = 0,
         
-        for(const, operation of, operations) {
-        ';
+        for (const operation of operations) {
+        ',
 
             try {'
                 switch(operation.operation) {''
-                    case 'add':';
-        }
+                    case 'add':' }
 
                     case 'update': }
                         const existingData = this.translations.get(operation.language) || {};
 
-                        existingData[operation.key] = operation.value;''
+                        existingData[operation.key] = operation.value;
                         this.setLanguageData(operation.language, existingData);
                         break;
 
-                    case 'delete':;
+                    case 'delete':
                         const data = this.translations.get(operation.language);
                         if(data && data[operation.key] !== undefined) {
-                            delete data[operation.key];
-                        }
+                            delete data[operation.key] }
                             this.setLanguageData(operation.language, data); }
                         }
                         break;
@@ -869,7 +853,7 @@ export class TranslationDataManager {
      * @returns マージ結果
      */
     mergeTranslationData(language: string, newData: TranslationData, overwrite: boolean = false): TranslationMergeResult { const result: TranslationMergeResult = {
-            mergedKeys: 0;
+            mergedKeys: 0,
             conflictKeys: [],
     newKeys: 0 };
         const existingData = this.translations.get(language) || {};
@@ -878,13 +862,11 @@ export class TranslationDataManager {
         
             if (existingData[key] !== undefined) {
                 if (!overwrite) {
-                    result.conflictKeys.push(key);
-        
-        }
+                    result.conflictKeys.push(key) }
                     continue; }
                 }
                 result.mergedKeys++;
-            } else { result.newKeys++; }
+            } else { result.newKeys++ }
             
             existingData[key] = value;
         }
@@ -899,16 +881,16 @@ export class TranslationDataManager {
      * @returns CSV文字列'
      */''
     private convertToCSV(data: Record<string, any>): string { const rows: string[] = [],''
-        rows.push('Language,Category,Key,Value);
+        rows.push('Language,Category,Key,Value),
         
         for(const [language, languageData] of Object.entries(data) {
         
-            for(const [category, categoryData] of Object.entries(languageData) {'
-                for(const [key, value] of Object.entries(categoryData) {'
-        
-        }
+            for(const [category, categoryData] of Object.entries(languageData) {
+                for(const [key, value] of Object.entries(categoryData) {
+    
+}
 
-                    const valueStr = Array.isArray(value) ? value.join('|'') : value;' }
+                    const valueStr = Array.isArray(value) ? value.join('|') : value;' }
 
                     rows.push(`${language},${category},${key},"${valueStr"}"`"}";
                 }
@@ -923,17 +905,17 @@ export class TranslationDataManager {
      * @returns YAML文字列'
      */''
     private convertToYAML(data: Record<string, any>): string { // 簡単なYAML変換（実際のプロジェクトではライブラリ使用推奨）
-        let yaml = '';
+        let yaml = ',
         for(const [language, languageData] of Object.entries(data) { }
             yaml += `${language}:\n`;
             for(const [category, categoryData] of Object.entries(languageData) {
-                
-            }
+    
+}
                 yaml += `  ${category}:\n`;
 
-                for(const [key, value] of Object.entries(categoryData) { ' }'
+                for(const [key, value] of Object.entries(categoryData) { }'
 
-                    const valueStr = Array.isArray(value) ? `[${value.join(', ''}']` : value;''
+                    const valueStr = Array.isArray(value) ? `[${value.join(', '}']` : value;
                     yaml += `    ${key}: "${valueStr}"\n`;
                 }
 }
@@ -946,24 +928,22 @@ export class TranslationDataManager {
      * @returns 解析されたデータ"
      */""
     private parseCSV(csv: string): Record<string, any> { ""
-        const lines = csv.split('\n'; }'
+        const lines = csv.split('\n' }'
         const data: Record<string, any> = {};
         
         for(let, i = 1; i < lines.length; i++) {
-        ';
+        ',
 
-            const line = lines[i].trim();''
-            if(!line) continue;
+            const line = lines[i].trim(),
+            if(!line) continue,
 
-            const [language, category, key, value] = line.split(','');''
-            const cleanValue = value.replace(/^"|"$/g, '');
-        
-        }
+            const [language, category, key, value] = line.split(','),
+            const cleanValue = value.replace(/^"|"$/g, ') }
 
-            if (!data[language]) data[language] = {};''
+            if (!data[language]) data[language] = {};
             if(!data[language][category]) data[language][category] = {};
 
-            data[language][category][key] = cleanValue.includes('|'') ? cleanValue.split('|' : cleanValue;
+            data[language][category][key] = cleanValue.includes('|') ? cleanValue.split('|' : cleanValue;
         }
         
         return data;
@@ -975,28 +955,28 @@ export class TranslationDataManager {
      * @returns 解析されたデータ'
      */''
     private parseYAML(yaml: string): Record<string, any> { // 簡単なYAML解析（実際のプロジェクトではライブラリ使用推奨） }
-        const data: Record<string, any> = {};''
-        const lines = yaml.split('\n'');
+        const data: Record<string, any> = {};
+        const lines = yaml.split('\n');
 
-        let currentLang = '';
-        let currentCategory = '';
+        let currentLang = ';
+        let currentCategory = ';
         
-        for(const, line of, lines) {
+        for (const line of lines) {
         
-            const trimmed = line.trim();
-            if (!trimmed) continue;
+            const trimmed = line.trim(),
+            if (!trimmed) continue,
 
-            if(line.match(/^[a-z]+:/)) {'
-        
-        }
+            if(line.match(/^[a-z]+:/)) {
+    
+}
 
                 currentLang = line.split(':'[0]; }'
                 data[currentLang] = {} else if(line.match(/^  [a-z]+:/) { ''
-                currentCategory = line.trim().split(':)[0]; }
+                currentCategory = line.trim().split(':)[0] }
                 data[currentLang][currentCategory] = {} else if(line.match(/^    /) { ''
-                const [key, ...valueParts] = line.trim().split(':'');''
-                const value = valueParts.join(':'.trim().replace(/^"|"$/g, '');
-                data[currentLang][currentCategory][key] = value; }
+                const [key, ...valueParts] = line.trim().split(':'),
+                const value = valueParts.join(':'.trim().replace(/^"|"$/g, '),
+                data[currentLang][currentCategory][key] = value }
         }
         
         return data;
@@ -1007,10 +987,10 @@ export class TranslationDataManager {
      * @param language 言語コード（指定しない場合は全言語）
      */
     clearTranslations(language: string | null = null): void { if (language) {
-            this.translations.delete(language);
-            this.accessibilityTranslations.delete(language);
-            this.loadedLanguages.delete(language); } else {  this.translations.clear();
-            this.accessibilityTranslations.clear(); }
+            this.translations.delete(language),
+            this.accessibilityTranslations.delete(language),
+            this.loadedLanguages.delete(language) } else {  this.translations.clear(),
+            this.accessibilityTranslations.clear() }
             this.loadedLanguages.clear(); }
 }
     
@@ -1026,21 +1006,20 @@ export class TranslationDataManager {
      * @returns 復元結果
      */
     restoreFromBackup(backupData: string): TranslationImportResult { // 現在のデータをクリア
-        this.clearTranslations();
+        this.clearTranslations(),
         
         // 初期データを再初期化
-        this.initializeTranslations();
-        this.initializeAccessibilityTranslations();
+        this.initializeTranslations(),
+        this.initializeAccessibilityTranslations(),
         
         // バックアップデータをインポート
-        return this.importTranslations(backupData); }
+        return this.importTranslations(backupData) }
     
     /**
      * リソースの解放
      */
     destroy(): void { ''
-        this.clearTranslations()';
-        console.log('Translation, Data Manager, destroyed''); }
+        this.clearTranslations()',
+        console.log('Translation, Data Manager, destroyed') }
 
-    }''
-}
+    }'}

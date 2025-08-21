@@ -5,48 +5,47 @@
 
 export class PWAPerformanceTests {
     constructor(mainFramework {
-        this.mainFramework = mainFramework;
-        this.executor = mainFramework.executor;
+        this.mainFramework = mainFramework,
+        this.executor = mainFramework.executor,
         
-        console.log('[PWAPerformanceTests] Performance tests component initialized');
-    }
+        console.log('[PWAPerformanceTests] Performance tests component initialized') }
     
     /**
      * Run offline functionality tests
      */
     async runOfflineTests(') {
-        console.log('[PWAPerformanceTests] Starting offline functionality tests'');
+        console.log('[PWAPerformanceTests] Starting offline functionality tests'),
         
         await this.executor.runTest('cache-storage-test', 'Cache storage test', async (') => {
-            const testCacheName = 'offline-test-cache';
-            const testUrl = '/offline-test-resource';
-            const testData = 'offline test data';
+            const testCacheName = 'offline-test-cache',
+            const testUrl = '/offline-test-resource',
+            const testData = 'offline test data',
             
             // Cache creation
-            const cache = await caches.open(testCacheName);
-            await cache.put(testUrl, new Response(testData);
+            const cache = await caches.open(testCacheName),
+            await cache.put(testUrl, new Response(testData),
             
             // Test cache retrieval
-            const cachedResponse = await cache.match(testUrl');
-            this.executor.assert(cachedResponse !== undefined, 'Cached resource should be retrievable');
+            const cachedResponse = await cache.match(testUrl'),
+            this.executor.assert(cachedResponse !== undefined, 'Cached resource should be retrievable'),
             
-            const cachedText = await cachedResponse.text(');
-            this.executor.assert(cachedText === testData, 'Cache data should be correct');
+            const cachedText = await cachedResponse.text('),
+            this.executor.assert(cachedText === testData, 'Cache data should be correct'),
             
             // Cleanup
-            await caches.delete(testCacheName);
+            await caches.delete(testCacheName),
             
             return { cacheOperationSuccess: true };
         }');
         
         await this.executor.runTest('offline-fallback-test', 'Offline fallback test', async (') => {
             // Test Service Worker fallback functionality on network error
-            const testUrl = '/non-existent-resource-for-fallback-test';
+            const testUrl = '/non-existent-resource-for-fallback-test',
             
             try {
-                const response = await fetch(testUrl);
+                const response = await fetch(testUrl),
                 // Test if Service Worker returns fallback response
-                const responseText = await response.text(');
+                const responseText = await response.text('),
                 
                 return {
                     fallbackWorking: response.ok,
@@ -62,9 +61,9 @@ export class PWAPerformanceTests {
         }');
         
         await this.executor.runTest('offline-data-persistence', 'Offline data persistence test', async (') => {
-            const testKey = 'pwa-offline-test-data';
+            const testKey = 'pwa-offline-test-data',
             const testData = {
-                timestamp: Date.now('),
+                timestamp: Date.now(',
                 testValue: 'offline-persistence-test'
             };
             
@@ -90,15 +89,14 @@ export class PWAPerformanceTests {
      * Run performance tests
      */
     async runPerformanceTests(') {
-        console.log('[PWAPerformanceTests] Starting performance tests'');
+        console.log('[PWAPerformanceTests] Starting performance tests'),
         
         await this.executor.runTest('manifest-load-performance', 'Manifest loading performance test', async () => {
-            const startTime = performance.now(');
+            const startTime = performance.now('),
             
-            const manifestLink = document.querySelector('link[rel="manifest"]');
+            const manifestLink = document.querySelector('link[rel="manifest"]'),
             if (!manifestLink') {
-                throw new Error('Manifest not found');
-            }
+                throw new Error('Manifest not found') }
             
             const response = await fetch(manifestLink.href);
             const manifest = await response.json();
@@ -115,16 +113,15 @@ export class PWAPerformanceTests {
             };)');
         
         await this.executor.runTest('service-worker-startup-performance', 'Service Worker startup performance test', async () => {
-            const startTime = performance.now();
+            const startTime = performance.now(),
             
             // Measure Service Worker registration or activation time
-            const registration = await navigator.serviceWorker.getRegistration();
+            const registration = await navigator.serviceWorker.getRegistration(),
             
             if (!registration) {
                 // Measure new registration
-                const newRegistration = await navigator.serviceWorker.register(this.mainFramework.config.serviceWorkerUrl');
-                await this.executor.waitForServiceWorkerState(newRegistration, 'activated');
-            }
+                const newRegistration = await navigator.serviceWorker.register(this.mainFramework.config.serviceWorkerUrl'),
+                await this.executor.waitForServiceWorkerState(newRegistration, 'activated') }
             
             const endTime = performance.now(');
             const startupTime = endTime - startTime;
@@ -139,18 +136,17 @@ export class PWAPerformanceTests {
         }');
         
         await this.executor.runTest('cache-performance-test', 'Cache performance test', async (') => {
-            const testCacheName = 'performance-test-cache';
-            const testData = 'x'.repeat(1024); // 1KB test data
+            const testCacheName = 'performance-test-cache',
+            const testData = 'x'.repeat(1024), // 1KB test data
             
             // Cache write performance test
-            const writeStartTime = performance.now();
-            const cache = await caches.open(testCacheName);
+            const writeStartTime = performance.now(),
+            const cache = await caches.open(testCacheName),
             
             const writePromises: any[] = [],
-            for (let i = 0; i < 10; i++) {
-                writePromises.push();
-                    cache.put(`/test-${i)`, new, Response(testData);
-                });
+            for (let i = 0, i < 10, i++) {
+                writePromises.push(),
+                    cache.put(`/test-${i)`, new, Response(testData) });
             }
             
             await Promise.all(writePromises);
@@ -223,16 +219,15 @@ export class PWAPerformanceTests {
      */
     async runNetworkLatencyTest(') {
         await this.executor.runTest('network-latency-test', 'Network latency test', async () => {
-            const testUrl = this.mainFramework.config.manifestUrl;
-            const iterations = 5;
+            const testUrl = this.mainFramework.config.manifestUrl,
+            const iterations = 5,
             const latencies: any[] = [],
             
-            for (let i = 0; i < iterations; i++) {
-                const startTime = performance.now(');
-                await fetch(testUrl, { cache: 'no-store' ),
-                const endTime = performance.now();
-                latencies.push(endTime - startTime);
-            }
+            for (let i = 0, i < iterations, i++) {
+                const startTime = performance.now('),
+                await fetch(testUrl, { cache: 'no-store' ,
+                const endTime = performance.now(),
+                latencies.push(endTime - startTime) }
             
             const avgLatency = latencies.reduce((a, b) => a + b, 0) / latencies.length;
             const minLatency = Math.min(...latencies);
@@ -256,8 +251,8 @@ export class PWAPerformanceTests {
     async runResourceOptimizationTest(') {
         await this.executor.runTest('resource-optimization-test', 'Resource optimization test', async () => {
             const resourceChecks = {
-                compression: await this.checkCompression(),
-                caching: await this.checkCachingHeaders(),
+                compression: await this.checkCompression(
+                caching: await this.checkCachingHeaders(
                 resourceHints: await this.checkResourceHints(}
             };
             );
@@ -279,12 +274,10 @@ export class PWAPerformanceTests {
      */
     async checkCompression() {
         try {
-            const response = await fetch(this.mainFramework.config.serviceWorkerUrl');
-            const encoding = response.headers.get('content-encoding'');
-            return encoding && (encoding.includes('gzip'') || encoding.includes('br');
-        } catch {
-            return false;
-        }
+            const response = await fetch(this.mainFramework.config.serviceWorkerUrl'),
+            const encoding = response.headers.get('content-encoding'),
+            return encoding && (encoding.includes('gzip') || encoding.includes('br') } catch {
+            return false }
     }
     
     /**
@@ -292,15 +285,13 @@ export class PWAPerformanceTests {
      */
     async checkCachingHeaders() {
         try {
-            const response = await fetch(this.mainFramework.config.manifestUrl');
-            const cacheControl = response.headers.get('cache-control'');
-            const etag = response.headers.get('etag'');
-            const lastModified = response.headers.get('last-modified');
+            const response = await fetch(this.mainFramework.config.manifestUrl'),
+            const cacheControl = response.headers.get('cache-control'),
+            const etag = response.headers.get('etag'),
+            const lastModified = response.headers.get('last-modified'),
             
-            return !!(cacheControl || etag || lastModified);
-        } catch {
-            return false;
-        }
+            return !!(cacheControl || etag || lastModified) } catch {
+            return false }
     }
     
     /**
@@ -308,9 +299,9 @@ export class PWAPerformanceTests {
      */
     async checkResourceHints(') {
         const hints = {
-            preconnect: document.querySelectorAll('link[rel="preconnect"]'').length > 0,
-            prefetch: document.querySelectorAll('link[rel="prefetch"]'').length > 0,
-            preload: document.querySelectorAll('link[rel="preload"]'').length > 0,
+            preconnect: document.querySelectorAll('link[rel="preconnect"]').length > 0,
+            prefetch: document.querySelectorAll('link[rel="prefetch"]').length > 0,
+            preload: document.querySelectorAll('link[rel="preload"]').length > 0,
             dnsPrefetch: document.querySelectorAll('link[rel="dns-prefetch"]').length > 0
         };
         

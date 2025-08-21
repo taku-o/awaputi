@@ -26,21 +26,18 @@ import './comparison-engine-tests/ComparisonEngineIntegrationTests';
 // Shared test utilities and mocks
 class MockStorageManager {
     constructor() {
-        this.data = new Map();
-    }
+        this.data = new Map() }
     async getData(storeName, query) {
-        const storeData = this.data.get(storeName || []);
-        if (!query') return storeData;
+        const storeData = this.data.get(storeName || []),
+        if (!query') return storeData,
         if (query.range && query.index === 'startTime') {
             return storeData.filter(item => {
-                const timestamp = item.startTime;
-                return timestamp >= query.range.lower && timestamp <= query.range.upper;);
-        }
+                const timestamp = item.startTime,
+                return timestamp >= query.range.lower && timestamp <= query.range.upper) }
         return storeData;
     }
     setTestData(storeName, data) {
-        this.data.set(storeName, data);
-    }
+        this.data.set(storeName, data) }
 }
 // Test data factory for creating consistent test scenarios
 class TestDataFactory {
@@ -48,7 +45,7 @@ class TestDataFactory {
         const defaults = {
             sessionId: 'test_session',
             startTime: Date.now() - 300000,
-            endTime: Date.now(),
+            endTime: Date.now(
             finalScore: 1000,
             bubblesPopped: 80,
             bubblesMissed: 20,
@@ -60,8 +57,8 @@ class TestDataFactory {
     }
     static createBenchmarkData(playerCount = 3) {
         const sessions: any[] = [],
-        for (let i = 1; i <= playerCount; i++) {
-            for (let j = 1; j <= 3; j++) {
+        for (let i = 1, i <= playerCount, i++) {
+            for (let j = 1, j <= 3, j++) {
                 sessions.push(this.createSessionData({
                     sessionId: `player${i}_session${j}`;);
                     playerId: `player${i)`,
@@ -76,9 +73,9 @@ class TestDataFactory {
     }
     static createStageData(stageId, sessionCount = 3) {
         const sessions: any[] = [],
-        for (let i = 0; i < sessionCount; i++) {
-            sessions.push(this.createSessionData({);
-                sessionId: `${stageId}_session_${i)`;
+        for (let i = 0, i < sessionCount, i++) {
+            sessions.push(this.createSessionData({),
+                sessionId: `${stageId}_session_${i)`,
                 stageId: stageId,
                 startTime: Date.now() - (i + 1) * 24 * 60 * 60 * 1000,
                 finalScore: 900 + Math.random() * 200,
@@ -94,27 +91,24 @@ describe('ComparisonEngine - Main Test Suite', () => {
     let coreComparisonEngine: any,
     let mockStorageManager: any,
     beforeEach(() => {
-        mockStorageManager = new MockStorageManager();
-        comparisonEngine = new ComparisonEngine(mockStorageManager);
-        coreComparisonEngine = new CoreComparisonEngine();
-    });
+        mockStorageManager = new MockStorageManager(),
+        comparisonEngine = new ComparisonEngine(mockStorageManager),
+        coreComparisonEngine = new CoreComparisonEngine() });
     afterEach(() => {
         // Clean up any shared state
         if (comparisonEngine && comparisonEngine.clearCache) {
-            comparisonEngine.clearCache();
-        }
+            comparisonEngine.clearCache() }
     }');
     describe('Test Suite Integration', (') => {
         test('分割テストコンポーネントが正しく読み込まれている', () => {
             // Verify that all test components are properly loaded
-            expect(ComparisonEngine).toBeDefined();
-            expect(CoreComparisonEngine).toBeDefined();
-            expect(MockStorageManager).toBeDefined();
-            expect(TestDataFactory).toBeDefined();
-        }');
+            expect(ComparisonEngine).toBeDefined(),
+            expect(CoreComparisonEngine).toBeDefined(),
+            expect(MockStorageManager).toBeDefined(),
+            expect(TestDataFactory).toBeDefined() }');
         test('共有ユーティリティが正常に動作する', () => {
             // Test MockStorageManager
-            const mockStorage = new MockStorageManager(');
+            const mockStorage = new MockStorageManager('),
             mockStorage.setTestData('test', [{ id: 1 }]');
             expect(mockStorage.data.get('test').toEqual([{ id: 1 }]);
             // Test TestDataFactory
@@ -128,12 +122,10 @@ describe('ComparisonEngine - Main Test Suite', () => {
             expect(stageData[0].stageId').toBe('stage1');
         }');
         test('ComparisonEngineインスタンスが正常に作成される', () => {
-            expect(comparisonEngine).toBeInstanceOf(ComparisonEngine);
-            expect(comparisonEngine.storageManager).toBe(mockStorageManager);
-        }');
+            expect(comparisonEngine).toBeInstanceOf(ComparisonEngine),
+            expect(comparisonEngine.storageManager).toBe(mockStorageManager) }');
         test('CoreComparisonEngineインスタンスが正常に作成される', () => {
-            expect(coreComparisonEngine).toBeInstanceOf(CoreComparisonEngine);
-        });
+            expect(coreComparisonEngine).toBeInstanceOf(CoreComparisonEngine) });
     }
 }');
 // Export shared utilities for use in split test components
