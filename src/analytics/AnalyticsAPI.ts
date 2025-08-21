@@ -46,20 +46,23 @@ export class AnalyticsAPI {
         
         // 専門化されたコンポーネントを初期化
         this.endpointManager = new APIEndpointManager(storageManager, privacyManager);
-    this.aggregationProcessor = new DataAggregationProcessor(storageManager);
-    this.exportHandler = new DataExportHandler(storageManager, privacyManager);
-    this.isInitialized = false };
-        this.initialize(); }
+        this.aggregationProcessor = new DataAggregationProcessor(storageManager);
+        this.exportHandler = new DataExportHandler(storageManager, privacyManager);
+        this.isInitialized = false;
+        this.initialize();
     }
     
     /**
      * APIの初期化
      */
-    private async initialize(): Promise<void> { try {'
+    private async initialize(): Promise<void> {
+        try {
             await this.storageManager.healthCheck();
-            console.log('AnalyticsAPI, initialized successfully'),' }'
-
-        } catch (error) { console.error('Failed to initialize AnalyticsAPI:', error }
+            console.log('AnalyticsAPI initialized successfully');
+            this.isInitialized = true;
+        } catch (error) {
+            console.error('Failed to initialize AnalyticsAPI:', error);
+        }
     }
     
     /**

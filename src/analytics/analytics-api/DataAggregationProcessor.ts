@@ -332,26 +332,23 @@ export class DataAggregationProcessor {
      * @returnsObject} クエリオブジェクト
      */
     buildAggregationQuery(filters, period) {
-    
-}
-        const query = { ...filters,
+        const query = { ...filters };
         
         // 期間設定の処理
         if (period) {
             const now = Date.now();
-            switch(period) {''
-                case 'last24h': ,
-                    query.startDate = now - 24 * 60 * 60 * 1000,
-
-                    break,
-                case 'last7d':,
-                    query.startDate = now - 7 * 24 * 60 * 60 * 1000,
-
-                    break,
-                case 'last30d':,
-                    query.startDate = now - 30 * 24 * 60 * 60 * 1000 }
-                    break; }
-}
+            switch(period) {
+                case 'last24h':
+                    query.startDate = now - 24 * 60 * 60 * 1000;
+                    break;
+                case 'last7d':
+                    query.startDate = now - 7 * 24 * 60 * 60 * 1000;
+                    break;
+                case 'last30d':
+                    query.startDate = now - 30 * 24 * 60 * 60 * 1000;
+                    break;
+            }
+        }
         
         return query;
     }
@@ -361,28 +358,34 @@ export class DataAggregationProcessor {
      * @param {Array} sessions - セッションデータ
      * @returns {Object} セッション統計
      */
-    calculateSessionStats(sessions) { if (sessions.length === 0) { }
-            return { noData: true,
+    calculateSessionStats(sessions) {
+        if (sessions.length === 0) {
+            return { noData: true };
+        }
         
         const completedSessions = sessions.filter(s => s.completed);
         const durations = sessions.map(s => s.duration).filter(d => d > 0);
         const scores = sessions.map(s => s.finalScore).filter(s => s > 0);
         
-        return { totalSessions: sessions.length,
+        return {
+            totalSessions: sessions.length,
             completedSessions: completedSessions.length,
             completionRate: completedSessions.length / sessions.length,
-    averageDuration: durations.reduce((sum, d) => sum + d, 0) / durations.length || 0,
-            averageScore: scores.reduce((sum, s) => sum + s, 0) / scores.length || 0 };
-            maxScore: scores.length > 0 ? Math.max(...scores) : 0 
-        }
+            averageDuration: durations.reduce((sum, d) => sum + d, 0) / durations.length || 0,
+            averageScore: scores.reduce((sum, s) => sum + s, 0) / scores.length || 0,
+            maxScore: scores.length > 0 ? Math.max(...scores) : 0
+        };
+    }
     
     /**
      * インタラクション統計の計算
      * @param {Array} interactions - インタラクションデータ
      * @returns {Object} インタラクション統計
      */
-    calculateInteractionStats(interactions) { if (interactions.length === 0) { }
-            return { noData: true,
+    calculateInteractionStats(interactions) {
+        if (interactions.length === 0) {
+            return { noData: true };
+        }
         
         const bubbleTypes = {};
         const reactionTimes = [];

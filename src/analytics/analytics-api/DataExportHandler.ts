@@ -62,23 +62,25 @@ export class DataExportHandler {
      * @param {boolean} options.includeMetadata - メタデータ含有フラグ
      * @returns {Promise<Object>} エクスポート結果
      */
-    async exportData(options: any = { ) {
+    async exportData(options: any = {}) {
         const startTime = performance.now();
         try {
             // ExportManagerが初期化されるまで待機
             if (!this.exportManager) {
-
-                await this.initializeExportManager('''
-                dataTypes: options.dataTypes || 'all' }
-
-                format: options.format || 'json'
+                await this.initializeExportManager();
             }
-                filters: options.filters || {},
-                anonymize: options.anonymize !== false, // デフォルトで匿名化を有効);
-                includeMetadata: options.includeMetadata !== false),
-                ...options;
             
-            // ExportManagerを使用してエクスポート実行)
+            // エクスポートオプションの準備
+            const exportOptions = {
+                dataTypes: options.dataTypes || 'all',
+                format: options.format || 'json',
+                filters: options.filters || {},
+                anonymize: options.anonymize !== false, // デフォルトで匿名化を有効
+                includeMetadata: options.includeMetadata !== false,
+                ...options
+            };
+            
+            // ExportManagerを使用してエクスポート実行
             const result = await this.exportManager.exportData(exportOptions);
             
             if (result.success) {
