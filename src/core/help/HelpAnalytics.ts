@@ -75,18 +75,19 @@ export interface EffectivenessAnalytics { helpfulnessRatings: Map<string, Rating
 };
 export interface RatingData { totalRatings: number;
     averageRating: number;
-    ratingCount: Record<number, number>, // 1-5の評価ごとの件数 };
+    ratingCount: Record<number, number>; // 1-5の評価ごとの件数
+};
 export interface ImprovementSuggestion { type: string;
     contentId?: string;
     query?: string;
     suggestion: string;
-    priority: 'high' | 'medium' | 'low'
-            };
+    priority: 'high' | 'medium' | 'low';
+};
 export interface Analytics { helpUsage: HelpUsageAnalytics;
     content: ContentAnalytics;
     tutorialUsage: TutorialUsageAnalytics;
     userBehavior: UserBehaviorAnalytics;
-    effectiveness: EffectivenessAnalytics
+    effectiveness: EffectivenessAnalytics;
 };
 export interface HelpSession { id: string;
     startTime: number;
@@ -161,10 +162,10 @@ export interface SystemValidationResult { isValid: boolean;
 export interface FallbackInterface { isActive: boolean;
     container: HTMLElement | null;
     content: Map<string, FallbackContent>;
-    keydownHandler?: (event: KeyboardEvent') => void  }'
+    keydownHandler?: (event: KeyboardEvent) => void;
 };
 export interface FallbackContent { title: string;
-    content: string[]
+    content: string[];
 };
 export interface UsageReport { generatedAt: number;
     period: ReportPeriod;
@@ -196,20 +197,20 @@ export interface TopItem { category?: string;
     topic?: string;
     query?: string;
     count: number;
-';'
 };
-export interface ProblemArea {,
+export interface ProblemArea {
     type: 'low_rating' | 'content_gap';
     contentId?: string;
     query?: string;
     rating?: number;
-    searchCount?: number,', severity: 'high' | 'medium' | 'low' }'
+    searchCount?: number;
+    severity: 'high' | 'medium' | 'low';
 };
 export interface ContentPerformance { [contentId: string]: {
-        averageRatin,g: number;
+        averageRating: number;
         totalRatings: number;
-    helpfulness: 'high' | 'medium' | 'low'
-        }
+        helpfulness: 'high' | 'medium' | 'low';
+    }
 };
 export interface UserBehaviorReport { timeSpentBySection: Record<string, TimeStats>,
     navigationPatterns: Record<string, number>;
